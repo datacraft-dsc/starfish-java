@@ -1,0 +1,42 @@
+<app-nav-bar></app-nav-bar>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav align="start" position="start" mode="side" opened="true" class="example-sidenav  side-nav-style">
+    
+      <div class="nameDetail">
+          <div class="nameDetailBox">
+            <p>
+              <span class="nameDetailLabel">Wallet Id</span>
+            <!--  <span class="nameDetailval"> : UVT Admin</span> -->
+            </p>
+            <p class="nameDetailBoxLine2">
+              <span class="glyphicon glyphicon-home">Home </span>
+           <!--   <span class="nameDetailval nameDetailLabel2">1/1/2017</span> -->
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel3">Market Place</span>
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel4">Assets </span>
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel4">Wallet </span>
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel5">Verification </span>
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel6">Bid </span>
+            </p>
+            <p>
+                <span class="nameDetailLabel nameDetailLabel6">Settings </span>
+            </p>
+          </div>
+        </div>
+        <br/>
+
+  </mat-sidenav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-sidenav-container>

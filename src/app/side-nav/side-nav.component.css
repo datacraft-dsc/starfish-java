@@ -1,0 +1,28 @@
+/* .example-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  } */
+  .side-nav-style {
+    background: #454b5d;
+    width: 255px;
+    margin-top: 70px;
+    position: fixed!important;
+}
+.content {
+    overflow: visible;
+    margin-top: 70px;
+}
+.mat-drawer {
+   
+    color: white;
+}
+.glyphicon-home:before {
+    content: "\e021";
+    padding-right: 18%;
+}
+.nameDetailBox{
+    padding-left: 7%;
+}
