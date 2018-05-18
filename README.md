@@ -23,7 +23,7 @@ mvn spring-boot:run
 ###
 
 <dependency>
-			<groupId>com.oceanprotocolclient</groupId>
-			<artifactId>oceanprotocolclient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+	<groupId>com.oceanprotocolclient</groupId>
+	<artifactId>oceanprotocolclient</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+</dependency>
