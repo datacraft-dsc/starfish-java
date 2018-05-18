@@ -29,7 +29,7 @@ public class Assetcontroller implements AssetsInterface {
 		PostMethod post = new PostMethod(targetUrl);
 		post.setParameter("publisherId", publisherId);
 		post.setParameter("name", name);
-		
+
 		HttpClient httpclient = new HttpClient();
 		try {
 			httpclient.executeMethod(post);// post data to a url
@@ -44,7 +44,7 @@ public class Assetcontroller implements AssetsInterface {
 		}
 		// Convert the string into jsonobject
 		String prepostToJson = postResp.substring(1, postResp.length() - 1);
-		String postToJson = prepostToJson.replaceAll("\\\\", ""); 
+		String postToJson = prepostToJson.replaceAll("\\\\", "");
 		JSONParser parser = new JSONParser();
 		JSONObject json = null;
 		try {
