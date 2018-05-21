@@ -1,3 +1,14 @@
+/**
+ *  
+ * To handle API Calls from User Side 
+ * This should take actorId... as parameters
+ * This data should be returned 
+ * For registering an user.
+ * url to register an user   :  http://host:8000/api/v1/keeper/users/user/
+ * paramter :actorId
+ * Author : Athul (Uvionics Tec)
+ */
+
 package com.oceanprotocolclient.user;
 
 import java.util.Random;
@@ -8,8 +19,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.oceanprotocolclient.interfaces.UserInterface;
 
 public class UserController implements UserInterface {
@@ -19,6 +28,14 @@ public class UserController implements UserInterface {
 
 	@Value("${userUrl}")
 	private String userUrl = "/api/v1/keeper/actors/actor/";
+
+	/**
+	 * 
+	 * @param actorId
+	 * @return JSONObject
+	 * 
+	 *         Posting a url and return result into user Registration
+	 */
 
 	@SuppressWarnings("unchecked")
 	public JSONObject userRegistration(String actorId) {
@@ -41,8 +58,12 @@ public class UserController implements UserInterface {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(post);
 			postResp = post.getResponseBodyAsString();
+			/**
+			 * Used for return a Json Object with failed result and status
+			 */
 			if (postResp == null) {
-				resultObject.put("result", "Post Response is not Present");
+				resultObject.put("failedResult", "Post Response is not Present");
+				resultObject.put("status", 0);
 				return resultObject;
 			}
 			/**
@@ -54,42 +75,63 @@ public class UserController implements UserInterface {
 			JSONObject json = (JSONObject) parser.parse(postToJson);
 			String walletId = (String) json.get("defaultWalletAddress");
 			String privateKey = (String) json.get("privateKey");
+			/**
+			 * Used for adding WalletId, PrivateKey,actorId and status to Json
+			 * Object
+			 */
 			resultObject.put("walletId", walletId);
 			resultObject.put("privateKey", privateKey);
 			resultObject.put("actorId", actorId);
+			resultObject.put("status", 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultObject;
 	}
 
+	/**
+	 * 
+	 * @param actorId
+	 * @return JSONObject
+	 * 
+	 *         Posting a url and return result into user Registration
+	 */
+
 	@SuppressWarnings("unchecked")
 	public JSONObject getActor(String actorId) {
 		String getResp = null;
 		JSONObject resultObject = new JSONObject();
 		String targetUrl = targetHost + userUrl;
+		/**
+		 * Used for posting the targetUrl
+		 */
 		try {
 			String targetURL = targetUrl + actorId;
 			GetMethod get = new GetMethod(targetURL);
-
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(get);
 			getResp = get.getResponseBodyAsString();
-			System.out.println(getResp);
+			/**
+			 * Used for return a Json Object with failed result and status
+			 */
 			if (getResp == null) {
-				resultObject.put("result", "No Response From Server");
+				resultObject.put("failedResult", "No Response From Server");
+				resultObject.put("status", 0);
+				return resultObject;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return (JSONObject) resultObject.put("result", getResp);
+		/**
+		 * Used for adding response and status
+		 */
+		resultObject.put("result", getResp);
+		resultObject.put("status", 1);
+		return resultObject;
 	}
 
 	@Override
 	public JSONObject updateActor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
