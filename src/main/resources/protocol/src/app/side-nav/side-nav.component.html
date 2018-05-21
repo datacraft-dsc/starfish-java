@@ -1,0 +1,78 @@
+<app-nav-bar></app-nav-bar>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav align="start" position="start" mode="side" opened="true" class="example-sidenav  side-nav-style">
+    <ul class="ul-sidenav">
+      <div class="row profile">
+      <div class="profile-img col-md-5">
+        <img src="./assets/images/profile.png">
+      </div>
+      <div class="profile-name col-md-7">
+          <p>Ajil Sebastian</p>
+          <p><i class="fa fa-circle text-success"></i>online</p>
+      </div>
+    </div>
+        <li class="actor-id">
+            <span>Wallet Id :</span>
+            <span class="actorId-value" style="color: red">{{actorId}}</span>
+        </li>
+        <li [ngClass]="{'active-tab': selectedItem == 'Home'}" (click)="listClick('Home')" [routerLink]="['dashboard']">
+            <span class="tab-name">
+                <img src="./assets/images/home.png" class="icon-size">Home </span>
+              <span class="position">
+                <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+              </span>
+        </li>
+        <li [ngClass]="{'active-tab': selectedItem == 'Market'}" (click)="listClick('Market')">
+            <span class="tab-name">
+            <img src="./assets/images/market.png" class="icon-size">Market </span>
+            <span class="position">
+                <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+            </span>
+        </li>
+        <li [ngClass]="{'active-tab': selectedItem == 'Assets'}" (click)="listClick('Assets')" [routerLink]="['assets']">
+            <span class="tab-name">
+                <img src="./assets/images/assets.png" class="icon-size">Assets </span>
+              <span class="position">
+                  <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+              </span>
+        </li>
+        <li [ngClass]="{'active-tab': selectedItem == 'Wallet'}" (click)="listClick('Wallet')">
+            <span class="tab-name">
+                <img src="./assets/images/wallet.png" class="icon-size">Wallet </span>
+              <span class="position">
+                  <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+              </span>
+        </li>
+        <li [ngClass]="{'active-tab': selectedItem == 'Verification'}" (click)="listClick('Verification')">
+                <span class="tab-name">
+                    <img src="./assets/images/verification.png" class="icon-size">Verification </span>
+                  <span class="position">
+                      <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+                  </span>
+            </li>
+            <li [ngClass]="{'active-tab': selectedItem == 'Bid'}" (click)="listClick('Bid')">
+                    <span class="tab-name">
+                        <img src="./assets/images/bid.png" class="icon-size">Bid </span>
+                      <span class="position">
+                          <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+                      </span>
+                </li>
+                <li [ngClass]="{'active-tab': selectedItem == 'Settings'}" (click)="listClick('Settings')">
+                        <span class="tab-name">
+                            <img src="./assets/images/settings.png" class="icon-size">Settings </span>
+                          <span class="position">
+                              <img src="./assets/images/right.png" style="width:20px; padding:4px;">
+                          </span>
+                    </li>
+    </ul>
+        <br/>
+        <div class="sideimg">
+        <img src="./assets/images/sidenav.svg">
+        </div>
+
+  </mat-sidenav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-sidenav-container>

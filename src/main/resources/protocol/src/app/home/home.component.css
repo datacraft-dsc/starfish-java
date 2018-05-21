@@ -1,0 +1,70 @@
+.home-background{
+  background: black;
+  color: white;
+  height: 100vh;
+  width: 100%;
+  background-image: url("../../assets/images/homeBackground.svg");
+  background-size: cover;
+}
+.example-container {
+    display: inline-block;
+    flex-direction: column;
+    font-size: 19px;
+    padding: 10px;
+    margin-top: 200px;
+  
+  
+  }
+  
+  .example-container > * {
+     margin-left: 300px;
+    width: 50%;
+    text-align: center;
+   
+    
+  }
+  .imgbox img{
+   
+    width:180px;
+    height:auto;
+    margin-top: 150px;
+  }
+    .button {
+      background-image: linear-gradient(to bottom, #801374, #9b197b, #b62081, #d02a84, #ea3587);
+      border: none;
+      color: white;
+      padding: 5px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+  }
+
+  
+  :host /deep/ .mat-form-field{
+    border-width: 1px !important;
+    border-color:#949494;
+}
+:host /deep/ .mat-form-field-label {
+  font-size: 16px;
+  color: #ffffff;
+}
+  .register-edit{
+    margin-top: 20px;
+  }
+ :host /deep/ .mat-form-field-underline {
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background-color: gray;
+}
+:host /deep/ .mat-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 0;
+  width: 270px;
+}

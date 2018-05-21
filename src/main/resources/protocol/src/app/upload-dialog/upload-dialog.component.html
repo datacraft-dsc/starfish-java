@@ -1,0 +1,90 @@
+<div class="dialog-container">
+    <div class="dialog">
+      <p>Register Asset</p>
+    </div>
+    <div class="dialog-file">
+        <input type="file" name="fileAdd" id="fileAdd" class="inputfile" (change)="fileAdd($event)" />
+        <p *ngIf="file">{{file}}</p>
+        <label for="fileAdd">Drag a category image or <a>Browse</a></label>
+    </div>
+    <div class="row row-dialog" >
+        <mat-form-field class="example"  floatPlaceholder="never" shouldPlaceholderFloat="false">
+          <input matInput placeholder="Enter Id:" [(ngModel)]="id" required>
+        </mat-form-field>
+    </div>
+    <div class="row row-dialog" >
+        <mat-form-field class="example"  floatPlaceholder="never" shouldPlaceholderFloat="false">
+          <input matInput placeholder="Publisher Name:" [(ngModel)]="pname">
+        </mat-form-field>
+    </div>
+    <div class="row row-dialog">
+        <mat-form-field class="example">
+          <!-- <input matInput placeholder="Enter Category Name:" [(ngModel)]="cname"> -->
+            <mat-select [(ngModel)]="cname" placeholder="category">
+<mat-option value="accounting">Accounting</mat-option>
+<mat-option value="marketing">Marketing</mat-option> 
+<mat-option value="bussiness">Bussiness</mat-option>
+<mat-option value="healthcare">Healthcare</mat-option>
+<mat-option value="weather">Weather</mat-option>
+<mat-option value="finance">Finance</mat-option>  
+            </mat-select>      
+</mat-form-field>
+    </div>
+    <div *ngIf="cname =='healthcare'" class="row row-dialog">
+        <mat-form-field class="example">
+          <mat-select [(ngModel)]="type" placeholder="Type">
+            <mat-option value="{{health}}" *ngFor="let health of healthList" >{{health}}</mat-option>  
+            </mat-select>   
+        </mat-form-field>
+       </div>
+       <div *ngIf="cname =='marketing'" class="row row-dialog">
+        <mat-form-field class="example">
+          <mat-select [(ngModel)]="type" placeholder="Type">
+        <mat-option value="{{marketing}}" *ngFor="let marketing of marketList">{{marketing}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+       </div>
+       <div *ngIf="cname =='accounting'" class="row row-dialog">
+          <mat-form-field class="example">
+            <mat-select [(ngModel)]="type" placeholder="Type">
+              <mat-option value="{{accounting}}" *ngFor="let accounting of accountingList" >{{accounting}}</mat-option>  
+              </mat-select>   
+          </mat-form-field>
+         </div>
+         <div *ngIf="cname =='bussiness'" class="row row-dialog">
+            <mat-form-field class="example">
+              <mat-select [(ngModel)]="type" placeholder="Type">
+            <mat-option value="{{bussiness}}" *ngFor="let bussiness of bussinessList">{{bussiness}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+           </div>
+           <div *ngIf="cname =='weather'" class="row row-dialog">
+              <mat-form-field class="example">
+                <mat-select [(ngModel)]="type" placeholder="Type">
+              <mat-option value="{{weather}}" *ngFor="let weather of weatherList">{{weather}}</mat-option>
+              </mat-select>
+              </mat-form-field>
+             </div>
+             <div *ngIf="cname =='finance'" class="row row-dialog">
+                <mat-form-field class="example">
+                  <mat-select [(ngModel)]="type" placeholder="Type">
+                <mat-option value="{{finance}}" *ngFor="let finance of financeList">{{finance}}</mat-option>
+                </mat-select>
+                </mat-form-field>
+               </div>
+      <div class="row row-dialog" >
+        <mat-form-field class="example"  floatPlaceholder="never" shouldPlaceholderFloat="false">
+          <input matInput placeholder="Price:" [(ngModel)]="price">
+        </mat-form-field>
+    </div>
+    <div class="row row-dialog" >
+        <mat-form-field class="example"  floatPlaceholder="never" shouldPlaceholderFloat="false">
+          <input matInput placeholder="description:" [(ngModel)]="description">
+        </mat-form-field>
+    </div>
+  
+   
+    <div style="text-align:center;padding-top:2%">
+        <button class="button" (click)="registerAsset();dialogRef.close()">Save</button>
+    </div>
+</div>
