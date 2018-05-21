@@ -19,6 +19,9 @@ The configuration is located in `src/resources/application.properties`.
 You can run the application from the command line using:
 ```
 mvn spring-boot:run
+
+mvn clean
+mvn install
 ```
 
 ###
