@@ -82,8 +82,8 @@ public class UserController implements UserInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return (JSONObject) resultObject.put("result", getResp);
+		resultObject.put("result", getResp);
+		return resultObject;
 	}
 
 	@Override
