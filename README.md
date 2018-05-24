@@ -1,4 +1,4 @@
-# Ocean java - Ocean Protocl Client API
+# Ocean java - Ocean Protocol Client API
 
 Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
 
