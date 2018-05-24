@@ -23,9 +23,6 @@ You can run the application from the command line using:
 ```
 mvn spring-boot:run
 
-```
-### To create jar file
-
 mvn clean
 
 mvn install
