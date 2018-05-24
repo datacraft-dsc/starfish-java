@@ -2,9 +2,9 @@
 
 Oceanprotocolclient API used for connecting to ocean protocol using Java, Spring Boot.
 
-###Getting Started
+### Getting Started
 
-##Prerequisites
+## Prerequisites
 
 Git
 JDK 8 or later
