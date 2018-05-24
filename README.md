@@ -19,12 +19,17 @@ The configuration is located in `src/resources/application.properties`.
 
 ### To run
 You can run the application from the command line using:
+
 ```
 mvn spring-boot:run
+
+```
+### To create jar file
 
 mvn clean
 
 mvn install
+
 ```
 
 ### Dependency
