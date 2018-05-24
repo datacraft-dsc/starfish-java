@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.oceanprotocol</groupId>
-	<artifactId>oceanprotocol</artifactId>
+	<groupId>com.oceanprotocolclient</groupId>
+	<artifactId>oceanprotocolclient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
-	<name>Oceanprotocol</name>
-	<description>oceanprotocol project for Spring Boot</description>
+	<name>oceanprotocolclient</name>
+	<description>demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -107,10 +107,11 @@
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.oceanprotocolclient</groupId>
-			<artifactId>oceanprotocolclient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-shade-plugin</artifactId>
+			<version>2.3</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
