@@ -1,6 +1,6 @@
 # Oceanprotocolclient API
 
-This project is an application for connecting to ocean protocol using Java, Spring Boot.
+Oceanprotocolclient API used for connecting to ocean protocol using Java, Spring Boot.
 
 Getting Started
 
@@ -25,10 +25,11 @@ mvn clean
 mvn install
 ```
 
-###
-
+### Dependency
+```
 <dependency>
-	<groupId>com.oceanprotocolclient</groupId>
-	<artifactId>oceanprotocolclient</artifactId>
+	<groupId>com.com.oceanprotocol</groupId>
+	<artifactId>ocean-java-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </dependency>
+```
