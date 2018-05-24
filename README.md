@@ -32,6 +32,7 @@ mvn clean
 mvn install
 
 ```
+jar file should create inside the target folder
 
 ### Dependency
 ```
@@ -40,4 +41,5 @@ mvn install
 	<artifactId>ocean-java-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </dependency>
+
 ```
