@@ -196,4 +196,28 @@ public class UserController implements UserInterface {
 		}
 		return null;
 	}
+
+	@Override
+	public ResponseEntity<Object> disableActor(String targetUrl, String id) {
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			// setting the headers for the url
+			HttpHeaders headers = new HttpHeaders();
+			// content-type setting
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			// create a json object to accept the user name
+			JSONObject userName = new JSONObject();
+			// insert user name to the json object
+			userName.put("actorId", id);
+			// create and http entity to attach with the rest url
+			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
+			// sent data to ocean network for disabling the user
+			ResponseEntity<Object> response = restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, Object.class);
+			return response;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
 }

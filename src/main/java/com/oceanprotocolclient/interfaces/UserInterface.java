@@ -8,5 +8,7 @@ public interface UserInterface {
 
 	User userRegistration(String actorId,String targetUrl);
 	User getActor(String actorId,String targetUrl);
-	ResponseEntity<Object> updateActor(String targetUrl, String name);}
+	ResponseEntity<Object> updateActor(String targetUrl, String name);
+	ResponseEntity<Object> disableActor(String targetUrl, String id);
+	}
 
