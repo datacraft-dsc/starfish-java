@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
 
 import com.oceanprotocolclient.model.Asset;
+import com.oceanprotocolclient.model.User;
 
 public interface AssetsInterface {
 	/**
@@ -64,7 +65,7 @@ public interface AssetsInterface {
 	
 	/**
 	 * used to get all assets 
-	 * @param targetUrl
+	 * @param targetUrl - Ocean network host and port
 	 * @return
 	 */
 	
@@ -72,11 +73,80 @@ public interface AssetsInterface {
 	
 	/**
 	 * Used to asset provider
+	 * @param targetUrl - Ocean network host and port 
+	 * @param asset - Asset object with all asset details
+	 * @return
+	 */
+	JSONObject addAssetProvider(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to add the contract details
+	 * @param targetUrl  - Ocean network host and port 
+	 * @param asset - Asset object with contract details
+	 * @return
+	 */
+	JSONObject addContract(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to get the contract details
+	 * @param targetUrl - Ocean network host and port 
+	 * @param user -  User object with contract details
+	 * @return
+	 */
+	
+	JSONObject getContract(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to sign the contract details
+	 * @param targetUrl - Ocean network host and port 
+	 * @param asset -  Asset object with contract details
+	 * @return
+	 */
+	
+	User signContract(String targetUrl,User user);
+	
+	/**
+	 * This method is used to authorize the contract details
+	 * @param targetUrl - Ocean network host and port 
+	 * @param asset -  Asset object with contract details
+	 * @return
+	 */
+	
+	Asset authorizeContract(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to revoke the authorization
+	 * @param targetUrl - Ocean network host and port
+	 * @param asset -  Asset object with contract details
+	 * @return
+	 */
+	
+	Asset revokeContractAuthorization(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to access contract asset
 	 * @param targetUrl
 	 * @param asset
 	 * @return
 	 */
-	JSONObject addAssetProvider(String targetUrl,Asset asset);
+	Asset accessContractAsset(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to settle contract
+	 * @param targetUrl
+	 * @param asset
+	 * @return
+	 */
+	Asset settleContract(String targetUrl,Asset asset);
+	
+	/**
+	 * This method is used to add asset listing
+	 * @param targetUrl
+	 * @param asset
+	 * @return
+	 */
+	
+	Asset addAssetListing(String targetUrl,Asset asset);
 		
 	
 }
