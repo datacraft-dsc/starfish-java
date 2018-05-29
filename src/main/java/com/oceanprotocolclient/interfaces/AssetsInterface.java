@@ -52,4 +52,14 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	JSONObject downloadAssest(String targetUrl);
+	
+	/**
+	 * Used to disbale the asset
+	 * @param targetUrl - Ocean network host and port
+	 * @param asset - Asset object with updated details
+	 * @return 
+	 */
+	
+	ResponseEntity<Object> disableAssets(String targetUrl,Asset asset);
+	
 }
