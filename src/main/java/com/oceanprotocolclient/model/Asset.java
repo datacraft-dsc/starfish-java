@@ -28,6 +28,8 @@ public class Asset {
 	private String contentState;
 	private String creationDatetime;
 	
+	private String contractId;
+	
 
 	public String getFiles() {
 		return files;
@@ -222,6 +224,14 @@ public class Asset {
 
 	public void setCreationDatetime(String creationDatetime) {
 		this.creationDatetime = creationDatetime;
+	}
+
+	public String getContractId() {
+		return contractId;
+	}
+
+	public void setContractId(String contractId) {
+		this.contractId = contractId;
 	}
 
 	@Override
