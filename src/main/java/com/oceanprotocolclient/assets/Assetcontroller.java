@@ -466,8 +466,28 @@ public class Assetcontroller implements AssetsInterface {
 
 	@Override
 	public Asset authorizeContract(String targetUrl, Asset asset) {
-		// TODO Auto-generated method stub
-		return null;
+		ResponseEntity<Object> authorizeContractResponse = null;
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			// setting the headers for the url
+			HttpHeaders headers = new HttpHeaders();
+			// content-type setting
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			// create a json object to accept the asset name
+			JSONObject contract = new JSONObject();
+			// insert asset name to the json object
+			contract.put("contractid", asset.getContractId());
+			contract.put("assetid", asset.getAssetId());
+			// create and http entity to attach with the rest url
+			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
+					contract, headers);
+			// sent data request fro delete asset from ocean network
+			authorizeContractResponse = restTemplate.exchange(targetUrl, HttpMethod.PUT, entity, Object.class);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return asset;
 	}
 
 	@Override
@@ -477,22 +497,68 @@ public class Assetcontroller implements AssetsInterface {
 	}
 
 	@Override
-	public Asset accessContractAsset(String targetUrl, Asset asset) {
-		// TODO Auto-generated method stub
-		return null;
+	public JSONObject accessContractAsset(String contractUrlfrom, Asset asset) {
+		JSONObject resultObject = new JSONObject();
+		JSONObject json = null; // initialize the json object into null
+		String contractUrl = contractUrlfrom+asset.getContractId()+"access";
+		try {
+
+			GetMethod getContract = new GetMethod(contractUrl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(getContract);
+			// used to get response from ocean server
+			String getContractResp = getContract.getResponseBodyAsString();
+			// check the response from ocean network
+			if (getContractResp == null) {
+				
+			}
+			// Convert the string into jsonobject
+			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
+			// replacing '\' with space
+			String postcontractToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();
+			// parse string to json object
+			json = (JSONObject) parser.parse(postcontractToJson);
+			// Set asset id into asset
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	@Override
-	public Asset settleContract(String targetUrl, Asset asset) {
-		// TODO Auto-generated method stub
-		return null;
+	public User settleContract(String targetUrl, User user) {
+		ResponseEntity<Object> settleContractResponse = null;
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			// setting the headers for the url
+			HttpHeaders headers = new HttpHeaders();
+			// content-type setting
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			// create a json object to accept the asset name
+			JSONObject contract = new JSONObject();
+			// insert asset name to the json object
+			contract.put("actorId", user.getActorId());
+			// create and http entity to attach with the rest url
+			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
+					contract, headers);
+			// sent data request fro delete asset from ocean network
+			settleContractResponse = restTemplate.exchange(targetUrl, HttpMethod.PUT, entity, Object.class);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return user;
 	}
-
+	
 	@Override
 	public Asset addAssetListing(String targetUrl, Asset asset) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 	
 

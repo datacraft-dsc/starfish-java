@@ -130,7 +130,7 @@ public interface AssetsInterface {
 	 * @param asset
 	 * @return
 	 */
-	Asset accessContractAsset(String targetUrl,Asset asset);
+	JSONObject accessContractAsset(String targetUrl,Asset asset);
 	
 	/**
 	 * This method is used to settle contract
@@ -138,7 +138,7 @@ public interface AssetsInterface {
 	 * @param asset
 	 * @return
 	 */
-	Asset settleContract(String targetUrl,Asset asset);
+	User settleContract(String targetUrl,User user);
 	
 	/**
 	 * This method is used to add asset listing
