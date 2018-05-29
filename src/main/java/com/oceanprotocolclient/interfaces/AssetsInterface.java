@@ -62,4 +62,14 @@ public interface AssetsInterface {
 	
 	ResponseEntity<Object> disableAssets(String targetUrl,Asset asset);
 	
+	/**
+	 * used to get all assets 
+	 * @param targetUrl
+	 * @return
+	 */
+	
+	JSONObject getAllAssets(String targetUrl);
+	
+	
+	
 }
