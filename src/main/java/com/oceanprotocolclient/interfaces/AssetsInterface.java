@@ -75,9 +75,10 @@ public interface AssetsInterface {
 	 * Used to asset provider
 	 * @param targetUrl - Ocean network host and port 
 	 * @param asset - Asset object with all asset details
+	 * @param actorid - Actor Id 
 	 * @return
 	 */
-	JSONObject addAssetProvider(String targetUrl,Asset asset);
+	JSONObject addAssetProvider(String targetUrl,String actorid ,Asset asset);
 	
 	/**
 	 * This method is used to add the contract details
