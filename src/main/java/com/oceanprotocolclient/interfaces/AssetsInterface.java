@@ -70,6 +70,13 @@ public interface AssetsInterface {
 	
 	JSONObject getAllAssets(String targetUrl);
 	
-	
+	/**
+	 * Used to asset provider
+	 * @param targetUrl
+	 * @param asset
+	 * @return
+	 */
+	JSONObject addAssetProvider(String targetUrl,Asset asset);
+		
 	
 }

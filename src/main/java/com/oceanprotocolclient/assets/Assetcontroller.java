@@ -284,6 +284,9 @@ public class Assetcontroller implements AssetsInterface {
 		return null;
 	}
 
+	/**
+	 * This method used to get all assets from ocean network
+	 */
 	@Override
 	public JSONObject getAllAssets(String targetUrl) {
 		JSONObject resultObject = new JSONObject();
@@ -315,5 +318,39 @@ public class Assetcontroller implements AssetsInterface {
 		}
 		return json;
 	}
+
+	@Override
+	public JSONObject addAssetProvider(String targetUrl, Asset asset) {
+		JSONObject resultObject = new JSONObject();
+		JSONObject json = null; // initialize the json object into null
+		try {
+
+			PostMethod post = new PostMethod(targetUrl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(post);
+			// used to get response from ocean server
+			String getResp = post.getResponseBodyAsString();
+			// check the response from ocean network
+			if (getResp == null) {
+				resultObject.put("status", 0);
+				resultObject.put("failedResult", "Get Response is not Present");
+				return resultObject;
+			}
+			// Convert the string into jsonobject
+			String prepostToJson = getResp.substring(1, getResp.length() - 1);
+			// repalcing '\' with space
+			String postToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();
+			// parse string to json object
+			json = (JSONObject) parser.parse(postToJson);
+			// Set asset id into asset
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	
 
 }
