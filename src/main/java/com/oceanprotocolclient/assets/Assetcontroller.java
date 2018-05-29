@@ -48,40 +48,44 @@ public class Assetcontroller implements AssetsInterface {
 	 * in.
 	 * 
 	 * Minimum required: name, publisherId * @return java object asset
+	 * @param  publisherId   - publisher id
+	 * @param  name - publisher name
+	 * @param targetUrl - target URL
+	 * return asset
 	 */
 
 	@Override
 	public Asset assetsRegistration(String publisherId, String name, String targetUrl) {
 		Asset assets = new Asset(); // Asset object creation
-		String postResp = null; // Initialize the varibale
+		String postAssetResp = null; // Initialize the varibale
 		// set parameters to PostMethod
-		PostMethod post = new PostMethod(targetUrl);
+		PostMethod postasset = new PostMethod(targetUrl);
 		// set the parametre publisherId
-		post.setParameter("publisherId", publisherId);
+		postasset.setParameter("publisherId", publisherId);
 		// set the parametre name
-		post.setParameter("name", name);
+		postasset.setParameter("name", name);
 		HttpClient httpclient = new HttpClient();
 		try {
-			httpclient.executeMethod(post);// post data to a url
-			postResp = post.getResponseBodyAsString(); // got response here
+			httpclient.executeMethod(postasset);// post data to a url
+			postAssetResp = postasset.getResponseBodyAsString(); // got response here
 			// check wether the ocean network response is empty or not
-			if (postResp == null) {
+			if (postAssetResp == null) {
 				return assets;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		// Convert the string into jsonobject
-		String prepostToJson = postResp.substring(1, postResp.length() - 1);
+		String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 		// Remove "\\" from the json string from ocean network
-		String postToJson = prepostToJson.replaceAll("\\\\", "");
+		String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
 		// create a json parser
 		JSONParser parser = new JSONParser();
 		// Initialise the json variable
 		JSONObject json = null;
 		try {
 			// parse the json string into json object
-			json = (JSONObject) parser.parse(postToJson);
+			json = (JSONObject) parser.parse(postAssetToJson);
 			// Set asset id from json object into asset
 			assets.setAssetId((String) json.get("assetId"));
 			// Set marketplaceId from json object into asset
@@ -104,10 +108,10 @@ public class Assetcontroller implements AssetsInterface {
 	}
 
 	/**
-	 * It is used to get the asset response from ocean network Paramete
-	 * targetUrl
+	 * It is used to get the asset response from ocean network 
+	 * @param targetUrl
 	 * 
-	 * @return java object asset GET "/api/v1/keeper/assets/metadata/{asset_id}"
+	 * @return "
 	 */
 	@Override
 	public Asset getAnAssests(String targetUrl) {
@@ -146,9 +150,9 @@ public class Assetcontroller implements AssetsInterface {
 
 	/**
 	 * Update the asset by using the given details PUT
-	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
+	 *  parametes targetUrl,asset
 	 * 
-	 * @return
+	 * @return assets
 	 *
 	 */
 	@Override
@@ -183,14 +187,13 @@ public class Assetcontroller implements AssetsInterface {
 	 * @return JSONObject
 	 * 
 	 * Allow uploading a file for an already registered asset. The
-	 * upload is submitted to the provider. POST
-	 * "/api/v1/provider/assets/asset/"
+	 * upload is submitted to the provider.
 	 */
 
 	@SuppressWarnings({ "resource", "unchecked" })
 	@Override
 	public JSONObject uploadAssest(File file, String targetUrl) {
-		JSONObject resultObject = new JSONObject();
+		JSONObject uploadedassetObject = new JSONObject();
 		// set parameters to PostMethod
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(targetUrl);
@@ -210,16 +213,16 @@ public class Assetcontroller implements AssetsInterface {
 		}
 		// Used for return a Json Object with failed result and status
 		if (string == null) {
-			resultObject.put("status", 0);
-			resultObject.put("failedResult", "Get Response is not Present");
-			return resultObject;
+			uploadedassetObject.put("status", 0);
+			uploadedassetObject.put("failedResult", "Get Response is not Present");
+			return uploadedassetObject;
 
 		}
 		// Used for adding response and status to Json Object
 		else {
-			resultObject.put("status", 1);
-			resultObject.put("result", file.getName());
-			return resultObject;
+			uploadedassetObject.put("status", 1);
+			uploadedassetObject.put("result", file.getName());
+			return uploadedassetObject;
 		}
 	}
 	/**
@@ -229,7 +232,7 @@ public class Assetcontroller implements AssetsInterface {
 	@SuppressWarnings("unchecked")
 	@Override
 	public JSONObject downloadAssest(String targetUrl) {
-		JSONObject resultObject = new JSONObject();
+		JSONObject downloadedassetObject = new JSONObject();
 		String getResp = null;
 		// Execute a get Method and get respose from ocean server
 		try {
@@ -240,19 +243,19 @@ public class Assetcontroller implements AssetsInterface {
 			System.out.println(getResp);
 			// Used for return a Json Object with failed result and status
 			if (getResp == null) {
-				resultObject.put("status", 0);
-				resultObject.put("failedResult", "Get Response is not Present");
-				return resultObject;
+				downloadedassetObject.put("status", 0);
+				downloadedassetObject.put("failedResult", "Get Response is not Present");
+				return downloadedassetObject;
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// Used for adding response and status to Json Object
-		resultObject.put("result", getResp);
-		resultObject.put("status", 1);
+		downloadedassetObject.put("result", getResp);
+		downloadedassetObject.put("status", 1);
 
-		return resultObject;
+		return downloadedassetObject;
 	}
 
 	/**
@@ -262,6 +265,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public ResponseEntity<Object> disableAssets(String targetUrl, Asset asset) {
+		ResponseEntity<Object> disableAssetResponse = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			// setting the headers for the url
@@ -277,12 +281,11 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
 					assetName, headers);
 			// sent data request fro delete asset from ocean network
-			ResponseEntity<Object> response = restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, Object.class);
-			return response;
+			disableAssetResponse = restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, Object.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return disableAssetResponse;
 	}
 
 	/**
@@ -326,28 +329,63 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public JSONObject addAssetProvider(String targetUrl, Asset asset) {
-		JSONObject resultObject = new JSONObject();
+		JSONObject assetProviderObject = new JSONObject();
 		JSONObject json = null; // initialize the json object into null
 		try {
 
-			PostMethod post = new PostMethod(targetUrl);
+			PostMethod postassetprovider = new PostMethod(targetUrl);
 			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(post);
+			httpclient.executeMethod(postassetprovider);
 			// used to get response from ocean server
-			String getResp = post.getResponseBodyAsString();
+			String getAssetProviderResp = postassetprovider.getResponseBodyAsString();
 			// check the response from ocean network
-			if (getResp == null) {
+			if (getAssetProviderResp == null) {
+				assetProviderObject.put("status", 0);
+				assetProviderObject.put("failedResult", "Get Response is not Present");
+				return assetProviderObject;
+			}
+			// Convert the string into jsonobject
+			String prepostToJson = getAssetProviderResp.substring(1, getAssetProviderResp.length() - 1);
+			// repalcing '\' with space
+			String postAssetProviderToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();
+			// parse string to json object
+			json = (JSONObject) parser.parse(postAssetProviderToJson);
+			// Set asset id into asset
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+	/**
+	 * This is used to create a contract
+	 */
+	@Override
+	public JSONObject addContract(String contractUrlfrom, Asset asset) {
+		JSONObject resultObject = new JSONObject();
+		JSONObject json = null; // initialize the json object into null
+		String contractUrl = contractUrlfrom+asset.getContractId();
+		try {
+
+			PostMethod postcontract = new PostMethod(contractUrl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(postcontract);
+			// used to get response from ocean server
+			String postcontractResp = postcontract.getResponseBodyAsString();
+			// check the response from ocean network
+			if (postcontractResp == null) {
 				resultObject.put("status", 0);
 				resultObject.put("failedResult", "Get Response is not Present");
 				return resultObject;
 			}
 			// Convert the string into jsonobject
-			String prepostToJson = getResp.substring(1, getResp.length() - 1);
+			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			// repalcing '\' with space
-			String postToJson = prepostToJson.replaceAll("\\\\", "");
+			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(postToJson);
+			json = (JSONObject) parser.parse(postcontactToJson);
 			// Set asset id into asset
 	
 		} catch (Exception e) {
@@ -356,43 +394,7 @@ public class Assetcontroller implements AssetsInterface {
 		return json;
 	}
 
-	@Override
-	public JSONObject addContract(String targetUrl, Asset asset) {
-		JSONObject resultObject = new JSONObject();
-		JSONObject json = null; // initialize the json object into null
-		try {
-
-			PostMethod post = new PostMethod(targetUrl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(post);
-			// used to get response from ocean server
-			String getResp = post.getResponseBodyAsString();
-			// check the response from ocean network
-			if (getResp == null) {
-				resultObject.put("status", 0);
-				resultObject.put("failedResult", "Get Response is not Present");
-				return resultObject;
-			}
-			// Convert the string into jsonobject
-			String prepostToJson = getResp.substring(1, getResp.length() - 1);
-			// repalcing '\' with space
-			String postToJson = prepostToJson.replaceAll("\\\\", "");
-			JSONParser parser = new JSONParser();
-			// parse string to json object
-			json = (JSONObject) parser.parse(postToJson);
-			// Set asset id into asset
 	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return json;
-	}
-
-	@Override
-	public JSONObject getContract(String targetUrl, Asset asset) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public User signContract(String targetUrl, User user) {
@@ -426,6 +428,12 @@ public class Assetcontroller implements AssetsInterface {
 
 	@Override
 	public Asset addAssetListing(String targetUrl, Asset asset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JSONObject getContract(String targetUrl, Asset asset) {
 		// TODO Auto-generated method stub
 		return null;
 	}

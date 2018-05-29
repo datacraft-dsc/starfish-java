@@ -37,8 +37,8 @@ public class UserController implements UserInterface {
 	 * @param actorId
 	 * @return JSONObject
 	 * 
-	 * Registers an actor with the Ocean network. POST
-	 * "/api/v1/keeper/actors/actor/"
+	 *         Registers an actor with the Ocean network. POST
+	 *         "/api/v1/keeper/actors/actor/"
 	 */
 
 	public User userRegistration(String actorId, String targetUrl) {
@@ -46,40 +46,39 @@ public class UserController implements UserInterface {
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
 		// variable
-		String postResp = null;
+		String postActorResp = null;
 		try {
 			// Used for generating a random Alphabet and add to ActorId
-			Random rnd = new Random();
-			char c = (char) (rnd.nextInt(26) + 'a');
-			String s = Character.toString(c);
-			actorId = s + actorId;
-
+			// Random rnd = new Random();
+			// char c = (char) (rnd.nextInt(26) + 'a');
+			// String s = Character.toString(c);
+			// actorId = s + actorId;
 			/**
 			 * Used for posting the data to ocean network
 			 */
-			PostMethod post = new PostMethod(targetUrl);
-			post.setParameter("actorId", actorId);// set Parameter actorId
+			PostMethod postActor = new PostMethod(targetUrl);
+			postActor.setParameter("actorId", actorId);// set Parameter actorId
 			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(post);
+			httpclient.executeMethod(postActor);
 			// Response from ocean network
-			postResp = post.getResponseBodyAsString();
+			postActorResp = postActor.getResponseBodyAsString();
 
 			/**
 			 * Used for return a Json Object with failed result and status
 			 */
-			if (postResp == null) {
+			if (postActorResp == null) {
 				return user;
 			}
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
-			String prepostToJson = postResp.substring(1, postResp.length() - 1);
+			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String postToJson = prepostToJson.replaceAll("\\\\", "");
+			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser(); // create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(postToJson);
+			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
 			// get the wallet address from ocean network response
 			String walletId = (String) json.get("defaultWalletAddress");
 			// set the wallet id to the user object
@@ -111,8 +110,8 @@ public class UserController implements UserInterface {
 	 * @param actorId
 	 * @return JSONObject
 	 * 
-	 * This method used to get the actor details from ocean network GET
-	 * "/api/v1/keeper/actors/actor/<actor_id>"
+	 *         This method used to get the actor details from ocean network GET
+	 *         "/api/v1/keeper/actors/actor/<actor_id>"
 	 */
 
 	public User getActor(String actorId, String targetUrl) {
@@ -120,33 +119,33 @@ public class UserController implements UserInterface {
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
 		// variable
-		String getResp = null;
+		String getActorResp = null;
 		/**
 		 * Used for getting the data to ocean network
 		 */
 		try {
 			String targetURL = targetUrl + actorId;
-			GetMethod get = new GetMethod(targetURL);
+			GetMethod getActor = new GetMethod(targetURL);
 			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(get);
+			httpclient.executeMethod(getActor);
 			// Response from ocean network
-			getResp = get.getResponseBodyAsString();
+			getActorResp = getActor.getResponseBodyAsString();
 			/**
 			 * Used for return a Json Object with failed result and status
 			 */
-			if (getResp == null) {
+			if (getActorResp == null) {
 				return user;
 			}
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
-			String prepostToJson = getResp.substring(1, getResp.length() - 1);
+			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String postToJson = prepostToJson.replaceAll("\\\\", "");
+			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(postToJson);
+			JSONObject json = (JSONObject) parser.parse(getActorToJson);
 			// set the wallet id to the user object
 			user.setWalletId(json.get("defaultWalletAddress").toString());
 			// set the actor id to the user object
@@ -159,22 +158,22 @@ public class UserController implements UserInterface {
 			user.setCreationDatetime(json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-		  }
+		}
 		return user;
 	}
 
 	/**
-	 * PUT "/api/v1/keeper/actors/actor/<actor_id>" JSON-encoded key-value pairs
-	 * from the Actor schema that are allowed to be updated (only 'name' and
-	 * 'attributes')
+	 * JSON-encoded key-value pairs from the Actor schema 
+	 * that are allowed to be updated (only 'name' and 'attributes')
 	 * 
 	 * @param targetUrl
 	 * @param name
-	 * @return
+	 * @return updatedresponse
 	 *
 	 */
 	@Override
 	public ResponseEntity<Object> updateActor(String targetUrl, String name) {
+		ResponseEntity<Object> updatedresponse = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			// setting the headers for the url
@@ -189,16 +188,22 @@ public class UserController implements UserInterface {
 			// create and http entity to attach with the rest url
 			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
 			// sent data to ocean network for updating the data
-			ResponseEntity<Object> response = restTemplate.exchange(targetUrl, HttpMethod.PUT, entity, Object.class);
-			return response;
+			updatedresponse = restTemplate.exchange(targetUrl, HttpMethod.PUT, entity, Object.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return updatedresponse;
 	}
 
+	/**
+	 * This method is used to disable the actor.
+	 * @param targetUrl
+	 * @param name
+	 * @return response
+	 */
 	@Override
 	public ResponseEntity<Object> disableActor(String targetUrl, String id) {
+		ResponseEntity<Object> updatedresponse = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			// setting the headers for the url
@@ -213,11 +218,10 @@ public class UserController implements UserInterface {
 			// create and http entity to attach with the rest url
 			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
 			// sent data to ocean network for disabling the user
-			ResponseEntity<Object> response = restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, Object.class);
-			return response;
+			updatedresponse = restTemplate.exchange(targetUrl, HttpMethod.DELETE, entity, Object.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return null;
+		return updatedresponse;
 	}
 }
