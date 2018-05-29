@@ -335,9 +335,9 @@ public class Assetcontroller implements AssetsInterface {
 		try {
 
 			PostMethod postassetprovider = new PostMethod(targetUrl);
-			// set the parametre publisherId
+			// set the assetId
 			postassetprovider.setParameter("assetId", asset.getAssetId());
-			// set the parametre name
+			// set the providerId
 			postassetprovider.setParameter("providerId", actorId);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(postassetprovider);
@@ -463,7 +463,9 @@ public class Assetcontroller implements AssetsInterface {
 		}
 		return user;
 	}
-
+	/**
+	 * This method is used to authorize the contract.
+	 */
 	@Override
 	public Asset authorizeContract(String targetUrl, Asset asset) {
 		ResponseEntity<Object> authorizeContractResponse = null;
@@ -476,8 +478,9 @@ public class Assetcontroller implements AssetsInterface {
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			// create a json object to accept the asset name
 			JSONObject contract = new JSONObject();
-			// insert asset name to the json object
-			contract.put("contractid", asset.getContractId());
+			// insert asset contractid to the json object
+			contract.put("contractid", asset.getContractId()); 
+			// insert asset assetid to the json object
 			contract.put("assetid", asset.getAssetId());
 			// create and http entity to attach with the rest url
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
@@ -495,7 +498,9 @@ public class Assetcontroller implements AssetsInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * This method is used to access Contract Asset.
+	 */
 	@Override
 	public JSONObject accessContractAsset(String contractUrlfrom, Asset asset) {
 		JSONObject resultObject = new JSONObject();
@@ -526,6 +531,9 @@ public class Assetcontroller implements AssetsInterface {
 		}
 		return json;
 	}
+	/**
+	 * This method is used to settle Contract Asset.
+	 */
 
 	@Override
 	public User settleContract(String targetUrl, User user) {
@@ -537,9 +545,9 @@ public class Assetcontroller implements AssetsInterface {
 			// content-type setting
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the asset name
+			// create a json object to accept the contract
 			JSONObject contract = new JSONObject();
-			// insert asset name to the json object
+			// insert actorId to the json object
 			contract.put("actorId", user.getActorId());
 			// create and http entity to attach with the rest url
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
@@ -552,10 +560,42 @@ public class Assetcontroller implements AssetsInterface {
 		return user;
 	}
 	
+	/**
+	 * This method is used to add asset listing (Market asset end point)
+	 */
 	@Override
-	public Asset addAssetListing(String targetUrl, Asset asset) {
-		// TODO Auto-generated method stub
-		return null;
+	public Asset addAssetListing(String marketUrlfrom, Asset asset) {
+		JSONObject resultObject = new JSONObject();
+		JSONObject json = null; // initialize the json object into null
+		String contractUrl = marketUrlfrom+asset.getAssetId();
+		try {
+
+			PostMethod postcontract = new PostMethod(contractUrl);
+			// insert asset assetId to the json object
+			postcontract.setParameter("assetId", asset.getAssetId());
+			// insert asset publisherId to the json object
+			postcontract.setParameter("publisherId", asset.getPublisherId());
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(postcontract);
+			// used to get response from ocean server
+			String postcontractResp = postcontract.getResponseBodyAsString();
+			// check the response from ocean network
+			if (postcontractResp == null) {
+				
+			}
+			// Convert the string into jsonobject
+			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
+			// replacing '\' with space
+			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();
+			// parse string to json object
+			json = (JSONObject) parser.parse(postcontactToJson);
+			// Set asset id into asset
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return asset;
 	}
 
 	
