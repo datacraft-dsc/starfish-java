@@ -23,14 +23,14 @@ public interface AssetsInterface {
 	 * @param targetUrl - Ocean network host and port 
 	 * @return
 	 */
-	Asset assetsRegistration(URL url,String publisherId,String name);
+	Asset assetRegistration(URL url,String publisherId,String name);
 	/**
 	 * To get asset details from ocean network
 	 * 
 	 * @param targetUrl - Ocean network host and port 
 	 * @return
 	 */
-	Asset getAnAsset(URL url);
+	Asset getAsset(URL url,String assetId);
 	/**
 	 * Update asset meta data
 	 * 
@@ -38,7 +38,7 @@ public interface AssetsInterface {
 	 * @param asset - Asset object with updated details
 	 * @return
 	 */
-	ResponseEntity<Object> updateAssets(URL url,Asset asset);
+	Asset updateAssets(URL url,String actorId,String assetName);
 	/**
 	 * Allow uploading a file for an already registered asset. 
 	 * The upload is submitted to the provider.
@@ -46,14 +46,14 @@ public interface AssetsInterface {
 	 * @param targetUrl - Ocean network host and port
 	 * @return
 	 */
-	JSONObject uploadAssest(URL url,File file);
+	Asset uploadAsset(URL url,File file,String assetId);
 	/**
 	 * Allow downloading the asset file from the provider
 	 * 
 	 * @param targetUrl - Ocean network host and port
 	 * @return
 	 */
-	JSONObject downloadAsset(URL url);
+	Asset downloadAsset(URL url,String assetId);
 	
 	/**
 	 * Used to disbale the asset
@@ -62,7 +62,7 @@ public interface AssetsInterface {
 	 * @return 
 	 */
 	
-	ResponseEntity<Object> disableAssets(URL url,Asset asset);
+	Asset disableAssets(URL url,String assetId,String assetName,String actorId);
 	
 	/**
 	 * used to get all assets 
@@ -70,7 +70,7 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	
-	JSONObject getAllAssets(URL url);
+	Asset getAssets(URL url,String assetId);
 	
 	/**
 	 * Used to asset provider
@@ -79,7 +79,7 @@ public interface AssetsInterface {
 	 * @param actorid - Actor Id 
 	 * @return
 	 */
-	JSONObject addAssetProvider(URL url,String actorid ,Asset asset);
+	Asset addAssetProvider(URL url,String actorid ,String assetId);
 	
 	/**
 	 * This method is used to add the contract details
@@ -87,7 +87,7 @@ public interface AssetsInterface {
 	 * @param asset - Asset object with contract details
 	 * @return
 	 */
-	JSONObject addContract(URL url,Asset asset);
+	Asset addContract(URL url,String assetId);
 	
 	/**
 	 * This method is used to get the contract details
@@ -96,7 +96,7 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	
-	JSONObject getContract(URL url,String contractId);
+	Asset getContract(URL url,String contractId);
 	
 	/**
 	 * This method is used to sign the contract details
@@ -105,7 +105,7 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	
-	ResponseEntity<?> signContract(URL url,String contractId, String signingActor);
+	Asset signContract(URL url,String contractId, String actorId);
 	
 	/**
 	 * This method is used to authorize the contract details
@@ -114,7 +114,7 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	
-	ResponseEntity<?> authorizeContract(URL url,String contractId, String assetId);
+	Asset authorizeContract(URL url,String contractId, String assetId);
 	
 	/**
 	 * This method is used to revoke the authorization
@@ -132,7 +132,7 @@ public interface AssetsInterface {
 	 * @param asset
 	 * @return
 	 */
-	JSONObject accessContractAsset(URL url,String contractId);
+	Asset accessContractAsset(URL url,String contractId);
 	
 	/**
 	 * This method is used to settle contract
@@ -140,7 +140,7 @@ public interface AssetsInterface {
 	 * @param asset
 	 * @return
 	 */
-	ResponseEntity<?> settleContract(URL url,String actorId);
+	Asset settleContract(URL url,String actorId,String contractId);
 	
 	/**
 	 * This method is used to add asset listing
@@ -149,7 +149,7 @@ public interface AssetsInterface {
 	 * @return
 	 */
 	
-	JSONObject addAssetListing(URL url,String assetId,String publisherId);
+	Asset addAssetListing(URL url,String assetId,String publisherId);
 		
 	
 }
