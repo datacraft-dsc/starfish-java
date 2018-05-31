@@ -40,7 +40,7 @@ public interface AssetInterface {
 	 * @param targetUrl - Ocean network host and port
 	 * @return
 	 */
-	Asset uploadAsset(URL url,File file,String assetId);
+	Asset uploadAsset(URL url,String assetId,File file);
 	/**
 	 * Allow downloading the asset file from the provider
 	 * 
