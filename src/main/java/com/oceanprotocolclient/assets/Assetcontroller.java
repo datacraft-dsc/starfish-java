@@ -10,9 +10,50 @@
  *								 - Disable Asset
  *								 - Add Asset Provider
  *								 - Add Contract
- *								 - getContract
+ *								 - Get Contract
+ *								 - SignContract
+ *								 - Authorize Contract
+ *								 - Revoke Contract Authorization
+ *								 - Access Contract Asset
+ *								 - Settle Contract
+ *								 - Add Asset Listing
+ *
+ * assetRegistration - This method registers an asset with the Ocean network. 
+ *					   POST "/api/v1/keeper/assets/metadata"
+ * 					   Parameter : url , actorId
+ * getAsset		 	 - This method used to fetch an asset from the Ocean network. 
+ * 					   GET "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId
+ * getAssets		 - This method used to fetch all assets from the Ocean network. 
+ * 					   GET "/api/v1/keeper/assets/metadata"
+ * 					   parameter : url , assetId
+ * updateAsset		 - This method used to update an asset in the the Ocean network. 
+ * 					   PUT "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId,assetName
+ * uploadAsset		 - This method used to upload an asset in the the Ocean network. 
+ * 					   POST "/api/v1/provider/assets/asset/
+ * 					   parameter : url , assetId ,file
+ * downloadAsset 	 - This method used to download asset from Ocean network. 
+ * 					   GET "/api/v1/provider/assets/asset/"
+ * 					   parameter : url , assetId
+ * disableAssets	 - This method used to disable asset from Ocean network. 
+ * 					   DELETE "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId ,assetName,actorId
+ * addAssetProvider	 - This method used to add asset provider from Ocean network. 
+ * 					   POST "/api/v1/keeper/assets/provider"
+ * 					   parameter : url , actorId ,assetId
+ * addContract		 - This method used to add contract from Ocean network. 
+ * 					   POST "/api/v1/keeper/contracts/contract"
+ * 					   parameter : url ,assetId
+ * getContract		 - This method used to get contract from Ocean network.
+ * 					   GET "/api/v1/keeper/contracts/contract/<contract_id>"
+ * 					   parameter : url ,contractId
+ * 
+ * 
+ *						
  * Author : Aleena,Athul,Arun (Uvionics Tec)
- */
+ * ***************************************************************************************************************************
+ ** ***************************************************************************************************************************/
 
 package com.oceanprotocolclient.assets;
 
@@ -48,7 +89,6 @@ public class Assetcontroller implements AssetInterface {
 
 	public String keeperURL = "/api/v1/keeper";
 	public String providerURL = "/api/v1/provider";
-	
 
 	/**
 	 * This method used to register an asset Json-encoded payload containing the
@@ -57,9 +97,12 @@ public class Assetcontroller implements AssetInterface {
 	 * 
 	 * Minimum required: name, publisherId
 	 * 
-	 * @param publisherId - publisher id
-	 * @param name - publisher name
-	 * @param targetUrl - target URL 
+	 * @param publisherId
+	 *            - publisher id
+	 * @param name
+	 *            - publisher name
+	 * @param targetUrl
+	 *            - target URL
 	 * @return java object asset
 	 */
 
@@ -187,7 +230,7 @@ public class Assetcontroller implements AssetInterface {
 		Asset asset = new Asset();
 		String updatedresponse = null;
 		try {
-			PutMethod  put = new PutMethod(oceanUrl);
+			PutMethod put = new PutMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
@@ -229,7 +272,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 
 	@SuppressWarnings({ "resource", "unchecked" })
-	public Asset uploadAsset(URL url, File file, String assetId) {
+	public Asset uploadAsset(URL url, String assetId, File file) {
 		String uploadassetResp = null;
 		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
 		Asset asset = new Asset();
@@ -290,7 +333,7 @@ public class Assetcontroller implements AssetInterface {
 	public Asset disableAssets(URL url, String assetId, String assetName, String actorId) {
 		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
 		Asset asset = new Asset();
-		String disableAssetResponse  = null;
+		String disableAssetResponse = null;
 		try {
 			DeleteMethod delete = new DeleteMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
@@ -501,7 +544,7 @@ public class Assetcontroller implements AssetInterface {
 		Asset asset = new Asset();
 		String updatedresponse = null;
 		try {
-			PutMethod  put = new PutMethod(oceanUrl);
+			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("assetId", assetId);
 			HttpClient httpclient = new HttpClient();
@@ -571,7 +614,7 @@ public class Assetcontroller implements AssetInterface {
 		Asset asset = new Asset();
 		String updatedresponse = null;
 		try {
-			PutMethod  put = new PutMethod(oceanUrl);
+			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("actorId", actorId);
 			HttpClient httpclient = new HttpClient();
