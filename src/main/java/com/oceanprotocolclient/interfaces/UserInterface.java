@@ -1,9 +1,6 @@
 package com.oceanprotocolclient.interfaces;
 
 import java.net.URL;
-
-import org.springframework.http.ResponseEntity;
-
 import com.oceanprotocolclient.model.User;
 
 public interface UserInterface {
