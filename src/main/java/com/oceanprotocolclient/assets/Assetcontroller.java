@@ -1,12 +1,16 @@
-/**
- *  
- * To handle API Calls from User Side 
- * This should take publisherId,name,assetId,file... as parameters
- * This data should be analyzed and returned to appropriate function call
- * For registering an user.
- * url to register an asset   :  http://host:8000/api/v1/keeper/assets/metadata/
- * url to download/upload an asset   :  http://host:8000/api/v1/provider/assets/asset/
- * paramter :assetId
+/*****************************************************************************************************************************
+ * ***************************************************************************************************************************
+ * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
+ * assetController Class includes- Asset Registration
+ * 								 - Get Asset
+ * 								 - Get Assets
+ * 								 - Update Asset
+ * 								 - Upload Asset
+ * 								 - Download Asset
+ *								 - Disable Asset
+ *								 - Add Asset Provider
+ *								 - Add Contract
+ *								 - getContract
  * Author : Aleena,Athul,Arun (Uvionics Tec)
  */
 
@@ -18,8 +22,11 @@ import java.net.URL;
 import java.util.Arrays;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -31,28 +38,18 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
-import com.oceanprotocolclient.interfaces.AssetsInterface;
+import com.oceanprotocolclient.interfaces.AssetInterface;
 import com.oceanprotocolclient.model.Asset;
 import com.oceanprotocolclient.model.User;
 
 @SuppressWarnings("deprecation")
-public class Assetcontroller implements AssetsInterface {
+public class Assetcontroller implements AssetInterface {
+
+	public String keeperURL = "/api/v1/keeper";
+	public String providerURL = "/api/v1/provider";
 	
-	@Autowired
-	Environment env;
-	
-	
-	
+
 	/**
 	 * This method used to register an asset Json-encoded payload containing the
 	 * Asset schema with the assetId, creationDatetime and contentState filled
@@ -60,21 +57,26 @@ public class Assetcontroller implements AssetsInterface {
 	 * 
 	 * Minimum required: name, publisherId
 	 * 
-	 * @param publisherId
-	 *            - publisher id
-	 * @param name
-	 *            - publisher name
-	 * @param targetUrl
-	 *            - target URL * @return java object asset
+	 * @param publisherId - publisher id
+	 * @param name - publisher name
+	 * @param targetUrl - target URL 
+	 * @return java object asset
 	 */
 
-	@Override
 	public Asset assetRegistration(URL url, String publisherId, String assetName) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata";
+		String oceanUrl = url + keeperURL + "/assets/metadata";
 		// Asset object creation
-		Asset assets = new Asset(); 
+		Asset asset = new Asset();
+		if (url == null) {
+			asset.setMessage("Host url not found");
+			return asset;
+		}
+		if (publisherId == null || assetName == null) {
+			asset.setMessage("Publisher Id or Asset Name not found");
+			return asset;
+		}
 		// Initialize the varible to null
-		String postAssetResp = null; 
+		String postAssetResp = null;
 		// set parameters to PostMethod
 		PostMethod postasset = new PostMethod(oceanUrl);
 		// set the parametre publisherId
@@ -83,12 +85,14 @@ public class Assetcontroller implements AssetsInterface {
 		postasset.setParameter("name", assetName);
 		HttpClient httpclient = new HttpClient();
 		try {
-			httpclient.executeMethod(postasset);// post data to a url
-			postAssetResp = postasset.getResponseBodyAsString(); // got response
-																	// here
+			// post data to a url
+			httpclient.executeMethod(postasset);
+			// Response from ocean network
+			postAssetResp = postasset.getResponseBodyAsString();
 			// check wether the ocean network response is empty or not
 			if (postAssetResp == null) {
-				return assets;
+				asset.setMessage("Response from ocean network is not found");
+				return asset;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -105,24 +109,24 @@ public class Assetcontroller implements AssetsInterface {
 			// parse the json string into json object
 			json = (JSONObject) parser.parse(postAssetToJson);
 			// Set asset id from json object into asset
-			assets.setAssetId((String) json.get("assetId"));
+			asset.setAssetId((String) json.get("assetId"));
 			// Set marketplaceId from json object into asset
-			assets.setMarketplaceId((String) json.get("marketplaceId"));
+			asset.setMarketplaceId((String) json.get("marketplaceId"));
 			// Set publisherId from json object into asset
-			assets.setPublisherId((String) json.get("publisherId"));
+			asset.setPublisherId((String) json.get("publisherId"));
 			// Set updateDatetime from json object into asset
-			assets.setUpdateDatetime(json.get("updateDatetime").toString());
+			asset.setUpdateDatetime(json.get("updateDatetime").toString());
 			// Set contentState from json object into asset
-			assets.setContentState((String) json.get("contentState"));
+			asset.setContentState((String) json.get("contentState"));
 			// Set name from json object into asset
-			assets.setAssetname((String) json.get("name"));
+			asset.setAssetName((String) json.get("name"));
 			// Set creationDatetime from json object into asset
-			assets.setCreationDatetime(json.get("creationDatetime").toString());
+			asset.setCreationDatetime(json.get("creationDatetime").toString());
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return assets;
+		return asset;
 	}
 
 	/**
@@ -132,11 +136,14 @@ public class Assetcontroller implements AssetsInterface {
 	 * 
 	 * @return "
 	 */
-	@Override
 	public Asset getAsset(URL url, String assetId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata/" + assetId;
-		Asset assets = new Asset(); // asset object creation
+		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
+		Asset asset = new Asset(); // asset object creation
 		JSONObject json = null; // initialize the json object into null
+		if (assetId == null) {
+			asset.setMessage("Response from ocean network is not found");
+			return asset;
+		}
 		try {
 
 			GetMethod get = new GetMethod(oceanUrl);
@@ -146,7 +153,8 @@ public class Assetcontroller implements AssetsInterface {
 			String getResp = get.getResponseBodyAsString();
 			// check the response from ocean network
 			if (getResp == null) {
-				return assets;
+				asset.setMessage("Response from ocean network is not found");
+				return asset;
 			}
 			// Convert the string into jsonobject
 			String prepostToJson = getResp.substring(1, getResp.length() - 1);
@@ -156,15 +164,15 @@ public class Assetcontroller implements AssetsInterface {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postToJson);
 			// Set asset id into asset
-			assets.setAssetId((String) json.get("assetId"));
+			asset.setAssetId((String) json.get("assetId"));
 			// Set publisherId into asset
-			assets.setPublisherId((String) json.get("publisherId"));
+			asset.setPublisherId((String) json.get("publisherId"));
 			// Set name into asset
-			assets.setAssetname((String) json.get("name"));
+			asset.setAssetName((String) json.get("name"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return assets;
+		return asset;
 
 	}
 
@@ -174,29 +182,17 @@ public class Assetcontroller implements AssetsInterface {
 	 * @return assets
 	 *
 	 */
-	@Override
-	public Asset updateAssets(URL url, String assetId, String assetName) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata/" + assetId;
-		ResponseEntity<String> updatedresponse;
+	public Asset updateAsset(URL url, String assetId, String assetName) {
+		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
 		Asset asset = new Asset();
+		String updatedresponse = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the asset name
-			JSONObject assetupdation = new JSONObject();
-			// insert asset name to the json object
-			assetupdation.put("name", assetName);
-			// create and http entity to attach with the rest url
-			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
-					assetupdation, headers);
-			// sent data request fro update data to ocean network
-			 updatedresponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
-			
-			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
+			PutMethod  put = new PutMethod(oceanUrl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(put);
+			// got response from ocean network
+			updatedresponse = put.getResponseBodyAsString();
+			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
@@ -204,7 +200,7 @@ public class Assetcontroller implements AssetsInterface {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the setAssetname to the user object
-			asset.setAssetname(json.get("name").toString());
+			asset.setAssetName(json.get("name").toString());
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
@@ -233,10 +229,9 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 
 	@SuppressWarnings({ "resource", "unchecked" })
-	@Override
 	public Asset uploadAsset(URL url, File file, String assetId) {
 		String uploadassetResp = null;
-		String oceanUrl = url + env.getProperty("providerURL") + "/assets/asset/" + assetId;
+		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
 		Asset asset = new Asset();
 		JSONObject uploadedassetObject = new JSONObject();
 		// set parameters to PostMethod
@@ -245,7 +240,7 @@ public class Assetcontroller implements AssetsInterface {
 		MultipartEntity entity = new MultipartEntity();
 		entity.addPart("file", new FileBody(file));
 		post.setEntity(entity);
-		
+
 		// used to get respose from ocean server
 		try {
 			HttpResponse response = client.execute(post);
@@ -266,9 +261,8 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Asset downloadAsset(URL url, String assetId) {
-		String oceanUrl = url + env.getProperty("providerURL") + "/assets/asset/" + assetId;
+		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
 		Asset asset = new Asset();
 		JSONObject downloadedassetObject = new JSONObject();
 		String getResp = null;
@@ -292,36 +286,26 @@ public class Assetcontroller implements AssetsInterface {
 	 * Method used to Delete the asset
 	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
 	 */
-	@Override
-	public Asset disableAssets(URL url, String assetId, String assetName,String actorId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/metadata/" + assetId;
+
+	public Asset disableAssets(URL url, String assetId, String assetName, String actorId) {
+		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
 		Asset asset = new Asset();
-		ResponseEntity<String> disableAssetResponse = null;
+		String disableAssetResponse  = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the asset name
-			JSONObject assetDisabled = new JSONObject();
-			// insert asset name to the json object
-			assetDisabled.put("requestor_actor_id", actorId);
-			// create and http entity to attach with the rest url
-			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
-					assetDisabled, headers);
-			// sent data request fro delete asset from ocean network
-			disableAssetResponse = restTemplate.exchange(oceanUrl, HttpMethod.DELETE, entity, String.class);
-			String prepostToJson = disableAssetResponse.getBody().substring(1, disableAssetResponse.getBody().length() - 1);
+			DeleteMethod delete = new DeleteMethod(oceanUrl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(delete);
+			// got response from ocean network
+			disableAssetResponse = delete.getResponseBodyAsString();
+			String predeleteToJson = disableAssetResponse.substring(1, disableAssetResponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String diabledAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			String diabledAssetToJson = predeleteToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(diabledAssetToJson);
 			// set the setAssetname to the user object
-			asset.setAssetname(json.get("name").toString());
+			asset.setAssetName(json.get("name").toString());
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
@@ -333,7 +317,6 @@ public class Assetcontroller implements AssetsInterface {
 			// set the publisher Id to the user object
 			asset.setPublisherId(json.get("publisherId").toString());
 
-			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -343,9 +326,9 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This method used to get all assets from ocean network
 	 */
-	@Override
+
 	public Asset getAssets(URL url, String assetId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/metadata/";
+		String oceanUrl = url + keeperURL + "/metadata/";
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		try {
@@ -363,7 +346,7 @@ public class Assetcontroller implements AssetsInterface {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getAssetToJson);
 			// set the setAssetname to the user object
-			asset.setAssetname(json.get("name").toString());
+			asset.setAssetName(json.get("name").toString());
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
@@ -384,9 +367,9 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This is used to add asset provider
 	 */
-	@Override
+
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/provider/";
+		String oceanUrl = url + keeperURL + "/assets/provider/";
 		JSONObject assetProviderObject = new JSONObject();
 		Asset asset = new Asset();
 		try {
@@ -419,9 +402,9 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This is used to create a contract
 	 */
-	@Override
+
 	public Asset addContract(URL url, String assetId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/";
+		String oceanUrl = url + keeperURL + "/contracts/contract/";
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		JSONObject json;
@@ -452,9 +435,8 @@ public class Assetcontroller implements AssetsInterface {
 	 * This method is used to get contract from alredy contracted stackholders
 	 */
 
-	@Override
 	public Asset getContract(URL url, String contractId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId;
+		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		JSONObject json = null; // initialize the json object into null
@@ -484,29 +466,18 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This method is used to sign the contract.
 	 */
-	@Override
 	public Asset signContract(URL url, String contractId, String signingActorId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId;
+		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
 		Asset asset = new Asset();
-		ResponseEntity<String> signedContractResponse = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the asset name
-			JSONObject contract = new JSONObject();
-			// insert asset name to the json object
-			contract.put("actor_id", signingActorId);
-			// create and http entity to attach with the rest url
-			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
-					headers);
-			// sent data request fro delete asset from ocean network
-			signedContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
-			
-			String prepostToJson = signedContractResponse.getBody().substring(1, signedContractResponse.getBody().length() - 1);
+			PostMethod postcontract = new PostMethod(oceanUrl);
+			postcontract.setParameter("actorId", signingActorId);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(postcontract);
+			// used to get response from ocean server
+			String postcontractResp = postcontract.getResponseBodyAsString();
+			// Convert the string into jsonobject
+			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String signedContractToJson = prepostToJson.replaceAll("\\\\", "");
@@ -515,7 +486,7 @@ public class Assetcontroller implements AssetsInterface {
 			JSONObject json = (JSONObject) parser.parse(signedContractToJson);
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -525,31 +496,19 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This method is used to authorize the contract.
 	 */
-	@Override
 	public Asset authorizeContract(URL url, String contractId, String assetId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/auth";
+		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/auth";
 		Asset asset = new Asset();
-		ResponseEntity<String> authorizeContractResponse = null;
+		String updatedresponse = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the asset name
-			JSONObject contract = new JSONObject();
-			// insert asset contractid to the json object
-			contract.put("contractid", contractId);
-			// insert asset assetid to the json object
-			contract.put("assetid", assetId);
-			// create and http entity to attach with the rest url
-			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
-					headers);
-			// sent data request fro delete asset from ocean network
-			authorizeContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
-			
-			String prepostToJson = authorizeContractResponse.getBody().substring(1, authorizeContractResponse.getBody().length() - 1);
+			PutMethod  put = new PutMethod(oceanUrl);
+			HttpMethodParams httpmethod = new HttpMethodParams();
+			httpmethod.setParameter("assetId", assetId);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(put);
+			// got response from ocean network
+			updatedresponse = put.getResponseBodyAsString();
+			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String authorizeContractToJson = prepostToJson.replaceAll("\\\\", "");
@@ -557,14 +516,13 @@ public class Assetcontroller implements AssetsInterface {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(authorizeContractToJson);
 			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());			
+			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return asset;
 	}
 
-	@Override
 	public Asset revokeContractAuthorization(URL url, Asset asset) {
 		// TODO Auto-generated method stub
 		return null;
@@ -573,9 +531,8 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This method is used to access Contract Asset.
 	 */
-	@Override
 	public Asset accessContractAsset(URL url, String contractId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/access";
+		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/access";
 		Asset asset = new Asset();
 		JSONObject resultObject = new JSONObject();
 		JSONObject json = null; // initialize the json object into null
@@ -598,7 +555,7 @@ public class Assetcontroller implements AssetsInterface {
 			// parse string to json object
 			json = (JSONObject) parser.parse(accessContractToJson);
 			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());	
+			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -609,29 +566,19 @@ public class Assetcontroller implements AssetsInterface {
 	 * This method is used to settle Contract Asset.
 	 */
 
-	@Override
-	public Asset settleContract(URL url, String actorId,String contractId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/settlement";
+	public Asset settleContract(URL url, String actorId, String contractId) {
+		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/settlement";
 		Asset asset = new Asset();
-		ResponseEntity<String> settleContractResponse = null;
+		String updatedresponse = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the contract
-			JSONObject contract = new JSONObject();
-			// insert actorId to the json object
-			contract.put("actorId", actorId);
-			// create and http entity to attach with the rest url
-			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
-					headers);
-			// sent data request fro delete asset from ocean network
-			settleContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
-			
-			String prepostToJson = settleContractResponse.getBody().substring(1, settleContractResponse.getBody().length() - 1);
+			PutMethod  put = new PutMethod(oceanUrl);
+			HttpMethodParams httpmethod = new HttpMethodParams();
+			httpmethod.setParameter("actorId", actorId);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(put);
+			// got response from ocean network
+			updatedresponse = put.getResponseBodyAsString();
+			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String settleContractContractToJson = prepostToJson.replaceAll("\\\\", "");
@@ -640,7 +587,7 @@ public class Assetcontroller implements AssetsInterface {
 			JSONObject json = (JSONObject) parser.parse(settleContractContractToJson);
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -650,9 +597,9 @@ public class Assetcontroller implements AssetsInterface {
 	/**
 	 * This method is used to add asset listing (Market asset end point)
 	 */
-	@Override
+
 	public Asset addAssetListing(URL url, String assetId, String publisherId) {
-		String oceanUrl = url + env.getProperty("keeperURL") + "/market/asset/"+assetId;
+		String oceanUrl = url + keeperURL + "/market/asset/" + publisherId;
 		JSONObject json = null; // initialize the json object into null
 		Asset asset = new Asset();
 		try {

@@ -1,13 +1,28 @@
-/**
- *  
- * To handle API Calls from User Side 
- * This should take actorId... as parameters
- * This data should be returned 
- * For registering an user.
- * url to register an user   :  http://host:8000/api/v1/keeper/users/user/
- * paramter :actorId
+/*****************************************************************************************************************************
+ * ***************************************************************************************************************************
+ * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
+ * UserController Class includes - User Registration
+ * 								 - Get Actor
+ * 								 - Update Actor
+ *								 - Disable Actor
+ * User Registration - This method registers an actor with the Ocean network. 
+ * 					   POST "/api/v1/keeper/actors/actor/" 
+ * 					   Parameter : actorId
+ * Get Actor		 - This method used to fetch the actor information from ocean network
+ * 			   		   GET "/api/v1/keeper/actors/actor/<actor_id>"
+ * 					   This should take actorId along with url
+ * Update Actor 	 - This method used to update the actor details
+ * 				 	   PUT "/api/v1/keeper/actors/actor/<actor_id>"
+ * 					   Parameter : Actor Name
+ *					   This should take actorId along with url
+ * Disable Actor	 - This method used to disable the actor.
+ *					   DELETE "/api/v1/keeper/actors/actor/<actor_id>"
+ *					   This should take actorId along with url
+ *
  * Author : Aleena , Athul ,Arun (Uvionics Tec)
- */
+ * 
+ * ********************************************************************************************************************************
+ ***********************************************************************************************************************************/
 
 package com.oceanprotocolclient.user;
 
@@ -16,28 +31,19 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-
 import com.oceanprotocolclient.interfaces.UserInterface;
 import com.oceanprotocolclient.model.User;
 
 public class UserController implements UserInterface {
-	
-	@Autowired
-	Environment env;
 
+	public String userURL = "/api/v1/keeper/actors/actor";
 	/**
 	 * 
 	 * @param actorId
@@ -48,18 +54,13 @@ public class UserController implements UserInterface {
 	 */
 
 	public User userRegistration(URL url, String actorId) {
-		String oceanurl = env.getProperty("userURL");
+		String oceanurl = userURL;
 		// Create object for user class..it include all user details
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
 		// variable
 		String postActorResp = null;
 		try {
-			// Used for generating a random Alphabet and add to ActorId
-			// Random rnd = new Random();
-			// char c = (char) (rnd.nextInt(26) + 'a');
-			// String s = Character.toString(c);
-			// actorId = s + actorId;
 			/**
 			 * Used for posting the data to ocean network
 			 */
@@ -122,7 +123,7 @@ public class UserController implements UserInterface {
 	 */
 
 	public User getActor(URL url, String actorId) {
-		String oceanurl = env.getProperty("userURL") + actorId;
+		String oceanurl = userURL + actorId;
 		// Create object for user class..it include all user details
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
@@ -178,27 +179,19 @@ public class UserController implements UserInterface {
 	 * @return updatedresponse
 	 *
 	 */
-	@Override
 	public User updateActor(URL url, String actorId, String actorName) {
-		String oceanurl = env.getProperty("userURL") + actorId;
+		String oceanurl = userURL + actorId;
 		User user = new User();
-		ResponseEntity<String> updatedresponse;
+		String updatedresponse =null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the user name
-			JSONObject userName = new JSONObject();
-			// insert user name to the json object
-			userName.put("name", actorName);
-			// create and http entity to attach with the rest url
-			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
-			// sent data to ocean network for updating the data
-			updatedresponse = restTemplate.exchange(oceanurl, HttpMethod.PUT, entity, String.class);
-			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
+			PutMethod  put = new PutMethod(oceanurl);
+			HttpMethodParams httpmethod = new HttpMethodParams();
+			httpmethod.setParameter("name", actorName);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(put);
+			// got response from ocean network
+			updatedresponse = put.getResponseBodyAsString();
+			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
@@ -206,7 +199,7 @@ public class UserController implements UserInterface {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
 			// set the wallet id to the user object
-			user.setName(json.get("name").toString());
+			user.setActorName(json.get("name").toString());
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
@@ -215,7 +208,7 @@ public class UserController implements UserInterface {
 			user.setState((String) json.get("state"));
 			// set the creationDatetime to the user object
 			user.setCreationDatetime(json.get("creationDatetime").toString());
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -229,36 +222,25 @@ public class UserController implements UserInterface {
 	 * @param name
 	 * @return response
 	 */
-	@Override
 	public User disableActor(URL url, String actorId) {
-		String oceanurl = env.getProperty("userURL") + actorId;
+		String oceanurl = userURL + actorId;
 		User user = new User();
-		ResponseEntity<String> updatedresponse = null;
+		String deletedresponse = null;
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			// setting the headers for the url
-			HttpHeaders headers = new HttpHeaders();
-			// content-type setting
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			// create a json object to accept the user name
-			JSONObject userName = new JSONObject();
-			// insert user name to the json object
-			userName.put("actorId", actorId);
-			// create and http entity to attach with the rest url
-			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
-			// sent data to ocean network for disabling the user
-			updatedresponse = restTemplate.exchange(oceanurl, HttpMethod.DELETE, entity, String.class);
-			
-			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
+			DeleteMethod delete = new DeleteMethod(oceanurl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(delete);
+			// got response from ocean network
+			deletedresponse = delete.getResponseBodyAsString();
+			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
+			String getActorToJson = predeleteToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
 			// set the wallet id to the user object
-			user.setName(json.get("name").toString());
+			user.setActorName(json.get("name").toString());
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object

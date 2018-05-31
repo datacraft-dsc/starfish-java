@@ -4,17 +4,11 @@
  */
 
 package com.oceanprotocolclient.interfaces;
-
 import java.io.File;
 import java.net.URL;
-
-import org.json.simple.JSONObject;
-import org.springframework.http.ResponseEntity;
-
 import com.oceanprotocolclient.model.Asset;
-import com.oceanprotocolclient.model.User;
 
-public interface AssetsInterface {
+public interface AssetInterface {
 	/**
 	 * Register an asset to ocean network.
 	 * 
@@ -38,7 +32,7 @@ public interface AssetsInterface {
 	 * @param asset - Asset object with updated details
 	 * @return
 	 */
-	Asset updateAssets(URL url,String actorId,String assetName);
+	Asset updateAsset(URL url,String actorId,String assetName);
 	/**
 	 * Allow uploading a file for an already registered asset. 
 	 * The upload is submitted to the provider.
