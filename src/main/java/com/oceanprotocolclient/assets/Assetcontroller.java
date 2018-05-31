@@ -70,7 +70,7 @@ public class Assetcontroller implements AssetsInterface {
 		// Initialize the varible to null
 		String postAssetResp = null; 
 		// set parameters to PostMethod
-		PostMethod postasset = new PostMethod(url.toString());
+		PostMethod postasset = new PostMethod(oceanUrl);
 		// set the parametre publisherId
 		postasset.setParameter("publisherId", publisherId);
 		// set the parametre name
@@ -188,7 +188,7 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
 					assetupdation, headers);
 			// sent data request fro update data to ocean network
-			 updatedresponse = restTemplate.exchange(url.toURI(), HttpMethod.PUT, entity, String.class);
+			 updatedresponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
 			
 			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -268,7 +268,7 @@ public class Assetcontroller implements AssetsInterface {
 		String getResp = null;
 		// Execute a get Method and get respose from ocean server
 		try {
-			GetMethod get = new GetMethod(url.toString());
+			GetMethod get = new GetMethod(oceanUrl.toString());
 			// setting the headers for the url
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(get);
@@ -306,7 +306,7 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(
 					assetDisabled, headers);
 			// sent data request fro delete asset from ocean network
-			disableAssetResponse = restTemplate.exchange(url.toURI(), HttpMethod.DELETE, entity, String.class);
+			disableAssetResponse = restTemplate.exchange(oceanUrl, HttpMethod.DELETE, entity, String.class);
 			String prepostToJson = disableAssetResponse.getBody().substring(1, disableAssetResponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -339,11 +339,12 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset getAssets(URL url, String assetId) {
+		String oceanUrl = url + keeperURL + "/metadata/";
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		try {
 
-			GetMethod get = new GetMethod(url.toString());
+			GetMethod get = new GetMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(get);
 			// used to get response from ocean server
@@ -384,7 +385,7 @@ public class Assetcontroller implements AssetsInterface {
 		Asset asset = new Asset();
 		try {
 
-			PostMethod postassetprovider = new PostMethod(url.toString());
+			PostMethod postassetprovider = new PostMethod(oceanUrl);
 			// set the assetId
 			postassetprovider.setParameter("assetId", assetId);
 			// set the providerId
@@ -419,7 +420,7 @@ public class Assetcontroller implements AssetsInterface {
 		Asset asset = new Asset();
 		JSONObject json;
 		try {
-			PostMethod postcontract = new PostMethod(url.toString());
+			PostMethod postcontract = new PostMethod(oceanUrl);
 			postcontract.setParameter("assetId", assetId);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(postcontract);
@@ -453,7 +454,7 @@ public class Assetcontroller implements AssetsInterface {
 		JSONObject json = null; // initialize the json object into null
 		try {
 
-			GetMethod getContract = new GetMethod(url.toString());
+			GetMethod getContract = new GetMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(getContract);
 			// used to get response from ocean server
@@ -497,7 +498,7 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
 					headers);
 			// sent data request fro delete asset from ocean network
-			signedContractResponse = restTemplate.exchange(url.toURI(), HttpMethod.PUT, entity, String.class);
+			signedContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
 			
 			String prepostToJson = signedContractResponse.getBody().substring(1, signedContractResponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -540,7 +541,7 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
 					headers);
 			// sent data request fro delete asset from ocean network
-			authorizeContractResponse = restTemplate.exchange(url.toURI(), HttpMethod.PUT, entity, String.class);
+			authorizeContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
 			
 			String prepostToJson = authorizeContractResponse.getBody().substring(1, authorizeContractResponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -574,7 +575,7 @@ public class Assetcontroller implements AssetsInterface {
 		JSONObject json = null; // initialize the json object into null
 		try {
 
-			GetMethod getContract = new GetMethod(url.toString());
+			GetMethod getContract = new GetMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(getContract);
 			// used to get response from ocean server
@@ -622,7 +623,7 @@ public class Assetcontroller implements AssetsInterface {
 			org.springframework.http.HttpEntity<JSONObject> entity = new org.springframework.http.HttpEntity<>(contract,
 					headers);
 			// sent data request fro delete asset from ocean network
-			settleContractResponse = restTemplate.exchange(url.toURI(), HttpMethod.PUT, entity, String.class);
+			settleContractResponse = restTemplate.exchange(oceanUrl, HttpMethod.PUT, entity, String.class);
 			
 			String prepostToJson = settleContractResponse.getBody().substring(1, settleContractResponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -651,7 +652,7 @@ public class Assetcontroller implements AssetsInterface {
 		String contractUrl = url + assetId;
 		try {
 
-			PostMethod postcontract = new PostMethod(contractUrl);
+			PostMethod postcontract = new PostMethod(oceanUrl);
 			// insert asset publisherId to the json object
 			postcontract.setParameter("publisherId", publisherId);
 			HttpClient httpclient = new HttpClient();
