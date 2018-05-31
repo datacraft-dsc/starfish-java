@@ -59,7 +59,7 @@ public class UserController implements UserInterface {
 			/**
 			 * Used for posting the data to ocean network
 			 */
-			PostMethod postActor = new PostMethod(url.toString());
+			PostMethod postActor = new PostMethod(oceanurl);
 			postActor.setParameter("actorId", actorId);// set Parameter actorId
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(postActor);
@@ -193,7 +193,7 @@ public class UserController implements UserInterface {
 			// create and http entity to attach with the rest url
 			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
 			// sent data to ocean network for updating the data
-			updatedresponse = restTemplate.exchange(url.toURI(), HttpMethod.PUT, entity, String.class);
+			updatedresponse = restTemplate.exchange(oceanurl, HttpMethod.PUT, entity, String.class);
 			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -244,7 +244,7 @@ public class UserController implements UserInterface {
 			// create and http entity to attach with the rest url
 			HttpEntity<JSONObject> entity = new HttpEntity<>(userName, headers);
 			// sent data to ocean network for disabling the user
-			updatedresponse = restTemplate.exchange(url.toURI(), HttpMethod.DELETE, entity, String.class);
+			updatedresponse = restTemplate.exchange(oceanurl, HttpMethod.DELETE, entity, String.class);
 			
 			String prepostToJson = updatedresponse.getBody().substring(1, updatedresponse.getBody().length() - 1);
 			// Data coming from ocean network is a json string..This line remove
