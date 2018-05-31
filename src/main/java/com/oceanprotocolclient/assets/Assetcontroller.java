@@ -31,6 +31,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -44,9 +47,12 @@ import com.oceanprotocolclient.model.User;
 
 @SuppressWarnings("deprecation")
 public class Assetcontroller implements AssetsInterface {
-	public String keeperURL = "/api/v1/keeper";
-	public String providerURL = "/api/v1/provider";
-
+	
+	@Autowired
+	Environment env;
+	
+	
+	
 	/**
 	 * This method used to register an asset Json-encoded payload containing the
 	 * Asset schema with the assetId, creationDatetime and contentState filled
@@ -64,7 +70,7 @@ public class Assetcontroller implements AssetsInterface {
 
 	@Override
 	public Asset assetRegistration(URL url, String publisherId, String assetName) {
-		String oceanUrl = url + keeperURL + "/assets/metadata";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata";
 		// Asset object creation
 		Asset assets = new Asset(); 
 		// Initialize the varible to null
@@ -128,7 +134,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset getAsset(URL url, String assetId) {
-		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata/" + assetId;
 		Asset assets = new Asset(); // asset object creation
 		JSONObject json = null; // initialize the json object into null
 		try {
@@ -170,7 +176,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset updateAssets(URL url, String assetId, String assetName) {
-		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/metadata/" + assetId;
 		ResponseEntity<String> updatedresponse;
 		Asset asset = new Asset();
 		try {
@@ -230,12 +236,12 @@ public class Assetcontroller implements AssetsInterface {
 	@Override
 	public Asset uploadAsset(URL url, File file, String assetId) {
 		String uploadassetResp = null;
-		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
+		String oceanUrl = url + env.getProperty("providerURL") + "/assets/asset/" + assetId;
 		Asset asset = new Asset();
 		JSONObject uploadedassetObject = new JSONObject();
 		// set parameters to PostMethod
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(url.toString());
+		HttpPost post = new HttpPost(oceanUrl);
 		MultipartEntity entity = new MultipartEntity();
 		entity.addPart("file", new FileBody(file));
 		post.setEntity(entity);
@@ -262,7 +268,7 @@ public class Assetcontroller implements AssetsInterface {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Asset downloadAsset(URL url, String assetId) {
-		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
+		String oceanUrl = url + env.getProperty("providerURL") + "/assets/asset/" + assetId;
 		Asset asset = new Asset();
 		JSONObject downloadedassetObject = new JSONObject();
 		String getResp = null;
@@ -288,7 +294,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset disableAssets(URL url, String assetId, String assetName,String actorId) {
-		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/metadata/" + assetId;
 		Asset asset = new Asset();
 		ResponseEntity<String> disableAssetResponse = null;
 		try {
@@ -339,7 +345,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset getAssets(URL url, String assetId) {
-		String oceanUrl = url + keeperURL + "/metadata/";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/metadata/";
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		try {
@@ -380,7 +386,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
-		String oceanUrl = url + keeperURL + "/assets/provider/";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/assets/provider/";
 		JSONObject assetProviderObject = new JSONObject();
 		Asset asset = new Asset();
 		try {
@@ -415,7 +421,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset addContract(URL url, String assetId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/";
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		JSONObject json;
@@ -448,7 +454,7 @@ public class Assetcontroller implements AssetsInterface {
 
 	@Override
 	public Asset getContract(URL url, String contractId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/"+contractId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId;
 		JSONObject resultObject = new JSONObject();
 		Asset asset = new Asset();
 		JSONObject json = null; // initialize the json object into null
@@ -480,7 +486,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset signContract(URL url, String contractId, String signingActorId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/"+contractId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId;
 		Asset asset = new Asset();
 		ResponseEntity<String> signedContractResponse = null;
 		try {
@@ -521,7 +527,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset authorizeContract(URL url, String contractId, String assetId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/"+contractId+"/auth";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/auth";
 		Asset asset = new Asset();
 		ResponseEntity<String> authorizeContractResponse = null;
 		try {
@@ -569,7 +575,7 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset accessContractAsset(URL url, String contractId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/"+contractId+"/access";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/access";
 		Asset asset = new Asset();
 		JSONObject resultObject = new JSONObject();
 		JSONObject json = null; // initialize the json object into null
@@ -605,7 +611,7 @@ public class Assetcontroller implements AssetsInterface {
 
 	@Override
 	public Asset settleContract(URL url, String actorId,String contractId) {
-		String oceanUrl = url + keeperURL + "/contracts/contract/"+contractId+"/settlement";
+		String oceanUrl = url + env.getProperty("keeperURL") + "/contracts/contract/"+contractId+"/settlement";
 		Asset asset = new Asset();
 		ResponseEntity<String> settleContractResponse = null;
 		try {
@@ -646,10 +652,9 @@ public class Assetcontroller implements AssetsInterface {
 	 */
 	@Override
 	public Asset addAssetListing(URL url, String assetId, String publisherId) {
-		String oceanUrl = url + keeperURL + "/market/asset/"+assetId;
+		String oceanUrl = url + env.getProperty("keeperURL") + "/market/asset/"+assetId;
 		JSONObject json = null; // initialize the json object into null
 		Asset asset = new Asset();
-		String contractUrl = url + assetId;
 		try {
 
 			PostMethod postcontract = new PostMethod(oceanUrl);

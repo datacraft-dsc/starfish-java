@@ -20,7 +20,9 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,7 +34,9 @@ import com.oceanprotocolclient.interfaces.UserInterface;
 import com.oceanprotocolclient.model.User;
 
 public class UserController implements UserInterface {
-	public String userApi = "/api/v1/keeper/actors/actor";
+	
+	@Autowired
+	Environment env;
 
 	/**
 	 * 
@@ -44,7 +48,7 @@ public class UserController implements UserInterface {
 	 */
 
 	public User userRegistration(URL url, String actorId) {
-		String oceanurl = userApi;
+		String oceanurl = env.getProperty("userURL");
 		// Create object for user class..it include all user details
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
@@ -118,7 +122,7 @@ public class UserController implements UserInterface {
 	 */
 
 	public User getActor(URL url, String actorId) {
-		String oceanurl = userApi + actorId;
+		String oceanurl = env.getProperty("userURL") + actorId;
 		// Create object for user class..it include all user details
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
@@ -176,7 +180,7 @@ public class UserController implements UserInterface {
 	 */
 	@Override
 	public User updateActor(URL url, String actorId, String actorName) {
-		String oceanurl = userApi + actorId;
+		String oceanurl = env.getProperty("userURL") + actorId;
 		User user = new User();
 		ResponseEntity<String> updatedresponse;
 		try {
@@ -227,7 +231,7 @@ public class UserController implements UserInterface {
 	 */
 	@Override
 	public User disableActor(URL url, String actorId) {
-		String oceanurl = userApi + actorId;
+		String oceanurl = env.getProperty("userURL") + actorId;
 		User user = new User();
 		ResponseEntity<String> updatedresponse = null;
 		try {
