@@ -111,17 +111,18 @@ public class Assetcontroller implements AssetInterface {
 			// Set asset id from json object into asset
 			asset.setAssetId((String) json.get("assetId"));
 			// Set marketplaceId from json object into asset
-			asset.setMarketplaceId((String) json.get("marketplaceId"));
+			asset.getOceanResponse().put("marketplaceId", json.get("marketplaceId").toString());
 			// Set publisherId from json object into asset
 			asset.setPublisherId((String) json.get("publisherId"));
 			// Set updateDatetime from json object into asset
-			asset.setUpdateDatetime(json.get("updateDatetime").toString());
+			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// Set contentState from json object into asset
-			asset.setContentState((String) json.get("contentState"));
+			asset.getOceanResponse().put("contentState", json.get("contentState").toString());
 			// Set name from json object into asset
 			asset.setAssetName((String) json.get("name"));
 			// Set creationDatetime from json object into asset
-			asset.setCreationDatetime(json.get("creationDatetime").toString());
+			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -204,11 +205,11 @@ public class Assetcontroller implements AssetInterface {
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
-			asset.setUpdateDatetime(json.get("updateDatetime").toString());
+			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			asset.setContentState((String) json.get("state"));
+			asset.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			asset.setCreationDatetime(json.get("creationDatetime").toString());
+			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 			// set the publisher Id to the user object
 			asset.setPublisherId(json.get("publisherId").toString());
 
@@ -309,11 +310,11 @@ public class Assetcontroller implements AssetInterface {
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
-			asset.setUpdateDatetime(json.get("updateDatetime").toString());
+			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			asset.setContentState((String) json.get("state"));
+			asset.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			asset.setCreationDatetime(json.get("creationDatetime").toString());
+			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 			// set the publisher Id to the user object
 			asset.setPublisherId(json.get("publisherId").toString());
 
@@ -350,11 +351,11 @@ public class Assetcontroller implements AssetInterface {
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 			// set the updateDatetime to the user object
-			asset.setUpdateDatetime(json.get("updateDatetime").toString());
+			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			asset.setContentState((String) json.get("state"));
+			asset.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			asset.setCreationDatetime(json.get("creationDatetime").toString());
+			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 			// set the publisher Id to the user object
 			asset.setPublisherId(json.get("publisherId").toString());
 

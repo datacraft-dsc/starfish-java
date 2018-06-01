@@ -92,21 +92,17 @@ public class UserController implements UserInterface {
 			// set the wallet id to the user object
 			user.setWalletId(walletId);
 			// get the private key from ocean network response
-			String privateKey = (String) json.get("privateKey");
 			// set the private key to the user object
-			user.setPrivateKey(privateKey);
+			user.getOceanResponse().put("privateKey", json.get("privateKey").toString());
 			// set the actorid to the user object
 			user.setActorId(actorId);
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the user state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
-			/**
-			 * Used for adding WalletId, PrivateKey,actorId and status to Json
-			 * Object
-			 */
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -159,11 +155,11 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -203,11 +199,11 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -244,11 +240,11 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

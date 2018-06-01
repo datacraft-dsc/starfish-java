@@ -1,26 +1,44 @@
 package com.oceanprotocolclient;
 
+import java.io.IOException;
+import java.net.URL;
 
-import org.junit.Before;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 
 import com.oceanprotocolclient.assets.Assetcontroller;
 
 public class AssetControllerTest {
-	
+	@InjectMocks
 	Assetcontroller ac;
-	
-	
-	@Before
-	public void init()
-	{
-		ac = new Assetcontroller();
+
+	 private GetMethod mockGetMethod;
+     private HttpClient mockHttpClient;
+     byte[] array = new byte[10];
+     
+     @Test
+	public void TestMethod() {
+
+		ac.downloadAsset(Mockito.any(URL.class), Mockito.anyString());
+
 	}
-	
-	@Test
-	public void TestMethod()
-	{
-		System.out.println("HHHHHHHHHHHHHHHHHHh");
-	}
+
+
+     public void MockRequestHandler() throws HttpException, IOException {
+         
+         mockGetMethod = Mockito.mock(GetMethod.class);
+         mockHttpClient = Mockito.mock(HttpClient.class);
+
+         Mockito.when(
+                 mockHttpClient.executeMethod(Mockito.any(GetMethod.class)))
+                 .thenReturn(1);
+
+         Mockito.when(mockGetMethod.getResponseBody()).thenReturn(array);
+         ac.downloadAsset(Mockito.any(URL.class), Mockito.anyString());
+     }
 
 }
