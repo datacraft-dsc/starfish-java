@@ -56,7 +56,7 @@ public interface AssetInterface {
 	 * @return 
 	 */
 	
-	Asset disableAssets(URL url,String assetId,String assetName,String actorId);
+	Asset disableAsset(URL url,String assetId,String assetName,String actorId);
 	
 	/**
 	 * used to get all assets 
