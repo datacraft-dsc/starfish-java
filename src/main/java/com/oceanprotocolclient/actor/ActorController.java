@@ -216,7 +216,7 @@ public class ActorController implements ActorInterface {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
-			 updatedresponse = put.getResponseBodyAsString();
+			updatedresponse = put.getResponseBodyAsString();
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
