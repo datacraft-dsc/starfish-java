@@ -27,9 +27,6 @@
 package com.oceanprotocolclient.user;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Random;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -44,6 +41,7 @@ import com.oceanprotocolclient.model.User;
 public class UserController implements UserInterface {
 
 	public String userURL = "/api/v1/keeper/actors/actor";
+
 	/**
 	 * 
 	 * @param actorId
@@ -54,9 +52,18 @@ public class UserController implements UserInterface {
 	 */
 
 	public User userRegistration(URL url, String actorId) {
-		String oceanurl = userURL;
 		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL;
 		// Initialize postResp - response from ocean network is given to this
 		// variable
 		String postActorResp = null;
@@ -70,13 +77,6 @@ public class UserController implements UserInterface {
 			httpclient.executeMethod(postActor);
 			// Response from ocean network
 			postActorResp = postActor.getResponseBodyAsString();
-
-			/**
-			 * Used for return a Json Object with failed result and status
-			 */
-			if (postActorResp == null) {
-				return user;
-			}
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
@@ -102,9 +102,11 @@ public class UserController implements UserInterface {
 			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-			
 		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(postActorResp);
 			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
@@ -119,9 +121,19 @@ public class UserController implements UserInterface {
 	 */
 
 	public User getActor(URL url, String actorId) {
-		String oceanurl = userURL + actorId;
 		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
+		// Create object for user class..it include all user details
 		// Initialize postResp - response from ocean network is given to this
 		// variable
 		String getActorResp = null;
@@ -134,12 +146,6 @@ public class UserController implements UserInterface {
 			httpclient.executeMethod(getActor);
 			// Response from ocean network
 			getActorResp = getActor.getResponseBodyAsString();
-			/**
-			 * Used for return a Json Object with failed result and status
-			 */
-			if (getActorResp == null) {
-				return user;
-			}
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
@@ -161,7 +167,10 @@ public class UserController implements UserInterface {
 			// set the creationDatetime to the user object
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(getActorResp);
 			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
@@ -176,11 +185,21 @@ public class UserController implements UserInterface {
 	 *
 	 */
 	public User updateActor(URL url, String actorId, String actorName) {
-		String oceanurl = userURL + actorId;
+		// Create object for user class..it include all user details
 		User user = new User();
-		String updatedresponse =null;
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null || actorName == null) {
+			user.setMessage("Actor Id or Actor Name not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
+		String updatedresponse = null;
 		try {
-			PutMethod  put = new PutMethod(oceanurl);
+			PutMethod put = new PutMethod(oceanurl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("name", actorName);
 			HttpClient httpclient = new HttpClient();
@@ -204,11 +223,13 @@ public class UserController implements UserInterface {
 			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return user;
+		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(updatedresponse);
+			e.printStackTrace();
+			return user;
+    }
+  return user;
 	}
 
 	/**
@@ -219,8 +240,18 @@ public class UserController implements UserInterface {
 	 * @return response
 	 */
 	public User disableActor(URL url, String actorId) {
-		String oceanurl = userURL + actorId;
+		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
 		String deletedresponse = null;
 		try {
 			DeleteMethod delete = new DeleteMethod(oceanurl);
@@ -245,8 +276,11 @@ public class UserController implements UserInterface {
 			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(deletedresponse);
+			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
