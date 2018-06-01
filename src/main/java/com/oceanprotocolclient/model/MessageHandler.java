@@ -3,7 +3,7 @@
  */
 package com.oceanprotocolclient.model;
 
-public class Response {
+public class MessageHandler {
 	String message;
 	String fileContent;
 	public String getMessage() {
@@ -20,7 +20,7 @@ public class Response {
 	}
 	@Override
 	public String toString() {
-		return "Response [message=" + message + ", fileContent=" + fileContent + "]";
+		return "MessageHandler [message=" + message + ", fileContent=" + fileContent + "]";
 	}
 	
 }

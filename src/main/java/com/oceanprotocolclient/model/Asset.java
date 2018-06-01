@@ -1,7 +1,6 @@
 /**
- * Asset class
- */
-
+  * Represents an asset on the Ocean Network.
+  */
 package com.oceanprotocolclient.model;
 
 import java.util.HashMap;
@@ -17,7 +16,7 @@ public class Asset {
 	 */
 	private Map<String, String> oceanResponse;
 	private String contractId;
-	private Response response;
+	private MessageHandler messageHandler;
 
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
@@ -58,18 +57,13 @@ public class Asset {
 		this.contractId = contractId;
 	}
 
-	public Response getResponse() {
-		return response;
+
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
 	}
 
-	public void setResponse(Response response) {
-		this.response = response;
-	}
-
-	@Override
-	public String toString() {
-		return "Asset [publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
-				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + "]";
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 	}
 
 	public Map<String, String> getOceanResponse() {
@@ -79,5 +73,13 @@ public class Asset {
 	public void setOceanResponse(Map<String, String> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
+
+	@Override
+	public String toString() {
+		return "Asset [publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
+				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + ", messageHandler="
+				+ messageHandler + "]";
+	}
+	
 
 }
