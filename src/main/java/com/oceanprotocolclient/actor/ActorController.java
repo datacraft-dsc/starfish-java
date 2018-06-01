@@ -24,7 +24,7 @@
  * ********************************************************************************************************************************
  ***********************************************************************************************************************************/
 
-package com.oceanprotocolclient.user;
+package com.oceanprotocolclient.actor;
 
 import java.net.URL;
 import org.apache.commons.httpclient.HttpClient;
@@ -35,11 +35,11 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.oceanprotocolclient.interfaces.UserInterface;
-import com.oceanprotocolclient.model.User;
+import com.oceanprotocolclient.interfaces.ActorInterface;
+import com.oceanprotocolclient.model.Actor;
 
-public class UserController implements UserInterface {
-	public String userURL = "/api/v1/keeper/actors/actor";
+public class ActorController implements ActorInterface {
+	public String actorURL = "/api/v1/keeper/actors/actor";
 
 	/**
 	 * This method registers an actor with the Ocean network. 
@@ -49,9 +49,9 @@ public class UserController implements UserInterface {
 	 * @return user object
 	 */
 
-	public User userRegistration(URL url, String actorId) {
+	public Actor actorRegistration(URL url, String actorId) {
 		// Create object for user class..it include all user details
-		User user = new User();
+		Actor user = new Actor();
 		// Checks the argument values is present or not
 		if (url == null) {
 			user.setMessage("Host url not found");
@@ -61,7 +61,7 @@ public class UserController implements UserInterface {
 			user.setMessage("Actor Id not found");
 			return user;
 		}
-		String oceanurl = userURL;
+		String oceanurl = actorURL;
 		String postActorResp = null;
 		// Initialize postResp - response from ocean network is given to this
 		// variable
@@ -120,9 +120,9 @@ public class UserController implements UserInterface {
 	 * @return user object
 	 */
 
-	public User getActor(URL url, String actorId) {
+	public Actor getActor(URL url, String actorId) {
 		// Create object for user class..it include all user details
-		User user = new User();
+		Actor user = new Actor();
 		// Checks the argument values is present or not
 		if (url == null) {
 			user.setMessage("Host url not found");
@@ -132,7 +132,7 @@ public class UserController implements UserInterface {
 			user.setMessage("Actor Id not found");
 			return user;
 		}
-		String oceanurl = userURL + actorId;
+		String oceanurl = actorURL + actorId;
 		String getActorResp = null;
 		/**
 		 * Used for getting the data to ocean network
@@ -182,9 +182,9 @@ public class UserController implements UserInterface {
 	 * @return updatedresponse
 	 *
 	 */
-	public User updateActor(URL url, String actorId, String actorName) {
+	public Actor updateActor(URL url, String actorId, String actorName) {
 		// Create object for user class..it include all user details
-		User user = new User();
+		Actor user = new Actor();
 		// Checks the argument values is present or not
 		if (url == null) {
 			user.setMessage("Host url not found");
@@ -194,7 +194,7 @@ public class UserController implements UserInterface {
 			user.setMessage("Actor Id or Actor Name not found");
 			return user;
 		}
-		String oceanurl = userURL + actorId;
+		String oceanurl = actorURL + actorId;
 		String updatedresponse = null;
 		try {
 			PutMethod put = new PutMethod(oceanurl);
@@ -238,9 +238,9 @@ public class UserController implements UserInterface {
 	 * @param name
 	 * @return response
 	 */
-	public User disableActor(URL url, String actorId) {
+	public Actor disableActor(URL url, String actorId) {
 		// Create object for user class..it include all user details
-		User user = new User();
+		Actor user = new Actor();
 		// Checks the argument values is present or not
 		if (url == null) {
 			user.setMessage("Host url not found");
@@ -250,7 +250,7 @@ public class UserController implements UserInterface {
 			user.setMessage("Actor Id not found");
 			return user;
 		}
-		String oceanurl = userURL + actorId;
+		String oceanurl = actorURL + actorId;
 		String deletedresponse = null;
 		try {
 			DeleteMethod delete = new DeleteMethod(oceanurl);

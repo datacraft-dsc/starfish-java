@@ -3,7 +3,7 @@ package com.oceanprotocolclient.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class Actor {
 	String id;
 	String actorId;
 	String actorName;
@@ -17,7 +17,7 @@ public class User {
 	 * Construct the oceanResponse  with Hash map for further use.
 	 */
 	String message;
-	public User()
+	public Actor()
 	{
 		this.oceanResponse= new HashMap<>();
 	}
