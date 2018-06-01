@@ -10,11 +10,11 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
-import com.oceanprotocolclient.assets.Assetcontroller;
+import com.oceanprotocolclient.asset.AssetController;
 
 public class AssetControllerTest {
 	@InjectMocks
-	Assetcontroller ac;
+	AssetController ac;
 
 	 private GetMethod mockGetMethod;
      private HttpClient mockHttpClient;

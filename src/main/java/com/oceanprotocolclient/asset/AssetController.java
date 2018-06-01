@@ -55,7 +55,7 @@
  * ***************************************************************************************************************************
  ** ***************************************************************************************************************************/
 
-package com.oceanprotocolclient.assets;
+package com.oceanprotocolclient.asset;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +80,7 @@ import com.oceanprotocolclient.model.Asset;
 import com.oceanprotocolclient.model.Response;
 
 @SuppressWarnings("deprecation")
-public class Assetcontroller implements AssetInterface {
+public class AssetController implements AssetInterface {
 	public String keeperURL = "/api/v1/keeper";
 	public String providerURL = "/api/v1/provider";
 	/**
@@ -244,7 +244,7 @@ public class Assetcontroller implements AssetInterface {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			HttpMethodParams httpmethod = new HttpMethodParams();
-			// used for setting the parameters to put and executing the server call
+			// setting the parameter name to update from ocean network
 			httpmethod.setParameter("name", assetName);
 			put.setParams(httpmethod);
 			httpclient.executeMethod(put);
@@ -560,8 +560,8 @@ public class Assetcontroller implements AssetInterface {
 		JSONObject json;
 		String postcontractResp = null;
 		try {
-			// used for setting the parameters to post and executing the server call
 			PostMethod postcontract = new PostMethod(oceanUrl);
+			// set the assetId
 			postcontract.setParameter("assetId", assetId);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(postcontract);
@@ -702,7 +702,7 @@ public class Assetcontroller implements AssetInterface {
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
-			// used for setting the parameters to put and executing the server call
+			// setting the parameter assetId to update from ocean network
 			httpmethod.setParameter("assetId", assetId);
 			put.setParams(httpmethod);
 			HttpClient httpclient = new HttpClient();
@@ -801,7 +801,7 @@ public class Assetcontroller implements AssetInterface {
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
-			// used for setting the parameters to put and executing the server call
+			// setting the parameter actorId to update from ocean network
 			httpmethod.setParameter("actorId", actorId);
 			put.setParams(httpmethod);
 			HttpClient httpclient = new HttpClient();
