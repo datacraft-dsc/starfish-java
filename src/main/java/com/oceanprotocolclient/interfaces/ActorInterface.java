@@ -1,9 +1,9 @@
 package com.oceanprotocolclient.interfaces;
 
 import java.net.URL;
-import com.oceanprotocolclient.model.User;
+import com.oceanprotocolclient.model.Actor;
 
-public interface UserInterface {
+public interface ActorInterface {
 	/**
 	 * Used to registers an actor with the Ocean network
 	 * 
@@ -11,7 +11,7 @@ public interface UserInterface {
 	 * @param targetUrl -  Ocean network host and port 
 	 * @return
 	 */
-	User userRegistration(URL url,String actorId);
+	Actor actorRegistration(URL url,String actorId);
 	/**
 	 * Get actor information
 	 * 
@@ -19,7 +19,7 @@ public interface UserInterface {
 	 * @param targetUrl - Ocean network host and port 
 	 * @return
 	 */
-	User getActor(URL url,String actorId);
+	Actor getActor(URL url,String actorId);
 	/**
 	 * Update actor name
 	 * 
@@ -27,13 +27,13 @@ public interface UserInterface {
 	 * @param name - actor name
 	 * @return
 	 */
-	User updateActor(URL url, String actorId,String actorName);
+	Actor updateActor(URL url, String actorId,String actorName);
 	/**
 	 * 
 	 * @param targetUrl - Ocean network host and port 
 	 * @param id - To disable the actor
 	 * @return
 	 */
-	User disableActor(URL url, String actorId);
+	Actor disableActor(URL url, String actorId);
 	}
 
