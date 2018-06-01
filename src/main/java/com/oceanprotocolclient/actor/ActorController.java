@@ -37,6 +37,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.oceanprotocolclient.interfaces.ActorInterface;
 import com.oceanprotocolclient.model.Actor;
+import com.oceanprotocolclient.model.Response;
 
 public class ActorController implements ActorInterface {
 	public String actorURL = "/api/v1/keeper/actors/actor";
@@ -52,13 +53,16 @@ public class ActorController implements ActorInterface {
 	public Actor actorRegistration(URL url, String actorId) {
 		// Create object for user class..it include all user details
 		Actor user = new Actor();
+		Response oceanresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
-			user.setMessage("Host url not found");
+			oceanresponse.setMessage("Host url not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		if (actorId == null) {
-			user.setMessage("Actor Id not found");
+			oceanresponse.setMessage("Actor Id not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		String oceanurl = actorURL;
@@ -104,7 +108,8 @@ public class ActorController implements ActorInterface {
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			user.setMessage(postActorResp);
+			oceanresponse.setMessage(postActorResp);
+			user.setResponse(oceanresponse);
 			e.printStackTrace();
 			return user;
 		}
@@ -123,13 +128,16 @@ public class ActorController implements ActorInterface {
 	public Actor getActor(URL url, String actorId) {
 		// Create object for user class..it include all user details
 		Actor user = new Actor();
+		Response oceanresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
-			user.setMessage("Host url not found");
+			oceanresponse.setMessage("Host url not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		if (actorId == null) {
-			user.setMessage("Actor Id not found");
+			oceanresponse.setMessage("Actor Id not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		String oceanurl = actorURL + actorId;
@@ -166,7 +174,8 @@ public class ActorController implements ActorInterface {
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			user.setMessage(getActorResp);
+			oceanresponse.setMessage(getActorResp);
+			user.setResponse(oceanresponse);
 			e.printStackTrace();
 			return user;
 		}
@@ -185,13 +194,16 @@ public class ActorController implements ActorInterface {
 	public Actor updateActor(URL url, String actorId, String actorName) {
 		// Create object for user class..it include all user details
 		Actor user = new Actor();
+		Response oceanresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
-			user.setMessage("Host url not found");
+			oceanresponse.setMessage("Host url not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		if (actorId == null || actorName == null) {
-			user.setMessage("Actor Id or Actor Name not found");
+			oceanresponse.setMessage("Actor Id or Actor Name not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		String oceanurl = actorURL + actorId;
@@ -224,7 +236,8 @@ public class ActorController implements ActorInterface {
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			user.setMessage(updatedresponse);
+			oceanresponse.setMessage(updatedresponse);
+			user.setResponse(oceanresponse);
 			e.printStackTrace();
 			return user;
     }
@@ -241,13 +254,16 @@ public class ActorController implements ActorInterface {
 	public Actor disableActor(URL url, String actorId) {
 		// Create object for user class..it include all user details
 		Actor user = new Actor();
+		Response oceanresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
-			user.setMessage("Host url not found");
+			oceanresponse.setMessage("Host url not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		if (actorId == null) {
-			user.setMessage("Actor Id not found");
+			oceanresponse.setMessage("Actor Id not found");
+			user.setResponse(oceanresponse);
 			return user;
 		}
 		String oceanurl = actorURL + actorId;
@@ -277,7 +293,8 @@ public class ActorController implements ActorInterface {
 			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			user.setMessage(deletedresponse);
+			oceanresponse.setMessage(deletedresponse);
+			user.setResponse(oceanresponse);
 			e.printStackTrace();
 			return user;
 		}
