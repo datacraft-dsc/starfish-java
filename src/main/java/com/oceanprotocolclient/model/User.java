@@ -1,16 +1,27 @@
 package com.oceanprotocolclient.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
 	String id;
 	String actorId;
 	String actorName;
 	String walletId;
-	String privateKey;	
-	String updateDatetime;
-	String state;
-	String creationDatetime;
-	public User() {
+	/**
+	 * {@link Map} to save the response from the ocean network as a key value pair
+	 */
+	private Map<String, String> oceanResponse;	
+
+	/**
+	 * Construct the oceanResponse  with Hash map for further use.
+	 */
+	String message;
+	public User()
+	{
+		this.oceanResponse= new HashMap<>();
 	}
+	
 	public String getId() {
 		return id;
 	}
@@ -35,35 +46,25 @@ public class User {
 	public void setWalletId(String walletId) {
 		this.walletId = walletId;
 	}
-	public String getPrivateKey() {
-		return privateKey;
+	public String getMessage() {
+		return message;
 	}
-	public void setPrivateKey(String privateKey) {
-		this.privateKey = privateKey;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getUpdateDatetime() {
-		return updateDatetime;
-	}
-	public void setUpdateDatetime(String updateDatetime) {
-		this.updateDatetime = updateDatetime;
-	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
-	public String getCreationDatetime() {
-		return creationDatetime;
-	}
-	public void setCreationDatetime(String creationDatetime) {
-		this.creationDatetime = creationDatetime;
-	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", actorId=" + actorId + ", actorName=" + actorName + ", walletId=" + walletId
-				+ ", privateKey=" + privateKey + ", updateDatetime=" + updateDatetime + ", state=" + state
-				+ ", creationDatetime=" + creationDatetime + "]";
+				+ ", oceanResponse=" + oceanResponse + "]";
+	}
+
+	public Map<String, String> getOceanResponse() {
+		return oceanResponse;
+	}
+
+	public void setOceanResponse(Map<String, String> oceanResponse) {
+		this.oceanResponse = oceanResponse;
 	}
 	
 
