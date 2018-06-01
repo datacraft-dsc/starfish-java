@@ -16,6 +16,7 @@ public class User {
 	/**
 	 * Construct the oceanResponse  with Hash map for further use.
 	 */
+	String message;
 	public User()
 	{
 		this.oceanResponse= new HashMap<>();

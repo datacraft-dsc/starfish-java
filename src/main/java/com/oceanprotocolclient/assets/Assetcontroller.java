@@ -80,7 +80,6 @@ import com.oceanprotocolclient.model.Asset;
 
 @SuppressWarnings("deprecation")
 public class Assetcontroller implements AssetInterface {
-
 	public String keeperURL = "/api/v1/keeper";
 	public String providerURL = "/api/v1/provider";
 	/**
@@ -90,12 +89,12 @@ public class Assetcontroller implements AssetInterface {
 	 * 
 	 * Minimum required: name, publisherId
 	 * 
-	 * @param publisherId
-	 *            - publisher id
+	 * @param publisherId-publisher
+	 *            Id
 	 * @param name
 	 *            - publisher name
-	 * @param targetUrl
-	 *            - target URL
+	 * @param targetUrltarget
+	 *            URL
 	 * @return java object asset
 	 */
 
@@ -232,6 +231,9 @@ public class Assetcontroller implements AssetInterface {
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
+			HttpMethodParams httpmethod = new HttpMethodParams();
+			httpmethod.setParameter("name", assetName);
+			put.setParams(httpmethod);
 			httpclient.executeMethod(put);
 			// got response from ocean network
 			updatedresponse = put.getResponseBodyAsString();
@@ -643,6 +645,7 @@ public class Assetcontroller implements AssetInterface {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("assetId", assetId);
+			put.setParams(httpmethod);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
@@ -731,6 +734,7 @@ public class Assetcontroller implements AssetInterface {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("actorId", actorId);
+			put.setParams(httpmethod);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
