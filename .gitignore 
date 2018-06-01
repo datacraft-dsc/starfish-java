@@ -8,16 +8,15 @@
 .#*
 .*.md.html
 .DS_Store
-.class
 .classpath
 .factorypath
 .gradle
 .idea
+.class
 .metadata
 .project
 .recommenders
 .settings
-.settings/
 .springBeans
 /build
 /code
@@ -35,7 +34,6 @@ manifest.yml
 overridedb.*
 settings.xml
 target
-target/
 transaction-logs
 .flattened-pom.xml
 secrets.yml

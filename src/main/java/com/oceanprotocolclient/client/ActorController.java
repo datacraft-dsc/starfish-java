@@ -24,7 +24,7 @@
  * ********************************************************************************************************************************
  ***********************************************************************************************************************************/
 
-package com.oceanprotocolclient.actor;
+package com.oceanprotocolclient.client;
 
 import java.net.URL;
 import org.apache.commons.httpclient.HttpClient;

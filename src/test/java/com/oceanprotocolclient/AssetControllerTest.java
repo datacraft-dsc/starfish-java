@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
-import com.oceanprotocolclient.asset.AssetController;
+import com.oceanprotocolclient.client.AssetController;
 
 public class AssetControllerTest {
 	@InjectMocks
