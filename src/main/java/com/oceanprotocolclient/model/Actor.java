@@ -2,9 +2,11 @@ package com.oceanprotocolclient.model;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
++ * Represents an Actor on the Ocean Network.
++ *
++ */
 public class Actor {
-	String id;
 	String actorId;
 	String actorName;
 	String walletId;
@@ -21,14 +23,6 @@ public class Actor {
 
 	public Actor() {
 		this.oceanResponse = new HashMap<>();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getActorId() {
@@ -73,7 +67,7 @@ public class Actor {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", actorId=" + actorId + ", actorName=" + actorName + ", walletId=" + walletId
+		return "User [actorId=" + actorId + ", actorName=" + actorName + ", walletId=" + walletId
 				+ ", oceanResponse=" + oceanResponse + "]";
 	}
 

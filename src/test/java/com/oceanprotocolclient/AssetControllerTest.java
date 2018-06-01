@@ -23,7 +23,7 @@ public class AssetControllerTest {
      @Test
 	public void TestMethod() {
 
-		ac.downloadAsset(Mockito.any(URL.class), Mockito.anyString());
+//		ac.downloadAsset(Mockito.any(URL.class), Mockito.anyString());
 
 	}
 
