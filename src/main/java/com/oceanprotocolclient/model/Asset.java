@@ -18,7 +18,7 @@ public class Asset {
 	 */
 	private Map<String, String> oceanResponse;
 	private String contractId;
-	private Response response;
+	private MessageHandler messageHandler;
 
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
@@ -67,13 +67,6 @@ public class Asset {
 		this.contractId = contractId;
 	}
 
-	public Response getResponse() {
-		return response;
-	}
-
-	public void setResponse(Response response) {
-		this.response = response;
-	}
 
 	@Override
 	public String toString() {
@@ -87,6 +80,14 @@ public class Asset {
 
 	public void setOceanResponse(Map<String, String> oceanResponse) {
 		this.oceanResponse = oceanResponse;
+	}
+
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 	}
 
 }

@@ -77,7 +77,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.oceanprotocolclient.interfaces.AssetInterface;
 import com.oceanprotocolclient.model.Asset;
-import com.oceanprotocolclient.model.Response;
+import com.oceanprotocolclient.model.MessageHandler;
 
 @SuppressWarnings("deprecation")
 public class Assetcontroller implements AssetInterface {
@@ -102,16 +102,16 @@ public class Assetcontroller implements AssetInterface {
 	public Asset assetRegistration(URL url, String publisherId, String assetName) {
 		// Asset object creation
 		Asset asset = new Asset();
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (publisherId == null || assetName == null) {
-			oceanresponse.setMessage("Publisher Id or Asset Name not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Publisher Id or Asset Name not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata";
@@ -161,8 +161,8 @@ public class Assetcontroller implements AssetInterface {
 
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(postAssetResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(postAssetResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -178,11 +178,11 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (assetId == null) {
-			oceanresponse.setMessage("Asset Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		JSONObject json = null; // initialize the json object into null
@@ -210,8 +210,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetName((String) json.get("name"));
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -226,16 +226,16 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset updateAsset(URL url, String assetId, String assetName) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null || assetName == null) {
-			oceanresponse.setMessage("Asset Id or Asset Name not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id or Asset Name not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
@@ -271,8 +271,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setPublisherId(json.get("publisherId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(updatedresponse);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(updatedresponse);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -294,16 +294,16 @@ public class Assetcontroller implements AssetInterface {
 		String uploadassetResp = null;
 		// asset Object Creation
 		Asset asset = new Asset();
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null || file == null) {
-			oceanresponse.setMessage("Asset Id or File not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id or File not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
@@ -321,13 +321,13 @@ public class Assetcontroller implements AssetInterface {
 			uploadassetResp = EntityUtils.toString(entity2);
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(uploadassetResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(uploadassetResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
-		oceanresponse.setMessage(uploadassetResp);
-		asset.setResponse(oceanresponse);
+		messageHandler.setMessage(uploadassetResp);
+		asset.setMessageHandler(messageHandler);
 		return asset;
 	}
 
@@ -338,16 +338,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset downloadAsset(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null) {
-			oceanresponse.setMessage("Asset Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
@@ -363,13 +363,13 @@ public class Assetcontroller implements AssetInterface {
 			getResp = get.getResponseBodyAsString();
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
-		oceanresponse.setFileContent(getResp);
-		asset.setResponse(oceanresponse);
+		messageHandler.setFileContent(getResp);
+		asset.setMessageHandler(messageHandler);
 		return asset;
 	}
 
@@ -380,16 +380,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset disableAsset(URL url, String assetId, String assetName, String actorId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null || assetName == null || actorId == null) {
-			oceanresponse.setMessage("Asset Id or Asset Name or Actor Id  not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id or Asset Name or Actor Id  not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
@@ -423,8 +423,8 @@ public class Assetcontroller implements AssetInterface {
 
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(disableAssetResponse);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(disableAssetResponse);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -437,16 +437,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset getAssets(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null) {
-			oceanresponse.setMessage("Asset Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/metadata/";
@@ -480,8 +480,8 @@ public class Assetcontroller implements AssetInterface {
 
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getAssetResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getAssetResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -494,16 +494,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null || actorId == null) {
-			oceanresponse.setMessage("Asset Id or Actor Id  not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id or Actor Id  not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/assets/provider/";
@@ -530,8 +530,8 @@ public class Assetcontroller implements AssetInterface {
 			// Set asset id into asset
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getAssetProviderResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getAssetProviderResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -544,16 +544,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addContract(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null) {
-			oceanresponse.setMessage("Asset Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/";
@@ -578,8 +578,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(postcontractResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(postcontractResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -592,16 +592,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset getContract(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (contractId == null) {
-			oceanresponse.setMessage("contract Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("contract Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
@@ -625,8 +625,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getContractResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getContractResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -638,16 +638,16 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset signContract(URL url, String contractId, String signingActorId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (contractId == null || signingActorId == null) {
-			oceanresponse.setMessage("Contract Id or SigningActor Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Contract Id or SigningActor Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
@@ -672,8 +672,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(postcontractResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(postcontractResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -685,16 +685,16 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset authorizeContract(URL url, String contractId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (contractId == null || assetId == null) {
-			oceanresponse.setMessage("Contract Id or Asset Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Contract Id or Asset Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/auth";
@@ -720,8 +720,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(updatedresponse);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(updatedresponse);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -737,16 +737,16 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset accessContractAsset(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (contractId == null) {
-			oceanresponse.setMessage("Contract Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Contract Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/access";
@@ -770,8 +770,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(getContractResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(getContractResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -784,16 +784,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset settleContract(URL url, String actorId, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (actorId == null || contractId == null) {
-			oceanresponse.setMessage("Actor Id or Contract Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Actor Id or Contract Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/settlement";
@@ -819,8 +819,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(updatedresponse);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(updatedresponse);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}
@@ -833,16 +833,16 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addAssetListing(URL url, String assetId, String publisherId) {
 		Asset asset = new Asset();// asset Object Creation
-		Response oceanresponse = new Response();
+		MessageHandler messageHandler = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
-			oceanresponse.setMessage("Host url not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Host url not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		if (assetId == null || publisherId == null) {
-			oceanresponse.setMessage("Asset Id or Publisher Id not found");
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage("Asset Id or Publisher Id not found");
+			asset.setMessageHandler(messageHandler);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/market/asset/" + publisherId;
@@ -867,8 +867,8 @@ public class Assetcontroller implements AssetInterface {
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
-			oceanresponse.setMessage(postcontractResp);
-			asset.setResponse(oceanresponse);
+			messageHandler.setMessage(postcontractResp);
+			asset.setMessageHandler(messageHandler);
 			e.printStackTrace();
 			return asset;
 		}

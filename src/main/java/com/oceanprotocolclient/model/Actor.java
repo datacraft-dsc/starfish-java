@@ -17,7 +17,7 @@ public class Actor {
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
 	 */
-	Response response;
+	MessageHandler messageHandler;
 
 	public Actor() {
 		this.oceanResponse = new HashMap<>();
@@ -55,20 +55,20 @@ public class Actor {
 		this.walletId = walletId;
 	}
 
-	public Response getResponse() {
-		return response;
-	}
-
-	public void setResponse(Response response) {
-		this.response = response;
-	}
-
 	public Map<String, String> getOceanResponse() {
 		return oceanResponse;
 	}
 
 	public void setOceanResponse(Map<String, String> oceanResponse) {
 		this.oceanResponse = oceanResponse;
+	}
+
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 	}
 
 	@Override

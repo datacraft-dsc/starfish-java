@@ -3,24 +3,30 @@
  */
 package com.oceanprotocolclient.model;
 
-public class Response {
+public class MessageHandler {
 	String message;
 	String fileContent;
+
 	public String getMessage() {
 		return message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 	public String getFileContent() {
 		return fileContent;
 	}
+
 	public void setFileContent(String fileContent) {
 		this.fileContent = fileContent;
 	}
+
 	@Override
 	public String toString() {
-		return "Response [message=" + message + ", fileContent=" + fileContent + "]";
+		return "MessageHandler [message=" + message + ", fileContent=" + fileContent + "]";
 	}
-	
+
+
 }
