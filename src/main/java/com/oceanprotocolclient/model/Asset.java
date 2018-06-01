@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Asset {
-	private String id;
 	private String publisherId;
 	private String assetId;
 	private String assetName;
@@ -25,14 +24,6 @@ public class Asset {
 	 */
 	public Asset() {
 		this.oceanResponse = new HashMap<>();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getPublisherId() {
@@ -77,7 +68,7 @@ public class Asset {
 
 	@Override
 	public String toString() {
-		return "Asset [id=" + id + ", publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
+		return "Asset [publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
 				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + "]";
 	}
 
