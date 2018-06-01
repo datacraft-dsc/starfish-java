@@ -134,9 +134,6 @@ public class UserController implements UserInterface {
 		}
 		String oceanurl = userURL + actorId;
 		String getActorResp = null;
-		// Create object for user class..it include all user details
-		// Initialize postResp - response from ocean network is given to this
-		// variable
 		/**
 		 * Used for getting the data to ocean network
 		 */
@@ -146,6 +143,7 @@ public class UserController implements UserInterface {
 			httpclient.executeMethod(getActor);
 			// Response from ocean network
 			 getActorResp = getActor.getResponseBodyAsString();
+
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
@@ -206,7 +204,7 @@ public class UserController implements UserInterface {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			 updatedresponse = put.getResponseBodyAsString();
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
