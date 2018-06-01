@@ -753,7 +753,7 @@ public class Assetcontroller implements AssetInterface {
 		JSONObject json = null; // initialize the json object into null
 		String getContractResp = null;
 		try {
-			// used for executing the server call
+			// used for executing the server call 
 			GetMethod getContract = new GetMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(getContract);
@@ -785,7 +785,7 @@ public class Assetcontroller implements AssetInterface {
 	public Asset settleContract(URL url, String actorId, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
 		MessageHandler messageHandler = new MessageHandler();
-		// Checks the argument values is present or not
+		// Checks the argument values is present or not 
 		if (url == null) {
 			messageHandler.setMessage("Host url not found");
 			asset.setMessageHandler(messageHandler);
