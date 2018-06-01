@@ -783,7 +783,7 @@ public class Assetcontroller implements AssetInterface {
 			// replacing '\' with space
 			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
-			// parse string to json object
+			//parse string to json object
 			json = (JSONObject) parser.parse(postcontactToJson);
 			// Set asset id into asset
 			asset.setAssetId(json.get("assetId").toString());
