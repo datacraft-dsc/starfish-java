@@ -50,9 +50,18 @@ public class UserController implements UserInterface {
 	 */
 
 	public User userRegistration(URL url, String actorId) {
-		String oceanurl = userURL;
 		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL;
 		// Initialize postResp - response from ocean network is given to this
 		// variable
 		try {
@@ -82,23 +91,21 @@ public class UserController implements UserInterface {
 			// set the wallet id to the user object
 			user.setWalletId(walletId);
 			// get the private key from ocean network response
-			String privateKey = (String) json.get("privateKey");
 			// set the private key to the user object
-			user.setPrivateKey(privateKey);
+			user.getOceanResponse().put("privateKey", json.get("privateKey").toString());
 			// set the actorid to the user object
 			user.setActorId(actorId);
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the user state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
-			/**
-			 * Used for adding WalletId, PrivateKey,actorId and status to Json
-			 * Object
-			 */
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(postActorResp);
 			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
@@ -113,9 +120,18 @@ public class UserController implements UserInterface {
 	 */
 
 	public User getActor(URL url, String actorId) {
-		String oceanurl = userURL + actorId;
 		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
 		/**
 		 * Used for getting the data to ocean network
 		 */
@@ -140,13 +156,16 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(getActorResp);
 			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
@@ -161,9 +180,18 @@ public class UserController implements UserInterface {
 	 *
 	 */
 	public User updateActor(URL url, String actorId, String actorName) {
-		String oceanurl = userURL + actorId;
+		// Create object for user class..it include all user details
 		User user = new User();
-		String updatedresponse = null;
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null || actorName == null) {
+			user.setMessage("Actor Id or Actor Name not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
 		try {
 			PutMethod put = new PutMethod(oceanurl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
@@ -172,7 +200,7 @@ public class UserController implements UserInterface {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			String updatedresponse = put.getResponseBodyAsString();
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -185,16 +213,18 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return user;
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(updatedresponse);
+			e.printStackTrace();
+			return user;
+    }
+  return user;
 	}
 
 	/**
@@ -205,8 +235,18 @@ public class UserController implements UserInterface {
 	 * @return response
 	 */
 	public User disableActor(URL url, String actorId) {
-		String oceanurl = userURL + actorId;
+		// Create object for user class..it include all user details
 		User user = new User();
+		// Checks the argument values is present or not
+		if (url == null) {
+			user.setMessage("Host url not found");
+			return user;
+		}
+		if (actorId == null) {
+			user.setMessage("Actor Id not found");
+			return user;
+		}
+		String oceanurl = userURL + actorId;
 		String deletedresponse = null;
 		try {
 			DeleteMethod delete = new DeleteMethod(oceanurl);
@@ -226,13 +266,16 @@ public class UserController implements UserInterface {
 			// set the actor id to the user object
 			user.setActorId(json.get("actorId").toString());
 			// set the updateDatetime to the user object
-			user.setUpdateDatetime(json.get("updateDatetime").toString());
+			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
 			// set the state to the user object
-			user.setState((String) json.get("state"));
+			user.getOceanResponse().put("state", json.get("state").toString());
 			// set the creationDatetime to the user object
-			user.setCreationDatetime(json.get("creationDatetime").toString());
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+		} catch (Exception e) {
+			// returns the response if no values are present
+			user.setMessage(deletedresponse);
+			e.printStackTrace();
+			return user;
 		}
 		return user;
 	}
