@@ -1,14 +1,16 @@
 package com.oceanprotocolclient.model;
 
 public class User {
-	String id;
-	String actorId;
-	String actorName;
-	String walletId;
-	String privateKey;	
-	String updateDatetime;
-	String state;
-	String creationDatetime;
+	private String id;
+	private String actorId;
+	private String actorName;
+	private String walletId;
+	private String privateKey;	
+	private String updateDatetime;
+	private String state;
+	private String creationDatetime;
+	private String message;
+	
 	public User() {
 	}
 	public String getId() {
@@ -59,11 +61,17 @@ public class User {
 	public void setCreationDatetime(String creationDatetime) {
 		this.creationDatetime = creationDatetime;
 	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", actorId=" + actorId + ", actorName=" + actorName + ", walletId=" + walletId
 				+ ", privateKey=" + privateKey + ", updateDatetime=" + updateDatetime + ", state=" + state
-				+ ", creationDatetime=" + creationDatetime + "]";
+				+ ", creationDatetime=" + creationDatetime + ", message=" + message + "]";
 	}
 	
 
