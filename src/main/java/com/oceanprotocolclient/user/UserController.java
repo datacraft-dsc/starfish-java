@@ -27,9 +27,6 @@
 package com.oceanprotocolclient.user;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Random;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -42,15 +39,14 @@ import com.oceanprotocolclient.interfaces.UserInterface;
 import com.oceanprotocolclient.model.User;
 
 public class UserController implements UserInterface {
-
 	public String userURL = "/api/v1/keeper/actors/actor";
+
 	/**
-	 * 
-	 * @param actorId
-	 * @return JSONObject
-	 * 
-	 *         Registers an actor with the Ocean network. POST
-	 *         "/api/v1/keeper/actors/actor/"
+	 * This method registers an actor with the Ocean network. 
+	 * POST "/api/v1/keeper/actors/actor/" 
+	 * @Param actorId
+	 * @Param url
+	 * @return user object
 	 */
 
 	public User userRegistration(URL url, String actorId) {
@@ -59,30 +55,24 @@ public class UserController implements UserInterface {
 		User user = new User();
 		// Initialize postResp - response from ocean network is given to this
 		// variable
-		String postActorResp = null;
 		try {
 			/**
 			 * Used for posting the data to ocean network
 			 */
 			PostMethod postActor = new PostMethod(oceanurl);
-			postActor.setParameter("actorId", actorId);// set Parameter actorId
+			// set Parameter actorId
+			postActor.setParameter("actorId", actorId);
 			HttpClient httpclient = new HttpClient();
+			//sent the parameters to ocean network
 			httpclient.executeMethod(postActor);
 			// Response from ocean network
-			postActorResp = postActor.getResponseBodyAsString();
-
-			/**
-			 * Used for return a Json Object with failed result and status
-			 */
-			if (postActorResp == null) {
-				return user;
-			}
+			String postActorResp = postActor.getResponseBodyAsString();
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
-			// Data coming from ocean network is a json string..This line remove
-			// the "\\" from the response
+			// Data coming from ocean network is a json string..
+			//This line remove  the "\\" from the response
 			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser(); // create json parser
 			// parse the data to json object
@@ -114,21 +104,18 @@ public class UserController implements UserInterface {
 	}
 
 	/**
-	 * 
-	 * @param actorId
-	 * @return JSONObject
-	 * 
-	 *         This method used to get the actor details from ocean network GET
-	 *         "/api/v1/keeper/actors/actor/<actor_id>"
+	 * This method used to fetch the actor information from ocean network
+	 * GET "/api/v1/keeper/actors/actor/<actor_id>"
+	 * This should take actorId along with url
+	 * @Param actorId
+	 * @Param url
+	 * @return user object
 	 */
 
 	public User getActor(URL url, String actorId) {
 		String oceanurl = userURL + actorId;
 		// Create object for user class..it include all user details
 		User user = new User();
-		// Initialize postResp - response from ocean network is given to this
-		// variable
-		String getActorResp = null;
 		/**
 		 * Used for getting the data to ocean network
 		 */
@@ -137,13 +124,7 @@ public class UserController implements UserInterface {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(getActor);
 			// Response from ocean network
-			getActorResp = getActor.getResponseBodyAsString();
-			/**
-			 * Used for return a Json Object with failed result and status
-			 */
-			if (getActorResp == null) {
-				return user;
-			}
+			String getActorResp = getActor.getResponseBodyAsString();
 			/**
 			 * Used for getting WalletId and PrivateKey
 			 */
@@ -182,11 +163,12 @@ public class UserController implements UserInterface {
 	public User updateActor(URL url, String actorId, String actorName) {
 		String oceanurl = userURL + actorId;
 		User user = new User();
-		String updatedresponse =null;
+		String updatedresponse = null;
 		try {
-			PutMethod  put = new PutMethod(oceanurl);
+			PutMethod put = new PutMethod(oceanurl);
 			HttpMethodParams httpmethod = new HttpMethodParams();
 			httpmethod.setParameter("name", actorName);
+			put.setParams(httpmethod);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
