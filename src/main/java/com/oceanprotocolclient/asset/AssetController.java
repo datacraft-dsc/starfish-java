@@ -138,11 +138,9 @@ public class AssetController implements AssetInterface {
 		String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
 		// create a json parser
 		JSONParser parser = new JSONParser();
-		// Initialise the json variable
-		JSONObject json = null;
 		try {
 			// parse the json string into json object
-			json = (JSONObject) parser.parse(postAssetToJson);
+			JSONObject json = (JSONObject) parser.parse(postAssetToJson);
 			// Set asset id from json object into asset
 			asset.setAssetId((String) json.get("assetId"));
 			// Set marketplaceId from json object into asset
@@ -185,7 +183,6 @@ public class AssetController implements AssetInterface {
 			asset.setMessageHandler(messagehandler);
 			return asset;
 		}
-		JSONObject json = null; // initialize the json object into null
 		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
 		String getResp = null;
 		try {
@@ -201,7 +198,7 @@ public class AssetController implements AssetInterface {
 			String postToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(postToJson);
+			JSONObject json = (JSONObject) parser.parse(postToJson);
 			// Set asset id into asset
 			asset.setAssetId((String) json.get("assetId"));
 			// Set publisherId into asset
@@ -557,7 +554,6 @@ public class AssetController implements AssetInterface {
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/";
-		JSONObject json;
 		String postcontractResp = null;
 		try {
 			PostMethod postcontract = new PostMethod(oceanUrl);
@@ -573,7 +569,7 @@ public class AssetController implements AssetInterface {
 			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(postcontactToJson);
+			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
@@ -605,7 +601,6 @@ public class AssetController implements AssetInterface {
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
-		JSONObject json = null; // initialize the json object into null
 		String getContractResp = null;
 		try {
 			// used for executing the server call
@@ -620,7 +615,7 @@ public class AssetController implements AssetInterface {
 			String postcontractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(postcontractToJson);
+			JSONObject json = (JSONObject) parser.parse(postcontractToJson);
 			// Set asset id into asset
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
@@ -750,7 +745,6 @@ public class AssetController implements AssetInterface {
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/access";
-		JSONObject json = null; // initialize the json object into null
 		String getContractResp = null;
 		try {
 			// used for executing the server call
@@ -765,7 +759,7 @@ public class AssetController implements AssetInterface {
 			String accessContractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(accessContractToJson);
+			JSONObject json = (JSONObject) parser.parse(accessContractToJson);
 			// set the set Asset id to the user object
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
@@ -846,7 +840,6 @@ public class AssetController implements AssetInterface {
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/market/asset/" + publisherId;
-		JSONObject json = null; // initialize the json object into null
 		String postcontractResp = null;
 		try {
 			PostMethod postcontract = new PostMethod(oceanUrl);
@@ -862,7 +855,7 @@ public class AssetController implements AssetInterface {
 			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			json = (JSONObject) parser.parse(postcontactToJson);
+			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
 			// Set asset id into asset
 			asset.setAssetId(json.get("assetId").toString());
 		} catch (Exception e) {
