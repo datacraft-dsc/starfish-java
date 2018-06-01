@@ -77,6 +77,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.oceanprotocolclient.interfaces.AssetInterface;
 import com.oceanprotocolclient.model.Asset;
+import com.oceanprotocolclient.model.Response;
 
 @SuppressWarnings("deprecation")
 public class Assetcontroller implements AssetInterface {
@@ -101,13 +102,16 @@ public class Assetcontroller implements AssetInterface {
 	public Asset assetRegistration(URL url, String publisherId, String assetName) {
 		// Asset object creation
 		Asset asset = new Asset();
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
-			asset.setMessage("Host url not found");
+			ocenresponse.setMessage("Host url not found");
+			asset.setResponse(ocenresponse);
 			return asset;
 		}
 		if (publisherId == null || assetName == null) {
-			asset.setMessage("Publisher Id or Asset Name not found");
+			ocenresponse.setMessage("Publisher Id or Asset Name not found");
+			asset.setResponse(ocenresponse);
 			return asset;
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata";
@@ -157,7 +161,8 @@ public class Assetcontroller implements AssetInterface {
 
 		} catch (Exception e) {
 			// returns the response if no values are present
-			asset.setMessage(postAssetResp);
+			ocenresponse.setMessage(postAssetResp);
+			asset.setResponse(ocenresponse);
 			e.printStackTrace();
 			return asset;
 		}
@@ -173,6 +178,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (assetId == null) {
 			asset.setMessage("Response from ocean network is not found");
@@ -217,6 +223,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset updateAsset(URL url, String assetId, String assetName) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -276,10 +283,11 @@ public class Assetcontroller implements AssetInterface {
 	 */
 
 	@SuppressWarnings({ "resource" })
-	public Asset uploadAsset(URL url, String assetId, File file) {
+	public Response uploadAsset(URL url, String assetId, File file) {
 		String uploadassetResp = null;
 		// asset Object Creation
 		Asset asset = new Asset();
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -318,6 +326,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset downloadAsset(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -353,8 +362,9 @@ public class Assetcontroller implements AssetInterface {
 	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
 	 */
 
-	public Asset disableAssets(URL url, String assetId, String assetName, String actorId) {
+	public Asset disableAsset(URL url, String assetId, String assetName, String actorId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -407,6 +417,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset getAssets(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -459,6 +470,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -504,6 +516,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addContract(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -547,6 +560,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset getContract(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -588,6 +602,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset signContract(URL url, String contractId, String signingActorId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -630,6 +645,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset authorizeContract(URL url, String contractId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -677,6 +693,7 @@ public class Assetcontroller implements AssetInterface {
 	 */
 	public Asset accessContractAsset(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -719,6 +736,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset settleContract(URL url, String actorId, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");
@@ -763,6 +781,7 @@ public class Assetcontroller implements AssetInterface {
 
 	public Asset addAssetListing(URL url, String assetId, String publisherId) {
 		Asset asset = new Asset();// asset Object Creation
+		Response ocenresponse = new Response();
 		// Checks the argument values is present or not
 		if (url == null) {
 			asset.setMessage("Host url not found");

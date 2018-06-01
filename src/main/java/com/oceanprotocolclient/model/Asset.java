@@ -1,3 +1,7 @@
+/**
+ * Asset class
+ */
+
 package com.oceanprotocolclient.model;
 
 import java.util.HashMap;
@@ -9,20 +13,20 @@ public class Asset {
 	private String assetId;
 	private String assetName;
 	/**
-	 * {@link Map} to save the response from the ocean network as a key value pair
+	 * {@link Map} to save the response from the ocean network as a key value
+	 * pair
 	 */
-	private Map<String, String> oceanResponse;	
+	private Map<String, String> oceanResponse;
 	private String contractId;
-	private String fileContent;
-	private String message;
-	
+	private Response response;
+
 	/**
-	 * Construct the oceanResponse  with Hash map for further use.
+	 * Construct the oceanResponse with Hash map for further use.
 	 */
-	public Asset()
-	{
-		this.oceanResponse= new HashMap<>();
+	public Asset() {
+		this.oceanResponse = new HashMap<>();
 	}
+
 	public String getId() {
 		return id;
 	}
@@ -54,7 +58,7 @@ public class Asset {
 	public void setAssetName(String assetName) {
 		this.assetName = assetName;
 	}
-  
+
 	public String getContractId() {
 		return contractId;
 	}
@@ -63,31 +67,24 @@ public class Asset {
 		this.contractId = contractId;
 	}
 
-	public String getFileContent() {
-		return fileContent;
+	public Response getResponse() {
+		return response;
 	}
 
-	public void setFileContent(String fileContent) {
-		this.fileContent = fileContent;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	public void setResponse(Response response) {
+		this.response = response;
 	}
 
 	@Override
 	public String toString() {
 		return "Asset [id=" + id + ", publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
-				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + ", fileContent=" + fileContent
-				+ ", message=" + message + "]";
+				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + "]";
 	}
+
 	public Map<String, String> getOceanResponse() {
 		return oceanResponse;
 	}
+
 	public void setOceanResponse(Map<String, String> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
