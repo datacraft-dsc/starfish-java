@@ -47,23 +47,23 @@ public class ActorController implements ActorInterface {
 	 * POST "/api/v1/keeper/actors/actor/" 
 	 * @Param actorId
 	 * @Param url
-	 * @return user object
+	 * @return actor object
 	 */
 
 	public Actor actorRegistration(URL url, String actorId) {
-		// Create object for user class..it include all user details
-		Actor user = new Actor();
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
 		MessageHandler oceanresponse = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
 			oceanresponse.setMessage("Host url not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		if (actorId == null) {
 			oceanresponse.setMessage("Actor Id not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		String oceanurl = actorURL;
 		String postActorResp = null;
@@ -93,27 +93,27 @@ public class ActorController implements ActorInterface {
 			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
 			// get the wallet address from ocean network response
 			String walletId = (String) json.get("defaultWalletAddress");
-			// set the wallet id to the user object
-			user.setWalletId(walletId);
+			// set the wallet id to the actor object
+			actor.setWalletId(walletId);
 			// get the private key from ocean network response
-			// set the private key to the user object
-			user.getOceanResponse().put("privateKey", json.get("privateKey").toString());
-			// set the actorid to the user object
-			user.setActorId(actorId);
-			// set the updateDatetime to the user object
-			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the user state to the user object
-			user.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+			// set the private key to the actor object
+			actor.getOceanResponse().put("privateKey", json.get("privateKey").toString());
+			// set the actorid to the actor object
+			actor.setActorId(actorId);
+			// set the updateDatetime to the actor object
+			actor.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
+			// set the actor state to the actor object
+			actor.getOceanResponse().put("state", json.get("state").toString());
+			// set the creationDatetime to the actor object
+			actor.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
 			oceanresponse.setMessage(postActorResp);
-			user.setMessageHandler(oceanresponse);
+			actor.setMessageHandler(oceanresponse);
 			e.printStackTrace();
-			return user;
+			return actor;
 		}
-		return user;
+		return actor;
 	}
 
 	/**
@@ -122,23 +122,23 @@ public class ActorController implements ActorInterface {
 	 * This should take actorId along with url
 	 * @Param actorId
 	 * @Param url
-	 * @return user object
+	 * @return actor object
 	 */
 
 	public Actor getActor(URL url, String actorId) {
-		// Create object for user class..it include all user details
-		Actor user = new Actor();
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
 		MessageHandler oceanresponse = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
 			oceanresponse.setMessage("Host url not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		if (actorId == null) {
 			oceanresponse.setMessage("Actor Id not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		String oceanurl = actorURL + actorId;
 		String getActorResp = null;
@@ -162,24 +162,24 @@ public class ActorController implements ActorInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
-			// set the wallet id to the user object
-			user.setWalletId(json.get("defaultWalletAddress").toString());
-			// set the actor id to the user object
-			user.setActorId(json.get("actorId").toString());
-			// set the updateDatetime to the user object
-			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			user.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+			// set the wallet id to the actor object
+			actor.setWalletId(json.get("defaultWalletAddress").toString());
+			// set the actor id to the actor object
+			actor.setActorId(json.get("actorId").toString());
+			// set the updateDatetime to the actor object
+			actor.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
+			// set the state to the actor object
+			actor.getOceanResponse().put("state", json.get("state").toString());
+			// set the creationDatetime to the actor object
+			actor.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
 			oceanresponse.setMessage(getActorResp);
-			user.setMessageHandler(oceanresponse);
+			actor.setMessageHandler(oceanresponse);
 			e.printStackTrace();
-			return user;
+			return actor;
 		}
-		return user;
+		return actor;
 	}
 
 	/**
@@ -192,19 +192,19 @@ public class ActorController implements ActorInterface {
 	 *
 	 */
 	public Actor updateActor(URL url, String actorId, String actorName) {
-		// Create object for user class..it include all user details
-		Actor user = new Actor();
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
 		MessageHandler oceanresponse = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
 			oceanresponse.setMessage("Host url not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		if (actorId == null || actorName == null) {
 			oceanresponse.setMessage("Actor Id or Actor Name not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		String oceanurl = actorURL + actorId;
 		String updatedresponse = null;
@@ -224,24 +224,24 @@ public class ActorController implements ActorInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
-			// set the wallet id to the user object
-			user.setActorName(json.get("name").toString());
-			// set the actor id to the user object
-			user.setActorId(json.get("actorId").toString());
-			// set the updateDatetime to the user object
-			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			user.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+			// set the wallet id to the actor object
+			actor.setActorName(json.get("name").toString());
+			// set the actor id to the actor object
+			actor.setActorId(json.get("actorId").toString());
+			// set the updateDatetime to the actor object
+			actor.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
+			// set the state to the actor object
+			actor.getOceanResponse().put("state", json.get("state").toString());
+			// set the creationDatetime to the actor object
+			actor.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
 			oceanresponse.setMessage(updatedresponse);
-			user.setMessageHandler(oceanresponse);
+			actor.setMessageHandler(oceanresponse);
 			e.printStackTrace();
-			return user;
+			return actor;
     }
-  return user;
+  return actor;
 	}
 
 	/**
@@ -252,19 +252,19 @@ public class ActorController implements ActorInterface {
 	 * @return response
 	 */
 	public Actor disableActor(URL url, String actorId) {
-		// Create object for user class..it include all user details
-		Actor user = new Actor();
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
 		MessageHandler oceanresponse = new MessageHandler();
 		// Checks the argument values is present or not
 		if (url == null) {
 			oceanresponse.setMessage("Host url not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		if (actorId == null) {
 			oceanresponse.setMessage("Actor Id not found");
-			user.setMessageHandler(oceanresponse);
-			return user;
+			actor.setMessageHandler(oceanresponse);
+			return actor;
 		}
 		String oceanurl = actorURL + actorId;
 		String deletedresponse = null;
@@ -281,23 +281,23 @@ public class ActorController implements ActorInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
-			// set the wallet id to the user object
-			user.setActorName(json.get("name").toString());
-			// set the actor id to the user object
-			user.setActorId(json.get("actorId").toString());
-			// set the updateDatetime to the user object
-			user.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			user.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			user.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
+			// set the wallet id to the actor object
+			actor.setActorName(json.get("name").toString());
+			// set the actor id to the actor object
+			actor.setActorId(json.get("actorId").toString());
+			// set the updateDatetime to the actor object
+			actor.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
+			// set the state to the actor object
+			actor.getOceanResponse().put("state", json.get("state").toString());
+			// set the creationDatetime to the actor object
+			actor.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
 		} catch (Exception e) {
 			// returns the response if no values are present
 			oceanresponse.setMessage(deletedresponse);
-			user.setMessageHandler(oceanresponse);
+			actor.setMessageHandler(oceanresponse);
 			e.printStackTrace();
-			return user;
+			return actor;
 		}
-		return user;
+		return actor;
 	}
 }
