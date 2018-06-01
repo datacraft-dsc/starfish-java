@@ -55,7 +55,7 @@
  * ***************************************************************************************************************************
  ** ***************************************************************************************************************************/
 
-package com.oceanprotocolclient.assets;
+package com.oceanprotocolclient.asset;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +80,7 @@ import com.oceanprotocolclient.model.Asset;
 import com.oceanprotocolclient.model.Response;
 
 @SuppressWarnings("deprecation")
-public class Assetcontroller implements AssetInterface {
+public class AssetController implements AssetInterface {
 	public String keeperURL = "/api/v1/keeper";
 	public String providerURL = "/api/v1/provider";
 	/**
@@ -243,6 +243,7 @@ public class Assetcontroller implements AssetInterface {
 			PutMethod put = new PutMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			HttpMethodParams httpmethod = new HttpMethodParams();
+			//set asset name
 			httpmethod.setParameter("name", assetName);
 			put.setParams(httpmethod);
 			httpclient.executeMethod(put);
