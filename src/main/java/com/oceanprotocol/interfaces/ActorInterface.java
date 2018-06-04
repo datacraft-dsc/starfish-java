@@ -1,7 +1,8 @@
-package com.oceanprotocolclient.interfaces;
+package com.oceanprotocol.interfaces;
 
 import java.net.URL;
-import com.oceanprotocolclient.model.Actor;
+
+import com.oceanprotocol.model.Actor;
 
 public interface ActorInterface {
 	/**

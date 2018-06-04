@@ -24,7 +24,7 @@
  * ********************************************************************************************************************************
  ***********************************************************************************************************************************/
 
-package com.oceanprotocolclient.client;
+package com.oceanprotocol.client;
 
 import java.net.URL;
 import org.apache.commons.httpclient.HttpClient;
@@ -35,9 +35,10 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.oceanprotocolclient.interfaces.ActorInterface;
-import com.oceanprotocolclient.model.Actor;
-import com.oceanprotocolclient.model.MessageHandler;
+
+import com.oceanprotocol.interfaces.ActorInterface;
+import com.oceanprotocol.model.Actor;
+import com.oceanprotocol.model.MessageHandler;
 
 public class ActorController implements ActorInterface {
 	public String actorURL = "/api/v1/keeper/actors/actor";

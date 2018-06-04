@@ -1,7 +1,7 @@
 /**
  * Response class handle the messages from ocean network
  */
-package com.oceanprotocolclient.model;
+package com.oceanprotocol.model;
 
 public class MessageHandler {
 	String message;
