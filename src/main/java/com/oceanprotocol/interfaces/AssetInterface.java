@@ -3,10 +3,11 @@
  * upload asset and download assets.
  */
 
-package com.oceanprotocolclient.interfaces;
+package com.oceanprotocol.interfaces;
 import java.io.File;
 import java.net.URL;
-import com.oceanprotocolclient.model.Asset;
+
+import com.oceanprotocol.model.Asset;
 
 public interface AssetInterface {
 	/**

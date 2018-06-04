@@ -55,7 +55,7 @@
  * ***************************************************************************************************************************
  ** ***************************************************************************************************************************/
 
-package com.oceanprotocolclient.client;
+package com.oceanprotocol.client;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,9 +75,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.oceanprotocolclient.interfaces.AssetInterface;
-import com.oceanprotocolclient.model.Asset;
-import com.oceanprotocolclient.model.MessageHandler;
+
+import com.oceanprotocol.interfaces.AssetInterface;
+import com.oceanprotocol.model.Asset;
+import com.oceanprotocol.model.MessageHandler;
 
 @SuppressWarnings("deprecation")
 public class AssetController implements AssetInterface {

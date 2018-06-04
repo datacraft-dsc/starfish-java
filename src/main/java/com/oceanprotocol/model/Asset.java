@@ -1,7 +1,7 @@
 /**
   * Represents an asset on the Ocean Network.
   */
-package com.oceanprotocolclient.model;
+package com.oceanprotocol.model;
 
 import java.util.HashMap;
 import java.util.Map;
