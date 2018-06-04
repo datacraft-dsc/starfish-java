@@ -90,13 +90,9 @@ public class AssetController implements AssetInterface {
 	 * in.
 	 * 
 	 * Minimum required: name, publisherId
-	 * 
-	 * @param publisherId-publisher
-	 *            Id
-	 * @param name
-	 *            - publisher name
-	 * @param targetUrltarget
-	 *            URL
+	 * @param url
+	 * @param publisherId - publisher Id
+	 * @param assetName - assetName
 	 * @return java object asset
 	 */
 
@@ -171,9 +167,9 @@ public class AssetController implements AssetInterface {
 	/**
 	 * It is used to get the asset response from ocean network
 	 * 
-	 * @param targetUrl
-	 * 
-	 * @return "
+	 * @param url
+	 * @param assetId
+	 * @return asset
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
