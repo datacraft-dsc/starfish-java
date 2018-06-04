@@ -46,9 +46,10 @@ public class ActorController implements ActorInterface {
 	/**
 	 * This method registers an actor with the Ocean network. 
 	 * POST "/api/v1/keeper/actors/actor/" 
-	 * @Param actorId
+	 *
 	 * @Param url
-	 * @return actor object
+	 * @Param actorId
+	 * @return actor
 	 */
 
 	public Actor actorRegistration(URL url, String actorId) {
@@ -121,9 +122,9 @@ public class ActorController implements ActorInterface {
 	 * This method used to fetch the actor information from ocean network
 	 * GET "/api/v1/keeper/actors/actor/<actor_id>"
 	 * This should take actorId along with url
+	 * @Param url 
 	 * @Param actorId
-	 * @Param url
-	 * @return actor object
+	 * @return actor
 	 */
 
 	public Actor getActor(URL url, String actorId) {
@@ -187,9 +188,9 @@ public class ActorController implements ActorInterface {
 	 * JSON-encoded key-value pairs from the Actor schema that are allowed to be
 	 * updated (only 'name' and 'attributes')
 	 * 
-	 * @param targetUrl
-	 * @param name
-	 * @return updatedresponse
+	 * @param url
+	 * @param actorName
+	 * @return actor
 	 *
 	 */
 	public Actor updateActor(URL url, String actorId, String actorName) {
@@ -248,9 +249,9 @@ public class ActorController implements ActorInterface {
 	/**
 	 * This method is used to disable the actor.
 	 * 
-	 * @param targetUrl
-	 * @param name
-	 * @return response
+	 * @param url
+	 * @param actorId
+	 * @return actor
 	 */
 	public Actor disableActor(URL url, String actorId) {
 		// Create object for actor class..it include all actor details
