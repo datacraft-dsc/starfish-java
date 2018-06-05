@@ -2,6 +2,8 @@ package com.oceanprotocol.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.simple.JSONObject;
 /**
 + * Represents an Actor on the Ocean Network.
 + *
@@ -14,12 +16,8 @@ public class Actor {
 	 * {@link Map} to save the response from the ocean network as a key value
 	 * pair
 	 */
-	private Map<String, String> oceanResponse;
+	private Map<String, JSONObject> oceanResponse;
 
-	/**
-	 * Construct the oceanResponse with Hash map for further use.
-	 */
-	MessageHandler messageHandler;
 
 	public Actor() {
 		this.oceanResponse = new HashMap<>();
@@ -49,27 +47,21 @@ public class Actor {
 		this.walletId = walletId;
 	}
 
-	public MessageHandler getMessageHandler() {
-		return messageHandler;
-	}
 
-	public void setMessageHandler(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
-
-	public Map<String, String> getOceanResponse() {
+	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
 	}
 
-	public void setOceanResponse(Map<String, String> oceanResponse) {
+	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
 
 	@Override
 	public String toString() {
 		return "Actor [actorId=" + actorId + ", actorName=" + actorName + ", walletId=" + walletId + ", oceanResponse="
-				+ oceanResponse + ", messageHandler=" + messageHandler + "]";
+				+ oceanResponse + "]";
 	}
+
 
 
 }

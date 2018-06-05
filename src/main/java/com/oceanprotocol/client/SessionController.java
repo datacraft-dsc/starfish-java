@@ -1,66 +1,11 @@
-/*****************************************************************************************************************************
- * ***************************************************************************************************************************
- * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
- * assetController Class includes- Asset Registration
- * 								 - Get Asset
- * 								 - Get Assets
- * 								 - Update Asset
- * 								 - Upload Asset
- * 								 - Download Asset
- *								 - Disable Asset
- *								 - Add Asset Provider
- *								 - Add Contract
- *								 - Get Contract
- *								 - SignContract
- *								 - Authorize Contract
- *								 - Revoke Contract Authorization
- *								 - Access Contract Asset
- *								 - Settle Contract
- *								 - Add Asset Listing
- *
- * assetRegistration - This method registers an asset with the Ocean network. 
- *					   POST "/api/v1/keeper/assets/metadata"
- * 					   Parameter : url , actorId
- * getAsset		 	 - This method used to fetch an asset from the Ocean network. 
- * 					   GET "/api/v1/keeper/assets/metadata/{asset_id}"
- * 					   parameter : url , assetId
- * getAssets		 - This method used to fetch all assets from the Ocean network. 
- * 					   GET "/api/v1/keeper/assets/metadata"
- * 					   parameter : url , assetId
- * updateAsset		 - This method used to update an asset in the the Ocean network. 
- * 					   PUT "/api/v1/keeper/assets/metadata/{asset_id}"
- * 					   parameter : url , assetId,assetName
- * uploadAsset		 - This method used to upload an asset in the the Ocean network. 
- * 					   POST "/api/v1/provider/assets/asset/
- * 					   parameter : url , assetId ,file
- * downloadAsset 	 - This method used to download asset from Ocean network. 
- * 					   GET "/api/v1/provider/assets/asset/"
- * 					   parameter : url , assetId
- * disableAssets	 - This method used to disable asset from Ocean network. 
- * 					   DELETE "/api/v1/keeper/assets/metadata/{asset_id}"
- * 					   parameter : url , assetId ,assetName,actorId
- * addAssetProvider	 - This method used to add asset provider from Ocean network. 
- * 					   POST "/api/v1/keeper/assets/provider"
- * 					   parameter : url , actorId ,assetId
- * addContract		 - This method used to add contract from Ocean network. 
- * 					   POST "/api/v1/keeper/contracts/contract"
- * 					   parameter : url ,assetId
- * getContract		 - This method used to get contract from Ocean network.
- * 					   GET "/api/v1/keeper/contracts/contract/<contract_id>"
- * 					   parameter : url ,contractId
- * 
- * 
- *						
- * Author : Aleena,Athul,Arun (Uvionics Tec)
- * ***************************************************************************************************************************
- ** ***************************************************************************************************************************/
-
 package com.oceanprotocol.client;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -76,40 +21,209 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.oceanprotocol.interfaces.AssetInterface;
+import com.oceanprotocol.model.Actor;
 import com.oceanprotocol.model.Asset;
-import com.oceanprotocol.model.MessageHandler;
 
-@SuppressWarnings("deprecation")
-public class AssetController implements AssetInterface {
-	public String keeperURL = "/api/v1/keeper";
-	public String providerURL = "/api/v1/provider";
+public class SessionController {
+
+	public static final String actorURL = "/api/v1/keeper/actors/actor";
+	public static final String keeperURL = "/api/v1/keeper";
+	public static final String providerURL = "/api/v1/provider";
+
+	/**
+	 * This method registers an actor with the Ocean network. POST
+	 * "/api/v1/keeper/actors/actor/"
+	 * 
+	 * @Param actorId
+	 * @Param url
+	 * @return actor object
+	 */
+
+	public Actor actorRegistration(URL url, String actorId) {
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
+		// Checks the argument values is present or not
+		if (url == null || actorId == null) {
+			throw new NullPointerException();
+		}
+		String oceanurl = actorURL;
+		String postActorResp = null;
+		// Initialize postResp - response from ocean network is given to this
+		// variable
+		try {
+			/**
+			 * Used for posting the data to ocean network
+			 */
+			PostMethod postActor = new PostMethod(oceanurl);
+			// set Parameter actorId
+			postActor.setParameter("actorId", actorId);
+			HttpClient httpclient = new HttpClient();
+			// sent the parameters to ocean network
+			httpclient.executeMethod(postActor);
+			// Response from ocean network
+			postActorResp = postActor.getResponseBodyAsString();
+			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
+			// Data coming from ocean network is a json string..
+			// This line remove the "\\" from the response
+			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser(); // create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
+			// set the result json to the actor object
+			actor.getOceanResponse().put("result", json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return actor;
+	}
+
+	/**
+	 * This method used to fetch the actor information from ocean network GET
+	 * "/api/v1/keeper/actors/actor/<actor_id>" This should take actorId along
+	 * with url
+	 * 
+	 * @Param actorId
+	 * @Param url
+	 * @return actor object
+	 */
+
+	public Actor getActor(URL url, String actorId) {
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
+		// Checks the argument values is present or not
+		if (url == null || actorId == null) {
+			throw new NullPointerException();
+		}
+		String oceanurl = actorURL + actorId;
+		String getActorResp = null;
+		/**
+		 * Used for getting the data to ocean network
+		 */
+		try {
+			GetMethod getActor = new GetMethod(oceanurl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(getActor);
+			// Response from ocean network
+			getActorResp = getActor.getResponseBodyAsString();
+			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
+			// Data coming from ocean network is a json string..This line remove
+			// the "\\" from the response
+			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();// create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			// set the result json to the actor object
+			actor.getOceanResponse().put("result", json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return actor;
+	}
+
+	/**
+	 * JSON-encoded key-value pairs from the Actor schema that are allowed to be
+	 * updated (only 'name' and 'attributes')
+	 * 
+	 * @param targetUrl
+	 * @param name
+	 * @return updatedresponse
+	 *
+	 */
+	public Actor updateActor(URL url, String actorId, String actorName) {
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
+		// Checks the argument values is present or not
+		if (url == null || actorId == null || actorName == null) {
+			throw new NullPointerException();
+		}
+		String oceanurl = actorURL + actorId;
+		String updatedresponse = null;
+		try {
+			PutMethod put = new PutMethod(oceanurl);
+			HttpMethodParams httpmethod = new HttpMethodParams();
+			httpmethod.setParameter("name", actorName);
+			put.setParams(httpmethod);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(put);
+			// got response from ocean network
+			updatedresponse = put.getResponseBodyAsString();
+			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
+			// Data coming from ocean network is a json string..This line remove
+			// the "\\" from the response
+			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();// create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			// set the result json to the actor object
+			actor.getOceanResponse().put("result", json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return actor;
+	}
+
+	/**
+	 * This method is used to disable the actor.
+	 * 
+	 * @param targetUrl
+	 * @param name
+	 * @return response
+	 */
+	public Actor disableActor(URL url, String actorId) {
+		// Create object for actor class..it include all actor details
+		Actor actor = new Actor();
+		// Checks the argument values is present or not
+		if (url == null || actorId == null) {
+			throw new NullPointerException();
+		}
+		String oceanurl = actorURL + actorId;
+		String deletedresponse = null;
+		try {
+			DeleteMethod delete = new DeleteMethod(oceanurl);
+			HttpClient httpclient = new HttpClient();
+			httpclient.executeMethod(delete);
+			// got response from ocean network
+			deletedresponse = delete.getResponseBodyAsString();
+			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
+			// Data coming from ocean network is a json string..This line remove
+			// the "\\" from the response
+			String getActorToJson = predeleteToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();// create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			// set the result json to the actor object
+			actor.getOceanResponse().put("result", json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return actor;
+	}
+
 	/**
 	 * This method used to register an asset Json-encoded payload containing the
 	 * Asset schema with the assetId, creationDatetime and contentState filled
 	 * in.
 	 * 
 	 * Minimum required: name, publisherId
+	 * 
 	 * @param url
-	 * @param publisherId - publisher Id
-	 * @param assetName - assetName
+	 * @param publisherId
+	 *            - publisher Id
+	 * @param assetName
+	 *            - assetName
 	 * @return java object asset
 	 */
 
 	public Asset assetRegistration(URL url, String publisherId, String assetName) {
 		// Asset object creation
 		Asset asset = new Asset();
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (publisherId == null || assetName == null) {
-			messagehandler.setMessage("Publisher Id or Asset Name not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata";
 		// Initialize the variable to null
@@ -126,40 +240,18 @@ public class AssetController implements AssetInterface {
 			httpclient.executeMethod(postasset);
 			// Response from ocean network
 			postAssetResp = postasset.getResponseBodyAsString();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Convert the string into jsonobject
-		String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
-		// Remove "\\" from the json string from ocean network
-		String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
-		// create a json parser
-		JSONParser parser = new JSONParser();
-		try {
+			// Convert the string into jsonobject
+			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
+			// Remove "\\" from the json string from ocean network
+			String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			// create a json parser
+			JSONParser parser = new JSONParser();
 			// parse the json string into json object
 			JSONObject json = (JSONObject) parser.parse(postAssetToJson);
-			// Set asset id from json object into asset
-			asset.setAssetId((String) json.get("assetId"));
-			// Set marketplaceId from json object into asset
-			asset.getOceanResponse().put("marketplaceId", json.get("marketplaceId").toString());
-			// Set publisherId from json object into asset
-			asset.setPublisherId((String) json.get("publisherId"));
-			// Set updateDatetime from json object into asset
-			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// Set contentState from json object into asset
-			asset.getOceanResponse().put("contentState", json.get("contentState").toString());
-			// Set name from json object into asset
-			asset.setAssetName((String) json.get("name"));
-			// Set creationDatetime from json object into asset
-			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-
-
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(postAssetResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -173,12 +265,10 @@ public class AssetController implements AssetInterface {
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (assetId == null) {
-			messagehandler.setMessage("Asset Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
 		String getResp = null;
@@ -196,18 +286,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postToJson);
-			// Set asset id into asset
-			asset.setAssetId((String) json.get("assetId"));
-			// Set publisherId into asset
-			asset.setPublisherId((String) json.get("publisherId"));
-			// Set name into asset
-			asset.setAssetName((String) json.get("name"));
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -220,17 +302,13 @@ public class AssetController implements AssetInterface {
 	 */
 	public Asset updateAsset(URL url, String assetId, String assetName) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null || assetName == null) {
-			messagehandler.setMessage("Asset Id or Asset Name not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
 		String updatedresponse = null;
@@ -251,31 +329,18 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
-			// set the setAssetname to the user object
-			asset.setAssetName(json.get("name").toString());
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
-			// set the updateDatetime to the user object
-			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			asset.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-			// set the publisher Id to the user object
-			asset.setPublisherId(json.get("publisherId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(updatedresponse);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
 
 	/**
 	 * 
-	 * parametes targetUrl,file
+	 * parameters targetUrl,file
+	 * 
 	 * @param url
 	 * @param assetId
 	 * @param file
@@ -290,17 +355,13 @@ public class AssetController implements AssetInterface {
 		String uploadassetResp = null;
 		// asset Object Creation
 		Asset asset = new Asset();
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null || file == null) {
-			messagehandler.setMessage("Asset Id or File not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
 		// set parameters to PostMethod
@@ -315,41 +376,41 @@ public class AssetController implements AssetInterface {
 			HttpResponse response = client.execute(post);
 			HttpEntity entity2 = response.getEntity();
 			uploadassetResp = EntityUtils.toString(entity2);
+			String prepostToJson = uploadassetResp.substring(1, uploadassetResp.length() - 1);
+			// Data coming from ocean network is a json string..This line remove
+			// the "\\" from the response
+			String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();// create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(uploadassetResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
-		messagehandler.setMessage(uploadassetResp);
-		asset.setMessageHandler(messagehandler);
 		return asset;
 	}
 
 	/**
 	 * Allow downloading the asset file from the provider. GET
 	 * "/api/v1/provider/assets/asset/"
+	 * 
 	 * @param url
 	 * @param assetId
 	 */
 
 	public Asset downloadAsset(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null) {
-			messagehandler.setMessage("Asset Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
-		 
+
 		String getResp = null;
 		// Execute a get Method and get response from ocean server
 		try {
@@ -359,21 +420,25 @@ public class AssetController implements AssetInterface {
 			httpclient.executeMethod(get);
 			// got response from ocean network
 			getResp = get.getResponseBodyAsString();
+			String prepostToJson = getResp.substring(1, getResp.length() - 1);
+			// Data coming from ocean network is a json string..This line remove
+			// the "\\" from the response
+			String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			JSONParser parser = new JSONParser();// create json parser
+			// parse the data to json object
+			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
-		messagehandler.setFileContent(getResp);
-		asset.setMessageHandler(messagehandler);
 		return asset;
 	}
 
 	/**
 	 * Method used to Delete the asset
 	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
+	 * 
 	 * @param assetId
 	 * @param assetName
 	 * @param actorId
@@ -381,17 +446,13 @@ public class AssetController implements AssetInterface {
 
 	public Asset disableAsset(URL url, String assetId, String assetName, String actorId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null || assetName == null || actorId == null) {
-			messagehandler.setMessage("Asset Id or Asset Name or Actor Id  not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
 		String disableAssetMessageHandler = null;
@@ -409,48 +470,30 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(diabledAssetToJson);
-			// set the setAssetname to the user object
-			asset.setAssetName(json.get("name").toString());
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
-			// set the updateDatetime to the user object
-			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			asset.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-			// set the publisher Id to the user object
-			asset.setPublisherId(json.get("publisherId").toString());
-
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(disableAssetMessageHandler);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
 
 	/**
 	 * This method used to get all assets from ocean network
+	 * 
 	 * @param url
 	 * @param assetId
 	 */
 
 	public Asset getAssets(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null) {
-			messagehandler.setMessage("Asset Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/metadata/";
 		String getAssetResp = null;
@@ -468,49 +511,31 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getAssetToJson);
-			// set the setAssetname to the user object
-			asset.setAssetName(json.get("name").toString());
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
-			// set the updateDatetime to the user object
-			asset.getOceanResponse().put("updateDatetime", json.get("updateDatetime").toString());
-			// set the state to the user object
-			asset.getOceanResponse().put("state", json.get("state").toString());
-			// set the creationDatetime to the user object
-			asset.getOceanResponse().put("creationDatetime", json.get("creationDatetime").toString());
-			// set the publisher Id to the user object
-			asset.setPublisherId(json.get("publisherId").toString());
-
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getAssetResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
 
 	/**
 	 * This is used to add asset provider
-	  * @param url
-	  * @param actorId
-	  * @param assetId
+	 * 
+	 * @param url
+	 * @param actorId
+	 * @param assetId
 	 */
 
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null || actorId == null) {
-			messagehandler.setMessage("Asset Id or Actor Id  not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/assets/provider/";
 		String getAssetProviderResp = null;
@@ -532,14 +557,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postAssetProviderToJson);
-			asset.setAssetId(json.get("assetId").toString());
-			// Set asset id into asset
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getAssetProviderResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -550,17 +571,13 @@ public class AssetController implements AssetInterface {
 
 	public Asset addContract(URL url, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null) {
-			messagehandler.setMessage("Asset Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/";
 		String postcontractResp = null;
@@ -579,14 +596,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(postcontractResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -597,17 +610,13 @@ public class AssetController implements AssetInterface {
 
 	public Asset getContract(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (contractId == null) {
-			messagehandler.setMessage("contract Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
 		String getContractResp = null;
@@ -625,14 +634,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontractToJson);
-			// Set asset id into asset
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getContractResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -642,22 +647,19 @@ public class AssetController implements AssetInterface {
 	 */
 	public Asset signContract(URL url, String contractId, String signingActorId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (contractId == null || signingActorId == null) {
-			messagehandler.setMessage("Contract Id or SigningActor Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
 		String postcontractResp = null;
 		try {
-			// used for setting the parameters to post and executing the server call
+			// used for setting the parameters to post and executing the server
+			// call
 			PostMethod postcontract = new PostMethod(oceanUrl);
 			postcontract.setParameter("actorId", signingActorId);
 			HttpClient httpclient = new HttpClient();
@@ -672,14 +674,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(signedContractToJson);
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(postcontractResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -689,17 +687,13 @@ public class AssetController implements AssetInterface {
 	 */
 	public Asset authorizeContract(URL url, String contractId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (contractId == null || assetId == null) {
-			messagehandler.setMessage("Contract Id or Asset Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/auth";
 		String updatedresponse = null;
@@ -720,14 +714,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(authorizeContractToJson);
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(updatedresponse);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -741,17 +731,13 @@ public class AssetController implements AssetInterface {
 	 */
 	public Asset accessContractAsset(URL url, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (contractId == null) {
-			messagehandler.setMessage("Contract Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/access";
 		String getContractResp = null;
@@ -769,14 +755,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(accessContractToJson);
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(getContractResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -787,17 +769,13 @@ public class AssetController implements AssetInterface {
 
 	public Asset settleContract(URL url, String actorId, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (actorId == null || contractId == null) {
-			messagehandler.setMessage("Actor Id or Contract Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/settlement";
 		String updatedresponse = null;
@@ -818,14 +796,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(settleContractContractToJson);
-			// set the set Asset id to the user object
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(updatedresponse);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}
@@ -836,17 +810,13 @@ public class AssetController implements AssetInterface {
 
 	public Asset addAssetListing(URL url, String assetId, String publisherId) {
 		Asset asset = new Asset();// asset Object Creation
-		MessageHandler messagehandler = new MessageHandler();
+		 
 		// Checks the argument values is present or not
 		if (url == null) {
-			messagehandler.setMessage("Host url not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		if (assetId == null || publisherId == null) {
-			messagehandler.setMessage("Asset Id or Publisher Id not found");
-			asset.setMessageHandler(messagehandler);
-			return asset;
+			throw new NullPointerException();
 		}
 		String oceanUrl = url + keeperURL + "/market/asset/" + publisherId;
 		String postcontractResp = null;
@@ -865,14 +835,10 @@ public class AssetController implements AssetInterface {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
-			// Set asset id into asset
-			asset.setAssetId(json.get("assetId").toString());
+			// set the result json to the asset object
+						asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			// returns the response if no values are present
-			messagehandler.setMessage(postcontractResp);
-			asset.setMessageHandler(messagehandler);
 			e.printStackTrace();
-			return asset;
 		}
 		return asset;
 	}

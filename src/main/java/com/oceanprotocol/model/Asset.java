@@ -6,6 +6,8 @@ package com.oceanprotocol.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 public class Asset {
 	private String publisherId;
 	private String assetId;
@@ -14,9 +16,8 @@ public class Asset {
 	 * {@link Map} to save the response from the ocean network as a key value
 	 * pair
 	 */
-	private Map<String, String> oceanResponse;
+	private Map<String, JSONObject> oceanResponse;
 	private String contractId;
-	private MessageHandler messageHandler;
 
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
@@ -57,29 +58,20 @@ public class Asset {
 		this.contractId = contractId;
 	}
 
-
-	public MessageHandler getMessageHandler() {
-		return messageHandler;
-	}
-
-	public void setMessageHandler(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
-
-	public Map<String, String> getOceanResponse() {
+	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
 	}
 
-	public void setOceanResponse(Map<String, String> oceanResponse) {
+	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
 
 	@Override
 	public String toString() {
 		return "Asset [publisherId=" + publisherId + ", assetId=" + assetId + ", assetName=" + assetName
-				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + ", messageHandler="
-				+ messageHandler + "]";
+				+ ", oceanResponse=" + oceanResponse + ", contractId=" + contractId + "]";
 	}
+
 	
 
 }
