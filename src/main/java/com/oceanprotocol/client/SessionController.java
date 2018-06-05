@@ -19,22 +19,22 @@
  *					   DELETE "/api/v1/keeper/actors/actor/<actor_id>"
  *					   This should take actorId along with url
  *****************************************************************************************************************************
- * - Asset Registration
- * - Get Asset
- * - Get Assets
- * - Update Asset
- * - Upload Asset
- * - Download Asset
- * - Disable Asset
- * - Add Asset Provider
- * - Add Contract
- * - Get Contract
- * - SignContract
- * - Authorize Contract
- * - Revoke Contract Authorization
- * - Access Contract Asset
- * - Settle Contract
- * - Add Asset Listing
+ *	 - Asset Registration
+ * 	 - Get Asset
+ * 	 - Get Assets
+ * 	 - Update Asset
+ * 	 - Upload Asset
+ * 	 - Download Asset
+ *  	 - Disable Asset
+ *       - Add Asset Provider
+ *       - Add Contract
+ *       - Get Contract
+ * 	 - SignContract
+ * 	 - Authorize Contract
+ * 	 - Revoke Contract Authorization
+ * 	 - Access Contract Asset
+ * 	 - Settle Contract
+ * 	 - Add Asset Listing
  *
  * assetRegistration - This method registers an asset with the Ocean network. 
  *					   POST "/api/v1/keeper/assets/metadata"
