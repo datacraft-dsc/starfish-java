@@ -1,9 +1,11 @@
 package com.oceanprotocol.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -22,7 +24,6 @@ import org.json.simple.parser.JSONParser;
 import com.oceanprotocol.model.Actor;
 import com.oceanprotocol.model.Asset;
 
-@SuppressWarnings("deprecation")
 public class SessionController {
 
 	public static final String actorURL = "/api/v1/keeper/actors/actor";
@@ -41,7 +42,6 @@ public class SessionController {
 	public Actor actorRegistration(URL url, String actorId) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
-		 
 		// Checks the argument values is present or not
 		if (url == null || actorId == null) {
 			throw new NullPointerException();
@@ -132,7 +132,6 @@ public class SessionController {
 	public Actor updateActor(URL url, String actorId, String actorName) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
-		 
 		// Checks the argument values is present or not
 		if (url == null || actorId == null || actorName == null) {
 			throw new NullPointerException();
@@ -173,7 +172,6 @@ public class SessionController {
 	public Actor disableActor(URL url, String actorId) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
-		 
 		// Checks the argument values is present or not
 		if (url == null || actorId == null) {
 			throw new NullPointerException();
