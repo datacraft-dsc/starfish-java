@@ -173,7 +173,6 @@ public class SessionController {
 			DeleteMethod delete = new DeleteMethod(oceanurl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(delete);
-			
 			// got response from ocean network
 			deletedresponse = delete.getResponseBodyAsString();
 			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
@@ -186,6 +185,7 @@ public class SessionController {
 			// set the result json to the actor object
 			actor.getOceanResponse().put("result", json);
 		} catch (Exception e) {
+			//catch exception
 			e.printStackTrace();
 		}
 		return actor;
