@@ -1,11 +1,11 @@
 /*****************************************************************************************************************************
  * ***************************************************************************************************************************
  * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
- * UserController Class includes - User Registration
- * 								 - Get Actor
- * 								 - Update Actor
- *								 - Disable Actor
- * User Registration - This method registers an actor with the Ocean network. 
+ *      - Actor Registration
+ * 	- Get Actor
+ * 	- Update Actor
+ *	- Disable Actor
+ * Actor Registration - This method registers an actor with the Ocean network. 
  * 					   POST "/api/v1/keeper/actors/actor/" 
  * 					   Parameter : actorId
  * Get Actor		 - This method used to fetch the actor information from ocean network
@@ -19,23 +19,22 @@
  *					   DELETE "/api/v1/keeper/actors/actor/<actor_id>"
  *					   This should take actorId along with url
  *****************************************************************************************************************************
- * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
- * assetController Class includes- Asset Registration
- * 								 - Get Asset
- * 								 - Get Assets
- * 								 - Update Asset
- * 								 - Upload Asset
- * 								 - Download Asset
- *								 - Disable Asset
- *								 - Add Asset Provider
- *								 - Add Contract
- *								 - Get Contract
- *								 - SignContract
- *								 - Authorize Contract
- *								 - Revoke Contract Authorization
- *								 - Access Contract Asset
- *								 - Settle Contract
- *								 - Add Asset Listing
+ * - Asset Registration
+ * - Get Asset
+ * - Get Assets
+ * - Update Asset
+ * - Upload Asset
+ * - Download Asset
+ * - Disable Asset
+ * - Add Asset Provider
+ * - Add Contract
+ * - Get Contract
+ * - SignContract
+ * - Authorize Contract
+ * - Revoke Contract Authorization
+ * - Access Contract Asset
+ * - Settle Contract
+ * - Add Asset Listing
  *
  * assetRegistration - This method registers an asset with the Ocean network. 
  *					   POST "/api/v1/keeper/assets/metadata"
