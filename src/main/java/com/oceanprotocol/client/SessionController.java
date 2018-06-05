@@ -1,3 +1,29 @@
+/*****************************************************************************************************************************
+ * ***************************************************************************************************************************
+ * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
+ * UserController Class includes - User Registration
+ * 								 - Get Actor
+ * 								 - Update Actor
+ *								 - Disable Actor
+ * User Registration - This method registers an actor with the Ocean network. 
+ * 					   POST "/api/v1/keeper/actors/actor/" 
+ * 					   Parameter : actorId
+ * Get Actor		 - This method used to fetch the actor information from ocean network
+ * 			   		   GET "/api/v1/keeper/actors/actor/<actor_id>"
+ * 					   This should take actorId along with url
+ * Update Actor 	 - This method used to update the actor details
+ * 				 	   PUT "/api/v1/keeper/actors/actor/<actor_id>"
+ * 					   Parameter : Actor Name
+ *					   This should take actorId along with url
+ * Disable Actor	 - This method used to disable the actor.
+ *					   DELETE "/api/v1/keeper/actors/actor/<actor_id>"
+ *					   This should take actorId along with url
+ *
+ * Author : Aleena , Athul ,Arun (Uvionics Tec)
+ * 
+ * ********************************************************************************************************************************
+ ***********************************************************************************************************************************/
+
 package com.oceanprotocol.client;
 
 import java.io.File;
