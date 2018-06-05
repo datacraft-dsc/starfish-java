@@ -185,7 +185,6 @@ public class SessionController {
 			// set the result json to the actor object
 			actor.getOceanResponse().put("result", json);
 		} catch (Exception e) {
-			//catch exception
 			e.printStackTrace();
 		}
 		return actor;
