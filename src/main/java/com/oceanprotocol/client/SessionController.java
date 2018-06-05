@@ -18,11 +18,57 @@
  * Disable Actor	 - This method used to disable the actor.
  *					   DELETE "/api/v1/keeper/actors/actor/<actor_id>"
  *					   This should take actorId along with url
+ *****************************************************************************************************************************
+ * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
+ * assetController Class includes- Asset Registration
+ * 								 - Get Asset
+ * 								 - Get Assets
+ * 								 - Update Asset
+ * 								 - Upload Asset
+ * 								 - Download Asset
+ *								 - Disable Asset
+ *								 - Add Asset Provider
+ *								 - Add Contract
+ *								 - Get Contract
+ *								 - SignContract
+ *								 - Authorize Contract
+ *								 - Revoke Contract Authorization
+ *								 - Access Contract Asset
+ *								 - Settle Contract
+ *								 - Add Asset Listing
  *
- * Author : Aleena , Athul ,Arun (Uvionics Tec)
- * 
- * ********************************************************************************************************************************
- ***********************************************************************************************************************************/
+ * assetRegistration - This method registers an asset with the Ocean network. 
+ *					   POST "/api/v1/keeper/assets/metadata"
+ * 					   Parameter : url , actorId
+ * getAsset		 	 - This method used to fetch an asset from the Ocean network. 
+ * 					   GET "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId
+ * getAssets		 - This method used to fetch all assets from the Ocean network. 
+ * 					   GET "/api/v1/keeper/assets/metadata"
+ * 					   parameter : url , assetId
+ * updateAsset		 - This method used to update an asset in the the Ocean network. 
+ * 					   PUT "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId,assetName
+ * uploadAsset		 - This method used to upload an asset in the the Ocean network. 
+ * 					   POST "/api/v1/provider/assets/asset/
+ * 					   parameter : url , assetId ,file
+ * downloadAsset 	 - This method used to download asset from Ocean network. 
+ * 					   GET "/api/v1/provider/assets/asset/"
+ * 					   parameter : url , assetId
+ * disableAssets	 - This method used to disable asset from Ocean network. 
+ * 					   DELETE "/api/v1/keeper/assets/metadata/{asset_id}"
+ * 					   parameter : url , assetId ,assetName,actorId
+ * addAssetProvider	 - This method used to add asset provider from Ocean network. 
+ * 					   POST "/api/v1/keeper/assets/provider"
+ * 					   parameter : url , actorId ,assetId
+ * addContract		 - This method used to add contract from Ocean network. 
+ * 					   POST "/api/v1/keeper/contracts/contract"
+ * 					   parameter : url ,assetId
+ * getContract		 - This method used to get contract from Ocean network.
+ * 					   GET "/api/v1/keeper/contracts/contract/<contract_id>"
+ * 					   parameter : url ,contractId
+ * ***************************************************************************************************************************
+ ** ***************************************************************************************************************************/
 
 package com.oceanprotocol.client;
 
