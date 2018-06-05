@@ -15,21 +15,21 @@ public interface AssetInterface {
 	 * 
 	 * @param publisherId - Publisher Id to register asset
 	 * @param name - Publisher name to register asset
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @return
 	 */
 	Asset assetRegistration(URL url,String publisherId,String name);
 	/**
 	 * To get asset details from ocean network
 	 * 
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @return
 	 */
 	Asset getAsset(URL url,String assetId);
 	/**
 	 * Update asset meta data
 	 * 
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @param asset - Asset object with updated details
 	 * @return
 	 */
@@ -38,21 +38,21 @@ public interface AssetInterface {
 	 * Allow uploading a file for an already registered asset. 
 	 * The upload is submitted to the provider.
 	 * @param file  - File to be uploaded
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @return
 	 */
 	Asset uploadAsset(URL url,String assetId,File file);
 	/**
 	 * Allow downloading the asset file from the provider
 	 * 
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @return
 	 */
 	Asset downloadAsset(URL url,String assetId);
 	
 	/**
 	 * Used to disbale the asset
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @param asset - Asset object with updated details
 	 * @return 
 	 */
@@ -61,7 +61,7 @@ public interface AssetInterface {
 	
 	/**
 	 * used to get all assets 
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @return
 	 */
 	
@@ -69,7 +69,7 @@ public interface AssetInterface {
 	
 	/**
 	 * Used to asset provider
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @param asset - Asset object with all asset details
 	 * @param actorid - Actor Id 
 	 * @return
@@ -78,7 +78,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to add the contract details
-	 * @param targetUrl  - Ocean network host and port 
+	 * @param url  - Ocean network host and port 
 	 * @param asset - Asset object with contract details
 	 * @return
 	 */
@@ -86,7 +86,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to get the contract details
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @param contractId -  contract Id
 	 * @return
 	 */
@@ -95,7 +95,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to sign the contract details
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @param asset -  Asset object with contract details
 	 * @return
 	 */
@@ -104,7 +104,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to authorize the contract details
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
 	 * @param asset -  Asset object with contract details
 	 * @return
 	 */
@@ -113,7 +113,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to revoke the authorization
-	 * @param targetUrl - Ocean network host and port
+	 * @param url - Ocean network host and port
 	 * @param contractId -  contract Id
 	 * @param assetId - asset Id
 	 * @return
@@ -123,7 +123,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to access contract asset
-	 * @param targetUrl
+	 * @param url
 	 * @param asset
 	 * @return
 	 */
@@ -131,7 +131,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to settle contract
-	 * @param targetUrl
+	 * @param url
 	 * @param asset
 	 * @return
 	 */
@@ -139,7 +139,7 @@ public interface AssetInterface {
 	
 	/**
 	 * This method is used to add asset listing
-	 * @param targetUrl
+	 * @param url
 	 * @param asset
 	 * @return
 	 */

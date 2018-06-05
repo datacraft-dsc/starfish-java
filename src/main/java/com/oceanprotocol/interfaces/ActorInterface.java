@@ -8,31 +8,33 @@ public interface ActorInterface {
 	/**
 	 * Used to registers an actor with the Ocean network
 	 * 
-	 * @param actorId - Id of an actor
-	 * @param targetUrl -  Ocean network host and port 
+	 * @param url -  Ocean network host and port 
+	 * @param actorId - Actor Id
 	 * @return
 	 */
 	Actor actorRegistration(URL url,String actorId);
 	/**
 	 * Get actor information
 	 * 
-	 * @param actorId - Id of an actor
-	 * @param targetUrl - Ocean network host and port 
+	 * @param url - Ocean network host and port 
+	 * @param actorId - Actor Id
 	 * @return
 	 */
 	Actor getActor(URL url,String actorId);
 	/**
-	 * Update actor name
+	 * To update the actor
 	 * 
-	 * @param targetUrl - Ocean network host and port 
-	 * @param name - actor name
+	 * @param url - Ocean network host and port 
+	 * @param actorId - Actor Id
+	 * @param actorName - Actor Actor Name
 	 * @return
 	 */
 	Actor updateActor(URL url, String actorId,String actorName);
 	/**
+	 * To disable the actor
 	 * 
-	 * @param targetUrl - Ocean network host and port 
-	 * @param id - To disable the actor
+	 * @param url - Ocean network host and port 
+	 * @param id - actorId
 	 * @return
 	 */
 	Actor disableActor(URL url, String actorId);

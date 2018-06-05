@@ -90,13 +90,9 @@ public class AssetController implements AssetInterface {
 	 * in.
 	 * 
 	 * Minimum required: name, publisherId
-	 * 
-	 * @param publisherId-publisher
-	 *            Id
-	 * @param name
-	 *            - publisher name
-	 * @param targetUrltarget
-	 *            URL
+	 * @param url
+	 * @param publisherId - publisher Id
+	 * @param assetName - assetName
 	 * @return java object asset
 	 */
 
@@ -171,9 +167,9 @@ public class AssetController implements AssetInterface {
 	/**
 	 * It is used to get the asset response from ocean network
 	 * 
-	 * @param targetUrl
-	 * 
-	 * @return "
+	 * @param url
+	 * @param assetId
+	 * @return asset
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
@@ -280,8 +276,10 @@ public class AssetController implements AssetInterface {
 	/**
 	 * 
 	 * parametes targetUrl,file
-	 * 
-	 * @return JSONObject
+	 * @param url
+	 * @param assetId
+	 * @param file
+	 * @return asset
 	 * 
 	 *         Allow uploading a file for an already registered asset. The
 	 *         upload is submitted to the provider.
@@ -332,6 +330,8 @@ public class AssetController implements AssetInterface {
 	/**
 	 * Allow downloading the asset file from the provider. GET
 	 * "/api/v1/provider/assets/asset/"
+	 * @param url
+	 * @param assetId
 	 */
 
 	public Asset downloadAsset(URL url, String assetId) {
@@ -374,6 +374,9 @@ public class AssetController implements AssetInterface {
 	/**
 	 * Method used to Delete the asset
 	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
+	 * @param assetId
+	 * @param assetName
+	 * @param actorId
 	 */
 
 	public Asset disableAsset(URL url, String assetId, String assetName, String actorId) {
@@ -431,6 +434,8 @@ public class AssetController implements AssetInterface {
 
 	/**
 	 * This method used to get all assets from ocean network
+	 * @param url
+	 * @param assetId
 	 */
 
 	public Asset getAssets(URL url, String assetId) {
@@ -488,6 +493,9 @@ public class AssetController implements AssetInterface {
 
 	/**
 	 * This is used to add asset provider
+	  * @param url
+	  * @param actorId
+	  * @param assetId
 	 */
 
 	public Asset addAssetProvider(URL url, String actorId, String assetId) {
