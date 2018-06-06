@@ -113,7 +113,7 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
-		Actor actor = controller.actorRegistration(url, "");
+		Actor actor = controller.registerActor("");
 		/**
 		 * checking the test is success or not with a expected result and an
 		 * actual value
@@ -161,7 +161,7 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
-		Asset asset = controller.assetRegistration(url, "", result);
+		Asset asset = controller.assetRegistration( "", result);
 		/**
 		 * checking the test is success or not with a expected result and an
 		 * actual value

@@ -96,28 +96,38 @@ import com.oceanprotocol.model.Asset;
 @SuppressWarnings("deprecation")
 public class Session {
 
-	public static final String actorURL = "/api/v1/keeper/actors/actor";
+	public static final String actorURL = "/api/v1/keeper/actors/actor/";
 	public static final String keeperURL = "/api/v1/keeper";
 	public static final String providerURL = "/api/v1/provider";
 
-	
 	/**
 	 * This method registers an actor with the Ocean network. POST
 	 * "/api/v1/keeper/actors/actor/"
 	 * 
 	 * @Param actorId
-	 * @Param url
 	 * @return actor object
 	 */
 
-	public Actor actorRegistration(URL url, String actorId) {
+	public Session(URL baseUrl) {
+		this.baseurl = baseUrl.toString();
+	}
+
+	private String baseurl;
+
+	public Session(String baseurl) {
+		this.baseurl = baseurl;
+	}
+
+	public Actor registerActor(String actorId) {
+
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (url == null || actorId == null) {
+		System.out.println("------->" + baseurl);
+		if (baseurl == null || actorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanurl = actorURL;
+		String oceanurl = baseurl + actorURL;
 		String postActorResp = null;
 		// Initialize postResp - response from ocean network is given to this
 		// variable
@@ -137,7 +147,8 @@ public class Session {
 			// Data coming from ocean network is a json string..
 			// This line remove the "\\" from the response
 			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
-			JSONParser parser = new JSONParser(); // create json parser
+			System.out.println(postactorResponseToJson);
+			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
 			// set the result json to the actor object
@@ -150,22 +161,20 @@ public class Session {
 
 	/**
 	 * This method used to fetch the actor information from ocean network GET
-	 * "/api/v1/keeper/actors/actor/<actor_id>" This should take actorId along
-	 * with url
+	 * "/api/v1/keeper/actors/actor/<actor_id>" This should take actorId
 	 * 
 	 * @Param actorId
-	 * @Param url
 	 * @return actor object
 	 */
 
-	public Actor getActor(URL url, String actorId) {
+	public Actor getActor(String actorId) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (url == null || actorId == null) {
+		if (baseurl == null || actorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanurl = actorURL + actorId;
+		String oceanurl = baseurl + actorURL + actorId;
 		String getActorResp = null;
 		/**
 		 * Used for getting the data to ocean network
@@ -195,25 +204,24 @@ public class Session {
 	 * JSON-encoded key-value pairs from the Actor schema that are allowed to be
 	 * updated (only 'name' and 'attributes')
 	 * 
-	 * @param targetUrl
 	 * @param name
 	 * @return updatedresponse
 	 *
 	 */
-	public Actor updateActor(URL url, String actorId, String actorName) {
+	public Actor updateActor(String actorId, String actorName) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (url == null || actorId == null || actorName == null) {
+		if (baseurl == null || actorId == null || actorName == null) {
 			throw new NullPointerException();
 		}
-		String oceanurl = actorURL + actorId;
+		String oceanurl = baseurl + actorURL + actorId;
 		String updatedresponse = null;
 		try {
 			PutMethod put = new PutMethod(oceanurl);
-			HttpMethodParams httpmethod = new HttpMethodParams();
-			httpmethod.setParameter("name", actorName);
-			put.setParams(httpmethod);
+			HttpMethodParams updateActor = new HttpMethodParams();
+			updateActor.setParameter("name", actorName);
+			put.setParams(updateActor);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(put);
 			// got response from ocean network
@@ -221,10 +229,10 @@ public class Session {
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
+			String updateActorToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			JSONObject json = (JSONObject) parser.parse(updateActorToJson);
 			// set the result json to the actor object
 			actor.getOceanResponse().put("result", json);
 		} catch (Exception e) {
@@ -236,32 +244,36 @@ public class Session {
 	/**
 	 * This method is used to disable the actor.
 	 * 
-	 * @param targetUrl
 	 * @param name
 	 * @return response
 	 */
-	public Actor disableActor(URL url, String actorId) {
+	public Actor disableActor(String actorId) {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (url == null || actorId == null) {
+		if (baseurl == null || actorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanurl = actorURL + actorId;
+		String oceanurl = baseurl + actorURL + actorId;
 		String deletedresponse = null;
 		try {
 			DeleteMethod delete = new DeleteMethod(oceanurl);
+			HttpMethodParams disableActor = new HttpMethodParams();
+			// set Parameter actorId
+			disableActor.setParameter("requestor_actor_id", "11");
+			delete.setParams(disableActor);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(delete);
 			// got response from ocean network
 			deletedresponse = delete.getResponseBodyAsString();
+			System.out.println(deletedresponse);
 			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
-			String getActorToJson = predeleteToJson.replaceAll("\\\\", "");
+			String disableActorToJson = predeleteToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			JSONObject json = (JSONObject) parser.parse(disableActorToJson);
 			// set the result json to the actor object
 			actor.getOceanResponse().put("result", json);
 		} catch (Exception e) {
@@ -277,7 +289,6 @@ public class Session {
 	 * 
 	 * Minimum required: name, publisherId
 	 * 
-	 * @param url
 	 * @param publisherId
 	 *            - publisher Id
 	 * @param assetName
@@ -285,18 +296,18 @@ public class Session {
 	 * @return java object asset
 	 */
 
-	public Asset assetRegistration(URL url, String publisherId, String assetName) {
+	public Asset assetRegistration(String publisherId, String assetName) {
 		// Asset object creation
 		Asset asset = new Asset();
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (publisherId == null || assetName == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/assets/metadata";
+		String oceanUrl = baseurl + keeperURL + "/assets/metadata";
 		// Initialize the variable to null
 		String postAssetResp = null;
 		// set parameters to PostMethod
@@ -315,9 +326,8 @@ public class Session {
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			// Remove "\\" from the json string from ocean network
 			String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
-			// create a json parser
 			JSONParser parser = new JSONParser();
-			// parse the json string into json object
+			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postAssetToJson);
 			// set the result json to the asset object
 			asset.getOceanResponse().put("result", json);
@@ -330,18 +340,17 @@ public class Session {
 	/**
 	 * It is used to get the asset response from ocean network
 	 * 
-	 * @param url
 	 * @param assetId
 	 * @return asset
 	 */
 	public Asset getAsset(URL url, String assetId) {
 		Asset asset = new Asset(); // asset object creation
-		 
+
 		// Checks the argument values is present or not
-		if (assetId == null) {
+		if (baseurl == null || assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
+		String oceanUrl = baseurl + keeperURL + "/assets/metadata/" + assetId;
 		String getResp = null;
 		try {
 			// used for executing the server call
@@ -366,22 +375,22 @@ public class Session {
 	}
 
 	/**
-	 * Update the asset by using the given details PUT parametes targetUrl,asset
+	 * Update the asset by using the given details PUT parametes url,asset
 	 * 
 	 * @return assets
 	 *
 	 */
 	public Asset updateAsset(URL url, String assetId, String assetName) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null || assetName == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/assets/metadata/" + assetId;
+		String oceanUrl = baseurl + keeperURL + "/assets/metadata/" + assetId;
 		String updatedresponse = null;
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
@@ -410,9 +419,8 @@ public class Session {
 
 	/**
 	 * 
-	 * parameters targetUrl,file
+	 * parameters url,file
 	 * 
-	 * @param url
 	 * @param assetId
 	 * @param file
 	 * @return asset
@@ -422,19 +430,19 @@ public class Session {
 	 */
 
 	@SuppressWarnings({ "resource" })
-	public Asset uploadAsset(URL url, String assetId, File file) {
+	public Asset uploadAsset(String assetId, File file) {
 		String uploadassetResp = null;
 		// asset Object Creation
 		Asset asset = new Asset();
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null || file == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
+		String oceanUrl = baseurl + providerURL + "/assets/asset/" + assetId;
 		// set parameters to PostMethod
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(oceanUrl);
@@ -466,27 +474,26 @@ public class Session {
 	 * Allow downloading the asset file from the provider. GET
 	 * "/api/v1/provider/assets/asset/"
 	 * 
-	 * @param url
 	 * @param assetId
 	 */
 
-	public Asset downloadAsset(URL url, String assetId) {
+	public Asset downloadAsset(String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + providerURL + "/assets/asset/" + assetId;
+		String oceanUrl = baseurl + providerURL + "/assets/asset/" + assetId;
 
 		String getResp = null;
 		// Execute a get Method and get response from ocean server
 		try {
 			GetMethod get = new GetMethod(oceanUrl.toString());
-			// setting the headers for the url
+			// setting the headers for the baseurl
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(get);
 			// got response from ocean network
@@ -508,24 +515,24 @@ public class Session {
 
 	/**
 	 * Method used to Delete the asset
-	 * "/api/v1/keeper/assets/metadata/{asset_id}" parametes targetUrl,asset
+	 * "/api/v1/keeper/assets/metadata/{asset_id}"
 	 * 
 	 * @param assetId
 	 * @param assetName
 	 * @param actorId
 	 */
 
-	public Asset disableAsset(URL url, String assetId, String assetName, String actorId) {
+	public Asset disableAsset(String assetId, String assetName, String actorId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null || assetName == null || actorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/metadata/" + assetId;
+		String oceanUrl = baseurl + keeperURL + "/metadata/" + assetId;
 		String disableAssetMessageHandler = null;
 		try {
 			// used for executing the server call
@@ -552,21 +559,20 @@ public class Session {
 	/**
 	 * This method used to get all assets from ocean network
 	 * 
-	 * @param url
 	 * @param assetId
 	 */
 
-	public Asset getAssets(URL url, String assetId) {
+	public Asset getAssets(String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/metadata/";
+		String oceanUrl = baseurl + keeperURL + "/metadata/";
 		String getAssetResp = null;
 		try {
 			// used executing the server call
@@ -593,22 +599,21 @@ public class Session {
 	/**
 	 * This is used to add asset provider
 	 * 
-	 * @param url
 	 * @param actorId
 	 * @param assetId
 	 */
 
-	public Asset addAssetProvider(URL url, String actorId, String assetId) {
+	public Asset addAssetProvider(String actorId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null || actorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/assets/provider/";
+		String oceanUrl = baseurl + keeperURL + "/assets/provider/";
 		String getAssetProviderResp = null;
 		try {
 			PostMethod postassetprovider = new PostMethod(oceanUrl);
@@ -638,19 +643,21 @@ public class Session {
 
 	/**
 	 * This is used to create a contract
+	 * 
+	 * @param assetId
 	 */
 
-	public Asset addContract(URL url, String assetId) {
+	public Asset addContract(String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/";
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/";
 		String postcontractResp = null;
 		try {
 			PostMethod postcontract = new PostMethod(oceanUrl);
@@ -677,19 +684,22 @@ public class Session {
 
 	/**
 	 * This method is used to get contract from alredy contracted stackholders
+	 * 
+	 * @param contractId
+	 * @return
 	 */
 
-	public Asset getContract(URL url, String contractId) {
+	public Asset getContract(String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (contractId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId;
 		String getContractResp = null;
 		try {
 			// used for executing the server call
@@ -715,18 +725,22 @@ public class Session {
 
 	/**
 	 * This method is used to sign the contract.
+	 * 
+	 * @param contractId
+	 * @param signingActorId
+	 * @return
 	 */
-	public Asset signContract(URL url, String contractId, String signingActorId) {
+	public Asset signContract(String contractId, String signingActorId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (contractId == null || signingActorId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId;
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId;
 		String postcontractResp = null;
 		try {
 			// used for setting the parameters to post and executing the server
@@ -755,18 +769,22 @@ public class Session {
 
 	/**
 	 * This method is used to authorize the contract.
+	 * 
+	 * @param contractId
+	 * @param assetId
+	 * @return
 	 */
-	public Asset authorizeContract(URL url, String contractId, String assetId) {
+	public Asset authorizeContract(String contractId, String assetId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (contractId == null || assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/auth";
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/auth";
 		String updatedresponse = null;
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
@@ -799,18 +817,21 @@ public class Session {
 
 	/**
 	 * This method is used to access Contract Asset.
+	 * 
+	 * @param contractId
+	 * @return
 	 */
-	public Asset accessContractAsset(URL url, String contractId) {
+	public Asset accessContractAsset(String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (contractId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/access";
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/access";
 		String getContractResp = null;
 		try {
 			// used for executing the server call
@@ -836,19 +857,23 @@ public class Session {
 
 	/**
 	 * This method is used to settle Contract Asset.
+	 * 
+	 * @param actorId
+	 * @param contractId
+	 * @return
 	 */
 
-	public Asset settleContract(URL url, String actorId, String contractId) {
+	public Asset settleContract(String actorId, String contractId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (actorId == null || contractId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/contracts/contract/" + contractId + "/settlement";
+		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/settlement";
 		String updatedresponse = null;
 		try {
 			PutMethod put = new PutMethod(oceanUrl);
@@ -877,19 +902,23 @@ public class Session {
 
 	/**
 	 * This method is used to add asset listing (Market asset end point)
+	 * 
+	 * @param assetId
+	 * @param publisherId
+	 * @return
 	 */
 
-	public Asset addAssetListing(URL url, String assetId, String publisherId) {
+	public Asset addAssetListing(String assetId, String publisherId) {
 		Asset asset = new Asset();// asset Object Creation
-		 
+
 		// Checks the argument values is present or not
-		if (url == null) {
+		if (baseurl == null) {
 			throw new NullPointerException();
 		}
 		if (assetId == null || publisherId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = url + keeperURL + "/market/asset/" + publisherId;
+		String oceanUrl = baseurl + keeperURL + "/market/asset/" + publisherId;
 		String postcontractResp = null;
 		try {
 			PostMethod postcontract = new PostMethod(oceanUrl);
@@ -907,7 +936,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
-						asset.getOceanResponse().put("result", json);
+			asset.getOceanResponse().put("result", json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
