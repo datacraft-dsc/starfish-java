@@ -100,6 +100,9 @@ public class Session {
 	public static final String keeperURL = "/api/v1/keeper";
 	public static final String providerURL = "/api/v1/provider";
 
+	public static void connection(String host , String port){
+		
+	}
 	/**
 	 * This method registers an actor with the Ocean network. POST
 	 * "/api/v1/keeper/actors/actor/"

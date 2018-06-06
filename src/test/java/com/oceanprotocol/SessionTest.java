@@ -83,7 +83,7 @@ public class SessionTest {
 	@Test
 	public void actorRegistrationTest() throws Exception {
 		// sample test URL
-		URL url = new URL("http://localhost:8000/api/v1/keeper/assets/metadata");
+		URL url = new URL("http://localhost:8000/api/v1/keeper/actors/actor/");
 		// sample data to return
 		String result = "[{\"state\": \"CREATED\",\"actorName\":\"ARUN\", \"\": \"\", \"actorId\": \"0x80e36ac92168301f9b12588ba3b28c259c088063d520b422c1108ad96921be6db5717cd8f684984d6a67d38ed3bff0db727144d716730a3124a35c8be9017ca0\", \"attributes\": [], \"updateDatetime\": 1528088768.2945037, \"privateKey\": \"0xf10f009b4def2638784e27c0fda3d5ec4b80d5c9e6412ffdaffd3a266a39be6e\", \"creationDatetime\": 1528088768.2945037, \"defaultWalletAddress\": \"0xe644c5dd5d812c3b02645514bf0048e6c8b20e4eae4d311de074ea615b26279a4f8c3b269e0688d180a4ae79dd0e6489f8a92893330fa3906eefc208225a4c3f\"}]";
 		/**
@@ -124,7 +124,7 @@ public class SessionTest {
 
 	/**
 	 * stub to test the asset registration method in the
-	 * {@link SessionController} uses sample url and a test result to return
+	 * {@link Session} uses sample url and a test result to return
 	 * mocks the http connections and calls the asset registration
 	 * 
 	 * @throws Exception
@@ -133,7 +133,7 @@ public class SessionTest {
 	@Test
 	public void assetRegistrationTest() throws Exception {
 		URL url = new URL("http://localhost:8000/api/v1/keeper/assets/metadata");
-		String result = "[{\"state\": \"CREATED\", \"\": \"\", \"actorId\": \"0x80e36ac92168301f9b12588ba3b28c259c088063d520b422c1108ad96921be6db5717cd8f684984d6a67d38ed3bff0db727144d716730a3124a35c8be9017ca0\", \"attributes\": [], \"updateDatetime\": 1528088768.2945037, \"privateKey\": \"0xf10f009b4def2638784e27c0fda3d5ec4b80d5c9e6412ffdaffd3a266a39be6e\", \"creationDatetime\": 1528088768.2945037, \"defaultWalletAddress\": \"0xe644c5dd5d812c3b02645514bf0048e6c8b20e4eae4d311de074ea615b26279a4f8c3b269e0688d180a4ae79dd0e6489f8a92893330fa3906eefc208225a4c3f\"}]";
+		String result = "[{\"name\": \"data from the cosmos\", \"updateDatetime\": 1528264925.8759427, \"parameters\": [], \"creationDatetime\": 1528264925.8759427, \"publisherId\": \"107\", \"links\": [], \"assetId\": \"1602501922914712807\", \"contentState\": \"UNPUBLISHED\", \"marketplaceId\": null}]";
 		/**
 		 * when a new instance of post method created at any time do return
 		 * mockPostMethod object instead of new object
@@ -166,86 +166,7 @@ public class SessionTest {
 		 * checking the test is success or not with a expected result and an
 		 * actual value
 		 */
-		assertEquals("CREATED", asset.getOceanResponse().get("result").get("state"));
-
-	}
-
-	/**
-	 * used to test the get actor method in {@link SessionController} ensure the
-	 * procedures are correct in the method uses sample url,result and mock
-	 * object for the http connections.
-	 * 
-	 * @throws Exception
-	 *
-	 */
-
-	@Test(expected = NullPointerException.class)
-	public void getActorTest() throws Exception {
-		String result = "[{\"state\": \"CREATED\", \"actorName\": \"ARUN\", \"actorId\": \"0x80e36ac92168301f9b12588ba3b28c259c088063d520b422c1108ad96921be6db5717cd8f684984d6a67d38ed3bff0db727144d716730a3124a35c8be9017ca0\", \"attributes\": [], \"updateDatetime\": 1528088768.2945037, \"privateKey\": \"0xf10f009b4def2638784e27c0fda3d5ec4b80d5c9e6412ffdaffd3a266a39be6e\", \"creationDatetime\": 1528088768.2945037, \"defaultWalletAddress\": \"0xe644c5dd5d812c3b02645514bf0048e6c8b20e4eae4d311de074ea615b26279a4f8c3b269e0688d180a4ae79dd0e6489f8a92893330fa3906eefc208225a4c3f\"}]";
-		URL url = new URL("http://localhost:8000/api/v1/keeper/assets/metadata");
-
-		/**
-		 * when a new instance of get method created at any time do return
-		 * mockGettMethod object instead of new object
-		 */
-		PowerMockito.whenNew(GetMethod.class).withAnyArguments().thenReturn(mockGetMethod);
-		/**
-		 * mocking the execute method of HTTP CLIENT and get the result as
-		 * specified in the thenReturn method
-		 */
-		PowerMockito.whenNew(HttpClient.class).withAnyArguments().thenReturn(mockHttpClient);
-		/**
-		 * mocking the execute method of HTTP CLIENT and get the result as
-		 * specified in the thenReturn method
-		 */
-		Mockito.when(mockHttpClient.executeMethod(Mockito.any(GetMethod.class))).thenReturn(1);
-		/**
-		 * mocking the getResponseBodyAsString of the POST METHOD and return the
-		 * above sample data as result
-		 */
-		Mockito.when(mockGetMethod.getResponseBodyAsString()).thenReturn(result);
-		/**
-		 * checking whether the method will throw null pointer exception or not
-		 * if it throws test succeeds else fails
-		 */
-		controller.getActor(url, "");
-		assertEquals("URL OR ASSET ID MUST BE NULL TO RETURN A NULL POINTER EXCEPTION", new NullPointerException(),
-				controller.downloadAsset(null, null));
-
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void downloadAssetTest() throws Exception {
-		URL url = new URL("http://localhost:8000/api/v1/keeper/assets/metadata");
-		String result = "[{\"state\": \"CREATED\", \"actorName\": \"ARUN\", \"actorId\": \"0x80e36ac92168301f9b12588ba3b28c259c088063d520b422c1108ad96921be6db5717cd8f684984d6a67d38ed3bff0db727144d716730a3124a35c8be9017ca0\", \"attributes\": [], \"updateDatetime\": 1528088768.2945037, \"privateKey\": \"0xf10f009b4def2638784e27c0fda3d5ec4b80d5c9e6412ffdaffd3a266a39be6e\", \"creationDatetime\": 1528088768.2945037, \"defaultWalletAddress\": \"0xe644c5dd5d812c3b02645514bf0048e6c8b20e4eae4d311de074ea615b26279a4f8c3b269e0688d180a4ae79dd0e6489f8a92893330fa3906eefc208225a4c3f\"}]";
-		GetMethod get = mock(GetMethod.class);
-		HttpClient client = mock(HttpClient.class);
-		/**
-		 * when a new instance of get method created at any time do return
-		 * mockGettMethod object instead of new object
-		 */
-		PowerMockito.whenNew(GetMethod.class).withAnyArguments().thenReturn(get);
-		/**
-		 * when a new instance of HttpClient created at any time do return
-		 * mockHttpClient object instead of new object
-		 */
-		PowerMockito.whenNew(HttpClient.class).withAnyArguments().thenReturn(client);
-		/**
-		 * mocking the execute method of HTTP CLIENT and get the result as
-		 * specified in the thenReturn method
-		 */
-		Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(1);
-		/**
-		 * mocking the getResponseBodyAsString of the POST METHOD and return the
-		 * above sample data as result
-		 */
-		Mockito.when(get.getResponseBodyAsString()).thenReturn(result);
-		/**
-		 * checking whether the method will throw null pointer exception or not
-		 * if it throws test succeeds else fails
-		 */
-		controller.downloadAsset(url, "");
-		assertEquals(new NullPointerException(), controller.downloadAsset(null, ""));
+		assertEquals("CREATED", asset.getOceanResponse().get("result").get("contentState"));
 
 	}
 }
