@@ -99,7 +99,7 @@ public class Session {
 	public static final String actorURL = "/api/v1/keeper/actors/actor/";
 	public static final String keeperURL = "/api/v1/keeper";
 	public static final String providerURL = "/api/v1/provider";
-
+	private String baseurl;
 	/**
 	 * This method registers an actor with the Ocean network. POST
 	 * "/api/v1/keeper/actors/actor/"
@@ -108,12 +108,13 @@ public class Session {
 	 * @return actor object
 	 */
 
+	//constructor to recieve url from user as URL 
 	public Session(URL baseUrl) {
 		this.baseurl = baseUrl.toString();
 	}
 
-	private String baseurl;
-
+	
+	//constructor to recieve url from user as String 
 	public Session(String baseurl) {
 		this.baseurl = baseurl;
 	}
