@@ -6,7 +6,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 /**
- * + * Represents an Actor on the Ocean Network. + * +
+ ** Represents an Actor on the Ocean Network.
  */
 public class Actor {
 	/**
