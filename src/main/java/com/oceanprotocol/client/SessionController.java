@@ -72,11 +72,9 @@
 package com.oceanprotocol.client;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -95,6 +93,7 @@ import org.json.simple.parser.JSONParser;
 import com.oceanprotocol.model.Actor;
 import com.oceanprotocol.model.Asset;
 
+@SuppressWarnings("deprecation")
 public class SessionController {
 
 	public static final String actorURL = "/api/v1/keeper/actors/actor";
