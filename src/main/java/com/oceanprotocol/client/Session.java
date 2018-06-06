@@ -94,7 +94,7 @@ import com.oceanprotocol.model.Actor;
 import com.oceanprotocol.model.Asset;
 
 @SuppressWarnings("deprecation")
-public class SessionController {
+public class Session {
 
 	public static final String actorURL = "/api/v1/keeper/actors/actor";
 	public static final String keeperURL = "/api/v1/keeper";

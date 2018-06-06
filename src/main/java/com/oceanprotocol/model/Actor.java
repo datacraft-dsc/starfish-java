@@ -14,6 +14,9 @@ public class Actor {
 	 * pair
 	 */
 	private Map<String, JSONObject> oceanResponse;
+	/**
+	 * Construct the oceanResponse with Hash map for further use.
+	 */
 
 	public Actor() {
 		this.oceanResponse = new HashMap<>();
