@@ -161,7 +161,7 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
-		Asset asset = controller.assetRegistration( "", result);
+		Asset asset = controller.assetRegistration("", result);
 		/**
 		 * checking the test is success or not with a expected result and an
 		 * actual value
