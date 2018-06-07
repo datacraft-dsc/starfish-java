@@ -71,7 +71,13 @@
 
 package com.oceanprotocol.client;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -95,11 +101,24 @@ import com.oceanprotocol.model.Asset;
 
 @SuppressWarnings("deprecation")
 public class Session {
-
+	// actor url
 	public static final String actorURL = "/api/v1/keeper/actors/actor/";
+	// keeper url
 	public static final String keeperURL = "/api/v1/keeper";
+	// provider url
 	public static final String providerURL = "/api/v1/provider";
 	private String baseurl;
+
+	// constructor to recieve url from user as URL
+	public Session(URL baseUrl) {
+		this.baseurl = baseUrl.toString();
+	}
+
+	// constructor to recieve url from user as String
+	public Session(String baseurl) {
+		this.baseurl = baseurl;
+	}
+
 	/**
 	 * This method registers an actor with the Ocean network. POST
 	 * "/api/v1/keeper/actors/actor/"
@@ -108,30 +127,17 @@ public class Session {
 	 * @return actor object
 	 */
 
-	//constructor to recieve url from user as URL 
-	public Session(URL baseUrl) {
-		this.baseurl = baseUrl.toString();
-	}
-
-	
-	//constructor to recieve url from user as String 
-	public Session(String baseurl) {
-		this.baseurl = baseurl;
-	}
-
 	public Actor registerActor(String actorId) {
-
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		System.out.println("------->" + baseurl);
-		if (baseurl == null || actorId == null) {
-			throw new NullPointerException();
+		if (baseurl == null) {
+			throw new NullPointerException("baseurl is not found");
+		}
+		if (actorId == null) {
+			throw new NullPointerException("actorId is not found");
 		}
 		String oceanurl = baseurl + actorURL;
-		String postActorResp = null;
-		// Initialize postResp - response from ocean network is given to this
-		// variable
 		try {
 			/**
 			 * Used for posting the data to ocean network
@@ -143,7 +149,9 @@ public class Session {
 			// sent the parameters to ocean network
 			httpclient.executeMethod(postActor);
 			// Response from ocean network
-			postActorResp = postActor.getResponseBodyAsString();
+			String postActorResp = postActor.getResponseBodyAsString();
+			int statuscode = postActor.getStatusCode();
+			System.out.println(statuscode);
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			// Data coming from ocean network is a json string..
 			// This line remove the "\\" from the response
@@ -172,11 +180,13 @@ public class Session {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (baseurl == null || actorId == null) {
-			throw new NullPointerException();
+		if (baseurl == null) {
+			throw new NullPointerException("baseurl is not found");
+		}
+		if (actorId == null) {
+			throw new NullPointerException("actorId is not found");
 		}
 		String oceanurl = baseurl + actorURL + actorId;
-		String getActorResp = null;
 		/**
 		 * Used for getting the data to ocean network
 		 */
@@ -185,7 +195,9 @@ public class Session {
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(getActor);
 			// Response from ocean network
-			getActorResp = getActor.getResponseBodyAsString();
+			String getActorResp = getActor.getResponseBodyAsString();
+			int statuscode = getActor.getStatusCode();
+			System.out.println(statuscode);
 			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -207,26 +219,25 @@ public class Session {
 	 * 
 	 * @param name
 	 * @return updatedresponse
+	 * @throws MalformedURLException
 	 *
 	 */
-	public Actor updateActor(String actorId, String actorName) {
+	public Actor updateActor(String actorId, String actorName) throws MalformedURLException {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (baseurl == null || actorId == null || actorName == null) {
-			throw new NullPointerException();
+		// Checks the argument values is present or not
+		if (baseurl == null) {
+			throw new NullPointerException("baseurl is not found");
 		}
-		String oceanurl = baseurl + actorURL + actorId;
-		String updatedresponse = null;
+		if (actorId == null || actorName == null) {
+			throw new NullPointerException("actorId or actorName not found");
+		}
+		URL oceanurl = new URL(baseurl + actorURL + actorId);
 		try {
-			PutMethod put = new PutMethod(oceanurl);
-			HttpMethodParams updateActor = new HttpMethodParams();
-			updateActor.setParameter("name", actorName);
-			put.setParams(updateActor);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(put);
-			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			JSONObject obj = new JSONObject();
+			obj.put("name", actorName);
+			String updatedresponse = modify(oceanurl, obj, "PUT");
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -247,27 +258,24 @@ public class Session {
 	 * 
 	 * @param name
 	 * @return response
+	 * @throws MalformedURLException
 	 */
-	public Actor disableActor(String actorId) {
+	public Actor disableActor(String actorId) throws MalformedURLException {
 		// Create object for actor class..it include all actor details
 		Actor actor = new Actor();
 		// Checks the argument values is present or not
-		if (baseurl == null || actorId == null) {
-			throw new NullPointerException();
+		if (baseurl == null) {
+			throw new NullPointerException("baseurl is not found");
 		}
-		String oceanurl = baseurl + actorURL + actorId;
-		String deletedresponse = null;
+		if (actorId == null) {
+			throw new NullPointerException("actorId not found");
+		}
+		URL oceanurl = new URL(baseurl + actorURL + actorId);
 		try {
-			DeleteMethod delete = new DeleteMethod(oceanurl);
-			HttpMethodParams disableActor = new HttpMethodParams();
-			// set Parameter actorId
-			disableActor.setParameter("requestor_actor_id", "11");
-			delete.setParams(disableActor);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(delete);
+			JSONObject obj = new JSONObject();
+			obj.put("requestor_actor_id", actorId);
+			String deletedresponse = modify(oceanurl, obj, "DELETE");
 			// got response from ocean network
-			deletedresponse = delete.getResponseBodyAsString();
-			System.out.println(deletedresponse);
 			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -300,13 +308,12 @@ public class Session {
 	public Asset assetRegistration(String publisherId, String assetName) {
 		// Asset object creation
 		Asset asset = new Asset();
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("baseurl is not found");
 		}
 		if (publisherId == null || assetName == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("publisherId or assetName not found");
 		}
 		String oceanUrl = baseurl + keeperURL + "/assets/metadata";
 		// Initialize the variable to null
@@ -348,18 +355,20 @@ public class Session {
 		Asset asset = new Asset(); // asset object creation
 
 		// Checks the argument values is present or not
-		if (baseurl == null || assetId == null) {
-			throw new NullPointerException();
+		if (baseurl == null) {
+			throw new NullPointerException("baseurl is not found");
+		}
+		if (assetId == null) {
+			throw new NullPointerException("assetId not found");
 		}
 		String oceanUrl = baseurl + keeperURL + "/assets/metadata/" + assetId;
-		String getResp = null;
 		try {
 			// used for executing the server call
 			GetMethod get = new GetMethod(oceanUrl);
 			HttpClient httpclient = new HttpClient();
 			httpclient.executeMethod(get);
 			// used to get response from ocean server
-			getResp = get.getResponseBodyAsString();
+			String getResp = get.getResponseBodyAsString();
 			// Convert the string into jsonobject
 			String prepostToJson = getResp.substring(1, getResp.length() - 1);
 			// Replacing '\' with space
@@ -379,30 +388,25 @@ public class Session {
 	 * Update the asset by using the given details PUT parametes url,asset
 	 * 
 	 * @return assets
+	 * @throws MalformedURLException
 	 *
 	 */
-	public Asset updateAsset(URL url, String assetId, String assetName) {
+	public Asset updateAsset(URL url, String assetId, String assetName) throws MalformedURLException {
 		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("baseurl is not found");
 		}
 		if (assetId == null || assetName == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("assetId or assetName not found");
 		}
-		String oceanUrl = baseurl + keeperURL + "/assets/metadata/" + assetId;
+		URL oceanUrl = new URL(baseurl + keeperURL + "/assets/metadata/" + assetId);
 		String updatedresponse = null;
 		try {
-			PutMethod put = new PutMethod(oceanUrl);
-			HttpClient httpclient = new HttpClient();
-			HttpMethodParams httpmethod = new HttpMethodParams();
-			// setting the parameter name to update from ocean network
-			httpmethod.setParameter("name", assetName);
-			put.setParams(httpmethod);
-			httpclient.executeMethod(put);
-			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			JSONObject obj = new JSONObject();
+			obj.put("name", assetName);
+			updatedresponse = modify(oceanUrl, obj, "PUT");
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -438,10 +442,10 @@ public class Session {
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("baseurl is not found");
 		}
 		if (assetId == null || file == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("assetId or file not found");
 		}
 		String oceanUrl = baseurl + providerURL + "/assets/asset/" + assetId;
 		// set parameters to PostMethod
@@ -483,10 +487,10 @@ public class Session {
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("baseurl is not found");
 		}
 		if (assetId == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("assetId is not found");
 		}
 		String oceanUrl = baseurl + providerURL + "/assets/asset/" + assetId;
 
@@ -521,28 +525,28 @@ public class Session {
 	 * @param assetId
 	 * @param assetName
 	 * @param actorId
+	 * @throws MalformedURLException
 	 */
 
-	public Asset disableAsset(String assetId, String assetName, String actorId) {
+	public Asset disableAsset(String assetId, String assetName, String actorId) throws MalformedURLException {
 		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
-			throw new NullPointerException();
+			throw new NullPointerException("baseurl is not found");
 		}
-		if (assetId == null || assetName == null || actorId == null) {
-			throw new NullPointerException();
+		if (assetId == null || assetName == null ||actorId == null ) {
+			throw new NullPointerException("assetId or assetName or actorId not found");
 		}
-		String oceanUrl = baseurl + keeperURL + "/metadata/" + assetId;
-		String disableAssetMessageHandler = null;
+		URL oceanurl = new URL(baseurl + keeperURL + "/metadata/" + assetId);
+		String disableAsset = null;
 		try {
 			// used for executing the server call
-			DeleteMethod delete = new DeleteMethod(oceanUrl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(delete);
+			JSONObject obj = new JSONObject();
+			obj.put("requestor_actor_id", actorId);
 			// got response from ocean network
-			disableAssetMessageHandler = delete.getResponseBodyAsString();
-			String predeleteToJson = disableAssetMessageHandler.substring(1, disableAssetMessageHandler.length() - 1);
+			disableAsset = modify(oceanurl, obj, "DELETE");
+			String predeleteToJson = disableAsset.substring(1, disableAsset.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String diabledAssetToJson = predeleteToJson.replaceAll("\\\\", "");
@@ -774,8 +778,9 @@ public class Session {
 	 * @param contractId
 	 * @param assetId
 	 * @return
+	 * @throws MalformedURLException
 	 */
-	public Asset authorizeContract(String contractId, String assetId) {
+	public Asset authorizeContract(String contractId, String assetId) throws MalformedURLException {
 		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
@@ -785,18 +790,13 @@ public class Session {
 		if (contractId == null || assetId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/auth";
+		URL oceanUrl = new URL(baseurl + keeperURL + "/contracts/contract/" + contractId + "/auth");
 		String updatedresponse = null;
 		try {
-			PutMethod put = new PutMethod(oceanUrl);
-			HttpMethodParams httpmethod = new HttpMethodParams();
-			// setting the parameter assetId to update from ocean network
-			httpmethod.setParameter("assetId", assetId);
-			put.setParams(httpmethod);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(put);
-			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			JSONObject obj = new JSONObject();
+			obj.put("assetId", assetId);
+			updatedresponse = modify(oceanUrl, obj, "PUT");
+
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -862,9 +862,10 @@ public class Session {
 	 * @param actorId
 	 * @param contractId
 	 * @return
+	 * @throws MalformedURLException
 	 */
 
-	public Asset settleContract(String actorId, String contractId) {
+	public Asset settleContract(String actorId, String contractId) throws MalformedURLException {
 		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
@@ -874,18 +875,13 @@ public class Session {
 		if (actorId == null || contractId == null) {
 			throw new NullPointerException();
 		}
-		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/settlement";
+		URL oceanUrl = new URL(baseurl + keeperURL + "/contracts/contract/" + contractId + "/settlement");
 		String updatedresponse = null;
 		try {
-			PutMethod put = new PutMethod(oceanUrl);
-			HttpMethodParams httpmethod = new HttpMethodParams();
-			// setting the parameter actorId to update from ocean network
-			httpmethod.setParameter("actorId", actorId);
-			put.setParams(httpmethod);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(put);
-			// got response from ocean network
-			updatedresponse = put.getResponseBodyAsString();
+			JSONObject obj = new JSONObject();
+			obj.put("actorId", actorId);
+			updatedresponse = modify(oceanUrl, obj, "PUT");
+
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
@@ -942,5 +938,29 @@ public class Session {
 			e.printStackTrace();
 		}
 		return asset;
+	}
+
+	public String modify(URL oceanurl, JSONObject obj, String httpMethod) throws IOException {
+		String updatedresponse = null;
+		HttpURLConnection conn = (HttpURLConnection) oceanurl.openConnection();
+		conn.setDoOutput(true);
+		conn.setRequestMethod(httpMethod);
+		conn.setRequestProperty("Content-Type", "application/json");
+		String input = obj.toString();
+		OutputStream os = conn.getOutputStream();
+		os.write(input.getBytes());
+		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+		}
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			if ((updatedresponse = br.readLine()) != null) {
+
+			}
+			conn.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return updatedresponse;
 	}
 }
