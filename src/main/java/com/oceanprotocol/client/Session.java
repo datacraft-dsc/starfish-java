@@ -351,7 +351,7 @@ public class Session {
 	 * @param assetId
 	 * @return asset
 	 */
-	public Asset getAsset(URL url, String assetId) {
+	public Asset getAsset( String assetId) {
 		Asset asset = new Asset(); // asset object creation
 
 		// Checks the argument values is present or not
