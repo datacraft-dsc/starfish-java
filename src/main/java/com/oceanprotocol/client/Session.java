@@ -1,3 +1,13 @@
+/**
+ * Classname  - Session
+ * 
+ * Version information - version 1
+ *
+ * Date - 07 june 2018
+ * 
+ * Copyright notice - Uvionics Tech
+ */
+
 /*****************************************************************************************************************************
  * ***************************************************************************************************************************
  * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
@@ -129,7 +139,7 @@ public class Session {
 
 	public Actor registerActor(String actorId) {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -161,7 +171,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -178,7 +188,7 @@ public class Session {
 
 	public Actor getActor(String actorId) {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -206,7 +216,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,7 +234,7 @@ public class Session {
 	 */
 	public Actor updateActor(String actorId, String actorName) throws MalformedURLException {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -246,7 +256,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -262,7 +272,7 @@ public class Session {
 	 */
 	public Actor disableActor(String actorId) throws MalformedURLException {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -284,7 +294,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(disableActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -307,7 +317,7 @@ public class Session {
 
 	public Asset assetRegistration(String publisherId, String assetName) {
 		// Asset object creation
-		Asset asset = new Asset();
+		Asset asset = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -338,7 +348,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -351,8 +361,9 @@ public class Session {
 	 * @param assetId
 	 * @return asset
 	 */
-	public Asset getAsset( String assetId) {
-		Asset asset = new Asset(); // asset object creation
+
+	public Asset getAsset(String assetId) {
+		Asset asset = null; // asset object creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -377,7 +388,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -392,7 +403,7 @@ public class Session {
 	 *
 	 */
 	public Asset updateAsset(URL url, String assetId, String assetName) throws MalformedURLException {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -415,7 +426,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -438,7 +449,7 @@ public class Session {
 	public Asset uploadAsset(String assetId, File file) {
 		String uploadassetResp = null;
 		// asset Object Creation
-		Asset asset = new Asset();
+		Asset asset = null;
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -468,7 +479,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -483,7 +494,7 @@ public class Session {
 	 */
 
 	public Asset downloadAsset(String assetId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -511,7 +522,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -529,8 +540,8 @@ public class Session {
 	 */
 
 	public Asset disableAsset(String assetId, String assetName, String actorId) throws MalformedURLException {
-		Asset asset = new Asset();// asset Object Creation
-
+//		Asset asset = null();// asset Object Creation
+		Asset asset = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -554,7 +565,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(diabledAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -567,17 +578,14 @@ public class Session {
 	 * @param assetId
 	 */
 
-	public Asset getAssets(String assetId) {
-		Asset asset = new Asset();// asset Object Creation
+	public Asset getAssets() {
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
 		}
-		if (assetId == null) {
-			throw new NullPointerException();
-		}
-		String oceanUrl = baseurl + keeperURL + "/metadata/";
+		String oceanUrl = baseurl + keeperURL + "/assets/metadata/";
 		String getAssetResp = null;
 		try {
 			// used executing the server call
@@ -586,6 +594,7 @@ public class Session {
 			httpclient.executeMethod(get);
 			// used to get response from ocean server
 			getAssetResp = get.getResponseBodyAsString();
+			System.out.println(getAssetResp);
 			// Convert the string into jsonobject
 			String prepostToJson = getAssetResp.substring(1, getAssetResp.length() - 1);
 			// replacing '\' with space
@@ -594,7 +603,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -609,7 +618,7 @@ public class Session {
 	 */
 
 	public Asset addAssetProvider(String actorId, String assetId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -639,7 +648,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postAssetProviderToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -653,7 +662,7 @@ public class Session {
 	 */
 
 	public Asset addContract(String assetId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -680,7 +689,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -695,7 +704,7 @@ public class Session {
 	 */
 
 	public Asset getContract(String contractId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -721,7 +730,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -736,7 +745,7 @@ public class Session {
 	 * @return
 	 */
 	public Asset signContract(String contractId, String signingActorId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -765,7 +774,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(signedContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -781,7 +790,7 @@ public class Session {
 	 * @throws MalformedURLException
 	 */
 	public Asset authorizeContract(String contractId, String assetId) throws MalformedURLException {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -805,7 +814,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(authorizeContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -823,7 +832,7 @@ public class Session {
 	 * @return
 	 */
 	public Asset accessContractAsset(String contractId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -849,7 +858,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(accessContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -866,7 +875,7 @@ public class Session {
 	 */
 
 	public Asset settleContract(String actorId, String contractId) throws MalformedURLException {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -890,7 +899,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(settleContractContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -906,7 +915,7 @@ public class Session {
 	 */
 
 	public Asset addAssetListing(String assetId, String publisherId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -933,7 +942,7 @@ public class Session {
 			// parse string to json object
 			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

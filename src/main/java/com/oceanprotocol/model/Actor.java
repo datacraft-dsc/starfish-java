@@ -18,6 +18,10 @@ public class Actor {
 	 * Construct the oceanResponse with Hash map for further use.
 	 */
 
+	public Actor(Map<String, JSONObject> result) {
+		this.oceanResponse = result;
+	}
+	
 	public Actor() {
 		this.oceanResponse = new HashMap<>();
 	}
