@@ -1,3 +1,13 @@
+/**
+ * Classname  - Session
+ * 
+ * Version information - version 1
+ *
+ * Date - 07 june 2018
+ * 
+ * Copyright notice - Uvionics Tech
+ */
+
 /*****************************************************************************************************************************
  * ***************************************************************************************************************************
  * Ocean protocol client API used for connecting to ocean protocol using Java and Spring Boot.
@@ -77,7 +87,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -134,7 +143,7 @@ public class Session {
 	public Actor registerActor(String actorId) throws HttpException, IOException, ParseException {
 		JSONObject json = null;
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -166,12 +175,12 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(postactorResponseToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} else {
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -190,7 +199,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public Actor getActor(String actorId) throws HttpException, IOException, ParseException {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -220,12 +229,12 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(getActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} else {
 			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -243,7 +252,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public Actor updateActor(String actorId, String actorName) throws IOException, ParseException {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -266,11 +275,11 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(updateActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", updatedresponse);
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -286,7 +295,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public Actor disableActor(String actorId) throws IOException, ParseException {
 		// Create object for actor class..it include all actor details
-		Actor actor = new Actor();
+		Actor actor = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -309,13 +318,12 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(disableActorToJson);
 			// set the result json to the actor object
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", deletedresponse);
-			actor.getOceanResponse().put("result", json);
+			actor = new Actor(json);
 		}
-
 		return actor;
 	}
 
@@ -339,7 +347,7 @@ public class Session {
 	public Asset assetRegistration(String publisherId, String assetName)
 			throws HttpException, IOException, ParseException {
 		// Asset object creation
-		Asset asset = new Asset();
+		Asset asset = null;
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -372,12 +380,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -387,13 +395,13 @@ public class Session {
 	 * 
 	 * @param assetId
 	 * @return asset
+	 * @throws HttpException 
 	 * @throws ParseException
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public Asset getAsset(String assetId) throws ParseException, IOException {
-		Asset asset = new Asset(); // asset object creation
-
+	public Asset getAsset(String assetId) throws HttpException, IOException, ParseException {
+		Asset asset = null; // asset object creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -419,12 +427,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = getResp.substring(1, getResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -462,11 +470,11 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", updatedresponse);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -490,7 +498,7 @@ public class Session {
 	public Asset uploadAsset(String assetId, File file) throws ClientProtocolException, IOException, ParseException {
 		String uploadassetResp = null;
 		// asset Object Creation
-		Asset asset = new Asset();
+		Asset asset = null;
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -521,7 +529,7 @@ public class Session {
 		// parse the data to json object
 		JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 		// set the result json to the asset object
-		asset.getOceanResponse().put("result", json);
+		asset = new Asset(json);
 		return asset;
 	}
 
@@ -533,7 +541,7 @@ public class Session {
 	 */
 
 	public Asset downloadAsset(String assetId) {
-		Asset asset = new Asset();// asset Object Creation
+		Asset asset = null;// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -561,7 +569,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -607,13 +615,12 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(diabledAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", disableAsset);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
-
 		return asset;
 	}
 
@@ -625,7 +632,6 @@ public class Session {
 
 	public Asset getAssets() {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -648,7 +654,7 @@ public class Session {
 			// parse the data to json object
 			JSONObject json = (JSONObject) parser.parse(getAssetToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -667,7 +673,6 @@ public class Session {
 
 	public Asset addAssetProvider(String actorId, String assetId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -697,17 +702,15 @@ public class Session {
 			JSONParser parser = new JSONParser();
 			// parse string to json object
 			json = (JSONObject) parser.parse(postAssetProviderToJson);
-			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			// set the result json to the asset objectasset = new Asset(json);asset.getOceanResponse().put("result", json);
 		} else {
 			String prepostToJson = getAssetProviderResp.substring(1, getAssetProviderResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
-
 	/**
 	 * This is used to create a contract
 	 * 
@@ -720,7 +723,6 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public Asset addContract(String assetId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -748,12 +750,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -770,7 +772,6 @@ public class Session {
 
 	public Asset getContract(String contractId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -797,12 +798,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postcontractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -817,10 +818,10 @@ public class Session {
 	 * @throws IOException
 	 * @throws HttpException
 	 */
+	@SuppressWarnings("unchecked")
 	public Asset signContract(String contractId, String signingActorId)
 			throws ParseException, HttpException, IOException {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -850,12 +851,12 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(signedContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -872,7 +873,6 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public Asset authorizeContract(String contractId, String assetId) throws IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -895,11 +895,11 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(authorizeContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", updatedresponse);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -917,6 +917,7 @@ public class Session {
 	 * @throws HttpException
 	 * @throws ParseException
 	 */
+	@SuppressWarnings("unchecked")
 	public Asset accessContractAsset(String contractId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
@@ -945,12 +946,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(accessContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -991,11 +992,11 @@ public class Session {
 			// parse the data to json object
 			json = (JSONObject) parser.parse(settleContractContractToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		} else {
 			json = new JSONObject();
 			json.put("response", updatedresponse);
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -1011,6 +1012,7 @@ public class Session {
 	 * @throws ParseException 
 	 */
 
+	@SuppressWarnings("unchecked")
 	public Asset addAssetListing(String assetId, String publisherId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
 
@@ -1041,12 +1043,12 @@ public class Session {
 			// parse string to json object
 			json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
-			asset.getOceanResponse().put("result", json);
+			asset = new Asset(json);
 			} else {
 				String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 				json = new JSONObject();
 				json.put("response", prepostToJson);
-				asset.getOceanResponse().put("result", json);
+				asset = new Asset(json);
 			}
 		return asset;
 	}

@@ -18,9 +18,13 @@ public class Asset {
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
 	 */
-	public Asset() {
-		this.oceanResponse = new HashMap<>();
+	public Asset(Map<String, JSONObject> result){
+		this.oceanResponse =result;
 	}
+
+	public Asset() {}
+
+	
 
 	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
