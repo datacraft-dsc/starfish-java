@@ -1,6 +1,5 @@
 package com.oceanprotocol.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -14,6 +13,8 @@ public class Actor {
 	 * pair
 	 */
 	private Map<String, JSONObject> oceanResponse;
+	
+	public Actor() {}
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
 	 */
@@ -22,10 +23,6 @@ public class Actor {
 		this.oceanResponse = result;
 	}
 	
-	public Actor() {
-		this.oceanResponse = new HashMap<>();
-	}
-
 	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
 	}
@@ -33,7 +30,7 @@ public class Actor {
 	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Actor [oceanResponse=" + oceanResponse + "]";

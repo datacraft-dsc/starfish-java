@@ -1,8 +1,6 @@
 package com.oceanprotocol;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
 import java.io.IOException;
 import java.net.URL;
 
@@ -167,6 +165,7 @@ public class SessionTest {
 //		 * actual value
 //		 */
 //		assertEquals("CREATED", asset.getOceanResponse().get("result").get("contentState"));
+
 
 	}
 }
