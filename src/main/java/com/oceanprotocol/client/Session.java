@@ -1045,7 +1045,8 @@ public class Session {
 		JSONObject json = null;
 		PostMethod postcontract = new PostMethod(oceanUrl);
 		// insert asset publisherId to the json object
-		postcontract.setParameter("publisherId", publisherId);
+		postcontract.setParameter("publisher_id", publisherId);
+		postcontract.setParameter("prices", "100"); //testing
 		HttpClient httpclient = new HttpClient();
 		httpclient.executeMethod(postcontract);
 		// used to get response from ocean server
