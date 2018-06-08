@@ -730,7 +730,7 @@ public class Session {
 	 */
 
 	@SuppressWarnings("unchecked")
-	public Asset addContract(String assetId) throws HttpException, IOException, ParseException {
+	public Asset addContract(String publisherId,String providerId,String consumerId,String assetId) throws HttpException, IOException, ParseException {
 		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -745,6 +745,12 @@ public class Session {
 		PostMethod postcontract = new PostMethod(oceanUrl);
 		// set the assetId
 		postcontract.setParameter("assetId", assetId);
+    // set the publisherId
+		postcontract.setParameter("publisherId", publisherId);
+    // set the providerId
+		postcontract.setParameter("providerId", providerId);
+    // set the consumerId
+		postcontract.setParameter("consumerId", consumerId);
 		HttpClient httpclient = new HttpClient();
 		httpclient.executeMethod(postcontract);
 		// used to get response from ocean server
