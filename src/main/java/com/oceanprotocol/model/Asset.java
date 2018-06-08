@@ -3,7 +3,6 @@
   */
 package com.oceanprotocol.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -14,6 +13,8 @@ public class Asset {
 	 * pair
 	 */
 	private Map<String, JSONObject> oceanResponse;
+	
+	public Asset(){}
 
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
@@ -21,8 +22,6 @@ public class Asset {
 	public Asset(Map<String, JSONObject> result){
 		this.oceanResponse =result;
 	}
-
-	public Asset() {}
 
 	
 
