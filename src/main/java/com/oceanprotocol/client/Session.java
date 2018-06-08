@@ -745,8 +745,11 @@ public class Session {
 		PostMethod postcontract = new PostMethod(oceanUrl);
 		// set the assetId
 		postcontract.setParameter("assetId", assetId);
+    // set the publisherId
 		postcontract.setParameter("publisherId", publisherId);
+    // set the providerId
 		postcontract.setParameter("providerId", providerId);
+    // set the consumerId
 		postcontract.setParameter("consumerId", consumerId);
 		HttpClient httpclient = new HttpClient();
 		httpclient.executeMethod(postcontract);
