@@ -1,10 +1,12 @@
 package com.oceanprotocol;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.mockito.Mockito.mock;
 
 import java.io.BufferedReader;
 import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -194,6 +196,7 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
+
 		Mockito.when(mockPostMethod.getStatusCode()).thenReturn(201);
 		/**
 		 * calling the registration method to test based on these mock objects
@@ -207,6 +210,7 @@ public class SessionTest {
 
 		// assertEquals("1602501922914712807",
 		// asset.getOceanResponse().get("response").get("assetId"));
+
 
 	}
 
