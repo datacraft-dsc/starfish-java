@@ -87,17 +87,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.DeleteMethod;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -105,6 +103,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.oceanprotocol.model.Actor;
 import com.oceanprotocol.model.Asset;
@@ -135,9 +134,14 @@ public class Session {
 	 * 
 	 * @Param actorId
 	 * @return actor object
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Actor registerActor(String actorId) {
+	@SuppressWarnings("unchecked")
+	public Actor registerActor(String actorId) throws HttpException, IOException, ParseException {
+		JSONObject json = null;
 		// Create object for actor class..it include all actor details
 		Actor actor = null;
 		// Checks the argument values is present or not
@@ -148,32 +152,36 @@ public class Session {
 			throw new NullPointerException("actorId is not found");
 		}
 		String oceanurl = baseurl + actorURL;
-		try {
-			/**
-			 * Used for posting the data to ocean network
-			 */
-			PostMethod postActor = new PostMethod(oceanurl);
-			// set Parameter actorId
-			postActor.setParameter("actorId", actorId);
-			HttpClient httpclient = new HttpClient();
-			// sent the parameters to ocean network
-			httpclient.executeMethod(postActor);
-			// Response from ocean network
-			String postActorResp = postActor.getResponseBodyAsString();
-			int statuscode = postActor.getStatusCode();
-			System.out.println(statuscode);
+		String postActorResp = null;
+		/**
+		 * Used for posting the data to ocean network
+		 */
+		PostMethod postActor = new PostMethod(oceanurl);
+		// set Parameter actorId
+		postActor.setParameter("actorId", actorId);
+		HttpClient httpclient = new HttpClient();
+
+		// sent the parameters to ocean network
+		httpclient.executeMethod(postActor);
+		// Response from ocean network
+		postActorResp = postActor.getResponseBodyAsString();
+		int statuscode = postActor.getStatusCode();
+		if (statuscode == 201) {
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			// Data coming from ocean network is a json string..
 			// This line remove the "\\" from the response
 			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
-			System.out.println(postactorResponseToJson);
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(postactorResponseToJson);
+			json = (JSONObject) parser.parse(postactorResponseToJson);
 			// set the result json to the actor object
 			actor = new Actor(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} else {
+			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -184,9 +192,13 @@ public class Session {
 	 * 
 	 * @Param actorId
 	 * @return actor object
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Actor getActor(String actorId) {
+	@SuppressWarnings("unchecked")
+	public Actor getActor(String actorId) throws HttpException, IOException, ParseException {
 		// Create object for actor class..it include all actor details
 		Actor actor = null;
 		// Checks the argument values is present or not
@@ -197,28 +209,31 @@ public class Session {
 			throw new NullPointerException("actorId is not found");
 		}
 		String oceanurl = baseurl + actorURL + actorId;
+		JSONObject json = null;
 		/**
 		 * Used for getting the data to ocean network
 		 */
-		try {
-			GetMethod getActor = new GetMethod(oceanurl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(getActor);
-			// Response from ocean network
-			String getActorResp = getActor.getResponseBodyAsString();
-			int statuscode = getActor.getStatusCode();
-			System.out.println(statuscode);
+		GetMethod getActor = new GetMethod(oceanurl);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(getActor);
+		// Response from ocean network
+		String getActorResp = getActor.getResponseBodyAsString();
+		int statuscode = getActor.getStatusCode();
+		if (statuscode == 200) {
 			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String getActorToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(getActorToJson);
+			json = (JSONObject) parser.parse(getActorToJson);
 			// set the result json to the actor object
 			actor = new Actor(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -229,10 +244,12 @@ public class Session {
 	 * 
 	 * @param name
 	 * @return updatedresponse
-	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
 	 *
 	 */
-	public Actor updateActor(String actorId, String actorName) throws MalformedURLException {
+	@SuppressWarnings("unchecked")
+	public Actor updateActor(String actorId, String actorName) throws IOException, ParseException {
 		// Create object for actor class..it include all actor details
 		Actor actor = null;
 		// Checks the argument values is present or not
@@ -244,21 +261,24 @@ public class Session {
 			throw new NullPointerException("actorId or actorName not found");
 		}
 		URL oceanurl = new URL(baseurl + actorURL + actorId);
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("name", actorName);
-			String updatedresponse = modify(oceanurl, obj, "PUT");
+		JSONObject json = null;
+		JSONObject obj = new JSONObject();
+		obj.put("name", actorName);
+		String updatedresponse = modify(oceanurl, obj, "PUT");
+		if (!updatedresponse.equalsIgnoreCase("Not Found")) {
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String updateActorToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(updateActorToJson);
+			json = (JSONObject) parser.parse(updateActorToJson);
 			// set the result json to the actor object
 			actor = new Actor(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", updatedresponse);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -268,9 +288,11 @@ public class Session {
 	 * 
 	 * @param name
 	 * @return response
-	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	public Actor disableActor(String actorId) throws MalformedURLException {
+	@SuppressWarnings("unchecked")
+	public Actor disableActor(String actorId) throws IOException, ParseException {
 		// Create object for actor class..it include all actor details
 		Actor actor = null;
 		// Checks the argument values is present or not
@@ -281,22 +303,25 @@ public class Session {
 			throw new NullPointerException("actorId not found");
 		}
 		URL oceanurl = new URL(baseurl + actorURL + actorId);
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("requestor_actor_id", actorId);
-			String deletedresponse = modify(oceanurl, obj, "DELETE");
-			// got response from ocean network
+		JSONObject json = null;
+		JSONObject obj = new JSONObject();
+		obj.put("requestor_actor_id", actorId);
+		String deletedresponse = modify(oceanurl, obj, "DELETE");
+		// got response from ocean network
+		if (!deletedresponse.equals("Not Found")) {
 			String predeleteToJson = deletedresponse.substring(1, deletedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String disableActorToJson = predeleteToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(disableActorToJson);
+			json = (JSONObject) parser.parse(disableActorToJson);
 			// set the result json to the actor object
 			actor = new Actor(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", deletedresponse);
+			actor = new Actor(json);
 		}
 		return actor;
 	}
@@ -313,9 +338,13 @@ public class Session {
 	 * @param assetName
 	 *            - assetName
 	 * @return java object asset
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Asset assetRegistration(String publisherId, String assetName) {
+	public Asset assetRegistration(String publisherId, String assetName)
+			throws HttpException, IOException, ParseException {
 		// Asset object creation
 		Asset asset = null;
 		// Checks the argument values is present or not
@@ -325,6 +354,7 @@ public class Session {
 		if (publisherId == null || assetName == null) {
 			throw new NullPointerException("publisherId or assetName not found");
 		}
+		JSONObject json = null;
 		String oceanUrl = baseurl + keeperURL + "/assets/metadata";
 		// Initialize the variable to null
 		String postAssetResp = null;
@@ -335,23 +365,29 @@ public class Session {
 		// set the parameter name
 		postasset.setParameter("name", assetName);
 		HttpClient httpclient = new HttpClient();
-		try {
-			// post data to a url
-			httpclient.executeMethod(postasset);
-			// Response from ocean network
-			postAssetResp = postasset.getResponseBodyAsString();
+		// post data to a url
+		httpclient.executeMethod(postasset);
+		// Response from ocean network
+		postAssetResp = postasset.getResponseBodyAsString();
+		int statuscode = postasset.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			// Remove "\\" from the json string from ocean network
 			String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postAssetToJson);
+			json = (JSONObject) parser.parse(postAssetToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			System.out.println("FAILEDDDDDD");
+			asset = new Asset(json);
 		}
+
 		return asset;
 	}
 
@@ -360,11 +396,14 @@ public class Session {
 	 * 
 	 * @param assetId
 	 * @return asset
+	 * @throws HttpException 
+	 * @throws ParseException
+	 * @throws IOException
 	 */
 
-	public Asset getAsset(String assetId) {
+	@SuppressWarnings("unchecked")
+	public Asset getAsset(String assetId) throws HttpException, IOException, ParseException {
 		Asset asset = null; // asset object creation
-
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -372,25 +411,30 @@ public class Session {
 		if (assetId == null) {
 			throw new NullPointerException("assetId not found");
 		}
+		JSONObject json = null;
 		String oceanUrl = baseurl + keeperURL + "/assets/metadata/" + assetId;
-		try {
-			// used for executing the server call
-			GetMethod get = new GetMethod(oceanUrl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(get);
-			// used to get response from ocean server
-			String getResp = get.getResponseBodyAsString();
+		// used for executing the server call
+		GetMethod get = new GetMethod(oceanUrl);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(get);
+		// used to get response from ocean server
+		String getResp = get.getResponseBodyAsString();
+		int statuscode = get.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = getResp.substring(1, getResp.length() - 1);
 			// Replacing '\' with space
 			String postToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postToJson);
+			json = (JSONObject) parser.parse(postToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = getResp.substring(1, getResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -399,12 +443,13 @@ public class Session {
 	 * Update the asset by using the given details PUT parametes url,asset
 	 * 
 	 * @return assets
-	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
 	 *
 	 */
-	public Asset updateAsset(URL url, String assetId, String assetName) throws MalformedURLException {
-		Asset asset = null;// asset Object Creation
-
+	@SuppressWarnings("unchecked")
+	public Asset updateAsset(String assetId, String assetName) throws IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
@@ -414,21 +459,24 @@ public class Session {
 		}
 		URL oceanUrl = new URL(baseurl + keeperURL + "/assets/metadata/" + assetId);
 		String updatedresponse = null;
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("name", assetName);
-			updatedresponse = modify(oceanUrl, obj, "PUT");
+		JSONObject json = null;
+		JSONObject obj = new JSONObject();
+		obj.put("name", assetName);
+		updatedresponse = modify(oceanUrl, obj, "PUT");
+		if (!updatedresponse.equals("Not Found")) {
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
+			json = (JSONObject) parser.parse(updateAssetToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", updatedresponse);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -443,10 +491,13 @@ public class Session {
 	 * 
 	 *         Allow uploading a file for an already registered asset. The
 	 *         upload is submitted to the provider.
+	 * @throws IOException
+	 * @throws ClientProtocolException
+	 * @throws ParseException
 	 */
 
 	@SuppressWarnings({ "resource" })
-	public Asset uploadAsset(String assetId, File file) {
+	public Asset uploadAsset(String assetId, File file) throws ClientProtocolException, IOException, ParseException {
 		String uploadassetResp = null;
 		// asset Object Creation
 		Asset asset = null;
@@ -467,22 +518,19 @@ public class Session {
 		entity.addPart("file", new FileBody(file));
 		post.setEntity(entity);
 		// used to get respose from ocean server
-		try {
-			HttpResponse response = client.execute(post);
-			HttpEntity entity2 = response.getEntity();
-			uploadassetResp = EntityUtils.toString(entity2);
-			String prepostToJson = uploadassetResp.substring(1, uploadassetResp.length() - 1);
-			// Data coming from ocean network is a json string..This line remove
-			// the "\\" from the response
-			String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
-			JSONParser parser = new JSONParser();// create json parser
-			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
-			// set the result json to the asset object
-			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		HttpResponse response = client.execute(post);
+		HttpEntity entity2 = response.getEntity();
+		uploadassetResp = EntityUtils.toString(entity2);
+		StatusLine responseLine = response.getStatusLine();
+		String prepostToJson = uploadassetResp.substring(1, uploadassetResp.length() - 1);
+		// Data coming from ocean network is a json string..This line remove
+		// the "\\" from the response
+		String updateAssetToJson = prepostToJson.replaceAll("\\\\", "");
+		JSONParser parser = new JSONParser();// create json parser
+		// parse the data to json object
+		JSONObject json = (JSONObject) parser.parse(updateAssetToJson);
+		// set the result json to the asset object
+		asset = new Asset(json);
 		return asset;
 	}
 
@@ -536,38 +584,43 @@ public class Session {
 	 * @param assetId
 	 * @param assetName
 	 * @param actorId
-	 * @throws MalformedURLException
+	 * @throws ParseException
+	 * @throws IOException
 	 */
 
-	public Asset disableAsset(String assetId, String assetName, String actorId) throws MalformedURLException {
-//		Asset asset = null();// asset Object Creation
-		Asset asset = null;
+	@SuppressWarnings("unchecked")
+	public Asset disableAsset(String assetId, String assetName, String actorId) throws ParseException, IOException {
+		Asset asset = new Asset();// asset Object Creation
+
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException("baseurl is not found");
 		}
-		if (assetId == null || assetName == null ||actorId == null ) {
+		if (assetId == null || assetName == null || actorId == null) {
 			throw new NullPointerException("assetId or assetName or actorId not found");
 		}
 		URL oceanurl = new URL(baseurl + keeperURL + "/metadata/" + assetId);
 		String disableAsset = null;
-		try {
-			// used for executing the server call
-			JSONObject obj = new JSONObject();
-			obj.put("requestor_actor_id", actorId);
-			// got response from ocean network
-			disableAsset = modify(oceanurl, obj, "DELETE");
+		JSONObject json = null;
+		// used for executing the server call
+		JSONObject obj = new JSONObject();
+		obj.put("requestor_actor_id", actorId);
+		// got response from ocean network
+		disableAsset = modify(oceanurl, obj, "DELETE");
+		if (!disableAsset.equals("Not Found")) {
 			String predeleteToJson = disableAsset.substring(1, disableAsset.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String diabledAssetToJson = predeleteToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(diabledAssetToJson);
+			json = (JSONObject) parser.parse(diabledAssetToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", disableAsset);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -579,8 +632,7 @@ public class Session {
 	 */
 
 	public Asset getAssets() {
-		Asset asset = null;// asset Object Creation
-
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -615,11 +667,13 @@ public class Session {
 	 * 
 	 * @param actorId
 	 * @param assetId
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Asset addAssetProvider(String actorId, String assetId) {
-		Asset asset = null;// asset Object Creation
-
+	public Asset addAssetProvider(String actorId, String assetId) throws HttpException, IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -629,41 +683,47 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/assets/provider/";
 		String getAssetProviderResp = null;
-		try {
-			PostMethod postassetprovider = new PostMethod(oceanUrl);
-			// set the assetId
-			postassetprovider.setParameter("assetId", assetId);
-			// set the providerId
-			postassetprovider.setParameter("providerId", actorId);
-			HttpClient httpclient = new HttpClient();
-			// used for executing the server call
-			httpclient.executeMethod(postassetprovider);
-			// used to get response from ocean server
-			getAssetProviderResp = postassetprovider.getResponseBodyAsString();
+		JSONObject json = null;
+		PostMethod postassetprovider = new PostMethod(oceanUrl);
+		// set the assetId
+		postassetprovider.setParameter("assetId", assetId);
+		// set the providerId
+		postassetprovider.setParameter("providerId", actorId);
+		HttpClient httpclient = new HttpClient();
+		// used for executing the server call
+		httpclient.executeMethod(postassetprovider);
+		// used to get response from ocean server
+		getAssetProviderResp = postassetprovider.getResponseBodyAsString();
+		int statuscode = postassetprovider.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = getAssetProviderResp.substring(1, getAssetProviderResp.length() - 1);
 			// replacing '\' with space
 			String postAssetProviderToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postAssetProviderToJson);
-			// set the result json to the asset object
+			json = (JSONObject) parser.parse(postAssetProviderToJson);
+			// set the result json to the asset objectasset = new Asset(json);asset.getOceanResponse().put("result", json);
+		} else {
+			String prepostToJson = getAssetProviderResp.substring(1, getAssetProviderResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return asset;
 	}
-
 	/**
 	 * This is used to create a contract
 	 * 
 	 * @param assetId
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Asset addContract(String assetId) {
-		Asset asset = null;// asset Object Creation
-
+	@SuppressWarnings("unchecked")
+	public Asset addContract(String assetId) throws HttpException, IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -673,25 +733,30 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/contracts/contract/";
 		String postcontractResp = null;
-		try {
-			PostMethod postcontract = new PostMethod(oceanUrl);
-			// set the assetId
-			postcontract.setParameter("assetId", assetId);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(postcontract);
-			// used to get response from ocean server
-			postcontractResp = postcontract.getResponseBodyAsString();
+		JSONObject json = null;
+		PostMethod postcontract = new PostMethod(oceanUrl);
+		// set the assetId
+		postcontract.setParameter("assetId", assetId);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(postcontract);
+		// used to get response from ocean server
+		postcontractResp = postcontract.getResponseBodyAsString();
+		int statuscode = postcontract.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			// replacing '\' with space
 			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
+			json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -701,11 +766,13 @@ public class Session {
 	 * 
 	 * @param contractId
 	 * @return
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
 
-	public Asset getContract(String contractId) {
-		Asset asset = null;// asset Object Creation
-
+	public Asset getContract(String contractId) throws HttpException, IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -715,24 +782,29 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId;
 		String getContractResp = null;
-		try {
-			// used for executing the server call
-			GetMethod getContract = new GetMethod(oceanUrl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(getContract);
-			// used to get response from ocean server
-			getContractResp = getContract.getResponseBodyAsString();
+		JSONObject json = null;
+		// used for executing the server call
+		GetMethod getContract = new GetMethod(oceanUrl);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(getContract);
+		// used to get response from ocean server
+		getContractResp = getContract.getResponseBodyAsString();
+		int statuscode = getContract.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
 			// replacing '\' with space
 			String postcontractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postcontractToJson);
+			json = (JSONObject) parser.parse(postcontractToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -743,10 +815,14 @@ public class Session {
 	 * @param contractId
 	 * @param signingActorId
 	 * @return
+	 * @throws ParseException
+	 * @throws IOException
+	 * @throws HttpException
 	 */
-	public Asset signContract(String contractId, String signingActorId) {
-		Asset asset = null;// asset Object Creation
-
+	@SuppressWarnings("unchecked")
+	public Asset signContract(String contractId, String signingActorId)
+			throws ParseException, HttpException, IOException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -756,15 +832,17 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId;
 		String postcontractResp = null;
-		try {
-			// used for setting the parameters to post and executing the server
-			// call
-			PostMethod postcontract = new PostMethod(oceanUrl);
-			postcontract.setParameter("actorId", signingActorId);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(postcontract);
-			// used to get response from ocean server
-			postcontractResp = postcontract.getResponseBodyAsString();
+		JSONObject json = null;
+		// used for setting the parameters to post and executing the server
+		// call
+		PostMethod postcontract = new PostMethod(oceanUrl);
+		postcontract.setParameter("actorId", signingActorId);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(postcontract);
+		// used to get response from ocean server
+		postcontractResp = postcontract.getResponseBodyAsString();
+		int statuscode = postcontract.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -772,11 +850,14 @@ public class Session {
 			String signedContractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(signedContractToJson);
+			json = (JSONObject) parser.parse(signedContractToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -787,11 +868,12 @@ public class Session {
 	 * @param contractId
 	 * @param assetId
 	 * @return
-	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	public Asset authorizeContract(String contractId, String assetId) throws MalformedURLException {
-		Asset asset = null;// asset Object Creation
-
+	@SuppressWarnings("unchecked")
+	public Asset authorizeContract(String contractId, String assetId) throws IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -799,24 +881,26 @@ public class Session {
 		if (contractId == null || assetId == null) {
 			throw new NullPointerException();
 		}
+		JSONObject json = null;
 		URL oceanUrl = new URL(baseurl + keeperURL + "/contracts/contract/" + contractId + "/auth");
 		String updatedresponse = null;
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("assetId", assetId);
-			updatedresponse = modify(oceanUrl, obj, "PUT");
-
+		JSONObject obj = new JSONObject();
+		obj.put("assetId", assetId);
+		updatedresponse = modify(oceanUrl, obj, "PUT");
+		if (!updatedresponse.equals("Not Found")) {
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String authorizeContractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(authorizeContractToJson);
+			json = (JSONObject) parser.parse(authorizeContractToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", updatedresponse);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -830,10 +914,13 @@ public class Session {
 	 * 
 	 * @param contractId
 	 * @return
+	 * @throws IOException
+	 * @throws HttpException
+	 * @throws ParseException
 	 */
-	public Asset accessContractAsset(String contractId) {
-		Asset asset = null;// asset Object Creation
-
+	@SuppressWarnings("unchecked")
+	public Asset accessContractAsset(String contractId) throws HttpException, IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 		// Checks the argument values is present or not
 		if (baseurl == null) {
 			throw new NullPointerException();
@@ -843,24 +930,29 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/contracts/contract/" + contractId + "/access";
 		String getContractResp = null;
-		try {
-			// used for executing the server call
-			GetMethod getContract = new GetMethod(oceanUrl);
-			HttpClient httpclient = new HttpClient();
-			httpclient.executeMethod(getContract);
-			// used to get response from ocean server
-			getContractResp = getContract.getResponseBodyAsString();
+		JSONObject json = null;
+		// used for executing the server call
+		GetMethod getContract = new GetMethod(oceanUrl);
+		HttpClient httpclient = new HttpClient();
+		httpclient.executeMethod(getContract);
+		// used to get response from ocean server
+		getContractResp = getContract.getResponseBodyAsString();
+		int statuscode = getContract.getStatusCode();
+		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
 			// replacing '\' with space
 			String accessContractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(accessContractToJson);
+			json = (JSONObject) parser.parse(accessContractToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			String prepostToJson = getContractResp.substring(1, getContractResp.length() - 1);
+			json = new JSONObject();
+			json.put("response", prepostToJson);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -871,11 +963,13 @@ public class Session {
 	 * @param actorId
 	 * @param contractId
 	 * @return
-	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
 	 */
 
-	public Asset settleContract(String actorId, String contractId) throws MalformedURLException {
-		Asset asset = null;// asset Object Creation
+	@SuppressWarnings("unchecked")
+	public Asset settleContract(String actorId, String contractId) throws IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -886,22 +980,24 @@ public class Session {
 		}
 		URL oceanUrl = new URL(baseurl + keeperURL + "/contracts/contract/" + contractId + "/settlement");
 		String updatedresponse = null;
-		try {
-			JSONObject obj = new JSONObject();
-			obj.put("actorId", actorId);
-			updatedresponse = modify(oceanUrl, obj, "PUT");
-
+		JSONObject json = null;
+		JSONObject obj = new JSONObject();
+		obj.put("actorId", actorId);
+		updatedresponse = modify(oceanUrl, obj, "PUT");
+		if (!updatedresponse.equals("Not Found")) {
 			String prepostToJson = updatedresponse.substring(1, updatedresponse.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
 			// the "\\" from the response
 			String settleContractContractToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
-			JSONObject json = (JSONObject) parser.parse(settleContractContractToJson);
+			json = (JSONObject) parser.parse(settleContractContractToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			json = new JSONObject();
+			json.put("response", updatedresponse);
+			asset = new Asset(json);
 		}
 		return asset;
 	}
@@ -912,10 +1008,14 @@ public class Session {
 	 * @param assetId
 	 * @param publisherId
 	 * @return
+	 * @throws IOException 
+	 * @throws HttpException 
+	 * @throws ParseException 
 	 */
 
-	public Asset addAssetListing(String assetId, String publisherId) {
-		Asset asset = null;// asset Object Creation
+	@SuppressWarnings("unchecked")
+	public Asset addAssetListing(String assetId, String publisherId) throws HttpException, IOException, ParseException {
+		Asset asset = new Asset();// asset Object Creation
 
 		// Checks the argument values is present or not
 		if (baseurl == null) {
@@ -926,7 +1026,7 @@ public class Session {
 		}
 		String oceanUrl = baseurl + keeperURL + "/market/asset/" + publisherId;
 		String postcontractResp = null;
-		try {
+		JSONObject json = null;
 			PostMethod postcontract = new PostMethod(oceanUrl);
 			// insert asset publisherId to the json object
 			postcontract.setParameter("publisherId", publisherId);
@@ -934,23 +1034,28 @@ public class Session {
 			httpclient.executeMethod(postcontract);
 			// used to get response from ocean server
 			postcontractResp = postcontract.getResponseBodyAsString();
+			int statuscode = postcontract.getStatusCode();
+			if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
 			// replacing '\' with space
 			String postcontactToJson = prepostToJson.replaceAll("\\\\", "");
 			JSONParser parser = new JSONParser();
 			// parse string to json object
-			JSONObject json = (JSONObject) parser.parse(postcontactToJson);
+			json = (JSONObject) parser.parse(postcontactToJson);
 			// set the result json to the asset object
 			asset = new Asset(json);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			} else {
+				String prepostToJson = postcontractResp.substring(1, postcontractResp.length() - 1);
+				json = new JSONObject();
+				json.put("response", prepostToJson);
+				asset = new Asset(json);
+			}
 		return asset;
 	}
 
 	public String modify(URL oceanurl, JSONObject obj, String httpMethod) throws IOException {
-		String updatedresponse = null;
+		String updatedresponse = "";
 		HttpURLConnection conn = (HttpURLConnection) oceanurl.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod(httpMethod);
@@ -958,18 +1063,15 @@ public class Session {
 		String input = obj.toString();
 		OutputStream os = conn.getOutputStream();
 		os.write(input.getBytes());
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-		}
-		BufferedReader br;
-		try {
+		String response = conn.getResponseMessage();
+		if (response.equals("OK")) {
+			BufferedReader br;
 			br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-			if ((updatedresponse = br.readLine()) != null) {
-
-			}
-			conn.disconnect();
-		} catch (Exception e) {
-			e.printStackTrace();
+			updatedresponse = br.readLine();
+		} else {
+			updatedresponse = updatedresponse + response;
 		}
+		conn.disconnect();
 		return updatedresponse;
 	}
 }

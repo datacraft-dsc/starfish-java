@@ -21,9 +21,10 @@ public class Asset {
 	public Asset(Map<String, JSONObject> result){
 		this.oceanResponse =result;
 	}
-	public Asset() {
-		this.oceanResponse = new HashMap<>();
-	}
+
+	public Asset() {}
+
+	
 
 	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;

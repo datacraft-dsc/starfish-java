@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
  ** Represents an Actor on the Ocean Network.
  */
 public class Actor {
+	public Actor() {}
+
 	/**
 	 * {@link Map} to save the response from the ocean network as a key value
 	 * pair
@@ -22,10 +24,6 @@ public class Actor {
 		this.oceanResponse = result;
 	}
 	
-	public Actor() {
-		this.oceanResponse = new HashMap<>();
-	}
-
 	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
 	}
@@ -33,7 +31,7 @@ public class Actor {
 	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Actor [oceanResponse=" + oceanResponse + "]";
