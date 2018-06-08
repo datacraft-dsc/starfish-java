@@ -360,6 +360,7 @@ public class SessionTest {
 		 */
 		BufferedReader br = mock(BufferedReader.class);
 		
+		
 		/**
 		 * returning mocked object when a new object of the output stream is being
 		 * created
