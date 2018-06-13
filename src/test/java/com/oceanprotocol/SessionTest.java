@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import java.io.BufferedReader;
 import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,6 +21,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -121,7 +123,6 @@ public class SessionTest {
 		PowerMockito.whenNew(GetMethod.class).withAnyArguments().thenReturn(mockGetMethod);
 
 	}
-	
 
 	/**
 	 * A test method to test the Actor registration in the session class first
@@ -135,7 +136,7 @@ public class SessionTest {
 	public void actorRegistrationTest() throws Exception {
 		// sample data to return
 		String result = "[{\"state\": \"CREATED\",\"actorName\":\"ARUN\", \"\": \"\", \"actorId\": \"0x80e36ac92168301f9b12588ba3b28c259c088063d520b422c1108ad96921be6db5717cd8f684984d6a67d38ed3bff0db727144d716730a3124a35c8be9017ca0\", \"attributes\": [], \"updateDatetime\": 1528088768.2945037, \"privateKey\": \"0xf10f009b4def2638784e27c0fda3d5ec4b80d5c9e6412ffdaffd3a266a39be6e\", \"creationDatetime\": 1528088768.2945037, \"defaultWalletAddress\": \"0xe644c5dd5d812c3b02645514bf0048e6c8b20e4eae4d311de074ea615b26279a4f8c3b269e0688d180a4ae79dd0e6489f8a92893330fa3906eefc208225a4c3f\"}]";
-	
+
 		/**
 		 * mocking the execute method of HTTP CLIENT and get the result as specified in
 		 * the thenReturn method
@@ -199,15 +200,12 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
-		Asset asset = controller.assetRegistration("", result);
+		Asset asset = controller.registerAsset("", "");
 		/**
 		 * checking the test is success or not with a expected result and an actual
 		 * value
 		 */
 		assertEquals("1602501922914712807", asset.getOceanResponse().get("assetId"));
-
-		// assertEquals("1602501922914712807",
-		// asset.getOceanResponse().get("response").get("assetId"));
 
 	}
 
@@ -273,18 +271,17 @@ public class SessionTest {
 		/**
 		 * calling the registration method to test based on these mock objects
 		 */
-		Mockito.when(mockGetMethod.getStatusCode()).thenReturn(201);
+		Mockito.when(mockGetMethod.getStatusCode()).thenReturn(200);
 
 		Asset asset = controller.getAsset("");
 		/**
 		 * checking the test is success or not with a expected result and an actual
 		 * value
 		 */
+
 		assertEquals("1598819930732334101", asset.getOceanResponse().get("assetId"));
 
 	}
-
-	
 
 	/**
 	 * stub to test the asset upload method in the {@link Session} uses sample url
@@ -316,8 +313,7 @@ public class SessionTest {
 		 * mock object of buffered reader
 		 */
 		BufferedReader br = mock(BufferedReader.class);
-		
-		
+
 		/**
 		 * returning mocked object when a new object of the output stream is being
 		 * created
@@ -340,7 +336,5 @@ public class SessionTest {
 		Asset updateAsset = controller.updateAsset("", "testdata");
 
 	}
-
-	
 
 }

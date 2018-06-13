@@ -3,7 +3,6 @@
   */
 package com.oceanprotocol.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -13,24 +12,25 @@ public class Asset {
 	 * {@link Map} to save the response from the ocean network as a key value
 	 * pair
 	 */
-	private Map<String, String> oceanResponse;
+
+	private Map<String, JSONObject> oceanResponse;
+	
+	public Asset(){}
 
 	/**
 	 * Construct the oceanResponse with Hash map for further use.
 	 */
-	public Asset(Map<String, String> result){
+	public Asset(Map<String, JSONObject> result){
 		this.oceanResponse =result;
 	}
 
-	public Asset() {}
-
 	
 
-	public Map<String, String> getOceanResponse() {
+	public Map<String, JSONObject> getOceanResponse() {
 		return oceanResponse;
 	}
 
-	public void setOceanResponse(Map<String, String> oceanResponse) {
+	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
 		this.oceanResponse = oceanResponse;
 	}
 
