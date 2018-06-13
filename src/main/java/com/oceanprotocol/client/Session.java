@@ -88,6 +88,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -369,22 +372,25 @@ public class Session {
 		httpclient.executeMethod(postasset);
 		// Response from ocean network
 		postAssetResp = postasset.getResponseBodyAsString();
+		byte[] responseBody = postasset.getResponseBody();
+	
 		int statuscode = postasset.getStatusCode();
 		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			// Remove "\\" from the json string from ocean network
 			String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			// create json parser
 			JSONParser parser = new JSONParser();
-			// parse string to json object
+			// parse the data to json object
 			json = (JSONObject) parser.parse(postAssetToJson);
-			// set the result json to the asset object
+			
+			
 			asset = new Asset(json);
 		} else {
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
-			System.out.println("FAILEDDDDDD");
 			asset = new Asset(json);
 		}
 

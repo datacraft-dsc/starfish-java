@@ -2,6 +2,7 @@ package com.oceanprotocol;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -283,51 +284,7 @@ public class SessionTest {
 
 	}
 
-	// @Test
-	// public void uploadassetTest() throws Exception {
-	// org.apache.http.client.HttpClient httpclient=mock(DefaultHttpClient.class);
-	// File file = mock(File.class);
-	// String result = "[{\"name\": \"data from the cosmos\", \"updateDatetime\":
-	// 1528264925.8759427, \"parameters\": [], \"creationDatetime\":
-	// 1528264925.8759427, \"publisherId\": \"107\", \"links\": [], \"assetId\":
-	// \"1602501922914712807\", \"contentState\": \"UNPUBLISHED\",
-	// \"marketplaceId\": null}]";
-	// /**
-	// * when a new instance of HttpPost created at any time do return
-	// * mockHttpPost object instead of new object
-	// */
-	// PowerMockito.whenNew(HttpPost.class).withAnyArguments().thenReturn(mockHttpPost);
-	// /**
-	// * when a new instance of HttpClient created at any time do return
-	// * mockHttpClient object instead of new object
-	// */
-	// PowerMockito.whenNew(org.apache.http.client.HttpClient.class).withAnyArguments().thenReturn(httpclient);
-	// /**
-	// * mocking the execute method of HTTP CLIENT and get the result as
-	// * specified in the thenReturn method
-	// */
-	// Mockito.when(httpclient.execute(Mockito.any(HttpPost.class))).thenReturn(httpResponse);
-	// /**
-	// * mocking the set entity function of the Httppost object
-	// */
-	// Mockito.doNothing().when(mockHttpPost).setEntity(Mockito.any(MultipartEntity.class));
-	// /**
-	// * mocking the getResponseBodyAsString of the POST METHOD and return the
-	// * above sample data as result
-	// */
-	// Mockito.when(mockPostMethod.getResponseBodyAsString()).thenReturn(result);
-	// /**
-	// * calling the registration method to test based on these mock objects
-	// */
-	// Asset asset = controller.uploadAsset("", file);
-	// /**
-	// * checking the test is success or not with a expected result and an
-	// * actual value
-	// */
-	// // assertEquals("1602501922914712807",
-	// asset.getOceanResponse().get("result").get("assetId"));
-	//
-	// }
+	
 
 	/**
 	 * stub to test the asset upload method in the {@link Session} uses sample url
