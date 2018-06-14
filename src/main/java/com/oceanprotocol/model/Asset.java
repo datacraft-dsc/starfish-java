@@ -12,6 +12,7 @@ public class Asset {
 	 * {@link Map} to save the response from the ocean network as a key value
 	 * pair
 	 */
+
 	private Map<String, JSONObject> oceanResponse;
 	
 	public Asset(){}

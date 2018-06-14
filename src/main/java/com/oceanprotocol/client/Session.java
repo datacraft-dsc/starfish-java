@@ -88,6 +88,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -160,23 +163,23 @@ public class Session {
 		// set Parameter actorId
 		postActor.setParameter("actorId", actorId);
 		HttpClient httpclient = new HttpClient();
+
 		// sent the parameters to ocean network
 		httpclient.executeMethod(postActor);
 		// Response from ocean network
 		postActorResp = postActor.getResponseBodyAsString();
 		int statuscode = postActor.getStatusCode();
-		System.out.println(statuscode);
 		if (statuscode == 201) {
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			// Data coming from ocean network is a json string..
 			// This line remove the "\\" from the response
 			String postactorResponseToJson = prepostToJson.replaceAll("\\\\", "");
-			System.out.println(postactorResponseToJson);
 			JSONParser parser = new JSONParser();// create json parser
 			// parse the data to json object
 			json = (JSONObject) parser.parse(postactorResponseToJson);
 			// set the result json to the actor object
 			actor = new Actor(json);
+
 		} else {
 			String prepostToJson = postActorResp.substring(1, postActorResp.length() - 1);
 			json = new JSONObject();
@@ -218,9 +221,7 @@ public class Session {
 		httpclient.executeMethod(getActor);
 		// Response from ocean network
 		String getActorResp = getActor.getResponseBodyAsString();
-		System.out.println(getActorResp);
 		int statuscode = getActor.getStatusCode();
-		System.out.println(statuscode);
 		if (statuscode == 200) {
 			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
 			// Data coming from ocean network is a json string..This line remove
@@ -233,7 +234,6 @@ public class Session {
 			actor = new Actor(json);
 		} else {
 			String prepostToJson = getActorResp.substring(1, getActorResp.length() - 1);
-			System.out.println(prepostToJson);
 			json = new JSONObject();
 			json.put("response", prepostToJson);
 			actor = new Actor(json);
@@ -371,16 +371,20 @@ public class Session {
 		httpclient.executeMethod(postasset);
 		// Response from ocean network
 		postAssetResp = postasset.getResponseBodyAsString();
+		byte[] responseBody = postasset.getResponseBody();
+	
 		int statuscode = postasset.getStatusCode();
 		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
 			// Remove "\\" from the json string from ocean network
 			String postAssetToJson = prepostToJson.replaceAll("\\\\", "");
+			// create json parser
 			JSONParser parser = new JSONParser();
-			// parse string to json object
+			// parse the data to json object
 			json = (JSONObject) parser.parse(postAssetToJson);
-			// set the result json to the asset object
+			
+			
 			asset = new Asset(json);
 		} else {
 			String prepostToJson = postAssetResp.substring(1, postAssetResp.length() - 1);
@@ -388,6 +392,7 @@ public class Session {
 			json.put("response", prepostToJson);
 			asset = new Asset(json);
 		}
+
 		return asset;
 	}
 
@@ -400,6 +405,7 @@ public class Session {
 	 * @throws ParseException
 	 * @throws IOException
 	 */
+
 	@SuppressWarnings("unchecked")
 	public Asset getAsset(String assetId) throws HttpException, IOException, ParseException {
 		Asset asset = null; // asset object creation
@@ -419,7 +425,6 @@ public class Session {
 		// used to get response from ocean server
 		String getResp = get.getResponseBodyAsString();
 		int statuscode = get.getStatusCode();
-		System.out.println(statuscode);
 		if (statuscode == 200) {
 			// Convert the string into jsonobject
 			String prepostToJson = getResp.substring(1, getResp.length() - 1);
@@ -522,7 +527,6 @@ public class Session {
 		HttpEntity entity2 = response.getEntity();
 		uploadassetResp = EntityUtils.toString(entity2);
 		StatusLine responseLine = response.getStatusLine();
-		System.out.println(responseLine);
 		String prepostToJson = uploadassetResp.substring(1, uploadassetResp.length() - 1);
 		// Data coming from ocean network is a json string..This line remove
 		// the "\\" from the response
@@ -649,7 +653,6 @@ public class Session {
 			httpclient.executeMethod(get);
 			// used to get response from ocean server
 			getAssetResp = get.getResponseBodyAsString();
-			System.out.println(getAssetResp);
 			// Convert the string into jsonobject
 			String prepostToJson = getAssetResp.substring(1, getAssetResp.length() - 1);
 			// replacing '\' with space
@@ -698,9 +701,7 @@ public class Session {
 		httpclient.executeMethod(postassetprovider);
 		// used to get response from ocean server
 		getAssetProviderResp = postassetprovider.getResponseBodyAsString();
-		System.out.println(getAssetProviderResp);
 		int statuscode = postassetprovider.getStatusCode();
-		System.out.println(statuscode);
 		if (statuscode == 201) {
 			// Convert the string into jsonobject
 			String prepostToJson = getAssetProviderResp.substring(1, getAssetProviderResp.length() - 1);
@@ -855,7 +856,6 @@ public class Session {
 		obj.put("actor_id", actorId);
 		// used to get response from ocean server
 		signedresponse = modify(oceanUrl, obj, "PUT");
-		System.out.println(signedresponse);
 		if (!(signedresponse.equalsIgnoreCase("Bad Request") || signedresponse.equals("Not Found"))) {
 			// Convert the string into jsonobject
 			String prepostToJson = signedresponse.substring(1, signedresponse.length() - 1);
@@ -944,7 +944,6 @@ public class Session {
 			throw new NullPointerException();
 		}
 		URL oceanurl = new URL(baseurl + keeperURL + "/contracts/contract/" + contractId + "/access");
-		System.out.println(oceanurl);
 		JSONObject json = null;
 		// used for executing the server call
 		String accessContractAsset = null;
@@ -953,7 +952,6 @@ public class Session {
 		obj.put("consumerId", consumerId);
 		// got response from ocean network
 		accessContractAsset = modify(oceanurl, obj, "DELETE");
-		System.out.println(accessContractAsset);
 		if (!accessContractAsset.equals("Not Found")) {
 			// Convert the string into jsonobject
 			String prepostToJson = accessContractAsset.substring(1, accessContractAsset.length() - 1);
