@@ -30,7 +30,7 @@ mvn install
 ```
 <dependency>
 	<groupId>com.com.oceanprotocol</groupId>
-	<artifactId>ocean-java-client</artifactId>
+	<artifactId>ocean-java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </dependency>
 
