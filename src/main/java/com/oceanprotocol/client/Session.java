@@ -108,8 +108,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.oceanprotocol.Asset;
 import com.oceanprotocol.model.Actor;
-import com.oceanprotocol.model.Asset;
 
 @SuppressWarnings("deprecation")
 public class Session {

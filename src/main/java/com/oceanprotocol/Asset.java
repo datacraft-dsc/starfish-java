@@ -1,7 +1,7 @@
 /**
   * Represents an asset on the Ocean Network.
   */
-package com.oceanprotocol.model;
+package com.oceanprotocol;
 
 import java.util.Map;
 

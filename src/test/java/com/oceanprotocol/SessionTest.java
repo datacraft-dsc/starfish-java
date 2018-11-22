@@ -37,7 +37,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.oceanprotocol.client.Session;
 import com.oceanprotocol.model.Actor;
-import com.oceanprotocol.model.Asset;
 
 /**
  * A Test class to test all the methods in {@link SessionController} to make
