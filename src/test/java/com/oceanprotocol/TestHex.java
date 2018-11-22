@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
+import com.oceanprotocol.crypto.Hex;
+
 public class TestHex {
 
 	@Test public void testHexVal() {

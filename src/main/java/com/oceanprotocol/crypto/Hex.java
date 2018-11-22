@@ -1,4 +1,4 @@
-package com.oceanprotocol;
+package com.oceanprotocol.crypto;
 
 /**
  * Utility class for hexadecimal strings

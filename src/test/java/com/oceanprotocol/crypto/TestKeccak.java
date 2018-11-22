@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.oceanprotocol.Hex;
 import com.oceanprotocol.crypto.Hash;
 
 public class TestKeccak {
