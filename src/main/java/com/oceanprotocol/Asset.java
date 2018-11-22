@@ -26,7 +26,7 @@ public class Asset {
 	}
 	
 
-	public Map<String, JSONObject> getMetadata() {
+	public JSONObject getMetadata() {
 		return metadata;
 	}
 
