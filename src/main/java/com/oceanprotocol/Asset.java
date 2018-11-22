@@ -1,5 +1,8 @@
 /**
-  * Represents an asset on the Ocean Network.
+  * Represents an Asset on the Ocean Network.
+  * 
+  * Assets are defined by JSON metadata, and the Asset ID is the keccak256 hash of the metadata
+  * as encoded in UTF-8.
   */
 package com.oceanprotocol;
 
@@ -13,30 +16,36 @@ public class Asset {
 	 * pair
 	 */
 
-	private Map<String, JSONObject> oceanResponse;
+	private JSONObject metadata=null;
+	private final String metadataString;
+	private final String id;
 	
-	public Asset(){}
-
-	/**
-	 * Construct the oceanResponse with Hash map for further use.
-	 */
-	public Asset(Map<String, JSONObject> result){
-		this.oceanResponse =result;
+	private Asset(String meta){
+		this.metadataString=meta;
+		this.id="TODO-Keccak-Hash:"+super.toString();
 	}
-
 	
 
-	public Map<String, JSONObject> getOceanResponse() {
-		return oceanResponse;
-	}
-
-	public void setOceanResponse(Map<String, JSONObject> oceanResponse) {
-		this.oceanResponse = oceanResponse;
+	public Map<String, JSONObject> getMetadata() {
+		return metadata;
 	}
 
 	@Override
 	public String toString() {
-		return "Asset [oceanResponse=" + oceanResponse + "]";
+		return getID();
+	}
+
+	private String getID() {
+		return id;
+	}
+
+
+	/**
+	 * Gets the metadata for this asset as a String
+	 * @return
+	 */
+	public String getMetadataString() {
+		return metadataString;
 	}
 
 }
