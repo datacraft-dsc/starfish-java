@@ -12,8 +12,14 @@ import org.json.simple.JSONObject;
  */
 public class Agent {
 
+	private final String did;
+	
 	private JSONObject ddo;
 
+	private Agent(String did) {
+		this.did=did;
+	}
+	
 	/**
 	 * Gets the cached DDO for the agent
 	 * Fetches the latest DDO from Universal Resolver if not cached
@@ -31,6 +37,6 @@ public class Agent {
 	 * @return
 	 */
 	public JSONObject refreshDDO() {
-		throw new UnsupportedOperationException("Not yet implemented");
+		return Ocean.getDDO(did);
 	}
 }
