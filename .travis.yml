@@ -2,3 +2,11 @@ language: java
 install: true
 script:
 - mvn install
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: bash scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
+  on:
+    tags: false
+    repo: DEX-Company/starfish-java
+    all_branches: true
