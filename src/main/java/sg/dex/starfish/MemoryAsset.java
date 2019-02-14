@@ -24,23 +24,23 @@ import sg.dex.crypto.Hex;
  * @author Mike
  *
  */
-public class LocalAsset extends ADataAsset {
+public class MemoryAsset extends ADataAsset {
 	private final String metadataString;
 	private final String id;
 	private byte[] data;
 	
-	private LocalAsset(String meta, byte[] data){
+	private MemoryAsset(String meta, byte[] data){
 		this.metadataString=meta;
 		this.id=Hex.toString(Hash.keccak256(getMetadataString()));
 		this.data=data;
 	}
 	
-	public static LocalAsset create(byte[] data) {
+	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data),data);
 	}
 	
-	private static LocalAsset create(String meta, byte[] data) {
-		return new LocalAsset(meta,data);
+	private static MemoryAsset create(String meta, byte[] data) {
+		return new MemoryAsset(meta,data);
 	}
 
 	/**
