@@ -9,7 +9,7 @@ import sg.dex.starfish.impl.MemoryAgent;
 public class TestMemoryAgent {
 	@Test 
 	public void testAssetStorage() {
-		DID did=DID.parse(Utils.createRandomDID());
+		DID did=DID.parse(Utils.createRandomDIDString());
 		MemoryAgent ma=MemoryAgent.create(did);
 		assertEquals(did,ma.getDID());
 	}
