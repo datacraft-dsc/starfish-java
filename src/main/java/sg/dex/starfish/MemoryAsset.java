@@ -8,6 +8,7 @@ package sg.dex.starfish;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,7 +37,11 @@ public class MemoryAsset extends ADataAsset {
 	}
 	
 	public static MemoryAsset create(byte[] data) {
-		return create(buildMetaData(data),data);
+		return create(buildMetaData(data,null),data);
+	}
+	
+	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
+		return create(buildMetaData(data,meta),data);
 	}
 	
 	private static MemoryAsset create(String meta, byte[] data) {
@@ -49,9 +54,15 @@ public class MemoryAsset extends ADataAsset {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private static String buildMetaData(byte[] data) {
+	private static String buildMetaData(byte[] data,Map<Object,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
 		JSONObject ob=new JSONObject();
+		if (meta!=null) {
+			for (Map.Entry<Object,Object> me:meta.entrySet()) {
+				ob.put(me.getKey(), me.getValue());
+			}
+		}
+		
 		ob.put("contentHash", hash);
 		ob.put("size", Integer.toString(data.length));
 		return ob.toJSONString();
