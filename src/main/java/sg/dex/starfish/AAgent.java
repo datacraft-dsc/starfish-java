@@ -20,6 +20,10 @@ public class AAgent implements Agent {
 		this.did=did;
 	}
 	
+	@Override public String getDID() {
+		return did;
+	}
+	
 	@Override
 	public JSONObject getDDO() {
 		if (ddo==null) {

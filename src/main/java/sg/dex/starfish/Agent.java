@@ -15,4 +15,8 @@ public interface Agent {
 	 */
 	public JSONObject getDDO();
 
+	/**
+	 * Gets the DID for an Agent
+	 */
+	public String getDID();
 }
