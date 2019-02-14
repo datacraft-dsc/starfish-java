@@ -2,6 +2,7 @@ package sg.dex.starfish;
 
 import static org.junit.Assert.assertEquals;
 
+import org.json.simple.JSONObject;
 import org.junit.Test;
 
 public class TestMemoryAsset {
@@ -10,5 +11,7 @@ public class TestMemoryAsset {
 		
 		MemoryAsset a=MemoryAsset.create(data);
 		assertEquals(10,a.getSize());
+		JSONObject meta=a.getMetadata();
+		assertEquals("10",meta.get("size"));
 	}
 }
