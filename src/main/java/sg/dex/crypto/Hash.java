@@ -41,4 +41,12 @@ public class Hash {
 		return keccak256(string.getBytes(StandardCharsets.UTF_8));
 	}
 
+	public static String keccak256String(String string) {
+		return Hex.toString(keccak256(string));
+	}
+	
+	public static String keccak256String(byte[] data) {
+		return Hex.toString(keccak256(data));
+	}
+
 }
