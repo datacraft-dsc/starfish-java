@@ -3,6 +3,11 @@ package sg.dex.starfish;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class representing a valid W3C DID
+ * @author Mike
+ *
+ */
 public class DID {
 	private static final String METHOD_REGEX="([a-z]+)";
 	private static final String ID_REGEX="([a-zA-z0-9\\\\d._]+)?";
