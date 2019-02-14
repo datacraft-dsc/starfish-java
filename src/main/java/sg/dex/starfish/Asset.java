@@ -10,6 +10,11 @@ import org.json.simple.JSONObject;
 public interface Asset {
 
 	/**
+	 * Gets the ID of the asset as a 64 character hex string
+	 */
+	public String getAssetID();
+	
+	/**
 	 * Gets the JSON metadata for this asset
 	 * @return
 	 */

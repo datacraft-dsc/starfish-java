@@ -7,4 +7,8 @@ package sg.dex.starfish;
  */
 public abstract class AAsset implements Asset {
 
+	@Override
+	public String toString() {
+		return getAssetID();
+	}
 }

@@ -35,11 +35,7 @@ public class LocalAsset extends ADataAsset {
 	}
 
 	@Override
-	public String toString() {
-		return getID();
-	}
-
-	private String getID() {
+	public String getAssetID() {
 		return id;
 	}
 
