@@ -10,13 +10,13 @@ import org.json.simple.JSONObject;
  * @author Mike
  *
  */
-public class Agent {
+public class AAgent {
 
 	private final String did;
 	
 	private JSONObject ddo;
 
-	private Agent(String did) {
+	private AAgent(String did) {
 		this.did=did;
 	}
 	

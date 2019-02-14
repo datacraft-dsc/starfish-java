@@ -5,6 +5,6 @@ package sg.dex.starfish;
  * @author Mike
  *
  */
-public abstract class Listing {
+public abstract class AListing {
 
 }

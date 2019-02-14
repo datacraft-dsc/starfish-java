@@ -6,21 +6,15 @@
   */
 package sg.dex.starfish;
 
-import java.util.Map;
-
 import org.json.simple.JSONObject;
 
-public class Asset {
-	/**
-	 * {@link Map} to save the response from the ocean network as a key value
-	 * pair
-	 */
+public class AAsset {
 
 	private JSONObject metadata=null;
 	private final String metadataString;
 	private final String id;
 	
-	private Asset(String meta){
+	private AAsset(String meta){
 		this.metadataString=meta;
 		this.id="TODO-Keccak-Hash:"+super.toString();
 	}
