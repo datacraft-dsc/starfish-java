@@ -20,11 +20,7 @@ public class AAgent implements Agent {
 		this.did=did;
 	}
 	
-	/**
-	 * Gets the cached DDO for the agent
-	 * Fetches the latest DDO from Universal Resolver if not cached
-	 * @return
-	 */
+	@Override
 	public JSONObject getDDO() {
 		if (ddo==null) {
 			ddo=refreshDDO();
