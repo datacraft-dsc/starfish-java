@@ -6,9 +6,12 @@
   */
 package sg.dex.starfish;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import sg.dex.crypto.Hash;
 import sg.dex.crypto.Hex;
@@ -22,19 +25,46 @@ import sg.dex.crypto.Hex;
  *
  */
 public class LocalAsset extends ADataAsset {
-
-	private JSONObject metadata=null;
 	private final String metadataString;
 	private final String id;
+	private byte[] data;
 	
-	private LocalAsset(String meta){
+	private LocalAsset(String meta, byte[] data){
 		this.metadataString=meta;
 		this.id=Hex.toString(Hash.keccak256(getMetadataString()));
+		this.data=data;
 	}
 	
+	public static LocalAsset create(byte[] data) {
+		return create(buildMetaData(data),data);
+	}
+	
+	private static LocalAsset create(String meta, byte[] data) {
+		return new LocalAsset(meta,data);
+	}
+
+	/**
+	 * Build default metadata for a local asset
+	 * @param data
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private static String buildMetaData(byte[] data) {
+		String hash=Hex.toString(Hash.keccak256(data));
+		JSONObject ob=new JSONObject();
+		ob.put("contentHash", hash);
+		ob.put("size", Integer.toString(data.length));
+		return ob.toJSONString();
+	}
+
 	@Override
 	public JSONObject getMetadata() {
-		return metadata;
+		JSONParser parser=new JSONParser();
+		try {
+			return (JSONObject) parser.parse(metadataString);
+		} catch (ParseException e) {
+			throw new Error("Error in JSON parson",e);
+		}
 	}
 
 	@Override
@@ -57,7 +87,7 @@ public class LocalAsset extends ADataAsset {
 
 	@Override
 	public InputStream getInputStream() {
-		throw new UnsupportedOperationException();
+		return new ByteArrayInputStream(data);
 	}
 
 }
