@@ -1,5 +1,7 @@
 package sg.dex.starfish;
 
+import java.io.InputStream;
+
 /**
  * Interface representing a data asset
  * 
@@ -12,4 +14,12 @@ public interface DataAsset extends Asset {
 	public default boolean isDataAsset() {
 		return true;
 	}
+	
+	/**
+	 * Gets an input stream that can be used to consume the content of this asset.
+	 * 
+	 * Will throw an exception if consumption of the asset data in not possible locally.
+	 * @return
+	 */
+	public InputStream getInputStream();
 }

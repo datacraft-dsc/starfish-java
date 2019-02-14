@@ -6,6 +6,8 @@
   */
 package sg.dex.starfish;
 
+import java.io.InputStream;
+
 import org.json.simple.JSONObject;
 
 /**
@@ -52,6 +54,11 @@ public class LocalAsset extends ADataAsset {
 	@Override
 	public boolean isDataAsset() {
 		return true;
+	}
+
+	@Override
+	public InputStream getInputStream() {
+		throw new UnsupportedOperationException();
 	}
 
 }
