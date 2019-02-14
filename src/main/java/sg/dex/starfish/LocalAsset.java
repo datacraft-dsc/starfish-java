@@ -10,6 +10,9 @@ import java.io.InputStream;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.crypto.Hash;
+import sg.dex.crypto.Hex;
+
 /**
  * Class representing a local in-memory asset.
  * 
@@ -26,7 +29,7 @@ public class LocalAsset extends ADataAsset {
 	
 	private LocalAsset(String meta){
 		this.metadataString=meta;
-		this.id="TODO-Keccak-Hash:"+super.toString();
+		this.id=Hex.toString(Hash.keccak256(getMetadataString()));
 	}
 	
 	@Override
