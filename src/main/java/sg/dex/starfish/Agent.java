@@ -18,7 +18,7 @@ public interface Agent {
 	/**
 	 * Gets the DID for an Agent
 	 */
-	public String getDID();
+	public DID getDID();
 	
 	/**
 	 * Registers asset with this agent.

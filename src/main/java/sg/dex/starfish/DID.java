@@ -84,5 +84,29 @@ public class DID {
 		
 		return sb.toString();
 	}
+	
+	@Override 
+	public boolean equals(Object o) {
+		if (!(o instanceof DID)) return false;
+		return equals((DID)o);
+	}
+	
+	public boolean equals(DID d) {
+		if (!method.equals(d.method)) return false;
+		if (!id.equals(d.id)) return false;
+		if (!Utils.equals(path,d.path)) return false;
+		if (!Utils.equals(fragment,d.fragment)) return false;
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		int h=0;
+		h+=method.hashCode();
+		h+=13*id.hashCode();
+		h+=53*Utils.hashCode(path);
+		h+=101*Utils.hashCode(path);
+		return h;
+	}
 
 }

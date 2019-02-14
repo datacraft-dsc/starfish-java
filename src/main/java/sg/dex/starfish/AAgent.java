@@ -12,15 +12,19 @@ import org.json.simple.JSONObject;
  */
 public abstract class AAgent implements Agent {
 
-	private final String did;
+	protected final DID did;
 	
 	private JSONObject ddo;
 
 	protected AAgent(String did) {
-		this.did=did;
+		this.did=DID.parse(did);
 	}
 	
-	@Override public String getDID() {
+	public AAgent(DID did) {
+		this.did=did;
+	}
+
+	@Override public DID getDID() {
 		return did;
 	}
 	

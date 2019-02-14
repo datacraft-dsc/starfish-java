@@ -20,7 +20,17 @@ public class Utils {
 		SecureRandom sr=new SecureRandom();
 		byte[] bytes=new byte[Utils.DID_LENGTH];
 		sr.nextBytes(bytes);
-		return Hex.toString(bytes);
+		return "did:ocn:"+Hex.toString(bytes);
+	}
+	
+	public static boolean equals(Object a, Object b) {
+		if (a==null) return b==null;
+		return a.equals(b);
+	}
+
+	public static int hashCode(Object o) {
+		if (o==null) return 0;
+		return o.hashCode();
 	}
 
 }
