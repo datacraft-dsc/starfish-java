@@ -8,7 +8,7 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
-public class AAsset {
+public class AAsset implements Asset {
 
 	private JSONObject metadata=null;
 	private final String metadataString;
