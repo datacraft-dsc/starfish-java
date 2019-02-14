@@ -8,6 +8,14 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Class representing a local in-memory asset.
+ * 
+ * Intended for use in testing or local development situations.
+ * 
+ * @author Mike
+ *
+ */
 public class LocalAsset extends ADataAsset {
 
 	private JSONObject metadata=null;
@@ -32,7 +40,6 @@ public class LocalAsset extends ADataAsset {
 	private String getID() {
 		return id;
 	}
-
 
 	/**
 	 * Gets the metadata for this asset as a String
