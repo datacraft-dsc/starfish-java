@@ -1,4 +1,4 @@
-# ocean-java - Ocean Protocol Client API for Java
+# starfish-java - Ocean Protocol Toolkit for Java
 
 Ocean protocol client API used for connecting to ocean protocol using Java.
 
@@ -29,8 +29,8 @@ mvn install
 ### Dependency
 ```
 <dependency>
-	<groupId>com.com.oceanprotocol</groupId>
-	<artifactId>ocean-java</artifactId>
+	<groupId>sg.dex</groupId>
+	<artifactId>starfish-java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </dependency>
 
