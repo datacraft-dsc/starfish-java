@@ -11,8 +11,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import sg.dex.crypto.Hash;
 import sg.dex.crypto.Hex;
@@ -26,13 +24,11 @@ import sg.dex.crypto.Hex;
  *
  */
 public class MemoryAsset extends ADataAsset {
-	private final String metadataString;
-	private final String id;
+
 	private byte[] data;
 	
 	private MemoryAsset(String meta, byte[] data){
-		this.metadataString=meta;
-		this.id=Hex.toString(Hash.keccak256(getMetadataString()));
+		super(meta);
 		this.data=data;
 	}
 	
@@ -68,28 +64,6 @@ public class MemoryAsset extends ADataAsset {
 		return ob.toJSONString();
 	}
 
-	@Override
-	public JSONObject getMetadata() {
-		JSONParser parser=new JSONParser();
-		try {
-			return (JSONObject) parser.parse(metadataString);
-		} catch (ParseException e) {
-			throw new Error("Error in JSON parson",e);
-		}
-	}
-
-	@Override
-	public String getAssetID() {
-		return id;
-	}
-
-	/**
-	 * Gets the metadata for this asset as a String
-	 * @return
-	 */
-	public String getMetadataString() {
-		return metadataString;
-	}
 
 	@Override
 	public boolean isDataAsset() {
