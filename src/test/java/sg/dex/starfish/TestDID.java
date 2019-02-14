@@ -1,7 +1,9 @@
 package sg.dex.starfish;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -24,6 +26,12 @@ public class TestDID {
 		assertNull(d1.getFragment());
 	}
 	
+	@Test public void testValidDID() {
+		assertTrue(DID.isValidDID("did:ocn:1234/foo/bar"));
+		assertFalse(DID.isValidDID("nonsense:ocn:1234"));
+		assertFalse(DID.isValidDID("did:OCN:1234"));
+	}
+
 	@Test public void testParseFragment() {
 		DID d1=DID.parse("did:ocn:1234#bar");
 		assertEquals("did",d1.getScheme());

@@ -22,6 +22,11 @@ public class DID {
 		this.fragment=fragment;
 	}
 	
+	public static boolean isValidDID(String did) {
+		Matcher m = DID_PATTERN.matcher(did);
+		return m.matches();
+	}
+	
 	public static DID parse(String did) {
 		Matcher m = DID_PATTERN.matcher(did);
 		if (m.matches()) {
