@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
  * @author Mike
  *
  */
-public class AAgent implements Agent {
+public abstract class AAgent implements Agent {
 
 	private final String did;
 	
