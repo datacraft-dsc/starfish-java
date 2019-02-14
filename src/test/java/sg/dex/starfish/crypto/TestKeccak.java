@@ -1,4 +1,4 @@
-package com.oceanprotocol.crypto;
+package sg.dex.starfish.crypto;
 
 import static org.junit.Assert.assertEquals;
 

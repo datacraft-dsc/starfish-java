@@ -1,4 +1,4 @@
-package com.oceanprotocol;
+package sg.dex.starfish;
 
 import static org.junit.Assert.*;
 
