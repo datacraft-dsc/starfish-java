@@ -25,4 +25,10 @@ public interface Agent {
 	 * The agent must support metadata storage.
 	 */
 	public void registerAsset(Asset a);
+	
+	/**
+	 * Gets an asset for the given asset ID from this agent.
+	 * Returns null if the asset ID does not exist.
+	 */
+	public Asset getAsset(String id);
 }

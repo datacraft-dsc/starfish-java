@@ -26,6 +26,10 @@ public class TestDID {
 		assertNull(d1.getFragment());
 	}
 	
+	@Test public void testRandomDID() {
+		DID.parse(Utils.createRandomDIDString());
+	}
+	
 	@Test public void testFullDID() {
 		DID d1=DID.parse("did:ocn:1234/foo/bar#fragment");
 		assertEquals("did",d1.getScheme());

@@ -21,9 +21,18 @@ public class MemoryAgent extends AAgent {
 	public static MemoryAgent create(DID did) {
 		return new MemoryAgent(did);
 	}
+	
+	public static MemoryAgent create(String did) {
+		return new MemoryAgent(did);
+	}
 
 	@Override
 	public void registerAsset(Asset a) {
 		assetStore.put(a.getAssetID(),a);
+	}
+
+	@Override
+	public Asset getAsset(String id) {
+		return assetStore.get(id);
 	}
 }
