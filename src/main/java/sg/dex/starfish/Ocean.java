@@ -22,6 +22,15 @@ public class Ocean {
 	 * @return
 	 */
 	public static JSONObject getDDO(String did) {
+		return getDDO(DID.parse(did));
+	}
+	
+	/**
+	 * Gets a DDO for a specified DID via the Universal resolver
+	 * @param did
+	 * @return
+	 */
+	public static JSONObject getDDO(DID did) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
