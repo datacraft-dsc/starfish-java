@@ -10,4 +10,13 @@ package sg.dex.starfish;
  */
 public interface Listing {
 
+	/**
+	 * Returns the asset associated with this listing.
+	 * 
+	 * The asset may not be available in some circumstances (e.g. lack of access permission)
+	 * in which case an exception will be thrown.
+	 * 
+	 * @return
+	 */
+	public Asset getAsset();
 }
