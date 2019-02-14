@@ -33,6 +33,10 @@ public class MemoryAsset extends ADataAsset {
 		this.data=data;
 	}
 	
+	public static Object create(String metadata) {
+		return new MemoryAsset(metadata,null);
+	}
+	
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
 	}
@@ -73,6 +77,7 @@ public class MemoryAsset extends ADataAsset {
 
 	@Override
 	public InputStream getInputStream() {
+		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}
 
@@ -80,5 +85,6 @@ public class MemoryAsset extends ADataAsset {
 	public long getSize() {
 		return data.length;
 	}
+
 
 }

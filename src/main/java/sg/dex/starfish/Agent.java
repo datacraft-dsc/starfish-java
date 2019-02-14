@@ -21,8 +21,8 @@ public interface Agent {
 	public String getDID();
 	
 	/**
-	 * Registers asset metadata with this agent.
+	 * Registers asset with this agent.
 	 * The agent must support metadata storage.
 	 */
-	public Asset registerAsset(String metadata);
+	public void registerAsset(Asset a);
 }

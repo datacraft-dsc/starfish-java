@@ -16,7 +16,7 @@ public abstract class AAgent implements Agent {
 	
 	private JSONObject ddo;
 
-	private AAgent(String did) {
+	protected AAgent(String did) {
 		this.did=did;
 	}
 	
