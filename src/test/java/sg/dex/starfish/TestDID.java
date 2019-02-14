@@ -26,6 +26,15 @@ public class TestDID {
 		assertNull(d1.getFragment());
 	}
 	
+	@Test public void testFullDID() {
+		DID d1=DID.parse("did:ocn:1234/foo/bar#fragment");
+		assertEquals("did",d1.getScheme());
+		assertEquals("ocn",d1.getMethod());
+		assertEquals("1234",d1.getID());
+		assertEquals("foo/bar",d1.getPath());
+		assertEquals("fragment",d1.getFragment());
+	}
+	
 	@Test public void testValidDID() {
 		assertTrue(DID.isValidDID("did:ocn:1234/foo/bar"));
 		assertFalse(DID.isValidDID("nonsense:ocn:1234"));
