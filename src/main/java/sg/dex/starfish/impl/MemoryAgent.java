@@ -9,8 +9,12 @@ public class MemoryAgent extends AAgent {
 
 	private HashMap<String,Asset> assetStore=new HashMap<String,Asset>();
 
-	protected MemoryAgent(String did) {
+	private MemoryAgent(String did) {
 		super(did);
+	}
+	
+	public static MemoryAgent create(String did) {
+		return new MemoryAgent(did);
 	}
 
 	@Override
