@@ -90,4 +90,9 @@ public class MemoryAsset extends ADataAsset {
 		return new ByteArrayInputStream(data);
 	}
 
+	@Override
+	public long getSize() {
+		return data.length;
+	}
+
 }
