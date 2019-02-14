@@ -4,7 +4,7 @@
   * Assets are defined by JSON metadata, and the Asset ID is the keccak256 hash of the metadata
   * as encoded in UTF-8.
   */
-package sg.dex.starfish;
+package sg.dex.starfish.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
 import sg.dex.crypto.Hex;
+import sg.dex.starfish.ADataAsset;
 
 /**
  * Class representing a local in-memory asset.
