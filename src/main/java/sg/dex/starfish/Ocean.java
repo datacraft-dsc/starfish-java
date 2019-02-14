@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
  */
 public class Ocean {
 	/**
-	 * Creat an instance of an Ocean object with the provided configuration
+	 * Create an instance of an Ocean object with the provided configuration
 	 */
 	public static Ocean connect() {
 		return new Ocean();
