@@ -1,5 +1,7 @@
 language: java
 install: true
+addons:
+  ssh_known_hosts: shrimp.octet.services
 script:
 - mvn install
 deploy:
