@@ -9,7 +9,7 @@ package sg.dex.crypto;
 public class Hex {
 	/**
 	 * Converts an int value in the range 0..15 to a hexadecimal character
-	 * @param value
+	 * @param value Integer value to convert
 	 * @return char
 	 */
 	public static char toChar(int value) {
@@ -39,8 +39,8 @@ public class Hex {
 	}
 
 	/**
-	 * Gets the value of a single hex car e.g. hexVal('c') => 12
-	 * @param c
+	 * Gets the value of a single hex car e.g. val('c') =&gt; 12
+	 * @param c Character to convert
 	 * @return int
 	 */
 	public static int val(char c) {

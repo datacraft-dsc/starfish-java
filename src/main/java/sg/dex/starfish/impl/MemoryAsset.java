@@ -1,6 +1,6 @@
 /**
   * Represents an Asset on the Ocean Network.
-  * 
+  *
   * Assets are defined by JSON metadata, and the Asset ID is the keccak256 hash of the metadata
   * as encoded in UTF-8.
   */
@@ -18,40 +18,40 @@ import sg.dex.starfish.ADataAsset;
 
 /**
  * Class representing a local in-memory asset.
- * 
+ *
  * Intended for use in testing or local development situations.
- * 
+ *
  * @author Mike
  *
  */
 public class MemoryAsset extends ADataAsset {
 
 	private byte[] data;
-	
+
 	private MemoryAsset(String meta, byte[] data){
 		super(meta);
 		this.data=data;
 	}
-	
+
 	public static Object create(String metadata) {
 		return new MemoryAsset(metadata,null);
 	}
-	
+
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
 	}
-	
+
 	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
 	}
-	
+
 	private static MemoryAsset create(String meta, byte[] data) {
 		return new MemoryAsset(meta,data);
 	}
 
 	/**
 	 * Build default metadata for a local asset
-	 * @param data
+	 * @param data Asset data
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -63,7 +63,7 @@ public class MemoryAsset extends ADataAsset {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
-		
+
 		ob.put("contentHash", hash);
 		ob.put("size", Integer.toString(data.length));
 		return ob.toJSONString();

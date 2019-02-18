@@ -18,7 +18,7 @@ public class Ocean {
 
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
-	 * @param did
+	 * @param did DID to resolve
 	 * @return JSONObject
 	 */
 	public static JSONObject getDDO(String did) {
@@ -27,7 +27,7 @@ public class Ocean {
 
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
-	 * @param did
+	 * @param did DID to resolve
 	 * @return JSONObject
 	 */
 	public static JSONObject getDDO(DID did) {

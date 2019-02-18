@@ -12,9 +12,9 @@ import org.bouncycastle.jcajce.provider.digest.Keccak;
 public class Hash {
 	/**
 	 * Compute Keccak256 hash of byte array segment
-	 * @param data
-	 * @param offset
-	 * @param length
+	 * @param data   Input data
+	 * @param offset Start offset in the array
+	 * @param length Length of bytes to compute
 	 * @return byte[]
 	 */
     public static byte[] keccak256(byte[] data, int offset, int length) {
@@ -25,7 +25,7 @@ public class Hash {
 
 	/**
 	 * Compute Keccak256 hash of byte array
-	 * @param data
+	 * @param data  Input data
 	 * @return byte[]
 	 */
 	public static byte[] keccak256(byte[] data) {
@@ -34,7 +34,7 @@ public class Hash {
 
 	/**
 	 * Compute Keccak256 hash of string, with UTF-8 encoding
-	 * @param string
+	 * @param string  Input string
 	 * @return byte[]
 	 */
 	public static byte[] keccak256(String string) {

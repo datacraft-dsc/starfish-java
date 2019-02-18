@@ -29,8 +29,8 @@ public class Utils {
 
 	/**
 	 * Compares to objects for equality. null is considered equal to null.
-	 * @param a
-	 * @param b
+	 * @param a First object
+	 * @param b Second object
 	 * @return boolean
 	 */
 	public static boolean equals(Object a, Object b) {
@@ -40,7 +40,7 @@ public class Utils {
 
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
-	 * @param o
+	 * @param o Object for which to compute the hashcode
 	 * @return int
 	 */
 	public static int hashCode(Object o) {

@@ -41,7 +41,7 @@ public class AssetBundle extends AAsset {
 
 	/**
 	 * Gets an asset contained within this bundle
-	 * @param path
+	 * @param path   Path to the asset
 	 * @return Asset
 	 */
 	public Asset getContent(String path) {
