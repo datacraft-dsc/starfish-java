@@ -4,7 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class representing a valid W3C DID
+ * Class representing a valid W3C DID 
+ * See: https://w3c-ccg.github.io/did-spec/
+ * 
  * @author Mike
  *
  */
