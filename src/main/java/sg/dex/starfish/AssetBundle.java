@@ -21,7 +21,7 @@ public class AssetBundle extends AAsset {
 	public boolean isDataAsset() {
 		return false;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<String> getContentIDs() {
 		JSONObject meta=getMetadata();
@@ -42,7 +42,7 @@ public class AssetBundle extends AAsset {
 	/**
 	 * Gets an asset contained within this bundle
 	 * @param path
-	 * @return
+	 * @return Asset
 	 */
 	public Asset getContent(String path) {
 		throw new UnsupportedOperationException();

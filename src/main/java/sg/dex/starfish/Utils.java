@@ -18,7 +18,7 @@ public class Utils {
 
 	/**
 	 * Creates a random Ocean-compliant DID as a string
-	 * @return
+	 * @return String
 	 */
 	public static String createRandomDIDString() {
 		SecureRandom sr=new SecureRandom();
@@ -26,12 +26,12 @@ public class Utils {
 		sr.nextBytes(bytes);
 		return "did:ocn:"+Hex.toString(bytes);
 	}
-	
+
 	/**
 	 * Compares to objects for equality. null is considered equal to null.
 	 * @param a
 	 * @param b
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean equals(Object a, Object b) {
 		if (a==null) return b==null;
@@ -41,7 +41,7 @@ public class Utils {
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
 	 * @param o
-	 * @return
+	 * @return int
 	 */
 	public static int hashCode(Object o) {
 		if (o==null) return 0;

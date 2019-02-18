@@ -2,7 +2,7 @@
 
 # package docs and deploy
 
-DOC_PATH='./target/site/apidocs/'
+DOC_PATH='./target/site/'
 # FIXME get version from mvn
 VERSION="0.0.1-SNAPSHOT"
 # FIXME get project name from mvn
@@ -30,10 +30,11 @@ fi
 echo "building docs package $PACKAGE_NAME"
 
 # make the docs from source
+rm -rf target/site
 mvn site
 
 # package into a tar.gz file for deployment
-(cd "$DOC_PATH"; tar -czf "../../../$DEPLOY_FILENAME" ./)
+(cd "$DOC_PATH"; tar -czf "../../$DEPLOY_FILENAME" ./)
 
 if [ ! -z "$DEPLOY_SERVER" ]; then
     DEPLOY_BUILD_URL="http://${DEPLOY_SERVER}/docs_build"

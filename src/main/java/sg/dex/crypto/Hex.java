@@ -2,7 +2,7 @@ package sg.dex.crypto;
 
 /**
  * Utility class for hexadecimal strings
- * 
+ *
  * @author Mike
  *
  */
@@ -10,7 +10,7 @@ public class Hex {
 	/**
 	 * Converts an int value in the range 0..15 to a hexadecimal character
 	 * @param value
-	 * @return
+	 * @return char
 	 */
 	public static char toChar(int value) {
 		if (value>=0) {
@@ -19,29 +19,29 @@ public class Hex {
 		}
 		throw new IllegalArgumentException("Invalid value for hex char: "+value);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param hex String containing Hex digits
-	 * @return
+	 * @return byte[]
 	 */
 	public static byte[] toBytes(String hex) {
 		int length=hex.length();
 		int n=length/2;
 		if (n*2!=length) throw new Error("Hex string must have even length: "+length);
 		byte[] result=new byte[n];
-		
+
 		for (int i=0; i<n; i++) {
 			result[i]=(byte)(Hex.val(hex.charAt(2*i))*16+Hex.val(hex.charAt(2*i+1)));
 		}
-		
+
 		return result;
 	}
 
 	/**
 	 * Gets the value of a single hex car e.g. hexVal('c') => 12
 	 * @param c
-	 * @return
+	 * @return int
 	 */
 	public static int val(char c) {
 		int v=(int)c;
@@ -52,11 +52,11 @@ public class Hex {
 		}
 		throw new Error("Invalid hex char ["+c+"] = "+(int)c);
 	}
-	
+
 	/**
 	 * Converts a byte array of length N to a hex string of length 2N
 	 * @param data Array of bytes
-	 * @return
+	 * @return String
 	 */
 	public static String toString(byte[] data) {
 		return toString(data,0,data.length);
@@ -65,7 +65,7 @@ public class Hex {
 	/**
 	 * Converts a byte array of length N to a hex string of length 2N
 	 * @param data Array of bytes
-	 * @return
+	 * @return String
 	 */
 	public static String toString(byte[] data, int offset, int length) {
 		char[] hex=new char[length*2];
