@@ -6,7 +6,7 @@ import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DID;
 import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Utils;
+import sg.dex.starfish.util.Utils;
 
 public class MemoryAgent extends AAgent {
 	/**

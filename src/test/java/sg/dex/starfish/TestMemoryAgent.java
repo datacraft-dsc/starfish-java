@@ -12,6 +12,7 @@ import org.junit.Test;
 import sg.dex.crypto.Hex;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.util.Utils;
 
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");

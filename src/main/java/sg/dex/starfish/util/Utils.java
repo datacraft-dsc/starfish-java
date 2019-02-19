@@ -1,4 +1,4 @@
-package sg.dex.starfish;
+package sg.dex.starfish.util;
 
 import java.security.SecureRandom;
 

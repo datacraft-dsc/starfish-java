@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import sg.dex.starfish.util.Utils;
+
 public class TestDID {
 	@Test public void testParse() {
 		DID d1=DID.parse("did:ocn:1234");
