@@ -16,8 +16,11 @@ public abstract class AAgent implements Agent {
 
 	private JSONObject ddo;
 
-	protected AAgent(String did) {
-		this.did=DID.parse(did);
+	private Ocean ocean;
+
+	protected AAgent(Ocean ocean, DID did) {
+		this.ocean=ocean;
+		this.did=did;
 	}
 
 	public AAgent(DID did) {
@@ -41,6 +44,6 @@ public abstract class AAgent implements Agent {
 	 * @return JSONObject
 	 */
 	public JSONObject refreshDDO() {
-		return Ocean.getDDO(did);
+		return ocean.getDDO(did);
 	}
 }

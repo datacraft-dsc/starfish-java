@@ -21,7 +21,7 @@ public class Ocean {
 	 * @param did DID to resolve
 	 * @return JSONObject
 	 */
-	public static JSONObject getDDO(String did) {
+	public JSONObject getDDO(String did) {
 		return getDDO(DID.parse(did));
 	}
 
@@ -30,7 +30,7 @@ public class Ocean {
 	 * @param did DID to resolve
 	 * @return JSONObject
 	 */
-	public static JSONObject getDDO(DID did) {
+	public JSONObject getDDO(DID did) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
