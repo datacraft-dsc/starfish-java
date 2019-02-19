@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,8 +30,13 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 
 	@Override
 	public InputStream getInputStream() {
-		// TODO Auto-generated method stub
-		return null;
+		URL url=getURL();
+		try {
+			return url.openStream();
+		}
+		catch (IOException e) {
+			throw new Error("Cannot open input stream for URL: "+url,e);
+		}
 	}
 
 	@Override
