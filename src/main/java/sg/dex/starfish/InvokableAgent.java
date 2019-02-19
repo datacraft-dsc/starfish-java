@@ -8,5 +8,11 @@ package sg.dex.starfish;
  */
 public interface InvokableAgent {
 
-	public Job invoke(Operation o, Asset... params);
+	/**
+	 * Invokes the specified operation on this agent
+	 * @param operation
+	 * @param params
+	 * @return A Job instance allowing access to the invoke job status and result
+	 */
+	public Job invoke(Operation operation, Asset... params);
 }

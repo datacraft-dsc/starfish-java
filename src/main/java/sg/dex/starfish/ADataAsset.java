@@ -14,6 +14,11 @@ public abstract class ADataAsset extends AAsset implements DataAsset {
 	public boolean isDataAsset() {
 		return true;
 	}
+	
+	@Override
+	public boolean isOperation() {
+		return false;
+	}
 
 	public abstract long getSize();
 

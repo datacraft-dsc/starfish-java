@@ -5,6 +5,10 @@ package sg.dex.starfish;
  * @author Mike
  *
  */
-public interface Operation {
+public interface Operation extends Asset {
 
+	@Override 
+	public default boolean isOperation() {
+		return true;
+	}
 }

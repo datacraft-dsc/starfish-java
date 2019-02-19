@@ -8,4 +8,15 @@ package sg.dex.starfish;
  */
 public interface Job {
 
+	/**
+	 * Returns true if the Job has been completed
+	 * @return
+	 */
+	public boolean isComplete();
+	
+	/**
+	 * Gets the result of the job as an Ocean asset
+	 * @return
+	 */
+	public Asset getResult();
 }

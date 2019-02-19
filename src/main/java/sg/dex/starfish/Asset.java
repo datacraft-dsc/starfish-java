@@ -27,6 +27,16 @@ public interface Asset {
 	 * @return boolean
 	 */
 	public boolean isDataAsset();
+	
+	/**
+	 * Returns this asset as a DataAsset.
+	 * 
+	 * Throws an exception if this asset is not a valid data asset
+	 * @return
+	 */
+	public default DataAsset asDataAsset() {
+		return (DataAsset)this;
+	}
 
 	/**
 	 * Returns the metadata for this asset as a String
@@ -41,14 +51,12 @@ public interface Asset {
 	public default byte[] getBytes() {
 		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
 	}
-	
+
 	/**
-	 * Returns this asset as a DataAsset.
+	 * Returns true if this asset is an operation, i.e. can be invoked on an
+	 * appropriate agent
 	 * 
-	 * Throws an exception if this asset is not a valid data asset
 	 * @return
 	 */
-	public default DataAsset asDataAsset() {
-		return (DataAsset)this;
-	}
+	public boolean isOperation();
 }

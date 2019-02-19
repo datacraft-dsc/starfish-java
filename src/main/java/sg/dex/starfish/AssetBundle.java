@@ -47,4 +47,9 @@ public class AssetBundle extends AAsset {
 	public Asset getContent(String path) {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public boolean isOperation() {
+		return false;
+	}
 }
