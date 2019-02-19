@@ -41,4 +41,14 @@ public interface Asset {
 	public default byte[] getBytes() {
 		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
 	}
+	
+	/**
+	 * Returns this asset as a DataAsset.
+	 * 
+	 * Throws an exception if this asset is not a valid data asset
+	 * @return
+	 */
+	public default DataAsset asDataAsset() {
+		return (DataAsset)this;
+	}
 }

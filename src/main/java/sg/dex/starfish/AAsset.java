@@ -51,7 +51,8 @@ public abstract class AAsset implements Asset {
 		return metadataString;
 	}
 
-
 	@Override
 	public abstract boolean isDataAsset();
+	
+
 }
