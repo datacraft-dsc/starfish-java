@@ -27,4 +27,10 @@ public interface Asset {
 	 * @return boolean
 	 */
 	public boolean isDataAsset();
+
+	/**
+	 * Returns the metadata for this asset as a String
+	 * @return
+	 */
+	public String getMetadataString();
 }

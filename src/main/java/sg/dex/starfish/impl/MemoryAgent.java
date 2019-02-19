@@ -6,9 +6,14 @@ import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DID;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Utils;
 
 public class MemoryAgent extends AAgent {
-
+	/**
+	 * The singleton default memory agent instance
+	 */
+	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+	
 	private HashMap<String,Asset> assetStore=new HashMap<String,Asset>();
 
 	private MemoryAgent(Ocean ocean,String did) {
@@ -23,6 +28,10 @@ public class MemoryAgent extends AAgent {
 		return new MemoryAgent(Ocean.connect(),did);
 	}
 	
+	public static MemoryAgent create() {
+		return new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+	}
+	
 	public static MemoryAgent create(String did) {
 		return new MemoryAgent(Ocean.connect(),did);
 	}
@@ -31,9 +40,26 @@ public class MemoryAgent extends AAgent {
 	public void registerAsset(Asset a) {
 		assetStore.put(a.getAssetID(),a);
 	}
+	
+	@Override
+	public Asset uploadAsset(Asset a) {
+		if (a instanceof MemoryAsset) {
+			return uploadAsset((MemoryAsset)a);
+		}
+		MemoryAsset ma=MemoryAsset.create(this,a);
+		registerAsset(a);
+		return ma;
+	}
+	
+	public Asset uploadAsset(MemoryAsset a) {
+		a=a.withAgent(this);
+		registerAsset(a);
+		return a;
+	}
 
 	@Override
 	public Asset getAsset(String id) {
 		return assetStore.get(id);
 	}
+
 }

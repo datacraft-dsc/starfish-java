@@ -31,4 +31,16 @@ public interface Agent {
 	 * Returns null if the asset ID does not exist.
 	 */
 	public Asset getAsset(String id);
+
+	/**
+	 * Uploads an asset to this agent.
+	 * 
+	 * Throws an exception if upload is not possible, with the following likely causes:
+	 * - The agent does not support uploads of this asset type / size
+	 * - The data for the asset cannot be accessed by the agent
+	 * 
+	 * @param a Asset to upload
+	 * @return Asset An asset stored on the agent if the upload is successful
+	 */
+	public Asset uploadAsset(Asset a);
 }

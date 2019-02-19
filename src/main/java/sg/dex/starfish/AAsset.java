@@ -15,8 +15,10 @@ import sg.dex.crypto.Hex;
 public abstract class AAsset implements Asset {
 	protected final String metadataString;
 	protected final String id;
+	protected final Agent agent;
 
-	protected AAsset(String meta) {
+	protected AAsset(Agent agent, String meta) {
+		this.agent=agent;
 		this.metadataString=meta;
 		this.id=Hex.toString(Hash.keccak256(meta));
 	}
@@ -44,6 +46,7 @@ public abstract class AAsset implements Asset {
 	 * Gets the metadata for this asset as a String
 	 * @return String
 	 */
+	@Override
 	public String getMetadataString() {
 		return metadataString;
 	}

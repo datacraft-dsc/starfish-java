@@ -3,7 +3,12 @@ package sg.dex.starfish;
 import java.io.InputStream;
 
 /**
- * Interface representing a data asset
+ * Interface representing a data asset.
+ * 
+ * A data asset is any asset that can be represented as an immutable sequence of bytes.
+ * As such, data assets offer the following properties:
+ * - They can be validated with a hash of the byte content
+ * - The byte representation of the data can be obtained (subject to appropriate permissions)
  *
  * @author Mike
  *
@@ -22,4 +27,6 @@ public interface DataAsset extends Asset {
 	 * @return InputStream
 	 */
 	public InputStream getInputStream();
+
+	public byte[] getBytes();
 }

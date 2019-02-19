@@ -13,8 +13,8 @@ import org.json.simple.JSONObject;
  */
 public class AssetBundle extends AAsset {
 
-	protected AssetBundle(String meta) {
-		super(meta);
+	protected AssetBundle(Agent agent, String meta) {
+		super(agent, meta);
 	}
 
 	@Override
