@@ -96,6 +96,12 @@ public class MemoryAsset extends ADataAsset {
 		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}
+	
+	@Override 
+	public byte[] getBytes() {
+		// we take a copy of data to protected immutability of MemoryAsset instance
+		return data.clone();
+	}
 
 	@Override
 	public long getSize() {
