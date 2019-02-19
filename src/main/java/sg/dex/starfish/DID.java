@@ -21,6 +21,7 @@ public class DID {
 	private final String id;
 	private final String path;
 	private final String fragment;
+	private String fullString=null;
 	
 	private DID(String method, String id, String path, String fragment) {
 		this.method=method;
@@ -41,7 +42,9 @@ public class DID {
 			String id=m.group(2);
 			String path=m.group(3);
 			String fragment=m.group(4);
-			return new DID(method,id,path,fragment);
+			DID newDID= new DID(method,id,path,fragment);
+			newDID.fullString=did;
+			return newDID;
 		} else {
 			throw new IllegalArgumentException("Parse failure on invalid DID ["+did+"]");
 		}
@@ -67,8 +70,7 @@ public class DID {
 		return fragment;
 	}
 
-	@Override
-	public String toString() {
+	private String createString() {
 		StringBuffer sb=new StringBuffer();
 		sb.append("did");
 		sb.append(':');
@@ -85,6 +87,12 @@ public class DID {
 		}
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public String toString() {
+		if (fullString==null) fullString=createString();
+		return fullString;
 	}
 	
 	@Override 
