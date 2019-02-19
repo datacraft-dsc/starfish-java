@@ -26,6 +26,18 @@ public class Utils {
 		sr.nextBytes(bytes);
 		return "did:ocn:"+Hex.toString(bytes);
 	}
+	
+	/**
+	 * Creates a random hex string of the specified length
+	 * @param length
+	 * @return
+	 */
+	public static String createRandomHexString(int length) {
+		SecureRandom sr=new SecureRandom();
+		byte[] bytes=new byte[length];
+		sr.nextBytes(bytes);
+		return Hex.toString(bytes);
+	}
 
 	/**
 	 * Compares to objects for equality. null is considered equal to null.
@@ -47,5 +59,6 @@ public class Utils {
 		if (o==null) return 0;
 		return o.hashCode();
 	}
+
 
 }

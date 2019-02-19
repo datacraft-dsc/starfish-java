@@ -20,6 +20,10 @@ public class FileAsset extends ADataAsset {
 		super(meta);
 		this.file=file;
 	}
+	
+	public static FileAsset create(File f) {
+		return new FileAsset("{}",f);
+	}
 
 	@Override
 	public InputStream getInputStream() {
@@ -39,5 +43,7 @@ public class FileAsset extends ADataAsset {
 	public File getFile() {
 		return file;
 	}
+
+
 
 }
