@@ -60,5 +60,16 @@ public class Utils {
 		return o.hashCode();
 	}
 
+	/**
+	 * Gets the class of an object, or null if the parameter is null
+	 * @param o
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Class<T> getClass(T o) {
+		if (o==null) return null;
+		return (Class<T>) o.getClass();
+	}
+
 
 }
