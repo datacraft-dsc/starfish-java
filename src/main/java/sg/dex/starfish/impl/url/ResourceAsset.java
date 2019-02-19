@@ -1,12 +1,13 @@
-package sg.dex.starfish.impl.file;
+package sg.dex.starfish.impl.url;
 
 import java.io.InputStream;
 
 import sg.dex.starfish.ADataAsset;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.util.TODOException;
 
 /**
- * Class exposing a Java resource as an Ocean asset
+ * Class exposing a Java resource referenced by a URL as an Ocean asset
  * 
  * @author Mike
  *
@@ -18,11 +19,16 @@ public class ResourceAsset extends ADataAsset {
 		super(meta);
 		this.name=name;
 	}
+	
+	public static Asset create(String meta, String resourcePath) {
+		return new ResourceAsset(meta,resourcePath);
+	}
 
 	@Override
 	public InputStream getInputStream() {
-		ClassLoader cl = this.getClass().getClassLoader();
-		return cl.getResourceAsStream(name);
+		InputStream istream= Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+		if (istream==null) throw new IllegalStateException("Resource does not exist on classpath: "+name);
+		return istream;
 	}
 
 	@Override
@@ -33,5 +39,7 @@ public class ResourceAsset extends ADataAsset {
 	public String getName() {
 		return name;
 	}
+
+
 
 }
