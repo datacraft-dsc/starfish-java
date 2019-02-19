@@ -9,12 +9,14 @@ import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 
-public class TestURLs {
+public class TestResources {
 
-	@Test public void testURLAsset() {
+	@Test public void testResourceAsset() {
 		Asset ua=ResourceAsset.create("{}","assets/hello.txt");
 		byte[] bs=ua.getBytes();
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);
+		
+		assertEquals("{}",ua.getMetadataString());
 	}
 }
