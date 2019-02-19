@@ -1,4 +1,4 @@
-package sg.dex.starfish.impl;
+package sg.dex.starfish.impl.memory;
 
 import java.util.HashMap;
 

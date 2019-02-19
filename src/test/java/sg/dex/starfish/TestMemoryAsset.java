@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import org.junit.Test;
 
 import sg.dex.crypto.Hash;
-import sg.dex.starfish.impl.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 
 public class TestMemoryAsset {
 	@Test public void testCreation() {

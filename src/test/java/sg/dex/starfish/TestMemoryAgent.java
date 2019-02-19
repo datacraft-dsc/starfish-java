@@ -10,8 +10,8 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import sg.dex.crypto.Hex;
-import sg.dex.starfish.impl.MemoryAgent;
-import sg.dex.starfish.impl.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryAgent;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
