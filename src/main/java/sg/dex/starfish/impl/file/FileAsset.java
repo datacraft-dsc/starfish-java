@@ -8,6 +8,12 @@ import java.io.InputStream;
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Agent;
 
+/**
+ * Class exposing a file on the local file system as an Ocean asset
+ * 
+ * @author Mike
+ *
+ */
 public class FileAsset extends ADataAsset {
 	private final File file;
 	

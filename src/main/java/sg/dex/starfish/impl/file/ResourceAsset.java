@@ -6,6 +6,12 @@ import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.util.TODOException;
 
+/**
+ * Class exposing a Java resource as an Ocean asset
+ * 
+ * @author Mike
+ *
+ */
 public class ResourceAsset extends ADataAsset {
 	private final String name;
 	
