@@ -24,7 +24,7 @@ public class RemoteAgent extends AAgent {
 
 	@Override
 	public Asset getAsset(String id) {
-		return RemoteAsset.create(this,id);
+		throw new TODOException();
 	}
 
 	@Override

@@ -5,15 +5,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.TODOException;
 
 public class RemoteAsset extends ADataAsset implements DataAsset {
 
-	protected RemoteAsset(Agent agent, String meta) {
-		super(agent, meta);
+	private final String urlString;
+	
+	protected RemoteAsset(String meta, String urlString) {
+		super(meta);
+		this.urlString=urlString;
+	}
+	
+	public static Asset create(String meta, String url) {
+		return new RemoteAsset(meta,url);
 	}
 
 	@Override
@@ -33,11 +39,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	}
 	
 	private String getURLString() {
-		return getRemoteAgent().getAssetURL(id);
-	}
-	
-	public RemoteAgent getRemoteAgent() {
-		return (RemoteAgent)agent;
+		return urlString;
 	}
 
 	public URL getURL() {
@@ -49,8 +51,5 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		}
 	}
 
-	public static Asset create(RemoteAgent remoteAgent, String id) {
-		return new RemoteAsset(remoteAgent,id);
-	}
 
 }

@@ -43,18 +43,9 @@ public class MemoryAgent extends AAgent {
 	
 	@Override
 	public Asset uploadAsset(Asset a) {
-		if (a instanceof MemoryAsset) {
-			return uploadAsset((MemoryAsset)a);
-		}
-		MemoryAsset ma=MemoryAsset.create(this,a);
-		registerAsset(a);
+		MemoryAsset ma=MemoryAsset.create(a);
+		registerAsset(ma);
 		return ma;
-	}
-	
-	public Asset uploadAsset(MemoryAsset a) {
-		a=a.withAgent(this);
-		registerAsset(a);
-		return a;
 	}
 
 	@Override

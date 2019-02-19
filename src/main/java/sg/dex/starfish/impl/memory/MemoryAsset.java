@@ -15,7 +15,6 @@ import org.json.simple.JSONObject;
 import sg.dex.crypto.Hash;
 import sg.dex.crypto.Hex;
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 
@@ -31,23 +30,23 @@ public class MemoryAsset extends ADataAsset {
 
 	private byte[] data;
 
-	private MemoryAsset(MemoryAgent agent, String meta, byte[] data){
-		super(agent, meta);
+	private MemoryAsset(String meta, byte[] data){
+		super(meta);
 		this.data=data;
 	}
 	
 	/**
-	 * Creates a new MemoryAsset for the given agent, using the content and metadata from the provided asset
+	 * Gets a MemoryAsset using the content and metadata from the provided asset
 	 * @param memoryAgent
 	 * @param a
 	 * @return
 	 */
-	public static MemoryAsset create(MemoryAgent agent, Asset a) {
+	public static MemoryAsset create(Asset a) {
 		if (a instanceof MemoryAsset) {
-			return ((MemoryAsset)a).withAgent(agent);
+			return (MemoryAsset)a;
 		} else if (a.isDataAsset()) {
 			byte[] data=((DataAsset)a).getBytes();
-			return new MemoryAsset(agent,a.getMetadataString(),data);
+			return new MemoryAsset(a.getMetadataString(),data);
 		} else {
 			throw new IllegalArgumentException("Asset must be a data asset");
 		}
@@ -62,7 +61,7 @@ public class MemoryAsset extends ADataAsset {
 	}
 
 	private static MemoryAsset create(String meta, byte[] data) {
-		return new MemoryAsset(MemoryAgent.DEFAULT,meta,data);
+		return new MemoryAsset(meta,data);
 	}
 
 	/**
@@ -107,11 +106,5 @@ public class MemoryAsset extends ADataAsset {
 	public long getSize() {
 		return data.length;
 	}
-
-	public MemoryAsset withAgent(Agent a) {
-		if (this.agent==a) return this;
-		return new MemoryAsset((MemoryAgent) a,getMetadataString(),data);
-	}
-
 
 }

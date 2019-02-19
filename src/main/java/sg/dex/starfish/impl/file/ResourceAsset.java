@@ -3,7 +3,6 @@ package sg.dex.starfish.impl.file;
 import java.io.InputStream;
 
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Agent;
 import sg.dex.starfish.util.TODOException;
 
 /**
@@ -15,8 +14,8 @@ import sg.dex.starfish.util.TODOException;
 public class ResourceAsset extends ADataAsset {
 	private final String name;
 	
-	protected ResourceAsset(Agent agent, String meta, String name) {
-		super(agent, meta);
+	protected ResourceAsset(String meta, String name) {
+		super(meta);
 		this.name=name;
 	}
 

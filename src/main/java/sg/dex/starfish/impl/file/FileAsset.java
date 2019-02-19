@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Agent;
 
 /**
  * Class exposing a file on the local file system as an Ocean asset
@@ -17,8 +16,8 @@ import sg.dex.starfish.Agent;
 public class FileAsset extends ADataAsset {
 	private final File file;
 	
-	protected FileAsset(Agent agent, String meta, File file) {
-		super(agent, meta);
+	protected FileAsset(String meta, File file) {
+		super(meta);
 		this.file=file;
 	}
 

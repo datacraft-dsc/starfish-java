@@ -6,8 +6,8 @@ import java.io.InputStream;
 
 public abstract class ADataAsset extends AAsset implements DataAsset {
 
-	public ADataAsset(Agent agent, String meta) {
-		super(agent, meta);
+	protected ADataAsset(String meta) {
+		super(meta);
 	}
 
 	@Override
