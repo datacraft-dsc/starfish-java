@@ -28,4 +28,12 @@ public interface Listing {
 	 * @return JSONObject
 	 */
 	public JSONObject getMetadata();
+	
+	/**
+	 * Returns the service agreement associated with this listing.
+	 * TODO create service agreement abstraction
+	 *
+	 * @return Object
+	 */
+	public Object getAgreement();
 }
