@@ -1,6 +1,8 @@
 package sg.dex.starfish.impl.remote;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Agent;
@@ -28,6 +30,23 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	@Override
 	public long getSize() {
 		throw new TODOException();
+	}
+	
+	private String getURLString() {
+		return getRemoteAgent().getAssetURL(id);
+	}
+	
+	public RemoteAgent getRemoteAgent() {
+		return (RemoteAgent)agent;
+	}
+
+	public URL getURL() {
+		try {
+			return new URL(getURLString());
+		}
+		catch (MalformedURLException e) {
+			throw new Error(e);
+		}
 	}
 
 	public static Asset create(RemoteAgent remoteAgent, String id) {

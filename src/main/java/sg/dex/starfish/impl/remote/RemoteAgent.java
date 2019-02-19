@@ -4,6 +4,7 @@ import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DID;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.util.TODOException;
 
 /**
  * Class implementing a remote storage agent using the Storage API
@@ -18,7 +19,7 @@ public class RemoteAgent extends AAgent {
 
 	@Override
 	public void registerAsset(Asset a) {
-		throw new UnsupportedOperationException();
+		throw new TODOException();
 	}
 
 	@Override
@@ -28,8 +29,16 @@ public class RemoteAgent extends AAgent {
 
 	@Override
 	public Asset uploadAsset(Asset a) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new TODOException();
+	}
+
+	/**
+	 * Gets a URL string for accessing the specified asset ID
+	 * @param id
+	 * @return
+	 */
+	public String getAssetURL(String id) {
+		throw new TODOException();
 	}
 
 }
