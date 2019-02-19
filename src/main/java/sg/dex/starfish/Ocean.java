@@ -3,7 +3,10 @@ package sg.dex.starfish;
 import org.json.simple.JSONObject;
 
 /**
- * Main entry point for Ocean ecosystem
+ * Main entry point for Ocean ecosystem.
+ * 
+ * An instance of the Ocean class is used to represent a connection to the Ocean network
+ * and supports functionality related to accessing the on-chain state of the Ocean network.
  *
  * @author Mike
  *
