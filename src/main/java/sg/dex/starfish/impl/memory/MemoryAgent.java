@@ -58,7 +58,7 @@ public class MemoryAgent extends AAgent implements InvokableAgent {
 
 	@Override
 	public Job invoke(Operation operation, Asset... params) {
-		if (!(operation instanceof MemoryOperation)) {
+		if (!(operation instanceof AMemoryOperation)) {
 			throw new IllegalArgumentException("Operation must be a MemoryOperation but got: "+Utils.getClass(operation));
 		}
 		return null;
