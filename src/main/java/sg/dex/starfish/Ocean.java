@@ -12,11 +12,14 @@ import org.json.simple.JSONObject;
  *
  */
 public class Ocean {
+	
+	public static final Ocean DEFAULT_OCEAN=new Ocean();
+	
 	/**
-	 * Create an instance of an Ocean object with the provided configuration
+	 * Gets an instance of an Ocean object with the default configuration
 	 */
 	public static Ocean connect() {
-		return new Ocean();
+		return DEFAULT_OCEAN;
 	}
 
 	/**

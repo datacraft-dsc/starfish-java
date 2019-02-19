@@ -33,7 +33,7 @@ public interface Agent {
 	public Asset getAsset(String id);
 
 	/**
-	 * Uploads an asset to this agent.
+	 * Uploads an asset to this agent. Registers the asset with the agent if required.
 	 * 
 	 * Throws an exception if upload is not possible, with the following likely causes:
 	 * - The agent does not support uploads of this asset type / size
