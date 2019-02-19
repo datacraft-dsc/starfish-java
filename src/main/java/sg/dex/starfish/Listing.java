@@ -1,5 +1,7 @@
 package sg.dex.starfish;
 
+import org.json.simple.JSONObject;
+
 /**
  * Interface representing a listing of an asset on a data marketplace
  *
@@ -19,4 +21,11 @@ public interface Listing {
 	 * @return Asset
 	 */
 	public Asset getAsset();
+	
+	/**
+	 * Returns the metadata associated with this listing.
+	 *
+	 * @return JSONObject
+	 */
+	public JSONObject getMetadata();
 }
