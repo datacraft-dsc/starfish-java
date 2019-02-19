@@ -28,5 +28,6 @@ public interface DataAsset extends Asset {
 	 */
 	public InputStream getInputStream();
 
+	@Override
 	public byte[] getBytes();
 }

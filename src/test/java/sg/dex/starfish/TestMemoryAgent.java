@@ -3,6 +3,9 @@ package sg.dex.starfish;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -31,9 +34,12 @@ public class TestMemoryAgent {
 		Asset a1=agent1.uploadAsset(a);
 		assertEquals(a1,agent1.getAsset(id));
 		
+		assertNull(agent2.getAsset(id));
 		Asset a2=agent2.uploadAsset(a1);
 		assertNotNull(agent2.getAsset(id));
 		
 		assertEquals(a1.getMetadataString(),a2.getMetadataString());
+		
+		assertTrue(Arrays.equals(BYTE_DATA, a2.getBytes()));
 	}
 }

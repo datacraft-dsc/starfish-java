@@ -33,4 +33,12 @@ public interface Asset {
 	 * @return
 	 */
 	public String getMetadataString();
+
+	/**
+	 * Gets a copy of byte contents for this asset
+	 * @return
+	 */
+	public default byte[] getBytes() {
+		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
+	}
 }
