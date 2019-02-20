@@ -9,6 +9,9 @@ import sg.dex.crypto.Hex;
 
 /**
  * Abstract base class for asset implementations
+ * 
+ * Includes default handing of metadata
+ * 
  * @author Mike
  *
  */
