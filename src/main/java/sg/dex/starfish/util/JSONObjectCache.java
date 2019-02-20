@@ -7,9 +7,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Utility class maintaining a cache of parsed JSON object
+ * Utility class maintaining a cache of parsed JSON objects
  * 
- * TODO: confirm that a deep clone of JSONObject is cheaper than new parsing
+ * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than fresh parsing
  * 
  * @author Mike
  *
@@ -27,7 +27,7 @@ public class JSONObjectCache {
 			cache.put(s, result);
 			return new JSONObject(result);
 		} catch (ParseException e) {
-			throw new Error("Error in JSON parsing",e);
+			throw new Error("Error in JSON parsing: "+e.getMessage(),e);
 		}
 	}
 }
