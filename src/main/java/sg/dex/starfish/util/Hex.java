@@ -1,4 +1,4 @@
-package sg.dex.crypto;
+package sg.dex.starfish.util;
 
 /**
  * Utility class for hexadecimal strings

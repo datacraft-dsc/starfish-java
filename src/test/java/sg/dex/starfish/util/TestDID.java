@@ -1,4 +1,4 @@
-package sg.dex.starfish;
+package sg.dex.starfish.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
 public class TestDID {

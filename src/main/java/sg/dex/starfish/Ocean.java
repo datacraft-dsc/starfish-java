@@ -2,6 +2,8 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.starfish.util.DID;
+
 /**
  * Main entry point for Ocean ecosystem.
  * 

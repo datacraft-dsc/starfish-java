@@ -1,4 +1,4 @@
-package sg.dex.starfish;
+package sg.dex.starfish.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,9 +9,11 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import sg.dex.crypto.Hex;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 public class TestMemoryAgent {

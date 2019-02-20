@@ -2,6 +2,8 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.starfish.util.DID;
+
 /**
  * Class representing an Agent in the Ocean Ecosystem
  *

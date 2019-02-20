@@ -1,9 +1,7 @@
-package sg.dex.starfish;
+package sg.dex.starfish.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a valid W3C DID 

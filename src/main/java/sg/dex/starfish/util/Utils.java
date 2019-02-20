@@ -2,8 +2,6 @@ package sg.dex.starfish.util;
 
 import java.security.SecureRandom;
 
-import sg.dex.crypto.Hex;
-
 /**
  * Utility class for StarFish
  * @author Mike

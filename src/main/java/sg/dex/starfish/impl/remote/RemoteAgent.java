@@ -2,8 +2,8 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.DID;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
 
 /**

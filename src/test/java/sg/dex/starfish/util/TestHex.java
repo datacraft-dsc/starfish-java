@@ -1,10 +1,10 @@
-package sg.dex.starfish;
+package sg.dex.starfish.util;
 
 import static org.junit.Assert.*;
 
 import org.junit.*;
 
-import sg.dex.crypto.Hex;
+import sg.dex.starfish.util.Hex;
 
 public class TestHex {
 

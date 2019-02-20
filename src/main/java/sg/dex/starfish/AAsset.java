@@ -3,7 +3,7 @@ package sg.dex.starfish;
 import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
-import sg.dex.crypto.Hex;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
 
 /**

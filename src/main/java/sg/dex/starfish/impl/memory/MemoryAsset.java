@@ -13,10 +13,10 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
-import sg.dex.crypto.Hex;
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.util.Hex;
 
 /**
  * Class representing a local in-memory asset.

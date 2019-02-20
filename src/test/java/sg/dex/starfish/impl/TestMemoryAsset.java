@@ -1,4 +1,4 @@
-package sg.dex.starfish;
+package sg.dex.starfish.impl;
 
 import static org.junit.Assert.assertEquals;
 

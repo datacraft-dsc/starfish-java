@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 
+import sg.dex.starfish.util.Hex;
+
 /**
  * Utility class for hash functions
  * @author Mike

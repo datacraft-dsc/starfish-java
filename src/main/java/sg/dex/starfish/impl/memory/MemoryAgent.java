@@ -6,11 +6,11 @@ import java.util.concurrent.Executors;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.DID;
 import sg.dex.starfish.InvokableAgent;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
 public class MemoryAgent extends AAgent implements InvokableAgent {
