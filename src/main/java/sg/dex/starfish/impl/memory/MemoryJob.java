@@ -9,7 +9,14 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 
 /**
- * Class representing a job being conducted in the local JVM
+ * Class representing a job being conducted asynchronously in the local JVM.
+ * 
+ * A memory job will either:
+ * - Be in progress (getResult return null)
+ * - Complete normally (getResult returns an Asset)
+ * - Fail with some exception (getResult throws an exception)
+ * 
+ * It is possible that a memory job will never complete.
  * 
  * @author Mike
  *
@@ -27,6 +34,12 @@ public class MemoryJob implements Job {
 		return future.isDone();
 	}
 	
+	/**
+	 * Create a MemoryJob instance using the provided Future.
+	 * 
+	 * @param future
+	 * @return A MemoryJob instance encapsulation the provided future
+	 */
 	public MemoryJob create(Future<Asset> future) {
 		return new MemoryJob(future);
 	}
