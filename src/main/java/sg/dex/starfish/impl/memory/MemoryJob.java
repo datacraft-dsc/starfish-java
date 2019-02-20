@@ -28,11 +28,6 @@ public class MemoryJob implements Job {
 	public MemoryJob(Future<Asset> future) {
 		this.future=future;
 	}
-
-	@Override
-	public boolean isComplete() {
-		return future.isDone();
-	}
 	
 	/**
 	 * Create a MemoryJob instance using the provided Future.
@@ -40,8 +35,13 @@ public class MemoryJob implements Job {
 	 * @param future
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
-	public MemoryJob create(Future<Asset> future) {
+	public static MemoryJob create(Future<Asset> future) {
 		return new MemoryJob(future);
+	}
+
+	@Override
+	public boolean isComplete() {
+		return future.isDone();
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package sg.dex.starfish.impl.memory;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
@@ -16,6 +18,11 @@ public class MemoryAgent extends AAgent implements InvokableAgent {
 	 * The singleton default memory agent instance
 	 */
 	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+
+	/**
+	 * A cached thread pool for jobs executed in memory
+	 */
+	public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 	
 	private HashMap<String,Asset> assetStore=new HashMap<String,Asset>();
 

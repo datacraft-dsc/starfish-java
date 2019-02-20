@@ -11,4 +11,14 @@ public interface Operation extends Asset {
 	public default boolean isOperation() {
 		return true;
 	}
+	
+	/**
+	 * Invokes this operation with the given positional parameters.
+	 * 
+	 * 
+	 * @param params
+	 * @throws IllegalArgumentException if required parameters are not available.
+	 * @return
+	 */
+	public Job invoke(Asset... params);
 }

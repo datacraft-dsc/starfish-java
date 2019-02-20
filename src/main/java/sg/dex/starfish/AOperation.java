@@ -16,6 +16,8 @@ public abstract class AOperation extends AAsset implements Operation {
 	public boolean isDataAsset() {
 		return false;
 	}
+	
+
 
 
 }
