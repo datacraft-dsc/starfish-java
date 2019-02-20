@@ -7,7 +7,7 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 /**
  * Basic implementation of an operation which reverses the byte sequence of a
  * data asset
- * 
+ *
  * @author Mike
  *
  */
@@ -24,8 +24,8 @@ public class ReverseBytesOperation extends AMemoryOperation {
 
 	/**
 	 * Creates a new instance of ReverseBytesOperation
-	 * 
-	 * @return
+	 *
+	 * @return ReverseBytesOperation
 	 */
 	public static ReverseBytesOperation create() {
 		String meta = "{}";

@@ -7,17 +7,17 @@ package sg.dex.starfish;
  */
 public interface Operation extends Asset {
 
-	@Override 
+	@Override
 	public default boolean isOperation() {
 		return true;
 	}
-	
+
 	/**
 	 * Invokes this operation with the given positional parameters.
-	 * 
+	 *
 	 * @param params Positional parameters for this invoke job
 	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @return
+	 * @return Job for this Operation
 	 */
 	public Job invoke(Asset... params);
 }

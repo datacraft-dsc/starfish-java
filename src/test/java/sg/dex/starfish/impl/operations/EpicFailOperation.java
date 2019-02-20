@@ -6,7 +6,7 @@ import sg.dex.starfish.impl.memory.AMemoryOperation;
 /**
  * Basic implementation of an operation which always fails
  * data asset
- * 
+ *
  * @author Mike
  *
  */
@@ -23,8 +23,8 @@ public class EpicFailOperation extends AMemoryOperation {
 
 	/**
 	 * Creates a new instance of ReverseBytesOperation
-	 * 
-	 * @return
+	 *
+	 * @return EpicFailOperation
 	 */
 	public static EpicFailOperation create() {
 		String meta = "{}";

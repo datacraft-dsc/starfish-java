@@ -24,11 +24,11 @@ public class Utils {
 		sr.nextBytes(bytes);
 		return "did:ocn:"+Hex.toString(bytes);
 	}
-	
+
 	/**
 	 * Creates a random hex string of the specified length
 	 * @param length
-	 * @return
+	 * @return String of random hex bytes
 	 */
 	public static String createRandomHexString(int length) {
 		SecureRandom sr=new SecureRandom();
@@ -61,7 +61,7 @@ public class Utils {
 	/**
 	 * Gets the class of an object, or null if the parameter is null
 	 * @param o
-	 * @return
+	 * @return Class<T> for o
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getClass(T o) {

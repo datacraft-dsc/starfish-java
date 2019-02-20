@@ -34,12 +34,11 @@ public class MemoryAsset extends ADataAsset {
 		super(meta);
 		this.data=data;
 	}
-	
+
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
-	 * @param memoryAgent
 	 * @param a
-	 * @return
+	 * @return MemoryAsset
 	 */
 	public static MemoryAsset create(Asset a) {
 		if (a instanceof MemoryAsset) {
@@ -95,8 +94,8 @@ public class MemoryAsset extends ADataAsset {
 		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}
-	
-	@Override 
+
+	@Override
 	public byte[] getBytes() {
 		// we take a copy of data to protected immutability of MemoryAsset instance
 		return data.clone();
