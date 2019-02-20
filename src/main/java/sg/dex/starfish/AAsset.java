@@ -1,14 +1,13 @@
 package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import sg.dex.crypto.Hash;
 import sg.dex.crypto.Hex;
+import sg.dex.starfish.util.JSONObjectCache;
 
 /**
- * Abstract base class for asset implementations
+ * Abstract base class for immutable asset implementations
  * 
  * Includes default handing of metadata
  * 
@@ -35,12 +34,7 @@ public abstract class AAsset implements Asset {
 	}
 	@Override
 	public JSONObject getMetadata() {
-		JSONParser parser=new JSONParser();
-		try {
-			return (JSONObject) parser.parse(metadataString);
-		} catch (ParseException e) {
-			throw new Error("Error in JSON parson",e);
-		}
+		return JSONObjectCache.parse(metadataString);
 	}
 
 	/**
