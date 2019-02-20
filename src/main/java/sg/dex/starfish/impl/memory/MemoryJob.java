@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.utils.JobFailedException;
 
 /**
  * Class representing a job being conducted asynchronously in the local JVM.
@@ -78,7 +79,7 @@ public class MemoryJob implements Job {
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException e) {
 			Throwable cause=e.getCause();
-			throw new Error("Job failed with exception: "+cause,e);
+			throw new JobFailedException("Job failed with exception: "+cause,e);
 		}
 	}
 

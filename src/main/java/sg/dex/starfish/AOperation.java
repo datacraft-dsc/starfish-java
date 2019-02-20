@@ -17,9 +17,4 @@ public abstract class AOperation extends AAsset implements Operation {
 		return false;
 	}
 	
-
-	
-
-
-
 }

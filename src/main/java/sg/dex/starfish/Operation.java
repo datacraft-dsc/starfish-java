@@ -15,8 +15,7 @@ public interface Operation extends Asset {
 	/**
 	 * Invokes this operation with the given positional parameters.
 	 * 
-	 * 
-	 * @param params
+	 * @param params Positional parameters for this invoke job
 	 * @throws IllegalArgumentException if required parameters are not available.
 	 * @return
 	 */
