@@ -19,7 +19,7 @@ public class Utils {
 	 * 
 	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
 	 * 
-	 * @return String A valid Ocean DID as a string
+	 * @return A valid Ocean DID represented as a string
 	 */
 	public static String createRandomDIDString() {
 		SecureRandom sr=new SecureRandom();
@@ -30,7 +30,7 @@ public class Utils {
 	
 	/**
 	 * Creates a random Ocean-compliant DID
-	 * @return DID
+	 * @return The created DID
 	 */
 	public static DID createRandomDID() {
 		return DID.parse(createRandomDIDString());
@@ -39,7 +39,7 @@ public class Utils {
 	/**
 	 * Creates a random hex string of the specified length
 	 * @param length Number of bytes of hex data to create
-	 * @return String a lowercase hex string of the specified length
+	 * @return A lowercase hex string of the specified length
 	 */
 	public static String createRandomHexString(int length) {
 		SecureRandom sr=new SecureRandom();
@@ -62,7 +62,7 @@ public class Utils {
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
 	 * @param o Object for which to compute the hashcode
-	 * @return int The computed hashcode
+	 * @return The computed hashcode
 	 */
 	public static int hashCode(Object o) {
 		if (o==null) return 0;
@@ -74,7 +74,7 @@ public class Utils {
 	 * 
 	 * @param o Any Object
 	 * @param <T> The class of the Object
-	 * @return Class The Class of the argument provided
+	 * @return The Class of the argument provided
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getClass(T o) {
@@ -91,7 +91,7 @@ public class Utils {
 	 * Throws an exception if coercion is not possible.
 	 * 
 	 * @param o The object to attempt to coerce to a boolean value
-	 * @return boolean The boolean value of this object if coercion is successful
+	 * @return The boolean value of this object if coercion is successful
 	 */
 	public static boolean coerceBoolean(Object o) {
 		if (o==null) return false;
@@ -111,7 +111,7 @@ public class Utils {
 	 * 
 	 * @throws IllegalArgumentException if the object cannot be successfully converted to an int
 	 * @param o An object to be converted to an int
-	 * @return int The coerced int value of the object
+	 * @return The coerced int value of the object
 	 */
 	public static int coerceInt(Object o) {
 		if (o instanceof Number) {
