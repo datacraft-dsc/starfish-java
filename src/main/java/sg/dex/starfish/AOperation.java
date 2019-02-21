@@ -12,6 +12,11 @@ import org.json.simple.JSONObject;
  */
 public abstract class AOperation extends AAsset implements Operation {
 
+	/**
+	 * Creates an operation object with the provided metadata string
+	 * 
+	 * @param meta Canonical metadata String to use for this operation
+	 */
 	protected AOperation(String meta) {
 		super(meta);
 	}

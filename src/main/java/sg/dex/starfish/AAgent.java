@@ -22,14 +22,19 @@ public abstract class AAgent implements Agent {
 
 	/**
 	 * Create an agent with the provided Ocean connection and DID
-	 * @param ocean
-	 * @param did
+	 * 
+	 * @param ocean The ocean connection to use for this agent
+	 * @param did The DID for this agent
 	 */
 	protected AAgent(Ocean ocean, DID did) {
 		this.ocean=ocean;
 		this.did=did;
 	}
 
+	/**
+	 * Create an agent with the provided Ocean connection and DID
+	 * @param did The DID for this agent
+	 */
 	protected AAgent(DID did) {
 		this.ocean=Ocean.connect();
 		this.did=did;
