@@ -21,7 +21,7 @@ public interface Operation extends Asset {
 	 * 
 	 * @param params Positional parameters for this invoke job
 	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @return
+	 * @return Job The Job for this invoked operation
 	 */
 	public Job invoke(Asset... params);
 

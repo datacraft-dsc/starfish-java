@@ -37,16 +37,15 @@ public class MemoryAsset extends ADataAsset {
 	
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
-	 * @param memoryAgent
-	 * @param a
-	 * @return
+	 * @param asset The asset to use to construct this MemoryAsset
+	 * @return MemoryAsset A new MemoryAsset containing the data from the passed asset argument
 	 */
-	public static MemoryAsset create(Asset a) {
-		if (a instanceof MemoryAsset) {
-			return (MemoryAsset)a;
-		} else if (a.isDataAsset()) {
-			byte[] data=((DataAsset)a).getBytes();
-			return new MemoryAsset(a.getMetadataString(),data);
+	public static MemoryAsset create(Asset asset) {
+		if (asset instanceof MemoryAsset) {
+			return (MemoryAsset)asset;
+		} else if (asset.isDataAsset()) {
+			byte[] data=((DataAsset)asset).getBytes();
+			return new MemoryAsset(asset.getMetadataString(),data);
 		} else {
 			throw new IllegalArgumentException("Asset must be a data asset");
 		}
