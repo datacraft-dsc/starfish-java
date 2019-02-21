@@ -65,6 +65,8 @@ public class Hex {
 	/**
 	 * Converts a byte array of length N to a hex string of length 2N
 	 * @param data Array of bytes
+	 * @param offset offset in data
+	 * @param length in bytes of data
 	 * @return String
 	 */
 	public static String toString(byte[] data, int offset, int length) {

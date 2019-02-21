@@ -19,28 +19,32 @@ public interface Agent {
 
 	/**
 	 * Gets the DID for an Agent
+	 * @return DIDgg29
 	 */
 	public DID getDID();
 
 	/**
 	 * Registers asset with this agent.
 	 * The agent must support metadata storage.
+	 * @param a Asset to register
 	 */
 	public void registerAsset(Asset a);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.
 	 * Returns null if the asset ID does not exist.
+	 * @param id of Asset
+         * @return Asset
 	 */
 	public Asset getAsset(String id);
 
 	/**
 	 * Uploads an asset to this agent. Registers the asset with the agent if required.
-	 * 
+	 *
 	 * Throws an exception if upload is not possible, with the following likely causes:
 	 * - The agent does not support uploads of this asset type / size
 	 * - The data for the asset cannot be accessed by the agent
-	 * 
+	 *
 	 * @param a Asset to upload
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */

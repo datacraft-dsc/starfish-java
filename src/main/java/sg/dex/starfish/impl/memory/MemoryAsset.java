@@ -37,7 +37,7 @@ public class MemoryAsset extends ADataAsset {
 
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
-	 * @param a
+	 * @param a Asset
 	 * @return MemoryAsset
 	 */
 	public static MemoryAsset create(Asset a) {

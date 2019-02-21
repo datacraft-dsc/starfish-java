@@ -11,6 +11,7 @@ public interface Asset {
 
 	/**
 	 * Gets the ID of the asset as a 64 character hex string
+	 * @return String id for Asset
 	 */
 	public String getAssetID();
 

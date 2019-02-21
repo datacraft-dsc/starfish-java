@@ -34,8 +34,8 @@ public class RemoteAgent extends AAgent {
 
 	/**
 	 * Gets a URL string for accessing the specified asset ID
-	 * @param id
-	 * @return String URL for the asset
+	 * @param id for Asset
+	 * @return String URL for the Asset
 	 */
 	public String getAssetURL(String id) {
 		throw new TODOException();

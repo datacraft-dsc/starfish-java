@@ -27,7 +27,7 @@ public class Utils {
 
 	/**
 	 * Creates a random hex string of the specified length
-	 * @param length
+	 * @param length of hex string to generate
 	 * @return String of random hex bytes
 	 */
 	public static String createRandomHexString(int length) {
@@ -61,10 +61,10 @@ public class Utils {
 	/**
 	 * Gets the class of an object, or null if the parameter is null
 	 * @param o
-	 * @return Class<T> for o
+	 * @return Class of type T for o
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Class<T> getClass(T o) {
+	public static Class<T> getClass(T o) {
 		if (o==null) return null;
 		return (Class<T>) o.getClass();
 	}

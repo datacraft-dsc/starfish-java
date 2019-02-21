@@ -11,29 +11,29 @@ import sg.dex.starfish.util.JobFailedException;
 
 /**
  * Class representing a job being conducted asynchronously in the local JVM.
- * 
+ *
  * A memory job will either:
  * - Be in progress (getResult return null)
  * - Complete normally (getResult returns an Asset)
  * - Fail with some exception (getResult throws an exception)
- * 
+ *
  * It is possible that a memory job will never complete.
- * 
+ *
  * @author Mike
  *
  */
 public class MemoryJob implements Job {
 
 	private final Future<Asset> future;
-	
+
 	public MemoryJob(Future<Asset> future) {
 		this.future=future;
 	}
-	
+
 	/**
 	 * Create a MemoryJob instance using the provided Future.
-	 * 
-	 * @param future
+	 *
+	 * @param future for an Asset
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
 	public static MemoryJob create(Future<Asset> future) {
