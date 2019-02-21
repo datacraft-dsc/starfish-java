@@ -4,7 +4,7 @@ addons:
   ssh_known_hosts: shrimp.octet.services
 script:
 - mvn install
-deploy:
+after_success:
 - provider: script
   skip_cleanup: true
   script: bash scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
