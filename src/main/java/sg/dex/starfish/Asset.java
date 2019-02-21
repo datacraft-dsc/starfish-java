@@ -17,15 +17,19 @@ public interface Asset {
 	public String getAssetID();
 	
 	/**
-	 * Gets the Ocean DID for this asset
+	 * Gets the Ocean DID for this asset. The DID may include a DID path to specify
+	 * the precise asset if the DID refers to an agent managing the asset.
 	 * 
 	 * Throws an exception if a DID is not available or cannot be constructed.
+	 * 
+	 * @return DID The global DID for this asset.
 	 */
 	public DID getAssetDID();
 
 	/**
-	 * Gets the JSON metadata for this asset
-	 * @return JSONObject
+	 * Gets a copy of the JSON metadata for this asset.
+	 * 
+	 * @return JSONObject New clone of the parsed JSON metadat for this asset
 	 */
 	public JSONObject getMetadata();
 

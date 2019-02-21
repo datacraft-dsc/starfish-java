@@ -15,7 +15,10 @@ public class Utils {
 	public static final int DID_LENGTH = 32;
 
 	/**
-	 * Creates a random Ocean-compliant DID as a string
+	 * Creates a random Ocean-compliant DID as a string, of the format:
+	 * 
+	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+	 * 
 	 * @return String
 	 */
 	public static String createRandomDIDString() {
@@ -27,7 +30,7 @@ public class Utils {
 	
 	/**
 	 * Creates a random Ocean-compliant DID
-	 * @return String
+	 * @return DID
 	 */
 	public static DID createRandomDID() {
 		return DID.parse(createRandomDIDString());

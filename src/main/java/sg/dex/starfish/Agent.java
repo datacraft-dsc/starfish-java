@@ -19,18 +19,25 @@ public interface Agent {
 
 	/**
 	 * Gets the DID for an Agent
+	 * 
+	 * @return DID The DID that can be used to address this agent in the Ocean Ecosystem
 	 */
 	public DID getDID();
 
 	/**
-	 * Registers asset with this agent.
+	 * Registers an asset with this agent.
 	 * The agent must support metadata storage.
+	 * 
+	 * @param a The asset to register
 	 */
 	public void registerAsset(Asset a);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.
 	 * Returns null if the asset ID does not exist.
+	 * 
+	 * @param id The ID of the asset to get from this agent
+	 * @return Asset The asset found, or null if the agent does not have the asset available
 	 */
 	public Asset getAsset(String id);
 
