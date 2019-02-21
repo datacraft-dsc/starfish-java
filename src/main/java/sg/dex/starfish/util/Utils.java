@@ -26,6 +26,14 @@ public class Utils {
 	}
 	
 	/**
+	 * Creates a random Ocean-compliant DID
+	 * @return String
+	 */
+	public static DID createRandomDID() {
+		return DID.parse(createRandomDIDString());
+	}
+	
+	/**
 	 * Creates a random hex string of the specified length
 	 * @param length
 	 * @return
@@ -68,6 +76,45 @@ public class Utils {
 		if (o==null) return null;
 		return (Class<T>) o.getClass();
 	}
+
+	/**
+	 * Coerces the argument to a boolean value, where:
+	 * - null is considered false
+	 * - Strings "false" and "true" are interpreted appropriately
+	 * - Boolean values are retained
+	 * 
+	 * Throws an exception if coercion is not possible.
+	 * @param o
+	 * @return
+	 */
+	public static boolean coerceBoolean(Object o) {
+		if (o==null) return false;
+		if (o instanceof Boolean) {
+			return (Boolean)o;
+		}
+		if (o instanceof String) {
+			String s=(String) o;
+			if (s.equals("true")) return true;
+			if (s.equals("false")) return false;
+		}
+		throw new IllegalArgumentException("Can't coerce to boolean: "+o);
+	}
+
+	
+	public static int coerceInt(Object o) {
+		if (o instanceof Number) {
+			if (o instanceof Integer) return (Integer)o;
+			Number n=(Number)o;
+			int value=(int)n.longValue();
+			if (value!=n.doubleValue()) throw new IllegalArgumentException("Cannot coerce to int without loss:");
+			return value;
+		}
+		if (o instanceof String) {
+			return Integer.parseInt((String) o);
+		}
+		throw new IllegalArgumentException("Can't coerce to int: "+o);
+	}
+
 
 
 }

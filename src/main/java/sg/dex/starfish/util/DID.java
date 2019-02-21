@@ -24,10 +24,24 @@ public class DID {
 	private String fullString=null;
 	
 	private DID(String method, String id, String path, String fragment) {
+		if (method==null) throw new IllegalArgumentException("DID method cannot be null");
+		if (id==null) throw new IllegalArgumentException("DID idstring cannot be null");
 		this.method=method;
 		this.id=id;
 		this.path=path;
 		this.fragment=fragment;
+	}
+	
+	/**
+	 * Creates a DID with the specified method, id, path and fragment
+	 * @param method
+	 * @param id
+	 * @param path
+	 * @param fragment
+	 * @return
+	 */
+	public static DID create(String method, String id, String path, String fragment) {
+		return new DID(method,id,path,fragment);
 	}
 	
 	public static boolean isValidDID(String did) {
@@ -118,5 +132,10 @@ public class DID {
 		h+=101*Utils.hashCode(path);
 		return h;
 	}
+
+	public DID withPath(String path) {
+		return DID.create(method,id,path,fragment);
+	}
+
 
 }

@@ -3,6 +3,7 @@ package sg.dex.starfish;
 import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
 
@@ -35,6 +36,20 @@ public abstract class AAsset implements Asset {
 	@Override
 	public JSONObject getMetadata() {
 		return JSONObjectCache.parse(metadataString);
+	}
+	
+	@Override
+	public DID getAssetDID() {
+		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass()); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JSONObject getParamValue() {
+		JSONObject o=new JSONObject();
+		// default is to pass the asset ID
+		o.put("id", getAssetID());
+		return o;
 	}
 
 	/**

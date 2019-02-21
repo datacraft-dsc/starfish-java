@@ -2,6 +2,8 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.starfish.util.DID;
+
 /**
  * Interface representing an asset
  *
@@ -13,6 +15,13 @@ public interface Asset {
 	 * Gets the ID of the asset as a 64 character hex string
 	 */
 	public String getAssetID();
+	
+	/**
+	 * Gets the Ocean DID for this asset
+	 * 
+	 * Throws an exception if a DID is not available or cannot be constructed.
+	 */
+	public DID getAssetDID();
 
 	/**
 	 * Gets the JSON metadata for this asset
@@ -59,4 +68,12 @@ public interface Asset {
 	 * @return
 	 */
 	public boolean isOperation();
+
+	/**
+	 * Gets the representation of this asset as required to pass to a remote invokable 
+	 * service.
+	 * @return
+	 */
+	public JSONObject getParamValue();
+
 }

@@ -1,5 +1,9 @@
 package sg.dex.starfish;
 
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+
 /**
  * Interface representing an invokable operation
  * @author Mike
@@ -20,4 +24,6 @@ public interface Operation extends Asset {
 	 * @return
 	 */
 	public Job invoke(Asset... params);
+
+	public Map<String, JSONObject> getParamSpec();
 }

@@ -107,4 +107,13 @@ public class MemoryAsset extends ADataAsset {
 		return data.length;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public JSONObject getParamValue() {
+		JSONObject o=new JSONObject();
+		// pass the asset ID, i.e. hash of content
+		o.put("id", getAssetID());
+		return o;
+	}
+
 }

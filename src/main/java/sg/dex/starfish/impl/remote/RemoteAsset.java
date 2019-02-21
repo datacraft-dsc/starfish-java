@@ -2,12 +2,14 @@ package sg.dex.starfish.impl.remote;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.json.simple.JSONObject;
 
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
 
 /**
@@ -18,24 +20,15 @@ import sg.dex.starfish.util.TODOException;
  */
 public class RemoteAsset extends ADataAsset implements DataAsset {
 
-	private final URL url;
+	private final RemoteAgent agent;
 	
-	protected RemoteAsset(String meta, URL url) {
+	protected RemoteAsset(String meta, RemoteAgent agent) {
 		super(meta);
-		this.url=url;
+		this.agent=agent;
 	}
 	
-	public static Asset create(String meta, String urlString) {
-		try {
-			return new RemoteAsset(meta,new URL(urlString));
-		}
-		catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-	
-	public static Asset create(String meta, URL url) {
-		return new RemoteAsset(meta,url);
+	public static Asset create(String meta, RemoteAgent agent) {
+		return new RemoteAsset(meta,agent);
 	}
 
 	@Override
@@ -45,7 +38,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 
 	@Override
 	public InputStream getInputStream() {
-		URL url=getURL();
+		URL url=agent.getURL(this);
 		try {
 			return url.openStream();
 		}
@@ -58,13 +51,20 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	public long getSize() {
 		throw new TODOException();
 	}
-	
-	public String getURLString() {
-		return url.toString();
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public JSONObject getParamValue() {
+		JSONObject o=new JSONObject();
+		// pass the asset ID, i.e. hash of content
+		o.put("did", getAssetDID());
+		return o;
 	}
 
-	public URL getURL() {
-		return url;
+	@Override
+	public DID getAssetDID() {
+		DID agentDID=agent.getDID();
+		return agentDID.withPath(getAssetID());
 	}
 
 
