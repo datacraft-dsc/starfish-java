@@ -38,7 +38,7 @@ public class MemoryAsset extends ADataAsset {
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
 	 * @param asset The asset to use to construct this MemoryAsset
-	 * @return MemoryAsset A new MemoryAsset containing the data from the passed asset argument
+	 * @return A new MemoryAsset containing the data from the passed asset argument
 	 */
 	public static MemoryAsset create(Asset asset) {
 		if (asset instanceof MemoryAsset) {
@@ -55,7 +55,7 @@ public class MemoryAsset extends ADataAsset {
 	 * Creates a MemoryAsset with the provided data. Default metadata will be generated.
 	 * 
 	 * @param data Byte array containing the data for this asset
-	 * @return MemoryAsset The newly created in-memory asset
+	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
@@ -65,7 +65,7 @@ public class MemoryAsset extends ADataAsset {
 	 * Creates a MemoryAsset with the provided metadata an content
 	 * @param meta A map containing the metadata for this asset
 	 * @param data Byte array containing the data for this asset
-	 * @return MemoryAsset The newly created in-memory asset
+	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
@@ -78,7 +78,7 @@ public class MemoryAsset extends ADataAsset {
 	/**
 	 * Build default metadata for a local asset
 	 * @param data Asset data
-	 * @return
+	 * @return The default metadata as a String
 	 */
 	@SuppressWarnings("unchecked")
 	private static String buildMetaData(byte[] data,Map<Object,Object> meta) {

@@ -92,7 +92,7 @@ public class InvokeAgent extends AAgent implements InvokableAgent {
 	 * and the passed arguments
 	 * @param operation
 	 * @param params
-	 * @return
+	 * @return The "params" portion of the invoke payload as a JSONObject
 	 */
 	@SuppressWarnings("unchecked")
 	private JSONObject formatParams(Operation operation, Asset... params) {

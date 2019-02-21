@@ -54,7 +54,7 @@ public abstract class AAsset implements Asset {
 
 	/**
 	 * Gets the metadata for this asset as a String
-	 * @return String
+	 * @return The metadata as a String
 	 */
 	@Override
 	public String getMetadataString() {

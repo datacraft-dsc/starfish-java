@@ -20,7 +20,7 @@ public class Ocean {
 	/**
 	 * Gets an instance of an Ocean object with the default configuration
 	 * 
-	 * @return Ocean The Ocean instance with default configuration
+	 * @return An Ocean instance with default configuration
 	 */
 	public static Ocean connect() {
 		return DEFAULT_OCEAN;
@@ -29,7 +29,7 @@ public class Ocean {
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
 	 * @param did DID to resolve
-	 * @return JSONObject The DDO as a JSON map
+	 * @return The DDO as a JSON map
 	 */
 	public JSONObject getDDO(String did) {
 		return getDDO(DID.parse(did));
@@ -38,7 +38,7 @@ public class Ocean {
 	/**
 	 * Gets a DDO for a specified DID via the Universal Resolver
 	 * @param did DID to resolve
-	 * @return JSONObject The DDO as a JSON map
+	 * @return The DDO as a JSON map
 	 */
 	public JSONObject getDDO(DID did) {
 		throw new UnsupportedOperationException("Not yet implemented");

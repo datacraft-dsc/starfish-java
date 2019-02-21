@@ -42,7 +42,7 @@ public class AssetBundle extends AAsset {
 	/**
 	 * Gets an asset contained within this bundle
 	 * @param path   Path to the asset
-	 * @return Asset
+	 * @return The asset at the specified path
 	 */
 	public Asset getContent(String path) {
 		throw new UnsupportedOperationException();

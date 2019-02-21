@@ -24,7 +24,7 @@ public interface DataAsset extends Asset {
 	 * Gets an input stream that can be used to consume the content of this asset.
 	 *
 	 * Will throw an exception if consumption of the asset data in not possible locally.
-	 * @return InputStream
+	 * @return An input stream allowing consumption of the asset data
 	 */
 	public InputStream getInputStream();
 
