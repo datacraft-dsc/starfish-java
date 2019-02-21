@@ -26,7 +26,7 @@ public class MemoryJob implements Job {
 
 	private final Future<Asset> future;
 	
-	public MemoryJob(Future<Asset> future) {
+	private MemoryJob(Future<Asset> future) {
 		this.future=future;
 	}
 	
