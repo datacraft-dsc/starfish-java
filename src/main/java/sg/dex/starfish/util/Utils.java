@@ -73,6 +73,7 @@ public class Utils {
 	 * Gets the class of an object, or null if the argument is null
 	 * 
 	 * @param o Any Object
+	 * @param <T> The class of the Object
 	 * @return Class The Class of the argument provided
 	 */
 	@SuppressWarnings("unchecked")
@@ -85,10 +86,11 @@ public class Utils {
 	 * Coerces the argument to a boolean value, where:
 	 * - null is considered false
 	 * - Strings "false" and "true" are interpreted appropriately
-	 * - Boolean values are retained
+	 * - Boolean values are retained as-is
 	 * 
 	 * Throws an exception if coercion is not possible.
-	 * @param o
+	 * 
+	 * @param o The object to attempt to coerce to a boolean value
 	 * @return boolean The boolean value of this object if coercion is successful
 	 */
 	public static boolean coerceBoolean(Object o) {
