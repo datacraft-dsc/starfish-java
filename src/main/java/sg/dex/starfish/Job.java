@@ -9,8 +9,10 @@ package sg.dex.starfish;
 public interface Job {
 
 	/**
-	 * Returns true if the Job has been completed
-	 * @return
+	 * Returns true if the Job has been completed. If the job is complete, the result
+	 * may be obtained via getResult()
+	 * 
+	 * @return boolean true if the job is complete, false otherwise.
 	 */
 	public boolean isComplete();
 	
