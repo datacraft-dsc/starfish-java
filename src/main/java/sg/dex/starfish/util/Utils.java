@@ -19,7 +19,7 @@ public class Utils {
 	 * 
 	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
 	 * 
-	 * @return String
+	 * @return String A valid Ocean DID as a string
 	 */
 	public static String createRandomDIDString() {
 		SecureRandom sr=new SecureRandom();
@@ -38,8 +38,8 @@ public class Utils {
 	
 	/**
 	 * Creates a random hex string of the specified length
-	 * @param length
-	 * @return
+	 * @param length Number of bytes of hex data to create
+	 * @return String a lowercase hex string of the specified length
 	 */
 	public static String createRandomHexString(int length) {
 		SecureRandom sr=new SecureRandom();
@@ -49,10 +49,10 @@ public class Utils {
 	}
 
 	/**
-	 * Compares to objects for equality. null is considered equal to null.
+	 * Compares two objects for equality. null is considered equal to null.
 	 * @param a First object
 	 * @param b Second object
-	 * @return boolean
+	 * @return boolean true if the arguments are equal, false otherwise
 	 */
 	public static boolean equals(Object a, Object b) {
 		if (a==null) return b==null;
@@ -62,7 +62,7 @@ public class Utils {
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
 	 * @param o Object for which to compute the hashcode
-	 * @return int
+	 * @return int The computed hashcode
 	 */
 	public static int hashCode(Object o) {
 		if (o==null) return 0;
@@ -70,9 +70,10 @@ public class Utils {
 	}
 
 	/**
-	 * Gets the class of an object, or null if the parameter is null
-	 * @param o
-	 * @return
+	 * Gets the class of an object, or null if the argument is null
+	 * 
+	 * @param o Any Object
+	 * @return Class The Class of the argument provided
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getClass(T o) {
@@ -88,7 +89,7 @@ public class Utils {
 	 * 
 	 * Throws an exception if coercion is not possible.
 	 * @param o
-	 * @return
+	 * @return boolean The boolean value of this object if coercion is successful
 	 */
 	public static boolean coerceBoolean(Object o) {
 		if (o==null) return false;
@@ -103,7 +104,13 @@ public class Utils {
 		throw new IllegalArgumentException("Can't coerce to boolean: "+o);
 	}
 
-	
+	/**
+	 * Coerces an object to an int value.
+	 * 
+	 * @throws IllegalArgumentException if the object cannot be successfully converted to an int
+	 * @param o An object to be converted to an int
+	 * @return int The coerced int value of the object
+	 */
 	public static int coerceInt(Object o) {
 		if (o instanceof Number) {
 			if (o instanceof Integer) return (Integer)o;

@@ -51,11 +51,23 @@ public class MemoryAsset extends ADataAsset {
 			throw new IllegalArgumentException("Asset must be a data asset");
 		}
 	}
-
+	
+	/**
+	 * Creates a MemoryAsset with the provided data. Default metadata will be generated.
+	 * 
+	 * @param data Byte array containing the data for this asset
+	 * @return MemoryAsset The newly created in-memory asset
+	 */
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
 	}
 
+	/**
+	 * Creates a MemoryAsset with the provided metadata an content
+	 * @param meta A map containing the metadata for this asset
+	 * @param data Byte array containing the data for this asset
+	 * @return MemoryAsset The newly created in-memory asset
+	 */
 	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
 	}
@@ -83,7 +95,6 @@ public class MemoryAsset extends ADataAsset {
 		ob.put("size", Integer.toString(data.length));
 		return ob.toJSONString();
 	}
-
 
 	@Override
 	public boolean isDataAsset() {

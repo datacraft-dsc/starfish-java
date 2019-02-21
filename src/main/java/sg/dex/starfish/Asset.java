@@ -13,6 +13,8 @@ public interface Asset {
 
 	/**
 	 * Gets the ID of the asset as a 64 character hex string
+	 * 
+	 * @return String The ID of the asset
 	 */
 	public String getAssetID();
 	
@@ -37,7 +39,7 @@ public interface Asset {
 	 * Returns true if this asset is a data asset, i.e. the asset represents an immutable
 	 * data object.
 	 *
-	 * @return boolean
+	 * @return boolean true if the asset is a data asset, false otherwise
 	 */
 	public boolean isDataAsset();
 	
@@ -45,21 +47,24 @@ public interface Asset {
 	 * Returns this asset as a DataAsset.
 	 * 
 	 * Throws an exception if this asset is not a valid data asset
-	 * @return
+	 * @return DataAsset This asset cast to a DataAsset
 	 */
 	public default DataAsset asDataAsset() {
 		return (DataAsset)this;
 	}
 
 	/**
-	 * Returns the metadata for this asset as a String
-	 * @return
+	 * Returns the metadata for this asset.
+	 * 
+	 * @return String The metadata of this asset as a String
 	 */
 	public String getMetadataString();
 
 	/**
-	 * Gets a copy of byte contents for this asset
-	 * @return
+	 * Gets a copy of byte contents for this data asset
+	 * 
+	 * @throws UnsupportedOperationException If this asset does not support getting byte data
+	 * @return byte[] The byte contents of this asset.
 	 */
 	public default byte[] getBytes() {
 		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
@@ -69,14 +74,14 @@ public interface Asset {
 	 * Returns true if this asset is an operation, i.e. can be invoked on an
 	 * appropriate agent
 	 * 
-	 * @return
+	 * @return boolean true if this asset is an operation, false otherwise
 	 */
 	public boolean isOperation();
 
 	/**
 	 * Gets the representation of this asset as required to pass to a remote invokable 
 	 * service.
-	 * @return
+	 * @return JSONObject A JSON map representing this asset
 	 */
 	public JSONObject getParamValue();
 
