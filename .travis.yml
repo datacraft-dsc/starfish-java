@@ -5,10 +5,4 @@ addons:
 script:
 - mvn install
 after_success:
-- provider: script
-  skip_cleanup: true
-  script: bash scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
-  on:
-    tags: false
-    repo: DEX-Company/starfish-java
-    all_branches: true
+- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
