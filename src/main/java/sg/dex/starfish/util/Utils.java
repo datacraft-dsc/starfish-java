@@ -64,7 +64,7 @@ public class Utils {
 	 * @return Class of type T for o
 	 */
 	@SuppressWarnings("unchecked")
-	public static Class<T> getClass(T o) {
+	public static <T> Class<T> getClass(T o) {
 		if (o==null) return null;
 		return (Class<T>) o.getClass();
 	}
