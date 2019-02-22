@@ -31,11 +31,12 @@ public class RemoteAgent extends AAgent {
 	}
 
 	/**
-	 * Registers an asset with this agent.
-	 * The agent must support metadata storage.
+	 * Registers an Asset with this Agent
 	 *
-	 * @throws StorageException if unable to register the Asset
-	 * @param a The asset to register
+	 * @param a The Asset to register
+	 * @throws AuthorizationExceptionn if requestor does not have register permission
+	 * @throws StorageException if there is an error in storing the Asset
+	 * @return Asset The asset found, or null if the agent does not have the asset available
 	 */
 	@Override
 	public void registerAsset(Asset a) {

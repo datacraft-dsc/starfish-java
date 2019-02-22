@@ -3,6 +3,8 @@ package sg.dex.starfish.impl.operations;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 
+import sg.dex.starfish.util.JobFailedException;
+
 /**
  * Basic implementation of an operation which always fails
  * data asset
@@ -37,13 +39,17 @@ public class EpicFailOperation extends AMemoryOperation {
 	}
 
 	/**
-	 * Returns the Asset result of computation
+	 * Computes the result of the invoke job using the provided assets
 	 *
-	 * @return Asset result of computation
+	 * @param params The positional parameters for this computation
+	 * @throws IllegalArgumentException if required parameters are not available.
+	 * @throws JobFailedException if the computation fails
+	 * @return Asset The result of the computation as an asset
 	 */
 	@Override
 	public Asset compute(Asset... params) {
-		throw new RuntimeException("EPIC FAIL");
+		throw new JobFailedException("EPIC FAIL",
+					     new Exception("Fail by design"));
 	}
 
 }

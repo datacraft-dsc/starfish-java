@@ -29,16 +29,6 @@ public abstract class AAsset implements Asset {
 		return getAssetID();
 	}
 
-	@Override
-	public String getAssetID() {
-		return id;
-	}
-
-	@Override
-	public JSONObject getMetadata() {
-		return JSONObjectCache.parse(metadataString);
-	}
-
 	/**
 	 * Gets DID for this Asset
 	 *
@@ -48,6 +38,16 @@ public abstract class AAsset implements Asset {
 	@Override
 	public DID getAssetDID() {
 		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
+	}
+
+	@Override
+	public String getAssetID() {
+		return id;
+	}
+
+	@Override
+	public JSONObject getMetadata() {
+		return JSONObjectCache.parse(metadataString);
 	}
 
 	@SuppressWarnings("unchecked")

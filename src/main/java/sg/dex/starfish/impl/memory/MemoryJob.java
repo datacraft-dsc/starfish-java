@@ -52,6 +52,7 @@ public class MemoryJob implements Job {
 	 *
 	 * @throws AuthorizationException if requestor does not have load permission
 	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job, or null if not available
 	 */
 	@Override
@@ -73,6 +74,7 @@ public class MemoryJob implements Job {
 	 *
 	 * @throws AuthorizationException if requestor does not have load permission
 	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job
 	 */
 	@Override

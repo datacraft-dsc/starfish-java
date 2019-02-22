@@ -14,9 +14,10 @@ import sg.dex.starfish.util.StorageException;
 public interface Asset {
 
 	/**
-	 * Gets the ID of the asset as a 64 character hex string
+	 * Gets DID for this Asset
 	 *
-	 * @return The ID of the asset
+	 * @throws UnsupportedOperationException if unable to obtain DID
+	 * @param a The asset to register
 	 */
 	public String getAssetID();
 

@@ -70,6 +70,12 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		return o;
 	}
 
+	/**
+	 * Gets DID for this Asset
+	 *
+	 * @throws UnsupportedOperationException if unable to obtain DID
+	 * @param a The asset to register
+	 */
 	@Override
 	public DID getAssetDID() {
 		DID agentDID=agent.getDID();
