@@ -24,17 +24,43 @@ public class DID {
 	private String fullString=null;
 	
 	private DID(String method, String id, String path, String fragment) {
+		if (method==null) throw new IllegalArgumentException("DID method cannot be null");
+		if (id==null) throw new IllegalArgumentException("DID idstring cannot be null");
 		this.method=method;
 		this.id=id;
 		this.path=path;
 		this.fragment=fragment;
 	}
 	
+	/**
+	 * Creates a DID with the specified method, id, path and fragment
+	 * @param method The DID method, e.g. "ocn"
+	 * @param id The DID idstring
+	 * @param path The DID path
+	 * @param fragment The DID fragment
+	 * @return DID The newly created DID
+	 */
+	public static DID create(String method, String id, String path, String fragment) {
+		return new DID(method,id,path,fragment);
+	}
+	
+	/**
+	 * Checks if the provided String is a valid DID
+	 * 
+	 * @param did Any String to test as a DID
+	 * @return boolean true if the String is parseable as a valid DID, false otherwise
+	 */
 	public static boolean isValidDID(String did) {
 		Matcher m = DID_PATTERN.matcher(did);
 		return m.matches();
 	}
 	
+	/**
+	 * Attempts to parse the given string as a DID
+	 * 
+	 * @param did The String to parse as a DID
+	 * @return DID The newly created DID
+	 */
 	public static DID parse(String did) {
 		Matcher m = DID_PATTERN.matcher(did);
 		if (m.matches()) {
@@ -50,22 +76,42 @@ public class DID {
 		}
 	}
 	
+	/**
+	 * Gets the DID scheme for this DID
+	 * @return String The DID scheme, always defined as "did"
+	 */
 	public String getScheme() {
 		return "did";
 	}
 
+	/**
+	 * Gets the DID method for this DID
+	 * @return String The DID method, e.g. "ocn"
+	 */
 	public String getMethod() {
 		return method;
 	}
 
+	/**
+	 * Gets the DID idstring for this DID
+	 * @return String The DID idstring, e.g. "2ee8d7d4dd764bc96e8f1c762b1ca4ff54688b22aeb851378aa9a543290bcbd9"
+	 */
 	public String getID() {
 		return id;
 	}
 	
+	/**
+	 * Gets the DID path for this DID
+	 * @return String The DID path, or null if there is no path specified
+	 */
 	public String getPath() {
 		return path;
 	}
 	
+	/**
+	 * Gets the DID fragment for this DID
+	 * @return String The DID fragment, or null if there is no fragment specified
+	 */
 	public String getFragment() {
 		return fragment;
 	}
@@ -101,6 +147,11 @@ public class DID {
 		return equals((DID)o);
 	}
 	
+	/**
+	 * Tests if this DID is equal to another DID
+	 * @param d The DID to compare for equality
+	 * @return boolean true if this DID equals the DID argument, false otherwise
+	 */
 	public boolean equals(DID d) {
 		if (!method.equals(d.method)) return false;
 		if (!id.equals(d.id)) return false;
@@ -118,5 +169,15 @@ public class DID {
 		h+=101*Utils.hashCode(path);
 		return h;
 	}
+
+	/**
+	 * Creates a new DID from this DID with an updated path
+	 * @param path The new path to add to this DID (may be null)
+	 * @return DID The updated DID with the specified path argument
+	 */
+	public DID withPath(String path) {
+		return DID.create(method,id,path,fragment);
+	}
+
 
 }

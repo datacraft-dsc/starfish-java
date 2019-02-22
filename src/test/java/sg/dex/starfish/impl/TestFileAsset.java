@@ -10,7 +10,7 @@ import org.junit.Test;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.util.Utils;
 
-public class TestFiles {
+public class TestFileAsset {
 
 	@Test public void testTempFile() {
 		String name=Utils.createRandomHexString(16);

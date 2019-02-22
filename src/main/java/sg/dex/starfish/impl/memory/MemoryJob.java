@@ -26,14 +26,14 @@ public class MemoryJob implements Job {
 
 	private final Future<Asset> future;
 
-	public MemoryJob(Future<Asset> future) {
+	private MemoryJob(Future<Asset> future) {
 		this.future=future;
 	}
 
 	/**
 	 * Create a MemoryJob instance using the provided Future.
 	 *
-	 * @param future for an Asset
+	 * @param future A Future to be used to complete this job
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
 	public static MemoryJob create(Future<Asset> future) {

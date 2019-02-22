@@ -2,6 +2,8 @@ package sg.dex.starfish;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.starfish.util.DID;
+
 /**
  * Interface representing an asset
  *
@@ -11,13 +13,25 @@ public interface Asset {
 
 	/**
 	 * Gets the ID of the asset as a 64 character hex string
-	 * @return String id for Asset
+	 *
+	 * @return The ID of the asset
 	 */
 	public String getAssetID();
 
 	/**
-	 * Gets the JSON metadata for this asset
-	 * @return JSONObject
+	 * Gets the Ocean DID for this asset. The DID may include a DID path to specify
+	 * the precise asset if the DID refers to an agent managing the asset.
+	 *
+	 * Throws an exception if a DID is not available or cannot be constructed.
+	 *
+	 * @return The global DID for this asset.
+	 */
+	public DID getAssetDID();
+
+	/**
+	 * Gets a copy of the JSON metadata for this asset.
+	 *
+	 * @return New clone of the parsed JSON metadat for this asset
 	 */
 	public JSONObject getMetadata();
 
@@ -25,7 +39,7 @@ public interface Asset {
 	 * Returns true if this asset is a data asset, i.e. the asset represents an immutable
 	 * data object.
 	 *
-	 * @return boolean
+	 * @return true if the asset is a data asset, false otherwise
 	 */
 	public boolean isDataAsset();
 
@@ -33,21 +47,24 @@ public interface Asset {
 	 * Returns this asset as a DataAsset.
 	 *
 	 * Throws an exception if this asset is not a valid data asset
-	 * @return DataAsset
+	 * @return This asset cast to a DataAsset
 	 */
 	public default DataAsset asDataAsset() {
 		return (DataAsset)this;
 	}
 
 	/**
-	 * Returns the metadata for this asset as a String
-	 * @return String metadata
+	 * Returns the metadata for this asset.
+	 *
+	 * @return The metadata of this asset as a String
 	 */
 	public String getMetadataString();
 
 	/**
-	 * Gets a copy of byte contents for this asset
-	 * @return byte[] contents for this asset
+	 * Gets a copy of byte contents for this data asset
+	 *
+	 * @throws UnsupportedOperationException If this asset does not support getting byte data
+	 * @return The byte contents of this asset.
 	 */
 	public default byte[] getBytes() {
 		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
@@ -57,7 +74,15 @@ public interface Asset {
 	 * Returns true if this asset is an operation, i.e. can be invoked on an
 	 * appropriate agent
 	 *
-	 * @return boolean true if this asset is an operation
+	 * @return true if this asset is an operation, false otherwise
 	 */
 	public boolean isOperation();
+
+	/**
+	 * Gets the representation of this asset as required to pass to a remote invokable
+	 * service.
+	 * @return A JSON map representing this asset
+	 */
+	public JSONObject getParamValue();
+
 }

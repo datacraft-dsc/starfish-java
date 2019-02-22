@@ -8,9 +8,9 @@ package sg.dex.starfish.util;
  */
 public class Hex {
 	/**
-	 * Converts an int value in the range 0..15 to a hexadecimal character
+	 * Converts an int value in the range 0..15 to a lowercase hexadecimal character
 	 * @param value Integer value to convert
-	 * @return char
+	 * @return The lowercase hex character
 	 */
 	public static char toChar(int value) {
 		if (value>=0) {
@@ -21,9 +21,11 @@ public class Hex {
 	}
 
 	/**
+	 * Converts a hex string to a byte array.
+	 * The hex string must have an even number of digits.
 	 *
 	 * @param hex String containing Hex digits
-	 * @return byte[]
+	 * @return The representation of the hex string as a byte array
 	 */
 	public static byte[] toBytes(String hex) {
 		int length=hex.length();
@@ -41,7 +43,7 @@ public class Hex {
 	/**
 	 * Gets the value of a single hex car e.g. val('c') =&gt; 12
 	 * @param c Character to convert
-	 * @return int
+	 * @return The int value of the hex char, in the range 0-15 inclusive
 	 */
 	public static int val(char c) {
 		int v=(int)c;
@@ -56,7 +58,7 @@ public class Hex {
 	/**
 	 * Converts a byte array of length N to a hex string of length 2N
 	 * @param data Array of bytes
-	 * @return String
+	 * @return The lowercase hex string generated
 	 */
 	public static String toString(byte[] data) {
 		return toString(data,0,data.length);
@@ -65,9 +67,9 @@ public class Hex {
 	/**
 	 * Converts a byte array of length N to a hex string of length 2N
 	 * @param data Array of bytes
-	 * @param offset offset in data
-	 * @param length in bytes of data
-	 * @return String
+	 * @param offset Offset into the byte array to start
+	 * @param length Number of bytes from the byte array to convert to hex
+	 * @return The lowercase hex string generated
 	 */
 	public static String toString(byte[] data, int offset, int length) {
 		char[] hex=new char[length*2];

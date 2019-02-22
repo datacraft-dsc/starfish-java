@@ -1,14 +1,13 @@
-package sg.dex.starfish.util;
+package sg.dex.starfish.impl;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)				
 @Suite.SuiteClasses({				
-	  TestHex.class,
-	  TestUtils.class,
-	  TestDID.class
+	  TestResources.class,
+	  TestFileAsset.class
 })		
-public class UtilsSuite {
+public class LocalSuite {
 
 }
