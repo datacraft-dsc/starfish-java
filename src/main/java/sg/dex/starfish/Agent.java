@@ -4,6 +4,9 @@ import org.json.simple.JSONObject;
 
 import sg.dex.starfish.util.DID;
 
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
+
 /**
  * Interface representing an Agent in the Ocean ecosystem
  * @author Mike
@@ -28,6 +31,8 @@ public interface Agent {
 	 * Registers an asset with this agent.
 	 * The agent must support metadata storage.
 	 *
+	 * @throws AuthorizationException if requestor does not have register permission
+	 * @throws StorageException if unable to register the Asset
 	 * @param a The asset to register
 	 */
 	public void registerAsset(Asset a);
@@ -37,7 +42,9 @@ public interface Agent {
 	 * Returns null if the asset ID does not exist.
 	 *
 	 * @param id The ID of the asset to get from this agent
-	 * @return Asset The asset found, or null if the agent does not have the asset available
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @return Asset The asset found
 	 */
 	public Asset getAsset(String id);
 
@@ -49,6 +56,8 @@ public interface Agent {
 	 * - The data for the asset cannot be accessed by the agent
 	 *
 	 * @param a Asset to upload
+	 * @throws AuthorizationException if requestor does not have upload permission
+	 * @throws StorageException if there is an error in uploading the Asset
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */
 	public Asset uploadAsset(Asset a);

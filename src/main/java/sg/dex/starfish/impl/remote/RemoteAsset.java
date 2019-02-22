@@ -11,22 +11,24 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
 
 /**
  * Class representing a data asset referenced by a URL.
- * 
+ *
  * @author Mike
  *
  */
 public class RemoteAsset extends ADataAsset implements DataAsset {
 
 	private final RemoteAgent agent;
-	
+
 	protected RemoteAsset(String meta, RemoteAgent agent) {
 		super(meta);
 		this.agent=agent;
 	}
-	
+
 	public static Asset create(String meta, RemoteAgent agent) {
 		return new RemoteAsset(meta,agent);
 	}
@@ -36,6 +38,13 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		return true;
 	}
 
+	/**
+	 * Gets raw data corresponding to this Asset
+	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
+	 * @return An input stream allowing consumption of the asset data
+	 */
 	@Override
 	public InputStream getInputStream() {
 		URL url=agent.getURL(this);

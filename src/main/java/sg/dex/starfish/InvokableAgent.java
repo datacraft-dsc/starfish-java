@@ -1,5 +1,7 @@
 package sg.dex.starfish;
 
+
+
 /**
  * Interface representing an invokable agent.
  *
@@ -15,6 +17,7 @@ public interface InvokableAgent {
 	 *
 	 * @param operation The operation to invoke on this agent
 	 * @param params Positional parameters for the invoke operation
+	 * @throws IllegalArgumentException if required parameters are not available.
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
 	public Job invoke(Operation operation, Asset... params);

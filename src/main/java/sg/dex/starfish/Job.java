@@ -1,5 +1,11 @@
 package sg.dex.starfish;
 
+import java.util.concurrent.TimeoutException;
+
+import sg.dex.starfish.util.JobFailedException;
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
+
 /**
  * Interface representing a job executed via the Invoke API
  *
@@ -19,6 +25,9 @@ public interface Job {
 	/**
 	 * Gets the result of the job as an Ocean asset
 	 *
+	 * @throws AuthorizationException if requestor does not have load permission
+	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job, or null if not available
 	 */
 	public Asset getResult();
@@ -28,6 +37,9 @@ public interface Job {
 	 * Waits for the result of the Operation and returns the result Asset
 	 * WARNING: may never return if the job does not complete
 	 *
+	 * @throws AuthorizationException if requestor does not have load permission
+	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job
 	 */
 	public Asset awaitResult();
@@ -38,6 +50,10 @@ public interface Job {
 	 * asset is available.
 	 *
 	 * @param timeoutMillis The number of milliseconds to wait for a result before returning null
+	 * @throws TimeoutException if result is not available in timeoutMillis
+	 * @throws AuthorizationException if requestor does not have load permission
+	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	public Asset awaitResult(long timeoutMillis);

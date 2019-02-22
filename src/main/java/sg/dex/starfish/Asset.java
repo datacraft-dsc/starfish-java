@@ -3,6 +3,8 @@ package sg.dex.starfish;
 import org.json.simple.JSONObject;
 
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
 
 /**
  * Interface representing an asset
@@ -64,6 +66,8 @@ public interface Asset {
 	 * Gets a copy of byte contents for this data asset
 	 *
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
 	 * @return The byte contents of this asset.
 	 */
 	public default byte[] getBytes() {

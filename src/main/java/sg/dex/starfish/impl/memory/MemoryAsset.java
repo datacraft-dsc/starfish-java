@@ -17,6 +17,8 @@ import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
 
 /**
  * Class representing a local in-memory asset.
@@ -100,12 +102,26 @@ public class MemoryAsset extends ADataAsset {
 		return true;
 	}
 
+	/**
+	 * Gets InputStream corresponding to this Asset
+	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
+	 * @return An input stream allowing consumption of the asset data
+	 */
 	@Override
 	public InputStream getInputStream() {
 		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}
 
+	/**
+	 * Gets raw data corresponding to this Asset
+	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
+	 * @return An input stream allowing consumption of the asset data
+	 */
 	@Override
 	public byte[] getBytes() {
 		// we take a copy of data to protected immutability of MemoryAsset instance

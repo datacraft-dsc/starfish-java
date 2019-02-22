@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
+
 /**
  * Class representing an asset bundle
  * @author Mike
@@ -42,10 +45,13 @@ public class AssetBundle extends AAsset {
 	/**
 	 * Gets an asset contained within this bundle
 	 * @param path   Path to the asset
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retreiving the Asset
 	 * @return The asset at the specified path
 	 */
 	public Asset getContent(String path) {
-		throw new UnsupportedOperationException();
+		throw new StorageException("getContent Error",
+					   new Exception("cannot getContent() for an abstract class"));
 	}
 
 	@Override
