@@ -13,6 +13,11 @@ import sg.dex.starfish.Job;
  */
 public abstract class AMemoryOperation extends AOperation {
 
+	/**
+	 * Creates a memory opearation with the provided metadata.
+	 * 
+	 * @param meta The metadata string describing this operation
+	 */
 	protected AMemoryOperation(String meta) {
 		super(meta);
 	}
@@ -38,6 +43,9 @@ public abstract class AMemoryOperation extends AOperation {
 	
 	/**
 	 * Computes the result of the invoke job using the provided assets
+	 * 
+	 * @param params The positional parameters for this computation
+	 * @return Asset The result of the computation as an asset
 	 */
 	protected abstract Asset compute(Asset... params);
 }

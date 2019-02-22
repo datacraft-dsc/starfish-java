@@ -18,14 +18,14 @@ public interface Listing {
 	 * The asset may not be available in some circumstances (e.g. lack of access permission)
 	 * in which case an exception will be thrown.
 	 *
-	 * @return Asset
+	 * @return The asset for this listing
 	 */
 	public Asset getAsset();
 	
 	/**
 	 * Returns the metadata associated with this listing.
 	 *
-	 * @return JSONObject
+	 * @return A copy of the JSON metadata
 	 */
 	public JSONObject getMetadata();
 	
@@ -33,7 +33,7 @@ public interface Listing {
 	 * Returns the service agreement associated with this listing.
 	 * TODO create service agreement abstraction
 	 *
-	 * @return Object
+	 * @return The Agreement associated with this Listing
 	 */
 	public Object getAgreement();
 }

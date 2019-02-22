@@ -15,8 +15,11 @@ public class Utils {
 	public static final int DID_LENGTH = 32;
 
 	/**
-	 * Creates a random Ocean-compliant DID as a string
-	 * @return String
+	 * Creates a random Ocean-compliant DID as a string, of the format:
+	 * 
+	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+	 * 
+	 * @return A valid Ocean DID represented as a string
 	 */
 	public static String createRandomDIDString() {
 		SecureRandom sr=new SecureRandom();
@@ -27,7 +30,7 @@ public class Utils {
 	
 	/**
 	 * Creates a random Ocean-compliant DID
-	 * @return String
+	 * @return The created DID
 	 */
 	public static DID createRandomDID() {
 		return DID.parse(createRandomDIDString());
@@ -35,8 +38,8 @@ public class Utils {
 	
 	/**
 	 * Creates a random hex string of the specified length
-	 * @param length
-	 * @return
+	 * @param length Number of bytes of hex data to create
+	 * @return A lowercase hex string of the specified length
 	 */
 	public static String createRandomHexString(int length) {
 		SecureRandom sr=new SecureRandom();
@@ -46,10 +49,10 @@ public class Utils {
 	}
 
 	/**
-	 * Compares to objects for equality. null is considered equal to null.
+	 * Compares two objects for equality. null is considered equal to null.
 	 * @param a First object
 	 * @param b Second object
-	 * @return boolean
+	 * @return boolean true if the arguments are equal, false otherwise
 	 */
 	public static boolean equals(Object a, Object b) {
 		if (a==null) return b==null;
@@ -59,7 +62,7 @@ public class Utils {
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
 	 * @param o Object for which to compute the hashcode
-	 * @return int
+	 * @return The computed hashcode
 	 */
 	public static int hashCode(Object o) {
 		if (o==null) return 0;
@@ -67,9 +70,11 @@ public class Utils {
 	}
 
 	/**
-	 * Gets the class of an object, or null if the parameter is null
-	 * @param o
-	 * @return
+	 * Gets the class of an object, or null if the argument is null
+	 * 
+	 * @param o Any Object
+	 * @param <T> The class of the Object
+	 * @return The Class of the argument provided
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getClass(T o) {
@@ -81,11 +86,12 @@ public class Utils {
 	 * Coerces the argument to a boolean value, where:
 	 * - null is considered false
 	 * - Strings "false" and "true" are interpreted appropriately
-	 * - Boolean values are retained
+	 * - Boolean values are retained as-is
 	 * 
 	 * Throws an exception if coercion is not possible.
-	 * @param o
-	 * @return
+	 * 
+	 * @param o The object to attempt to coerce to a boolean value
+	 * @return The boolean value of this object if coercion is successful
 	 */
 	public static boolean coerceBoolean(Object o) {
 		if (o==null) return false;
@@ -100,7 +106,13 @@ public class Utils {
 		throw new IllegalArgumentException("Can't coerce to boolean: "+o);
 	}
 
-	
+	/**
+	 * Coerces an object to an int value.
+	 * 
+	 * @throws IllegalArgumentException if the object cannot be successfully converted to an int
+	 * @param o An object to be converted to an int
+	 * @return The coerced int value of the object
+	 */
 	public static int coerceInt(Object o) {
 		if (o instanceof Number) {
 			if (o instanceof Integer) return (Integer)o;

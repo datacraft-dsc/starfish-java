@@ -18,14 +18,25 @@ public abstract class AAgent implements Agent {
 
 	private JSONObject ddo;
 
-	private Ocean ocean;
+	protected final Ocean ocean;
 
+	/**
+	 * Create an agent with the provided Ocean connection and DID
+	 * 
+	 * @param ocean The ocean connection to use for this agent
+	 * @param did The DID for this agent
+	 */
 	protected AAgent(Ocean ocean, DID did) {
 		this.ocean=ocean;
 		this.did=did;
 	}
 
-	public AAgent(DID did) {
+	/**
+	 * Create an agent with the provided Ocean connection and DID
+	 * @param did The DID for this agent
+	 */
+	protected AAgent(DID did) {
+		this.ocean=Ocean.connect();
 		this.did=did;
 	}
 

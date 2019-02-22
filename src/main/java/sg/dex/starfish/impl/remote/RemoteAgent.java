@@ -19,6 +19,11 @@ import sg.dex.starfish.util.TODOException;
  */
 public class RemoteAgent extends AAgent {
 
+	/**
+	 * Creates a RemoteAgent with the specified Ocean connection and DID
+	 * @param ocean Ocean connection to use
+	 * @param did DID for this agent
+	 */
 	protected RemoteAgent(Ocean ocean, DID did) {
 		super(ocean, did);
 	}
@@ -40,8 +45,8 @@ public class RemoteAgent extends AAgent {
 
 	/**
 	 * Gets a URL string for accessing the specified asset ID
-	 * @param id
-	 * @return
+	 * @param id The asset ID to address 
+	 * @return The URL for the asset as a String
 	 */
 	public String getAssetURL(String id) {
 		throw new TODOException();
@@ -58,14 +63,20 @@ public class RemoteAgent extends AAgent {
 		}
 	}
 
+	/**
+	 * Gets the storage endpoint for this agent
+	 * @return The storage endpoint for this agent e.g. "https://www.myagent.com/api/v1/storage"
+	 */
 	public String getStorageEndpoint() {
 		return getEndpoint("Ocean.Storage");
 	}
 	
 	/**
-	 * Returns the serviceEndpoint for the specified service type
-	 * @param type
-	 * @return
+	 * Returns the serviceEndpoint for the specified service type.
+	 * Searched the agent's DDO for the appropriate service.
+	 * 
+	 * @param type The type of the service to find
+	 * @return The service endpoint, or null if not found
 	 */
 	public String getEndpoint(String type) {
 		JSONObject ddo=getDDO();

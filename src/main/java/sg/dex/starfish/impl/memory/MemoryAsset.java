@@ -37,25 +37,36 @@ public class MemoryAsset extends ADataAsset {
 	
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
-	 * @param memoryAgent
-	 * @param a
-	 * @return
+	 * @param asset The asset to use to construct this MemoryAsset
+	 * @return A new MemoryAsset containing the data from the passed asset argument
 	 */
-	public static MemoryAsset create(Asset a) {
-		if (a instanceof MemoryAsset) {
-			return (MemoryAsset)a;
-		} else if (a.isDataAsset()) {
-			byte[] data=((DataAsset)a).getBytes();
-			return new MemoryAsset(a.getMetadataString(),data);
+	public static MemoryAsset create(Asset asset) {
+		if (asset instanceof MemoryAsset) {
+			return (MemoryAsset)asset;
+		} else if (asset.isDataAsset()) {
+			byte[] data=((DataAsset)asset).getBytes();
+			return new MemoryAsset(asset.getMetadataString(),data);
 		} else {
 			throw new IllegalArgumentException("Asset must be a data asset");
 		}
 	}
-
+	
+	/**
+	 * Creates a MemoryAsset with the provided data. Default metadata will be generated.
+	 * 
+	 * @param data Byte array containing the data for this asset
+	 * @return The newly created in-memory asset
+	 */
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
 	}
 
+	/**
+	 * Creates a MemoryAsset with the provided metadata an content
+	 * @param meta A map containing the metadata for this asset
+	 * @param data Byte array containing the data for this asset
+	 * @return The newly created in-memory asset
+	 */
 	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
 	}
@@ -67,7 +78,7 @@ public class MemoryAsset extends ADataAsset {
 	/**
 	 * Build default metadata for a local asset
 	 * @param data Asset data
-	 * @return
+	 * @return The default metadata as a String
 	 */
 	@SuppressWarnings("unchecked")
 	private static String buildMetaData(byte[] data,Map<Object,Object> meta) {
@@ -83,7 +94,6 @@ public class MemoryAsset extends ADataAsset {
 		ob.put("size", Integer.toString(data.length));
 		return ob.toJSONString();
 	}
-
 
 	@Override
 	public boolean isDataAsset() {

@@ -7,7 +7,7 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 /**
  * Basic implementation of an operation which reverses the byte sequence of a
  * data asset
- * 
+ *
  * @author Mike
  *
  */
@@ -17,6 +17,11 @@ public class ReverseBytesOperation extends AMemoryOperation {
 		super(meta);
 	}
 
+	/**
+	 * Returns the AssetID for this ReverseBytesOperation
+	 *
+	 * @return AssetID for this ReverseBytesOperation
+	 */
 	@Override
 	public String getAssetID() {
 		return "reverse-bytes";
@@ -24,14 +29,19 @@ public class ReverseBytesOperation extends AMemoryOperation {
 
 	/**
 	 * Creates a new instance of ReverseBytesOperation
-	 * 
-	 * @return
+	 *
+	 * @return new instance of ReverseBytesOperation
 	 */
 	public static ReverseBytesOperation create() {
 		String meta = "{}";
 		return new ReverseBytesOperation(meta);
 	}
 
+	/**
+	 * Returns the Asset result of computation
+	 *
+	 * @return Asset result of computation
+	 */
 	@Override
 	public Asset compute(Asset... params) {
 		if (params.length != 1) throw new IllegalArgumentException("Wrong arity, exactly 1 parameter required");
