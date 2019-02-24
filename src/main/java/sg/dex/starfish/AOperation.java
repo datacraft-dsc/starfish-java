@@ -3,7 +3,7 @@ package sg.dex.starfish;
 import java.util.Map;
 
 /**
- * Abstract base class representing invokable operation sin th eOCean ecosystem
+ * Abstract base class representing invokable operations in the Ocean ecosystem
  * 
  * @author Mike
  *
