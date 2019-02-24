@@ -2,8 +2,6 @@ package sg.dex.starfish.impl.remote;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
@@ -70,23 +68,6 @@ public class RemoteAgent extends AAgent {
 		return getEndpoint("Ocean.Storage");
 	}
 	
-	/**
-	 * Returns the serviceEndpoint for the specified service type.
-	 * Searched the agent's DDO for the appropriate service.
-	 * 
-	 * @param type The type of the service to find
-	 * @return The service endpoint, or null if not found
-	 */
-	@SuppressWarnings("unchecked")
-	public String getEndpoint(String type) {
-		Map<String,Object> ddo=getDDO();
-		List<Object> services = (List<Object>) ddo.get("service");
-		if (services==null) return null;
-		for (Object o: services) {
-			Map<String,Object> service=(Map<String,Object>)o;
-			if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
-		}
-		return null;
-	}
+
 
 }

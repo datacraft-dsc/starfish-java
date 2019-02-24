@@ -13,7 +13,7 @@ public interface Agent {
 
 	/**
 	 * Gets the DDO for the agent
-	 * @return JSONObject
+	 * @return The DDO of the agent as a metadata Map
 	 */
 	public Map<String,Object> getDDO();
 
@@ -28,9 +28,10 @@ public interface Agent {
 	 * Registers an asset with this agent.
 	 * The agent must support metadata storage.
 	 * 
-	 * @param a The asset to register
+	 * @throws UnsupportedOperationException if the agent does not support metadata storage
+	 * @param asset The asset to register
 	 */
-	public void registerAsset(Asset a);
+	public void registerAsset(Asset asset);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.

@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import java.util.List;
 import java.util.Map;
 
 import sg.dex.starfish.util.DID;
@@ -58,5 +59,24 @@ public abstract class AAgent implements Agent {
 	 */
 	public Map<String,Object> refreshDDO() {
 		return ocean.getDDO(did);
+	}
+	
+	/**
+	 * Returns the serviceEndpoint for the specified service type.
+	 * Searched the agent's DDO for the appropriate service.
+	 * 
+	 * @param type The type of the service to find
+	 * @return The service endpoint, or null if not found
+	 */
+	@SuppressWarnings("unchecked")
+	public String getEndpoint(String type) {
+		Map<String,Object> ddo=getDDO();
+		List<Object> services = (List<Object>) ddo.get("service");
+		if (services==null) return null;
+		for (Object o: services) {
+			Map<String,Object> service=(Map<String,Object>)o;
+			if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
+		}
+		return null;
 	}
 }
