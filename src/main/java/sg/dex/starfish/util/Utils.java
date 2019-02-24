@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility class for StarFish
@@ -144,6 +146,24 @@ public class Utils {
 			throw new RuntimeException("Can't read input stream",e);
 		}
 		return new String(result.toByteArray(),StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * Creates a map using the given arguments as keys and values
+	 * @param params A sequence of (key,value) objects
+	 * @return A map containing the key keys and values
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K,V> Map<K,V> mapOf(Object... params) {
+		int len=params.length;
+		if ((len&1)!=0) throw new IllegalArgumentException("mapOf requires a even number of arguments but got: "+len);
+		Map<K,V> result = new HashMap<>(len>>1);
+		for(int i=0; i<len; i+=2) {
+			K key=(K) params[i];
+			V value=(V) params[i+1];
+			result .put(key,value);
+		}
+		return result;
 	}
 
 
