@@ -44,6 +44,17 @@ public class TestMemoryOperations {
 		}
 	}
 	
+	@Test public void testInsufficientParams() {
+		Operation op=ReverseBytesOperation.create();
+		Job badJob=op.invoke(); // should not yet fail since this is async
+		try {
+			Asset result2=badJob.awaitResult(1000);
+			fail("Should not succeed! Got: "+Utils.getClass(result2));
+		} catch (Exception ex) {
+			/* OK */
+		}
+	}
+	
 	@Test public void testFailingOperation() {
 		byte[] data=new byte[] {1,2,3};
 		Operation op=EpicFailOperation.create();
