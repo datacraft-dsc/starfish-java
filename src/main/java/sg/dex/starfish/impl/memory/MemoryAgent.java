@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,7 +69,15 @@ public class MemoryAgent extends AAgent implements Invokable {
 		if (!(operation instanceof AMemoryOperation)) {
 			throw new IllegalArgumentException("Operation must be a MemoryOperation but got: "+Utils.getClass(operation));
 		}
-		return null;
+		return operation.invoke(params);
+	}
+
+	@Override
+	public Job invoke(Operation operation, Map<String, Asset> params) {
+		if (!(operation instanceof AMemoryOperation)) {
+			throw new IllegalArgumentException("Operation must be a MemoryOperation but got: "+Utils.getClass(operation));
+		}
+		return operation.invoke(params);
 	}
 
 }

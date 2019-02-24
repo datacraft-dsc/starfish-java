@@ -8,6 +8,14 @@ package sg.dex.starfish;
  */
 public interface Job {
 
+	long DEFAULT_TIMEOUT = 10000; // 10 seconds default timeout
+
+	/**
+	 * Gets the Job ID associated with this Job
+	 * @return
+	 */
+	public String getJobID();
+	
 	/**
 	 * Returns true if the Job has been completed. If the job is complete, the result
 	 * may be obtained via getResult()
@@ -30,7 +38,9 @@ public interface Job {
 	 * 
 	 * @return The Asset resulting from the job
 	 */
-	public Asset awaitResult();
+	public default Asset awaitResult() {
+		return awaitResult(DEFAULT_TIMEOUT);
+	}
 	
 	/**
 	 * Waits for the result of the Operation and returns the result Asset

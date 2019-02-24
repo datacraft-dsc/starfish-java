@@ -22,7 +22,7 @@ public abstract class AOperation extends AAsset implements Operation {
 	}
 
 	@Override
-	public boolean isDataAsset() {
+	public final boolean isDataAsset() {
 		return false;
 	}
 	
@@ -30,7 +30,8 @@ public abstract class AOperation extends AAsset implements Operation {
 	@Override
 	public Map<String, Object> getParamSpec() {
 		JSONObject meta=getMetadata();
-		return (Map<String, Object>) meta.get("params");
+		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
+		return paramSpec;
 	}
 	
 }

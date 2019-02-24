@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JobFailedException;
 
 /**
@@ -81,6 +82,11 @@ public class MemoryJob implements Job {
 			Throwable cause=e.getCause();
 			throw new JobFailedException("Job failed with exception: "+cause,e);
 		}
+	}
+
+	@Override
+	public String getJobID() {
+		return "MemoryJob:"+Hex.toString(System.identityHashCode(this));
 	}
 
 }

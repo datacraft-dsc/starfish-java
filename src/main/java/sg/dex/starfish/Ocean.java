@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -31,7 +31,7 @@ public class Ocean {
 	 * @param did DID to resolve
 	 * @return The DDO as a JSON map
 	 */
-	public JSONObject getDDO(String did) {
+	public Map<String,Object> getDDO(String did) {
 		return getDDO(DID.parse(did));
 	}
 
@@ -40,7 +40,7 @@ public class Ocean {
 	 * @param did DID to resolve
 	 * @return The DDO as a JSON map
 	 */
-	public JSONObject getDDO(DID did) {
+	public Map<String,Object> getDDO(DID did) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 

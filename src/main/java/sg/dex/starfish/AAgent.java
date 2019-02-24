@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -16,7 +16,7 @@ public abstract class AAgent implements Agent {
 
 	protected final DID did;
 
-	private JSONObject ddo;
+	private Map<String,Object> ddo;
 
 	protected final Ocean ocean;
 
@@ -45,7 +45,7 @@ public abstract class AAgent implements Agent {
 	}
 
 	@Override
-	public JSONObject getDDO() {
+	public Map<String,Object> getDDO() {
 		if (ddo==null) {
 			ddo=refreshDDO();
 		}
@@ -56,7 +56,7 @@ public abstract class AAgent implements Agent {
 	 * Fetches the latest DDO from Universal Resolver if not cached
 	 * @return JSONObject
 	 */
-	public JSONObject refreshDDO() {
+	public Map<String,Object> refreshDDO() {
 		return ocean.getDDO(did);
 	}
 }

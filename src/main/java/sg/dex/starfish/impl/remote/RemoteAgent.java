@@ -2,9 +2,8 @@ package sg.dex.starfish.impl.remote;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.List;
+import java.util.Map;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
@@ -78,12 +77,13 @@ public class RemoteAgent extends AAgent {
 	 * @param type The type of the service to find
 	 * @return The service endpoint, or null if not found
 	 */
+	@SuppressWarnings("unchecked")
 	public String getEndpoint(String type) {
-		JSONObject ddo=getDDO();
-		JSONArray services = (JSONArray) ddo.get("service");
+		Map<String,Object> ddo=getDDO();
+		List<Object> services = (List<Object>) ddo.get("service");
 		if (services==null) return null;
 		for (Object o: services) {
-			JSONObject service=(JSONObject)o;
+			Map<String,Object> service=(Map<String,Object>)o;
 			if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
 		}
 		return null;

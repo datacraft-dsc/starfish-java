@@ -1,5 +1,9 @@
 package sg.dex.starfish.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 /**
@@ -125,6 +129,21 @@ public class Utils {
 			return Integer.parseInt((String) o);
 		}
 		throw new IllegalArgumentException("Can't coerce to int: "+o);
+	}
+
+	public static String stringFromStream(InputStream inputStream) {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int length;
+		try {
+			while ((length = inputStream.read(buffer)) != -1) {
+			    result.write(buffer, 0, length);
+			}
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Can't read input stream",e);
+		}
+		return new String(result.toByteArray(),StandardCharsets.UTF_8);
 	}
 
 

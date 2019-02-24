@@ -1,5 +1,7 @@
 package sg.dex.starfish.impl.operations;
 
+import java.util.Map;
+
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 
@@ -42,7 +44,12 @@ public class EpicFailOperation extends AMemoryOperation {
 	 * @return Asset result of computation
 	 */
 	@Override
-	public Asset compute(Asset... params) {
+	public Asset compute(Map<String, Asset> params) {
+		throw new RuntimeException("EPIC FAIL");
+	}
+
+	@Override
+	protected Asset compute(Asset... params) {
 		throw new RuntimeException("EPIC FAIL");
 	}
 

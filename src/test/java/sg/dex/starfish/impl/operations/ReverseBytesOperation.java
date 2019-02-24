@@ -1,5 +1,7 @@
 package sg.dex.starfish.impl.operations;
 
+import java.util.Map;
+
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -45,8 +47,11 @@ public class ReverseBytesOperation extends AMemoryOperation {
 	@Override
 	public Asset compute(Asset... params) {
 		if (params.length != 1) throw new IllegalArgumentException("Wrong arity, exactly 1 parameter required");
-		Asset a = params[0];
-		byte[] bytes = a.getBytes();
+		return doCompute( params[0]);
+	}
+	
+	private Asset doCompute(Asset input) {
+		byte[] bytes = input.getBytes();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
 			byte temp = bytes[i];
@@ -55,6 +60,12 @@ public class ReverseBytesOperation extends AMemoryOperation {
 		}
 		Asset result = MemoryAsset.create(bytes);
 		return result;
+	}
+
+	@Override
+	protected Asset compute(Map<String, Asset> params) {
+		Asset input=params.get("input");
+		return doCompute(input);
 	}
 
 }

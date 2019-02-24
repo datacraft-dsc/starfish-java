@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -15,7 +15,7 @@ public interface Agent {
 	 * Gets the DDO for the agent
 	 * @return JSONObject
 	 */
-	public JSONObject getDDO();
+	public Map<String,Object> getDDO();
 
 	/**
 	 * Gets the DID for an Agent

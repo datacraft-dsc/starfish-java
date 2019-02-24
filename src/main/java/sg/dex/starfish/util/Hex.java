@@ -80,4 +80,17 @@ public class Hex {
 		}
 		return new String(hex);
 	}
+
+	/**
+	 * Converts an int to its 8-character hex representation
+	 * @param identityHashCode
+	 * @return
+	 */
+	public static String toString(int value) {
+		char[] hex=new char[8];
+		for (int i=0; i<8; i++) {
+			hex[i]=toChar(0x0F&(value>>(28-4*i)));
+		}
+		return new String(hex);
+	}
 }
