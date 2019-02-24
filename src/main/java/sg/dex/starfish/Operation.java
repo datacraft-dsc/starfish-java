@@ -2,8 +2,6 @@ package sg.dex.starfish;
 
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 /**
  * Interface representing an invokable operation
  * @author Mike
@@ -31,5 +29,5 @@ public interface Operation extends Asset {
 	 * 
 	 * @return A map of parameter names to specifications
 	 */
-	public Map<String, JSONObject> getParamSpec();
+	public Map<String, Object> getParamSpec();
 }

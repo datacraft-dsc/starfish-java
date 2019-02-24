@@ -28,9 +28,9 @@ public abstract class AOperation extends AAsset implements Operation {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, JSONObject> getParamSpec() {
+	public Map<String, Object> getParamSpec() {
 		JSONObject meta=getMetadata();
-		return (Map<String, JSONObject>) meta.get("params");
+		return (Map<String, Object>) meta.get("params");
 	}
 	
 }

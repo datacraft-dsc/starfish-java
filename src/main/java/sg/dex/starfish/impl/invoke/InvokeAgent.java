@@ -15,14 +15,14 @@ import org.json.simple.JSONObject;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.InvokableAgent;
+import sg.dex.starfish.Invokable;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
-public class InvokeAgent extends AAgent implements InvokableAgent {
+public class InvokeAgent extends AAgent implements Invokable {
 
 	protected InvokeAgent(Ocean ocean, DID did) {
 		super(ocean, did);
@@ -97,10 +97,10 @@ public class InvokeAgent extends AAgent implements InvokableAgent {
 	@SuppressWarnings("unchecked")
 	private JSONObject formatParams(Operation operation, Asset... params) {
 		JSONObject result=new JSONObject();
-		Map<String,JSONObject> paramSpec=operation.getParamSpec();
-		for (Map.Entry<String,JSONObject> me:paramSpec.entrySet()) {
+		Map<String,Object> paramSpec=operation.getParamSpec();
+		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
-			JSONObject spec=me.getValue();
+			JSONObject spec=(JSONObject)me.getValue();
 			// String type=(String) spec.get("type");
 			Object positionObj=spec.get("position");
 			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
@@ -115,6 +115,11 @@ public class InvokeAgent extends AAgent implements InvokableAgent {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public Map<String, Object> getParamSpec(Operation op) {
+		return op.getParamSpec();
 	}
 
 }
