@@ -48,7 +48,7 @@ public abstract class AAsset implements Asset {
 	public Map<String,Object> getParamValue() {
 		 Map<String,Object>  o=new HashMap<>();
 		// default is to pass the asset ID
-		o.put("id", getAssetID());
+		o.put("did", getAssetDID());
 		return o;
 	}
 
