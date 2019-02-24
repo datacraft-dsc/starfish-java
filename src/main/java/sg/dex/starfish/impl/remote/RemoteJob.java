@@ -5,17 +5,17 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.util.JobFailedException;
 
 public class RemoteJob implements Job {
-	private InvokeAgent agent;
+	private RemoteAgent agent;
 	private String jobID;
 	private Asset asset;
 
-	public RemoteJob(InvokeAgent agent, String jobID) {
+	public RemoteJob(RemoteAgent agent, String jobID) {
 		this.agent=agent;
 		this.jobID=jobID;
 	}
 
-	public static Job create(InvokeAgent agent, String jobID) {
-		return new RemoteJob(agent,jobID);
+	public static Job create(RemoteAgent agent2, String jobID) {
+		return new RemoteJob(agent2,jobID);
 	}
 
 	@Override

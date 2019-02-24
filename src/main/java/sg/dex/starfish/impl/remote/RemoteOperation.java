@@ -14,14 +14,14 @@ import sg.dex.starfish.Job;
  */
 public class RemoteOperation extends AOperation {
 
-	private InvokeAgent agent;
+	private RemoteAgent agent;
 
-	protected RemoteOperation(InvokeAgent agent, String meta) {
+	protected RemoteOperation(RemoteAgent agent, String meta) {
 		super(meta);
 		this.agent=agent;
 	}
 	
-	public static Asset create(InvokeAgent a, String meta) {
+	public static Asset create(RemoteAgent a, String meta) {
 		return new RemoteOperation(a,meta);
 	}
 

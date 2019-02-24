@@ -1,20 +1,44 @@
 package sg.dex.starfish.impl.remote;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Invokable;
+import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Operation;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Params;
+import sg.dex.starfish.util.RemoteException;
 import sg.dex.starfish.util.TODOException;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class implementing a remote storage agent using the Storage API
  * @author Mike
  *
  */
-public class RemoteAgent extends AAgent {
+public class RemoteAgent extends AAgent implements Invokable {
 
 	/**
 	 * Creates a RemoteAgent with the specified Ocean connection and DID
@@ -48,6 +72,24 @@ public class RemoteAgent extends AAgent {
 	public String getAssetURL(String id) {
 		throw new TODOException();
 	}
+	
+	public URI getInvokeURI() {
+		try {
+			return new URI("http://10.0.1.164:3000/invokesync");
+		}
+		catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public URI getJobURI(String jobID) {
+		try {
+			return new URI("http://10.0.1.164:3000/jobs/"+jobID);
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Can't create valid URI for job: "+jobID,e);
+		}
+	}
 
 	public URL getURL(RemoteAsset remoteAsset) {
 		String storageEndpoint=getStorageEndpoint();
@@ -68,6 +110,125 @@ public class RemoteAgent extends AAgent {
 		return getEndpoint("Ocean.Storage");
 	}
 	
+	@Override
+	public Job invoke(Operation operation, Asset... params) {
+		Map<String,Object> request=new HashMap<String,Object>(2);
+		request.put("operation",operation.getAssetID());
+		request.put("params",Params.formatParams(operation,params));
+		return invoke(request);
+	}
+	
+	/**
+	 * Polls this agent for the Asset resulting from the given job ID
+	 * @throws IllegalArgumentException If the job ID is invalid
+	 * @param jobID
+	 * @return The asset resulting from this job ID if available, null otherwise.
+	 */
+	public Asset pollJob(String jobID) {
+		URI uri=getJobURI(jobID);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(uri);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			try {
+			    StatusLine statusLine=response.getStatusLine();
+			    int statusCode = statusLine.getStatusCode();
+			    if (statusCode==404) {
+			    	throw new RemoteException("Job ID not found for invoke at: "+uri);
+			    }
+			    if (statusCode==200) {
+			    	String body=Utils.stringFromStream(response.getEntity().getContent());
+			    	Map<String,Object> result=JSON.toMap(body);
+			    	String status=(String) result.get("status");
+			    	if (status==null) throw new RemoteException("No status in job result: "+body);
+			    	if (status.equals("started")||status.equals("inprogress")) {
+			    		return null; // no result yet
+			    	}
+			    	if (status.equals("started")||status.equals("inprogress")) {
+			    		return null; // no result yet
+			    	}
+			    	if (status.equals("complete")) {
+			    		String assetID = (String) result.get("result");
+			    		if (assetID==null) throw new RemoteException("No asset in completed job result: "+body);
+			    		return RemoteAsset.create(assetID,this);
+			    	}
+			    }
+		    	throw new TODOException("status code not handled: "+statusCode);
+			} finally {
+			    response.close();
+			}
+		}
+		catch (ClientProtocolException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public Job invoke(Operation operation, Map<String,Asset> params) {
+		Map<String,Object> request=new HashMap<String,Object>(2);
+		request.put("operation",operation.getAssetID());
+		request.put("params",Params.formatParams(operation,params));
+		return invoke(request);
+	}
+
+	private Job invoke(Map<String,Object> request) {
+		String req=JSON.toString(request);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(getInvokeURI());
+		StringEntity entity=new StringEntity(req,StandardCharsets.UTF_8);
+		httppost.setEntity(entity);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httppost);
+			try {
+				return RemoteAgent.create(this,response);
+			} finally {
+			    response.close();
+			}
+		}
+		catch (ClientProtocolException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	
+
+	static Job createWith200(RemoteAgent agent, HttpResponse response) {
+		HttpEntity entity=response.getEntity();
+		if (entity==null) throw new RuntimeException("Invoke failed: no response body");
+		try {
+			String body=Utils.stringFromStream(entity.getContent());
+			return RemoteJob.create(agent,body);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Invoke failed: "+e.getMessage(),e);
+		}
+	}
+
+	/**
+	 * Creates a remote invoke Job using the given HTTP response.
+	 * @param response A valid successful response from the remote Invoke API
+	 * @return A job representing the remote invocation
+	 */
+	public static Job create(RemoteAgent agent, HttpResponse response) {
+		StatusLine statusLine=response.getStatusLine();
+		int statusCode=statusLine.getStatusCode();
+	    if (statusCode==200) {
+	    	return RemoteAgent.createWith200(agent, response);
+	    }			    
+	    String reason=statusLine.getReasonPhrase();
+	    if ((statusCode)==400) {
+	    	throw new IllegalArgumentException("Bad invoke request: "+reason);
+	    }
+	    throw new RuntimeException("Invoke request failed with code "+statusCode+": "+reason);
+	}
 
 
 }
