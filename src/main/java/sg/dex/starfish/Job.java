@@ -8,10 +8,10 @@ package sg.dex.starfish;
  */
 public interface Job {
 
-	long DEFAULT_TIMEOUT = 10000; // 10 seconds default timeout
-
 	/**
-	 * Gets the Job ID associated with this Job
+	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
+	 * responsible for completing the job.
+	 * 
 	 * @return
 	 */
 	public String getJobID();
@@ -27,7 +27,8 @@ public interface Job {
 	/**
 	 * Gets the result of the job as an Ocean asset
 	 * 
-	 * @return The Asset resulting from the job, or null if not available
+	 * @throws JobFailedException if the job failed during execution
+	 * @return The Asset resulting from the job, or null if not yet available
 	 */
 	public Asset getResult();
 	
@@ -39,7 +40,7 @@ public interface Job {
 	 * @return The Asset resulting from the job
 	 */
 	public default Asset awaitResult() {
-		return awaitResult(DEFAULT_TIMEOUT);
+		return awaitResult(Long.MAX_VALUE);
 	}
 	
 	/**

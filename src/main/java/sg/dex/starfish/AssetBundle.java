@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class representing an asset bundle
+ * Class representing an asset bundle. The contents of the bundle are defined in the asset 
+ * metadata.
+ * 
  * @author Mike
  *
  */
