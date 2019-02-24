@@ -29,6 +29,14 @@ public class TestMemoryOperations {
 		Job job=op.invoke(Utils.mapOf("input",a));
 		Asset result=job.awaitResult(1000);
 		assertArrayEquals(new byte[] {3,2,1}, result.getBytes());
+		
+		try {
+			Job badJob=op.invoke(Utils.mapOf("nonsense",a));
+			Asset result2=badJob.awaitResult(1000);
+			fail("Should not succeed! Got: "+Utils.getClass(result2));
+		} catch (Exception ex) {
+			/* OK */
+		}
 	}
 	
 	@Test public void testFailingOperation() {
