@@ -3,8 +3,8 @@ package sg.dex.starfish.impl.remote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
@@ -52,10 +52,9 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		throw new TODOException();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject getParamValue() {
-		JSONObject o=new JSONObject();
+	public Map<String,Object> getParamValue() {
+		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
 		o.put("did", getAssetDID());
 		return o;

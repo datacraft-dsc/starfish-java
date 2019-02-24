@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 /**
  * Class representing an asset bundle
  * @author Mike
@@ -24,7 +22,7 @@ public class AssetBundle extends AAsset {
 
 	@SuppressWarnings("unchecked")
 	public List<String> getContentIDs() {
-		JSONObject meta=getMetadata();
+		Map<String,Object> meta=getMetadata();
 		Object contentValue=meta.get("contents");
 		if (!(contentValue instanceof Map)) {
 			throw new Error("Expected a map of contents in bundle, found: "+contentValue);

@@ -1,6 +1,7 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.util.DID;
@@ -34,7 +35,7 @@ public abstract class AAsset implements Asset {
 		return id;
 	}
 	@Override
-	public JSONObject getMetadata() {
+	public Map<String,Object> getMetadata() {
 		return JSONObjectCache.parse(metadataString);
 	}
 	
@@ -43,10 +44,9 @@ public abstract class AAsset implements Asset {
 		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass()); 
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject getParamValue() {
-		JSONObject o=new JSONObject();
+	public Map<String,Object> getParamValue() {
+		 Map<String,Object>  o=new HashMap<>();
 		// default is to pass the asset ID
 		o.put("id", getAssetID());
 		return o;

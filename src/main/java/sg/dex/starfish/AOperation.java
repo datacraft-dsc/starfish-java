@@ -2,8 +2,6 @@ package sg.dex.starfish;
 
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 /**
  * Abstract base class representing invokable operation sin th eOCean ecosystem
  * 
@@ -29,7 +27,7 @@ public abstract class AOperation extends AAsset implements Operation {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> getParamSpec() {
-		JSONObject meta=getMetadata();
+		Map<String,Object> meta=getMetadata();
 		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
 		return paramSpec;
 	}

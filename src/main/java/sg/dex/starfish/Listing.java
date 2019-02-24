@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 /**
  * Interface representing a listing of an asset on a data marketplace
@@ -27,7 +27,7 @@ public interface Listing {
 	 *
 	 * @return A copy of the JSON metadata
 	 */
-	public JSONObject getMetadata();
+	public Map<String,Object> getMetadata();
 	
 	/**
 	 * Returns the service agreement associated with this listing.

@@ -2,7 +2,8 @@ package sg.dex.starfish.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
+
 import org.junit.Test;
 
 import sg.dex.crypto.Hash;
@@ -14,7 +15,7 @@ public class TestMemoryAsset {
 		
 		MemoryAsset a=MemoryAsset.create(data);
 		assertEquals(10,a.getSize());
-		JSONObject meta=a.getMetadata();
+		Map<String,Object> meta=a.getMetadata();
 		assertEquals("10",meta.get("size"));
 		assertEquals(Hash.keccak256String(data),meta.get("contentHash"));
 	}

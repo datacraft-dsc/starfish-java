@@ -1,5 +1,6 @@
 package sg.dex.starfish.util;
 
+import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.json.simple.JSONObject;
@@ -18,7 +19,8 @@ public class JSONObjectCache {
 
 	private static final WeakHashMap<String,JSONObject> cache=new WeakHashMap<String,JSONObject>();
 	
-	public synchronized static JSONObject parse(String s) {
+	@SuppressWarnings("unchecked")
+	public synchronized static Map<String,Object> parse(String s) {
 		JSONObject cached=cache.get(s);
 		if (cached!=null) return new JSONObject(cached); // deep clone
 		JSONParser parser=new JSONParser();

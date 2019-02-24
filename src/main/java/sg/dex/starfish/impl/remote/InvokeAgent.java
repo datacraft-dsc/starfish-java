@@ -17,7 +17,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.simple.JSONObject;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Invokable;
@@ -141,17 +140,18 @@ public class InvokeAgent extends RemoteAgent implements Invokable {
 	 * @param params A map of parameter names to assets
 	 * @return The "params" portion of the invoke payload as a Map
 	 */
+	@SuppressWarnings("unchecked")
 	protected Map<String,Object> formatParams(Operation operation, Map<String,Asset> params) {
 		HashMap<String,Object> result=new HashMap<>(params.size());
 		Map<String,Object> paramSpec=operation.getParamSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
-			JSONObject spec=(JSONObject)me.getValue();
+			Map<String,Object> spec=(Map<String,Object>)me.getValue();
 			// String type=(String) spec.get("type");
 			boolean required=Utils.coerceBoolean(spec.get("required"));
 			if (params.containsKey(paramName)) {
 				Asset a=params.get(paramName);
-				JSONObject value=a.getParamValue();
+				Map<String,Object> value=a.getParamValue();
 				result.put(paramName,value);
 			}
 			if (required) {
@@ -168,19 +168,20 @@ public class InvokeAgent extends RemoteAgent implements Invokable {
 	 * @param params An array of assets to be provided as positional parameters
 	 * @return The "params" portion of the invoke payload as a JSONObject
 	 */
+	@SuppressWarnings("unchecked")
 	protected Map<String,Object> formatParams(Operation operation, Asset... params) {
 		HashMap<String,Object> result=new HashMap<>(params.length);
 		Map<String,Object> paramSpec=operation.getParamSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
-			JSONObject spec=(JSONObject)me.getValue();
+			Map<String,Object> spec=(Map<String,Object>)me.getValue();
 			// String type=(String) spec.get("type");
 			Object positionObj=spec.get("position");
 			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
 			boolean required=Utils.coerceBoolean(spec.get("required"));
 			if ((pos>=0)&&(pos<params.length)) {
 				Asset a=params[pos];
-				JSONObject value=a.getParamValue();
+				Map<String,Object> value=a.getParamValue();
 				result.put(paramName,value);
 			}
 			if (required) {

@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -31,9 +31,9 @@ public interface Asset {
 	/**
 	 * Gets a copy of the JSON metadata for this asset.
 	 * 
-	 * @return New clone of the parsed JSON metadat for this asset
+	 * @return New clone of the parsed JSON metadata for this asset
 	 */
-	public JSONObject getMetadata();
+	public Map<String, Object> getMetadata();
 
 	/**
 	 * Returns true if this asset is a data asset, i.e. the asset represents an immutable
@@ -81,8 +81,8 @@ public interface Asset {
 	/**
 	 * Gets the representation of this asset as required to pass to a remote invokable 
 	 * service.
-	 * @return A JSON map representing this asset
+	 * @return A map representing this asset
 	 */
-	public JSONObject getParamValue();
+	public Map<String, Object> getParamValue();
 
 }

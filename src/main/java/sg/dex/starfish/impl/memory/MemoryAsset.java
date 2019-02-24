@@ -8,15 +8,15 @@ package sg.dex.starfish.impl.memory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 
 /**
  * Class representing a local in-memory asset.
@@ -67,7 +67,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @param data Byte array containing the data for this asset
 	 * @return The newly created in-memory asset
 	 */
-	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
+	public static MemoryAsset create(Map<String,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
 	}
 
@@ -80,19 +80,18 @@ public class MemoryAsset extends ADataAsset {
 	 * @param data Asset data
 	 * @return The default metadata as a String
 	 */
-	@SuppressWarnings("unchecked")
-	private static String buildMetaData(byte[] data,Map<Object,Object> meta) {
+	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
-		JSONObject ob=new JSONObject();
+		Map<String,Object> ob=new HashMap<>();
 		if (meta!=null) {
-			for (Map.Entry<Object,Object> me:meta.entrySet()) {
+			for (Map.Entry<String,Object> me:meta.entrySet()) {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
 
 		ob.put("contentHash", hash);
 		ob.put("size", Integer.toString(data.length));
-		return ob.toJSONString();
+		return JSON.toString(ob);
 	}
 
 	@Override
@@ -117,10 +116,9 @@ public class MemoryAsset extends ADataAsset {
 		return data.length;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject getParamValue() {
-		JSONObject o=new JSONObject();
+	public Map<String,Object> getParamValue() {
+		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
 		o.put("id", getAssetID());
 		return o;
