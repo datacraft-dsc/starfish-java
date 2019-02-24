@@ -75,7 +75,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	
 	public URI getInvokeURI() {
 		try {
-			return new URI("http://10.0.1.164:3000/invokesync");
+			return new URI(getInvokeEndpoint()+"/invokesync");
 		}
 		catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -84,7 +84,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	
 	public URI getJobURI(String jobID) {
 		try {
-			return new URI("http://10.0.1.164:3000/jobs/"+jobID);
+			return new URI(getInvokeEndpoint()+"/jobs/"+jobID);
 		}
 		catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for job: "+jobID,e);
@@ -107,7 +107,23 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @return The storage endpoint for this agent e.g. "https://www.myagent.com/api/v1/storage"
 	 */
 	public String getStorageEndpoint() {
-		return getEndpoint("Ocean.Storage");
+		return getEndpoint("Ocean.Storage.v1");
+	}
+	
+	/**
+	 * Gets the Invoke API endpoint for this agent
+	 * @return The invoke endpoint for this agent e.g. "https://www.myagent.com/api/v1/invoke"
+	 */
+	public String getInvokeEndpoint() {
+		return getEndpoint("Ocean.Invoke.v1");
+	}
+	
+	/**
+	 * Gets the Meta API endpoint for this agent
+	 * @return The Meta API endpoint for this agent e.g. "https://www.myagent.com/api/v1/meta"
+	 */
+	public String getMetaEndpoint() {
+		return getEndpoint("Ocean.Meta.v1");
 	}
 	
 	@Override
@@ -197,8 +213,6 @@ public class RemoteAgent extends AAgent implements Invokable {
 			throw new RuntimeException(e);
 		}
 	}
-
-	
 
 	static Job createWith200(RemoteAgent agent, HttpResponse response) {
 		HttpEntity entity=response.getEntity();

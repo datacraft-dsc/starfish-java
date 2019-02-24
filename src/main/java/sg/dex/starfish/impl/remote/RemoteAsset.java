@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
@@ -27,7 +26,13 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		this.agent=agent;
 	}
 	
-	public static Asset create(String meta, RemoteAgent agent) {
+	/**
+	 * Creates a RemoteAsset with the given metadata on the specified remote agent
+	 * @param meta
+	 * @param agent
+	 * @return
+	 */
+	public static RemoteAsset create(String meta, RemoteAgent agent) {
 		return new RemoteAsset(meta,agent);
 	}
 
