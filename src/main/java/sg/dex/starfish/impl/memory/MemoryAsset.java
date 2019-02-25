@@ -73,7 +73,8 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static Asset create(String string) {
-		return create(Utils.mapOf("contentType","text/plain"),string.getBytes(StandardCharsets.UTF_8));
+		byte[] bytes=string.getBytes(StandardCharsets.UTF_8);
+		return create(Utils.mapOf("contentType","text/plain; charset=utf-8"),bytes);
 	}
 
 	/**
