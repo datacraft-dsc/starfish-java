@@ -20,6 +20,10 @@ public class RegisterSample {
 		
 		// check the metadata is correct
 		assertEquals(a.getMetadata(),ra.getMetadata());
+		
+		
+		// download the asset 
+		// Asset dl=MemoryAsset.create(ra);
 	}
 
 

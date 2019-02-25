@@ -1,9 +1,17 @@
 package sg.dex.starfish.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 public class HTTP {
 
@@ -14,6 +22,43 @@ public class HTTP {
 	 */
 	public static HttpEntity textEntity(String s) {
 		return new ByteArrayEntity(s.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public static CloseableHttpResponse execute(HttpUriRequest httpRequest) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpRequest);
+			return response;
+		}
+		catch (ClientProtocolException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void close(CloseableHttpResponse response) {
+		try {
+			response.close();
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static HttpEntity getEntity(HttpResponse response) {
+		return response.getEntity();
+	}
+
+	public static InputStream getContent(HttpResponse response) {
+		try {
+			return getEntity(response).getContent();
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

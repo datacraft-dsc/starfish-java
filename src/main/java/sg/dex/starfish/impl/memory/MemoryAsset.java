@@ -102,6 +102,7 @@ public class MemoryAsset extends ADataAsset {
 		Map<String,Object> ob=new HashMap<>();
 		ob.put("dateCreated", Instant.now().toString());
 		ob.put("contentHash", hash);
+		ob.put("type", "dataset");
 		ob.put("size", Integer.toString(data.length));
 		ob.put("contentType","application/octet-stream");
 		

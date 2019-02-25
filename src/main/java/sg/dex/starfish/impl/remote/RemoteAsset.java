@@ -1,8 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,13 +41,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 
 	@Override
 	public InputStream getInputStream() {
-		URL url=agent.getURL(this);
-		try {
-			return url.openStream();
-		}
-		catch (IOException e) {
-			throw new Error("Cannot open input stream for URL: "+url,e);
-		}
+		return agent.getDownloadStream(this);
 	}
 
 	@Override
