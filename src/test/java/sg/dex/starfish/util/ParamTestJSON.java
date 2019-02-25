@@ -24,10 +24,14 @@ public class ParamTestJSON {
 			{ "Number with decimal","1.0" }, 
 			{ "Null","null" }, 
 			{ "String","\"foobar\"" }, 
+			{ "String with special characters","\"foo\\nbaz\\tbar\"" }, 
+			{ "String with unicode characters","\"\u0026\uFFFF\"" }, 
+			{ "String with non-escaped forward slashes","\"foo/bar/baz\"" }, 
+			{ "String with escaped forward slashes","\"foo\\/bar\\/baz\"" }, 
 			{ "Array of numbers","[1,2,3]" }, 
 			{ "Array of stuff","[1,{},true,\"bar\"]" }, 
 			{ "Empty map","{}" }, 
-			{ "Nested maps", "{\"foo\": {}}" } 
+			{ "Nested maps", "{\"foo/bar\": {}}" } 
 		});
 	}
 	
