@@ -19,6 +19,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a local in-memory asset.
@@ -72,7 +73,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static Asset create(String string) {
-		return create(string.getBytes(StandardCharsets.UTF_8));
+		return create(Utils.mapOf("contentType","text/plain"),string.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -96,16 +97,19 @@ public class MemoryAsset extends ADataAsset {
 	 */
 	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
+		
 		Map<String,Object> ob=new HashMap<>();
+		ob.put("dateCreated", Instant.now().toString());
+		ob.put("contentHash", hash);
+		ob.put("size", Integer.toString(data.length));
+		ob.put("contentType","application/octet-stream");
+		
 		if (meta!=null) {
 			for (Map.Entry<String,Object> me:meta.entrySet()) {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
-
-		ob.put("dateCreated", Instant.now().toString());
-		ob.put("contentHash", hash);
-		ob.put("size", Integer.toString(data.length));
+		
 		return JSON.toString(ob);
 	}
 
