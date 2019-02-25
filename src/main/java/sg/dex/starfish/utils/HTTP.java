@@ -17,7 +17,7 @@ public class HTTP {
 
 	/**
 	 * Creates a HTTP entity with the specified String as UTF_8 bytes
-	 * @param s
+	 * @param s String of UTF-8 bytes to create the entity
 	 * @return HttpEntity
 	 */
 	public static HttpEntity textEntity(String s) {

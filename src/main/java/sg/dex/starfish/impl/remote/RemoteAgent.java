@@ -352,7 +352,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	/**
 	 * Polls this agent for the Asset resulting from the given job ID
 	 *
-	 * @param jobID
+	 * @param jobID ID for the Job to poll
 	 * @throws IllegalArgumentException If the job ID is invalid
 	 * @throws RemoteException if there is a failure in a remote operation
 	 * @throws TODOException for unhandled status codes
@@ -464,6 +464,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	/**
 	 * Creates a remote invoke Job using the given HTTP response.
 	 *
+	 * @param agent RemoteAgent on which to create the Job
 	 * @param response A valid successful response from the remote Invoke API
 	 * @throws IllegalArgumentException for a bad invoke request
 	 * @throws RuntimeException for protocol errors

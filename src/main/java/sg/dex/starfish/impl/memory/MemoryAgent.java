@@ -53,7 +53,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 * Registers an Asset with this Agent
 	 *
 	 * @param a The Asset to register
-	 * @throws AuthorizationExceptionn if requestor does not have register permission
+	 * @throws AuthorizationException if requestor does not have register permission
 	 * @throws StorageException if there is an error in storing the Asset
 	 * @return Asset The asset found, or null if the agent does not have the asset available
 	 */
@@ -67,7 +67,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 * Registers an Asset with this Agent
 	 *
 	 * @param a The Asset to register
-	 * @throws AuthorizationExceptionn if requestor does not have register permission
+	 * @throws AuthorizationException if requestor does not have register permission
 	 * @throws StorageException if there is an error in storing the Asset
 	 * @return Asset The asset uploaded
 	 */
@@ -82,7 +82,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 * Get Asset
 	 *
 	 * @param id The Asset to get
-	 * @throws AuthorizationExceptionn if requestor does not have register permission
+	 * @throws AuthorizationException if requestor does not have register permission
 	 * @throws StorageException if there is an error in loading the Asset
 	 * @return Asset The asset found
 	 */
