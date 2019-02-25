@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
@@ -68,7 +69,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 		URI uri = getMetaURI();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(uri);
-		httpPost.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		addAuthHeaders(httpPost);
 		httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
 		CloseableHttpResponse response;
 		try {
@@ -101,7 +102,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	public InputStream getDownloadStream(RemoteAsset a) {
 		URI uri = getStorageURI(a.getAssetID());
 		HttpGet httpget = new HttpGet(uri);
-		httpget.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		addAuthHeaders(httpget);
 		HttpResponse response = HTTP.execute(httpget);
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
@@ -114,11 +115,15 @@ public class RemoteAgent extends AAgent implements Invokable {
 		throw new TODOException("status code not handled: " + statusCode);
 	}
 
+	private void addAuthHeaders(HttpRequest request) {
+		request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+	}
+
 	@Override
 	public RemoteAsset getAsset(String id) {
 		URI uri = getMetaURI(id);
 		HttpGet httpget = new HttpGet(uri);
-		httpget.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		addAuthHeaders(httpget);
 		CloseableHttpResponse response = HTTP.execute(httpget);
 		try {
 			StatusLine statusLine = response.getStatusLine();
