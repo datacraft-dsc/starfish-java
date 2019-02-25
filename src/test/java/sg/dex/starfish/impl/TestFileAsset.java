@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class TestFileAsset {
 		
 		File f;
 		try {
-			f = File.createTempFile(name, "tmp");
+			f = File.createTempFile(name, ".tmp");
 		}
 		catch (IOException e) {
 			throw new Error(e);
@@ -25,7 +26,10 @@ public class TestFileAsset {
 		f.deleteOnExit();
 		
 		FileAsset fa=FileAsset.create(f);
+		Map<String,Object> md=fa.getMetadata();
 		assertEquals(0,fa.getBytes().length); // should be empty file
+		assertEquals(f.getName(),md.get("fileName"));
+		assertEquals(0,Utils.coerceInt(md.get("size")));
 
 		
 	}
