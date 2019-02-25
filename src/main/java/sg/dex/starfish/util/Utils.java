@@ -1,6 +1,12 @@
 package sg.dex.starfish.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility class for StarFish
@@ -13,28 +19,6 @@ public class Utils {
 	 * Length of a DID identifier in bytes
 	 */
 	public static final int DID_LENGTH = 32;
-
-	/**
-	 * Creates a random Ocean-compliant DID as a string, of the format:
-	 *
-	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
-	 *
-	 * @return A valid Ocean DID represented as a string
-	 */
-	public static String createRandomDIDString() {
-		SecureRandom sr=new SecureRandom();
-		byte[] bytes=new byte[Utils.DID_LENGTH];
-		sr.nextBytes(bytes);
-		return "did:ocn:"+Hex.toString(bytes);
-	}
-
-	/**
-	 * Creates a random Ocean-compliant DID
-	 * @return The created DID
-	 */
-	public static DID createRandomDID() {
-		return DID.parse(createRandomDIDString());
-	}
 
 	/**
 	 * Creates a random hex string of the specified length
@@ -125,6 +109,39 @@ public class Utils {
 			return Integer.parseInt((String) o);
 		}
 		throw new IllegalArgumentException("Can't coerce to int: "+o);
+	}
+
+	public static String stringFromStream(InputStream inputStream) {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int length;
+		try {
+			while ((length = inputStream.read(buffer)) != -1) {
+			    result.write(buffer, 0, length);
+			}
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Can't read input stream",e);
+		}
+		return new String(result.toByteArray(),StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * Creates a map using the given arguments as keys and values
+	 * @param params A sequence of (key,value) objects
+	 * @return A map containing the key keys and values
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K,V> Map<K,V> mapOf(Object... params) {
+		int len=params.length;
+		if ((len&1)!=0) throw new IllegalArgumentException("mapOf requires a even number of arguments but got: "+len);
+		Map<K,V> result = new HashMap<>(len>>1);
+		for(int i=0; i<len; i+=2) {
+			K key=(K) params[i];
+			V value=(V) params[i+1];
+			result .put(key,value);
+		}
+		return result;
 	}
 
 

@@ -3,6 +3,9 @@ package sg.dex.starfish.util;
 /**
  * Exception class representing a failure during invoke job execution.
  * 
+ * Intended for cases where the invoke was sucessfully launched, but terminated with
+ * an error during the execution of the operation.
+ * 
  * @author Mike
  *
  */

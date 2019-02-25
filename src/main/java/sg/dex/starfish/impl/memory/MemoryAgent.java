@@ -1,12 +1,13 @@
 package sg.dex.starfish.impl.memory;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.InvokableAgent;
+import sg.dex.starfish.Invokable;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
@@ -15,11 +16,11 @@ import sg.dex.starfish.util.Utils;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 
-public class MemoryAgent extends AAgent implements InvokableAgent {
+public class MemoryAgent extends AAgent implements Invokable {
 	/**
 	 * The singleton default memory agent instance
 	 */
-	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),DID.createRandomString());
 
 	/**
 	 * A cached thread pool for jobs executed in memory
@@ -41,7 +42,7 @@ public class MemoryAgent extends AAgent implements InvokableAgent {
 	}
 
 	public static MemoryAgent create() {
-		return new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+		return new MemoryAgent(Ocean.connect(),DID.createRandomString());
 	}
 
 	public static MemoryAgent create(String did) {
@@ -57,8 +58,9 @@ public class MemoryAgent extends AAgent implements InvokableAgent {
 	 * @return Asset The asset found, or null if the agent does not have the asset available
 	 */
 	@Override
-	public void registerAsset(Asset a) {
+	public Asset registerAsset(Asset a) {
 		assetStore.put(a.getAssetID(),a);
+		return a;
 	}
 
 	/**
@@ -103,7 +105,15 @@ public class MemoryAgent extends AAgent implements InvokableAgent {
 		if (!(operation instanceof AMemoryOperation)) {
 			throw new IllegalArgumentException("Operation must be a MemoryOperation but got: "+Utils.getClass(operation));
 		}
-		return null;
+		return operation.invoke(params);
+	}
+
+	@Override
+	public Job invoke(Operation operation, Map<String, Asset> params) {
+		if (!(operation instanceof AMemoryOperation)) {
+			throw new IllegalArgumentException("Operation must be a MemoryOperation but got: "+Utils.getClass(operation));
+		}
+		return operation.invoke(params);
 	}
 
 }

@@ -1,6 +1,7 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.List;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -16,7 +17,7 @@ public abstract class AAgent implements Agent {
 
 	protected final DID did;
 
-	private JSONObject ddo;
+	private Map<String,Object> ddo;
 
 	protected final Ocean ocean;
 
@@ -45,7 +46,7 @@ public abstract class AAgent implements Agent {
 	}
 
 	@Override
-	public JSONObject getDDO() {
+	public Map<String,Object> getDDO() {
 		if (ddo==null) {
 			ddo=refreshDDO();
 		}
@@ -56,7 +57,26 @@ public abstract class AAgent implements Agent {
 	 * Fetches the latest DDO from Universal Resolver if not cached
 	 * @return JSONObject
 	 */
-	public JSONObject refreshDDO() {
+	public Map<String,Object> refreshDDO() {
 		return ocean.getDDO(did);
+	}
+	
+	/**
+	 * Returns the serviceEndpoint for the specified service type.
+	 * Searched the agent's DDO for the appropriate service.
+	 * 
+	 * @param type The type of the service to find
+	 * @return The service endpoint, or null if not found
+	 */
+	@SuppressWarnings("unchecked")
+	public String getEndpoint(String type) {
+		Map<String,Object> ddo=getDDO();
+		List<Object> services = (List<Object>) ddo.get("service");
+		if (services==null) return null;
+		for (Object o: services) {
+			Map<String,Object> service=(Map<String,Object>)o;
+			if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
+		}
+		return null;
 	}
 }

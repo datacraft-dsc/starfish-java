@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 
@@ -16,9 +16,9 @@ public interface Agent {
 
 	/**
 	 * Gets the DDO for the agent
-	 * @return JSONObject
+	 * @return The DDO of the agent as a metadata Map
 	 */
-	public JSONObject getDDO();
+	public Map<String,Object> getDDO();
 
 	/**
 	 * Gets the DID for an Agent
@@ -31,11 +31,13 @@ public interface Agent {
 	 * Registers an asset with this agent.
 	 * The agent must support metadata storage.
 	 *
+	 * @param asset The asset to register
 	 * @throws AuthorizationException if requestor does not have register permission
 	 * @throws StorageException if unable to register the Asset
-	 * @param a The asset to register
+	 * @throws UnsupportedOperationException if the agent does not support metadata storage
+	 * @return
 	 */
-	public void registerAsset(Asset a);
+	public Asset registerAsset(Asset asset);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 
 /**
- * Class representing an asset bundle
+ * Class representing an asset bundle. The contents of the bundle are defined in the asset
+ * metadata.
+ *
  * @author Mike
  *
  */
@@ -27,7 +27,7 @@ public class AssetBundle extends AAsset {
 
 	@SuppressWarnings("unchecked")
 	public List<String> getContentIDs() {
-		JSONObject meta=getMetadata();
+		Map<String,Object> meta=getMetadata();
 		Object contentValue=meta.get("contents");
 		if (!(contentValue instanceof Map)) {
 			throw new Error("Expected a map of contents in bundle, found: "+contentValue);

@@ -14,14 +14,13 @@ import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.Utils;
 
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
 
 	@Test 
 	public void testAgentID() {
-		DID did=DID.parse(Utils.createRandomDIDString());
+		DID did=DID.parse(DID.createRandomString());
 		MemoryAgent ma=MemoryAgent.create(did);
 		assertEquals(did,ma.getDID());
 	}

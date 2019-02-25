@@ -20,7 +20,39 @@ public class TestMemoryOperations {
 		Job job=op.invoke(a);
 		Asset result=job.awaitResult(1000);
 		assertArrayEquals(new byte[] {3,2,1}, result.getBytes());
-		
+	}
+	
+	@Test public void testNamedParams() {
+		byte[] data=new byte[] {1,2,3};
+		Operation op=ReverseBytesOperation.create();
+		Asset a=MemoryAsset.create(data);
+		Job job=op.invoke(Utils.mapOf("input",a));
+		Asset result=job.awaitResult(1000);
+		assertArrayEquals(new byte[] {3,2,1}, result.getBytes());
+	}
+	
+	@Test public void testBadNamedParams() {
+		byte[] data=new byte[] {1,2,3};
+		Operation op=ReverseBytesOperation.create();
+		Asset a=MemoryAsset.create(data);
+		Job badJob=op.invoke(Utils.mapOf("nonsense",a)); // should not yet fail since this is async
+		try {
+			Asset result2=badJob.awaitResult(1000);
+			fail("Should not succeed! Got: "+Utils.getClass(result2));
+		} catch (Exception ex) {
+			/* OK */
+		}
+	}
+	
+	@Test public void testInsufficientParams() {
+		Operation op=ReverseBytesOperation.create();
+		Job badJob=op.invoke(); // should not yet fail since this is async
+		try {
+			Asset result2=badJob.awaitResult(1000);
+			fail("Should not succeed! Got: "+Utils.getClass(result2));
+		} catch (Exception ex) {
+			/* OK */
+		}
 	}
 	
 	@Test public void testFailingOperation() {

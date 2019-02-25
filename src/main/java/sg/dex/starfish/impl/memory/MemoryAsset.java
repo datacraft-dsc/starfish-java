@@ -8,9 +8,10 @@ package sg.dex.starfish.impl.memory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.ADataAsset;
@@ -19,6 +20,8 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a local in-memory asset.
@@ -63,13 +66,26 @@ public class MemoryAsset extends ADataAsset {
 		return create(buildMetaData(data,null),data);
 	}
 
+
+	/**
+	 * Creates a MemoryAsset with the provided string data, encoded in UTF_8
+	 * Default metadata will be generated.
+	 *
+	 * @param data String containing the data for this asset
+	 * @return The newly created in-memory asset
+	 */
+	public static Asset create(String string) {
+		byte[] bytes=string.getBytes(StandardCharsets.UTF_8);
+		return create(Utils.mapOf("contentType","text/plain; charset=utf-8"),bytes);
+	}
+
 	/**
 	 * Creates a MemoryAsset with the provided metadata an content
 	 * @param meta A map containing the metadata for this asset
 	 * @param data Byte array containing the data for this asset
 	 * @return The newly created in-memory asset
 	 */
-	public static MemoryAsset create(Map<Object,Object> meta, byte[] data) {
+	public static MemoryAsset create(Map<String,Object> meta, byte[] data) {
 		return create(buildMetaData(data,meta),data);
 	}
 
@@ -82,19 +98,23 @@ public class MemoryAsset extends ADataAsset {
 	 * @param data Asset data
 	 * @return The default metadata as a String
 	 */
-	@SuppressWarnings("unchecked")
-	private static String buildMetaData(byte[] data,Map<Object,Object> meta) {
+	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
-		JSONObject ob=new JSONObject();
+
+		Map<String,Object> ob=new HashMap<>();
+		ob.put("dateCreated", Instant.now().toString());
+		ob.put("contentHash", hash);
+		ob.put("type", "dataset");
+		ob.put("size", Integer.toString(data.length));
+		ob.put("contentType","application/octet-stream");
+
 		if (meta!=null) {
-			for (Map.Entry<Object,Object> me:meta.entrySet()) {
+			for (Map.Entry<String,Object> me:meta.entrySet()) {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
 
-		ob.put("contentHash", hash);
-		ob.put("size", Integer.toString(data.length));
-		return ob.toJSONString();
+		return JSON.toString(ob);
 	}
 
 	@Override
@@ -133,13 +153,13 @@ public class MemoryAsset extends ADataAsset {
 		return data.length;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject getParamValue() {
-		JSONObject o=new JSONObject();
+	public Map<String,Object> getParamValue() {
+		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
 		o.put("id", getAssetID());
 		return o;
 	}
+
 
 }

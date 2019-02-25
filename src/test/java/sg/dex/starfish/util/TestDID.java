@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Utils;
 
 public class TestDID {
 	@Test public void testParse() {
@@ -30,7 +29,7 @@ public class TestDID {
 	}
 	
 	@Test public void testRandomDID() {
-		DID.parse(Utils.createRandomDIDString());
+		DID.parse(DID.createRandomString());
 	}
 	
 	@Test public void testFullDID() {

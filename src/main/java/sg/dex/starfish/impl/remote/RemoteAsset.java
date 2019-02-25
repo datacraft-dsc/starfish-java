@@ -1,13 +1,10 @@
 package sg.dex.starfish.impl.remote;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import sg.dex.starfish.ADataAsset;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
@@ -29,7 +26,13 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		this.agent=agent;
 	}
 
-	public static Asset create(String meta, RemoteAgent agent) {
+	/**
+	 * Creates a RemoteAsset with the given metadata on the specified remote agent
+	 * @param agent
+	 * @param meta
+	 * @return
+	 */
+	public static RemoteAsset create(RemoteAgent agent, String meta) {
 		return new RemoteAsset(meta,agent);
 	}
 
@@ -47,13 +50,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	 */
 	@Override
 	public InputStream getInputStream() {
-		URL url=agent.getURL(this);
-		try {
-			return url.openStream();
-		}
-		catch (IOException e) {
-			throw new Error("Cannot open input stream for URL: "+url,e);
-		}
+		return agent.getDownloadStream(this);
 	}
 
 	@Override
@@ -61,10 +58,9 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		throw new TODOException();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject getParamValue() {
-		JSONObject o=new JSONObject();
+	public Map<String,Object> getParamValue() {
+		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
 		o.put("did", getAssetDID());
 		return o;
@@ -78,6 +74,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	 */
 	@Override
 	public DID getAssetDID() {
+		// DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
 		DID agentDID=agent.getDID();
 		return agentDID.withPath(getAssetID());
 	}

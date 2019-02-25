@@ -2,10 +2,8 @@ package sg.dex.starfish;
 
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 /**
- * Abstract base class representing invokable operation sin th eOCean ecosystem
+ * Abstract base class representing invokable operations in the Ocean ecosystem
  * 
  * @author Mike
  *
@@ -22,15 +20,16 @@ public abstract class AOperation extends AAsset implements Operation {
 	}
 
 	@Override
-	public boolean isDataAsset() {
+	public final boolean isDataAsset() {
 		return false;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, JSONObject> getParamSpec() {
-		JSONObject meta=getMetadata();
-		return (Map<String, JSONObject>) meta.get("params");
+	public Map<String, Object> getParamSpec() {
+		Map<String,Object> meta=getMetadata();
+		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
+		return paramSpec;
 	}
 	
 }

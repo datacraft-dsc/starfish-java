@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.AuthorizationException;
@@ -34,9 +34,9 @@ public interface Asset {
 	/**
 	 * Gets a copy of the JSON metadata for this asset.
 	 *
-	 * @return New clone of the parsed JSON metadat for this asset
+	 * @return New clone of the parsed JSON metadata for this asset
 	 */
-	public JSONObject getMetadata();
+	public Map<String, Object> getMetadata();
 
 	/**
 	 * Returns true if this asset is a data asset, i.e. the asset represents an immutable
@@ -49,7 +49,7 @@ public interface Asset {
 	/**
 	 * Returns this asset as a DataAsset.
 	 *
-	 * Throws an exception if this asset is not a valid data asset
+	 * @throws RuntimeException an exception if this asset is not a valid data asset
 	 * @return This asset cast to a DataAsset
 	 */
 	public default DataAsset asDataAsset() {
@@ -57,7 +57,15 @@ public interface Asset {
 	}
 
 	/**
-	 * Returns the metadata for this asset.
+	 * Returns true if this asset is an operation, i.e. can be invoked on an
+	 * appropriate agent
+	 *
+	 * @return true if this asset is an operation, false otherwise
+	 */
+	public boolean isOperation();
+
+	/**
+	 * Returns the metadata for this asset as a String.
 	 *
 	 * @return The metadata of this asset as a String
 	 */
@@ -76,18 +84,10 @@ public interface Asset {
 	}
 
 	/**
-	 * Returns true if this asset is an operation, i.e. can be invoked on an
-	 * appropriate agent
-	 *
-	 * @return true if this asset is an operation, false otherwise
-	 */
-	public boolean isOperation();
-
-	/**
 	 * Gets the representation of this asset as required to pass to a remote invokable
 	 * service.
-	 * @return A JSON map representing this asset
+	 * @return A map representing this asset
 	 */
-	public JSONObject getParamValue();
+	public Map<String, Object> getParamValue();
 
 }

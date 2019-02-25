@@ -15,6 +15,14 @@ import sg.dex.starfish.util.StorageException;
 public interface Job {
 
 	/**
+	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
+	 * responsible for completing the job.
+	 *
+	 * @return
+	 */
+	public String getJobID();
+
+	/**
 	 * Returns true if the Job has been completed. If the job is complete, the result
 	 * may be obtained via getResult()
 	 *
@@ -27,8 +35,8 @@ public interface Job {
 	 *
 	 * @throws AuthorizationException if requestor does not have load permission
 	 * @throws StorageException if unable to load the Asset
-	 * @throws JobFailedException if Job fails
-	 * @return The Asset resulting from the job, or null if not available
+	 * @throws JobFailedException if the job failed during execution
+	 * @return The Asset resulting from the job, or null if not yet available
 	 */
 	public Asset getResult();
 
@@ -42,7 +50,9 @@ public interface Job {
 	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job
 	 */
-	public Asset awaitResult();
+	public default Asset awaitResult() {
+		return awaitResult(Long.MAX_VALUE);
+	}
 
 	/**
 	 * Waits for the result of the Operation and returns the result Asset

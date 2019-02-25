@@ -1,8 +1,10 @@
 package sg.dex.starfish;
 
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.JSONObjectCache;
 
 /**
  * Main entry point for Ocean ecosystem.
@@ -26,13 +28,24 @@ public class Ocean {
 		return DEFAULT_OCEAN;
 	}
 
+	private Map<DID, String> ddoCache = new HashMap<DID,String>();
+
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
 	 * @param did DID to resolve
 	 * @return The DDO as a JSON map
 	 */
-	public JSONObject getDDO(String did) {
+	public Map<String,Object> getDDO(String did) {
 		return getDDO(DID.parse(did));
+	}
+	
+	/**
+	 * Registers a DID within the context of this Ocean connection.
+	 * @param did A did to register
+	 * @param ddo A string containing a valid Ocean DDO
+	 */
+	public void registerLocalDID(DID did, String ddo) {
+		ddoCache.put(did,ddo);
 	}
 
 	/**
@@ -40,7 +53,11 @@ public class Ocean {
 	 * @param did DID to resolve
 	 * @return The DDO as a JSON map
 	 */
-	public JSONObject getDDO(DID did) {
+	public Map<String,Object> getDDO(DID did) {
+		String localDDO=ddoCache.get(did);
+		if (localDDO!=null) {
+			return JSONObjectCache.parse(localDDO);
+		}
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
