@@ -10,8 +10,9 @@ public class RegisterSample {
 
 	public static void main(String... args) {
 		RemoteAgent surfer = SurferConfig.getSurfer("http://13.67.33.157:8080");
-		Asset a=MemoryAsset.create("Hello World");
 		
+		// a new memory asset
+		Asset a=MemoryAsset.create("Hello World");
 		System.out.println("Asset ID: "+a.getAssetID());
 		System.out.println(a.getMetadataString());
 		
