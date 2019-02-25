@@ -46,17 +46,15 @@ public class JSON {
 	
 	@SuppressWarnings("unchecked")
 	private static StringBuilder appendPrettyString(StringBuilder sb,Object o,int indent) {
-		String indentString=createIndentString(indent);
 		if (o instanceof Map) {
 			int entryIndent=indent+2;
-			String internalIndent=createIndentString(entryIndent);
 			sb.append("{\n");
 			Map<String,Object> m=((Map<String,Object>)o);
 			int size=m.size();
 			int pos=0;
 			for (Map.Entry<String,Object> me:m.entrySet()) {
 				String k=me.getKey();
-				sb.append(internalIndent);
+				sb=appendWhitespaceString(sb,entryIndent);
 				sb.append(toString(k));
 				sb.append(": ");
 				int vIndent=entryIndent+k.length()+4; // indent for value
@@ -69,18 +67,17 @@ public class JSON {
 					sb.append(",\n"); // comma for next entry
 				}
 			}
-			sb.append(indentString);
+			sb=appendWhitespaceString(sb,indent);
 			sb.append("}");
 		} else if (o instanceof List) {
 			List<Object> list=(List<Object>)o;
 			int size=list.size();
 			int entryIndent=indent+1;
-			String internalIndent=createIndentString(entryIndent);
 			sb.append("[");
 			for (int i=0; i<size; i++) {
 				if (i>0) {
 					sb.append(",\n");
-					sb.append(internalIndent);
+					sb=appendWhitespaceString(sb,entryIndent);
 				}
 				Object v=list.get(i);
 				sb=appendPrettyString(sb,v,entryIndent);
@@ -96,22 +93,25 @@ public class JSON {
 	private static int WHITESPACE_LENGTH=WHITESPACE.length();
 	
 	/**
+	 * Appends a whitespace string of the specified length.
 	 * 
-	 * @param indent Number of whitespace characters
-	 * @return String containing the number of whitespace characters specified
+	 * @param sb StringBuilder to append the whitespace characters
+	 * @param count Number of whitespace characters
+	 * @return Updated StringBuilder
 	 */
-	private static String createIndentString(int indent) {
-		String s="";
-		while (indent>WHITESPACE_LENGTH) {
-			s=s+WHITESPACE;
-			indent-=WHITESPACE_LENGTH;
+	private static StringBuilder appendWhitespaceString(StringBuilder sb, int count) {
+		while (count>WHITESPACE_LENGTH) {
+			sb.append(WHITESPACE);
+			count-=WHITESPACE_LENGTH;
 		}
-		s=s+WHITESPACE.substring(0,indent);
-		return s;
+		sb.append(WHITESPACE.substring(0,count));
+		return sb;
 	}
 
 	/**
-	 * Converts a string assumed to contain a valid JSON object to a (possibly nested) Map
+	 * Converts a string assumed to contain a valid JSON object to a (possibly nested) Map.
+	 * Use in preference to parse(...) if you know the string should contain a map/object.
+	 * 
 	 * @param jsonString A string containing a valid JSON object
 	 * @return A map representing the JSON object
 	 */
