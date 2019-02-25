@@ -8,6 +8,7 @@ package sg.dex.starfish.impl.memory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +61,18 @@ public class MemoryAsset extends ADataAsset {
 	 */
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
+	}
+	
+
+	/**
+	 * Creates a MemoryAsset with the provided string data, encoded in UTF_8 
+	 * Default metadata will be generated.
+	 * 
+	 * @param data String containing the data for this asset
+	 * @return The newly created in-memory asset
+	 */
+	public static Asset create(String string) {
+		return create(string.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -125,5 +138,6 @@ public class MemoryAsset extends ADataAsset {
 		o.put("id", getAssetID());
 		return o;
 	}
+
 
 }
