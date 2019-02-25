@@ -16,10 +16,11 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class JSON {
-	public static Map<String,Object> toMap(JSONObject value) {
-		throw new TODOException();
-	}
-
+	/**
+	 * Converts an object to an efficient JSON string representation
+	 * @param value Object to represent as a JSON String
+	 * @return JSON string representing the value
+	 */
 	public static String toString(Object value) {
 		// TODO refactor to remove json-simple?
 		StringWriter sw=new StringWriter();
@@ -32,9 +33,14 @@ public class JSON {
 		return sw.toString();
 	}
 	
-	public static String toPrettyString(Object o) {
+	/**
+	 * Converts an object to a pretty-printed JSON string representation suitable for human consumption
+	 * @param value Object to represent as a JSON String
+	 * @return JSON string representing the value
+	 */
+	public static String toPrettyString(Object value) {
 		StringBuilder sb=new StringBuilder();
-		sb=appendPrettyString(sb,o,0);
+		sb=appendPrettyString(sb,value,0);
 		return sb.toString();
 	}
 	
@@ -106,14 +112,14 @@ public class JSON {
 
 	/**
 	 * Converts a string assumed to contain a valid JSON object to a (possibly nested) Map
-	 * @param s A string containing valid JSON
+	 * @param jsonString A string containing a valid JSON object
 	 * @return A map representing the JSON object
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> toMap(String s) {
+	public static Map<String, Object> toMap(String jsonString) {
 		JSONParser parser=new JSONParser();
 		try {
-			JSONObject result=(JSONObject) parser.parse(s);
+			JSONObject result=(JSONObject) parser.parse(jsonString);
 			return new JSONObject(result);
 		} catch (ParseException e) {
 			throw new Error("Error in JSON parsing: "+e.getMessage(),e);
@@ -122,14 +128,14 @@ public class JSON {
 	
 	/**
 	 * Converts a string assumed to contain valid JSON object to an Object
-	 * @param s A string containing valid JSON
+	 * @param jsonString A string containing valid JSON
 	 * @return A Java object represnting the JSON provided
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T parse(String s) {
+	public static <T> T parse(String jsonString) {
 		JSONParser parser=new JSONParser();
 		try {
-			Object result=parser.parse(s);
+			Object result=parser.parse(jsonString);
 			return (T) result;
 		} catch (ParseException e) {
 			throw new Error("Error in JSON parsing: "+e.getMessage(),e);
