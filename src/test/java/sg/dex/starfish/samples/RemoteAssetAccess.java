@@ -16,8 +16,7 @@ import sg.dex.starfish.util.Utils;
 
 public class RemoteAssetAccess {
 
-	public static void main(String... args) {
-		String host="http://localhost:8080";
+	private static RemoteAgent getSurfer(String host) {
 		Map<String,Object> ddo=new HashMap<>();
 		List<Map<String,Object>> services=new ArrayList<>();
 		services.add(Utils.mapOf(
@@ -41,8 +40,15 @@ public class RemoteAssetAccess {
 		RemoteAgent surfer=RemoteAgent.create(ocean,surferDID);
 		assertEquals(surferDID,surfer.getDID());
 		assertEquals(surferDDO,surfer.getDDO());
+		return surfer;
+	}
+	
+	public static void main(String... args) {
+		RemoteAgent surfer = getSurfer("http://localhost:8080");
 		
 		Asset a=surfer.getAsset("b48d38f93eaa084033fc5970bf96e559c33c4cdc07d889ab00b4d63f9590739d");
 		assertEquals("{}",a.getMetadataString());
 	}
+
+
 }

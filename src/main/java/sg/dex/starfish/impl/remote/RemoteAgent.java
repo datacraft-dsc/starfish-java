@@ -65,10 +65,34 @@ public class RemoteAgent extends AAgent implements Invokable {
 
 	@Override
 	public Asset getAsset(String id) {
-		String metaEndpoint=getMetaEndpoint();
-		if (metaEndpoint==null) throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
-		String meta="{}";
-		return RemoteAsset.create(this,meta);
+		URI uri=getMetaURI(id);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(uri);
+		httpget.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			try {
+			    StatusLine statusLine=response.getStatusLine();
+			    int statusCode = statusLine.getStatusCode();
+			    if (statusCode==404) {
+			    	throw new RemoteException("Asset ID not found for at: "+uri);
+			    }
+			    if (statusCode==200) {
+			    	String body=Utils.stringFromStream(response.getEntity().getContent());
+			    	return RemoteAsset.create(this,body);
+			    }
+		    	throw new TODOException("status code not handled: "+statusCode);
+			} finally {
+			    response.close();
+			}
+		}
+		catch (ClientProtocolException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -94,12 +118,23 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 	
-	public URI getJobURI(String jobID) {
+	private URI getJobURI(String jobID) {
 		try {
 			return new URI(getInvokeEndpoint()+"/jobs/"+jobID);
 		}
 		catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for job: "+jobID,e);
+		}
+	}
+	
+	private URI getMetaURI(String assetID) {
+		String metaEndpoint=getMetaEndpoint();
+		if (metaEndpoint==null) throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
+		try {
+			return new URI(metaEndpoint+"/data/"+assetID);
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Can't create valid URI for asset metadata with ID: "+assetID,e);
 		}
 	}
 
