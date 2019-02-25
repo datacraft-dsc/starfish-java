@@ -31,11 +31,21 @@ public class ParamTestJSON {
 		});
 	}
 	
+	@Test public void testJSONRoundTrip() {
+		Object o1=JSON.parse(data);
+		String s1=JSON.toString(o1);
+		Object o2=JSON.parse(s1);
+		String s2=JSON.toString(o2);
+		assertEquals(s1,s2);
+		assertEquals(o1,o2);
+	}
+	
 	@Test public void testJSONRoundTripPretty() {
 		Object o1=JSON.parse(data);
 		String ps1=JSON.toPrettyString(o1);
 		Object o2=JSON.parse(ps1);
 		String ps2=JSON.toPrettyString(o2);
 		assertEquals(ps1,ps2);
+		assertEquals(o1,o2);
 	}
 }
