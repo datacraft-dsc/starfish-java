@@ -28,11 +28,11 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	
 	/**
 	 * Creates a RemoteAsset with the given metadata on the specified remote agent
-	 * @param meta
 	 * @param agent
+	 * @param meta
 	 * @return
 	 */
-	public static RemoteAsset create(String meta, RemoteAgent agent) {
+	public static RemoteAsset create(RemoteAgent agent, String meta) {
 		return new RemoteAsset(meta,agent);
 	}
 

@@ -65,7 +65,10 @@ public class RemoteAgent extends AAgent implements Invokable {
 
 	@Override
 	public Asset getAsset(String id) {
-		throw new TODOException();
+		String metaEndpoint=getMetaEndpoint();
+		if (metaEndpoint==null) throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
+		String meta="{}";
+		return RemoteAsset.create(this,meta);
 	}
 
 	@Override
@@ -128,7 +131,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	}
 	
 	/**
-	 * Gets the Meta API endpoint for this agent
+	 * Gets the Meta API endpoint for this agent, or null if this does not exist
 	 * @return The Meta API endpoint for this agent e.g. "https://www.myagent.com/api/v1/meta"
 	 */
 	public String getMetaEndpoint() {
@@ -176,7 +179,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 			    	if (status.equals("complete")) {
 			    		String assetID = (String) result.get("result");
 			    		if (assetID==null) throw new RemoteException("No asset in completed job result: "+body);
-			    		return RemoteAsset.create(assetID,this);
+			    		return RemoteAsset.create(this,assetID);
 			    	}
 			    }
 		    	throw new TODOException("status code not handled: "+statusCode);
