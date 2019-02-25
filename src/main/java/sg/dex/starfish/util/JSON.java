@@ -2,6 +2,7 @@ package sg.dex.starfish.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -29,6 +30,78 @@ public class JSON {
 			throw new RuntimeException("Can't create JSON string from object",e);
 		}
 		return sw.toString();
+	}
+	
+	public static String toPrettyString(Object o) {
+		StringBuilder sb=new StringBuilder();
+		sb=appendPrettyString(sb,o,0);
+		return sb.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static StringBuilder appendPrettyString(StringBuilder sb,Object o,int indent) {
+		String indentString=createIndentString(indent);
+		if (o instanceof Map) {
+			int entryIndent=indent+2;
+			String internalIndent=createIndentString(entryIndent);
+			sb.append("{\n");
+			Map<String,Object> m=((Map<String,Object>)o);
+			int size=m.size();
+			int pos=0;
+			for (Map.Entry<String,Object> me:m.entrySet()) {
+				String k=me.getKey();
+				sb.append(internalIndent);
+				sb.append(toString(k));
+				sb.append(": ");
+				int vIndent=entryIndent+k.length()+4; // indent for value
+				Object v=me.getValue();
+				appendPrettyString(sb,v,vIndent);
+				pos++;
+				if (pos==size) {
+					sb.append('\n'); // final entry
+				} else {
+					sb.append(",\n"); // comma for next entry
+				}
+			}
+			sb.append(indentString);
+			sb.append("}");
+		} else if (o instanceof List) {
+			List<Object> list=(List<Object>)o;
+			int size=list.size();
+			int entryIndent=indent+1;
+			String internalIndent=createIndentString(entryIndent);
+			sb.append("[");
+			for (int i=0; i<size; i++) {
+				if (i>0) {
+					sb.append(",\n");
+					sb.append(internalIndent);
+				}
+				Object v=list.get(i);
+				sb=appendPrettyString(sb,v,entryIndent);
+			}
+			sb.append("]");
+		} else {
+			sb.append(toString(o));
+		}
+		return sb;
+	}
+
+	private static String WHITESPACE="                                                             ";
+	private static int WHITESPACE_LENGTH=WHITESPACE.length();
+	
+	/**
+	 * 
+	 * @param indent Number of whitespace characters
+	 * @return String containing the number of whitespace characters specified
+	 */
+	private static String createIndentString(int indent) {
+		String s="";
+		while (indent>WHITESPACE_LENGTH) {
+			s=s+WHITESPACE;
+			indent-=WHITESPACE_LENGTH;
+		}
+		s=s+WHITESPACE.substring(0,indent);
+		return s;
 	}
 
 	/**

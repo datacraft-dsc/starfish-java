@@ -24,7 +24,7 @@ public class RemoteAssetAccess {
 				"type","Ocean.Storage.v1",
 				"serviceEndpoint",host+"/api/v1/invoke"));
 		ddo.put("service",services);
-		String ddoString=JSON.toString(ddo);
+		String ddoString=JSON.toPrettyString(ddo);
 		System.out.println(ddoString);
 	}
 }
