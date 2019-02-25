@@ -128,6 +128,8 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @param id The ID of the asset to get from this agent
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @throws RemoteException if there is a failure in a remote operation
+	 * @throws TODOException for unhandled status codes
 	 * @return Asset The asset found
 	 */
 	@Override
@@ -163,6 +165,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @param a Asset to upload
 	 * @throws AuthorizationException if requestor does not have upload permission
 	 * @throws StorageException if there is an error in uploading the Asset
+	 * @throws TODOException when not implemented yet
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */
 	@Override
@@ -174,6 +177,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * Gets a URL string for accessing the specified asset ID
 	 *
 	 * @param id The asset ID to address
+	 * @throws TODOException when not implemented yet
 	 * @return The URL for the asset as a String
 	 */
 	public String getAssetURL(String id) {
@@ -286,8 +290,11 @@ public class RemoteAgent extends AAgent implements Invokable {
 	/**
 	 * Polls this agent for the Asset resulting from the given job ID
 	 *
-	 * @throws IllegalArgumentException If the job ID is invalid
 	 * @param jobID
+	 * @throws IllegalArgumentException If the job ID is invalid
+	 * @throws RemoteException if there is a failure in a remote operation
+	 * @throws TODOException for unhandled status codes
+	 * @throws RuntimeException for protocol errors
 	 * @return The asset resulting from this job ID if available, null otherwise.
 	 */
 	public Asset pollJob(String jobID) {
@@ -382,6 +389,8 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * Creates a remote invoke Job using the given HTTP response.
 	 *
 	 * @param response A valid successful response from the remote Invoke API
+	 * @throws IllegalArgumentException for a bad invoke request
+	 * @throws RuntimeException for protocol errors
 	 * @return A job representing the remote invocation
 	 */
 	public static Job createJob(RemoteAgent agent, HttpResponse response) {

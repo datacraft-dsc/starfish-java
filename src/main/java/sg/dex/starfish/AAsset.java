@@ -30,17 +30,6 @@ public abstract class AAsset implements Asset {
 		return getAssetID();
 	}
 
-	/**
-	 * Gets DID for this Asset
-	 *
-	 * @throws UnsupportedOperationException if unable to obtain DID
-	 * @param a The asset to register
-	 */
-	@Override
-	public DID getAssetDID() {
-		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
-	}
-
 	@Override
 	public String getAssetID() {
 		return id;

@@ -72,8 +72,7 @@ public class Utils {
 	 * - Strings "false" and "true" are interpreted appropriately
 	 * - Boolean values are retained as-is
 	 *
-	 * Throws an exception if coercion is not possible.
-	 *
+	 * @throws IllegalArgumentException if the object cannot be successfully converted to a boolean
 	 * @param o The object to attempt to coerce to a boolean value
 	 * @return The boolean value of this object if coercion is successful
 	 */
@@ -129,6 +128,7 @@ public class Utils {
 	/**
 	 * Creates a map using the given arguments as keys and values
 	 * @param params A sequence of (key,value) objects
+	 * @throws IllegalArgumentException if mapOf has odd number of arguments
 	 * @return A map containing the key keys and values
 	 */
 	@SuppressWarnings("unchecked")
