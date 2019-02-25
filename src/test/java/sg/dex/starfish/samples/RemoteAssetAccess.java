@@ -45,9 +45,8 @@ public class RemoteAssetAccess {
 	
 	public static void main(String... args) {
 		RemoteAgent surfer = getSurfer("http://localhost:8080");
-		
-		Asset a=surfer.getAsset("b48d38f93eaa084033fc5970bf96e559c33c4cdc07d889ab00b4d63f9590739d");
-		assertEquals("{}",a.getMetadataString());
+		Asset a=surfer.getAsset("69ea9dcb1f9fdbdb803e91d735bdc56b76f7a0130d4a9615955438afda5eb393");
+		assertEquals("{\"name\":\"My Test Asset\"}",a.getMetadataString());
 	}
 
 
