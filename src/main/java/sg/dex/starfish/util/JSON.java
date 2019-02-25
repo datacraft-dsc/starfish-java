@@ -19,6 +19,7 @@ public class JSON {
 	/**
 	 * Converts an object to an efficient JSON string representation
 	 * @param value Object to represent as a JSON String
+	 * @throws RuntimeException on failure to create JSON from value
 	 * @return JSON string representing the value
 	 */
 	public static String toString(Object value) {
@@ -32,7 +33,7 @@ public class JSON {
 		}
 		return sw.toString();
 	}
-	
+
 	/**
 	 * Converts an object to a pretty-printed JSON string representation suitable for human consumption
 	 * @param value Object to represent as a JSON String
@@ -43,7 +44,7 @@ public class JSON {
 		sb=appendPrettyString(sb,value,0);
 		return sb.toString();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static StringBuilder appendPrettyString(StringBuilder sb,Object o,int indent) {
 		if (o instanceof Map) {
@@ -91,10 +92,10 @@ public class JSON {
 
 	private static String WHITESPACE="                                                             ";
 	private static int WHITESPACE_LENGTH=WHITESPACE.length();
-	
+
 	/**
 	 * Appends a whitespace string of the specified length.
-	 * 
+	 *
 	 * @param sb StringBuilder to append the whitespace characters
 	 * @param count Number of whitespace characters
 	 * @return Updated StringBuilder
@@ -111,8 +112,9 @@ public class JSON {
 	/**
 	 * Converts a string assumed to contain a valid JSON object to a (possibly nested) Map.
 	 * Use in preference to parse(...) if you know the string should contain a map/object.
-	 * 
+	 *
 	 * @param jsonString A string containing a valid JSON object
+	 * @throws Error on JSON parsing error
 	 * @return A map representing the JSON object
 	 */
 	@SuppressWarnings("unchecked")
@@ -125,10 +127,11 @@ public class JSON {
 			throw new Error("Error in JSON parsing: "+e.getMessage(),e);
 		}
 	}
-	
+
 	/**
 	 * Converts a string assumed to contain valid JSON object to an Object
 	 * @param jsonString A string containing valid JSON
+	 * @throws Error on JSON parsing error
 	 * @return A Java object represnting the JSON provided
 	 */
 	@SuppressWarnings("unchecked")

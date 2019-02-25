@@ -9,24 +9,30 @@ import org.json.simple.parser.ParseException;
 
 /**
  * Utility class maintaining a cache of parsed JSON objects
- * 
+ *
  * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than fresh parsing
- * 
+ *
  * @author Mike
  *
  */
 public class JSONObjectCache {
 
 	private static final WeakHashMap<String,JSONObject> cache=new WeakHashMap<String,JSONObject>();
-	
+
+	/**
+	 * Converts a string assumed to contain valid JSON object to an Object
+	 * @param jsonString A string containing valid JSON
+	 * @throws Error on JSON parsing error
+	 * @return A JSONObject as parsed from jsonString
+	 */
 	@SuppressWarnings("unchecked")
-	public synchronized static Map<String,Object> parse(String s) {
-		JSONObject cached=cache.get(s);
+	public synchronized static Map<String,Object> parse(String jsonString) {
+		JSONObject cached=cache.get(jsonString);
 		if (cached!=null) return new JSONObject(cached); // deep clone
 		JSONParser parser=new JSONParser();
 		try {
-			JSONObject result=(JSONObject) parser.parse(s);
-			cache.put(s, result);
+			JSONObject result=(JSONObject) parser.parse(jsonString);
+			cache.put(jsonString, result);
 			return new JSONObject(result);
 		} catch (ParseException e) {
 			throw new Error("Error in JSON parsing: "+e.getMessage(),e);

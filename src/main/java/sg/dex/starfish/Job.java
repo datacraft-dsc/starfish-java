@@ -18,7 +18,7 @@ public interface Job {
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
 	 * responsible for completing the job.
 	 *
-	 * @return
+	 * @return jobID
 	 */
 	public String getJobID();
 

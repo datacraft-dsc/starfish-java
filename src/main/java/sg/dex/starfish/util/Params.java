@@ -8,17 +8,18 @@ import sg.dex.starfish.Operation;
 
 /**
  * Utility class for handling invoke parameters
- * 
+ *
  * @author Mike
  *
  */
 public class Params {
 
 	/**
-	 * Creates the "params" part of the invoke payload using the spec in the operation metadata 
+	 * Creates the "params" part of the invoke payload using the spec in the operation metadata
 	 * and the passed positional arguments
 	 * @param operation The operation to format the parameters for
 	 * @param params A map of parameter names to assets
+	 * @throws IllegalArgumentException if missing required parameter
 	 * @return The "params" portion of the invoke payload as a Map
 	 */
 	@SuppressWarnings("unchecked")
@@ -44,10 +45,11 @@ public class Params {
 	}
 
 	/**
-	 * Creates the "params" part of the invoke payload using the spec in the operation metadata 
+	 * Creates the "params" part of the invoke payload using the spec in the operation metadata
 	 * and the passed positional arguments
 	 * @param operation The operation to format the parameters for
 	 * @param params An array of assets to be provided as positional parameters
+	 * @throws IllegalArgumentException if missing required parameter
 	 * @return The "params" portion of the invoke payload as a JSONObject
 	 */
 	@SuppressWarnings("unchecked")

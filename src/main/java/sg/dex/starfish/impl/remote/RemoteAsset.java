@@ -30,7 +30,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	 * Creates a RemoteAsset with the given metadata on the specified remote agent
 	 * @param agent
 	 * @param meta
-	 * @return
+	 * @return RemoteAsset
 	 */
 	public static RemoteAsset create(RemoteAgent agent, String meta) {
 		return new RemoteAsset(meta,agent);
@@ -53,6 +53,12 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 		return agent.getDownloadStream(this);
 	}
 
+	/**
+	 * Gets RemoteAsset size
+	 *
+	 * @throws TODOException not implemented yet
+	 * @return size of the RemoteAsset
+	 */
 	@Override
 	public long getSize() {
 		throw new TODOException();
@@ -70,7 +76,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	 * Gets DID for this Asset
 	 *
 	 * @throws UnsupportedOperationException if unable to obtain DID
-	 * @param a The asset to register
+	 * @return DID
 	 */
 	@Override
 	public DID getAssetDID() {

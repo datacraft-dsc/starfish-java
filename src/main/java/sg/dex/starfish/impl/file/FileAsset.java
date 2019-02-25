@@ -69,7 +69,7 @@ public class FileAsset extends ADataAsset {
 			return new FileInputStream(file);
 		}
 		catch (FileNotFoundException e) {
-			throw new IllegalStateException("File not found",e);
+			throw new StorageException("File not found",e);
 		}
 	}
 

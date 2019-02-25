@@ -18,12 +18,19 @@ public class HTTP {
 	/**
 	 * Creates a HTTP entity with the specified String as UTF_8 bytes
 	 * @param s
-	 * @return
+	 * @return HttpEntity
 	 */
 	public static HttpEntity textEntity(String s) {
 		return new ByteArrayEntity(s.getBytes(StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Executes an HTTP request
+	 *
+	 * @param httpRequest the HttpUriRequest to execute
+	 * @throws RuntimeException for protocol errors
+	 * @return CloseableHttpResponse
+	 */
 	public static CloseableHttpResponse execute(HttpUriRequest httpRequest) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response;
@@ -39,6 +46,12 @@ public class HTTP {
 		}
 	}
 
+	/**
+	 * Closes an HTTP response
+	 *
+	 * @param response A valid successful response from the remote Invoke API
+	 * @throws RuntimeException for protocol errors
+	 */
 	public static void close(CloseableHttpResponse response) {
 		try {
 			response.close();
@@ -52,6 +65,13 @@ public class HTTP {
 		return response.getEntity();
 	}
 
+	/**
+	 * Gets HTTP response content
+	 *
+	 * @param response A valid successful response from the remote Invoke API
+	 * @throws RuntimeException for protocol errors
+	 * @return InputStream for the content
+	 */
 	public static InputStream getContent(HttpResponse response) {
 		try {
 			return getEntity(response).getContent();

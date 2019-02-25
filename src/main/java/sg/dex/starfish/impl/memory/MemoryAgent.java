@@ -69,6 +69,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 * @param a The Asset to register
 	 * @throws AuthorizationExceptionn if requestor does not have register permission
 	 * @throws StorageException if there is an error in storing the Asset
+	 * @return Asset The asset uploaded
 	 */
 	@Override
 	public Asset uploadAsset(Asset a) {
@@ -78,9 +79,9 @@ public class MemoryAgent extends AAgent implements Invokable {
 	}
 
 	/**
-	 * Registers an Asset with this Agent
+	 * Get Asset
 	 *
-	 * @param a The Asset to register
+	 * @param id The Asset to get
 	 * @throws AuthorizationExceptionn if requestor does not have register permission
 	 * @throws StorageException if there is an error in loading the Asset
 	 * @return Asset The asset found
@@ -108,6 +109,16 @@ public class MemoryAgent extends AAgent implements Invokable {
 		return operation.invoke(params);
 	}
 
+	/**
+	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
+	 * will return a Job instance that can be used to access the result, otherwise throws an
+	 * exception.
+	 *
+	 * @param operation The operation to invoke on this agent
+	 * @param params named parameters for the invoke operation
+	 * @throws IllegalArgumentException if operation not a AMemoryOperation
+	 * @return A Job instance allowing access to the invoke job status and result
+	 */
 	@Override
 	public Job invoke(Operation operation, Map<String, Asset> params) {
 		if (!(operation instanceof AMemoryOperation)) {

@@ -5,9 +5,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class representing a valid W3C DID 
+ * Class representing a valid W3C DID
  * See: https://w3c-ccg.github.io/did-spec/
- * 
+ *
  * @author Mike
  *
  */
@@ -17,22 +17,32 @@ public class DID {
 	private static final String PATH_REGEX="(?:/([a-z0-9\\-._~%!$&'()*+,;=:@/]*))?";
 	private static final String FRAGMENT_REGEX="(?:#(.*))?";
 	private static final Pattern DID_PATTERN=Pattern.compile("did:"+METHOD_REGEX+":"+ID_REGEX+PATH_REGEX+FRAGMENT_REGEX+"$");
-	
+
 	private final String method;
 	private final String id;
 	private final String path;
 	private final String fragment;
 	private String fullString=null;
-	
+
+	/**
+	 * Creates a DID
+	 *
+	 * @param method METHOD portion of DID
+	 * @param id ID portion of DID
+	 * @param path PATH portion of DID (optional)
+	 * @param fragment FRAGMENT portion of DID  (optional)
+	 * @throws IllegalArgumentException if method or id are null
+	 * @return DID
+	 */
 	private DID(String method, String id, String path, String fragment) {
 		if (method==null) throw new IllegalArgumentException("DID method cannot be null");
-		if (id==null) throw new IllegalArgumentException("DID idstring cannot be null");
+		if (id==null) throw new IllegalArgumentException("DID id cannot be null");
 		this.method=method;
 		this.id=id;
 		this.path=path;
 		this.fragment=fragment;
 	}
-	
+
 	/**
 	 * Creates a DID with the specified method, id, path and fragment
 	 * @param method The DID method, e.g. "ocn"
@@ -44,10 +54,10 @@ public class DID {
 	public static DID create(String method, String id, String path, String fragment) {
 		return new DID(method,id,path,fragment);
 	}
-	
+
 	/**
 	 * Checks if the provided String is a valid DID
-	 * 
+	 *
 	 * @param did Any String to test as a DID
 	 * @return boolean true if the String is parseable as a valid DID, false otherwise
 	 */
@@ -55,11 +65,12 @@ public class DID {
 		Matcher m = DID_PATTERN.matcher(did);
 		return m.matches();
 	}
-	
+
 	/**
 	 * Attempts to parse the given string as a DID
-	 * 
+	 *
 	 * @param did The String to parse as a DID
+	 * @throws IllegalArgumentException on DID parse error
 	 * @return DID The newly created DID
 	 */
 	public static DID parse(String did) {
@@ -76,7 +87,7 @@ public class DID {
 			throw new IllegalArgumentException("Parse failure on invalid DID ["+did+"]");
 		}
 	}
-	
+
 	/**
 	 * Gets the DID scheme for this DID
 	 * @return String The DID scheme, always defined as "did"
@@ -100,7 +111,7 @@ public class DID {
 	public String getID() {
 		return id;
 	}
-	
+
 	/**
 	 * Gets the DID path for this DID
 	 * @return String The DID path, or null if there is no path specified
@@ -108,7 +119,7 @@ public class DID {
 	public String getPath() {
 		return path;
 	}
-	
+
 	/**
 	 * Gets the DID fragment for this DID
 	 * @return String The DID fragment, or null if there is no fragment specified
@@ -132,22 +143,22 @@ public class DID {
 			sb.append('/');
 			sb.append(fragment);
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		if (fullString==null) fullString=createString();
 		return fullString;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof DID)) return false;
 		return equals((DID)o);
 	}
-	
+
 	/**
 	 * Tests if this DID is equal to another DID
 	 * @param d The DID to compare for equality
@@ -160,7 +171,7 @@ public class DID {
 		if (!Utils.equals(fragment,d.fragment)) return false;
 		return true;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int h=0;
@@ -182,9 +193,9 @@ public class DID {
 
 	/**
 	 * Creates a random Ocean-compliant DID as a string, of the format:
-	 * 
+	 *
 	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
-	 * 
+	 *
 	 * @return A valid Ocean DID represented as a string
 	 */
 	public static String createRandomString() {

@@ -40,6 +40,12 @@ public abstract class AAsset implements Asset {
 		return JSONObjectCache.parse(metadataString);
 	}
 
+	/**
+	 * Gets DID for this Asset
+	 *
+	 * @throws UnsupportedOperationException if unable to obtain DID
+	 * @return DID
+	 */
 	@Override
 	public DID getAssetDID() {
 		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());

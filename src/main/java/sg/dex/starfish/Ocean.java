@@ -38,7 +38,7 @@ public class Ocean {
 	public Map<String,Object> getDDO(String did) {
 		return getDDO(DID.parse(did));
 	}
-	
+
 	/**
 	 * Registers a DID within the context of this Ocean connection.
 	 * @param did A did to register
@@ -50,7 +50,9 @@ public class Ocean {
 
 	/**
 	 * Gets a DDO for a specified DID via the Universal Resolver
+	 *
 	 * @param did DID to resolve
+	 * @throws UnsupportedOperationException not yet implemented
 	 * @return The DDO as a JSON map
 	 */
 	public Map<String,Object> getDDO(DID did) {

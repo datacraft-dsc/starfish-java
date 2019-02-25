@@ -35,7 +35,7 @@ public interface Agent {
 	 * @throws AuthorizationException if requestor does not have register permission
 	 * @throws StorageException if unable to register the Asset
 	 * @throws UnsupportedOperationException if the agent does not support metadata storage
-	 * @return
+	 * @return Asset
 	 */
 	public Asset registerAsset(Asset asset);
 

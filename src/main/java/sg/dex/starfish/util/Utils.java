@@ -110,6 +110,13 @@ public class Utils {
 		throw new IllegalArgumentException("Can't coerce to int: "+o);
 	}
 
+	/**
+	 * Consumes an InputStream to a String
+	 *
+	 * @param inputStream the InputStream
+	 * @throws RuntimeException if inputStream unreadable
+	 * @return The String value of inputStream
+	 */
 	public static String stringFromStream(InputStream inputStream) {
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		byte[] buffer = new byte[4096];

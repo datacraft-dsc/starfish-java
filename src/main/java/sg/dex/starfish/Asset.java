@@ -17,7 +17,7 @@ public interface Asset {
 	 * Gets DID for this Asset
 	 *
 	 * @throws UnsupportedOperationException if unable to obtain DID
-	 * @param a The asset to register
+	 * @return the assetID
 	 */
 	public String getAssetID();
 

@@ -10,6 +10,7 @@ public class Hex {
 	/**
 	 * Converts an int value in the range 0..15 to a lowercase hexadecimal character
 	 * @param value Integer value to convert
+	 * @throws IllegalArgumentException on invalid hex char
 	 * @return The lowercase hex character
 	 */
 	public static char toChar(int value) {
@@ -25,6 +26,7 @@ public class Hex {
 	 * The hex string must have an even number of digits.
 	 *
 	 * @param hex String containing Hex digits
+	 * @throws Error on odd length hex string
 	 * @return The representation of the hex string as a byte array
 	 */
 	public static byte[] toBytes(String hex) {
@@ -43,6 +45,7 @@ public class Hex {
 	/**
 	 * Gets the value of a single hex car e.g. val('c') =&gt; 12
 	 * @param c Character to convert
+	 * @throws Error on invalid hex char
 	 * @return The int value of the hex char, in the range 0-15 inclusive
 	 */
 	public static int val(char c) {
@@ -84,7 +87,7 @@ public class Hex {
 	/**
 	 * Converts an int to its 8-character hex representation
 	 * @param identityHashCode
-	 * @return
+	 * @return hex representation
 	 */
 	public static String toString(int value) {
 		char[] hex=new char[8];

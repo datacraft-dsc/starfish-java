@@ -71,7 +71,7 @@ public class MemoryAsset extends ADataAsset {
 	 * Creates a MemoryAsset with the provided string data, encoded in UTF_8
 	 * Default metadata will be generated.
 	 *
-	 * @param data String containing the data for this asset
+	 * @param string String containing the data for this asset
 	 * @return The newly created in-memory asset
 	 */
 	public static Asset create(String string) {

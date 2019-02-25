@@ -25,6 +25,12 @@ public class AssetBundle extends AAsset {
 		return false;
 	}
 
+	/**
+	 * Gets content IDs for each asset
+	 *
+	 * @throws Error if metadata contents are not a Map
+	 * @return List of content ID
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getContentIDs() {
 		Map<String,Object> meta=getMetadata();

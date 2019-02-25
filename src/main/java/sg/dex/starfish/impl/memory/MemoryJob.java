@@ -76,6 +76,7 @@ public class MemoryJob implements Job {
 	 * @throws AuthorizationException if requestor does not have load permission
 	 * @throws StorageException if unable to load the Asset
 	 * @throws JobFailedException if Job fails
+	 * @throws Error if Job interrupted
 	 * @return The Asset resulting from the job
 	 */
 	@Override
@@ -84,11 +85,11 @@ public class MemoryJob implements Job {
 			return future.get();
 		}
 		catch (InterruptedException e) {
-			throw new Error("Job interruped",e);
+			throw new Error("Job interrupted",e);
 		}
 		catch (ExecutionException e) {
 			Throwable cause=e.getCause();
-			throw new Error("Job failed with exception: "+cause,e);
+			throw new JobFailedException("Job failed with exception: "+cause,e);
 		}
 	}
 

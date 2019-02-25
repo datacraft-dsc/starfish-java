@@ -61,11 +61,21 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 *
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
+	 * @return RemoteAgent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did) {
 		return new RemoteAgent(ocean, did);
 	}
 
+	/**
+	 * Registers Asset a with the RemoteAgent
+	 *
+	 * @param a Asset to register
+	 * @throws RemoteException if a is not found
+	 * @throws TODOException for unhandled results
+	 * @throws RuntimeException for protocol errors
+	 * @return RemoteAsset corresponding to a
+	 */
 	@Override
 	public RemoteAsset registerAsset(Asset a) {
 		URI uri = getMetaURI();
@@ -101,6 +111,14 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets InputStream to download a RemoteAsset
+	 *
+	 * @param a the RemoteAsset to download
+	 * @throws RemoteException if a is not found
+	 * @throws TODOException for unhandled status codes
+	 * @return InputStream corresponding to a
+	 */
 	public InputStream getDownloadStream(RemoteAsset a) {
 		URI uri = getStorageURI(a.getAssetID());
 		HttpGet httpget = new HttpGet(uri);
@@ -184,6 +202,12 @@ public class RemoteAgent extends AAgent implements Invokable {
 		throw new TODOException();
 	}
 
+	/**
+	 * Gets URI for this agent's invoke endpoint
+	 *
+	 * @throws RuntimeException on URI syntax errors
+	 * @return The URI for this agent's invoke endpoint
+	 */
 	public URI getInvokeURI() {
 		try {
 			return new URI(getInvokeEndpoint() + "/invokesync");
@@ -193,6 +217,13 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets URI for this agent's endpoint for jobID
+	 *
+	 * @param jobID of the URI to create
+	 * @throws IllegalArgumentException on invalid URI for jobID
+	 * @return The URI for this agent's invoke endpoint
+	 */
 	private URI getJobURI(String jobID) {
 		try {
 			return new URI(getInvokeEndpoint() + "/jobs/" + jobID);
@@ -202,6 +233,14 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets meta URI for this assetID
+	 *
+	 * @param assetID of the URI to create
+	 * @throws UnsupportedOperationException if the agent does not support the Meta API
+	 * @throws IllegalArgumentException on invalid URI for assetID
+	 * @return The URI for this assetID
+	 */
 	private URI getMetaURI(String assetID) {
 		String metaEndpoint = getMetaEndpoint();
 		if (metaEndpoint == null)
@@ -214,6 +253,14 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets storage URI for this assetID
+	 *
+	 * @param assetID of the URI to create
+	 * @throws UnsupportedOperationException if the agent does not support the Storage API
+	 * @throws IllegalArgumentException on invalid URI for assetID
+	 * @return The URI for this assetID
+	 */
 	public URI getStorageURI(String assetID) {
 		String storageEndpoint = getStorageEndpoint();
 		if (storageEndpoint == null) throw new UnsupportedOperationException(
@@ -226,6 +273,13 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets meta URI for this agent
+	 *
+	 * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
+	 * @throws IllegalArgumentException on invalid URI for asset metadata
+	 * @return The URI for asset metadata
+	 */
 	private URI getMetaURI() {
 		String metaEndpoint = getMetaEndpoint();
 		if (metaEndpoint == null)
@@ -238,6 +292,14 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Gets URL for a given remoteAsset
+	 *
+	 * @param remoteAsset for the URL
+	 * @throws IllegalStateException No storage endpoint available for agent
+	 * @throws Error on failure to get asset URL
+	 * @return The URL for the remoteAsset
+	 */
 	public URL getURL(RemoteAsset remoteAsset) {
 		String storageEndpoint = getStorageEndpoint();
 		if (storageEndpoint == null) throw new IllegalStateException("No storage endpoint available for agent");
@@ -349,6 +411,13 @@ public class RemoteAgent extends AAgent implements Invokable {
 		return invoke(request);
 	}
 
+	/**
+	 * Invokes request on this RemoteAgent
+	 *
+	 * @param request Invoke request
+	 * @throws RuntimeException for protocol errors
+	 * @return Job for this request
+	 */
 	private Job invoke(Map<String, Object> request) {
 		String req = JSON.toString(request);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -373,6 +442,13 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+	/**
+	 * Invokes request on this RemoteAgent
+	 *
+	 * @param request Invoke request
+	 * @throws RuntimeException for protocol errors
+	 * @return Job for this request
+	 */
 	private static Job createJobWith200(RemoteAgent agent, HttpResponse response) {
 		HttpEntity entity = response.getEntity();
 		if (entity == null) throw new RuntimeException("Invoke failed: no response body");
