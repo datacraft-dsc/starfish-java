@@ -1,5 +1,6 @@
 package sg.dex.starfish.util;
 
+import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -177,6 +178,28 @@ public class DID {
 	 */
 	public DID withPath(String path) {
 		return DID.create(method,id,path,fragment);
+	}
+
+	/**
+	 * Creates a random Ocean-compliant DID as a string, of the format:
+	 * 
+	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+	 * 
+	 * @return A valid Ocean DID represented as a string
+	 */
+	public static String createRandomString() {
+		SecureRandom sr=new SecureRandom();
+		byte[] bytes=new byte[Utils.DID_LENGTH];
+		sr.nextBytes(bytes);
+		return "did:ocn:"+Hex.toString(bytes);
+	}
+
+	/**
+	 * Creates a random Ocean-compliant DID
+	 * @return The created DID
+	 */
+	public static DID createRandom() {
+		return parse(DID.createRandomString());
 	}
 
 

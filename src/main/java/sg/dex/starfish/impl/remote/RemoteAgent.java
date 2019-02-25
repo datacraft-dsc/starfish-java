@@ -48,6 +48,15 @@ public class RemoteAgent extends AAgent implements Invokable {
 	protected RemoteAgent(Ocean ocean, DID did) {
 		super(ocean, did);
 	}
+	
+	/**
+	 * Creates a RemoteAgent with the specified Ocean connection and DID
+	 * @param ocean Ocean connection to use
+	 * @param did DID for this agent
+	 */
+	public static RemoteAgent create(Ocean ocean, DID did) {
+		return new RemoteAgent(ocean,did);
+	}
 
 	@Override
 	public void registerAsset(Asset a) {

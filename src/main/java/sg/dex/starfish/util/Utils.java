@@ -21,28 +21,6 @@ public class Utils {
 	public static final int DID_LENGTH = 32;
 
 	/**
-	 * Creates a random Ocean-compliant DID as a string, of the format:
-	 * 
-	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
-	 * 
-	 * @return A valid Ocean DID represented as a string
-	 */
-	public static String createRandomDIDString() {
-		SecureRandom sr=new SecureRandom();
-		byte[] bytes=new byte[Utils.DID_LENGTH];
-		sr.nextBytes(bytes);
-		return "did:ocn:"+Hex.toString(bytes);
-	}
-	
-	/**
-	 * Creates a random Ocean-compliant DID
-	 * @return The created DID
-	 */
-	public static DID createRandomDID() {
-		return DID.parse(createRandomDIDString());
-	}
-	
-	/**
 	 * Creates a random hex string of the specified length
 	 * @param length Number of bytes of hex data to create
 	 * @return A lowercase hex string of the specified length

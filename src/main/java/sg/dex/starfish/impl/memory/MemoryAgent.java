@@ -18,7 +18,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	/**
 	 * The singleton default memory agent instance
 	 */
-	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+	public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(),DID.createRandomString());
 
 	/**
 	 * A cached thread pool for jobs executed in memory
@@ -40,7 +40,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	}
 	
 	public static MemoryAgent create() {
-		return new MemoryAgent(Ocean.connect(),Utils.createRandomDIDString());
+		return new MemoryAgent(Ocean.connect(),DID.createRandomString());
 	}
 	
 	public static MemoryAgent create(String did) {

@@ -1,17 +1,23 @@
 package sg.dex.starfish.samples;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 public class RemoteAssetAccess {
 
 	public static void main(String... args) {
-		String host="https://13.67.33.157";
+		String host="http://localhost:8080";
 		Map<String,Object> ddo=new HashMap<>();
 		List<Map<String,Object>> services=new ArrayList<>();
 		services.add(Utils.mapOf(
@@ -26,5 +32,17 @@ public class RemoteAssetAccess {
 		ddo.put("service",services);
 		String ddoString=JSON.toPrettyString(ddo);
 		System.out.println(ddoString);
+		Map<String,Object> surferDDO=JSON.toMap(ddoString);
+		
+		Ocean ocean=Ocean.connect();
+		DID surferDID=DID.createRandom();
+		ocean.registerLocalDID(surferDID,ddoString);
+		
+		RemoteAgent surfer=RemoteAgent.create(ocean,surferDID);
+		assertEquals(surferDID,surfer.getDID());
+		assertEquals(surferDDO,surfer.getDDO());
+		
+		Asset a=surfer.getAsset("b48d38f93eaa084033fc5970bf96e559c33c4cdc07d889ab00b4d63f9590739d");
+		assertEquals("{}",a.getMetadataString());
 	}
 }
