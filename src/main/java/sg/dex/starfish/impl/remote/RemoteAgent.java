@@ -201,7 +201,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 		try {
 			response = httpclient.execute(httppost);
 			try {
-				return RemoteAgent.create(this,response);
+				return RemoteAgent.createJob(this,response);
 			} finally {
 			    response.close();
 			}
@@ -214,7 +214,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
-	static Job createWith200(RemoteAgent agent, HttpResponse response) {
+	private static Job createJobWith200(RemoteAgent agent, HttpResponse response) {
 		HttpEntity entity=response.getEntity();
 		if (entity==null) throw new RuntimeException("Invoke failed: no response body");
 		try {
@@ -231,11 +231,11 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @param response A valid successful response from the remote Invoke API
 	 * @return A job representing the remote invocation
 	 */
-	public static Job create(RemoteAgent agent, HttpResponse response) {
+	public static Job createJob(RemoteAgent agent, HttpResponse response) {
 		StatusLine statusLine=response.getStatusLine();
 		int statusCode=statusLine.getStatusCode();
 	    if (statusCode==200) {
-	    	return RemoteAgent.createWith200(agent, response);
+	    	return RemoteAgent.createJobWith200(agent, response);
 	    }			    
 	    String reason=statusLine.getReasonPhrase();
 	    if ((statusCode)==400) {
