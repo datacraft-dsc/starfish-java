@@ -11,7 +11,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 public class RegisterSample {
 
 	public static void main(String... args) {
-		RemoteAgent surfer = SurferConfig.getSurfer("http://localhost:8080");
+		RemoteAgent surfer = SurferConfig.getSurfer("http://13.67.33.157:8080");
 		Asset a=MemoryAsset.create("Hello World".getBytes(StandardCharsets.UTF_8));
 		
 		System.out.println("Asset ID: "+a.getAssetID());

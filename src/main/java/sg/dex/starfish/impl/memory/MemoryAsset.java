@@ -8,6 +8,7 @@ package sg.dex.starfish.impl.memory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +90,7 @@ public class MemoryAsset extends ADataAsset {
 			}
 		}
 
+		ob.put("dateCreated", Instant.now().toString());
 		ob.put("contentHash", hash);
 		ob.put("size", Integer.toString(data.length));
 		return JSON.toString(ob);
