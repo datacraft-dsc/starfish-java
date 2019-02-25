@@ -48,8 +48,9 @@ public class MemoryAgent extends AAgent implements Invokable {
 	}
 
 	@Override
-	public void registerAsset(Asset a) {
+	public Asset registerAsset(Asset a) {
 		assetStore.put(a.getAssetID(),a);
+		return a;
 	}
 	
 	@Override

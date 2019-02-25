@@ -30,8 +30,9 @@ public interface Agent {
 	 * 
 	 * @throws UnsupportedOperationException if the agent does not support metadata storage
 	 * @param asset The asset to register
+	 * @return 
 	 */
-	public void registerAsset(Asset asset);
+	public Asset registerAsset(Asset asset);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.

@@ -32,6 +32,7 @@ import sg.dex.starfish.util.Params;
 import sg.dex.starfish.util.RemoteException;
 import sg.dex.starfish.util.TODOException;
 import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.utils.HTTP;
 
 /**
  * Class implementing a remote storage agent using the Storage API
@@ -59,12 +60,41 @@ public class RemoteAgent extends AAgent implements Invokable {
 	}
 
 	@Override
-	public void registerAsset(Asset a) {
-		throw new TODOException();
+	public RemoteAsset registerAsset(Asset a) {
+		URI uri=getMetaURI();
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(uri);
+		httpPost.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpPost);
+			try {
+			    StatusLine statusLine=response.getStatusLine();
+			    int statusCode = statusLine.getStatusCode();
+			    if (statusCode==404) {
+			    	throw new RemoteException("Asset ID not found for at: "+uri);
+			    }
+			    if (statusCode==200) {
+			    	String body=Utils.stringFromStream(response.getEntity().getContent());
+			    	String id=JSON.parse(body);
+			    	return getAsset(id);
+			    }
+		    	throw new TODOException("Result not handled: "+statusLine);
+			} finally {
+			    response.close();
+			}
+		}
+		catch (ClientProtocolException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
-	public Asset getAsset(String id) {
+	public RemoteAsset getAsset(String id) {
 		URI uri=getMetaURI(id);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(uri);
@@ -135,6 +165,17 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 		catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for asset metadata with ID: "+assetID,e);
+		}
+	}
+	
+	private URI getMetaURI() {
+		String metaEndpoint=getMetaEndpoint();
+		if (metaEndpoint==null) throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
+		try {
+			return new URI(metaEndpoint+"/data");
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Can't create valid URI for asset metadata",e);
 		}
 	}
 
