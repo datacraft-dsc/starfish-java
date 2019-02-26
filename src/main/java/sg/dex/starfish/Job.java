@@ -1,9 +1,7 @@
 package sg.dex.starfish;
 
-import java.util.concurrent.TimeoutException;
-
-import sg.dex.starfish.util.JobFailedException;
 import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.JobFailedException;
 import sg.dex.starfish.util.StorageException;
 
 /**
