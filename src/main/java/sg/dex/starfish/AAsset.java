@@ -10,9 +10,9 @@ import sg.dex.starfish.util.JSONObjectCache;
 
 /**
  * Abstract base class for immutable asset implementations
- * 
+ *
  * Includes default handing of metadata
- * 
+ *
  * @author Mike
  *
  */
@@ -34,16 +34,23 @@ public abstract class AAsset implements Asset {
 	public String getAssetID() {
 		return id;
 	}
+
 	@Override
 	public Map<String,Object> getMetadata() {
 		return JSONObjectCache.parse(metadataString);
 	}
-	
+
+	/**
+	 * Gets DID for this Asset
+	 *
+	 * @throws UnsupportedOperationException if unable to obtain DID
+	 * @return DID
+	 */
 	@Override
 	public DID getAssetDID() {
-		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass()); 
+		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
 	}
-	
+
 	@Override
 	public Map<String,Object> getParamValue() {
 		 Map<String,Object>  o=new HashMap<>();
@@ -63,6 +70,6 @@ public abstract class AAsset implements Asset {
 
 	@Override
 	public abstract boolean isDataAsset();
-	
+
 
 }

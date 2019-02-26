@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
+
 /**
- * Class representing an asset bundle. The contents of the bundle are defined in the asset 
+ * Class representing an asset bundle. The contents of the bundle are defined in the asset
  * metadata.
- * 
+ *
  * @author Mike
  *
  */
@@ -22,6 +25,12 @@ public class AssetBundle extends AAsset {
 		return false;
 	}
 
+	/**
+	 * Gets content IDs for each asset
+	 *
+	 * @throws Error if metadata contents are not a Map
+	 * @return List of content ID
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getContentIDs() {
 		Map<String,Object> meta=getMetadata();
@@ -42,10 +51,13 @@ public class AssetBundle extends AAsset {
 	/**
 	 * Gets an asset contained within this bundle
 	 * @param path   Path to the asset
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retreiving the Asset
 	 * @return The asset at the specified path
 	 */
 	public Asset getContent(String path) {
-		throw new UnsupportedOperationException();
+		throw new StorageException("getContent Error",
+					   new Exception("cannot getContent() for an abstract class"));
 	}
 
 	@Override

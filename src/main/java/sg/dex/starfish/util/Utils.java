@@ -55,7 +55,7 @@ public class Utils {
 
 	/**
 	 * Gets the class of an object, or null if the argument is null
-	 * 
+	 *
 	 * @param o Any Object
 	 * @param <T> The class of the Object
 	 * @return The Class of the argument provided
@@ -71,9 +71,8 @@ public class Utils {
 	 * - null is considered false
 	 * - Strings "false" and "true" are interpreted appropriately
 	 * - Boolean values are retained as-is
-	 * 
-	 * Throws an exception if coercion is not possible.
-	 * 
+	 *
+	 * @throws IllegalArgumentException if the object cannot be successfully converted to a boolean
 	 * @param o The object to attempt to coerce to a boolean value
 	 * @return The boolean value of this object if coercion is successful
 	 */
@@ -92,7 +91,7 @@ public class Utils {
 
 	/**
 	 * Coerces an object to an int value.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the object cannot be successfully converted to an int
 	 * @param o An object to be converted to an int
 	 * @return The coerced int value of the object
@@ -111,6 +110,13 @@ public class Utils {
 		throw new IllegalArgumentException("Can't coerce to int: "+o);
 	}
 
+	/**
+	 * Consumes an InputStream to a String
+	 *
+	 * @param inputStream the InputStream
+	 * @throws RuntimeException if inputStream unreadable
+	 * @return The String value of inputStream
+	 */
 	public static String stringFromStream(InputStream inputStream) {
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		byte[] buffer = new byte[4096];
@@ -129,6 +135,7 @@ public class Utils {
 	/**
 	 * Creates a map using the given arguments as keys and values
 	 * @param params A sequence of (key,value) objects
+	 * @throws IllegalArgumentException if mapOf has odd number of arguments
 	 * @return A map containing the key keys and values
 	 */
 	@SuppressWarnings("unchecked")

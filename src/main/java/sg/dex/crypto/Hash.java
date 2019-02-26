@@ -19,11 +19,11 @@ public class Hash {
 	 * @param length Length of bytes to compute
 	 * @return byte[]
 	 */
-    public static byte[] keccak256(byte[] data, int offset, int length) {
-        Keccak.DigestKeccak keccak = new Keccak.Digest256();
-        keccak.update(data, offset, length);
-        return keccak.digest();
-    }
+	public static byte[] keccak256(byte[] data, int offset, int length) {
+		Keccak.DigestKeccak keccak = new Keccak.Digest256();
+		keccak.update(data, offset, length);
+		return keccak.digest();
+	}
 
 	/**
 	 * Compute Keccak256 hash of byte array

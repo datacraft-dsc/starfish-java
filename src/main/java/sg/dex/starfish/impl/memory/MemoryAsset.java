@@ -18,6 +18,8 @@ import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
@@ -37,7 +39,7 @@ public class MemoryAsset extends ADataAsset {
 		super(meta);
 		this.data=data;
 	}
-	
+
 	/**
 	 * Gets a MemoryAsset using the content and metadata from the provided asset
 	 * @param asset The asset to use to construct this MemoryAsset
@@ -53,23 +55,23 @@ public class MemoryAsset extends ADataAsset {
 			throw new IllegalArgumentException("Asset must be a data asset");
 		}
 	}
-	
+
 	/**
 	 * Creates a MemoryAsset with the provided data. Default metadata will be generated.
-	 * 
+	 *
 	 * @param data Byte array containing the data for this asset
 	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(byte[] data) {
 		return create(buildMetaData(data,null),data);
 	}
-	
+
 
 	/**
-	 * Creates a MemoryAsset with the provided string data, encoded in UTF_8 
+	 * Creates a MemoryAsset with the provided string data, encoded in UTF_8
 	 * Default metadata will be generated.
-	 * 
-	 * @param data String containing the data for this asset
+	 *
+	 * @param string String containing the data for this asset
 	 * @return The newly created in-memory asset
 	 */
 	public static Asset create(String string) {
@@ -98,20 +100,20 @@ public class MemoryAsset extends ADataAsset {
 	 */
 	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
-		
+
 		Map<String,Object> ob=new HashMap<>();
 		ob.put("dateCreated", Instant.now().toString());
 		ob.put("contentHash", hash);
 		ob.put("type", "dataset");
 		ob.put("size", Integer.toString(data.length));
 		ob.put("contentType","application/octet-stream");
-		
+
 		if (meta!=null) {
 			for (Map.Entry<String,Object> me:meta.entrySet()) {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
-		
+
 		return JSON.toString(ob);
 	}
 
@@ -120,13 +122,27 @@ public class MemoryAsset extends ADataAsset {
 		return true;
 	}
 
+	/**
+	 * Gets InputStream corresponding to this Asset
+	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
+	 * @return An input stream allowing consumption of the asset data
+	 */
 	@Override
 	public InputStream getInputStream() {
 		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}
-	
-	@Override 
+
+	/**
+	 * Gets raw data corresponding to this Asset
+	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if unable to load the Asset
+	 * @return An input stream allowing consumption of the asset data
+	 */
+	@Override
 	public byte[] getBytes() {
 		// we take a copy of data to protected immutability of MemoryAsset instance
 		return data.clone();

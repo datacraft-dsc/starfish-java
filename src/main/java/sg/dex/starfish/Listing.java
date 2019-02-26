@@ -2,6 +2,9 @@ package sg.dex.starfish;
 
 import java.util.Map;
 
+import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.StorageException;
+
 /**
  * Interface representing a listing of an asset on a data marketplace
  *
@@ -17,18 +20,19 @@ public interface Listing {
 	 *
 	 * The asset may not be available in some circumstances (e.g. lack of access permission)
 	 * in which case an exception will be thrown.
-	 *
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retreiving the Asset
 	 * @return The asset for this listing
 	 */
 	public Asset getAsset();
-	
+
 	/**
 	 * Returns the metadata associated with this listing.
 	 *
 	 * @return A copy of the JSON metadata
 	 */
 	public Map<String,Object> getMetadata();
-	
+
 	/**
 	 * Returns the service agreement associated with this listing.
 	 * TODO create service agreement abstraction
