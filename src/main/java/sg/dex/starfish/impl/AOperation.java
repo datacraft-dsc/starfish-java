@@ -1,6 +1,8 @@
-package sg.dex.starfish;
+package sg.dex.starfish.impl;
 
 import java.util.Map;
+
+import sg.dex.starfish.Operation;
 
 /**
  * Abstract base class representing invokable operations in the Ocean ecosystem

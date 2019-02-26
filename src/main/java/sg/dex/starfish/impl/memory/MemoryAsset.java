@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sg.dex.crypto.Hash;
-import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;

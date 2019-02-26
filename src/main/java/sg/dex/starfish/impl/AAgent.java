@@ -1,8 +1,10 @@
-package sg.dex.starfish;
+package sg.dex.starfish.impl;
 
 import java.util.List;
 import java.util.Map;
 
+import sg.dex.starfish.Agent;
+import sg.dex.starfish.Ocean;
 import sg.dex.starfish.util.DID;
 
 /**

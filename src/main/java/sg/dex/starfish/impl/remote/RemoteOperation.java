@@ -2,9 +2,9 @@ package sg.dex.starfish.impl.remote;
 
 import java.util.Map;
 
-import sg.dex.starfish.AOperation;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.impl.AOperation;
 
 /**
  * Class representing a remote operation callable via the Invoke API

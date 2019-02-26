@@ -3,9 +3,9 @@ package sg.dex.starfish.impl.memory;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import sg.dex.starfish.AOperation;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.impl.AOperation;
 
 import sg.dex.starfish.util.JobFailedException;
 

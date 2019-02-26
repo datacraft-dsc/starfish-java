@@ -1,4 +1,4 @@
-package sg.dex.starfish.utils;
+package sg.dex.starfish.util;
 
 import java.io.IOException;
 import java.io.InputStream;

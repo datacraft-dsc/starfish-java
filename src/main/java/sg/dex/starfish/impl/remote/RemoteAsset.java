@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.TODOException;
 import sg.dex.starfish.util.AuthorizationException;

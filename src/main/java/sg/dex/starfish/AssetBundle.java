@@ -6,6 +6,7 @@ import java.util.Map;
 
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.impl.AAsset;
 
 /**
  * Class representing an asset bundle. The contents of the bundle are defined in the asset

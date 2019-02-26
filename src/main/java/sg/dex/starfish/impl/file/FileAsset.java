@@ -8,9 +8,9 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.JSON;
 
 /**

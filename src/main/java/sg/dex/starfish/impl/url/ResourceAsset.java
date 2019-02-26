@@ -2,8 +2,8 @@ package sg.dex.starfish.impl.url;
 
 import java.io.InputStream;
 
-import sg.dex.starfish.ADataAsset;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.TODOException;
 
 import sg.dex.starfish.util.AuthorizationException;

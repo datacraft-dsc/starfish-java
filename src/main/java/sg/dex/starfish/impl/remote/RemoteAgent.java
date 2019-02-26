@@ -22,12 +22,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import sg.dex.starfish.AAgent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Invokable;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
@@ -36,7 +36,7 @@ import sg.dex.starfish.util.TODOException;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 import sg.dex.starfish.util.Utils;
-import sg.dex.starfish.utils.HTTP;
+import sg.dex.starfish.util.HTTP;
 
 /**
  * Class implementing a remote storage agent using the Storage API
