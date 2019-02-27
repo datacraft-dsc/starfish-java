@@ -12,7 +12,7 @@ import sg.dex.starfish.util.JobFailedException;
 /**
  * Abstract base class for operations executed in-memory.
  *
- * Memory operations to not require a specific agent to operate.
+ * Memory operations do not require a specific agent to operate.
  *
  * @author Mike
  *

@@ -35,7 +35,7 @@ public class ReverseBytesOperation extends AMemoryOperation {
 	 * @return new instance of ReverseBytesOperation
 	 */
 	public static ReverseBytesOperation create() {
-		String meta = "{}";
+		String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
 		return new ReverseBytesOperation(meta);
 	}
 

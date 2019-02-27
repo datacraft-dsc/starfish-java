@@ -164,6 +164,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 			}
 			if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
+				// TODO: consider if this this an operation rather than data asset?
 				return RemoteAsset.create(this, body);
 			}
 			throw new TODOException("status code not handled: " + statusCode);
@@ -377,9 +378,6 @@ public class RemoteAgent extends AAgent implements Invokable {
 					Map<String, Object> result = JSON.toMap(body);
 					String status = (String) result.get("status");
 					if (status == null) throw new RemoteException("No status in job result: " + body);
-					if (status.equals("started") || status.equals("inprogress")) {
-						return null; // no result yet
-					}
 					if (status.equals("started") || status.equals("inprogress")) {
 						return null; // no result yet
 					}
