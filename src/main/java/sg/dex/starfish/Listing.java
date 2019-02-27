@@ -20,8 +20,8 @@ public interface Listing {
 	 *
 	 * The asset may not be available in some circumstances (e.g. lack of access permission)
 	 * in which case an exception will be thrown.
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @throws AuthorizationException if requester does not have access permission
+	 * @throws StorageException if there is an error in retrieving the Asset
 	 * @return The asset for this listing
 	 */
 	public Asset getAsset();

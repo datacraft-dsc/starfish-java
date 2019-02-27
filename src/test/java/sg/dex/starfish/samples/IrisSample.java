@@ -1,7 +1,5 @@
 package sg.dex.starfish.samples;
 
-import sg.dex.starfish.Operation;
-import sg.dex.starfish.impl.operations.ReverseBytesOperation;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.JSON;
@@ -17,7 +15,7 @@ public class IrisSample {
 		String prettyJSON = JSON.toPrettyString(iris.getMetadata());
 		System.out.println(Utils.stringFromStream(iris.getInputStream()));
 		System.out.println("ID = "+iris.getAssetID());
-		//System.out.println(prettyJSON);
+		System.out.println(prettyJSON);
 		
 		surfer.registerAsset(iris);
 	}
