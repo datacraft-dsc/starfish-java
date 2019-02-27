@@ -9,7 +9,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 public class RegisterSample {
 
 	public static void main(String... args) {
-		RemoteAgent surfer = SurferConfig.getSurfer("http://13.67.33.157:8080");
+		RemoteAgent surfer = SurferConfig.getSurfer("http://localhost:8080");
 		
 		// a new memory asset
 		Asset a=MemoryAsset.create("Hello World");

@@ -1,13 +1,17 @@
 package sg.dex.starfish.impl.url;
 
 import java.io.InputStream;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
-import sg.dex.starfish.Asset;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.TODOException;
-
 import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.util.TODOException;
 
 /**
  * Class exposing a Java resource referenced by a URL as an Ocean asset
@@ -23,8 +27,30 @@ public class ResourceAsset extends ADataAsset {
 		this.name=name;
 	}
 
-	public static Asset create(String meta, String resourcePath) {
+	public static ResourceAsset create(String meta, String resourcePath) {
 		return new ResourceAsset(meta,resourcePath);
+	}
+	
+	public static ResourceAsset create(String resourcePath) {
+		return create(buildMetaData(resourcePath,null),resourcePath);
+	}
+	
+	private static String buildMetaData(String resourcePath,Map<String,Object> meta) {
+		String hash=Hex.toString(Hash.keccak256(resourcePath));
+
+		Map<String,Object> ob=new HashMap<>();
+		ob.put("dateCreated", Instant.now().toString());
+		ob.put("contentHash", hash);
+		ob.put("type", "dataset");
+		ob.put("contentType","application/octet-stream");
+
+		if (meta!=null) {
+			for (Map.Entry<String,Object> me:meta.entrySet()) {
+				ob.put(me.getKey(), me.getValue());
+			}
+		}
+
+		return JSON.toString(ob);
 	}
 
 	/**
@@ -49,6 +75,8 @@ public class ResourceAsset extends ADataAsset {
 	public String getName() {
 		return name;
 	}
+
+
 
 
 
