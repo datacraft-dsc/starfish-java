@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.JSON;
 
 public class RegisterSample {
 
@@ -14,7 +15,8 @@ public class RegisterSample {
 		// a new memory asset
 		Asset a=MemoryAsset.create("Hello World");
 		System.out.println("Asset ID: "+a.getAssetID());
-		System.out.println(a.getMetadataString());
+		String prettyJSON = JSON.toPrettyString(a.getMetadata());
+		System.out.println(prettyJSON);
 		
 		Asset ra=surfer.registerAsset(a);
 		
