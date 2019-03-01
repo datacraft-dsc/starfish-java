@@ -7,7 +7,7 @@ install: true
 addons:
   ssh_known_hosts: shrimp.octet.services
 script:
-- mvn integration:test
+- mvn integration-test
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
