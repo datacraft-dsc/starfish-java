@@ -31,11 +31,11 @@ public class SurferConfig {
 		String ddoString=JSON.toPrettyString(ddo);
 		// System.out.println(ddoString);
 		Map<String,Object> surferDDO=JSON.toMap(ddoString);
-		
+
 		Ocean ocean=Ocean.connect();
 		DID surferDID=DID.createRandom();
 		ocean.registerLocalDID(surferDID,ddoString);
-		
+
 		RemoteAgent surfer=RemoteAgent.create(ocean,surferDID);
 		assertEquals(surferDID,surfer.getDID());
 		assertEquals(surferDDO,surfer.getDDO());

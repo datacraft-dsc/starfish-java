@@ -1,5 +1,7 @@
 package sg.dex.starfish.samples;
 
+import sg.dex.starfish.impl.remote.RemoteAgent;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -9,6 +11,7 @@ import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SampleIntegrationTests {
+	private static boolean surferUp = RemoteAgent.isAgentUp("http://localhost:8080");
 	private static String registerAssetID = null;
 
 	@Test public void aTestInvokeSample() {
@@ -18,17 +21,29 @@ public class SampleIntegrationTests {
 
 	@Test public void bTestIrisSample() {
 		System.out.println("=== bTestIrisSample ===");
-		IrisSample.main();
+		if (surferUp) {
+			IrisSample.main();
+		} else {
+			System.out.println("WARNING: not tested as surfer is not up.");
+		}
 	}
 
 	@Test public void cTestRegisterSample() {
 		System.out.println("=== cTestRegisterSample ===");
-		registerAssetID = RegisterSample.test();
+		if (surferUp) {
+			registerAssetID = RegisterSample.test();
+		} else {
+			System.out.println("WARNING: not tested as surfer is not up.");
+		}
 	}
 
 	@Test public void dTestMetadataSample() {
 		System.out.println("=== dTestMetadataSample ===");
-		MetadataSample.main(registerAssetID);
+		if (surferUp) {
+			MetadataSample.main(registerAssetID);
+		} else {
+			System.out.println("WARNING: not tested as surfer is not up.");
+		}
 	}
 
 }
