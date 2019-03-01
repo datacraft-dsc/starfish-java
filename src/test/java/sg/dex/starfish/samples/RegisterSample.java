@@ -9,24 +9,30 @@ import sg.dex.starfish.util.JSON;
 
 public class RegisterSample {
 
-	public static void main(String... args) {
+	public static String test(String... args) {
 		RemoteAgent surfer = SurferConfig.getSurfer("http://localhost:8080");
-		
+
 		// a new memory asset
 		Asset a=MemoryAsset.create("Hello World");
-		System.out.println("Asset ID: "+a.getAssetID());
+		String assetID = a.getAssetID();
+		System.out.println("Asset ID: "+assetID);
 		String prettyJSON = JSON.toPrettyString(a.getMetadata());
 		System.out.println(prettyJSON);
-		
+
 		Asset ra=surfer.registerAsset(a);
-		
+
 		// check the metadata is correct
 		assertEquals(a.getMetadata(),ra.getMetadata());
-		
-		
-		// download the asset 
+
+
+		// download the asset
 		// Asset dl=MemoryAsset.create(ra);
+
+		return assetID;
 	}
 
+	public static void main(String... args) {
+		test(args);
+	}
 
 }
