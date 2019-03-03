@@ -1,8 +1,14 @@
 language: java
+# NOTE this will not work while surfer is private
+# before_install:
+# - git clone https://github.com/DEX-Company/surfer.git
+# - ./surfer/test/bin/cli-test startup
 install: true
 addons:
   ssh_known_hosts: shrimp.octet.services
 script:
-- mvn install
+- mvn integration-test
+# after_script:
+# - ./surfer/test/bin/cli-test shutdown
 after_success:
 - ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev

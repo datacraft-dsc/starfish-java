@@ -481,4 +481,30 @@ public class RemoteAgent extends AAgent implements Invokable {
 		throw new RuntimeException("Invoke request failed with code " + statusCode + ": " + reason);
 	}
 
+	public static boolean isAgentUp(String uri) {
+		Boolean up = false;
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(uri);
+		httpGet.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpGet);
+			try {
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+				if (statusCode == 200) {
+					up = true;
+				}
+			}
+			finally {
+				response.close();
+			}
+		}
+		catch (ClientProtocolException e) {
+		}
+		catch (IOException e) {
+		}
+		return up;
+	}
+
 }

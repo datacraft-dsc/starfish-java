@@ -8,7 +8,7 @@ public class InvokeSample {
 
 
 	public static void main(String... args) {
-		
+
 		Operation op = ReverseBytesOperation.create();
 		System.out.println(JSON.toPrettyString(op.getMetadata()));
 	}
