@@ -26,7 +26,7 @@ import com.oceanprotocol.squid.models.Account;
 
 public class SquidConfig {
 
-	static RemoteAgent getSquid() throws Exception {
+	static RemoteAgent getSquid(Ocean ocean) throws Exception {
 		Map<String,Object> ddo=new HashMap<>();
 		List<Map<String,Object>> services=new ArrayList<>();
 		// services.add(Utils.mapOf(
@@ -42,7 +42,6 @@ public class SquidConfig {
 		String ddoString=JSON.toPrettyString(ddo);
 		Map<String,Object> squidDDO=JSON.toMap(ddoString);
 
-		Ocean ocean=Ocean.connect();
 		DID squidDID=DID.createRandom();
 		ocean.registerLocalDID(squidDID,ddoString);
 
