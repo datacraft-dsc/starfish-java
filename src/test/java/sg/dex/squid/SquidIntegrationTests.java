@@ -1,34 +1,62 @@
 package sg.dex.squid;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 
 import org.junit.Test;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.oceanprotocol.squid.api.OceanAPI;
-import com.oceanprotocol.squid.api.AssetsAPI;
-import com.oceanprotocol.squid.api.AccountsAPI;
-import com.oceanprotocol.squid.api.SecretStoreAPI;
-import com.oceanprotocol.squid.models.Account;
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SquidIntegrationTests {
 
 	private static final Logger log = LogManager.getLogger(SquidIntegrationTests.class);
+	private static RemoteAgent squid = null;
 
-    @Test public void buildAPIFromConfig() throws Exception {
+	@Test public void aConfigureSquidAgent() {
+		System.out.println("=== aConfigureSquidAgent ===");
+		try {
+			squid = SquidConfig.getSquid();
+		} catch (Exception e) {
+			fail("unable to configure squid");
+		}
+	}
 
-        Config config = ConfigFactory.load();
+	@Test public void bConfigureSquidAgent() {
+		System.out.println("=== bConfigureSquidAgent ===");
+	}
 
-        OceanAPI oceanAPI = OceanAPI.getInstance(config);
-        assertNotNull(oceanAPI.getMainAccount());
-        assertEquals(config.getString("account.main.address"), oceanAPI.getMainAccount().address);
-        assertNotNull(oceanAPI.getAssetsAPI());
-        assertNotNull(oceanAPI.getAccountsAPI());
-        assertNotNull(oceanAPI.getSecretStoreAPI());
-    }
+	@Test public void cGetPublisherAccount() {
+		System.out.println("=== cGetPublisherAccount ===");
+	}
+
+	@Test public void dCreateAsset() {
+		System.out.println("=== dCreateAsset ===");
+	}
+
+	@Test public void eRegisterAsset() {
+		System.out.println("=== eRegisterAsset ===");
+	}
+
+	@Test public void fGetPurchaserAccount() {
+		System.out.println("=== fGetPurchaserAccount ===");
+	}
+
+	@Test public void gSearchListings() {
+		System.out.println("=== gSearchListings ===");
+	}
+
+	@Test public void hPurchaseAsset() {
+		System.out.println("=== hPurchaseAsset ===");
+	}
+
+	@Test public void iDownloadAsset() {
+		System.out.println("=== iDownloadAsset ===");
+	}
+
 }
