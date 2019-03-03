@@ -86,7 +86,7 @@ public class Hex {
 
 	/**
 	 * Converts an int to its 8-character hex representation
-	 * @param value
+	 * @param value int to convert to hex
 	 * @return hex representation
 	 */
 	public static String toString(int value) {
