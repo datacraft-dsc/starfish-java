@@ -33,6 +33,7 @@ public class TestHex {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Test public void testHexExceptionToBytes() {
 		try {
 			byte[] result = Hex.toBytes("A");
@@ -42,6 +43,7 @@ public class TestHex {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@Test public void testHexExceptionVal() {
 		try {
 			int val = Hex.val('?');

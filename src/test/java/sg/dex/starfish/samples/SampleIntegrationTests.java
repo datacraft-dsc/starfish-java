@@ -1,13 +1,10 @@
 package sg.dex.starfish.samples;
 
-import sg.dex.starfish.impl.remote.RemoteAgent;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import sg.dex.starfish.impl.remote.RemoteAgent;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SampleIntegrationTests {
