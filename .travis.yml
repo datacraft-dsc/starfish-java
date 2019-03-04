@@ -1,4 +1,9 @@
 language: java
+dist: xenial
+services:
+- docker
+addons:
+  ssh_known_hosts: shrimp.octet.services
 before_install:
 - git clone https://github.com/DEX-Company/barge.git
 - cd barge
@@ -11,8 +16,6 @@ before_install:
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
 install: true
-addons:
-  ssh_known_hosts: shrimp.octet.services
 script:
 - mvn integration-test
 # after_script:
