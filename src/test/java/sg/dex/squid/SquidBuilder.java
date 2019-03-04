@@ -2,6 +2,7 @@ package sg.dex.squid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigFactory;
 
 import com.oceanprotocol.squid.api.OceanAPI;
@@ -26,6 +28,8 @@ import com.oceanprotocol.squid.models.Account;
 public class SquidBuilder {
 
 	static SquidAgent create(Ocean ocean) throws Exception {
+		SquidAgent squid = null;
+
 		Map<String,Object> ddo=new HashMap<>();
 		List<Map<String,Object>> services=new ArrayList<>();
 		ddo.put("service",services);
@@ -35,21 +39,38 @@ public class SquidBuilder {
 		DID squidDID=DID.createRandom();
 		ocean.registerLocalDID(squidDID,ddoString);
 
-		// TODO: try/catch
-		// TODO: static default config
-		// TODO: map to override
-		Config config = ConfigFactory.load();
+		Config config = null;
+		String squidConf = "application.conf";
+		String squidConfDefault = "squid.conf";
+		if (Utils.resourceExists(squidConf)) {
+			config = ConfigFactory.load(squidConf);
+		} else {
+			config = ConfigFactory.load(squidConfDefault);
+		}
 
-		OceanAPI oceanAPI = OceanAPI.getInstance(config);
-		assertNotNull(oceanAPI.getMainAccount());
-		assertEquals(config.getString("account.main.address"), oceanAPI.getMainAccount().address);
-		assertNotNull(oceanAPI.getAssetsAPI());
-		assertNotNull(oceanAPI.getAccountsAPI());
-		assertNotNull(oceanAPI.getSecretStoreAPI());
+		// This map is an example of overidding config file defaults
+		// with specfic values
+		Map<String,String> cliOptions = new HashMap<String,String>();
+		cliOptions.put("starfish.java.testing", "true");
+		if (cliOptions.size() > 0) {
+			Config cliConfig = ConfigFactory.parseMap(cliOptions);
+			config = cliConfig.withFallback(config);
+		}
 
-		SquidAgent squid=SquidAgent.create(oceanAPI,ocean,squidDID);
-		assertEquals(squidDID,squid.getDID());
-		assertEquals(squidDDO,squid.getDDO());
+		try {
+			OceanAPI oceanAPI = OceanAPI.getInstance(config);
+			assertNotNull(oceanAPI.getMainAccount());
+			assertEquals(config.getString("account.main.address"), oceanAPI.getMainAccount().address);
+			assertNotNull(oceanAPI.getAssetsAPI());
+			assertNotNull(oceanAPI.getAccountsAPI());
+			assertNotNull(oceanAPI.getSecretStoreAPI());
+
+			squid=SquidAgent.create(oceanAPI,ocean,squidDID);
+			assertEquals(squidDID,squid.getDID());
+			assertEquals(squidDDO,squid.getDDO());
+		} catch (Exception e) {
+			fail("unable to create squid oceanAPI: " + e);
+		}
 		return squid;
 	}
 

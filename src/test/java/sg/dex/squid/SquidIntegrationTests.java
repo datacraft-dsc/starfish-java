@@ -12,13 +12,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SquidIntegrationTests {
 
-	private static final Logger log = LogManager.getLogger(SquidIntegrationTests.class);
 	private static Ocean ocean = null;
 	private static SquidAgent squid = null;
 	private static Account publisherAccount = null;
@@ -34,7 +30,7 @@ public class SquidIntegrationTests {
 		try {
 			squid = SquidBuilder.create(ocean);
 		} catch (Exception e) {
-			fail("unable to build squid");
+			fail("unable to build squid: " + e);
 		}
 	}
 

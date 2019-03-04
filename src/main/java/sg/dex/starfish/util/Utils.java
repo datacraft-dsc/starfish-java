@@ -3,6 +3,7 @@ package sg.dex.starfish.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -151,6 +152,16 @@ public class Utils {
 		return result;
 	}
 
-
+	/**
+	 * Checks if a resource is available
+	 *
+	 * @param fileName Name of resource file to query
+	 * @return true if the resource exists
+	 */
+	public static boolean resourceExists(String fileName) {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		URL url = classLoader.getResource(fileName);
+		return (url != null);
+	}
 
 }
