@@ -2,8 +2,8 @@ package sg.dex.squid;
 
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Account;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.SquidAccount;
+import sg.dex.starfish.impl.squid.SquidAgent;
+import sg.dex.starfish.impl.squid.SquidAccount;
 
 import org.junit.Test;
 import org.junit.FixMethodOrder;
@@ -20,7 +20,7 @@ public class SquidIntegrationTests {
 
 	private static final Logger log = LogManager.getLogger(SquidIntegrationTests.class);
 	private static Ocean ocean = null;
-	private static RemoteAgent squid = null;
+	private static SquidAgent squid = null;
 	private static Account publisherAccount = null;
 	private static Account purchaserAccount = null;
 
@@ -32,15 +32,15 @@ public class SquidIntegrationTests {
 	@Test public void bConfigureSquidAgent() {
 		System.out.println("=== bConfigureSquidAgent ===");
 		try {
-			squid = SquidConfig.getSquid(ocean);
+			squid = SquidBuilder.create(ocean);
 		} catch (Exception e) {
-			fail("unable to configure squid");
+			fail("unable to build squid");
 		}
 	}
 
 	@Test public void cGetPublisherAccount() {
 		System.out.println("=== cGetPublisherAccount ===");
-		publisherAccount = SquidAccount.create(ocean, "0x00bd138abd70e2f00903268f3db08f2d25677c9e", "node0");
+		publisherAccount = SquidAccount.create("0x00bd138abd70e2f00903268f3db08f2d25677c9e", "node0", ocean);
 	}
 
 	@Test public void dCreateAsset() {
@@ -53,7 +53,7 @@ public class SquidIntegrationTests {
 
 	@Test public void fGetPurchaserAccount() {
 		System.out.println("=== fGetPurchaserAccount ===");
-		purchaserAccount = SquidAccount.create(ocean, "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0","secret");
+		purchaserAccount = SquidAccount.create("0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0", "secret", ocean);
 	}
 
 	@Test public void gSearchListings() {
