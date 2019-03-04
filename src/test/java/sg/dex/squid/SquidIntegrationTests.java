@@ -42,7 +42,7 @@ public class SquidIntegrationTests {
 		publisherAccount = SquidAccount.create(publisherAddress, publisherPassword, squid);
 		try {
 			publisherAccount.unlock();
-p			try {
+			try {
 				publisherAccount.requestTokens(20);
 			} catch (AuthorizationException e) {
 				fail("unable to request publisher tokens: " + e);
