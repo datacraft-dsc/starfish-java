@@ -4,6 +4,7 @@ import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAccount;
+import sg.dex.starfish.util.AuthorizationException;
 
 import org.junit.Test;
 import org.junit.FixMethodOrder;
@@ -17,8 +18,8 @@ public class SquidIntegrationTests {
 
 	private static Ocean ocean = null;
 	private static SquidAgent squid = null;
-	private static Account publisherAccount = null;
-	private static Account purchaserAccount = null;
+	private static SquidAccount publisherAccount = null;
+	private static SquidAccount purchaserAccount = null;
 
 	@Test public void aCreateOcean() {
 		System.out.println("=== aCreateOcean ===");
@@ -36,7 +37,19 @@ public class SquidIntegrationTests {
 
 	@Test public void cGetPublisherAccount() {
 		System.out.println("=== cGetPublisherAccount ===");
-		publisherAccount = SquidAccount.create("0x00bd138abd70e2f00903268f3db08f2d25677c9e", "node0", ocean);
+		String publisherAddress = squid.getConfigString("account.parity.address");
+		String publisherPassword = squid.getConfigString("account.parity.password");
+		publisherAccount = SquidAccount.create(publisherAddress, publisherPassword, squid);
+		try {
+			publisherAccount.unlock();
+p			try {
+				publisherAccount.requestTokens(20);
+			} catch (AuthorizationException e) {
+				fail("unable to request publisher tokens: " + e);
+			}
+		} catch (AuthorizationException e) {
+			fail("unable to unlock publisher account: " + e);
+		}
 	}
 
 	@Test public void dCreateAsset() {
@@ -49,7 +62,19 @@ public class SquidIntegrationTests {
 
 	@Test public void fGetPurchaserAccount() {
 		System.out.println("=== fGetPurchaserAccount ===");
-		purchaserAccount = SquidAccount.create("0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0", "secret", ocean);
+		String purchaserAddress = squid.getConfigString("account.parity.address2");
+		String purchaserPassword = squid.getConfigString("account.parity.password2");
+		purchaserAccount = SquidAccount.create(purchaserAddress, purchaserPassword, squid);
+		try {
+			purchaserAccount.unlock();
+			try {
+				purchaserAccount.requestTokens(10);
+			} catch (AuthorizationException e) {
+				fail("unable to request purchaser tokens: " + e);
+			}
+		} catch (AuthorizationException e) {
+			fail("unable to unlock purchaser account: " + e);
+		}
 	}
 
 	@Test public void gSearchListings() {

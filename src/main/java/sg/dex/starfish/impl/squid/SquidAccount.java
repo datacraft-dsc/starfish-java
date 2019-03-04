@@ -1,9 +1,12 @@
 package sg.dex.starfish.impl.squid;
 
+import java.math.BigInteger;
+
 import sg.dex.starfish.impl.AEVMAccount;
-import sg.dex.starfish.Ocean;
 
 import sg.dex.starfish.util.AuthorizationException;
+
+import com.oceanprotocol.squid.exceptions.EthereumException;
 
 /**
  * Class implementing a Squid Account
@@ -13,7 +16,7 @@ import sg.dex.starfish.util.AuthorizationException;
  */
 public class SquidAccount extends AEVMAccount {
 
-	protected Ocean ocean = null;
+	protected SquidAgent squid = null;
 	protected boolean locked = true;
 
 	/**
@@ -22,11 +25,11 @@ public class SquidAccount extends AEVMAccount {
 	 *
 	 * @param id The identifier for this account
 	 * @param password The Account password
-	 * @param ocean Ocean connection to use
+	 * @param squid The SquidAgent to use
 	 */
-	protected SquidAccount(String id, String password, Ocean ocean) {
+	protected SquidAccount(String id, String password, SquidAgent squid) {
 		super(id, password);
-		this.ocean = ocean;
+		this.squid = squid;
 	}
 
 	/**
@@ -35,11 +38,11 @@ public class SquidAccount extends AEVMAccount {
 	 *
 	 * @param id The identifier for this account
 	 * @param password The Account password
-	 * @param ocean Ocean connection to use
+	 * @param squid The SquidAgent to use
 	 * @return SquidAccount
 	 */
-	public static SquidAccount create(String id, String password, Ocean ocean) {
-		return new SquidAccount(id, password, ocean);
+	public static SquidAccount create(String id, String password, SquidAgent squid) {
+		return new SquidAccount(id, password, squid);
 	}
 
 	/**
@@ -48,7 +51,10 @@ public class SquidAccount extends AEVMAccount {
 	 * @throws AuthorizationException if the password is invalid
 	 */
 	public void unlock() {
-		if (true) {
+		// TODO verify that password is correct
+		// TODO there does NOT seem to be an analog to the Python
+		// approach of choosing a specific account?
+		if (false) {
 			throw new AuthorizationException("authorization failure",
 							 new Exception("not implemented yet"));
 		} else {
@@ -69,10 +75,33 @@ public class SquidAccount extends AEVMAccount {
 	 *
 	 * @param amount The amount of ocean tokens to transfer
 	 * @throws AuthorizationException if account is locekd
-	 * @return number of tokens requestd
+	 * @return number of tokens requested
+	 */
+	public BigInteger requestTokens(BigInteger amount) {
+		if (locked) {
+			throw new AuthorizationException("authorization failure",
+							 new Exception("account is not unlocked"));
+		} else {
+			try {
+				amount = squid.requestTokens(amount);
+			} catch (EthereumException e) {
+				// TODO Handle/log this Exception
+				System.out.println("Ethereum exception: " + e);
+				amount = BigInteger.ZERO;
+			}
+		}
+		return amount;
+	}
+
+	/**
+	 * Request some ocean tokens to be transfer to this Account
+	 *
+	 * @param amount The amount of ocean tokens to transfer
+	 * @throws AuthorizationException if account is locekd
+	 * @return number of tokens requested
 	 */
 	public int requestTokens(int amount) {
-		return amount;
+		return requestTokens(BigInteger.valueOf(amount)).intValue();
 	}
 
 }

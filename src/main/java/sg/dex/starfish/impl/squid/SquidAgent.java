@@ -1,5 +1,7 @@
 package sg.dex.starfish.impl.squid;
 
+import java.math.BigInteger;
+
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.AAgent;
@@ -7,7 +9,10 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 
+import com.typesafe.config.Config;
 import com.oceanprotocol.squid.api.OceanAPI;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import com.oceanprotocol.squid.exceptions.EthereumException;
 
 /**
  * Class implementing a Squid Agent
@@ -18,6 +23,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 public class SquidAgent extends AAgent {
 
 	private OceanAPI oceanAPI;
+	private Config config;
 
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
@@ -26,8 +32,9 @@ public class SquidAgent extends AAgent {
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(OceanAPI oceanAPI, Ocean ocean, DID did) {
+	protected SquidAgent(OceanAPI oceanAPI, Config config, Ocean ocean, DID did) {
 		super(ocean, did);
+		this.config = config;
 		this.oceanAPI = oceanAPI;
 	}
 
@@ -39,8 +46,8 @@ public class SquidAgent extends AAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create(OceanAPI oceanAPI, Ocean ocean, DID did) {
-		return new SquidAgent(oceanAPI, ocean, did);
+	public static SquidAgent create(OceanAPI oceanAPI, Config config, Ocean ocean, DID did) {
+		return new SquidAgent(oceanAPI, config, ocean, did);
 	}
 
 
@@ -88,6 +95,48 @@ public class SquidAgent extends AAgent {
 	@Override
 	public Asset uploadAsset(Asset a) {
 		return a;
+	}
+
+	/**
+	 * Returns a configuration String value for key
+	 *
+	 * @param key to find in the Config
+	 * @return value corresponding to the key (or null if not found)
+	 */
+	public String getConfigString(String key) {
+		String value = null;
+		try {
+			value = config.getString(key);
+		} catch (Exception e) {
+			// https://www.javadoc.io/doc/com.typesafe/config/1.3.3
+		}
+		return value;
+	}
+
+	/**
+	 * Request some ocean tokens
+	 *
+	 * @param amount The amount of ocean tokens to transfer
+	 * @throws EthereumException on error
+	 * @return number of tokens requested
+	 */
+	public BigInteger requestTokens(BigInteger amount) throws EthereumException {
+		TransactionReceipt receipt = oceanAPI.getAccountsAPI().requestTokens(amount);
+		if (!receipt.isStatusOK()) {
+			amount = BigInteger.ZERO;
+		}
+		return amount;
+	}
+
+	/**
+	 * Request some ocean tokens to be transfer to this Account
+	 *
+	 * @param amount The amount of ocean tokens to transfer
+	 * @throws EthereumException on error
+	 * @return number of tokens requested
+	 */
+	public int requestTokens(int amount) throws EthereumException {
+		return requestTokens(BigInteger.valueOf(amount)).intValue();
 	}
 
 }

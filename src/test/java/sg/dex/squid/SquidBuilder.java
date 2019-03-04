@@ -16,7 +16,6 @@ import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigFactory;
 
 import com.oceanprotocol.squid.api.OceanAPI;
@@ -65,7 +64,7 @@ public class SquidBuilder {
 			assertNotNull(oceanAPI.getAccountsAPI());
 			assertNotNull(oceanAPI.getSecretStoreAPI());
 
-			squid=SquidAgent.create(oceanAPI,ocean,squidDID);
+			squid=SquidAgent.create(oceanAPI,config,ocean,squidDID);
 			assertEquals(squidDID,squid.getDID());
 			assertEquals(squidDDO,squid.getDDO());
 		} catch (Exception e) {
