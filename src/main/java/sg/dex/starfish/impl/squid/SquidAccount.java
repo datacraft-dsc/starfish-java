@@ -6,6 +6,8 @@ import sg.dex.starfish.impl.AEVMAccount;
 
 import sg.dex.starfish.util.AuthorizationException;
 
+import com.oceanprotocol.squid.models.Account;
+import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 
 /**
@@ -17,6 +19,7 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 public class SquidAccount extends AEVMAccount {
 
 	protected SquidAgent squid = null;
+	protected Account account = null;
 	protected boolean locked = true;
 
 	/**
@@ -28,8 +31,19 @@ public class SquidAccount extends AEVMAccount {
 	 * @param squid The SquidAgent to use
 	 */
 	protected SquidAccount(String id, String password, SquidAgent squid) {
-		super(id, password);
+		super(id.toLowerCase(), password);
 		this.squid = squid;
+		try {
+			for (Account a : squid.list()) {
+				if (a.getId().equals(this.id)) {
+					account = a; // found match
+				}
+			}
+		} catch (EthereumException e) {
+		}
+		if (account == null) {
+			System.out.println("ERROR address: " + id + " UNABLE to get Squid Account");
+		}
 	}
 
 	/**
@@ -52,7 +66,7 @@ public class SquidAccount extends AEVMAccount {
 	 */
 	public void unlock() {
 		// TODO verify that password is correct
-		// TODO there does NOT seem to be an analog to the Python
+		// there does NOT seem to be an analog to the Python
 		// approach of choosing a specific account?
 		if (false) {
 			throw new AuthorizationException("authorization failure",
@@ -104,4 +118,21 @@ public class SquidAccount extends AEVMAccount {
 		return requestTokens(BigInteger.valueOf(amount)).intValue();
 	}
 
+	/**
+	 * Returns the Balance of an account
+	 *
+	 * @return the Balance of the account
+	 * @throws EthereumException EthereumException
+	 */
+	@Override
+	public Balance balance() throws EthereumException {
+		try {
+			return squid.balance(account);
+		} catch (EthereumException e) {
+			// TODO: handle this error
+			// 17:34:59.967 [main] ERROR com.oceanprotocol.squid.manager.AccountsManager - Unable to get account(0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0) Ocean balance: Empty value (0x) returned from contract
+
+		}
+		return new Balance();
+	}
 }

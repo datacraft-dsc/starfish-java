@@ -1,17 +1,20 @@
 package sg.dex.starfish.impl.squid;
 
+import java.util.List;
+import java.util.Map;
 import java.math.BigInteger;
 
-import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 
-import com.typesafe.config.Config;
 import com.oceanprotocol.squid.api.OceanAPI;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import com.oceanprotocol.squid.models.Account;
+import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 
 /**
@@ -23,7 +26,7 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 public class SquidAgent extends AAgent {
 
 	private OceanAPI oceanAPI;
-	private Config config;
+	private Map<String,String> config;
 
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
@@ -32,7 +35,8 @@ public class SquidAgent extends AAgent {
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(OceanAPI oceanAPI, Config config, Ocean ocean, DID did) {
+	protected SquidAgent(OceanAPI oceanAPI, Map<String,String> config,
+			     Ocean ocean, DID did) {
 		super(ocean, did);
 		this.config = config;
 		this.oceanAPI = oceanAPI;
@@ -46,7 +50,7 @@ public class SquidAgent extends AAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create(OceanAPI oceanAPI, Config config, Ocean ocean, DID did) {
+	public static SquidAgent create(OceanAPI oceanAPI, Map<String,String> config, Ocean ocean, DID did) {
 		return new SquidAgent(oceanAPI, config, ocean, did);
 	}
 
@@ -57,13 +61,13 @@ public class SquidAgent extends AAgent {
 	 *
 	 * @param asset The asset to register
 	 * @throws AuthorizationException if requestor does not have register permission
-	 * @throws StorageException if unable to register the Asset
+	 * @throws StorageException if unable to register the SquidAsset
 	 * @throws UnsupportedOperationException if the agent does not support metadata storage
-	 * @return Asset
+	 * @return SquidAsset
 	 */
 	@Override
-	public Asset registerAsset(Asset asset) {
-		return asset;
+	public SquidAsset registerAsset(Asset asset) {
+		return (SquidAsset)asset; // TODO: FIXME
 	}
 
 	/**
@@ -72,11 +76,11 @@ public class SquidAgent extends AAgent {
 	 *
 	 * @param id The ID of the asset to get from this agent
 	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if there is an error in retreiving the Asset
-	 * @return Asset The asset found
+	 * @throws StorageException if there is an error in retreiving the SquidAsset
+	 * @return SquidAsset The asset found
 	 */
 	@Override
-	public Asset getAsset(String id) {
+	public SquidAsset getAsset(String id) {
 		return null;
 	}
 
@@ -87,30 +91,24 @@ public class SquidAgent extends AAgent {
 	 * - The agent does not support uploads of this asset type / size
 	 * - The data for the asset cannot be accessed by the agent
 	 *
-	 * @param a Asset to upload
+	 * @param a SquidAsset to upload
 	 * @throws AuthorizationException if requestor does not have upload permission
-	 * @throws StorageException if there is an error in uploading the Asset
-	 * @return Asset An asset stored on the agent if the upload is successful
+	 * @throws StorageException if there is an error in uploading the SquidAsset
+	 * @return SquidAsset An asset stored on the agent if the upload is successful
 	 */
 	@Override
-	public Asset uploadAsset(Asset a) {
-		return a;
+	public SquidAsset uploadAsset(Asset a) {
+		return (SquidAsset)a; // TODO: FIXME
 	}
 
 	/**
 	 * Returns a configuration String value for key
 	 *
-	 * @param key to find in the Config
+	 * @param key to find in the config
 	 * @return value corresponding to the key (or null if not found)
 	 */
 	public String getConfigString(String key) {
-		String value = null;
-		try {
-			value = config.getString(key);
-		} catch (Exception e) {
-			// https://www.javadoc.io/doc/com.typesafe/config/1.3.3
-		}
-		return value;
+		return config.get(key);
 	}
 
 	/**
@@ -139,4 +137,22 @@ public class SquidAgent extends AAgent {
 		return requestTokens(BigInteger.valueOf(amount)).intValue();
 	}
 
+	/**
+	 * Returns the Balance of an account
+	 * @param account the account we want to get the balance
+	 * @return the Balance of the account
+	 * @throws EthereumException EthereumException
+	 */
+	public Balance balance(Account account) throws EthereumException {
+		return oceanAPI.getAccountsAPI().balance(account);
+	}
+
+	/**
+	 * Returns a list of the accounts registered in Keeper
+	 * @return a List of all Account registered in Keeper
+	 * @throws EthereumException EthereumException
+	 */
+	public List<Account> list() throws EthereumException {
+		return oceanAPI.getAccountsAPI().list();
+	}
 }

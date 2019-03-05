@@ -17,6 +17,7 @@ import sg.dex.starfish.util.Utils;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValue;;
 
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
@@ -26,7 +27,21 @@ import com.oceanprotocol.squid.models.Account;
 
 public class SquidBuilder {
 
-	static SquidAgent create(Ocean ocean) throws Exception {
+	public static Map<String,String> configToHashMap(Config config) {
+		Map<String,String> options = new HashMap<String,String>();
+		for (Map.Entry<String,ConfigValue> entry : config.entrySet()) {
+			String value;
+			try {
+				value = config.getString(entry.getKey());
+			} catch (Exception e) {
+				value = "<not convertable to a String>";
+			}
+			options.put(entry.getKey(),value);
+		}
+		return options;
+	}
+
+	public static SquidAgent create(Ocean ocean) throws Exception {
 		SquidAgent squid = null;
 
 		Map<String,Object> ddo=new HashMap<>();
@@ -64,7 +79,8 @@ public class SquidBuilder {
 			assertNotNull(oceanAPI.getAccountsAPI());
 			assertNotNull(oceanAPI.getSecretStoreAPI());
 
-			squid=SquidAgent.create(oceanAPI,config,ocean,squidDID);
+			squid=SquidAgent.create(oceanAPI,configToHashMap(config),
+						ocean,squidDID);
 			assertEquals(squidDID,squid.getDID());
 			assertEquals(squidDDO,squid.getDDO());
 		} catch (Exception e) {
