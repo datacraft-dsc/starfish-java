@@ -1,11 +1,21 @@
 language: java
+dist: xenial
+services:
+- docker
+addons:
+  ssh_known_hosts: shrimp.octet.services
+before_install:
+- git clone https://github.com/DEX-Company/barge.git
+- cd barge
+- git checkout tags/dex-2019-02-18
+- bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
+  &
+- cd ..
+- sleep 15
 # NOTE this will not work while surfer is private
-# before_install:
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
 install: true
-addons:
-  ssh_known_hosts: shrimp.octet.services
 script:
 - mvn integration-test
 # after_script:
