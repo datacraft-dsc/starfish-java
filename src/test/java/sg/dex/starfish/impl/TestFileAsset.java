@@ -27,7 +27,7 @@ public class TestFileAsset {
 		
 		FileAsset fa=FileAsset.create(f);
 		Map<String,Object> md=fa.getMetadata();
-		assertEquals(0,fa.getBytes().length); // should be empty file
+		assertEquals(0,fa.getContent().length); // should be empty file
 		assertEquals(f.getName(),md.get("fileName"));
 		assertEquals(0,Utils.coerceInt(md.get("size")));
 

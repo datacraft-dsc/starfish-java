@@ -42,6 +42,6 @@ public class TestMemoryAgent {
 		
 		assertEquals(a1.getMetadataString(),a2.getMetadataString());
 		
-		assertTrue(Arrays.equals(BYTE_DATA, a2.getBytes()));
+		assertTrue(Arrays.equals(BYTE_DATA, a2.getContent()));
 	}
 }

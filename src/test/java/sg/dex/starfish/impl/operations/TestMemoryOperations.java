@@ -24,7 +24,7 @@ public class TestMemoryOperations {
 		
 		Asset result=job.awaitResult(1000);
 		
-		assertArrayEquals(new byte[] {3,2,1}, result.getBytes());
+		assertArrayEquals(new byte[] {3,2,1}, result.getContent());
 	}
 	
 	@Test public void testNamedParams() {
@@ -33,7 +33,7 @@ public class TestMemoryOperations {
 		Asset a=MemoryAsset.create(data);
 		Job job=op.invoke(Utils.mapOf("input",a));
 		Asset result=job.awaitResult(1000);
-		assertArrayEquals(new byte[] {3,2,1}, result.getBytes());
+		assertArrayEquals(new byte[] {3,2,1}, result.getContent());
 	}
 	
 	@Test public void testBadNamedParams() {

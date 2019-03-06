@@ -51,7 +51,7 @@ public class ReverseBytesOperation extends AMemoryOperation {
 	}
 	
 	private Asset doCompute(Asset input) {
-		byte[] bytes = input.getBytes();
+		byte[] bytes = input.getContent();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
 			byte temp = bytes[i];

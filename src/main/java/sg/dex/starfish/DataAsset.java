@@ -41,5 +41,5 @@ public interface DataAsset extends Asset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public byte[] getBytes();
+	public byte[] getContent();
 }

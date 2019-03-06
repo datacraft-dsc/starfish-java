@@ -72,14 +72,14 @@ public interface Asset {
 	public String getMetadataString();
 
 	/**
-	 * Gets a copy of byte contents for this data asset
+	 * Gets the contents of this data asset as a byte[] array
 	 *
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if unable to load the Asset
 	 * @return The byte contents of this asset.
 	 */
-	public default byte[] getBytes() {
+	public default byte[] getContent() {
 		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
 	}
 

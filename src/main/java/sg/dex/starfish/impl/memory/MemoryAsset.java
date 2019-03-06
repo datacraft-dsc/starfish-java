@@ -49,7 +49,7 @@ public class MemoryAsset extends ADataAsset {
 		if (asset instanceof MemoryAsset) {
 			return (MemoryAsset)asset;
 		} else if (asset.isDataAsset()) {
-			byte[] data=((DataAsset)asset).getBytes();
+			byte[] data=((DataAsset)asset).getContent();
 			return new MemoryAsset(asset.getMetadataString(),data);
 		} else {
 			throw new IllegalArgumentException("Asset must be a data asset");
@@ -143,7 +143,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public byte[] getBytes() {
+	public byte[] getContent() {
 		// we take a copy of data to protected immutability of MemoryAsset instance
 		return data.clone();
 	}
