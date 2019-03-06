@@ -17,7 +17,7 @@ import sg.dex.starfish.util.Utils;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigValue;;
+import com.typesafe.config.ConfigValue;
 
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
