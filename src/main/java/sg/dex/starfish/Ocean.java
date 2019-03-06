@@ -28,10 +28,11 @@ public class Ocean {
 		return DEFAULT_OCEAN;
 	}
 
-	private Map<DID, String> ddoCache = new HashMap<DID,String>();
+	private final Map<DID, String> ddoCache = new HashMap<DID,String>();
 
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
+	 * 
 	 * @param did DID to resolve
 	 * @return The DDO as a JSON map
 	 */
@@ -40,7 +41,10 @@ public class Ocean {
 	}
 
 	/**
-	 * Registers a DID within the context of this Ocean connection.
+	 * Registers a DID within the context of this Ocean connection on the local machine.
+	 * 
+	 * This registration is intended for testing purposes.
+	 * 
 	 * @param did A did to register
 	 * @param ddo A string containing a valid Ocean DDO
 	 */
