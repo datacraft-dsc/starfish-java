@@ -6,7 +6,7 @@ import sg.dex.starfish.util.AuthorizationException;
 import sg.dex.starfish.util.StorageException;
 
 /**
- * Interface representing a listing of an asset on the OCean Network
+ * Interface representing a listing of an asset on the Ocean Network
  *
  * Listings can be used to query and purchase Assets
  *
@@ -40,8 +40,8 @@ public interface Listing {
 	 * @return The Agreement associated with this Listing
 	 */
 	public Object getAgreement();
-	
-	
+
+
 	/**
 	 * Purchases this listing using the given account
 	 * @param a The account to use for the purchase

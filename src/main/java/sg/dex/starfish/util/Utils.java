@@ -3,7 +3,9 @@ package sg.dex.starfish.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.net.URL;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -164,4 +166,21 @@ public class Utils {
 		return (url != null);
 	}
 
+	/**
+	 * Checks HTTP URL and returns <code>true</code> a connection can be
+         * established to the corresponding host and port
+	 *
+	 * @param url The HTTP URL to be checked.
+	 * @return boolean if endpoint is up within the timeout
+	 */
+	public static boolean checkURL(String urlString) {
+		try {
+			URL url = new URL(urlString);
+			Socket socket = new Socket(url.getHost(), url.getPort());
+			socket.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

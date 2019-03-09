@@ -4,19 +4,23 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.Utils;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SampleIntegrationTests {
-	private static boolean surferUp = RemoteAgent.isAgentUp("http://localhost:8080");
+	public static final String DEFAULT_SURFER_URL = "http://localhost:8080";
+
+	private static boolean surferUp = Utils.checkURL(DEFAULT_SURFER_URL);
 	private static String registerAssetID = null;
 
-	@Test public void aTestInvokeSample() {
+	@Test
+	public void aTestInvokeSample() {
 		System.out.println("=== aTestInvokeSample ===");
 		InvokeSample.main();
 	}
 
-	@Test public void bTestIrisSample() {
+	@Test
+	public void bTestIrisSample() {
 		System.out.println("=== bTestIrisSample ===");
 		if (surferUp) {
 			IrisSample.main();
@@ -25,7 +29,8 @@ public class SampleIntegrationTests {
 		}
 	}
 
-	@Test public void cTestRegisterSample() {
+	@Test
+	public void cTestRegisterSample() {
 		System.out.println("=== cTestRegisterSample ===");
 		if (surferUp) {
 			registerAssetID = RegisterSample.test();
@@ -34,7 +39,8 @@ public class SampleIntegrationTests {
 		}
 	}
 
-	@Test public void dTestMetadataSample() {
+	@Test
+	public void dTestMetadataSample() {
 		System.out.println("=== dTestMetadataSample ===");
 		if (surferUp) {
 			MetadataSample.main(registerAssetID);
