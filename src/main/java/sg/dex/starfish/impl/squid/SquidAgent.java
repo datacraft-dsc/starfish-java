@@ -155,4 +155,8 @@ public class SquidAgent extends AAgent {
 	public List<Account> list() throws EthereumException {
 		return oceanAPI.getAccountsAPI().list();
 	}
+
+	public OceanAPI getOceanAPI() {
+		return oceanAPI;
+	}
 }
