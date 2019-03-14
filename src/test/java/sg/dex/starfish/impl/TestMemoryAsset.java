@@ -35,4 +35,11 @@ public class TestMemoryAsset {
 			/* OK */
 		}
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testNullData() {
+		byte[] data=null;
+		MemoryAsset.create(data);
+
+	}
 }

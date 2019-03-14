@@ -63,6 +63,9 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(byte[] data) {
+		if(data == null){
+			throw new IllegalArgumentException("Missing data");
+		}
 		return create(buildMetaData(data,null),data);
 	}
 
@@ -86,6 +89,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(Map<String,Object> meta, byte[] data) {
+
 		return create(buildMetaData(data,meta),data);
 	}
 
