@@ -94,7 +94,7 @@ public class MemoryAsset extends ADataAsset {
 	}
 
 	/**
-	 * Build default metadata for a local asset
+	 * Build default metadata for an in-memory asset
 	 * @param data Asset data
 	 * @return The default metadata as a String
 	 */

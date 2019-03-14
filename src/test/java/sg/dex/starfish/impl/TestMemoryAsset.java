@@ -14,12 +14,14 @@ import sg.dex.starfish.util.DID;
 
 public class TestMemoryAsset {
 	@Test public void testCreation() {
-		byte[] data=new byte[10];
+		int SIZE=10;
+		
+		byte[] data=new byte[SIZE];
 		
 		MemoryAsset a=MemoryAsset.create(data);
-		assertEquals(10,a.getContentSize());
+		assertEquals(SIZE,a.getContentSize());
 		Map<String,Object> meta=a.getMetadata();
-		assertEquals("10",meta.get("size"));
+		assertEquals(Integer.toString(SIZE),meta.get("size"));
 		assertEquals(Hash.keccak256String(data),meta.get("contentHash"));
 	}
 	
