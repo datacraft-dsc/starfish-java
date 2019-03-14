@@ -74,7 +74,7 @@ public class FileAsset extends ADataAsset {
 	}
 
 	@Override
-	public long getSize() {
+	public long getContentSize() {
 		return file.length();
 	}
 

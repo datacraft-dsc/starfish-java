@@ -68,7 +68,7 @@ public class ResourceAsset extends ADataAsset {
 	}
 
 	@Override
-	public long getSize() {
+	public long getContentSize() {
 		throw new TODOException();
 	}
 

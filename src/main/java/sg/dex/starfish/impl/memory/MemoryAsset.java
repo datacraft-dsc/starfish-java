@@ -149,7 +149,7 @@ public class MemoryAsset extends ADataAsset {
 	}
 
 	@Override
-	public long getSize() {
+	public long getContentSize() {
 		return data.length;
 	}
 

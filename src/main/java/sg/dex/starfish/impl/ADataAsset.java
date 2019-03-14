@@ -24,7 +24,7 @@ public abstract class ADataAsset extends AAsset implements DataAsset {
 		return false;
 	}
 
-	public abstract long getSize();
+	public abstract long getContentSize();
 
 	/**
 	 * Gets raw data corresponding to this Asset

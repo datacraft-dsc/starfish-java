@@ -60,7 +60,7 @@ public class RemoteAsset extends ADataAsset implements DataAsset {
 	 * @return size of the RemoteAsset
 	 */
 	@Override
-	public long getSize() {
+	public long getContentSize() {
 		throw new TODOException();
 	}
 

@@ -17,7 +17,7 @@ public class TestMemoryAsset {
 		byte[] data=new byte[10];
 		
 		MemoryAsset a=MemoryAsset.create(data);
-		assertEquals(10,a.getSize());
+		assertEquals(10,a.getContentSize());
 		Map<String,Object> meta=a.getMetadata();
 		assertEquals("10",meta.get("size"));
 		assertEquals(Hash.keccak256String(data),meta.get("contentHash"));
