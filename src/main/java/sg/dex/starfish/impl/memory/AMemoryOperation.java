@@ -7,7 +7,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.impl.AOperation;
 
-import sg.dex.starfish.util.JobFailedException;
+import sg.dex.starfish.exception.JobFailedException;
 
 /**
  * Abstract base class for operations executed in-memory.

@@ -31,10 +31,10 @@ import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
-import sg.dex.starfish.util.RemoteException;
-import sg.dex.starfish.util.TODOException;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Utils;
 import sg.dex.starfish.util.HTTP;
 
@@ -225,7 +225,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @throws IllegalArgumentException on invalid URI for jobID
 	 * @return The URI for this agent's invoke endpoint
 	 */
-	private URI getJobURI(String jobID) {
+		private URI getJobURI(String jobID) {
 		try {
 			return new URI(getInvokeEndpoint() + "/jobs/" + jobID);
 		}

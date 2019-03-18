@@ -1,8 +1,8 @@
 package sg.dex.starfish;
 
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.JobFailedException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Interface representing a job executed via the Invoke API

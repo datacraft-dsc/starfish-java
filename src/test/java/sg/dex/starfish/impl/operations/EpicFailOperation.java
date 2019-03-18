@@ -5,7 +5,7 @@ import java.util.Map;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 
-import sg.dex.starfish.util.JobFailedException;
+import sg.dex.starfish.exception.JobFailedException;
 
 /**
  * Basic implementation of an operation which always fails

@@ -96,8 +96,9 @@ public class TestMemoryAsset {
 
 		byte[] data=new byte[] {1,2,3};
 		Map<String,Object> metaMap = new HashMap<>();
+		metaMap.put("test1","success");
 		Asset a=MemoryAsset.create(metaMap,data);
-		assertEquals(metaMap.get(TYPE), "dataset");
+		assertEquals(metaMap.get("test1"), "success");
 	}
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateAssetException(){

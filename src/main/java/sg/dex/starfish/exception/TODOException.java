@@ -1,4 +1,4 @@
-package sg.dex.starfish.util;
+package sg.dex.starfish.exception;
 
 @SuppressWarnings("serial")
 public class TODOException extends RuntimeException {

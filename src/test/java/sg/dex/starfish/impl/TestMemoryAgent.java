@@ -26,13 +26,18 @@ public class TestMemoryAgent {
 	}
 	
 	@Test public void testTransfer() {
+		// it will create Memory agent instance.
+		//the instance will be associated with default Ocean and will have unique DID.
 		MemoryAgent agent1=MemoryAgent.create();
 		MemoryAgent agent2=MemoryAgent.create();
-		
+
 		MemoryAsset a=MemoryAsset.create(BYTE_DATA);
 		String id=a.getAssetID();
+		// agent getAsset will be null as the asset is not yet registered
+		// with memory agent
 		assertNull(agent1.getAsset(id));
-		
+
+		// upload api will crete a MemoryAsset or DataAsset and then register it with agent.
 		Asset a1=agent1.uploadAsset(a);
 		assertEquals(a1,agent1.getAsset(id));
 		
@@ -43,5 +48,23 @@ public class TestMemoryAgent {
 		assertEquals(a1.getMetadataString(),a2.getMetadataString());
 		
 		assertTrue(Arrays.equals(BYTE_DATA, a2.getContent()));
+	}
+
+	@Test
+	public void testUpload(){
+		MemoryAgent agent1=MemoryAgent.create();
+		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		String id = asset.getAssetID();
+		agent1.uploadAsset(asset);
+		assertNotNull(agent1.getAsset(id));
+	}
+	@Test
+	public void testRegister(){
+		MemoryAgent agent1=MemoryAgent.create();
+		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		String id  = asset.getAssetID();
+		agent1.registerAsset(asset);
+		assertNotNull(agent1.getAsset(id));
+
 	}
 }
