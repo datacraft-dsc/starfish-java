@@ -8,6 +8,8 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.*;
 
@@ -102,17 +104,20 @@ public class MemoryAsset extends ADataAsset {
 	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
 
-		if(meta == null){
-			meta =  new HashMap<>();
+		Map<String,Object> ob=new HashMap<>();
+		ob.put(DATE_CREATED, Instant.now().toString());
+		ob.put(CONTENT_HASH, hash);
+		ob.put(TYPE, "dataset");
+		ob.put(SIZE, Integer.toString(data.length));
+		ob.put(CONTENT_TYPE,"application/octet-stream");
+
+		if (meta!=null) {
+			for (Map.Entry<String,Object> me:meta.entrySet()) {
+				ob.put(me.getKey(), me.getValue());
+			}
 		}
-		meta.put(DATE_CREATED, Instant.now().toString());
-		meta.put(CONTENT_HASH, hash);
-		meta.put(TYPE, "dataset");
-		meta.put(SIZE, Integer.toString(data.length));
-		meta.put(CONTENT_TYPE,"application/octet-stream");
 
-
-		return JSON.toString(meta);
+		return JSON.toString(ob);
 	}
 
 	@Override

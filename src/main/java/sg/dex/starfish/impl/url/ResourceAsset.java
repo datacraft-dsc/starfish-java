@@ -7,11 +7,11 @@ import java.util.Map;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.StorageException;
-import sg.dex.starfish.util.TODOException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
 
 /**
  * Class exposing a Java resource referenced by a URL as an Ocean asset

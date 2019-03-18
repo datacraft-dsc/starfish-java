@@ -8,8 +8,8 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 import com.oceanprotocol.squid.api.OceanAPI;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;

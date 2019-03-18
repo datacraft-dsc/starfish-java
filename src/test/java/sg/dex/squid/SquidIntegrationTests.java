@@ -1,22 +1,14 @@
 package sg.dex.squid;
 
-import java.util.List;
-
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.impl.squid.SquidAgent;
-import sg.dex.starfish.impl.squid.SquidAccount;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.Utils;
-
-import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.exceptions.EthereumException;
-
-import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.squid.SquidAccount;
+import sg.dex.starfish.impl.squid.SquidAgent;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.util.Utils;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SquidIntegrationTests {

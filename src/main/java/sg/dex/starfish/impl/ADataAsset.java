@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 public abstract class ADataAsset extends AAsset implements DataAsset {
 

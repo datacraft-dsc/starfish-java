@@ -2,8 +2,12 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
-import sg.dex.starfish.util.JobFailedException;
+import sg.dex.starfish.exception.JobFailedException;
 
+/**
+ * This class is for creating the job and also can be used
+ * to know the status of each job
+ */
 public class RemoteJob implements Job {
 	private RemoteAgent agent;
 	private String jobID;

@@ -7,6 +7,16 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.JSON;
 
+/**
+ * This class describe a dummy implementation(Sample) how to register any local asset to the Ocean echosystem
+ * using Remote Agent.
+ * In this eg : local asset is a any String data
+ * In this eg remote agent is used Surfer.it wil do two steps:
+ *		1. create ResouceAseet instance based string data passed
+ * 		2. Register the  asset to any RemoteAgent .
+ * After successsful registration of the asset to Ocean EchoSystem and it will return a reference of Remote Asset .
+ */
+
 public class RegisterSample {
 
 	public static String test(String... args) {

@@ -6,6 +6,10 @@ import static org.junit.Assert.assertTrue;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
+/**
+ * This will be a sample steps to get the Asset instance base on Asset id from the RemoteAgent.
+ * Here in Example we have used Surfer as the Remote Agent
+ */
 public class MetadataSample {
 
 	public static void main(String... args) {
