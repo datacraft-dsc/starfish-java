@@ -27,14 +27,11 @@ import sg.dex.starfish.Invokable;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.exception.TODOException;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Utils;
 import sg.dex.starfish.util.HTTP;
 
@@ -394,10 +391,10 @@ public class RemoteAgent extends AAgent implements Invokable {
 			}
 		}
 		catch (ClientProtocolException e) {
-			throw new RuntimeException(e);
+			throw new JobFailedException(" Client Protocol Expectopn :",e);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new JobFailedException(" IOException occured  Expectopn :",e);
 		}
 	}
 
@@ -433,17 +430,18 @@ public class RemoteAgent extends AAgent implements Invokable {
 			}
 		}
 		catch (ClientProtocolException e) {
-			throw new RuntimeException(e);
+			throw new JobFailedException(" Client Protocol Expectopn :",e);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new JobFailedException(" IOException occured  Expectopn :",e);
 		}
 	}
 
 	/**
 	 * Invokes request on this RemoteAgent
 	 *
-	 * @param request Invoke request
+	 * @param agent the remote
+	 * @param response
 	 * @throws RuntimeException for protocol errors
 	 * @return Job for this request
 	 */
@@ -455,7 +453,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 			return RemoteJob.create(agent, body);
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Invoke failed: " + e.getMessage(), e);
+			throw  new GenericException("Internal Server Error");
 		}
 	}
 
@@ -478,7 +476,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 		if ((statusCode) == 400) {
 			throw new IllegalArgumentException("Bad invoke request: " + reason);
 		}
-		throw new RuntimeException("Invoke request failed with code " + statusCode + ": " + reason);
+		throw  new GenericException("Internal Server Error");
 	}
 
 }
