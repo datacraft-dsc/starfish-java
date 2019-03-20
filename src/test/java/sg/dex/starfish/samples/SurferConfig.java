@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sg.dex.starfish.Agent;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
@@ -44,6 +46,16 @@ public class SurferConfig {
 		assertEquals(surferDID,surfer.getDID());
 		assertEquals(surferDDO,surfer.getDDO());
 		return surfer;
+	}
+	
+	public static void main(String[] args) {
+		RemoteAgent surfer=getSurfer("http://13.67.33.157:8080");
+		
+		// Agent agent=Ocean.connect().getAgent(surfer.getDID());
+		Agent agent=surfer;
+		Asset a = agent.getAsset("e399c658b8b5e260e946261b6dd19299e8dda7e9f810452deb4887bd702b0c11");
+		Map<String,Object> meta=a.getMetadata();
+		System.out.println(JSON.toPrettyString(meta));
 	}
 
 }

@@ -3,6 +3,7 @@ package sg.dex.starfish;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSONObjectCache;
 
@@ -65,6 +66,11 @@ public class Ocean {
 			return JSONObjectCache.parse(localDDO);
 		}
 		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	public Agent getAgent(DID did) {
+		// TODO Auto-generated method stub
+		throw new TODOException();
 	}
 
 }
