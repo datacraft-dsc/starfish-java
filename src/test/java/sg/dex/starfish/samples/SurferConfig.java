@@ -25,7 +25,7 @@ public class SurferConfig {
 				"type","Ocean.Storage.v1",
 				"serviceEndpoint",host+"/api/v1/assets"));
 		services.add(Utils.mapOf(
-				"type","Ocean.Storage.v1",
+				"type","Ocean.Invoke.v1",
 				"serviceEndpoint",host+"/api/v1/invoke"));
 		ddo.put("service",services);
 		String ddoString=JSON.toPrettyString(ddo);
