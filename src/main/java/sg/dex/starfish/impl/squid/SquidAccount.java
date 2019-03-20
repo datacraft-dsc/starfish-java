@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 import sg.dex.starfish.impl.AEVMAccount;
 
-import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.exception.AuthorizationException;
 
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;

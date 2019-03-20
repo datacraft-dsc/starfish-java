@@ -7,12 +7,14 @@ import java.util.Map;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.TODOException;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Class representing a data asset referenced by a URL.
+ * this asset will be present in Ocean echo system and be referred by using the asset ID.
+ *
  *
  * @author Mike
  *

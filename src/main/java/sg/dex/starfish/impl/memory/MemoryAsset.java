@@ -6,6 +6,13 @@
   */
 package sg.dex.starfish.impl.memory;
 
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.ADataAsset;
+import sg.dex.starfish.util.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -13,15 +20,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory asset.
@@ -49,7 +48,7 @@ public class MemoryAsset extends ADataAsset {
 		if (asset instanceof MemoryAsset) {
 			return (MemoryAsset)asset;
 		} else if (asset.isDataAsset()) {
-			byte[] data=((DataAsset)asset).getContent();
+			byte[] data=asset.getContent();
 			return new MemoryAsset(asset.getMetadataString(),data);
 		} else {
 			throw new IllegalArgumentException("Asset must be a data asset");
@@ -63,6 +62,9 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(byte[] data) {
+		if(data == null){
+			throw new IllegalArgumentException("Missing data");
+		}
 		return create(buildMetaData(data,null),data);
 	}
 
@@ -76,7 +78,7 @@ public class MemoryAsset extends ADataAsset {
 	 */
 	public static Asset create(String string) {
 		byte[] bytes=string.getBytes(StandardCharsets.UTF_8);
-		return create(Utils.mapOf("contentType","text/plain; charset=utf-8"),bytes);
+		return create(Utils.mapOf(CONTENT_TYPE,"text/plain; charset=utf-8"),bytes);
 	}
 
 	/**
@@ -86,6 +88,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @return The newly created in-memory asset
 	 */
 	public static MemoryAsset create(Map<String,Object> meta, byte[] data) {
+
 		return create(buildMetaData(data,meta),data);
 	}
 
@@ -102,11 +105,11 @@ public class MemoryAsset extends ADataAsset {
 		String hash=Hex.toString(Hash.keccak256(data));
 
 		Map<String,Object> ob=new HashMap<>();
-		ob.put("dateCreated", Instant.now().toString());
-		ob.put("contentHash", hash);
-		ob.put("type", "dataset");
-		ob.put("size", Integer.toString(data.length));
-		ob.put("contentType","application/octet-stream");
+		ob.put(DATE_CREATED, Instant.now().toString());
+		ob.put(CONTENT_HASH, hash);
+		ob.put(TYPE, "dataset");
+		ob.put(SIZE, Integer.toString(data.length));
+		ob.put(CONTENT_TYPE,"application/octet-stream");
 
 		if (meta!=null) {
 			for (Map.Entry<String,Object> me:meta.entrySet()) {
@@ -157,7 +160,7 @@ public class MemoryAsset extends ADataAsset {
 	public Map<String,Object> getParamValue() {
 		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
-		o.put("id", getAssetID());
+		o.put(ID, getAssetID());
 		return o;
 	}
 

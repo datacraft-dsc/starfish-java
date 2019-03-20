@@ -3,15 +3,15 @@ package sg.dex.starfish;
 import java.util.Map;
 
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Interface representing an asset
  *
  * @author Mike
  */
-public interface Asset {
+public interface 	Asset {
 
 	/**
 	 * Gets DID for this Asset

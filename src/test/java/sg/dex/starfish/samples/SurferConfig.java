@@ -13,6 +13,10 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+/**
+ * This class is used to get the Remote Agent based on the host.
+ * Currently it will connect with default OCEAN.
+ */
 public class SurferConfig {
 
 	static RemoteAgent getSurfer(String host) {

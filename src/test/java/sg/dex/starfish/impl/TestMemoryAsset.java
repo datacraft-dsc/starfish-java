@@ -1,10 +1,9 @@
 package sg.dex.starfish.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
+import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import sg.dex.crypto.Hash;
@@ -12,7 +11,57 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.DID;
 
+import static org.junit.Assert.*;
+import static sg.dex.starfish.constant.Constant.*;
+
 public class TestMemoryAsset {
+
+	Asset asset;
+	MemoryAsset memoryAsset;
+	@Before
+	public void setup(){
+
+		asset = new Asset() {
+			@Override
+			public String getAssetID() {
+				return "test";
+			}
+
+			@Override
+			public DID getAssetDID() {
+				return null;
+			}
+
+			@Override
+			public Map<String, Object> getMetadata() {
+				return null;
+			}
+
+			@Override
+			public boolean isDataAsset() {
+				return false;
+			}
+
+			@Override
+			public boolean isOperation() {
+				return false;
+			}
+
+			@Override
+			public String getMetadataString() {
+				return null;
+			}
+
+			@Override
+			public Map<String, Object> getParamValue() {
+				return null;
+			}
+		};
+
+		memoryAsset = MemoryAsset.create(new byte[] {1,2,3});
+
+
+	}
 	@Test public void testCreation() {
 		int SIZE=10;
 		
@@ -34,5 +83,44 @@ public class TestMemoryAsset {
 		} catch (UnsupportedOperationException ex) {
 			/* OK */
 		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testNullData() {
+		byte[] data=null;
+		MemoryAsset.create(data);
+
+	}
+	@Test
+	public void testBuildMetaData(){
+
+		byte[] data=new byte[] {1,2,3};
+		Map<String,Object> metaMap = new HashMap<>();
+		metaMap.put("test1","success");
+		Asset a=MemoryAsset.create(metaMap,data);
+		assertEquals(metaMap.get("test1"), "success");
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateAssetException(){
+		MemoryAsset.create(asset);
+		//assertEquals(memoryAsset.getAssetID(),"test");
+	}
+
+	@Test
+	public void testCreateAsset(){
+		MemoryAsset.create(memoryAsset);
+		assertNotNull(memoryAsset.getAssetID());
+	}
+	@Test
+	public void testGetInputStream(){
+		assertNotNull(memoryAsset.getInputStream());
+	}
+	@Test
+	public void testgetContent(){
+		assertNotNull(memoryAsset.getContent());
+	}
+	@Test
+	public void testgetContentSize(){
+		assertNotNull(memoryAsset.getContentSize());
 	}
 }

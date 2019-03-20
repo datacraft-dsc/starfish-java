@@ -13,8 +13,8 @@ import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 public class MemoryAgent extends AAgent implements Invokable {
 	/**
@@ -59,6 +59,9 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 */
 	@Override
 	public Asset registerAsset(Asset a) {
+		if(null != assetStore.get(a.getAssetID())){
+			throw new IllegalStateException("Asset with id "+ a.getAssetID() +"is already register");
+		}
 		assetStore.put(a.getAssetID(),a);
 		return a;
 	}

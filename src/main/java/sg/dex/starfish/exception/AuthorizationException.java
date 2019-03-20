@@ -1,4 +1,4 @@
-package sg.dex.starfish.util;
+package sg.dex.starfish.exception;
 
 /**
  * Exception class representing invalid access permission
