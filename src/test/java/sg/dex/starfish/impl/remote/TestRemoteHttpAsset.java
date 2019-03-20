@@ -25,6 +25,15 @@ public class TestRemoteHttpAsset {
         RemoteHttpAsset.createWithURL("invalidURL");
     }
 
+    @Test
+    public void testCreateResourceWithURL(){
+        String url = "https://scet.berkeley.edu/wp-content/uploads/BlockchainPaper.pdf";
+        Asset asset =RemoteHttpAsset.createResourceWithURL(url);
+        assertNotNull(asset);
+        assertNotNull(asset.getContent());
+        assertNotNull(asset.getAssetID());
+    }
+
 
 
 }

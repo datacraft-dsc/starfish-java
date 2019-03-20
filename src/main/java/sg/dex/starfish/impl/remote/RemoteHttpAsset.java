@@ -3,12 +3,14 @@ package sg.dex.starfish.impl.remote;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.impl.ADataAsset;
+import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Paths;
 
 /**
  * This clss is for reading the data from a give URL
@@ -51,6 +53,58 @@ public class RemoteHttpAsset extends ADataAsset {
         }
     }
 
+    /**
+     * API to create the Local Resource Asset with a given remote Asset path .
+     * @param urlString
+     * @return
+     */
+    public static Asset createResourceWithURL(String urlString ){
+
+        String filename =null;
+        try {
+            filename = Paths.get(new URI(urlString).getPath()).getFileName().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        try {
+            File f =downloadUsingNIO(urlString, filename);
+            asset = FileAsset.create(f);
+            return asset;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * API to donwload a resource file for a given ulr
+     * @param urlStr
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+
+    private static File downloadUsingNIO(String urlStr, String fileName) throws IOException {
+        String path = RemoteHttpAsset.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String decodedPath = URLDecoder.decode(path, "UTF-8");
+        URL url = new URL(urlStr);
+        FileOutputStream fos =null;
+        ReadableByteChannel rbc =null;
+        File file = new File(decodedPath+File.separator+fileName);
+        try{
+         rbc = Channels.newChannel(url.openStream());
+
+         fos = new FileOutputStream(file);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        }
+        finally {
+            fos.close();
+            rbc.close();
+        }
+
+        return file;
+    }
 
     @Override
     public long getContentSize() {
@@ -62,4 +116,5 @@ public class RemoteHttpAsset extends ADataAsset {
         if (asset==null) throw new Error("RemoteHttpAsset has not been initialised with data");
         return new ByteArrayInputStream(asset.getContent());
     }
+
 }
