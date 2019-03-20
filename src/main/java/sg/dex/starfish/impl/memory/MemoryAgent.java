@@ -27,7 +27,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 */
 	public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
-	private HashMap<String,Asset> assetStore=new HashMap<String,Asset>();
+	private HashMap<String,MemoryAsset> assetStore=new HashMap<String,MemoryAsset>();
 
 	private MemoryAgent(Ocean ocean,String did) {
 		this(ocean,DID.parse(did));
@@ -59,11 +59,13 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 */
 	@Override
 	public Asset registerAsset(Asset a) {
-		if(null != assetStore.get(a.getAssetID())){
-			throw new IllegalStateException("Asset with id "+ a.getAssetID() +"is already register");
-		}
-		assetStore.put(a.getAssetID(),a);
-		return a;
+		MemoryAsset ma = MemoryAsset.create(a);
+		// TODO: consider removing because ID collision is impossible?
+		//if(null != assetStore.get(a.getAssetID())){
+		//		throw new IllegalStateException("Asset with id "+ a.getAssetID() +"is already register");
+		//}
+		assetStore.put(ma.getAssetID(),ma);
+		return ma;
 	}
 
 	/**

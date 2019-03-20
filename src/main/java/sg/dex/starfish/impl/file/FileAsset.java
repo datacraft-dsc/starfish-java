@@ -8,8 +8,10 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.JSON;
 
@@ -29,8 +31,23 @@ public class FileAsset extends ADataAsset {
 		this.file=file;
 	}
 
+	/**
+	 * Create a FileAsset to read from an existing file
+	 * @param f
+	 * @return
+	 */
 	public static FileAsset create(File f) {
 		return new FileAsset(buildMetadata(f,null),f);
+	}
+	
+	/**
+	 * Create a new FileAsset at the given file location, using the specified asset as a source.
+	 * @param f
+	 * @param source
+	 * @return
+	 */
+	public static FileAsset create(File f, Asset source) {
+		throw new TODOException("Create file asset on disk");
 	}
 
 	/**
