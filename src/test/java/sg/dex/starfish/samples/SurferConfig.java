@@ -10,6 +10,7 @@ import java.util.Map;
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -56,6 +57,10 @@ public class SurferConfig {
 		Asset a = agent.getAsset("e399c658b8b5e260e946261b6dd19299e8dda7e9f810452deb4887bd702b0c11");
 		Map<String,Object> meta=a.getMetadata();
 		System.out.println(JSON.toPrettyString(meta));
+		
+		Asset m=MemoryAsset.create(new byte[13]);
+		Asset rm=surfer.registerAsset(m);
+		System.out.println(rm.getAssetID());
 	}
 
 }
