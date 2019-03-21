@@ -26,7 +26,7 @@ public class RemoteHttpAsset extends ADataAsset {
     /**
      * API to get the content of data with give url passes in param
      * @param urlString url where the content has to be read
-     * @return
+     * @return Asset
      */
     public static Asset createWithURL(String urlString) {
         URL url;
@@ -55,8 +55,8 @@ public class RemoteHttpAsset extends ADataAsset {
 
     /**
      * API to create the Local Resource Asset with a given remote Asset path .
-     * @param urlString
-     * @return
+     * @param urlString remote Asset Path
+     * @return Asset
      */
     public static Asset createResourceWithURL(String urlString ){
 

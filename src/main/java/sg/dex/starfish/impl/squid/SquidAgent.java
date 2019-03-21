@@ -45,7 +45,7 @@ public class SquidAgent extends AAgent {
 	/**
 	 * Creates a RemoteAgent with the specified OceanAPI, Ocean connection and DID
 	 *
-	 * @param oceanapi Squid OceanAPI to use
+	 * @param oceanAPI Squid OceanAPI to use
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 * @return RemoteAgent

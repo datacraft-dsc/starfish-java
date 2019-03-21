@@ -89,10 +89,10 @@
 				<configuration>
 				  <show>public</show>
                                   <failOnError>
-                                    false
+                                    true
                                   </failOnError>
                                   <failOnWarnings>
-                                    false
+                                    true
                                   </failOnWarnings>
                                   <doclint>
                                     all,-missing
