@@ -35,7 +35,7 @@ public abstract class ADataAsset extends AAsset implements DataAsset {
 	 */
 	@Override
 	public byte[] getContent() {
-		InputStream is = getInputStream();
+		InputStream is = getContentStream();
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 		byte[] buf = new byte[16384];

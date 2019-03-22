@@ -31,7 +31,7 @@ public interface DataAsset extends Asset {
 	 * @throws StorageException if unable to load the Asset
 	 * @return An input stream allowing consumption of the asset data
 	 */
-	public InputStream getInputStream();
+	public InputStream getContentStream();
 
 	/**
 	 * Gets raw data corresponding to this Asset

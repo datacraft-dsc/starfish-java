@@ -61,7 +61,7 @@ public class ResourceAsset extends ADataAsset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public InputStream getInputStream() {
+	public InputStream getContentStream() {
 		InputStream istream= Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		if (istream==null) throw new IllegalStateException("Resource does not exist on classpath: "+name);
 		return istream;

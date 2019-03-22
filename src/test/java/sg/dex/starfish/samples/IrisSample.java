@@ -23,7 +23,7 @@ public class IrisSample {
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
 
 		String prettyJSON = JSON.toPrettyString(iris.getMetadata());
-		System.out.println(Utils.stringFromStream(iris.getInputStream()));
+		System.out.println(Utils.stringFromStream(iris.getContentStream()));
 		System.out.println("Asset ID = "+iris.getAssetID());
 		System.out.println(prettyJSON);
 

@@ -112,7 +112,7 @@ public class RemoteHttpAsset extends ADataAsset {
     }
 
     @Override
-    public InputStream getInputStream() {
+    public InputStream getContentStream() {
         if (asset==null) throw new Error("RemoteHttpAsset has not been initialised with data");
         return new ByteArrayInputStream(asset.getContent());
     }
