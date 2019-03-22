@@ -9,10 +9,9 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -49,10 +48,25 @@ public class SurferConfig {
         return surfer;
     }
 
+    private static Properties getProperties(){
+        Properties properties = new Properties();
+        try {
+            try (InputStream is = SurferConfig.class.getClassLoader().getResourceAsStream("application_test.properties")) {
+                properties.load(is);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  properties;
+    }
     public static void main(String[] args) {
         // get ref of remmote agent
-        RemoteAgent surfer = getSurfer("http://13.67.33.157:8080");
 
+        Properties properties = getProperties();
+        String ip =properties.getProperty("surfer.host");
+        String port = properties.getProperty("surfer.port");
+
+        RemoteAgent surfer = getSurfer(ip+":"+port);
         Agent agent = surfer;
         // get already registered Asset.
 //		Asset a = agent.getAsset("e399c658b8b5e260e946261b6dd19299e8dda7e9f810452deb4887bd702b0c11");
