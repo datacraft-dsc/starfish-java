@@ -29,6 +29,7 @@ public class TestRemoteHttpAsset {
     public void testCreateResourceWithURL(){
         String url = "https://scet.berkeley.edu/wp-content/uploads/BlockchainPaper.pdf";
         Asset asset =RemoteHttpAsset.createResourceWithURL(url);
+        System.out.println("Asset ID : "+ asset.getAssetID());
         assertNotNull(asset);
         assertNotNull(asset.getContent());
         assertNotNull(asset.getAssetID());

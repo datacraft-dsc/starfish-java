@@ -12,7 +12,6 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.DID;
 
 import static org.junit.Assert.*;
-import static sg.dex.starfish.constant.Constant.*;
 
 public class TestMemoryAsset {
 
@@ -113,7 +112,7 @@ public class TestMemoryAsset {
 	}
 	@Test
 	public void testGetInputStream(){
-		assertNotNull(memoryAsset.getInputStream());
+		assertNotNull(memoryAsset.getContentStream());
 	}
 	@Test
 	public void testgetContent(){

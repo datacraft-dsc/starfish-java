@@ -11,7 +11,9 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.*;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -101,7 +103,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @param data Asset data
 	 * @return The default metadata as a String
 	 */
-	private static String buildMetaData(byte[] data,Map<String,Object> meta) {
+		private static String buildMetaData(byte[] data,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(data));
 
 		Map<String,Object> ob=new HashMap<>();
@@ -133,7 +135,7 @@ public class MemoryAsset extends ADataAsset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public InputStream getInputStream() {
+	public InputStream getContentStream() {
 		if (data==null) throw new Error("MemoryAsset has not been initialised with data");
 		return new ByteArrayInputStream(data);
 	}

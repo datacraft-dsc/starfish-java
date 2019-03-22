@@ -1,17 +1,20 @@
 package sg.dex.starfish.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sg.dex.starfish.exception.RemoteException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class HTTP {
 
@@ -28,7 +31,7 @@ public class HTTP {
 	 * Executes an HTTP request
 	 *
 	 * @param httpRequest the HttpUriRequest to execute
-	 * @throws RuntimeException for protocol errors
+	 * @throws RemoteException if there is an problem executing the task on remote Server.
 	 * @return CloseableHttpResponse
 	 */
 	public static CloseableHttpResponse execute(HttpUriRequest httpRequest) {
@@ -39,10 +42,10 @@ public class HTTP {
 			return response;
 		}
 		catch (ClientProtocolException e) {
-			throw new RuntimeException(e);
+			throw new RemoteException("ClientProtocolException executing HTTP request ,"+e.getMessage(),e);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RemoteException("IOException executing HTTP request ,"+e.getMessage(),e);
 		}
 	}
 
@@ -81,4 +84,12 @@ public class HTTP {
 		}
 	}
 
+	public static HttpEntity createMultiPart(String partName, ContentBody body) {
+		return MultipartEntityBuilder
+				.create()
+				// to upload a file
+				//.addBinaryBody("file", f, ContentType.create("application/octet-stream"), f.getName())
+				.addPart(partName,body)
+				.build();
+	}
 }
