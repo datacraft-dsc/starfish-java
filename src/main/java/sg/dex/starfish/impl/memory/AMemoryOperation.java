@@ -9,8 +9,12 @@ import sg.dex.starfish.impl.AOperation;
 
 /**
  * Abstract base class for operations executed in-memory.
+ * 
+ * Subclasses should override compute(....) to implement the in-memory computation of results.
+ * Invocations to this operation will invoke compute(....) in a separate threat, using a 
+ * future to return the result of the memory Job.
  *
- * Memory operations do not require a specific agent to operate.
+ * Memory operations do not require a specific agent to operate. 
  *
  * @author Mike
  *
@@ -28,8 +32,9 @@ public abstract class AMemoryOperation extends AOperation {
 
 	@Override
 	public Job invoke(Map<String, Asset> params) {
-		// default implementation for an invoke job in memory, using a Future<Asset>.
-		// Implementations may override this for custom behaviour
+		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
+		// But this should be sufficient for most cases.
 		final CompletableFuture<Asset> future=new CompletableFuture<Asset>();
 
 	    MemoryAgent.THREAD_POOL.submit(() -> {
