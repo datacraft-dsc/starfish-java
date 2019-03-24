@@ -37,9 +37,9 @@ public abstract class AOperation extends AAsset implements Operation {
 		return paramSpec;
 	}
 	
-//	@Override
-//	public Job invoke(Asset... params) {
-//		return invoke(Params.formatParams(this, params));
-//	}
+	@Override
+	public Job invoke(Asset... params) {
+		return invoke(Params.namedParams(this, params));
+	}
 	
 }

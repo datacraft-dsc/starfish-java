@@ -29,7 +29,7 @@ public interface Operation extends Asset {
 	 * Job interface
 	 * 
 	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available.
+	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
 	 * @return The Job for this invoked operation
 	 */
 	public Job invoke(Map<String,Asset> params);

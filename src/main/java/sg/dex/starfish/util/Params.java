@@ -76,5 +76,36 @@ public class Params {
 		return result;
 	}
 	
+	/**
+	 * Converts an array of positional parameters to a map of named parameters, according to the
+	 * parameter spec of the given operation.
+	 * 
+	 * @param operation
+	 * @param params
+	 * @return A new map containing the named parameters
+	 * @throws IllegalArgumentException if a require dparameter is not provided
+	 */
+	@SuppressWarnings("unchecked")
+	public
+	static Map<String,Asset> namedParams(Operation operation, Asset... params) {
+		HashMap<String,Asset> result=new HashMap<>(params.length);
+		Map<String,Object> paramSpec=operation.getParamSpec();
+		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
+			String paramName=me.getKey();
+			Map<String,Object> spec=(Map<String,Object>)me.getValue();
+			// String type=(String) spec.get("type");
+			Object positionObj=spec.get("position");
+			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
+			boolean required=Utils.coerceBoolean(spec.get("required"));
+			if ((pos>=0)&&(pos<params.length)) {
+				Asset a=params[pos];
+				result.put(paramName,a);
+			} else if (required) {
+				throw new IllegalArgumentException("Paramter "+paramName+" is required but not supplied");
+			}
+		}
+		return result;
+	}
+	
 
 }
