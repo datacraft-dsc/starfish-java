@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Utility class for StarFish
- * 
+ *
  * @author Mike
  *
  */
@@ -25,7 +25,7 @@ public class Utils {
 
 	/**
 	 * Creates a random hex string of the specified length
-	 * 
+	 *
 	 * @param length Number of bytes of hex data to create
 	 * @return A lowercase hex string of the specified length
 	 */
@@ -38,7 +38,7 @@ public class Utils {
 
 	/**
 	 * Compares two objects for equality. null is considered equal to null.
-	 * 
+	 *
 	 * @param a First object
 	 * @param b Second object
 	 * @return boolean true if the arguments are equal, false otherwise
@@ -50,7 +50,7 @@ public class Utils {
 
 	/**
 	 * Computes the hashcode for an Object. returns zero for null.
-	 * 
+	 *
 	 * @param o Object for which to compute the hashcode
 	 * @return The computed hashcode
 	 */
@@ -141,7 +141,7 @@ public class Utils {
 
 	/**
 	 * Creates a map using the given arguments as keys and values
-	 * 
+	 *
 	 * @param params A sequence of (key,value) objects
 	 * @throws IllegalArgumentException if mapOf has odd number of arguments
 	 * @return A map containing the key keys and values

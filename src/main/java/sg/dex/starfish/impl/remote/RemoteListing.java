@@ -95,12 +95,6 @@ public class RemoteListing extends AListing implements MarketAgent {
         return null;
     }
 
-
-    @Override
-    public Map<String, Object> getMetadata() {
-        return metaDataCache.get(id) == null ? getListing() : metaDataCache.get(id);
-    }
-
     @Override
     public Object getAgreement() {
         throw new TODOException();
@@ -113,7 +107,7 @@ public class RemoteListing extends AListing implements MarketAgent {
 
     @Override
     public void refresh() {
-        metaDataCache.put(id, getListing());
+        metaDataCache.put(id, getListingMetadata());
 
     }
 
@@ -153,22 +147,14 @@ public class RemoteListing extends AListing implements MarketAgent {
         return Collections.emptyList();
     }
 
-    /**
-     * API that will take meta data as an argument and create listing instance.
-     *
-     * @param listing
-     * @return instance of remote listing
-     */
-    private RemoteListing getListObject(Map<String, Object> listing) {
-        //1.
-        RemoteListing rl = RemoteListing.create(remoteAgent, listing.get("id").toString());
-        metaDataCache.put(listing.get("id").toString(), listing);
-        return rl;
+    @Override
+    public Map<String, Object> getListingMetaData() {
+
+        return metaDataCache.get(id) == null ? getListingMetadata() : metaDataCache.get(id);
+
     }
 
-    @Override
-    public Map<String, Object> getListing() {
-
+    private Map<String,Object> getListingMetadata(){
         URI uri = getMarketLURIByID();
         HttpGet httpget = new HttpGet(uri);
         remoteAgent.addAuthHeaders(httpget);
@@ -208,7 +194,8 @@ public class RemoteListing extends AListing implements MarketAgent {
             int statusCode = statusLine.getStatusCode();
             if (statusCode == 200) {
                 String body = Utils.stringFromStream(HTTP.getContent(response));
-                return getListObject(JSON.toMap(body));
+                metaDataCache.put(id, JSON.toMap(body));
+                return this;
             } else if (statusCode == 403) {
                 throw new TODOException("Can't modify listing: only listing owner can do so" + statusCode);
             } else {
@@ -240,7 +227,9 @@ public class RemoteListing extends AListing implements MarketAgent {
             int statusCode = statusLine.getStatusCode();
             if (statusCode == 200) {
                 String body = Utils.stringFromStream(HTTP.getContent(response));
-                return getListObject(JSON.toMap(body));
+                String id =JSON.toMap(body).get("id").toString();
+                return create(remoteAgent,id);
+                //return getListObject(JSON.toMap(body));
             } else if (statusCode == 403) {
                 throw new TODOException("Can't modify listing: only listing owner can do so" + statusCode);
             } else {

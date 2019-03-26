@@ -39,7 +39,7 @@ public class FileAsset extends ADataAsset {
 	public static FileAsset create(File f) {
 		return new FileAsset(buildMetadata(f,null),f);
 	}
-	
+
 	/**
 	 * Create a new FileAsset at the given file location, using the specified asset as a source.
 	 * @param f
