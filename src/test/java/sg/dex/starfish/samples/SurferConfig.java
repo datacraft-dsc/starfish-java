@@ -32,7 +32,9 @@ public class SurferConfig {
                 "serviceEndpoint", host + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host + "/api/v1/invoke"));
+                "serviceEndpoint", host + "/api/v1/invoke"));services.add(Utils.mapOf(
+                "type", "Ocean.Market.v1",
+                "serviceEndpoint", host + "/api/v1/market"));
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
         // System.out.println(ddoString);
