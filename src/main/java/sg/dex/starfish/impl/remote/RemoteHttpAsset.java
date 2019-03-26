@@ -25,9 +25,9 @@ public class RemoteHttpAsset extends ADataAsset {
 
 	/**
 	 * API to get the content of data with give url passes in param
-	 * 
+	 *
 	 * @param urlString url where the content has to be read
-	 * @return
+	 * @return Asset
 	 */
 	public static Asset createWithURL(String urlString) {
 		URL url;
@@ -58,9 +58,9 @@ public class RemoteHttpAsset extends ADataAsset {
 
 	/**
 	 * API to create the Local Resource Asset with a given remote Asset path .
-	 * 
-	 * @param urlString
-	 * @return
+	 *
+	 * @param urlString remote Asset Path
+	 * @return Asset
 	 */
 	public static Asset createResourceWithURL(String urlString) {
 
@@ -85,10 +85,10 @@ public class RemoteHttpAsset extends ADataAsset {
 
 	/**
 	 * API to download a resource file for a given URL
-	 * 
+	 *
 	 * @param urlStr
 	 * @param fileName
-	 * @return
+	 * @return File
 	 * @throws IOException
 	 */
 
@@ -123,5 +123,4 @@ public class RemoteHttpAsset extends ADataAsset {
 		if (asset == null) throw new Error("RemoteHttpAsset has not been initialised with data");
 		return new ByteArrayInputStream(asset.getContent());
 	}
-
 }

@@ -44,8 +44,8 @@ public interface Listing {
 
 	/**
 	 * Purchases this listing using the given account
-	 * @param a The account to use for the purchase
-	 * @return
+	 * @param account The account to use for the purchase
+	 * @return PLEASE EXPLAIN the Object returned
 	 */
 	public Object purchase(Account account);
 }
