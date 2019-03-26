@@ -37,27 +37,31 @@ public class ListingSample {
         // creating listing object
         RemoteListing remoteListing1 =RemoteListing.create(surfer, "5317b2e7dd18b6090dbc58912ddef337f32fdd2a001e36edecf20eb50a2fe18c" );
 
-        assertNotNull(remoteListing1.getMetadata());
+        System.out.println(remoteListing1.getListingMetaData());
 
-        // 1.get all listing
+
+        // 1.get specific listing
+        Map<String,Object>result2 =remoteListing1.getListingMetaData();
+        System.out.println(remoteListing1.getListingMetaData());
+        assertNotNull(result2);
+
+        // 2.get all listing
         List<RemoteListing> allListingLst =remoteListing1.getAllListing();
         assertNotNull(allListingLst);
 
-        // 2.get specific listing
-        Map<String,Object>result2 =remoteListing1.getListing();
-        assertNotNull(result2);
+
 
         // 3. update existing Listing
 
         Map<String ,Object>  data = new HashMap<>();
-        Map<String,Object> oldData = remoteListing1.getMetadata();
+        Map<String,Object> oldData = remoteListing1.getListingMetaData();
         String status = oldData.get("status").toString();
         String newVal = status.equals("unpublished")?"published":"unpublished";
         data.put( "status", newVal);
 
-        System.out.println(remoteListing1.getMetadata());
+        System.out.println(remoteListing1.getListingMetaData());
         Listing updated =remoteListing1.updateListing(data);
-        System.out.println(updated.getMetadata());
+        System.out.println(((RemoteListing) updated).getListingMetaData());
         assertNotNull(updated);
 
 
@@ -72,7 +76,7 @@ public class ListingSample {
         assertNotNull(newListing);
 
         // get meta data for newly created Listing
-        System.out.println(newListing.getMetadata());
+        System.out.println(newListing.getListingMetaData());
 
 
 

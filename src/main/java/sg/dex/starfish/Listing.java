@@ -26,12 +26,6 @@ public interface Listing {
      */
     public Asset getAsset();
 
-    /**
-     * Returns the metadata associated with this listing.
-     *
-     * @return A copy of the JSON metadata
-     */
-    public Map<String, Object> getMetadata();
 
     /**
      * Returns the service agreement associated with this listing.

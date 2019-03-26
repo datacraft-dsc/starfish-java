@@ -26,7 +26,7 @@ public interface MarketAgent {
      *
      * @return Map which has the Meta data of the Listing
      */
-    Map<String, Object> getListing();
+    Map<String, Object> getListingMetaData();
 
     /**
      * API to update the existing listing
