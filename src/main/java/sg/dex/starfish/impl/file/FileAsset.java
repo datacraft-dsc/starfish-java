@@ -83,7 +83,7 @@ public class FileAsset extends ADataAsset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public InputStream getInputStream() {
+	public InputStream getContentStream() {
 		try {
 			return new FileInputStream(file);
 		}

@@ -1,15 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -19,21 +9,24 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Invokable;
-import sg.dex.starfish.Job;
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Operation;
+import sg.dex.starfish.*;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Params;
-import sg.dex.starfish.util.Utils;
-import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class implementing a remote storage agent using the Storage API
@@ -108,37 +101,15 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
-	/**
-	 * Gets InputStream to download a RemoteAsset
-	 *
-	 * @param a the RemoteAsset to download
-	 * @throws RemoteException if a is not found
-	 * @throws TODOException for unhandled status codes
-	 * @return InputStream corresponding to a
-	 */
-	public InputStream getDownloadStream(RemoteAsset a) {
-		URI uri = getStorageURI(a.getAssetID());
-		HttpGet httpget = new HttpGet(uri);
-		addAuthHeaders(httpget);
-		HttpResponse response = HTTP.execute(httpget);
-		StatusLine statusLine = response.getStatusLine();
-		int statusCode = statusLine.getStatusCode();
-		if (statusCode == 404) {
-			throw new RemoteException("Asset ID not found at: " + uri);
-		}
-		if (statusCode == 200) {
-			return HTTP.getContent(response);
-		}
-		throw new TODOException("status code not handled: " + statusCode);
-	}
 
-	private void addAuthHeaders(HttpRequest request) {
+
+	void addAuthHeaders(HttpRequest request) {
 		request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
 	}
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.
-	 * Returns null if the asset ID does not exist.
+	 * Returns Runtime Exception  if the asset ID does not exist.
 	 *
 	 * @param id The ID of the asset to get from this agent
 	 * @throws AuthorizationException if requestor does not have access permission
@@ -159,17 +130,42 @@ public class RemoteAgent extends AAgent implements Invokable {
 			if (statusCode == 404) {
 				throw new RemoteException("Asset ID not found for at: " + uri);
 			}
-			if (statusCode == 200) {
+			else if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
 				// TODO: consider if this this an operation rather than data asset?
 				return RemoteAsset.create(this, body);
 			}
-			throw new TODOException("status code not handled: " + statusCode);
+			else {
+				throw new TODOException("status code not handled: " + statusCode);
+			}
 		}
 		finally {
 			HTTP.close(response);
 		}
 	}
+
+    /**
+     * API to check if the Asset is present if present it will return true else false.
+     *
+     * @param assetId
+     * @return
+     */
+    private boolean isAssetRegistered(String assetId) {
+        URI uri = getMetaURI(assetId);
+        HttpGet httpget = new HttpGet(uri);
+        addAuthHeaders(httpget);
+        CloseableHttpResponse response = HTTP.execute(httpget);
+        try {
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                return true;
+            }
+            return false;
+        } finally {
+            HTTP.close(response);
+        }
+    }
 
 	/**
 	 * Uploads an asset to this agent. Registers the asset with the agent if required.
@@ -181,13 +177,73 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @param a Asset to upload
 	 * @throws AuthorizationException if requestor does not have upload permission
 	 * @throws StorageException if there is an error in uploading the Asset
-	 * @throws TODOException when not implemented yet
+	 * @throws RemoteException if there is an problem executing the task on remote Server.
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */
-	@Override
-	public Asset uploadAsset(Asset a) {
-		throw new TODOException();
-	}
+    @Override
+    public RemoteAsset uploadAsset(Asset a) {
+        RemoteAsset remoteAsset;
+
+        // asset alredy registered then only upload
+        if (isAssetRegistered(a.getAssetID())) {
+            remoteAsset = getAsset(a.getAssetID());
+            uploadAssetContent(a);
+        }
+        // if asset is not registered then registered and upload
+        else {
+            remoteAsset = registerAsset(a);
+            uploadAssetContent(a);
+        }
+
+        return remoteAsset;
+    }
+
+    /**
+     * API to uplaod the content of an Asset.
+     * API to upload the Asset content
+     *
+     * @param asset
+     * @return
+     */
+    private void uploadAssetContent(Asset asset) {
+        // get the storage API to upload the Asset content
+        URI uri = getStorageURI(asset.getAssetID());
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        HttpPost post = new HttpPost(uri);
+        addAuthHeaders(post);
+        post.addHeader("Accept", "application/json");
+
+        InputStream assetContentAsStream = new ByteArrayInputStream(asset.getContent());
+        HttpEntity entity = HTTP.createMultiPart("file", new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
+
+        post.setEntity(entity);
+
+        CloseableHttpResponse response;
+        try {
+            response = httpclient.execute(post);
+            try {
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 201) {
+                    return;
+                }
+                if (statusCode == 404) {
+                    throw new RemoteException("server could not find what was requested or it was configured not to fulfill the request." + uri);
+                } else if (statusCode == 500) {
+                    throw new GenericException("Internal Server Error : " + statusLine);
+                } else {
+                    throw new TODOException("Result not handled: " + statusLine);
+                }
+            } finally {
+                response.close();
+            }
+        } catch (ClientProtocolException e) {
+            throw new RemoteException("ClientProtocolException executing HTTP request ," + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new RemoteException("IOException executing HTTP request ," + e.getMessage(), e);
+        }
+    }
 
 	/**
 	 * Gets a URL string for accessing the specified asset ID
@@ -222,7 +278,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 * @throws IllegalArgumentException on invalid URI for jobID
 	 * @return The URI for this agent's invoke endpoint
 	 */
-		private URI getJobURI(String jobID) {
+	private URI getJobURI(String jobID) {
 		try {
 			return new URI(getInvokeEndpoint() + "/jobs/" + jobID);
 		}

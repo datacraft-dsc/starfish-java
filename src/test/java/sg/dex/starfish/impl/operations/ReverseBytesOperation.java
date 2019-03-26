@@ -38,17 +38,6 @@ public class ReverseBytesOperation extends AMemoryOperation {
 		String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
 		return new ReverseBytesOperation(meta);
 	}
-
-	/**
-	 * Returns the Asset result of computation
-	 *
-	 * @return Asset result of computation
-	 */
-	@Override
-	public Asset compute(Asset... params) {
-		if (params.length != 1) throw new IllegalArgumentException("Wrong arity, exactly 1 parameter required");
-		return doCompute( params[0]);
-	}
 	
 	private Asset doCompute(Asset input) {
 		byte[] bytes = input.getContent();
@@ -65,6 +54,7 @@ public class ReverseBytesOperation extends AMemoryOperation {
 	@Override
 	protected Asset compute(Map<String, Asset> params) {
 		Asset input=params.get("input");
+		if (input==null) throw new IllegalArgumentException("Missing parameter 'input'");
 		return doCompute(input);
 	}
 
