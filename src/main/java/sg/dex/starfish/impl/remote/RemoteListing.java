@@ -283,4 +283,10 @@ public class RemoteListing extends AListing implements MarketAgent {
         }
     }
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> getInfo() {
+		return (Map<String, Object>) getListingMetaData().get("info");
+	}
+
 }

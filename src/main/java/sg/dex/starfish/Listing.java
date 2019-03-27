@@ -34,7 +34,13 @@ public interface Listing {
      * @return The Agreement associated with this Listing
      */
     public Object getAgreement();
-
+    
+    /**
+     * Gets the listing information for this listing.
+     * 
+     * Listing information is defined by the marketplace on which the Listing is present.
+     */
+    public Map<String,Object> getInfo();
 
     /**
      * Purchases this listing using the given account
