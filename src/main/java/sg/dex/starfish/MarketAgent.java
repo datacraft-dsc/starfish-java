@@ -1,7 +1,5 @@
 package sg.dex.starfish;
 
-import sg.dex.starfish.impl.remote.RemoteListing;
-
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +16,15 @@ public interface MarketAgent {
      *
      * @return list of listing instacne if no listing found then return an empty list.
      */
-    List<RemoteListing> getAllListing();
+    List<Map<String, Object>> getAllInstance(String ext);
 
+    /**
+     * API to get one  Listing.
+     * This will return  the listing that belong specific agent
+     *
+     * @return list of listing instacne if no listing found then return an empty list.
+     */
+    String getInstanceMetaData(String ext);
 
     /**
      * API used to create a  new listing instance
@@ -28,6 +33,16 @@ public interface MarketAgent {
      * @param listingData
      * @return
      */
-    RemoteListing createListing(Map<String, Object> listingData);
+    String createInstance(Map<String, Object> listingData,String ext);
+
+
+    /**
+     * API used to update a  new listing instance
+     * it will have map of all metadata that need to be passed while creating the listing instance
+     *
+     * @param listingData
+     * @return
+     */
+    String updateInstance(Map<String, Object> listingData, String ext);
 
 }
