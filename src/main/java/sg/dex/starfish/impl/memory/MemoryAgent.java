@@ -16,6 +16,8 @@ import sg.dex.starfish.util.Utils;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 
+// TODO: should implement MarketAgent, StorageAgent etc.
+
 public class MemoryAgent extends AAgent implements Invokable {
 	/**
 	 * The singleton default memory agent instance
