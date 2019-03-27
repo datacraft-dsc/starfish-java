@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Listing;
 import sg.dex.starfish.MarketAgent;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.RemoteException;
@@ -38,7 +39,8 @@ import java.util.stream.Collectors;
 public class RemoteListing extends AListing implements MarketAgent {
 
     // local map to cache the listing data
-    private static Map<String, Map<String, Object>> metaDataCache = new HashMap<>();
+    private Map<String, Object> metaDataCache = null;
+    
     // remote agent
     private RemoteAgent remoteAgent;
     // listing id
@@ -101,14 +103,14 @@ public class RemoteListing extends AListing implements MarketAgent {
     }
 
     @Override
-    public Object purchase(Account account) {
+    public Asset purchase(Account account) {
         throw new TODOException();
     }
 
     @Override
-    public void refresh() {
+    public Listing refresh() {
         metaDataCache.put(id, getListingMetadata());
-
+        return this;
     }
 
     @Override
@@ -150,7 +152,7 @@ public class RemoteListing extends AListing implements MarketAgent {
     @Override
     public Map<String, Object> getListingMetaData() {
 
-        return metaDataCache.get(id) == null ? getListingMetadata() : metaDataCache.get(id);
+        return metaDataCache == null ? getListingMetadata() : metaDataCache;
 
     }
 

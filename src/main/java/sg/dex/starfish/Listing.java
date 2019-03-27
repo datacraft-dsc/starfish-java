@@ -42,13 +42,15 @@ public interface Listing {
      * @param account The account to use for the purchase
      * @return
      */
-    public Object purchase(Account account);
+    public Asset purchase(Account account);
 
     /**
-     * This API will be used to refresh the cached listing data.
-     * this api will hold the listing data in local cache(in-memory) cache so
-     * that every time it should not call server for getting the listing details
+     * This method can be used to refresh the cached listing data, if the implementation supports
+     * mutable listings with in-memory local caches. Implementations may wish to do this to 
+     * avoid calling the server for every time listing details are requested.
+     * 
+     * @throws UnsupportedOperationException If the implementation does not support listing refresh
      */
-    void refresh();
+    public Listing refresh();
 
 }
