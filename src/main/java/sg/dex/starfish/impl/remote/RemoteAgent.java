@@ -37,14 +37,17 @@ import java.util.Map;
  */
 public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
+	private final Account account;
+	
 	/**
 	 * Creates a RemoteAgent with the specified Ocean connection and DID
 	 *
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected RemoteAgent(Ocean ocean, DID did) {
+	protected RemoteAgent(Ocean ocean, DID did, Account acc) {
 		super(ocean, did);
+		this.account=acc;
 	}
 
 	/**
@@ -55,7 +58,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return RemoteAgent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did) {
-		return new RemoteAgent(ocean, did);
+		return new RemoteAgent(ocean, did,null);
+	}
+	
+	public RemoteAgent connect(Account acc) {
+		// TODO: get user token and store this in account
+		return new RemoteAgent(ocean, did, acc);
 	}
 
 	/**
@@ -101,8 +109,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			throw new RuntimeException(e);
 		}
 	}
-
-
 
 	void addAuthHeaders(HttpRequest request) {
 		request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
