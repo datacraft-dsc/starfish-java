@@ -20,22 +20,6 @@ public interface MarketAgent {
      */
     List<RemoteListing> getAllListing();
 
-    /**
-     * API to get the meta data of the  listing
-     * it will return the Map of meta data of the listing
-     *
-     * @return Map which has the Meta data of the Listing
-     */
-    Map<String, Object> getListingMetaData();
-
-    /**
-     * API to update the existing listing
-     * This api will be used to update one or multiple filed of listing metadata.
-     *
-     * @param metaDaa it will have all fields that need to be updated for the Listing
-     * @return It will return the updated listing instance
-     */
-    RemoteListing updateListing(Map<String, Object> metaDaa);
 
     /**
      * API used to create a  new listing instance

@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +35,7 @@ import java.util.Map;
  * @author Mike
  *
  */
-public class RemoteAgent extends AAgent implements Invokable {
+public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * Creates a RemoteAgent with the specified Ocean connection and DID
@@ -544,6 +545,18 @@ public class RemoteAgent extends AAgent implements Invokable {
 			throw new IllegalArgumentException("Bad invoke request: " + reason);
 		}
 		throw  new GenericException("Internal Server Error");
+	}
+
+	@Override
+	public List<RemoteListing> getAllListing() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RemoteListing createListing(Map<String, Object> listingData) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

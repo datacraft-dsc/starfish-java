@@ -36,13 +36,14 @@ import java.util.stream.Collectors;
  * It also sever getting the meta data of existing listing ,updating the existing listing.
  */
 
-public class RemoteListing extends AListing implements MarketAgent {
+public class RemoteListing extends AListing {
 
     // local map to cache the listing data
     private Map<String, Object> metaDataCache = null;
     
-    // remote agent
+    // remote agent reference
     private RemoteAgent remoteAgent;
+    
     // listing id
     private String id;
 
@@ -113,7 +114,6 @@ public class RemoteListing extends AListing implements MarketAgent {
         return this;
     }
 
-    @Override
     public List<RemoteListing> getAllListing() {
 
         URI uri = getMarketLURI();
@@ -149,7 +149,6 @@ public class RemoteListing extends AListing implements MarketAgent {
         return Collections.emptyList();
     }
 
-    @Override
     public Map<String, Object> getListingMetaData() {
 
         return metaDataCache == null ? getListingMetadata() : metaDataCache;
@@ -179,7 +178,6 @@ public class RemoteListing extends AListing implements MarketAgent {
     }
 
 
-    @Override
     public RemoteListing updateListing(Map<String, Object> newValue) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPut put = new HttpPut(getMarketLURIByID());
@@ -212,7 +210,6 @@ public class RemoteListing extends AListing implements MarketAgent {
         }
     }
 
-    @Override
     public RemoteListing createListing(Map<String, Object> metaData) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(getMarketLURI());
