@@ -40,7 +40,7 @@ public abstract class AIdentity implements Identity {
 	/**
 	 * Gets the Accounts associated with this Identity
 	 * where the key is the Account.getID();
-	 * @return hashmap of Accounts
+	 * @return
 	 */
 	@Override
 	public Map<String,Account> getAccounts() {

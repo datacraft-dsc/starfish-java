@@ -92,16 +92,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-				  <show>public</show>
-                                  <failOnError>
-                                    true
-                                  </failOnError>
-                                  <failOnWarnings>
-                                    true
-                                  </failOnWarnings>
-                                  <doclint>
-                                    all,-missing
-                                  </doclint>
+					<show>public</show>
 				</configuration>
 			</plugin>
 		</plugins>

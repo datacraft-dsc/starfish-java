@@ -69,7 +69,7 @@ public class Ocean {
 	}
 
 	public Agent getAgent(DID did) {
-		// TODO Auto-generated method stub
+		// TODO create an aggent instance according to the given DID
 		throw new TODOException();
 	}
 

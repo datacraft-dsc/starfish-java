@@ -346,6 +346,7 @@ public class RemoteAgent extends AAgent implements Invokable {
 		}
 	}
 
+
 	/**
 	 * Gets URL for a given remoteAsset
 	 *
@@ -393,6 +394,16 @@ public class RemoteAgent extends AAgent implements Invokable {
 	 */
 	public String getMetaEndpoint() {
 		return getEndpoint("Ocean.Meta.v1");
+	}
+
+	/**
+	 * Gets the Market API endpoint for this agent, or null if this does not exist
+	 *
+	 * @return The Meta API endpoint for this agent e.g.
+	 *         "https://www.myagent.com/api/v1/meta"
+	 */
+	public String getMarketEndpoint() {
+		return getEndpoint("Ocean.Market.v1");
 	}
 
 	@Override

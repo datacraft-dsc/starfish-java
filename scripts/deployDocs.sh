@@ -31,11 +31,7 @@ echo "building docs package $PACKAGE_NAME"
 
 # make the docs from source
 rm -rf target/site
-if mvn site ; then
-    echo "Built Javadocs successfully"
-else
-    echo "FAILED building Javadocs"
-fi
+mvn site
 
 # package into a tar.gz file for deployment
 (cd "$DOC_PATH"; tar -czf "../../$DEPLOY_FILENAME" ./)

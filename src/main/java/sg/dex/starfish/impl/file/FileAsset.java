@@ -33,8 +33,8 @@ public class FileAsset extends ADataAsset {
 
 	/**
 	 * Create a FileAsset to read from an existing file
-	 * @param f File from which to read the Asset
-	 * @return FileAsset
+	 * @param f
+	 * @return
 	 */
 	public static FileAsset create(File f) {
 		return new FileAsset(buildMetadata(f,null),f);
@@ -42,9 +42,9 @@ public class FileAsset extends ADataAsset {
 
 	/**
 	 * Create a new FileAsset at the given file location, using the specified asset as a source.
-	 * @param f File from which to read the Asset
-	 * @param source Asset
-	 * @return FileAsset
+	 * @param f
+	 * @param source
+	 * @return
 	 */
 	public static FileAsset create(File f, Asset source) {
 		throw new TODOException("Create file asset on disk");
