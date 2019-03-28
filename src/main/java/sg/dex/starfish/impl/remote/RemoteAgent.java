@@ -32,16 +32,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class implementing a remote storage agent using the Storage API
  *
  * @author Mike
  */
-public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
+public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
+    private static final String LISTING_URL = "/listings";
+    private static final String PURCHAISNG_URL = "/purchases";
     private final Account account;
-
 
     /**
      * Creates a RemoteAgent with the specified Ocean connection and DID
@@ -534,9 +536,14 @@ public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
         }
     }
 
-    @Override
-    public List<Map<String, Object>> getAllInstance(String extension) {
-        URI uri = getMarketLURI(extension);
+    /**
+     * API for Listing
+     *
+     * @param marketAgentUrl
+     * @return
+     */
+    private List<Map<String, Object>> getAllMarketMetaData(String marketAgentUrl) {
+        URI uri = getMarketLURI(marketAgentUrl);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
         CloseableHttpResponse response = HTTP.execute(httpget);
@@ -567,11 +574,10 @@ public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
         return Collections.emptyList();
     }
 
-    @Override
 
-    public String createInstance(Map<String, Object> listingData,String extesnion) {
+    private String createMarketAgentInstance(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(getMarketLURI(extesnion));
+        HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));
 
         addAuthHeaders(httpPost);
         httpPost.addHeader("Accept", "application/json");
@@ -601,10 +607,8 @@ public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
     }
 
 
-
-    @Override
-    public String getInstanceMetaData(String extension) {
-        HttpGet httpget = new HttpGet(getMarketLURI(extension));
+    private String getMarketMetaData(String marketAgentUrl) {
+        HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));
         addAuthHeaders(httpget);
         CloseableHttpResponse response = HTTP.execute(httpget);
         try {
@@ -623,10 +627,9 @@ public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
         }
     }
 
-    @Override
-    public String updateInstance(Map<String, Object> listingData, String extension) {
+    private String updateMarketMetaData(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPut put = new HttpPut(getMarketLURI(extension));
+        HttpPut put = new HttpPut(getMarketLURI(marketAgentUrl));
 
         addAuthHeaders(put);
         put.addHeader("Accept", "application/json");
@@ -662,16 +665,132 @@ public class RemoteAgent extends AAgent implements Invokable,MarketAgent {
      * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
      */
-    private URI getMarketLURI(String extension) {
+    private URI getMarketLURI(String marketAgentUrl) {
         String marketEndpoint = getMarketEndpoint();
         if (marketEndpoint == null)
             throw new UnsupportedOperationException("This agent does not support the Market API (no endpoint defined)");
         try {
-            return new URI(marketEndpoint + extension);
+            return new URI(marketEndpoint + marketAgentUrl);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
         }
     }
 
 
+    @Override
+    public Listing getListing(String id) {
+        return RemoteListing.create(this, id);
+    }
+
+    @Override
+    public Purchase getPurchasing(String id) {
+        return RemotePurchase.create(this, id);
+    }
+
+    @Override
+    public Listing createListing(Map<String, Object> listingData) {
+        String response = createMarketAgentInstance(listingData, LISTING_URL);
+        String id = JSON.toMap(response).get("id").toString();
+        return RemoteListing.create(this, id);
+    }
+
+    /**
+     * API to update the Lising data
+     *
+     * @param newValue
+     * @return
+     */
+    public Listing updateListing(Map<String, Object> newValue) {
+
+        String id = newValue.get("id").toString();
+        if (id == null) {
+            throw new GenericException("Listing ID not found");
+        }
+        updateMarketMetaData(newValue, LISTING_URL + "/" + id);
+        return RemoteListing.create(this, id);
+
+    }
+
+    /**
+     * API to get the listing meta data
+     *
+     * @param id
+     * @return
+     */
+    public Map<String, Object> getListingMetaData(String id) {
+        String response = getMarketMetaData(LISTING_URL + "/" + id);
+        return JSON.toMap(response);
+    }
+
+    /**
+     * API to get all listing metaData.It may ab very heavy call .
+     *
+     * @return
+     */
+    public List<Listing> getAllListing() {
+
+        List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
+
+        return result.stream()
+                .map(p -> RemoteListing.create(this, p.get("id").toString()))
+                .collect(Collectors.toList());
+
+    }
+
+    /**
+     * APi to get listing by userID
+     *
+     * @param userID
+     * @return
+     */
+    public List<RemoteListing> getAllListing(String userID) {
+
+        List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
+
+        return result.stream()
+                .map(p -> RemoteListing.create(this, p.get("id").toString()))
+                .collect(Collectors.toList());
+
+    }
+
+    /**
+     * API to create the Purchase object
+     *
+     * @param data
+     * @return
+     */
+    public Purchase createPurchase(Map<String, Object> data) {
+        String response = createMarketAgentInstance(data, PURCHAISNG_URL);
+        String id = JSON.toMap(response).get("id").toString();
+        return RemotePurchase.create(this, id);
+    }
+
+
+    /**
+     * API to get the Purchase MetaData
+     *
+     * @param id
+     * @return
+     */
+    public Map<String, Object> getPurchaseMetaData(String id) {
+        String response = getMarketMetaData(PURCHAISNG_URL + "/" + id);
+        return JSON.toMap(response);
+    }
+
+    /**
+     * API to update the Purchase
+     *
+     * @param newValue
+     * @return
+     */
+    public Purchase updatePurchase(Map<String, Object> newValue) {
+
+        String id = newValue.get("id").toString();
+        if (id == null) {
+            throw new GenericException("Listing ID not found");
+        }
+        updateMarketMetaData(newValue, PURCHAISNG_URL + "/" + id);
+        return RemotePurchase.create(this, id);
+
+    }
 }

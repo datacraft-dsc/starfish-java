@@ -1,12 +1,12 @@
 package sg.dex.starfish.samples;
 
+import sg.dex.starfish.Purchase;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemotePurchase;
+import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -34,55 +34,43 @@ public class PurchaseSample {
 
         // 1.create Listing
 
-        RemotePurchase remotePurchase1 = createNewPurchase(surfer);
+        Purchase purchase = createNewPurchase(surfer);
 
 
-        // 2.get  listing details
-        Map<String, Object> result2 = remotePurchase1.getPurchasingMetaData();
-        System.out.println(result2);
-        assertNotNull(result2);
+        // 2.get purchase details
 
-
-//        // 3.get all listing details
-        try {
-            List<RemotePurchase> allPurchaseLst = remotePurchase1.getAllPurchasing();
-            assertNotNull(allPurchaseLst);
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
+        Map<String, Object> purchaseMetaData = purchase.getMetaData();
+        assertNotNull(purchaseMetaData);
 
 
         // 3. update existing Listing
 
-        Map<String, Object> data = new HashMap<>();
-        Map<String, Object> oldData = remotePurchase1.getPurchasingMetaData();
+
+        Map<String, Object> oldData = purchase.getMetaData();
         String status = oldData.get("status").toString();
         String newVal = status.equals("ordered") ? "wishlist" : "ordered";
-        data.put("status", newVal);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("status", newVal);
+        newData.put("id", oldData.get("id"));
 
-        System.out.println(remotePurchase1.getPurchasingMetaData());
-        RemotePurchase updated = remotePurchase1.updatePurchase(data);
-        System.out.println(updated.getPurchasingMetaData());
-        assertNotNull(updated);
+        System.out.println(JSON.toPrettyString(oldData));
+        Purchase updatedPurchase = surfer.updatePurchase(newData);
+        System.out.println(JSON.toPrettyString(updatedPurchase.getMetaData()));
+        assertNotNull(updatedPurchase);
 
 
     }
 
-    private static RemotePurchase createNewPurchase(RemoteAgent surfer) {
-        Map<String, Object> data2 = new HashMap<>();
-        data2.put("listingid", "8f6827f7a8f64f2c3ee6e6d43a3198b68ec5fe05fd96d4d1d34a0294144c2fad");
+    private static Purchase createNewPurchase(RemoteAgent surfer) {
+        Map<String, Object> purchaseData = new HashMap<>();
+        purchaseData.put("listingid", "8f6827f7a8f64f2c3ee6e6d43a3198b68ec5fe05fd96d4d1d34a0294144c2fad");
 
-        RemotePurchase newListing = RemotePurchase.create(surfer, data2);
+        Purchase purchase = surfer.createPurchase(purchaseData);
+        assertNotNull(purchase);
+        assertNotNull(purchase.getMetaData());
+        //assertNotNull(purchase.getInfo());
+        assertNotNull(purchase.getListing());
 
-        // Listing newListing =remoteListing.createListing(data2);
-        assertNotNull(newListing);
-
-        // get meta data for newly created Listing
-        System.out.println(newListing.getPurchasingMetaData());
-
-
-        return newListing;
+        return purchase;
     }
 }
