@@ -1,17 +1,14 @@
 package sg.dex.starfish.impl.memory;
 
+import org.bouncycastle.util.encoders.Hex;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.AListing;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
 
-import java.time.Instant;
 import java.util.Map;
-
-import org.bouncycastle.util.encoders.Hex;
 
 public class MemoryListing extends AListing {
 	private MemoryAgent agent;
@@ -58,6 +55,11 @@ public class MemoryListing extends AListing {
     @Override
     public Listing refresh() {
     	return this;
+    }
+
+    @Override
+    public Map<String, Object> getMetaData() {
+        return null;
     }
 
     public String getId() {
