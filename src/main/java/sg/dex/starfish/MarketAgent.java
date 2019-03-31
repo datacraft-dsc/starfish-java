@@ -1,6 +1,5 @@
 package sg.dex.starfish;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +15,7 @@ public interface MarketAgent {
      *
      * @return list of listing instacne if no listing found then return an empty list.
      */
-    List<Map<String, Object>> getAllInstance(String ext);
+    Listing getListing(String id);
 
     /**
      * API to get one  Listing.
@@ -24,7 +23,7 @@ public interface MarketAgent {
      *
      * @return list of listing instacne if no listing found then return an empty list.
      */
-    String getInstanceMetaData(String ext);
+    Purchase getPurchasing(String id);
 
     /**
      * API used to create a  new listing instance
@@ -33,16 +32,9 @@ public interface MarketAgent {
      * @param listingData
      * @return
      */
-    String createInstance(Map<String, Object> listingData,String ext);
+    Listing createListing(Map<String, Object> listingData);
 
 
-    /**
-     * API used to update a  new listing instance
-     * it will have map of all metadata that need to be passed while creating the listing instance
-     *
-     * @param listingData
-     * @return
-     */
-    String updateInstance(Map<String, Object> listingData, String ext);
+
 
 }

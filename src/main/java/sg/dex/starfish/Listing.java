@@ -24,7 +24,7 @@ public interface Listing {
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if there is an error in retrieving the Asset
      */
-    public Asset getAsset();
+     Asset getAsset();
 
 
     /**
@@ -33,14 +33,14 @@ public interface Listing {
      *
      * @return The Agreement associated with this Listing
      */
-    public Object getAgreement();
+     Object getAgreement();
     
     /**
      * Gets the listing information for this listing.
      * 
      * Listing information is defined by the marketplace on which the Listing is present.
      */
-    public Map<String,Object> getInfo();
+     Map<String,Object> getInfo();
 
     /**
      * Purchases this listing using the given account
@@ -48,7 +48,7 @@ public interface Listing {
      * @param account The account to use for the purchase
      * @return
      */
-    public Asset purchase(Account account);
+     Asset purchase(Account account);
 
     /**
      * This method can be used to refresh the cached listing data, if the implementation supports
@@ -57,6 +57,14 @@ public interface Listing {
      * 
      * @throws UnsupportedOperationException If the implementation does not support listing refresh
      */
-    public Listing refresh();
+     Listing refresh();
+
+    /**
+     * API to get the meta data of this Lisiting
+     * @return
+     */
+     Map<String, Object> getMetaData() ;
+
+
 
 }

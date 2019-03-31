@@ -2,8 +2,7 @@ package sg.dex.starfish.impl.memory;
 
 import java.util.Map;
 
-import org.bouncycastle.util.encoders.Hex;
-
+import sg.dex.starfish.util.Hex;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
@@ -25,7 +24,7 @@ public class MemoryListing extends AListing {
 
     public static MemoryListing create(MemoryAgent agent, String metaString) {
     	Map<String,Object> metaMap=JSON.parse(metaString);
-    	String listingID=Hex.toHexString(Hash.keccak256(metaString));
+    	String listingID=Hex.toString(Hash.keccak256(metaString));
         return  new MemoryListing(agent,listingID,metaMap);
     }
 
@@ -56,6 +55,11 @@ public class MemoryListing extends AListing {
     @Override
     public Listing refresh() {
     	return this;
+    }
+
+    @Override
+    public Map<String, Object> getMetaData() {
+        return null;
     }
 
     public String getId() {
