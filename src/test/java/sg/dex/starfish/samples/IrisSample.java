@@ -1,6 +1,7 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
@@ -18,7 +19,7 @@ import sg.dex.starfish.util.Utils;
 public class IrisSample {
 
 	public static void main(String... args) {
-		RemoteAgent surfer = SurferConfig.getSurfer("http://localhost:8080");
+		RemoteAgent surfer = Surfer.getSurfer("http://localhost:8080");
 
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
 

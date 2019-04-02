@@ -2,6 +2,7 @@ package sg.dex.starfish.samples;
 
 import sg.dex.starfish.Purchase;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class PurchaseSample {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
-        RemoteAgent surfer = SurferConfig.getSurfer(ip + ":" + port);
+        RemoteAgent surfer = Surfer.getSurfer(ip + ":" + port);
 
         // 1.create Listing
 

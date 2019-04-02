@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class ListingSample {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
-        RemoteAgent surfer = SurferConfig.getSurfer(ip + ":" + port);
+        RemoteAgent surfer = Surfer.getSurfer(ip + ":" + port);
 
         // 1.create Listing
 

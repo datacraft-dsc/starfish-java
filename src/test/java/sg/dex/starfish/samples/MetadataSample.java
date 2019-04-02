@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.Surfer;
 
 /**
  * This will be a sample steps to get the Asset instance base on Asset id from the RemoteAgent.
@@ -23,7 +24,7 @@ public class MetadataSample {
 			assetID = defaultAssetID;
 		}
 		System.out.println("looking up assetID = "+assetID);
-		RemoteAgent surfer = SurferConfig.getSurfer("http://localhost:8080");
+		RemoteAgent surfer = Surfer.getSurfer("http://localhost:8080");
 		Asset a=surfer.getAsset(assetID);
 		if (assetID == defaultAssetID) {
 			assertEquals("{\"name\":\"My Test Asset\"}",a.getMetadataString());
