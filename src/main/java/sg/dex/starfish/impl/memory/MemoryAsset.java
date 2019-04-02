@@ -94,7 +94,7 @@ public class MemoryAsset extends ADataAsset {
 		return create(buildMetaData(data,meta),data);
 	}
 
-	private static MemoryAsset create(String meta, byte[] data) {
+	public static MemoryAsset create(String meta, byte[] data) {
 		return new MemoryAsset(meta,data);
 	}
 

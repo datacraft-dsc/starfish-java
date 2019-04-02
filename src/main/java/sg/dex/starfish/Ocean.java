@@ -42,7 +42,7 @@ public class Ocean {
 	}
 
 	/**
-	 * Registers a DID within the context of this Ocean connection on the local machine.
+	 * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
 	 * 
 	 * This registration is intended for testing purposes.
 	 * 
@@ -52,7 +52,18 @@ public class Ocean {
 	public void registerLocalDID(DID did, String ddo) {
 		ddoCache.put(did,ddo);
 	}
-
+	
+	/**
+	 * Registers an agent DDO with this Ocean connection,
+	 * @return did The newly created DID for the agent
+	 * @param ddo
+	 */
+	public DID registerDDO(String ddo) {
+		DID did=DID.createRandom();
+		registerLocalDID(did,ddo);
+		return did;
+	}
+ 
 	/**
 	 * Gets a DDO for a specified DID via the Universal Resolver
 	 *
