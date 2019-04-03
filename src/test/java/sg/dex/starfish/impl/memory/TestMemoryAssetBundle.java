@@ -16,14 +16,10 @@ public class TestMemoryAssetBundle {
         byte data[] = {2, 3, 4};
         Asset a = MemoryAsset.create(data);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a);
-        System.out.println(memoryAssetBundle.getAllSubAsset());
-        System.out.println(memoryAssetBundle.getSubAssetById(a.getAssetID()));
         byte data1[] = {2, 3, 4, 6};
         Asset a1 = MemoryAsset.create(data1);
         memoryAssetBundle.addSubAsset(a1);
-        System.out.println(memoryAssetBundle.getAllSubAsset());
-        System.out.println(memoryAssetBundle.getSubAssetById(a.getAssetID()));
-        memoryAssetBundle.getContent();
+        assertEquals(memoryAssetBundle.getAllSubAsset().size(),2);
     }
 
     @Test
@@ -31,14 +27,9 @@ public class TestMemoryAssetBundle {
         byte data[] = {2, 3, 4};
         Asset a = MemoryAsset.create(data);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a);
-        System.out.println(memoryAssetBundle.getAllSubAsset());
-        System.out.println(memoryAssetBundle.getSubAssetById(a.getAssetID()));
         byte data1[] = {2, 3, 4, 6};
         Asset a1 = MemoryAsset.create(data1);
         memoryAssetBundle.addSubAsset(a1);
-        System.out.println(memoryAssetBundle.getAllSubAsset());
-        System.out.println(memoryAssetBundle.getSubAssetById(a.getAssetID()));
-        memoryAssetBundle.getContent();
     }
 
     @Test
