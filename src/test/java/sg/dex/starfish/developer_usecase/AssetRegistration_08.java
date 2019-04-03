@@ -40,6 +40,8 @@ public class AssetRegistration_08 {
         assertEquals(remoteAsset.getAssetID(), remoteAsset1.getAssetID());
         assertEquals(remoteAsset.isDataAsset(), remoteAsset1.isDataAsset());
         assertEquals(remoteAsset.getMetadataString(), remoteAsset1.getMetadataString());
+        System.out.println(remoteAsset.getAssetDID());
+        System.out.println(remoteAsset.getAssetID());
     }
 
     @Test

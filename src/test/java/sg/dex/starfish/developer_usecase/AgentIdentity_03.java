@@ -1,5 +1,6 @@
 package sg.dex.starfish.developer_usecase;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,5 +35,9 @@ public class AgentIdentity_03 {
         assertEquals(did.getScheme(), "did");
         assertNotNull(did);
 
+    }
+    @After
+    public void clear(){
+        remoteAgent =null;
     }
 }
