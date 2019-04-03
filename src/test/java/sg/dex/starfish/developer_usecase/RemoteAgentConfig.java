@@ -9,8 +9,10 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -73,6 +75,40 @@ public class RemoteAgentConfig {
         String port = properties.getProperty("surfer.port");
         return getSurfer(ip + ":" + port);
 
+    }
+
+    public static String getDataAsStirngFromInputStream(InputStream is) {
+
+        BufferedReader br = null;
+        String result = "";
+
+        try {
+
+            //is = System.in;
+            br = new BufferedReader(new InputStreamReader(is));
+
+            String line = null;
+
+            while ((line = br.readLine()) != null) {
+
+                result = result + line;
+            }
+
+        } catch (IOException ioe) {
+            System.out.println("Exception while reading input " + ioe);
+        } finally {
+            // close the streams using close method
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println("Error while closing stream: " + ioe);
+            }
+
+        }
+
+        return result;
     }
 
 }
