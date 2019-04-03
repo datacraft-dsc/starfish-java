@@ -90,4 +90,5 @@ public interface 	Asset {
 	 */
 	public Map<String, Object> getParamValue();
 
+    boolean isBundledAsset();
 }

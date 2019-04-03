@@ -55,6 +55,11 @@ public class TestMemoryAsset {
 			public Map<String, Object> getParamValue() {
 				return null;
 			}
+
+			@Override
+			public boolean isBundledAsset() {
+				return false;
+			}
 		};
 
 		memoryAsset = MemoryAsset.create(new byte[] {1,2,3});

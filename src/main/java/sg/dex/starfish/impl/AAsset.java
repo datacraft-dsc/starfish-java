@@ -1,13 +1,13 @@
 package sg.dex.starfish.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract base class for immutable asset implementations
@@ -70,6 +70,12 @@ public abstract class AAsset implements Asset {
 
 	@Override
 	public abstract boolean isDataAsset();
+
+	@Override
+	public  boolean isBundledAsset(){
+		return getMetadata().get("type").toString().equalsIgnoreCase("bundle");
+	}
+
 
 
 }
