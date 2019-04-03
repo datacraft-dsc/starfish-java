@@ -81,9 +81,9 @@ public class TestMemoryAssetBundle {
         assetList.add(a);
         assetList.add(a1);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(assetList);
-        System.out.println(memoryAssetBundle.getAllSubAsset());
-        System.out.println(memoryAssetBundle.getSubAssetById(a.getAssetID()));
-        System.out.println(memoryAssetBundle.getSubAssetById(a1.getAssetID()));
+        assertEquals(memoryAssetBundle.getAllSubAsset().size(),2);
+        assertEquals(memoryAssetBundle.getSubAssetById(a.getAssetID()).getAssetID(),a.getAssetID());
+        assertEquals(memoryAssetBundle.getSubAssetById(a1.getAssetID()).getAssetID(),a1.getAssetID());
 
 
     }
