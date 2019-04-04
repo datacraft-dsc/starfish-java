@@ -12,24 +12,37 @@ import static org.junit.Assert.assertNotNull;
 public class TestMemoryAssetBundle {
 
     @Test
-    public void testCreateWithAsset() {
+    public void testAddAssetInNewBundle() {
         byte data[] = {2, 3, 4};
         Asset a = MemoryAsset.create(data);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a);
-        byte data1[] = {2, 3, 4, 6};
-        Asset a1 = MemoryAsset.create(data1);
-        memoryAssetBundle.addSubAsset(a1);
-        assertEquals(memoryAssetBundle.getAllSubAsset().size(),2);
+
+        Asset newAsset = memoryAssetBundle.getSubAssetById(a.getAssetID());
+        assertEquals(newAsset.getAssetID(), a.getAssetID());
+
     }
 
     @Test
-    public void testAddAssetAfterCreate() {
-        byte data[] = {2, 3, 4};
-        Asset a = MemoryAsset.create(data);
-        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a);
-        byte data1[] = {2, 3, 4, 6};
+    public void testAddAssetInExistingBundle() {
+        byte data1[] = {2, 3, 4};
         Asset a1 = MemoryAsset.create(data1);
-        memoryAssetBundle.addSubAsset(a1);
+        MemoryAssetBundle memoryAssetBundle1 = MemoryAssetBundle.create(a1);
+        Asset newAsset = memoryAssetBundle1.getSubAssetById(a1.getAssetID());
+        assertEquals(newAsset.getAssetID(), a1.getAssetID());
+
+
+        byte data2[] = {2, 3, 4, 6};
+        Asset a2 = MemoryAsset.create(data2);
+
+        MemoryAssetBundle memoryAssetBundle2 = memoryAssetBundle1.addSubAsset(a2);
+
+        Asset a1_new = memoryAssetBundle2.getSubAssetById(a1.getAssetID());
+        Asset a2_new = memoryAssetBundle2.getSubAssetById(a2.getAssetID());
+
+        assertEquals(a1_new.getAssetID(), a1.getAssetID());
+        assertEquals(a2_new.getAssetID(), a2.getAssetID());
+
+
     }
 
     @Test
@@ -37,7 +50,7 @@ public class TestMemoryAssetBundle {
         byte data[] = {2, 3, 4};
         Asset a = MemoryAsset.create(data);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a);
-        assertEquals(true, memoryAssetBundle.isBundledAsset());
+        assertEquals(true, memoryAssetBundle.isBundle());
 
     }
 
@@ -72,9 +85,31 @@ public class TestMemoryAssetBundle {
         assetList.add(a);
         assetList.add(a1);
         MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(assetList);
-        assertEquals(memoryAssetBundle.getAllSubAsset().size(),2);
-        assertEquals(memoryAssetBundle.getSubAssetById(a.getAssetID()).getAssetID(),a.getAssetID());
-        assertEquals(memoryAssetBundle.getSubAssetById(a1.getAssetID()).getAssetID(),a1.getAssetID());
+        assertEquals(memoryAssetBundle.getAllSubAsset().size(), 2);
+        assertEquals(memoryAssetBundle.getSubAssetById(a.getAssetID()).getAssetID(), a.getAssetID());
+        assertEquals(memoryAssetBundle.getSubAssetById(a1.getAssetID()).getAssetID(), a1.getAssetID());
+
+
+    }
+    @Test
+    public void addAllSubAsset(){
+        byte data1[] = {2, 3, 4};
+        Asset a1 = MemoryAsset.create(data1);
+        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(a1);
+
+        byte data2[] = {2, 3, 4,5,6,7};
+        Asset a2 = MemoryAsset.create(data2);
+
+        byte data3[] = {2, 3, 4, 6,2,3,4,};
+        Asset a3 = MemoryAsset.create(data3);
+
+        List<Asset> assetList = new ArrayList<>();
+        assetList.add(a2);
+        assetList.add(a3);
+        MemoryAssetBundle updatedMBA =memoryAssetBundle.addAllSubAsset(assetList);
+        assertEquals(updatedMBA.getSubAssetById(a1.getAssetID()).getAssetID(),a1.getAssetID());
+        assertEquals(updatedMBA.getSubAssetById(a2.getAssetID()).getAssetID(),a2.getAssetID());
+        assertEquals(updatedMBA.getSubAssetById(a3.getAssetID()).getAssetID(),a3.getAssetID());
 
 
     }

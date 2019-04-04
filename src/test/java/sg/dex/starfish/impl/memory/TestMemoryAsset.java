@@ -57,7 +57,7 @@ public class TestMemoryAsset {
 			}
 
 			@Override
-			public boolean isBundledAsset() {
+			public boolean isBundle() {
 				return false;
 			}
 		};
