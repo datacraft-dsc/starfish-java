@@ -1,10 +1,13 @@
 package sg.dex.starfish.impl.memory;
 
-import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static sg.dex.starfish.constant.Constant.TYPE;
@@ -20,64 +23,49 @@ public class MemoryAssetBundle extends AAsset {
 
     }
 
-    /**
-     * Gets a BundleAsset using the content and metadata from the provided asset
-     *
-     * @param name
-     * @param subAssetId
-     * @return
-     */
-
-    public static MemoryAssetBundle create(String bundleName, String name, String subAssetId) {
-        //build meta data
-        Map<String, String> subAssetIdMap = new HashMap<>();
-        subAssetIdMap.put(name, "AssetId : " + subAssetId);
-
-        return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));
-
-    }
 
     /**
-     * Gets a BundleAsset using the content and metadata from the provided asset
+     * API to create a memory bundle asset asset with given Bundle name
      *
-     * @param name
-     * @param
-     * @return
-     */
-    public static MemoryAssetBundle create(String bundleName, String name, Asset subAsset) {
-        //build meta data
-        Map<String, String> subAssetIdMap = new HashMap<>();
-        subAssetIdMap.put(name, "AssetId : " + subAsset.getAssetID());
-        return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));
-    }
-
-    /**
-     * Gets a BundleAreturn new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));   sset using the content and metadata from the provided asset
-     *
-     * @param
-     * @param
+     * @param bundleName Name of the bundle
+     * @param assetMap   map of all asset with name and assetID
      * @return
      */
     public static MemoryAssetBundle create(String bundleName, Map<String, String> assetMap) {
 
         //build meta data
-        Map<String, String> subAssetIdMap = new HashMap<>();
+        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
         for (String name : assetMap.keySet()) {
 
-            subAssetIdMap.put(name, "AssetId: " + assetMap.get(name));
+            subAssetIdMap.put(name, getAssetIdMap(assetMap.get(name)));
         }
         return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));
 
 
     }
 
+    /**
+     * API to create a Bundle Asset with default bundle name
+     * IF no bundle name is passed then ,creation Timestamp will be used as bundle name.
+     *
+     * @param assetMap map of all asset with name and assetID
+     * @return
+     */
+    public static MemoryAssetBundle create(Map<String, String> assetMap) {
+
+        return create(Instant.now().toString(), assetMap);
+
+
+    }
 
     /**
-     * Build default metadata for an in-bundle asset
+     * API to create the Meta data of the Asset bundle
      *
-     * @return The default metadata as a String
+     * @param bundleName
+     * @param content
+     * @return
      */
-    private static String buildMetaData(String bundleName, Map<String, String> content) {
+    private static String buildMetaData(String bundleName, Map<String, Map<String, String>> content) {
         if (null == content) {
             content = new HashMap<>();
         }
@@ -87,6 +75,19 @@ public class MemoryAssetBundle extends AAsset {
         ob.put(TYPE, "bundle");
         ob.put("contents", content);
         return JSON.toPrettyString(ob);
+    }
+
+    /**
+     * API to get the map of AssetID based on AssetId
+     *
+     * @param assetId
+     * @return
+     */
+    private static Map<String, String> getAssetIdMap(String assetId) {
+        Map<String, String> assetIDMap = new HashMap<>();
+        assetIDMap.put("assetID", assetId);
+        return assetIDMap;
+
     }
 
     @Override
@@ -100,56 +101,26 @@ public class MemoryAssetBundle extends AAsset {
     }
 
     /**
-     * API to get all the Sub Asset
+     * API to get the list of all AssetID present in Asset Bundle
      *
-     * @return it will return a map of all Sub asset present in the Asset Bundle
-     */
-    public Map<String, String> getAllSubAsset() {
-        return (Map<String, String>) getMetadata().get("contents");
-
-    }
-
-    /**
-     * API to get the sub Asset based on sub Asset ID
-     *
-     * @param name sub Asset ID
      * @return
      */
-    public String getSubAssetById(String name) {
-        Map<String, String> metaData = (Map<String, String>) getMetadata().get("contents");
-        return metaData.get(name);
-    }
 
+    public List<String> getAllSubAssetIDs() {
+        if (isBundle()) {
 
-    /**
-     * API to add subAsset .
-     * It will create a new instance of Assetbundle instance and all the give sub-Asset
-     *
-     * @param
-     * @return
-     */
-    public MemoryAssetBundle addSubAsset(String name, String subAssetId) {
-        Map<String, Object> metaData = getMetadata();
-        Map<String, String> content = (Map<String, String>) metaData.get("contents");
-        String bundleName = metaData.get("name").toString();
-        content.put(name, "AssetId: "+ subAssetId);
-        return create(bundleName, content);
+            Map<String, Object> metadata = getMetadata();
+            Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
 
-    }
+            List<String> allSubAssetIdLst = new ArrayList<>();
+            for (String data : contents.keySet()) {
+                allSubAssetIdLst.add((contents.get(data)).get("assetID"));
+            }
+            return allSubAssetIdLst;
 
-    /**
-     * API to add subAsset .
-     * It will create a new instance of Assetbundle instance and all the give sub-Asset
-     *
-     * @param subAsset
-     * @return
-     */
-    public MemoryAssetBundle addSubAsset(String name, Asset subAsset) {
-        Map<String, Object> metaData = getMetadata();
-        Map<String, String> content = (Map<String, String>) metaData.get("contents");
-        String bundleName = metaData.get("name").toString();
-        content.put(name, "AssetId: "+subAsset.getAssetID());
-        return create(bundleName, content);
+        }
+        throw new TODOException(" Not an Asset Bundle");
+
     }
 
 
