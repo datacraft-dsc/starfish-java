@@ -17,7 +17,7 @@ before_install:
 # - ./surfer/test/bin/cli-test startup
 install: true
 script:
-- mvn integration-test -DadditionalJOption=-Xdoclint:none
+- mvn -Dmaven.javadoc.skip=true integration-test
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:

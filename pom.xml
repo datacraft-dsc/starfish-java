@@ -144,9 +144,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<additionalOptions>-Xdoclint:none</additionalOptions>
-					<additionalJOption>-Xdoclint:none</additionalJOption>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
 				</configuration>
 			</plugin>
 		</plugins>
