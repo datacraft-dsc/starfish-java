@@ -1,7 +1,6 @@
 language: java
+jdk: oraclejdk8
 dist: xenial
-jdk:
-  - oraclejdk8
 services:
 - docker
 addons:
@@ -19,7 +18,7 @@ before_install:
 # - ./surfer/test/bin/cli-test startup
 install: true
 script:
-- mvn integration-test
+- mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V integration-test
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
