@@ -89,6 +89,10 @@ public interface 	Asset {
 	 * @return A map representing this asset
 	 */
 	public Map<String, Object> getParamValue();
-
-    boolean isBundle();
+	/**
+	 * Returns true if this asset is an bundle, i.e. can have many sub-asset.
+	 *
+	 * @return true if this asset is an bundle, false otherwise
+	 */
+	public boolean isBundle();
 }

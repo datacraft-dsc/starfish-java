@@ -1,7 +1,9 @@
 package sg.dex.starfish.impl.memory;
 
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.AssetBundle;
 import sg.dex.starfish.exception.TODOException;
-import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -10,15 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.TYPE;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * This class is to create a memory bundle asset
  */
-public class MemoryAssetBundle extends AAsset {
+public class MemoryAssetBundle extends AssetBundle {
+
+    private static AAgent memoryAgent;
 
     private MemoryAssetBundle(String metaData) {
-
         super(metaData);
 
     }
@@ -31,13 +34,17 @@ public class MemoryAssetBundle extends AAsset {
      * @param assetMap   map of all asset with name and assetID
      * @return
      */
-    public static MemoryAssetBundle create(String bundleName, Map<String, String> assetMap) {
+    public static MemoryAssetBundle create(AAgent aAgent, String bundleName, Map<String, Asset> assetMap) {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
+        memoryAgent = aAgent;
+        Asset asset ;
         for (String name : assetMap.keySet()) {
+            asset = assetMap.get(name);
+            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
+            memoryAgent.uploadAsset(asset);
 
-            subAssetIdMap.put(name, getAssetIdMap(assetMap.get(name)));
         }
         return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));
 
@@ -51,9 +58,9 @@ public class MemoryAssetBundle extends AAsset {
      * @param assetMap map of all asset with name and assetID
      * @return
      */
-    public static MemoryAssetBundle create(Map<String, String> assetMap) {
+    public static MemoryAssetBundle create(AAgent aAgent, Map<String, Asset> assetMap) {
 
-        return create(Instant.now().toString(), assetMap);
+        return create(aAgent, null, assetMap);
 
 
     }
@@ -72,8 +79,10 @@ public class MemoryAssetBundle extends AAsset {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put("name", bundleName);
+        ob.put(DATE_CREATED, Instant.now().toString());
         ob.put(TYPE, "bundle");
         ob.put("contents", content);
+        ob.put(CONTENT_TYPE, "application/octet-stream");
         return JSON.toPrettyString(ob);
     }
 
@@ -106,17 +115,18 @@ public class MemoryAssetBundle extends AAsset {
      * @return
      */
 
-    public List<String> getAllSubAssetIDs() {
+    public List<Asset> getAllSubAssetIDs() {
         if (isBundle()) {
 
             Map<String, Object> metadata = getMetadata();
             Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
 
-            List<String> allSubAssetIdLst = new ArrayList<>();
+            List<Asset> allSubAssetLst = new ArrayList<>();
             for (String data : contents.keySet()) {
-                allSubAssetIdLst.add((contents.get(data)).get("assetID"));
+
+                allSubAssetLst.add(memoryAgent.getAsset((contents.get(data)).get("assetID")));
             }
-            return allSubAssetIdLst;
+            return allSubAssetLst;
 
         }
         throw new TODOException(" Not an Asset Bundle");
