@@ -63,17 +63,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param did   DID for this agent
      * @return RemoteAgent
      */
-    public static RemoteAgent create(Ocean ocean, DID did, Account account) {
-        return new RemoteAgent(ocean, did, account);
-    }
-
-    /**
-     * Creates a RemoteAgent with the specified Ocean connection and DID
-     *
-     * @param ocean Ocean connection to use
-     * @param did   DID for this agent
-     * @return RemoteAgent
-     */
     public static RemoteAgent create(Ocean ocean, DID did) {
         return new RemoteAgent(ocean, did, null);
     }
@@ -167,7 +156,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     void addAuthHeaders(HttpRequest request) {
         request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
-        // request.setHeader("Authorization", "token ee803bb37109be5779ba1e85908f65e537db604f419000231e8c551a7f3d0af1");
     }
 
     /**
@@ -454,16 +442,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public String getMarketEndpoint() {
         return getEndpoint("Ocean.Market.v1");
-    }
-
-    /**
-     * Gets the Auth API endpoint for this agent, or null if this does not exist
-     *
-     * @return The Meta API endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/meta"
-     */
-    public String getAuthEndpoint() {
-        return getEndpoint("Ocean.Auth.v1");
     }
 
     @Override
@@ -815,146 +793,4 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return RemotePurchase.create(this, id);
 
     }
-
-    /**
-     * Gets Auth URI for this agent
-     *
-     * @return The URI for listing metadata
-     * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
-     * @throws IllegalArgumentException      on invalid URI for asset metadata
-     */
-    private URI getAuthURI(String authpath) {
-        String authEndpoint = getAuthEndpoint();
-        if (authEndpoint == null)
-            throw new UnsupportedOperationException("This agent does not support the Market API (no endpoint defined)");
-        try {
-            return new URI(authEndpoint + "/" + authpath);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
-        }
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getUser() {
-
-        HttpGet httpget = new HttpGet(getAuthURI("user"));
-        addAuthHeaders(httpget);
-        CloseableHttpResponse response = HTTP.execute(httpget);
-        try {
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 404) {
-                throw new RemoteException("Auth not found for at: " + statusCode);
-            } else if (statusCode == 200) {
-                String body = Utils.stringFromStream(HTTP.getContent(response));
-                account.getCredentials().putAll(JSON.toMap(body));
-                return account.getCredentials().get("username").toString();
-            } else {
-                throw new TODOException("status code not handled: " + statusCode);
-            }
-        } finally {
-            HTTP.close(response);
-        }
-
-    }
-
-    public String getToken() {
-        HttpGet httpget = new HttpGet(getAuthURI("token"));
-        addAuthHeaders(httpget);
-        CloseableHttpResponse response = HTTP.execute(httpget);
-        try {
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            // if not token then create a token
-            if (statusCode == 401) {
-                return createToken();
-            }
-            if (statusCode == 404) {
-                throw new RemoteException("Asset ID not found for at: " + statusCode);
-            } else if (statusCode == 200) {
-                String body = Utils.stringFromStream(HTTP.getContent(response));
-                List<String> allTokenLst = JSON.parse(body);
-                account.getCredentials().put("token",allTokenLst);
-                return allTokenLst.get(0);
-            } else {
-                throw new TODOException("status code not handled: " + statusCode);
-            }
-        } finally {
-            HTTP.close(response);
-        }
-
-
-    }
-
-    private String createToken() {
-        String url = "token";
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(getAuthURI(url));
-        addAuthHeaders(httpPost);
-        //httpPost.setEntity();
-        CloseableHttpResponse response;
-        try {
-            response = httpclient.execute(httpPost);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + "");
-                }
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    String id = JSON.parse(body);
-                    ((List)account.getCredentials().get("token")).add(id);
-                    return id;
-                }
-                throw new TODOException("Result not handled: " + statusLine);
-            } finally {
-                response.close();
-            }
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-    public String createToken(String user,String pswd) {
-        String url = "token";
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(getAuthURI(url));
-        addAuthHeaders(httpPost);
-        //httpPost.setEntity();
-        CloseableHttpResponse response;
-        try {
-            response = httpclient.execute(httpPost);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + "");
-                }
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    String id = JSON.parse(body);
-                    return id;
-                }
-                throw new TODOException("Result not handled: " + statusLine);
-            } finally {
-                response.close();
-            }
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-
 }
