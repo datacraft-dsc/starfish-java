@@ -45,7 +45,7 @@ public class TestMemoryAssetBundle {
 
         MemoryAgent memoryAgent = MemoryAgent.create();
         // create assetbundle
-        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(memoryAgent,assetBundle);
+        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(memoryAgent,assetBundle,null);
 
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
@@ -58,26 +58,17 @@ public class TestMemoryAssetBundle {
 
 
         // get list of all sub Asset
-        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAsset();
+        Map<String,Asset> allAssetMap = memoryAssetBundle.getAllSubAsset();
 
         // check if asset present
-        Asset a = allAssetLst.stream()
-                .filter(asset -> a1.getAssetID().equals(asset.getAssetID()))
+        Object a = allAssetMap.keySet().stream()
+                .filter(asset -> a1.getAssetID().equals(allAssetMap.get(asset).getAssetID()))
                 .findAny()
                 .orElse(null);
 
         assertNotNull(a);
 
-        // comparing each added asset with result asset
 
-        List<Asset> filteredAssetList = allAssetLst.stream()
-                .filter(asset -> initalAssetLst.stream()
-                        .anyMatch(asset1 ->
-                                asset1.getAssetID().equals(asset.getAssetID())))
-                .collect(Collectors.toList());
-
-        assertEquals(filteredAssetList.size(),
-                initalAssetLst.size());
 
     }
 
@@ -111,7 +102,7 @@ public class TestMemoryAssetBundle {
 
         // create assetbundle
         MemoryAgent memoryAgent =MemoryAgent.create();
-        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(memoryAgent,"AssetBundle Test Name", assetBundle);
+        MemoryAssetBundle memoryAssetBundle = MemoryAssetBundle.create(memoryAgent,"AssetBundle Test Name", assetBundle,null);
 
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
 
@@ -125,26 +116,13 @@ public class TestMemoryAssetBundle {
 
 
         // get list of all sub Asset
-        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAsset();
+        Map<String,Asset> allAssetMap = memoryAssetBundle.getAllSubAsset();
 
         // check if asset present
-        Asset a = allAssetLst.stream()
-                .filter(asset -> a1.getAssetID().equals(asset.getAssetID()))
+        Object a = allAssetMap.keySet().stream()
+                .filter(asset -> a1.getAssetID().equals(allAssetMap.get(asset).getAssetID()))
                 .findAny()
                 .orElse(null);
-
-        assertNotNull(a);
-
-        // comparing each added asset with result asset
-
-        List<Asset> filteredAssetList = allAssetLst.stream()
-                .filter(asset -> initalAssetLst.stream()
-                        .anyMatch(asset1 ->
-                                asset1.getAssetID().equals(asset.getAssetID())))
-                .collect(Collectors.toList());
-
-        assertEquals(filteredAssetList.size(),
-                initalAssetLst.size());
 
         // get the asset base one asset name from the bundle
 
