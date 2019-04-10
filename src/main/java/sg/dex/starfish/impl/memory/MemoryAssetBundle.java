@@ -39,7 +39,7 @@ public class MemoryAssetBundle extends AssetBundle {
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
         memoryAgent = aAgent;
-        Asset asset ;
+        Asset asset;
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
@@ -76,7 +76,6 @@ public class MemoryAssetBundle extends AssetBundle {
         if (null == content) {
             content = new HashMap<>();
         }
-
         Map<String, Object> ob = new HashMap<>();
         ob.put("name", bundleName);
         ob.put(DATE_CREATED, Instant.now().toString());
@@ -115,7 +114,7 @@ public class MemoryAssetBundle extends AssetBundle {
      * @return
      */
 
-    public List<Asset> getAllSubAssetIDs() {
+    public List<Asset> getAllSubAsset() {
         if (isBundle()) {
 
             Map<String, Object> metadata = getMetadata();
@@ -133,5 +132,22 @@ public class MemoryAssetBundle extends AssetBundle {
 
     }
 
+    /**
+     * API to get the Asset by Asset Name from the Bundle
+     *
+     * @return Asset
+     */
+
+    public Asset getSubAsset(String name) {
+
+
+        Map<String, Object> metadata = getMetadata();
+        Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
+
+
+        return memoryAgent.getAsset((contents.get(name)).get("assetID"));
+
+
+    }
 
 }

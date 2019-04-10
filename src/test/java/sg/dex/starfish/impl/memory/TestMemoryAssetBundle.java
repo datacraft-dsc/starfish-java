@@ -58,7 +58,7 @@ public class TestMemoryAssetBundle {
 
 
         // get list of all sub Asset
-        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAssetIDs();
+        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAsset();
 
         // check if asset present
         Asset a = allAssetLst.stream()
@@ -125,7 +125,7 @@ public class TestMemoryAssetBundle {
 
 
         // get list of all sub Asset
-        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAssetIDs();
+        List<Asset> allAssetLst = memoryAssetBundle.getAllSubAsset();
 
         // check if asset present
         Asset a = allAssetLst.stream()
@@ -145,6 +145,11 @@ public class TestMemoryAssetBundle {
 
         assertEquals(filteredAssetList.size(),
                 initalAssetLst.size());
+
+        // get the asset base one asset name from the bundle
+
+        Asset assetByName =memoryAssetBundle.getSubAsset("two");
+        assertEquals(assetByName.getAssetID(),a2.getAssetID());
 
     }
 
