@@ -23,6 +23,7 @@ public interface Account {
 	 * 
 	 * Required credentials are defined by the agent implementation, but would typically include
 	 * things like user name, password etc.
+	 * This map is immutable and can be used by Agent to get the credential
 	 * 
 	 * @return
 	 */

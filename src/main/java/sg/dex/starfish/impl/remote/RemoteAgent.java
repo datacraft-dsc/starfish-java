@@ -28,10 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +51,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     protected RemoteAgent(Ocean ocean, DID did, Account acc) {
         super(ocean, did);
         this.account = acc;
+    }
+
+    /**
+     * Creates a RemoteAgent with the specified Ocean connection and DID
+     *
+     * @param ocean Ocean connection to use
+     * @param did   DID for this agent
+     * @return RemoteAgent
+     */
+    public static RemoteAgent create(Ocean ocean, DID did, Account account) {
+        return new RemoteAgent(ocean, did, account);
     }
 
     /**
@@ -108,6 +116,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         throw new GenericException("Internal Server Error");
     }
 
+
     public RemoteAgent connect(Account acc) {
         // TODO: get user token and store this in account
         return new RemoteAgent(ocean, did, acc);
@@ -155,7 +164,23 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     void addAuthHeaders(HttpRequest request) {
-        request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+        if (null == account) {
+            request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
+            //request.setHeader("Authorization", "token " + "NA");
+        } else {
+            // get token form account
+            if (null != account.getCredentials().get("token")) {
+                String token = ((List<String>) account.getCredentials().get("token")).get(0);
+                request.setHeader("Authorization", "token " + token);
+            } else {
+                String token = createToken(account);
+                // add default token
+                request.setHeader("Authorization", "token " + token);
+            }
+
+        }
+
+
     }
 
     /**
@@ -444,6 +469,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return getEndpoint("Ocean.Market.v1");
     }
 
+    /**
+     * Gets the Auth API endpoint for this agent, or null if this does not exist
+     *
+     * @return The Meta API endpoint for this agent e.g.
+     * "https://www.myagent.com/api/v1/meta"
+     */
+    public String getAuthEndpoint() {
+        return getEndpoint("Ocean.Auth.v1");
+    }
+
     @Override
     public Job invoke(Operation operation, Asset... params) {
         Map<String, Object> request = new HashMap<String, Object>(2);
@@ -574,7 +609,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return Collections.emptyList();
     }
 
-
     private String createMarketAgentInstance(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));
@@ -605,7 +639,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             HTTP.close(response);
         }
     }
-
 
     private String getMarketMetaData(String marketAgentUrl) {
         HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));
@@ -675,7 +708,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
         }
     }
-
 
     @Override
     public Listing getListing(String id) {
@@ -765,7 +797,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return RemotePurchase.create(this, id);
     }
 
-
     /**
      * API to get the Purchase MetaData
      *
@@ -793,4 +824,142 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return RemotePurchase.create(this, id);
 
     }
+
+    /**
+     * Gets Auth URI for this agent
+     *
+     * @return The URI for listing metadata
+     * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
+     * @throws IllegalArgumentException      on invalid URI for asset metadata
+     */
+    private URI getAuthURI(String authpath) {
+        String authEndpoint = getAuthEndpoint();
+        if (authEndpoint == null)
+            throw new UnsupportedOperationException("This agent does not support the Market API (no endpoint defined)");
+        try {
+            return new URI(authEndpoint + "/" + authpath);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
+        }
+    }
+
+    /**
+     * API to get the logged in user details from the Agent
+     *
+     * @return
+     */
+    public Map<String, Object> getUserDetails() {
+
+        HttpGet httpget = new HttpGet(getAuthURI("user"));
+        addAuthHeaders(httpget);
+        CloseableHttpResponse response = HTTP.execute(httpget);
+        try {
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 404) {
+                throw new RemoteException("Auth not found for at: " + statusCode);
+            } else if (statusCode == 200) {
+                String body = Utils.stringFromStream(HTTP.getContent(response));
+                ((RemoteAccount) account).getUserDataMap().putAll(JSON.toMap(body));
+                return JSON.toMap(body);
+            } else {
+                throw new TODOException("status code not handled: " + statusCode);
+            }
+        } finally {
+            HTTP.close(response);
+        }
+
+    }
+
+    /**
+     * API to get the Oath Token from the Agent
+     *
+     * @return
+     */
+    public String getToken() {
+
+        HttpGet httpget = new HttpGet(getAuthURI("token"));
+        addAuthHeaders(httpget);
+        CloseableHttpResponse response = HTTP.execute(httpget);
+        try {
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 404) {
+                throw new RemoteException("Asset ID not found for at: " + statusCode);
+            } else if (statusCode == 200) {
+                String body = Utils.stringFromStream(HTTP.getContent(response));
+                List<String> allTokenLst = JSON.parse(body);
+                ((RemoteAccount) account).getUserDataMap().put("token", allTokenLst.get(0));
+                return allTokenLst.get(0);
+            } else {
+                throw new TODOException("status code not handled: " + statusCode);
+            }
+        } finally {
+            HTTP.close(response);
+        }
+
+
+    }
+
+    /**
+     * The will create the token base on user name and password configured
+     *
+     * @return new token
+     */
+    public String createToken(Account account) {
+        String url = "token";
+        HttpPost httpPost = new HttpPost(getAuthURI(url));
+        CloseableHttpResponse response;
+        try {
+            String username = account.getCredentials().get("username").toString();
+            String password = account.getCredentials().get("password").toString();
+
+            response = HTTP.executeWithAuth(httpPost, username, password);
+            try {
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 404) {
+                    throw new RemoteException("Asset ID not found for at: " + "");
+                }
+                if (statusCode == 200) {
+                    String body = Utils.stringFromStream(response.getEntity().getContent());
+                    String id = JSON.parse(body);
+                    updateAccountData(id);
+                    return id;
+                }
+                throw new TODOException("Result not handled: " + statusLine);
+            } finally {
+                response.close();
+            }
+        } catch (ClientProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
+     * API to update the Account Data based on response received from the Agent
+     *
+     *
+     * @param token
+     */
+    private void updateAccountData(String token) {
+        if (null == account) {
+            return;
+        }
+
+
+        if (null != ((RemoteAccount) account).getUserDataMap().get("token")) {
+            List<String> tokenLst = ((List<String>) ((RemoteAccount) account).getUserDataMap().get("token"));
+            tokenLst.add(token);
+        } else {
+            List<String> tokenLst = new ArrayList<>();
+            tokenLst.add(token);
+            ((RemoteAccount) account).getUserDataMap().put("token", tokenLst);
+        }
+
+    }
+
 }
