@@ -34,7 +34,7 @@ public class MemoryAssetBundle extends AssetBundle {
      * @param assetMap   map of all asset with name and assetID
      * @return
      */
-    public static MemoryAssetBundle create(AAgent aAgent, String bundleName, Map<String, Asset> assetMap) {
+    public static MemoryAssetBundle create(AAgent aAgent, String bundleName, Map<String, Asset> assetMap,Map<String, Object> meta) {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class MemoryAssetBundle extends AssetBundle {
             memoryAgent.uploadAsset(asset);
 
         }
-        return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap));
+        return new MemoryAssetBundle(buildMetaData(bundleName, subAssetIdMap,meta));
 
 
     }
@@ -58,9 +58,9 @@ public class MemoryAssetBundle extends AssetBundle {
      * @param assetMap map of all asset with name and assetID
      * @return
      */
-    public static MemoryAssetBundle create(AAgent aAgent, Map<String, Asset> assetMap) {
+    public static MemoryAssetBundle create(AAgent aAgent, Map<String, Asset> assetMap,Map<String, Object> meta) {
 
-        return create(aAgent, null, assetMap);
+        return create(aAgent, null, assetMap,meta);
 
 
     }
@@ -72,7 +72,7 @@ public class MemoryAssetBundle extends AssetBundle {
      * @param content
      * @return
      */
-    private static String buildMetaData(String bundleName, Map<String, Map<String, String>> content) {
+    private static String buildMetaData(String bundleName, Map<String, Map<String, String>> content,Map<String, Object> meta) {
         if (null == content) {
             content = new HashMap<>();
         }
@@ -82,6 +82,11 @@ public class MemoryAssetBundle extends AssetBundle {
         ob.put(TYPE, "bundle");
         ob.put("contents", content);
         ob.put(CONTENT_TYPE, "application/octet-stream");
+        if (meta != null) {
+            for (Map.Entry<String, Object> me : meta.entrySet()) {
+                ob.put(me.getKey(), me.getValue());
+            }
+        }
         return JSON.toPrettyString(ob);
     }
 
@@ -109,23 +114,23 @@ public class MemoryAssetBundle extends AssetBundle {
     }
 
     /**
-     * API to get the list of all AssetID present in Asset Bundle
+     * API to get the Map of all Asset present in Asset Bundle
      *
      * @return
      */
 
-    public List<Asset> getAllSubAsset() {
+    public Map<String,Asset> getAllSubAsset() {
         if (isBundle()) {
 
             Map<String, Object> metadata = getMetadata();
             Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
 
-            List<Asset> allSubAssetLst = new ArrayList<>();
+            Map<String,Asset> assetMap = new HashMap<>();
             for (String data : contents.keySet()) {
 
-                allSubAssetLst.add(memoryAgent.getAsset((contents.get(data)).get("assetID")));
+                assetMap.put(data,memoryAgent.getAsset((contents.get(data)).get("assetID")));
             }
-            return allSubAssetLst;
+            return assetMap;
 
         }
         throw new TODOException(" Not an Asset Bundle");
