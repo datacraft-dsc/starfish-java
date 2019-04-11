@@ -1,10 +1,13 @@
 package sg.dex.starfish.impl.remote;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.auth.AUTH;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,10 +18,18 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.CharArrayBuffer;
+import org.apache.http.util.EncodingUtils;
+
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.*;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Params;
+import sg.dex.starfish.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -51,9 +62,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param ocean Ocean connection to use
      * @param did   DID for this agent
      */
-    protected RemoteAgent(Ocean ocean, DID did, Account acc) {
+    protected RemoteAgent(Ocean ocean, DID did, Account account) {
         super(ocean, did);
-        this.account = acc;
+        this.account = (account == null) ? defaultAccount() : account;
     }
 
     /**
@@ -66,6 +77,26 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     public static RemoteAgent create(Ocean ocean, DID did) {
         return new RemoteAgent(ocean, did, null);
     }
+
+    /**
+     * Creates a RemoteAgent with the specified Ocean connection, DID
+     * and Account
+     *
+     * @param ocean Ocean connection to use
+     * @param did   DID for this agent
+     * @param account Account for this agent
+     * @return RemoteAgent
+     */
+    public static RemoteAgent create(Ocean ocean, DID did, Account account) {
+        return new RemoteAgent(ocean, did, account);
+    }
+
+	private Account defaultAccount() {
+		RemoteAccount account = new RemoteAccount(Utils.createRandomHexString(32));
+		account.setCredential("username", "test");
+		account.setCredential("password", "foobar");
+		return account;
+	}
 
     /**
      * Invokes request on this RemoteAgent
@@ -154,9 +185,25 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
     }
 
-    void addAuthHeaders(HttpRequest request) {
-        request.setHeader("Authorization", "Basic QWxhZGRpbjpPcGVuU2VzYW1l");
-    }
+	void addAuthHeaders(HttpRequest request) {
+		String username = this.account.getCredentials().get("username").toString();
+		String password = this.account.getCredentials().get("password").toString();
+		final StringBuilder tmp = new StringBuilder();
+		tmp.append(username);
+		tmp.append(":");
+		tmp.append((password == null) ? "null" : password);
+		final Base64 base64codec = new Base64(0);
+		final byte[] base64password = base64codec.encode(EncodingUtils.getBytes(tmp.toString(), Consts.UTF_8.name()));
+		final CharArrayBuffer buffer = new CharArrayBuffer(32);
+		buffer.append("Basic ");
+		buffer.append(base64password, 0, base64password.length);
+		String header2 = AUTH.WWW_AUTH_RESP;
+		String value2 = buffer.toString();
+		// FIXME: remove this debugging
+		System.out.println("account = " + this.account);
+		System.out.println("RemoteAgent.addAuthHeaders(" + header2 + ", " + value2 + ")");
+		request.setHeader(header2, value2);
+	}
 
     /**
      * Gets an asset for the given asset ID from this agent.
