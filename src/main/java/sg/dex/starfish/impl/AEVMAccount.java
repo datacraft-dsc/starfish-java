@@ -1,7 +1,9 @@
 package sg.dex.starfish.impl;
 
-import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.models.Balance;
+
+import java.util.HashMap;
 
 /**
  * Class representing an Ethereum Account in the Ocean Ecosystem
@@ -20,7 +22,7 @@ public abstract class AEVMAccount extends AAccount {
 	 * @param password The Account password
 	 */
 	protected AEVMAccount(String id, String password) {
-		super(id);
+		super(id,new HashMap<>());
 		this.password=password;
 	}
 

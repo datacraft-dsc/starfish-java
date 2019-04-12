@@ -2,15 +2,14 @@ package sg.dex.starfish.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import sg.dex.starfish.Account;
-
 
 /**
  * Class representing an Account in the Ocean Ecosystem
  *
  * @author Tom
- *
  */
 public abstract class AAccount implements Account {
 
@@ -25,6 +24,11 @@ public abstract class AAccount implements Account {
 	protected AAccount(String id) {
 		this.id=id;
 		this.credentials = new HashMap<String,Object>();
+	}
+
+	protected AAccount(String id, Map<String, Object> credentials) {
+		this.id=id;
+		this.credentials = credentials;;
 	}
 
 	/**
@@ -45,9 +49,13 @@ public abstract class AAccount implements Account {
 	 *
 	 * @return
 	 */
+        @Override
 	public Map<String,Object> getCredentials() {
-		return this.credentials;
-	}
+           // deep cloning the map
+		return  credentials.entrySet().stream()
+			.collect(Collectors.toMap(e -> e.getKey(),
+						  e -> e.getValue()));
+        }
 
 	public void setCredential(String key, Object value) {
 		credentials.put(key, value);
@@ -55,9 +63,9 @@ public abstract class AAccount implements Account {
 
 	public String toString() {
 		final StringBuilder tmp = new StringBuilder();
-		tmp.append(this.getClass().getName());
+		tmp.append(getClass().getName());
 		tmp.append(":");
-		tmp.append(this.id);
+		tmp.append(id);
 		tmp.append("{");
 		for (Map.Entry<String, Object> entry : credentials.entrySet()) {
 			tmp.append(entry.getKey());
