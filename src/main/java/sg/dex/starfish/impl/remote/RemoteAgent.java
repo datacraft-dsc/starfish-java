@@ -71,17 +71,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param did   DID for this agent
      * @return RemoteAgent
      */
-    public static RemoteAgent create(Ocean ocean, DID did, Account account) {
-        return new RemoteAgent(ocean, did, account);
-    }
-
-    /**
-     * Creates a RemoteAgent with the specified Ocean connection and DID
-     *
-     * @param ocean Ocean connection to use
-     * @param did   DID for this agent
-     * @return RemoteAgent
-     */
     public static RemoteAgent create(Ocean ocean, DID did) {
         return new RemoteAgent(ocean, did, null);
     }
@@ -100,7 +89,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     private Account defaultAccount() {
-        RemoteAccount account = new RemoteAccount(Utils.createRandomHexString(32));
+	 RemoteAccount account = new RemoteAccount(Utils.createRandomHexString(32), null);
 	account.setCredential("username", "test");
 	account.setCredential("password", "foobar");
 	return account;
@@ -125,7 +114,104 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
     }
 
+    /**
+     * Creates a remote invoke Job using the given HTTP response.
+     *
+     * @param agent    RemoteAgent on which to create the Job
+     * @param response A valid successful response from the remote Invoke API
+     * @return A job representing the remote invocation
+     * @throws IllegalArgumentException for a bad invoke request
+     * @throws RuntimeException         for protocol errors
+     */
+    public static Job createJob(RemoteAgent agent, HttpResponse response) {
+        StatusLine statusLine = response.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        if (statusCode == 200) {
+            return RemoteAgent.createJobWith200(agent, response);
+        }
+        String reason = statusLine.getReasonPhrase();
+        if ((statusCode) == 400) {
+            throw new IllegalArgumentException("Bad invoke request: " + reason);
+        }
+        throw new GenericException("Internal Server Error");
     }
+
+    public RemoteAgent connect(Account acc) {
+        // TODO: get user token and store this in account
+        return new RemoteAgent(ocean, did, acc);
+    }
+
+    /**
+     * Registers Asset a with the RemoteAgent
+     *
+     * @param a Asset to register
+     * @return RemoteAsset corresponding to a
+     * @throws RemoteException  if a is not found
+     * @throws TODOException    for unhandled results
+     * @throws RuntimeException for protocol errors
+     */
+    @Override
+    public RemoteAsset registerAsset(Asset a) {
+        URI uri = getMetaURI();
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(uri);
+        addAuthHeaders(httpPost);
+        httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+        CloseableHttpResponse response;
+        try {
+            response = httpclient.execute(httpPost);
+            try {
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 404) {
+                    throw new RemoteException("Asset ID not found for at: " + uri);
+                }
+                if (statusCode == 200) {
+                    String body = Utils.stringFromStream(response.getEntity().getContent());
+                    String id = JSON.parse(body);
+                    return getAsset(id);
+                }
+                throw new TODOException("Result not handled: " + statusLine);
+            } finally {
+                response.close();
+            }
+        } catch (ClientProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+     }
+
+	void addAuthHeaders(HttpRequest request) {
+		final CharArrayBuffer buffer = new CharArrayBuffer(32);
+		String token = null;
+
+		if (account.getCredentials().get("token") != null) {
+			token = account.getCredentials().get("token").toString();
+		}
+		if (token != null) {
+			buffer.append("token ");
+			buffer.append(token);
+		} else {
+			String username = account.getCredentials().get("username").toString();
+			String password = account.getCredentials().get("password").toString();
+			final StringBuilder tmp = new StringBuilder();
+			tmp.append(username);
+			tmp.append(":");
+			tmp.append((password == null) ? "null" : password);
+			final Base64 base64codec = new Base64(0);
+			final byte[] base64password = base64codec.encode(EncodingUtils.getBytes(tmp.toString(), Consts.UTF_8.name()));
+			buffer.append("Basic ");
+			buffer.append(base64password, 0, base64password.length);
+
+		}
+		String header = AUTH.WWW_AUTH_RESP;
+		String value = buffer.toString();
+		// FIXME: remove this debugging
+		System.out.println("account = " + account);
+		System.out.println("RemoteAgent.addAuthHeaders(" + header + ", " + value + ")");
+		request.setHeader(header, value);
+	}
 
 
     /**
