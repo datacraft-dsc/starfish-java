@@ -28,7 +28,7 @@ public abstract class AAccount implements Account {
 
 	protected AAccount(String id, Map<String, Object> credentials) {
 		this.id=id;
-		this.credentials = credentials;;
+		this.credentials = (credentials == null) ? new HashMap<String,Object>() : credentials;
 	}
 
 	/**
@@ -51,7 +51,7 @@ public abstract class AAccount implements Account {
 	 */
         @Override
 	public Map<String,Object> getCredentials() {
-           // deep cloning the map
+		// deep cloning the map
 		return  credentials.entrySet().stream()
 			.collect(Collectors.toMap(e -> e.getKey(),
 						  e -> e.getValue()));
