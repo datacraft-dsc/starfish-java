@@ -10,12 +10,23 @@ import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 
 import com.oceanprotocol.squid.api.OceanAPI;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.exceptions.EthereumException;
+
+/* DESIGN CONSIDERATION
+   It may be more apropos for SquidAgent to be a subclass of RemoteAgent.
+   In this case the constructor would need to pass an Account
+   to the superclass.
+   If so then the signatures of registerAsset, getAsset, uploadAsset
+   would need to change to return a RemoteAsset and
+   SquidAsset would need to be a subclass of RemoteAsset.
+*/
 
 /**
  * Class implementing a Squid Agent

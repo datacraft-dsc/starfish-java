@@ -28,7 +28,7 @@ public class AuthSample {
     }
 
 
-    public static void main(String[] arg) {
+    public static void main(String... args) {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
@@ -38,7 +38,7 @@ public class AuthSample {
         // credential
         Map<String, Object> credentialMap = new HashMap<>();
         credentialMap.put("username", "Aladdin");
-        credentialMap.put("password", "6e29fef5d289293d");
+        credentialMap.put("password", "OpenSesame");
 
         // creating remote Account
         RemoteAccount surferAccount = RemoteAccount.create("9671e2c4dabf1b0ea4f4db909b9df3814ca481e3d110072e0e7d776774a68e0d",
@@ -63,8 +63,8 @@ public class AuthSample {
 
 
         // get ALL Tokens
-        String allTokensLst = surfer.getToken();
-        assertNotNull(allTokensLst);
+        String firstToken = surfer.getToken();
+        assertNotNull(firstToken);
 
 
         String token = surferAccount.getUserDataMap().get("token").toString();
@@ -76,7 +76,8 @@ public class AuthSample {
         Object metaData = surferAccount.getUserDataMap().get("metadata");
         String status = surferAccount.getUserDataMap().get("status").toString();
 
-        List<String> role = (List<String>) surferAccount.getUserDataMap().get("roles");
+        // List<String> role = (List<String>) surferAccount.getUserDataMap().get("roles");
+        String role = surferAccount.getUserDataMap().get("roles").toString();
 
         assertNotNull(id);
         assertNotNull(metaData);
@@ -89,4 +90,3 @@ public class AuthSample {
 
 
 }
-
