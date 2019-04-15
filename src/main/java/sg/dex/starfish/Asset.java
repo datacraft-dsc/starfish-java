@@ -65,7 +65,11 @@ public interface 	Asset {
 	public boolean isOperation();
 
 	/**
-	 * Returns the metadata for this asset as a String.
+	 * Returns the metadata for this asset as a String. Assets should store their metadata by deafult 
+	 * as a valid JSON string.
+	 * 
+	 * Warning: Some implementations may not validate the JSON on asset creation and it is possible
+	 * for the metadata String to contain invalid JSON.
 	 *
 	 * @return The metadata of this asset as a String
 	 */
