@@ -28,6 +28,8 @@ public class SearchAssetListing_13 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    	if (remoteAgent==null) return;
+
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
         // register Remote asset
@@ -38,6 +40,7 @@ public class SearchAssetListing_13 {
 
     @Test
     public void testSearchListingById() {
+    	if (remoteAgent==null) return;
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
@@ -49,6 +52,7 @@ public class SearchAssetListing_13 {
 
     @Test
     public void testSearchAllListing() {
+    	if (remoteAgent==null) return;
 
         List<Listing> listingLst = remoteAgent.getAllListing();
         for(Listing listing: listingLst){
@@ -59,6 +63,7 @@ public class SearchAssetListing_13 {
     }
     @Test
     public void testSearchListingByInvalidId() {
+    	if (remoteAgent==null) return;
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());

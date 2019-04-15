@@ -29,6 +29,7 @@ public class AssetDownload_19 {
 
     @Test
     public void testDownloadAsset() {
+    	if (remoteAgent==null) return;
 
         Asset asset = MemoryAsset.create("test upload of asset");
         RemoteAsset ra = remoteAgent.uploadAsset(asset);

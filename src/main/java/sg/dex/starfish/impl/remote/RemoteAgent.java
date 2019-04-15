@@ -61,13 +61,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
 		super(ocean, did);
+		// TODO: remove defaultAccount!! 
 		this.account = (account == null) ? defaultAccount() : account;
-		String token = getToken();
-		if (token == null) {
-			System.out.println("creating a token...");
-			token = createToken(this.account);
-		}
-		System.out.println("token: " + token);
+		// Remove: shouldn't call remote APIs in constructor
+		//		String token = getToken();
+		//		if ((token == null)&&(account!=null)) {
+		//			System.out.println("creating a token...");
+		//			token = createToken(this.account);
+		//		}
+		//		System.out.println("token: " + token);
 	}
 
 	/**
@@ -885,7 +887,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	private URI getAuthURI(String authpath) {
 		String authEndpoint = getAuthEndpoint();
 		if (authEndpoint == null)
-			throw new UnsupportedOperationException("This agent does not support the Market API (no endpoint defined)");
+			throw new UnsupportedOperationException("This agent does not support the Auth API (no endpoint defined)");
 		try {
 			return new URI(authEndpoint + "/" + authpath);
 		} catch (URISyntaxException e) {
@@ -934,7 +936,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
 			if (statusCode == 404) {
-				throw new RemoteException("Asset ID not found for at: " + statusCode);
+				throw new RemoteException("Can't get token: " + statusCode);
 			} else if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
 				List<String> allTokenLst = JSON.parse(body);
@@ -957,6 +959,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return new token
 	 */
 	public String createToken(RemoteAccount account) {
+		// TODO this probably needs refactoring
 		String url = "token";
 		HttpPost httpPost = new HttpPost(getAuthURI(url));
 		CloseableHttpResponse response;

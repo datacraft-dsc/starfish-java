@@ -28,6 +28,8 @@ public class AgentIdentity_03 {
 
     @Test
     public void testDid() {
+    	if (remoteAgent==null) return;
+    	
         DID did = remoteAgent.getDID();
         System.out.println(did);
         assertNotNull(did.getID());

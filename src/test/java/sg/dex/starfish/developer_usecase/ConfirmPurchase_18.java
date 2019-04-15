@@ -28,6 +28,8 @@ public class ConfirmPurchase_18 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        if (remoteAgent==null) return;
+        
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset purchase");
         remoteAgent.registerAsset(remoteAsset);
@@ -38,12 +40,13 @@ public class ConfirmPurchase_18 {
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
         remoteAgent.updateListing(data2);
-
     }
 
 
     @Test
     public void testOrderedStatusForPurchaseAsset() {
+        if (remoteAgent==null) return;
+
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
         purchaseData.put("status", "ordered");
@@ -56,6 +59,8 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testWishlistStatusForPurchaseAsset() {
+        if (remoteAgent==null) return;
+
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
         purchaseData.put("status", "wishlist");
@@ -68,6 +73,8 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testDeliveredStatusForPurchaseAsset() {
+        if (remoteAgent==null) return;
+
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
         purchaseData.put("status", "delivered");

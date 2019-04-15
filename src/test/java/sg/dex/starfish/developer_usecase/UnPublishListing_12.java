@@ -31,7 +31,9 @@ public class UnPublishListing_12 {
 
     @Test
     public void testPublishAsset() {
-        // register Remote asset
+    	if (remoteAgent==null) return;
+
+    	// register Remote asset
         remoteAgent.registerAsset(remoteAsset);
         Map<String, Object> data2 = new HashMap<>();
         //data.put( "status", "unpublished");
