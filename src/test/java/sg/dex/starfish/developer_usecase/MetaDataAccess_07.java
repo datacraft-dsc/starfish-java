@@ -26,19 +26,18 @@ import static sg.dex.starfish.constant.Constant.*;
  */
 @RunWith(JUnit4.class)
 public class MetaDataAccess_07 {
-    Asset asset;
+    MemoryAsset asset;
     RemoteAgent remoteAgent;
 
     @Before
-    public void seup() {
+    public void setup() {
         byte data[] = {2, 5, 7};
         asset = MemoryAsset.create(data);
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-
     }
 
     @Test
-    public void testMEmoryAgentMetaData() {
+    public void testMemoryAgentMetaData() {
 
         assertNotNull(asset.getMetadata());
         assertNotNull(asset.getMetadata().get(DATE_CREATED));
@@ -52,16 +51,16 @@ public class MetaDataAccess_07 {
     @Test
     public void testRemoteAssetMetaDataAsset() {
 
-        asset = RemoteAsset.create(remoteAgent, "This is remote data");
-        assertNotNull(asset.getAssetID());
+        RemoteAsset rasset = RemoteAsset.create(remoteAgent, "This is remote data");
+        assertNotNull(rasset.getAssetID());
 
     }
 
     @Test(expected = Error.class)
     public void testRemoteAssetMetaDataAssetInvalidJson() {
 
-        asset = RemoteAsset.create(remoteAgent, "This is remote data");
-        assertNotNull(asset.getMetadata().get(CONTENT_HASH));
+    	RemoteAsset rasset = RemoteAsset.create(remoteAgent, "This is remote data");
+        assertNotNull(rasset.getMetadata().get(CONTENT_HASH));
 //
     }
 
@@ -75,14 +74,14 @@ public class MetaDataAccess_07 {
         ob.put(TYPE, "dataset");
         ob.put(SIZE, Integer.toString(data.length()));
         ob.put(CONTENT_TYPE, "application/octet-stream");
-        asset = RemoteAsset.create(remoteAgent, JSON.toPrettyString(ob));
-        System.out.println(asset);
-        System.out.println(asset.getMetadataString());
-        assertNotNull(asset.getMetadataString());
-        assertNotNull(asset.getMetadata().get(CONTENT_HASH));
-        assertNotNull(asset.getMetadata().get(TYPE));
-        assertNotNull(asset.getMetadata().get(SIZE));
-        assertNotNull(asset.getMetadata().get(CONTENT_TYPE));
+        RemoteAsset rasset = RemoteAsset.create(remoteAgent, JSON.toPrettyString(ob));
+        System.out.println(rasset);
+        System.out.println(rasset.getMetadataString());
+        assertNotNull(rasset.getMetadataString());
+        assertNotNull(rasset.getMetadata().get(CONTENT_HASH));
+        assertNotNull(rasset.getMetadata().get(TYPE));
+        assertNotNull(rasset.getMetadata().get(SIZE));
+        assertNotNull(rasset.getMetadata().get(CONTENT_TYPE));
 
 
     }
