@@ -10,7 +10,6 @@ import sg.dex.starfish.util.Utils;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -145,65 +144,87 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
 
+    /**
+     * API to ge the Listing instance
+     *
+     * @param listingData
+     * @return
+     */
     @Override
     public Listing createListing(Map<String, Object> listingData) {
-        if(listingData.get("assetid")== null){
-            throw new RuntimeException("Assset Id is mandatory");
+        if (listingData.get("assetid") == null) {
+            throw new IllegalArgumentException("Assset Id is mandatory");
         }
 
-        Map<String, Object> responseMetaData =getResponseMetaDataListing(listingData);
+        Map<String, Object> responseMetaData = getResponseMetaDataListing(listingData);
         //String data =JSON.toPrettyString(responseMetaData);
-        listingStore.put(responseMetaData.get("id").toString(),MemoryListing.create(this, responseMetaData));
+        listingStore.put(responseMetaData.get("id").toString(), MemoryListing.create(this, responseMetaData));
         return listingStore.get(responseMetaData.get("id").toString());
     }
 
-    private  Map<String,Object> getResponseMetaDataListing(Map<String,Object> meta){
-        Map<String,Object> responseMetadata = new HashMap<>();
+    /**
+     * API to create a response similar to Remote Agents responses.
+     *
+     * @param meta
+     * @return
+     */
+    private Map<String, Object> getResponseMetaDataListing(Map<String, Object> meta) {
+        Map<String, Object> responseMetadata = new HashMap<>();
 
         responseMetadata.putAll(meta);
         // default status
-        responseMetadata.put("status","unpublished");
+        responseMetadata.put("status", "unpublished");
 
-        String listingID =new Random().toString();
-        responseMetadata.put("id",listingID);
+        responseMetadata.put("id", DID.createRandom());
 
-        responseMetadata.put("trust_level",meta.get("trust_level")==null?0:meta.get("trust_level"));
-        responseMetadata.put("userid",meta.get("userid")==null?1234:meta.get("userid"));
-        responseMetadata.put("agreement",meta.get("agreement")==null?0:meta.get("agreement"));
-        responseMetadata.put("info",meta.get("info")==null?0:meta.get("info"));
-        responseMetadata.put("utime",meta.get("utime")==null? Instant.now() :meta.get("utime"));
+        responseMetadata.put("trust_level", meta.get("trust_level") == null ? 0 : meta.get("trust_level"));
+        responseMetadata.put("userid", meta.get("userid") == null ? 1234 : meta.get("userid"));
+        responseMetadata.put("agreement", meta.get("agreement") == null ? 0 : meta.get("agreement"));
+        responseMetadata.put("info", meta.get("info") == null ? 0 : meta.get("info"));
+        responseMetadata.put("utime", meta.get("utime") == null ? Instant.now() : meta.get("utime"));
+        responseMetadata.put("ctime", meta.get("ctime") == null ? Instant.now() : meta.get("ctime"));
 
         return responseMetadata;
 
 
     }
 
+    /**
+     * API to get the Purchase instance
+     *
+     * @param purchaseData
+     * @return
+     */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {
-        if(purchaseData.get("listingid")== null){
-            throw new RuntimeException("Listing Id is mandatory");
+        if (purchaseData.get("listingid") == null) {
+            throw new IllegalArgumentException("Listing Id is mandatory");
         }
 
-        Map<String, Object> responseMetaData =getResponseMetaDataPurchase(purchaseData);
+        Map<String, Object> responseMetaData = getResponseMetaDataPurchase(purchaseData);
 
-        purchaseStore.put(responseMetaData.get("id").toString(),MemoryPurchase.create(this, responseMetaData));
+        purchaseStore.put(responseMetaData.get("id").toString(), MemoryPurchase.create(this, responseMetaData));
         return purchaseStore.get(responseMetaData.get("id").toString());
     }
 
-    private Map<String,Object> getResponseMetaDataPurchase(Map<String,Object> purchaseData){
+    /**
+     * API to create a response similar to Remote Agents responses.
+     *
+     * @param purchaseData
+     * @return
+     */
+    private Map<String, Object> getResponseMetaDataPurchase(Map<String, Object> purchaseData) {
 
 
-
-        Map<String,Object> responseMetadata = new HashMap<>();
+        Map<String, Object> responseMetadata = new HashMap<>();
         responseMetadata.putAll(purchaseData);
-        responseMetadata.put("status","wishlist");
-        String listingID =new Random().toString();
-        responseMetadata.put("id",listingID);
+        responseMetadata.put("status", "wishlist");
+        responseMetadata.put("id", DID.createRandomString());
 
-        responseMetadata.put("userid",purchaseData.get("userid")==null?1234:purchaseData.get("userid"));
-        responseMetadata.put("info",purchaseData.get("info")==null?0:purchaseData.get("info"));
-        responseMetadata.put("agreement",purchaseData.get("agreement")==null? Instant.now() :purchaseData.get("agreement"));
-        responseMetadata.put("ctime",purchaseData.get("ctime")==null? Instant.now() :purchaseData.get("agreement"));
-        responseMetadata.put("utime",purchaseData.get("utime")==null? Instant.now() :purchaseData.get("agreement"));
+        responseMetadata.put("userid", purchaseData.get("userid") == null ? 1234 : purchaseData.get("userid"));
+        responseMetadata.put("info", purchaseData.get("info") == null ? 0 : purchaseData.get("info"));
+        responseMetadata.put("agreement", purchaseData.get("agreement") == null ? Instant.now() : purchaseData.get("agreement"));
+        responseMetadata.put("ctime", purchaseData.get("ctime") == null ? Instant.now() : purchaseData.get("agreement"));
+        responseMetadata.put("utime", purchaseData.get("utime") == null ? Instant.now() : purchaseData.get("agreement"));
 
         return responseMetadata;
 

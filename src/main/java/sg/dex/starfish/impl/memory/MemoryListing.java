@@ -20,9 +20,14 @@ public class MemoryListing extends AListing {
         this.id=listingID;
     }
 
+    /**
+     * API will create the listing instance based on the metaMap data passed.
+     * @param agent
+     * @param metaMap
+     * @return
+     */
     public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {
-    	//Map<String,Object> metaMap=JSON.parse(metaString);
-    	//String listingID=Hex.toString(Hash.keccak256(metaString));
+
     	String listingID= metaMap.get("id").toString();
 
         return  new MemoryListing(agent,listingID,metaMap);

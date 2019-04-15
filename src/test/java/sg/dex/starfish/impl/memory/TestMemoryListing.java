@@ -1,13 +1,13 @@
 package sg.dex.starfish.impl.memory;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.util.Hex;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,7 @@ import java.util.Map;
 public class TestMemoryListing {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/listing.json";
 
     @Test
     public void testCreateListing() {
@@ -27,21 +28,15 @@ public class TestMemoryListing {
         memoryAgent.uploadAsset(a);
 
         Map<String, Object> metaData = new HashMap<>();
-        //data.put( "status", "unpublished");
-        metaData.put("assetid", a.getAssetID());
-        String info = "{\n" +
-                "    \"title\": \"Test\",\n" +
-                "    \"description\": \"Listing test\"\n" +
-                "  }";
-        JSONObject json = null;
-        JSONParser parser = new JSONParser();
         try {
-            json = (JSONObject) parser.parse(info);
-        } catch (ParseException e) {
+            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            ObjectMapper objectMapper = new ObjectMapper();
+            HashMap json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            metaData.put("info", json);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        metaData.put("info", json);
-
+        metaData.put("assetid",a.getAssetID());
         Listing listing = memoryAgent.createListing(metaData);
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
@@ -70,7 +65,7 @@ public class TestMemoryListing {
     }
 
     @Test
-    public void testWithAllData(){
+    public void testWithAllData() {
         // create memory Agent
         MemoryAgent memoryAgent = MemoryAgent.create();
         // create asset
@@ -95,31 +90,26 @@ public class TestMemoryListing {
 
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testCreateListingWithoutMandatoryData() {
 
         // create memory Agent
         MemoryAgent memoryAgent = MemoryAgent.create();
         // create asset
         MemoryAsset a = MemoryAsset.create(BYTE_DATA);
-
         memoryAgent.uploadAsset(a);
 
         Map<String, Object> metaData = new HashMap<>();
-        //data.put( "status", "unpublished");
-        //metaData.put("assetID", a.getAssetID());
-        String info = "{\n" +
-                "    \"title\": \"Test\",\n" +
-                "    \"description\": \"Listing test\"\n" +
-                "  }";
-        JSONObject json = null;
-        JSONParser parser = new JSONParser();
+
         try {
-            json = (JSONObject) parser.parse(info);
-        } catch (ParseException e) {
+            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            ObjectMapper objectMapper = new ObjectMapper();
+            HashMap json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            metaData.put("info", json);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        metaData.put("info", json);
+
 
         Listing listing = memoryAgent.createListing(metaData);
         Assert.assertNotNull(listing);
