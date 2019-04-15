@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	private static final String LISTING_URL = "/listings";
-	private static final String PURCHAISNG_URL = "/purchases";
+	private static final String PURCHASE_URL = "/purchases";
 	private final RemoteAccount account;
 
 	/**
@@ -842,7 +842,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return
 	 */
 	public Purchase createPurchase(Map<String, Object> data) {
-		String response = createMarketAgentInstance(data, PURCHAISNG_URL);
+		String response = createMarketAgentInstance(data, PURCHASE_URL);
 		String id = JSON.toMap(response).get("id").toString();
 		return RemotePurchase.create(this, id);
 	}
@@ -854,7 +854,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return
 	 */
 	public Map<String, Object> getPurchaseMetaData(String id) {
-		String response = getMarketMetaData(PURCHAISNG_URL + "/" + id);
+		String response = getMarketMetaData(PURCHASE_URL + "/" + id);
 		return JSON.toMap(response);
 	}
 
@@ -870,7 +870,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		if (id == null) {
 			throw new GenericException("Listing ID not found");
 		}
-		updateMarketMetaData(newValue, PURCHAISNG_URL + "/" + id);
+		updateMarketMetaData(newValue, PURCHASE_URL + "/" + id);
 		return RemotePurchase.create(this, id);
 
 	}
