@@ -13,7 +13,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Paths;
 
 /**
- * This clss is for reading the data from a give URL
+ * This class is for reading the data from a given URL
  */
 public class RemoteHttpAsset extends ADataAsset {
 

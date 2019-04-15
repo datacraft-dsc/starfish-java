@@ -37,6 +37,9 @@ public class AgentRegistration_04 {
                 "type", "Ocean.Invoke.v1",
                 "serviceEndpoint", "/api/v1/invoke"));
         services.add(Utils.mapOf(
+                "type", "Ocean.Auth.v1",
+                "serviceEndpoint", "/api/v1/auth"));
+         services.add(Utils.mapOf(
                 "type", "Ocean.Market.v1",
                 "serviceEndpoint", "/api/v1/market"));
         ddo.put("service", services);

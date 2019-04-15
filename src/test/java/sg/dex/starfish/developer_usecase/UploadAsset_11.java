@@ -22,6 +22,8 @@ public class UploadAsset_11 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    	if (remoteAgent==null) return;
+
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
         // register Remote asset
@@ -32,6 +34,8 @@ public class UploadAsset_11 {
 
     @Test
     public void testUploadAsset() {
+    	if (remoteAgent==null) return;
+    	
         Asset a = MemoryAsset.create("Testing to upload of asset");
         RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
         String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());
