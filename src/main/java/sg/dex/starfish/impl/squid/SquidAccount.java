@@ -1,10 +1,12 @@
 package sg.dex.starfish.impl.squid;
 
 import java.math.BigInteger;
+import java.util.Map;
 
 import sg.dex.starfish.impl.AEVMAccount;
 
-import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.TODOException;
 
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
@@ -134,5 +136,10 @@ public class SquidAccount extends AEVMAccount {
 
 		}
 		return new Balance();
+	}
+
+	@Override
+	public Map<String, Object> getCredentials() {
+		throw new TODOException("Squid credentials?");
 	}
 }

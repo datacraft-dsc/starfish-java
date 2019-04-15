@@ -51,11 +51,11 @@ public class TestMemoryOperations {
 	
 	@Test public void testInsufficientParams() {
 		Operation op=ReverseBytesOperation.create();
-		Job badJob=op.invoke(); // should not yet fail since this is async
 		try {
-			Asset result2=badJob.awaitResult(1000);
+			Job badJob=op.invoke(); // should not yet fail since this is async
+			Asset result2=badJob.awaitResult(10);
 			fail("Should not succeed! Got: "+Utils.getClass(result2));
-		} catch (Exception ex) {
+		} catch (IllegalArgumentException ex) {
 			/* OK */
 		}
 	}

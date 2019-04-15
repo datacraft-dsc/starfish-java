@@ -1,4 +1,4 @@
-package sg.dex.starfish.util;
+package sg.dex.starfish.exception;
 
 /**
  * Exception class representing a failure during invoke job execution.

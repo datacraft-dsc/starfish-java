@@ -7,38 +7,41 @@ import java.util.Map;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.AuthorizationException;
+import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.StorageException;
-import sg.dex.starfish.util.TODOException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
 
 /**
- * Class exposing a Java resource referenced by a URL as an Ocean asset
+ * Class exposing a Java classpath resource as an Ocean asset.
+ * 
+ * Mainly useful for testing, or for applications that wish to embed some default assets such as 
+ * scripts as fixed resources.
  *
  * @author Mike
- *
  */
 public class ResourceAsset extends ADataAsset {
-	private final String name;
+	private final String resourceName;
 
-	protected ResourceAsset(String meta, String name) {
+	protected ResourceAsset(String meta, String resourceName) {
 		super(meta);
-		this.name=name;
+		this.resourceName=resourceName;
 	}
 
 	public static ResourceAsset create(String meta, String resourcePath) {
 		return new ResourceAsset(meta,resourcePath);
 	}
 	
-	public static ResourceAsset create(String resourcePath) {
-		return create(buildMetaData(resourcePath,null),resourcePath);
+	public static ResourceAsset create(String resourceName) {
+		return create(buildMetaData(resourceName,null),resourceName);
 	}
 	
 	private static String buildMetaData(String resourcePath,Map<String,Object> meta) {
 		String hash=Hex.toString(Hash.keccak256(resourcePath));
 
 		Map<String,Object> ob=new HashMap<>();
+		ob.put("name", resourcePath);
 		ob.put("dateCreated", Instant.now().toString());
 		ob.put("contentHash", hash);
 		ob.put("type", "dataset");
@@ -61,19 +64,19 @@ public class ResourceAsset extends ADataAsset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public InputStream getInputStream() {
-		InputStream istream= Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-		if (istream==null) throw new IllegalStateException("Resource does not exist on classpath: "+name);
+	public InputStream getContentStream() {
+		InputStream istream= Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+		if (istream==null) throw new IllegalStateException("Resource does not exist on classpath: "+resourceName);
 		return istream;
 	}
 
 	@Override
-	public long getSize() {
+	public long getContentSize() {
 		throw new TODOException();
 	}
 
 	public String getName() {
-		return name;
+		return resourceName;
 	}
 
 

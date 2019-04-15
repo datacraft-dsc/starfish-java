@@ -2,8 +2,8 @@ package sg.dex.starfish;
 
 import java.io.InputStream;
 
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Interface representing a data asset.
@@ -31,7 +31,7 @@ public interface DataAsset extends Asset {
 	 * @throws StorageException if unable to load the Asset
 	 * @return An input stream allowing consumption of the asset data
 	 */
-	public InputStream getInputStream();
+	public InputStream getContentStream();
 
 	/**
 	 * Gets raw data corresponding to this Asset

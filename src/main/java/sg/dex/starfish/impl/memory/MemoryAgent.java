@@ -13,8 +13,10 @@ import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+
+// TODO: should implement MarketAgent, StorageAgent etc.
 
 public class MemoryAgent extends AAgent implements Invokable {
 	/**
@@ -27,7 +29,7 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 */
 	public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
-	private HashMap<String,Asset> assetStore=new HashMap<String,Asset>();
+	private HashMap<String,MemoryAsset> assetStore=new HashMap<String,MemoryAsset>();
 
 	private MemoryAgent(Ocean ocean,String did) {
 		this(ocean,DID.parse(did));
@@ -59,8 +61,13 @@ public class MemoryAgent extends AAgent implements Invokable {
 	 */
 	@Override
 	public Asset registerAsset(Asset a) {
-		assetStore.put(a.getAssetID(),a);
-		return a;
+		MemoryAsset ma = MemoryAsset.create(a);
+		// TODO: consider removing because ID collision is impossible?
+		//if(null != assetStore.get(a.getAssetID())){
+		//		throw new IllegalStateException("Asset with id "+ a.getAssetID() +"is already register");
+		//}
+		assetStore.put(ma.getAssetID(),ma);
+		return ma;
 	}
 
 	/**

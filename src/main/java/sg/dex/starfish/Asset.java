@@ -3,15 +3,15 @@ package sg.dex.starfish;
 import java.util.Map;
 
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Interface representing an asset
  *
  * @author Mike
  */
-public interface Asset {
+public interface 	Asset {
 
 	/**
 	 * Gets DID for this Asset
@@ -89,5 +89,10 @@ public interface Asset {
 	 * @return A map representing this asset
 	 */
 	public Map<String, Object> getParamValue();
-
+	/**
+	 * Returns true if this asset is an bundle, i.e. can have many sub-asset.
+	 *
+	 * @return true if this asset is an bundle, false otherwise
+	 */
+	public boolean isBundle();
 }

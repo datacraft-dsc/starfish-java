@@ -5,7 +5,7 @@ import java.util.Map;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 
-import sg.dex.starfish.util.JobFailedException;
+import sg.dex.starfish.exception.JobFailedException;
 
 /**
  * Basic implementation of an operation which always fails
@@ -36,7 +36,7 @@ public class EpicFailOperation extends AMemoryOperation {
 	 * @return new instance of EpicFailOperation
 	 */
 	public static EpicFailOperation create() {
-		String meta = "{}";
+		String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
 		return new EpicFailOperation(meta);
 	}
 
@@ -50,12 +50,6 @@ public class EpicFailOperation extends AMemoryOperation {
 	 */
 	@Override
 	public Asset compute(Map<String, Asset> params) {
-		throw new JobFailedException("EPIC FAIL",
-					     new Exception("Fail by design"));
-	}
-
-	@Override
-	protected Asset compute(Asset... params) {
 		throw new JobFailedException("EPIC FAIL",
 					     new Exception("Fail by design"));
 	}

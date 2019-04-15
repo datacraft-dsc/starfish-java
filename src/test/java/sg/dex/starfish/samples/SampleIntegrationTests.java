@@ -13,6 +13,17 @@ public class SampleIntegrationTests {
 	private static boolean surferUp = Utils.checkURL(DEFAULT_SURFER_URL);
 	private static String registerAssetID = null;
 
+
+	@Test
+	public void aAuthSample() {
+		System.out.println("=== aAuthSample ===");
+		if (surferUp) {
+			AuthSample.main();
+		} else {
+			System.out.println("WARNING: not tested as surfer is not up.");
+		}
+	}
+
 	@Test
 	public void aTestInvokeSample() {
 		System.out.println("=== aTestInvokeSample ===");
@@ -48,5 +59,4 @@ public class SampleIntegrationTests {
 			System.out.println("WARNING: not tested as surfer is not up.");
 		}
 	}
-
 }

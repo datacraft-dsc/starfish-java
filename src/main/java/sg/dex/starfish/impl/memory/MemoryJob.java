@@ -8,9 +8,9 @@ import java.util.concurrent.TimeoutException;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JobFailedException;
-import sg.dex.starfish.util.AuthorizationException;
-import sg.dex.starfish.util.StorageException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
 
 /**
  * Class representing a job being conducted asynchronously in the local JVM.

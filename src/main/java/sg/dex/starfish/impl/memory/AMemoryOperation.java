@@ -7,12 +7,14 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.impl.AOperation;
 
-import sg.dex.starfish.util.JobFailedException;
-
 /**
  * Abstract base class for operations executed in-memory.
+ * 
+ * Subclasses should override compute(....) to implement the in-memory computation of results.
+ * Invocations to this operation will invoke compute(....) in a separate threat, using a 
+ * future to return the result of the memory Job.
  *
- * Memory operations do not require a specific agent to operate.
+ * Memory operations do not require a specific agent to operate. 
  *
  * @author Mike
  *
@@ -28,36 +30,11 @@ public abstract class AMemoryOperation extends AOperation {
 		super(meta);
 	}
 
-	/**
-	 * Invokes this operation with the given positional parameters.
-	 *
-	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @return The Job for this invoked operation
-	 */
-	@Override
-	public Job invoke(Asset... params) {
-		// default implementation for an invoke job in memory, using a Future<Asset>.
-		// Implementations may override this for custom behaviour
-		final CompletableFuture<Asset> future=new CompletableFuture<Asset>();
-
-	    MemoryAgent.THREAD_POOL.submit(() -> {
-	        try {
-	        	Asset result=compute(params);
-	        	future.complete(result); // success
-	        } catch (Throwable t) {
-	        	future.completeExceptionally(t); // failure
-	        }
-	        assert(future.isDone());
-	    });
-
-		return MemoryJob.create(future);
-	}
-
 	@Override
 	public Job invoke(Map<String, Asset> params) {
-		// default implementation for an invoke job in memory, using a Future<Asset>.
-		// Implementations may override this for custom behaviour
+		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
+		// But this should be sufficient for most cases.
 		final CompletableFuture<Asset> future=new CompletableFuture<Asset>();
 
 	    MemoryAgent.THREAD_POOL.submit(() -> {
@@ -72,22 +49,13 @@ public abstract class AMemoryOperation extends AOperation {
 
 		return MemoryJob.create(future);
 	}
-
-	/**
-	 * Computes the result of the invoke job using the provided assets
-	 *
-	 * @param params The positional parameters for this computation
-	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @throws JobFailedException if the computation fails
-	 * @return Asset The result of the computation as an asset
-	 */
-	protected abstract Asset compute(Asset... params);
 
 	/**
 	 * Computes the result of the invoke job using the provided assets
 	 *
 	 * @param params The named parameters for this computation
 	 * @return Asset The result of the computation as an asset
+	 * @throws IllegalArgumentException is a required parameter is not present or of incorrect type
 	 */
 	protected abstract Asset compute(Map<String,Asset> params);
 }
