@@ -8,13 +8,15 @@ import sg.dex.starfish.util.Hex;
 
 /**
  * Utility class for hash functions
+ * 
  * @author Mike
  *
  */
 public class Hash {
 	/**
-	 * Compute Keccak256 hash of byte array segment
-	 * @param data   Input data
+	 * Compute the Keccak256 hash of byte array segment
+	 * 
+	 * @param data Input data
 	 * @param offset Start offset in the array
 	 * @param length Length of bytes to compute
 	 * @return byte[]
@@ -26,27 +28,41 @@ public class Hash {
 	}
 
 	/**
-	 * Compute Keccak256 hash of byte array
-	 * @param data  Input data
+	 * Compute the Keccak256 hash of byte array
+	 * 
+	 * @param data Input data
 	 * @return byte[]
 	 */
 	public static byte[] keccak256(byte[] data) {
-		return keccak256(data,0,data.length);
+		return keccak256(data, 0, data.length);
 	}
 
 	/**
-	 * Compute Keccak256 hash of string, with UTF-8 encoding
-	 * @param string  Input string
+	 * Compute the Keccak256 hash of string, with UTF-8 encoding
+	 * 
+	 * @param string Input string
 	 * @return byte[]
 	 */
 	public static byte[] keccak256(String string) {
 		return keccak256(string.getBytes(StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Compute the Keccak256 hash of string, with UTF-8 encoding
+	 * 
+	 * @param string Input string
+	 * @return Keccak256 hash as a hex string
+	 */
 	public static String keccak256String(String string) {
 		return Hex.toString(keccak256(string));
 	}
 
+	/**
+	 * Compute the Keccak256 hash of byte array
+	 * 
+	 * @param data Input data
+	 * @return Keccak256 hash as a hex string
+	 */
 	public static String keccak256String(byte[] data) {
 		return Hex.toString(keccak256(data));
 	}
