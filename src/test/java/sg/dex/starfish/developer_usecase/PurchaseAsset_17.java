@@ -32,6 +32,8 @@ public class PurchaseAsset_17 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        if (remoteAgent==null) return;
+        
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset purchase");
         remoteAgent.registerAsset(remoteAsset);
@@ -42,13 +44,13 @@ public class PurchaseAsset_17 {
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
         remoteAgent.updateListing(data2);
-
-
     }
 
 
     @Test
     public  void testPurchaseAsset(){
+        if (remoteAgent==null) return;
+
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
 

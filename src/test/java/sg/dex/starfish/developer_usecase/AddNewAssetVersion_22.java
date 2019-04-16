@@ -29,6 +29,7 @@ public class AddNewAssetVersion_22 {
 
     @Test
     public void testNewVersionOfAsset() {
+    	if (remoteAgent==null) return;
 
         String data ="test upload of asset";
         Asset asset = MemoryAsset.create(data);

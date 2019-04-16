@@ -7,7 +7,10 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 
 /**
- * Interface representing an asset
+ * Interface representing an Asset. An Asset in Starfish is an entity in the Ocean Ecosystem
+ * that is:
+ * A) Described by metadata
+ * B) Able to be used in Data Supply Lines
  *
  * @author Mike
  */

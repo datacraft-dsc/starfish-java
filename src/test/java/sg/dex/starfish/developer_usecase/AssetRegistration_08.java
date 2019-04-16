@@ -28,11 +28,12 @@ public class AssetRegistration_08 {
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
         String data = "Simple memory Asset";
         asset = MemoryAsset.create(data);
-
     }
 
     @Test
     public void testRegister() {
+        if (remoteAgent==null) return;
+    	
         RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
         // get registered Asset by ID
@@ -45,7 +46,9 @@ public class AssetRegistration_08 {
     }
 
     @Test
-    public void testToModifyMetadata() {
+    public void testToModifyMetadata() {    	
+        if (remoteAgent==null) return;
+
         RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
 
         Map<String, Object> metaData = asset.getMetadata();

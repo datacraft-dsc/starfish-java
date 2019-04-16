@@ -31,9 +31,10 @@ public class AssetIdentity_02 {
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
     }
 
-
     @Test
     public void testByteContent() {
+        if (remoteAgent==null) return;
+
         // create a memory asset
         byte[] data = new byte[]{1, 2, 3};
         Asset asset1 = MemoryAsset.create(data);
@@ -50,10 +51,10 @@ public class AssetIdentity_02 {
 
 
     // try to register again with same content and check the Hash
-
-
     @Test
     public void updateMetaData() {
+        if (remoteAgent==null) return;
+        
         byte[] data = new byte[]{1, 2, 3};
         // update the metadata
         Map<String, Object> metaDataAsset = new HashMap<>();
@@ -65,6 +66,8 @@ public class AssetIdentity_02 {
 
     @Test
     public void testWithStringContent() {
+        if (remoteAgent==null) return;
+    	
         // create Asset using String data
         Asset asset3 = MemoryAsset.create("Testing using String");
         RemoteAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
@@ -73,6 +76,8 @@ public class AssetIdentity_02 {
 
     @Test
     public void testSameAssetContent() {
+        if (remoteAgent==null) return;
+
         Asset asset3 = MemoryAsset.create("Testing using String");
         RemoteAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
 
