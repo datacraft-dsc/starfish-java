@@ -1,6 +1,8 @@
 package sg.dex.starfish.connection_check;
 
 
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
+
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -29,7 +31,7 @@ public class ConnectionChecker {
         try {
             URL url = new URL(uri);
             Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), 1000);
+            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), RemoteAgentConfig.getSocketTimeout());
             socket.close();
             return true;
         } catch (Exception e) {

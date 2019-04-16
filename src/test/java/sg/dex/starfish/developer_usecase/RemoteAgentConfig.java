@@ -69,6 +69,13 @@ public class RemoteAgentConfig {
 		String surferURL = ip + ":" + port;
 		return surferURL;
 	}
+	public static int getSocketTimeout(){
+		Properties properties = getProperties();
+		String timeOutValue = properties.getProperty("socket.timeout");
+		int timeOut =Integer.parseInt(timeOutValue);
+
+		return timeOut;
+	}
 	private static Properties getProperties() {
 		Properties properties = new Properties();
 		try {
