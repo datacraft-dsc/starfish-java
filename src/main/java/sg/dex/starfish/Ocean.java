@@ -3,9 +3,11 @@ package sg.dex.starfish;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
 
 import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSONObjectCache;
 
@@ -102,10 +104,28 @@ public class Ocean {
 	public OceanAPI getOceanAPI() {
 		return oceanAPI;
 	}
+	
+	public AssetsAPI getAssetsAPI() {
+		return oceanAPI.getAssetsAPI();
+	}
 
 	public Agent getAgent(DID did) {
-		// TODO create an aggent instance according to the given DID
+		// TODO create an agent instance according to the given DID
 		throw new TODOException();
 	}
+
+	public Asset getAsset(DID did) {
+		AssetsAPI assetsAPI=oceanAPI.getAssetsAPI();
+		if (did.getPath()==null) {
+			// resolve using Squid
+			return SquidAsset.create(this,did);
+		} else {
+			// resolve using DEP protocol
+			Agent ag=getAgent(did);
+			return ag.getAsset(did);
+		}
+	}
+
+
 
 }

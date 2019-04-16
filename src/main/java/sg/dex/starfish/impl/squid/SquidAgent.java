@@ -86,6 +86,11 @@ public class SquidAgent extends AAgent {
 	public SquidAsset getAsset(String id) {
 		return null;
 	}
+	
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
+	}
 
 	/**
 	 * Uploads an asset to this agent. Registers the asset with the agent if required.

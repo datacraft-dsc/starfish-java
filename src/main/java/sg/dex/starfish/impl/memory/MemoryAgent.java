@@ -134,4 +134,9 @@ public class MemoryAgent extends AAgent implements Invokable {
 		return operation.invoke(params);
 	}
 
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
+	}
+
 }

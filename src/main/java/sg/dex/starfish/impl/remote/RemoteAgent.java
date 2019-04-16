@@ -268,6 +268,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			HTTP.close(response);
 		}
 	}
+	
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
+	}
 
 	/**
 	 * API to check if the Asset is present if present it will return true else false.
@@ -1014,5 +1019,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 		*/
 	}
+
 
 }
