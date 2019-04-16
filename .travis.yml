@@ -1,24 +1,32 @@
-language: java
-dist: xenial
+jdk:
+  - oraclejdk8
+
+sudo: false
 services:
-- docker
+  - docker
+cache:
+  directories:
+    - "$HOME/.cache"
 addons:
   ssh_known_hosts: shrimp.octet.services
 before_install:
-- git clone https://github.com/DEX-Company/barge.git
+- git clone https://github.com/oceanprotocol/barge
 - cd barge
-- git checkout tags/dex-2019-02-18
-- bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
-  &
-- cd ..
-- sleep 15
+#- git checkout tags/dex-2019-02-18
+#- bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
+ # &
+#- cd ..
+#- sleep 15
 # NOTE this will not work while surfer is private
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
-install: true
+install:
+- mvn --settings .maven.xml install -P integration-test -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 script:
-- mvn integration-test
+#- mvn --settings .maven.xml install -P integration-test -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+#- mvn integration-test
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
+#- java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r target/site/jacoco/jacoco.xml
+- mvn javadoc:javadoc

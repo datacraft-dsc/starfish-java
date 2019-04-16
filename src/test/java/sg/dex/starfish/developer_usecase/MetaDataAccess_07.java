@@ -1,5 +1,6 @@
 package sg.dex.starfish.developer_usecase;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -16,6 +17,8 @@ import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +37,9 @@ public class MetaDataAccess_07 {
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
     private Asset asset;
     private RemoteAgent remoteAgent;
-
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
     @Before
-    public void seup() {
+    public void setup() {
         byte data[] = {2, 5, 7};
         asset = MemoryAsset.create(data);
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
@@ -58,7 +61,7 @@ public class MetaDataAccess_07 {
     @Test
     public void testRemoteAssetMetaDataAsset() {
 
-        asset = RemoteAsset.create(remoteAgent, "This is remote data");
+        asset = RemoteAsset.create(remoteAgent,  JSON.toString(getMetaData()));
         assertNotNull(asset.getAssetID());
 
     }
@@ -66,7 +69,7 @@ public class MetaDataAccess_07 {
     @Test(expected = Error.class)
     public void testRemoteAssetMetaDataAssetInvalidJson() {
 
-        asset = RemoteAsset.create(remoteAgent, "This is remote data");
+        asset = RemoteAsset.create(remoteAgent, JSON.toString(getMetaData()));
         assertNotNull(asset.getMetadata().get(CONTENT_HASH));
 //
     }
@@ -91,6 +94,18 @@ public class MetaDataAccess_07 {
         assertNotNull(asset.getMetadata().get(CONTENT_TYPE));
 
 
+    }
+    private Map<String,Object> getMetaData(){
+        Map<String, Object> metaData = new HashMap<>();
+        try {
+            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            ObjectMapper objectMapper = new ObjectMapper();
+            HashMap<String,Object> json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @After

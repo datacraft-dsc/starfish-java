@@ -35,7 +35,7 @@ public class AgentIdentity_03 {
     @Test
     public void testDid() {
         DID did = remoteAgent.getDID();
-        System.out.println(did);
+       // System.out.println(did);
         assertNotNull(did.getID());
         assertEquals(did.getMethod(), "ocn");
         assertEquals(did.getScheme(), "did");
