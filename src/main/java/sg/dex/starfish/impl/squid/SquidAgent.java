@@ -19,15 +19,6 @@ import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 
-/* DESIGN CONSIDERATION
-   It may be more apropos for SquidAgent to be a subclass of RemoteAgent.
-   In this case the constructor would need to pass an Account
-   to the superclass.
-   If so then the signatures of registerAsset, getAsset, uploadAsset
-   would need to change to return a RemoteAsset and
-   SquidAsset would need to be a subclass of RemoteAsset.
-*/
-
 /**
  * Class implementing a Squid Agent
  *
@@ -36,8 +27,8 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
  */
 public class SquidAgent extends AAgent {
 
-	private OceanAPI oceanAPI;
-	private Map<String,String> config;
+	private final OceanAPI oceanAPI;
+	private final Map<String,String> config;
 
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
