@@ -1,10 +1,13 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -21,10 +24,13 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(JUnit4.class)
 public class ConnectToOcean_01 {
 
-    Ocean ocean ;
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    Ocean ocean;
 
     @Before
-    public void setup(){
+    public void setup() {
         ocean = new Ocean();
     }
 
@@ -39,7 +45,6 @@ public class ConnectToOcean_01 {
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
         assertNotNull(ocean);
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
-
 
 
     }
@@ -75,14 +80,13 @@ public class ConnectToOcean_01 {
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "testAgain");
 
 
-
     }
 
     @Test
-    public void testregisterDDO(){
+    public void testregisterDDO() {
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "test");
-        DID did =ocean.registerDDO(JSON.toPrettyString(ddo));
+        DID did = ocean.registerDDO(JSON.toPrettyString(ddo));
         ddo.put("test", "testNewValue");
         assertEquals(ocean.getDDO(did).get("test").toString(), "test");
     }

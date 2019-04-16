@@ -1,12 +1,12 @@
 package sg.dex.starfish.samples;
 
-import static org.junit.Assert.assertEquals;
-
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.JSON;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class describe a dummy implementation(Sample) how to register any local asset to the Ocean echosystem
@@ -21,7 +21,7 @@ import sg.dex.starfish.util.JSON;
 public class RegisterSample {
 
 	public static String test(String... args) {
-		RemoteAgent surfer = Surfer.getSurfer("http://localhost:8080");
+		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
 		// a new memory asset
 		Asset a=MemoryAsset.create("Hello World");

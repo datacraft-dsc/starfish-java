@@ -2,10 +2,13 @@ package sg.dex.starfish.developer_usecase;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -23,7 +26,10 @@ import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
  */
 @RunWith(JUnit4.class)
 public class AssetIdentity_02 {
-    RemoteAgent remoteAgent;
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setup() {

@@ -22,16 +22,10 @@ import sg.dex.starfish.util.Utils;
  */
 public class RemoteAgentConfig {
 
-	private static RemoteAgent surfer = null;
+	private static RemoteAgent surfer ;
 
 	static {
-		Properties properties = getProperties();
-		String ip = properties.getProperty("surfer.host");
-		String port = properties.getProperty("surfer.port");
-		String surferURL = ip + ":" + port;
-
-		boolean surferUp = Utils.checkURL(surferURL);
-		if (surferUp) surfer = getSurfer(surferURL);
+		 surfer = getSurfer(getSurferUrl());
 	}
 
 	private static RemoteAgent getSurfer(String host) {
@@ -68,6 +62,13 @@ public class RemoteAgentConfig {
 		return surfer;
 	}
 
+	public static String getSurferUrl(){
+		Properties properties = getProperties();
+		String ip = properties.getProperty("surfer.host");
+		String port = properties.getProperty("surfer.port");
+		String surferURL = ip + ":" + port;
+		return surferURL;
+	}
 	private static Properties getProperties() {
 		Properties properties = new Properties();
 		try {

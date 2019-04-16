@@ -1,37 +1,22 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.Purchase;
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.JSON;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
 
 public class PurchaseSample {
 
-    private static Properties getProperties() {
-        Properties properties = new Properties();
-        try {
-            try (InputStream is = SurferConfig.class.getClassLoader().getResourceAsStream("application_test.properties")) {
-                properties.load(is);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
+
 
     public static void main(String[] arg) {
-        Properties properties = getProperties();
-        String ip = properties.getProperty("surfer.host");
-        String port = properties.getProperty("surfer.port");
-        RemoteAgent surfer = Surfer.getSurfer(ip + ":" + port);
+
+        RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
         // 1.create Listing
 

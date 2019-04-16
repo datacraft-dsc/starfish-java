@@ -1,8 +1,11 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -16,8 +19,11 @@ import static junit.framework.TestCase.assertEquals;
  * I need a way to unpublish my asset (i.e. remove relevant listings) from a marketplace
  */
 public class UnPublishListing_12 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    private RemoteAsset remoteAsset;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
@@ -31,7 +37,6 @@ public class UnPublishListing_12 {
 
     @Test
     public void testPublishAsset() {
-    	if (remoteAgent==null) return;
 
     	// register Remote asset
         remoteAgent.registerAsset(remoteAsset);

@@ -1,11 +1,20 @@
 package sg.dex.starfish.developer_usecase;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -15,15 +24,20 @@ import static junit.framework.TestCase.assertNotNull;
  * I need a way to upload the asset data to an appropriate service provider
  */
 public class UploadAsset_11 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+   private RemoteAsset remoteAsset;
+    private RemoteAgent remoteAgent;
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
+
+
 
     @Before
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-    	if (remoteAgent==null) return;
-
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
         // register Remote asset
@@ -32,10 +46,22 @@ public class UploadAsset_11 {
 
     }
 
+    private Map<String,Object> getMetaData(){
+        Map<String, Object> metaData = new HashMap<>();
+        try {
+            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            ObjectMapper objectMapper = new ObjectMapper();
+            HashMap<String,Object> json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Test
     public void testUploadAsset() {
-    	if (remoteAgent==null) return;
-    	
+
         Asset a = MemoryAsset.create("Testing to upload of asset");
         RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
         String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());

@@ -15,7 +15,7 @@ import java.util.Map;
 public class TestMemoryListing {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
-    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/listing.json";
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
 
     @Test
     public void testCreateListing() {
