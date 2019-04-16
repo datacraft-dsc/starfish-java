@@ -21,10 +21,11 @@ before_install:
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
 install:
-- mvn install -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+#-true
+- mvn install -Dmaven.javadoc.skip=true -B -V
 script:
 #- mvn --settings .maven.xml install -P integration-test -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
-#- mvn integration-test
+#- mvn integration-test -Dmaven.javadoc.skip=true -B -V
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
