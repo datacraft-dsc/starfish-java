@@ -94,6 +94,14 @@ public class Ocean {
 		}
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
+	
+	/**
+	 * Gets the OceanAPI instance
+	 * @return
+	 */
+	public OceanAPI getOceanAPI() {
+		return oceanAPI;
+	}
 
 	public Agent getAgent(DID did) {
 		// TODO create an aggent instance according to the given DID
