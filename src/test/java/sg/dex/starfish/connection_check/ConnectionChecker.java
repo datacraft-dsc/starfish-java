@@ -29,9 +29,10 @@ public class ConnectionChecker {
     public boolean isServerReachable() {
 
         try {
+            int timeOut=RemoteAgentConfig.getSocketTimeout();
             URL url = new URL(uri);
             Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), RemoteAgentConfig.getSocketTimeout());
+            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);
             socket.close();
             return true;
         } catch (Exception e) {
