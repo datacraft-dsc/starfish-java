@@ -3,6 +3,8 @@ package sg.dex.starfish;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.oceanprotocol.squid.api.OceanAPI;
+
 import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSONObjectCache;
@@ -17,9 +19,16 @@ import sg.dex.starfish.util.JSONObjectCache;
  *
  */
 public class Ocean {
+	public static final Ocean DEFAULT_OCEAN=new Ocean(null);
+	
+	private final Map<DID, String> ddoCache = new HashMap<DID,String>();
 
-	public static final Ocean DEFAULT_OCEAN=new Ocean();
+	private final OceanAPI oceanAPI;
 
+	private Ocean(OceanAPI oceanAPI) {
+		this.oceanAPI=oceanAPI;
+	}
+	
 	/**
 	 * Gets an instance of an Ocean object with the default configuration
 	 *
@@ -28,8 +37,15 @@ public class Ocean {
 	public static Ocean connect() {
 		return DEFAULT_OCEAN;
 	}
-
-	private final Map<DID, String> ddoCache = new HashMap<DID,String>();
+	
+	/**
+	 * Gets an instance of an Ocean object with the given OceanAPI instance.
+	 *
+	 * @return An Ocean instance with default configuration
+	 */
+	public static Ocean connect(OceanAPI oceanAPI) {
+		return new Ocean(oceanAPI);
+	}
 
 	/**
 	 * Gets a DDO for a specified DID via the Universal resolver
