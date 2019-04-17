@@ -33,7 +33,7 @@ import sg.dex.starfish.connection_check.ConnectionChecker;
 
 
 })
-public class DeveloperUsercase_IntegrationTests {
+public class Dev_Usecase_IntegrationTests {
 
     @ClassRule
     public static AssumingConnection assumingConnection =
