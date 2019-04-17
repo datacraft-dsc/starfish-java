@@ -2,11 +2,7 @@ package sg.dex.starfish.impl.remote;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.Consts;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.auth.AUTH;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,16 +16,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.apache.http.util.EncodingUtils;
-
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Params;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,7 +29,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -99,8 +92,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	// for debugging only
 	private RemoteAccount defaultAccount() {
 		RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), null);
-		account.setCredential("username", "test");
-		account.setCredential("password", "foobar");
+		account.setCredential("username", "Aladdin");
+		account.setCredential("password", "6e29fef5d289293d");
 		return account;
 	}
 
@@ -227,8 +220,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				}
 				String header = AUTH.WWW_AUTH_RESP;
 				String value = buffer.toString();
-				System.out.println("account = " + account);
-				System.out.println("RemoteAgent.addAuthHeaders(" + header + ", " + value + ")");
+				//System.out.println("account = " + account);
+				//System.out.println("RemoteAgent.addAuthHeaders(" + header + ", " + value + ")");
 				request.setHeader(header, value);
 			}
 		}

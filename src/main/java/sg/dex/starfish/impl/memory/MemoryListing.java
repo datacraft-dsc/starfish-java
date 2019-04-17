@@ -1,14 +1,12 @@
 package sg.dex.starfish.impl.memory;
 
-import java.util.Map;
-
-import sg.dex.starfish.util.Hex;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.AListing;
 import sg.dex.starfish.util.JSON;
+
+import java.util.Map;
 
 public class MemoryListing extends AListing {
 	private MemoryAgent agent;
@@ -22,14 +20,21 @@ public class MemoryListing extends AListing {
         this.id=listingID;
     }
 
-    public static MemoryListing create(MemoryAgent agent, String metaString) {
-    	Map<String,Object> metaMap=JSON.parse(metaString);
-    	String listingID=Hex.toString(Hash.keccak256(metaString));
+    /**
+     * API will create the listing instance based on the metaMap data passed.
+     * @param agent
+     * @param metaMap
+     * @return
+     */
+    public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {
+
+    	String listingID= metaMap.get("id").toString();
+
         return  new MemoryListing(agent,listingID,metaMap);
     }
 
     public String getAssetID() {
-        return (String) meta.get("assetID");
+        return (String) meta.get("assetid");
     }
 
     @Override
@@ -59,7 +64,7 @@ public class MemoryListing extends AListing {
 
     @Override
     public Map<String, Object> getMetaData() {
-        return null;
+        return meta;
     }
 
     public String getId() {

@@ -1,10 +1,13 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -21,7 +24,11 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(JUnit4.class)
 public class ConnectToOcean_01 {
 
-    Ocean ocean ;
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    // instance of Ocean class use to represent the Ocean Network
+    private Ocean ocean;
 
     @Before
     public void setup(){
@@ -35,11 +42,10 @@ public class ConnectToOcean_01 {
         Ocean ocean = Ocean.connect();
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
-        ddo.put("test", "test");
+        ddo.put("test", "1234");
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
         assertNotNull(ocean);
-        assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
-
+        assertEquals(ocean.getDDO(surferDID).get("test").toString(), "1234");
 
 
     }
@@ -61,8 +67,6 @@ public class ConnectToOcean_01 {
     @Test
     public void testOceanConnectDoubleRegistration() {
 
-        //
-
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "test");
@@ -75,16 +79,6 @@ public class ConnectToOcean_01 {
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "testAgain");
 
 
-
-    }
-
-    @Test
-    public void testregisterDDO(){
-        Map<String, Object> ddo = new HashMap<>();
-        ddo.put("test", "test");
-        DID did =ocean.registerDDO(JSON.toPrettyString(ddo));
-        ddo.put("test", "testNewValue");
-        assertEquals(ocean.getDDO(did).get("test").toString(), "test");
     }
 
 }

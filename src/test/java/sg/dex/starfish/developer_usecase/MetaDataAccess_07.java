@@ -1,22 +1,29 @@
 package sg.dex.starfish.developer_usecase;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -28,31 +35,42 @@ import static sg.dex.starfish.constant.Constant.*;
 public class MetaDataAccess_07 {
     MemoryAsset asset;
     RemoteAgent remoteAgent;
+    
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
 
     @Before
     public void setup() {
         byte data[] = {2, 5, 7};
         asset = MemoryAsset.create(data);
+
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
     }
 
     @Test
-    public void testMemoryAgentMetaData() {
+    public void testMEmoryAgentMetaData() {
+        byte data[] = {2, 5, 7};
+        MemoryAsset asset = MemoryAsset.create(data);
+        RemoteAsset remoteAsset =remoteAgent.registerAsset(asset);
 
-        assertNotNull(asset.getMetadata());
-        assertNotNull(asset.getMetadata().get(DATE_CREATED));
-        assertNotNull(asset.getMetadata().get(CONTENT_HASH));
-        assertNotNull(asset.getMetadata().get(TYPE));
-        assertNotNull(asset.getMetadata().get(SIZE));
-        assertNotNull(asset.getMetadata().get(CONTENT_TYPE));
+        assertNotNull(remoteAsset.getMetadata());
+        assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(),asset.getMetadata().get(DATE_CREATED).toString());
+        assertEquals(remoteAsset.getMetadata().get(CONTENT_HASH).toString(),asset.getMetadata().get(CONTENT_HASH).toString());
+        assertEquals(remoteAsset.getMetadata().get(TYPE).toString(),asset.getMetadata().get(TYPE));
+        assertEquals(remoteAsset.getMetadata().get(SIZE).toString(),asset.getMetadata().get(SIZE));
+        assertEquals(remoteAsset.getMetadata().get(CONTENT_TYPE),asset.getMetadata().get(CONTENT_TYPE));
 
     }
 
     @Test
     public void testRemoteAssetMetaDataAsset() {
 
-        RemoteAsset rasset = RemoteAsset.create(remoteAgent, "This is remote data");
-        assertNotNull(rasset.getAssetID());
+        RemoteAsset remoteAsset = RemoteAsset.create(remoteAgent,  JSON.toString(getMetaData()));
+        assertEquals(remoteAsset.getMetadata().get("title"),"First listing");
+        assertEquals(remoteAsset.getMetadata().get("description"),"this is the Memory listing");
 
     }
 
@@ -82,13 +100,24 @@ public class MetaDataAccess_07 {
         assertNotNull(rasset.getMetadata().get(TYPE));
         assertNotNull(rasset.getMetadata().get(SIZE));
         assertNotNull(rasset.getMetadata().get(CONTENT_TYPE));
+    }
 
 
+    private Map<String,Object> getMetaData(){
+        Map<String, Object> metaData = new HashMap<>();
+        try {
+            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            ObjectMapper objectMapper = new ObjectMapper();
+            HashMap<String,Object> json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @After
     public void clear() {
-        asset = null;
         remoteAgent = null;
     }
 }

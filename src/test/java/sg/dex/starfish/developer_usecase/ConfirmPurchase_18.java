@@ -1,9 +1,12 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -20,6 +23,9 @@ import static org.junit.Assert.assertNotNull;
  * "
  */
 public class ConfirmPurchase_18 {
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
     private RemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;
     private Listing listing;
@@ -28,8 +34,7 @@ public class ConfirmPurchase_18 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        if (remoteAgent==null) return;
-        
+
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset purchase");
         remoteAgent.registerAsset(remoteAsset);
@@ -45,7 +50,6 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testOrderedStatusForPurchaseAsset() {
-        if (remoteAgent==null) return;
 
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
@@ -59,7 +63,6 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testWishlistStatusForPurchaseAsset() {
-        if (remoteAgent==null) return;
 
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
@@ -73,7 +76,6 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testDeliveredStatusForPurchaseAsset() {
-        if (remoteAgent==null) return;
 
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
