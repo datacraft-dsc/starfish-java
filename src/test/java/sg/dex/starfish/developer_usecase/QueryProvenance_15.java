@@ -8,8 +8,10 @@ import org.junit.Test;
  * "
  */
 public class QueryProvenance_15 {
+
+
     @Test
-    public  void test(){
+    public void test() {
 
     }
 }

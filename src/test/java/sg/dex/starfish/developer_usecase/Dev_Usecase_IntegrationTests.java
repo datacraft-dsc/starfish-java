@@ -1,7 +1,10 @@
 package sg.dex.starfish.developer_usecase;
 
+import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -30,6 +33,10 @@ import org.junit.runners.Suite;
 
 
 })
-public class RunAllTestSuit {
+public class Dev_Usecase_IntegrationTests {
+
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
 
 }

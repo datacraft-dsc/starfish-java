@@ -1,15 +1,13 @@
 package sg.dex.starfish.impl.memory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.DID;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 

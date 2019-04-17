@@ -1,33 +1,28 @@
 package sg.dex.squid;
 
 import com.oceanprotocol.squid.exceptions.EthereumException;
+import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
+import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.impl.squid.SquidAgent;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.util.Utils;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SquidIntegrationTests {
-	private static final String DEFAULT_KEEPER_URL = "http://localhost:8545";
 	private static Ocean ocean = null;
 	private static SquidAgent squid = null;
 	private static SquidAccount publisherAccount = null;
 	private static SquidAccount purchaserAccount = null;
 
-	@Test
-	public void aCreateOcean() {
-		System.out.println("=== aCreateOcean ===");
-		if (Utils.checkURL(DEFAULT_KEEPER_URL)) {
-			ocean = Ocean.connect();
-		} else {
-			System.out.println("WARNING: unable to reach keeper at " + DEFAULT_KEEPER_URL +
-			     " (is barge running?)");
-		}
-	}
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getBargeUrl()));
 
 	@Test
 	public void bConfigureSquidAgent() {

@@ -7,8 +7,10 @@ import org.junit.Test;
  * I wish to invoke a free service available on the Ocean ecosystem and obtain the results as a new Ocean Asset
  */
 public class InvokeServiceFree_20 {
+
+
     @Test
-    public  void test(){
+    public void test() {
 
     }
 }

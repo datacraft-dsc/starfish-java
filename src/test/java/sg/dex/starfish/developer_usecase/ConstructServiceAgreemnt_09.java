@@ -12,8 +12,10 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class ConstructServiceAgreemnt_09 {
+
+
     @Test
-    public  void test(){
+    public void test() {
 
     }
 }

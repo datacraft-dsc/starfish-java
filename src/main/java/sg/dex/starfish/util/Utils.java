@@ -176,7 +176,7 @@ public class Utils {
 	 * Checks HTTP URL and returns <code>true</code> a connection can be established
 	 * to the corresponding host and port
 	 *
-	 * @param url The HTTP URL to be checked.
+	 * @param urlString The HTTP URL to be checked.
 	 * @return boolean if endpoint is up within the timeout
 	 */
 	public static boolean checkURL(String urlString) {

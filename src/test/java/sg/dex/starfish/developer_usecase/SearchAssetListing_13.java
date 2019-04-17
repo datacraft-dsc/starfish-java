@@ -4,7 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -21,38 +24,35 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(JUnit4.class)
 public class SearchAssetListing_13 {
 
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-    	if (remoteAgent==null) return;
-
-        // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
-        // register Remote asset
-        remoteAgent.registerAsset(remoteAsset);
-
 
     }
 
     @Test
     public void testSearchListingById() {
-    	if (remoteAgent==null) return;
+
+        // create memory Asset
+        Asset asset = MemoryAsset.create("Test Searching of listing");
+        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
+        // creating listing
         Listing listing = remoteAgent.createListing(data2);
+
         String listingId = listing.getMetaData().get("id").toString();
+        // verifying if the listing has been created
         assertNotNull(remoteAgent.getListing(listingId));
 
     }
 
     @Test
     public void testSearchAllListing() {
-    	if (remoteAgent==null) return;
 
         List<Listing> listingLst = remoteAgent.getAllListing();
         for(Listing listing: listingLst){
@@ -61,16 +61,19 @@ public class SearchAssetListing_13 {
         }
 
     }
-    @Test
+    @Test(expected = TODOException.class)
     public void testSearchListingByInvalidId() {
-    	if (remoteAgent==null) return;
+
+        Asset asset = MemoryAsset.create("Test Searching of listing");
+        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
-        data2.put("assetid", remoteAsset.getAssetID());
+        // adding some invlaid assetid in the map and try to create the listing
+        data2.put("assetid", remoteAsset.getAssetID()+"Invalid");
+
         Listing listing = remoteAgent.createListing(data2);
-        String listingId = listing.getMetaData().get("id").toString();
-        listingId =listingId+"invalid";
-        assertNotNull(remoteAgent.getListing(listingId));
+
+
 
     }
 

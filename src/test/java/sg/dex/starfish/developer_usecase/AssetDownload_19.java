@@ -14,8 +14,9 @@ import static junit.framework.TestCase.assertEquals;
  * I need a way to download the data for a data asset that I have purchased
  */
 public class AssetDownload_19 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+
+    private RemoteAsset remoteAsset;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
@@ -29,7 +30,6 @@ public class AssetDownload_19 {
 
     @Test
     public void testDownloadAsset() {
-    	if (remoteAgent==null) return;
 
         Asset asset = MemoryAsset.create("test upload of asset");
         RemoteAsset ra = remoteAgent.uploadAsset(asset);

@@ -14,15 +14,14 @@ import static junit.framework.TestCase.assertEquals;
  * I want to publish a new asset (as a new version of an existing asset), so that consumers can purchase the latest version
  */
 public class AddNewAssetVersion_22 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+    private RemoteAgent remoteAgent;
+
 
     @Before
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
         // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
 
 
     }

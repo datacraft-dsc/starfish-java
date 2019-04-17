@@ -158,7 +158,6 @@
 				<version>3.0.1</version>
 				<configuration>
 					<show>public</show>
-					<doclint>none</doclint>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -207,14 +206,6 @@
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
-			<plugin>
-                          <groupId>org.apache.maven.plugins</groupId>
-                          <artifactId>maven-enforcer-plugin</artifactId>
-                          <version>3.0.0-M2</version>
-                          <configuration>
-                            <rules><dependencyConvergence/></rules>
-                          </configuration>
-                        </plugin>
 		</plugins>
 
 		<resources>
