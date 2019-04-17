@@ -116,7 +116,6 @@ public class Ocean {
 	}
 
 	public Asset getAsset(DID did) {
-		AssetsAPI assetsAPI=oceanAPI.getAssetsAPI();
 		if (did.getPath()==null) {
 			// resolve using Squid
 			return SquidAsset.create(this,did);
@@ -126,7 +125,5 @@ public class Ocean {
 			return ag.getAsset(did);
 		}
 	}
-
-
 
 }
