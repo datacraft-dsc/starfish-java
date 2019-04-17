@@ -24,7 +24,6 @@ public class UploadAsset_10 {
     public static AssumingConnection assumingConnection =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
 
-    private RemoteAsset remoteAsset;
     private  RemoteAgent remoteAgent;
 
     @Before
@@ -32,19 +31,23 @@ public class UploadAsset_10 {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
 
-        // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
-
     }
 
     @Test
     public void testUploadDownloadAsset() {
 
+
         Asset asset = MemoryAsset.create("test upload of asset");
+
+        // upload will do the registration and upload the content
         RemoteAsset ra = remoteAgent.uploadAsset(asset);
+        // getting the content form Remote Agent (Downloading the content)
+
         String downloadData = RemoteAgentConfig.getDataAsStirngFromInputStream(ra.getContentStream());
 
+
         assertEquals(asset.getAssetID(), ra.getAssetID());
+        // comparing both the content
         assertEquals(downloadData, "test upload of asset");
 
     }

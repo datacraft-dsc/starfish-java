@@ -3,9 +3,11 @@ package sg.dex.starfish.developer_usecase;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.connection_check.AssumingConnection;
 import sg.dex.starfish.connection_check.ConnectionChecker;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -22,38 +24,54 @@ public class UnPublishListing_12 {
     @ClassRule
     public static AssumingConnection assumingConnection =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
-    private RemoteAsset remoteAsset;
+
     private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
-        // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
-
-
     }
 
-    @Test
-    public void testPublishAsset() {
 
-    	// register Remote asset
-        remoteAgent.registerAsset(remoteAsset);
+    @Test
+    public void testUnPublishAsset() {
+
+        // creating a memory Asset
+        Asset memoryAsset = MemoryAsset.create("Test Publish of an Asset");
+        // registering the Asset
+        RemoteAsset remoteAsset = remoteAgent.registerAsset(memoryAsset);
+
+
+        // meta data creation
         Map<String, Object> data2 = new HashMap<>();
-        //data.put( "status", "unpublished");
         data2.put("assetid", remoteAsset.getAssetID());
+        // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(data2);
+
+        // by default for the first time the listing will be unpublished
         assertEquals(listing.getMetaData().get("status"), "unpublished");
+
+        // updating the listing meta data map
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
-        remoteAgent.updateListing(data2);
-        assertEquals(listing.getMetaData().get("status"), "published");
-        data2.put("id", listing.getMetaData().get("id"));
-        data2.put("status", "unpublished");
+
+        // updating the listing with new values
         remoteAgent.updateListing(data2);
 
+        // verifying the updated value
+        assertEquals(listing.getMetaData().get("status"), "published");
+
+        // again trying to un publish
+
+        data2.put("status", "unpublished");
+
+        // updating the listing with new values
+        remoteAgent.updateListing(data2);
+
+        // verifying the updated value
         assertEquals(listing.getMetaData().get("status"), "unpublished");
+
+
 
     }
 

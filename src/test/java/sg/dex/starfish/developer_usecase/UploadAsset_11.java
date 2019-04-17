@@ -28,7 +28,6 @@ public class UploadAsset_11 {
     @ClassRule
     public static AssumingConnection assumingConnection =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
-   private RemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;
     private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
 
@@ -38,10 +37,7 @@ public class UploadAsset_11 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
-        // register Remote asset
-        remoteAgent.registerAsset(remoteAsset);
+
 
 
     }
@@ -69,6 +65,20 @@ public class UploadAsset_11 {
         assertEquals(actual, "Testing to upload of asset");
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
         assertNotNull(a.getMetadata());
+
+    }
+
+    @Test
+    public void testUploadAssetWithMetaData() {
+
+        byte [] data ={2,3,4,5,6,7,8,9,0};
+        Asset a = MemoryAsset.create(getMetaData(),data);
+        RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
+        String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());
+
+        assertEquals(remoteAssetUpload.getContent().length, data.length);
+        assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
+        assertEquals(a.getMetadata().get("title").toString(),"First listing");
 
     }
 
