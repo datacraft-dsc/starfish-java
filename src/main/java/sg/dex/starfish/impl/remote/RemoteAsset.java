@@ -19,12 +19,11 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.HTTP;
 
 /**
- * Class representing a data asset referenced by a URL.
- * this asset will be present in Ocean echo system and be referred by using the asset ID.
- *
+ * Class representing an asset managed via a remote agent.
+ * 
+ * This asset will be present in Ocean ecosystem and be referred by using the asset ID.
  *
  * @author Mike
- *
  */
 public class RemoteAsset extends ADataAsset implements DataAsset {
 
