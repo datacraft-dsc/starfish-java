@@ -2,11 +2,8 @@ package sg.dex.starfish.developer_usecase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.connection_check.AssumingConnection;
-import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -25,9 +22,7 @@ import static junit.framework.TestCase.assertNotNull;
  */
 public class UploadAsset_11 {
 
-    @ClassRule
-    public static AssumingConnection assumingConnection =
-            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+
     private RemoteAgent remoteAgent;
     private static String METADATA_JSON_SAMPLE = "src/test/resources/example/test_asset.json";
 
