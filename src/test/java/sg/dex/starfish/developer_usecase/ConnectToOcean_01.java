@@ -27,10 +27,12 @@ public class ConnectToOcean_01 {
     @ClassRule
     public static AssumingConnection assumingConnection =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
-    Ocean ocean;
+    // instance of Ocean class use to represent the Ocean Network
+    private Ocean ocean;
 
     @Before
     public void setup() {
+
         ocean = new Ocean();
     }
 
@@ -41,10 +43,10 @@ public class ConnectToOcean_01 {
         Ocean ocean = Ocean.connect();
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
-        ddo.put("test", "test");
+        ddo.put("test", "1234");
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
         assertNotNull(ocean);
-        assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
+        assertEquals(ocean.getDDO(surferDID).get("test").toString(), "1234");
 
 
     }
@@ -66,8 +68,6 @@ public class ConnectToOcean_01 {
     @Test
     public void testOceanConnectDoubleRegistration() {
 
-        //
-
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "test");
@@ -80,15 +80,6 @@ public class ConnectToOcean_01 {
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "testAgain");
 
 
-    }
-
-    @Test
-    public void testregisterDDO() {
-        Map<String, Object> ddo = new HashMap<>();
-        ddo.put("test", "test");
-        DID did = ocean.registerDDO(JSON.toPrettyString(ddo));
-        ddo.put("test", "testNewValue");
-        assertEquals(ocean.getDDO(did).get("test").toString(), "test");
     }
 
 }

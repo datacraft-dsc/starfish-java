@@ -62,5 +62,31 @@ public class AgentRegistration_04 {
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
         assertNotNull(remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
+        assertNotNull(remoteAgent.getDID());
+        // verify the DID format
+        assertEquals(remoteAgent.getDID().getMethod(), "ocn");
+        assertEquals(remoteAgent.getDID().getScheme(), "did");
+        assertNotNull(remoteAgent.getDDO());
     }
+
+    @Test
+    public void testRegistrationForException() {
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+
+        String ddoString = JSON.toPrettyString(ddo);
+
+        //Should not allow to create the null DID ?
+        //getting the default Ocean instance
+        Ocean ocean = Ocean.connect();
+        RemoteAgent remoteAgent = RemoteAgent.create(ocean, null);
+        //registering the  DID and DDO
+
+        ocean.registerLocalDID(null, ddoString);
+
+        assertEquals(remoteAgent.getDID(), null);
+
+
+    }
+
 }
