@@ -30,7 +30,8 @@ install:
   - mvn clean install
 script:
 - mvn integration-test
+- mvn site
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-#- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
+- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
