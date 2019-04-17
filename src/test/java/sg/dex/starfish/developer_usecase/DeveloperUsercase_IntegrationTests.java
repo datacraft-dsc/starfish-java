@@ -30,6 +30,6 @@ import org.junit.runners.Suite;
 
 
 })
-public class RunAllTestSuit {
+public class DeveloperUsercase_IntegrationTests {
 
 }

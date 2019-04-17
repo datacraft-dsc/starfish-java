@@ -1,23 +1,36 @@
 language: java
+jdk:
+  - openjdk8
+
 dist: xenial
-services:
-- docker
+sudo: false
+
 addons:
   ssh_known_hosts: shrimp.octet.services
+
+branches:
+  only:
+    - develop
+
+services:
+  - docker
 before_install:
-- git clone https://github.com/DEX-Company/barge.git
-- cd barge
-- git checkout tags/dex-2019-02-18
-- bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
-  &
-- cd ..
-- sleep 15
+  - git clone https://github.com/DEX-Company/barge.git
+  - cd barge
+  - git checkout dex-2019-04-10
+  - bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
+    &
+  - cd ..
+  - sleep 15
+#bash start_ocean.sh  --no-brizo --no-aquarius --no-pleuston --no-secret-store
 # NOTE this will not work while surfer is private
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
-install: true
+install:
+  - mvn clean install
 script:
 - mvn integration-test
+- mvn site
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:

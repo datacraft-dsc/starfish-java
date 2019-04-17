@@ -1,8 +1,11 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -14,8 +17,12 @@ import static junit.framework.TestCase.assertEquals;
  * I need a way to download the data for a data asset that I have purchased
  */
 public class AssetDownload_19 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    private RemoteAsset remoteAsset;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
@@ -29,7 +36,6 @@ public class AssetDownload_19 {
 
     @Test
     public void testDownloadAsset() {
-    	if (remoteAgent==null) return;
 
         Asset asset = MemoryAsset.create("test upload of asset");
         RemoteAsset ra = remoteAgent.uploadAsset(asset);

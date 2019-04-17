@@ -1,19 +1,18 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.MarketAgent;
 import sg.dex.starfish.Purchase;
-import sg.dex.starfish.impl.AAccount;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -23,7 +22,9 @@ import static org.junit.Assert.assertNotNull;
  * "
  */
 public class PurchaseAsset_17 {
-
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
     RemoteAsset remoteAsset;
     RemoteAgent remoteAgent;
     Listing listing;
@@ -32,8 +33,7 @@ public class PurchaseAsset_17 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        if (remoteAgent==null) return;
-        
+
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset purchase");
         remoteAgent.registerAsset(remoteAsset);
@@ -49,7 +49,6 @@ public class PurchaseAsset_17 {
 
     @Test
     public  void testPurchaseAsset(){
-        if (remoteAgent==null) return;
 
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));

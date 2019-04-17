@@ -1,10 +1,8 @@
 package sg.dex.starfish.samples;
 
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.impl.url.ResourceAsset;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
 
 /**
  * This class describe a dummy implementation(Sample) how to register any local asset to the Ocean echosystem
@@ -19,14 +17,14 @@ import sg.dex.starfish.util.Utils;
 public class IrisSample {
 
 	public static void main(String... args) {
-		RemoteAgent surfer = Surfer.getSurfer("http://localhost:8080");
+		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
 
-		String prettyJSON = JSON.toPrettyString(iris.getMetadata());
-		System.out.println(Utils.stringFromStream(iris.getContentStream()));
-		System.out.println("Asset ID = "+iris.getAssetID());
-		System.out.println(prettyJSON);
+		//String prettyJSON = JSON.toPrettyString(iris.getMetadata());
+//		System.out.println(Utils.stringFromStream(iris.getContentStream()));
+//		System.out.println("Asset ID = "+iris.getAssetID());
+//		System.out.println(prettyJSON);
 
 		surfer.registerAsset(iris);
 	}

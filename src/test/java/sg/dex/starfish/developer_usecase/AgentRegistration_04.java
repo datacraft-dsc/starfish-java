@@ -1,9 +1,12 @@
 package sg.dex.starfish.developer_usecase;
 
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -23,6 +26,9 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(JUnit4.class)
 public class AgentRegistration_04 {
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
     @Test
     public void testRegistration() {
         Map<String, Object> ddo = new HashMap<>();
@@ -56,5 +62,31 @@ public class AgentRegistration_04 {
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
         assertNotNull(remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
+        assertNotNull(remoteAgent.getDID());
+        // verify the DID format
+        assertEquals(remoteAgent.getDID().getMethod(), "ocn");
+        assertEquals(remoteAgent.getDID().getScheme(), "did");
+        assertNotNull(remoteAgent.getDDO());
     }
+
+    @Test
+    public void testRegistrationForException() {
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+
+        String ddoString = JSON.toPrettyString(ddo);
+
+        //Should not allow to create the null DID ?
+        //getting the default Ocean instance
+        Ocean ocean = Ocean.connect();
+        RemoteAgent remoteAgent = RemoteAgent.create(ocean, null);
+        //registering the  DID and DDO
+
+        ocean.registerLocalDID(null, ddoString);
+
+        assertEquals(remoteAgent.getDID(), null);
+
+
+    }
+
 }

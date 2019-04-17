@@ -1,10 +1,13 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -12,6 +15,7 @@ import sg.dex.starfish.impl.remote.RemoteAsset;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static sg.dex.starfish.constant.Constant.SIZE;
 
 /**
@@ -19,46 +23,41 @@ import static sg.dex.starfish.constant.Constant.SIZE;
  */
 @RunWith(JUnit4.class)
 public class AssetRegistration_08 {
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    private RemoteAgent remoteAgent;
 
-    RemoteAgent remoteAgent;
-    Asset asset;
 
     @Before
     public void setup() {
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        String data = "Simple memory Asset";
-        asset = MemoryAsset.create(data);
+
     }
 
     @Test
     public void testRegister() {
-        if (remoteAgent==null) return;
-    	
+        String data = "Simple memory Asset";
+        Asset asset = MemoryAsset.create(data);
+
         RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
+
         // get registered Asset by ID
-        RemoteAsset remoteAsset1 = remoteAgent.getAsset(asset.getAssetID());
-        assertEquals(remoteAsset.getAssetID(), remoteAsset1.getAssetID());
-        assertEquals(remoteAsset.isDataAsset(), remoteAsset1.isDataAsset());
-        assertEquals(remoteAsset.getMetadataString(), remoteAsset1.getMetadataString());
-        System.out.println(remoteAsset.getAssetDID());
-        System.out.println(remoteAsset.getAssetID());
+        assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
+        assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
     }
 
     @Test
-    public void testToModifyMetadata() {    	
-        if (remoteAgent==null) return;
+    public void testRegisterWithTwoAssetSameContent() {
+        String data = "Simple Test two  Asset with same content";
 
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+        RemoteAsset remoteAsset = remoteAgent.registerAsset(MemoryAsset.create(data));
+        RemoteAsset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.create(data));
 
-        Map<String, Object> metaData = asset.getMetadata();
-        String size = asset.getMetadata().get(SIZE).toString();
+        assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
 
-
-        // trying to update the data
-        metaData.put(SIZE, 100000000);
-        String size1 = asset.getMetadata().get(SIZE).toString();
-        assertEquals(size, size1);
 
     }
 

@@ -1,10 +1,13 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * As a developer managing a Ocean Agent,
@@ -24,58 +28,34 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(JUnit4.class)
 public class AgentEndpointUpdate_05 {
     RemoteAgent remoteAgent;
-
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
     @Before
     public void setup() {
-        Map<String, Object> ddo = new HashMap<>();
-        List<Map<String, Object>> services = new ArrayList<>();
-        services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "/api/v1/meta"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "/api/v1/assets"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "/api/v1/invoke"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Market.v1",
-                "serviceEndpoint", "/api/v1/market"));
-        ddo.put("service", services);
-        String ddoString = JSON.toPrettyString(ddo);
 
-        //getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
-        // creating unique DID
-        DID surferDID = DID.createRandom();
-        //registering the  DID and DDO
-        ocean.registerLocalDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        remoteAgent = RemoteAgent.create(ocean, surferDID);
+        remoteAgent = RemoteAgentConfig.getRemoteAgent();
     }
 
     @Test
     public void testServiceEndPoint() {
 
-        assertEquals(remoteAgent.getStorageEndpoint(), "/api/v1/assets");
-        assertEquals(remoteAgent.getInvokeEndpoint(), "/api/v1/invoke");
-        assertEquals(remoteAgent.getMetaEndpoint(), "/api/v1/meta");
-        assertEquals(remoteAgent.getMarketEndpoint(), "/api/v1/market");
+        assertTrue(remoteAgent.getStorageEndpoint().contains( "/api/v1/assets"));
+        assertTrue(remoteAgent.getInvokeEndpoint().contains("/api/v1/invoke"));
+        assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
+        assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
+        assertTrue(remoteAgent.getAuthEndpoint().contains("/api/v1/auth"));
     }
 
-    @Test(expected = Error.class)
+    @Test
     public void testForNull() {
         Ocean ocean = Ocean.connect();
-        // creating unique DID
-        DID surferDID = DID.createRandom();
-        //registering the  DID and DDO
-        // adding invalid json data
-        ocean.registerLocalDID(surferDID, "Invalid json data");
-        // will throw JSON  parsing Error
-        RemoteAgent remoteAgent2 = RemoteAgent.create(ocean, surferDID);
+        // Null check validation
+        ocean.registerLocalDID(null, null);
 
-        System.out.println(remoteAgent2.getStorageEndpoint());
+
 
     }
 }

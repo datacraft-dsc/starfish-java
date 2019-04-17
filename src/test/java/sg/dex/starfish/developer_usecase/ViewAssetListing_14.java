@@ -1,10 +1,13 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.connection_check.AssumingConnection;
+import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -21,16 +24,17 @@ import static junit.framework.TestCase.assertNotNull;
  */
 @RunWith(JUnit4.class)
 public class ViewAssetListing_14 {
-    RemoteAsset remoteAsset;
-    RemoteAgent remoteAgent;
+    @ClassRule
+    public static AssumingConnection assumingConnection =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    private RemoteAsset remoteAsset;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-    	if (remoteAgent==null) return;
 
-    	
         // create remote Asset
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
         // register Remote asset
@@ -41,8 +45,6 @@ public class ViewAssetListing_14 {
 
     @Test
     public void testSearchListingById() {
-    	if (remoteAgent==null) return;
-
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
         Listing listing = remoteAgent.createListing(data2);
@@ -53,10 +55,9 @@ public class ViewAssetListing_14 {
 
     @Test
     public void testSearchAllListing() {
-    	if (remoteAgent==null) return;
 
         List<Listing> listingLst = remoteAgent.getAllListing();
-        for(Listing listing: listingLst){
+        for (Listing listing : listingLst) {
             String listingId = listing.getMetaData().get("id").toString();
             assertNotNull(remoteAgent.getListing(listingId));
         }

@@ -1,132 +1,145 @@
 package sg.dex.starfish.developer_usecase;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+
 /**
- * This class is used to get the Remote Agent based on the host. Currently it
- * will connect with default OCEAN.
+ * This class is used to get the Remote Agent based on the host.
+ * Currently it is written to connect with Surfer
+ * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
 public class RemoteAgentConfig {
 
-	private static RemoteAgent surfer = null;
+    private static RemoteAgent surfer;
+    private static String surferUrl;
+    private static String bargeUrl;
+    private static String socketTimeout;
 
-	static {
-		Properties properties = getProperties();
-		String ip = properties.getProperty("surfer.host");
-		String port = properties.getProperty("surfer.port");
-		String surferURL = ip + ":" + port;
+    static {
+        Properties properties = getProperties();
+        String ip = properties.getProperty("surfer.host");
+        String port = properties.getProperty("surfer.port");
+        surferUrl = ip + ":" + port;
+        socketTimeout = properties.getProperty("socket.timeout");
+        surfer = getSurfer(surferUrl);
 
-		boolean surferUp = Utils.checkURL(surferURL);
-		if (surferUp) surfer = getSurfer(surferURL);
-	}
+        // setting barge URL
+        String barge_ip = properties.getProperty("barge.host");
+        String barge_port = properties.getProperty("barge.port");
+        bargeUrl = barge_ip + ":" + barge_port;
 
-	private static RemoteAgent getSurfer(String host) {
-		Map<String, Object> ddo = new HashMap<>();
-		List<Map<String, Object>> services = new ArrayList<>();
-		services.add(Utils.mapOf(
-				"type", "Ocean.Meta.v1",
-				"serviceEndpoint", host + "/api/v1/meta"));
-		services.add(Utils.mapOf(
-				"type", "Ocean.Storage.v1",
-				"serviceEndpoint", host + "/api/v1/assets"));
-		services.add(Utils.mapOf(
-				"type", "Ocean.Invoke.v1",
-				"serviceEndpoint", host + "/api/v1/invoke"));
-		services.add(Utils.mapOf(
-				"type", "Ocean.Auth.v1",
-				"serviceEndpoint", host + "/api/v1/auth"));
-		services.add(Utils.mapOf(
-				"type", "Ocean.Market.v1",
-				"serviceEndpoint", host + "/api/v1/market"));
-		ddo.put("service", services);
-		String ddoString = JSON.toPrettyString(ddo);
 
-		// getting the default Ocean instance
-		Ocean ocean = Ocean.connect();
-		// creating unique DID
-		DID surferDID = DID.createRandom();
-		// registering the DID and DDO
-		ocean.registerLocalDID(surferDID, ddoString);
+    }
 
-		// creating a Remote agent instance for given Ocean and DID
-		RemoteAgent surfer = RemoteAgent.create(ocean, surferDID);
+    private static RemoteAgent getSurfer(String host) {
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+        services.add(Utils.mapOf(
+                "type", "Ocean.Meta.v1",
+                "serviceEndpoint", host + "/api/v1/meta"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Storage.v1",
+                "serviceEndpoint", host + "/api/v1/assets"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Invoke.v1",
+                "serviceEndpoint", host + "/api/v1/invoke"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Auth.v1",
+                "serviceEndpoint", host + "/api/v1/auth"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Market.v1",
+                "serviceEndpoint", host + "/api/v1/market"));
+        ddo.put("service", services);
+        String ddoString = JSON.toPrettyString(ddo);
 
-		return surfer;
-	}
+        // getting the default Ocean instance
+        Ocean ocean = Ocean.connect();
+        // creating unique DID
+        DID surferDID = DID.createRandom();
+        // registering the DID and DDO
+        ocean.registerLocalDID(surferDID, ddoString);
 
-	private static Properties getProperties() {
-		Properties properties = new Properties();
-		try {
-			try (InputStream is = RemoteAgentConfig.class.getClassLoader()
-					.getResourceAsStream("application_test.properties")) {
-				properties.load(is);
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return properties;
-	}
+        // creating a Remote agent instance for given Ocean and DID
+        RemoteAgent surfer = RemoteAgent.create(ocean, surferDID);
 
-	/**
-	 * Gets the surfer remote agent for testing purposes
-	 * 
-	 * @return The RemoteAgent, or null if not up
-	 */
-	public static RemoteAgent getRemoteAgent() {
-		return surfer;
+        return surfer;
+    }
 
-	}
+    public static String getSurferUrl() {
+        return surferUrl;
+    }
+    public static String getBargeUrl() {
+        return bargeUrl;
+    }
 
-	public static String getDataAsStirngFromInputStream(InputStream is) {
+    public static int getSocketTimeout() {
+        return Integer.parseInt(socketTimeout);
+    }
 
-		BufferedReader br = null;
-		String result = "";
+    private static Properties getProperties() {
+        Properties properties = new Properties();
+        try {
+            try (InputStream is = RemoteAgentConfig.class.getClassLoader()
+                    .getResourceAsStream("application_test.properties")) {
+                properties.load(is);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
 
-		try {
+    /**
+     * Gets the surfer remote agent for testing purposes
+     *
+     * @return The RemoteAgent, or null if not up
+     */
+    public static RemoteAgent getRemoteAgent() {
+        return surfer;
 
-			// is = System.in;
-			br = new BufferedReader(new InputStreamReader(is));
+    }
 
-			String line = null;
+    public static String getDataAsStirngFromInputStream(InputStream is) {
 
-			while ((line = br.readLine()) != null) {
+        BufferedReader br = null;
+        String result = "";
 
-				result = result + line;
-			}
+        try {
 
-		}
-		catch (IOException ioe) {
-			System.out.println("Exception while reading input " + ioe);
-		}
-		finally {
-			// close the streams using close method
-			try {
-				if (br != null) {
-					br.close();
-				}
-			}
-			catch (IOException ioe) {
-				System.out.println("Error while closing stream: " + ioe);
-			}
+            // is = System.in;
+            br = new BufferedReader(new InputStreamReader(is));
 
-		}
+            String line = null;
 
-		return result;
-	}
+            while ((line = br.readLine()) != null) {
+
+                result = result + line;
+            }
+
+        } catch (IOException ioe) {
+            System.out.println("Exception while reading input " + ioe);
+        } finally {
+            // close the streams using close method
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println("Error while closing stream: " + ioe);
+            }
+
+        }
+
+        return result;
+    }
 
 }
