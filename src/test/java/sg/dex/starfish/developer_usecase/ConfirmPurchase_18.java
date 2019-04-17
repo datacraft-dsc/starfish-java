@@ -1,12 +1,9 @@
 package sg.dex.starfish.developer_usecase;
 
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
-import sg.dex.starfish.connection_check.AssumingConnection;
-import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
@@ -23,9 +20,7 @@ import static org.junit.Assert.assertNotNull;
  * "
  */
 public class ConfirmPurchase_18 {
-    @ClassRule
-    public static AssumingConnection assumingConnection =
-            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+
     private RemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;
     private Listing listing;

@@ -15,8 +15,6 @@ import sg.dex.starfish.impl.squid.SquidAgent;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SquidIntegrationTests {
-	//private static final String DEFAULT_KEEPER_URL = "http://localhost:8545";
-	//private static final String DEFAULT_KEEPER_URL = "http://localhost:8545";
 	private static Ocean ocean = null;
 	private static SquidAgent squid = null;
 	private static SquidAccount publisherAccount = null;
@@ -25,16 +23,6 @@ public class SquidIntegrationTests {
     @ClassRule
     public static AssumingConnection assumingConnection =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getBargeUrl()));
-//	@Test
-//	public void aCreateOcean() {
-//		System.out.println("=== aCreateOcean ===");
-//		if (Utils.checkURL(DEFAULT_KEEPER_URL)) {
-//			ocean = Ocean.connect();
-//		} else {
-//			System.out.println("WARNING: unable to reach keeper at " + DEFAULT_KEEPER_URL +
-//			     " (is barge running?)");
-//		}
-//	}
 
 	@Test
 	public void bConfigureSquidAgent() {
