@@ -4,10 +4,14 @@ services:
 - docker
 addons:
   ssh_known_hosts: shrimp.octet.services
+branches:
+  only:
+    - develop
+
 before_install:
 - git clone https://github.com/DEX-Company/barge.git
 - cd barge
-- git checkout develop
+- git checkout
 - bash -x start_ocean.sh bash start_ocean.sh  --no-brizo --no-aquarius --no-pleuston --no-secret-store --local-spree-node 2>&1 > start_ocean.log
   &
 - cd ..
@@ -22,4 +26,4 @@ script:
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
+#- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
