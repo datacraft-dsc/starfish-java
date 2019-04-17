@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.impl.ADataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.exception.TODOException;
