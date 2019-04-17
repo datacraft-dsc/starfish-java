@@ -86,7 +86,7 @@ public class SquidAsset extends AAsset {
 	private static String wrapDDOMeta(DDO ddo) {
 		HashMap<String,Object> info=new HashMap<>();
 		try {
-			info.put("ddoString", ddo.toJson());
+			info.put("ddoString", JSON.toMap(ddo.toJson()));
 		}
 		catch (JsonProcessingException e) {
 			throw new IllegalArgumentException(e);
