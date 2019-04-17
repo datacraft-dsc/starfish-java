@@ -7,11 +7,12 @@ addons:
 before_install:
 - git clone https://github.com/DEX-Company/barge.git
 - cd barge
-- git checkout tags/dex-2019-02-18
-- bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
+- git checkout develop
+- bash -x start_ocean.sh bash start_ocean.sh  --no-brizo --no-aquarius --no-pleuston --no-secret-store --local-spree-node 2>&1 > start_ocean.log
   &
 - cd ..
 - sleep 15
+#bash start_ocean.sh  --no-brizo --no-aquarius --no-pleuston --no-secret-store
 # NOTE this will not work while surfer is private
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
