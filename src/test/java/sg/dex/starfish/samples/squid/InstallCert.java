@@ -52,7 +52,7 @@ import java.security.cert.X509Certificate;
 public class InstallCert {
 	
 	public static void main(String[] args) throws Exception {
-		install("nginx-aquarius.dev-ocean.com");
+		install("nile.dev-ocean.com");
 	}
 
     public static void install(String... args) throws Exception {
@@ -75,6 +75,7 @@ public class InstallCert {
             char SEP = File.separatorChar;
             File dir = new File(System.getProperty("java.home") + SEP
                     + "lib" + SEP + "security");
+            System.out.println("Loading KeyStore from directory: "+dir);
             file = new File(dir, "jssecacerts");
             if (file.isFile() == false) {
                 file = new File(dir, "cacerts");

@@ -52,14 +52,18 @@ public class CommonsAssetTest {
 	}
 	
 	public static void main(String... args) throws InitializationException, InvalidConfiguration {
-		OceanAPI oceanAPI=buildOceanAPI();
-		Ocean ocean=Ocean.connect(oceanAPI);
-		
-		DID did=DID.parse("did:op:8e511d4c54b34454bbf7947473517a8347ada436ec034f799fdb84ce3e8683f3");
-		
-		Asset a=ocean.getAsset(did);
-		
-		System.out.println(a.getMetadataString());
-	}
+		try {
+			OceanAPI oceanAPI=buildOceanAPI();
 
+			Ocean ocean=Ocean.connect(oceanAPI);
+			
+			DID did=DID.parse("did:op:8e511d4c54b34454bbf7947473517a8347ada436ec034f799fdb84ce3e8683f3");
+			
+			Asset a=ocean.getAsset(did);
+			
+			System.out.println(a.getMetadataString());
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
 }
