@@ -20,8 +20,19 @@ import sg.dex.starfish.util.DID;
 public class CommonsAssetTest {
 	
 	public static OceanAPI buildOceanAPI() throws InitializationException, InvalidConfiguration {
-		// Default values for KEEPER_URL, KEEPER_GAS_LIMIT, KEEPER_GAS_PRICE, AQUARIUS_URL, SECRETSTORE_URL, CONSUME_BASE_PATH
 		Properties properties = new Properties();
+		
+		// config from https://github.com/oceanprotocol/commons/blob/master/client/src/config.ts
+		properties.put(OceanConfig.KEEPER_URL, "https://nile.dev-ocean.com");
+		properties.put(OceanConfig.KEEPER_GAS_LIMIT, "4712388");
+		properties.put(OceanConfig.KEEPER_GAS_PRICE, "100000000000");
+
+		properties.put(OceanConfig.AQUARIUS_URL, "https://nginx-aquarius.dev-ocean.com");
+		properties.put(OceanConfig.SECRETSTORE_URL, "https://secret-store.dev-ocean.com");
+		
+		properties.put(OceanConfig.CONSUME_BASE_PATH, "tmp");
+		
+		// config from squid-java
 		properties.put(OceanConfig.MAIN_ACCOUNT_ADDRESS, "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e");
 		properties.put(OceanConfig.MAIN_ACCOUNT_PASSWORD,"node0");
 		properties.put(OceanConfig.MAIN_ACCOUNT_CREDENTIALS_FILE,"src/test/resources/accounts/parity/00bd138abd70e2f00903268f3db08f2d25677c9e.json.testaccount");
@@ -47,6 +58,8 @@ public class CommonsAssetTest {
 		DID did=DID.parse("did:op:8e511d4c54b34454bbf7947473517a8347ada436ec034f799fdb84ce3e8683f3");
 		
 		Asset a=ocean.getAsset(did);
+		
+		System.out.println(a.getMetadataString());
 	}
 
 }
