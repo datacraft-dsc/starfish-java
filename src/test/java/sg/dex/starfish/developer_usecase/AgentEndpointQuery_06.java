@@ -26,10 +26,19 @@ public class AgentEndpointQuery_06 {
     }
     @Test
     public  void testServiceEndPoint(){
+        // getting the URL for storage service
         String storage =remoteAgent.getStorageEndpoint();
+
+        // getting the URL for invoke service
         String invoke =remoteAgent.getInvokeEndpoint();
+
+        // getting the URL for metaData service
         String meta =remoteAgent.getMetaEndpoint();
+
+        // getting the URL for market service
         String market =remoteAgent.getMarketEndpoint();
+
+
         assertNotNull(market);
         assertNotNull(meta);
         assertNotNull(invoke);
