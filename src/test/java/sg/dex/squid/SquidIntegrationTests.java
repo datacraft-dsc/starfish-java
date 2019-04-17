@@ -8,6 +8,7 @@ import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.connection_check.AssumingConnection;
 import sg.dex.starfish.connection_check.ConnectionChecker;
+import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.impl.squid.SquidAgent;
@@ -23,7 +24,7 @@ public class SquidIntegrationTests {
 
     @ClassRule
     public static AssumingConnection assumingConnection =
-            new AssumingConnection(new ConnectionChecker("http://localhost:8545"));
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getBargeUrl()));
 //	@Test
 //	public void aCreateOcean() {
 //		System.out.println("=== aCreateOcean ===");

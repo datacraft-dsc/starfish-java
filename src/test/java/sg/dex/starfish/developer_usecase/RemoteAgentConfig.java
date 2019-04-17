@@ -21,6 +21,7 @@ public class RemoteAgentConfig {
 
     private static RemoteAgent surfer;
     private static String surferUrl;
+    private static String bargeUrl;
     private static String socketTimeout;
 
     static {
@@ -30,6 +31,12 @@ public class RemoteAgentConfig {
         surferUrl = ip + ":" + port;
         socketTimeout = properties.getProperty("socket.timeout");
         surfer = getSurfer(surferUrl);
+
+        // setting barge URL
+        String barge_ip = properties.getProperty("barge.host");
+        String barge_port = properties.getProperty("barge.port");
+        bargeUrl = barge_ip + ":" + barge_port;
+
 
     }
 
@@ -69,6 +76,9 @@ public class RemoteAgentConfig {
 
     public static String getSurferUrl() {
         return surferUrl;
+    }
+    public static String getBargeUrl() {
+        return bargeUrl;
     }
 
     public static int getSocketTimeout() {
