@@ -7,6 +7,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.InitializationException;
 import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
+import com.oceanprotocol.squid.models.Balance;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
@@ -62,6 +63,10 @@ public class CommonsAssetTest {
 			Asset a=ocean.getAsset(did);
 			
 			System.out.println(a.getMetadataString());
+			
+			Balance balance = oceanAPI.getAccountsAPI().balance(oceanAPI.getMainAccount());
+			System.out.println(balance.getEth());
+			
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

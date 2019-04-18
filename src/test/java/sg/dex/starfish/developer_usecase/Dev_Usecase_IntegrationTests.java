@@ -30,9 +30,8 @@ import sg.dex.starfish.connection_check.ConnectionChecker;
         InvokeServiceFree_20.class,
         InvokeServicePaid_21.class,
         AddNewAssetVersion_22.class
-
-
 })
+
 public class Dev_Usecase_IntegrationTests {
 
     @ClassRule

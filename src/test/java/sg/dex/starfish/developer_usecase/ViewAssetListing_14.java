@@ -34,8 +34,6 @@ public class ViewAssetListing_14 {
         remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
         // register Remote asset
         remoteAgent.registerAsset(remoteAsset);
-
-
     }
 
     @Test
