@@ -3,6 +3,7 @@ package sg.dex.starfish;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
 
@@ -109,6 +110,10 @@ public class Ocean {
 	public AssetsAPI getAssetsAPI() {
 		return oceanAPI.getAssetsAPI();
 	}
+	
+	public AccountsAPI getAccountsAPI() {
+		return oceanAPI.getAccountsAPI();
+	}
 
 	public Agent getAgent(DID did) {
 		// TODO create an agent instance according to the given DID
@@ -125,5 +130,7 @@ public class Ocean {
 			return ag.getAsset(did);
 		}
 	}
+
+
 
 }

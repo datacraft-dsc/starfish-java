@@ -43,34 +43,6 @@ public class SquidIntegrationTests {
 	}
 
 	@Test
-	public void cGetPublisherAccount() {
-		System.out.println("=== cGetPublisherAccount ===");
-		if (ocean == null)  {
-			System.out.println("WARNING: barge not running");
-		} else {
-			String publisherAddress = squid.getConfigString("account.parity.address");
-			String publisherPassword = squid.getConfigString("account.parity.password");
-			System.out.println("publisherAddress: " + publisherAddress);
-			publisherAccount = SquidAccount.create(publisherAddress, publisherPassword, squid);
-			try {
-				System.out.println("publisherAddress: " + publisherAddress + " balance: " + publisherAccount.balance());
-			} catch (EthereumException e) {
-				System.out.println("publisherAddress: " + publisherAddress + " UNABLE to get balance");
-			}
-			try {
-				publisherAccount.unlock();
-				// try {
-				// 	publisherAccount.requestTokens(20);
-				// } catch (AuthorizationException e) {
-				// 	System.out.println("unable to request publisher tokens: " + e);
-				// }
-			} catch (AuthorizationException e) {
-				System.out.println("unable to unlock publisher account: " + e);
-			}
-		}
-	}
-
-	@Test
 	public void dCreateAsset() {
 		System.out.println("=== dCreateAsset ===");
 		if (ocean == null)  {
@@ -85,33 +57,6 @@ public class SquidIntegrationTests {
 		if (ocean == null)  {
 			System.out.println("WARNING: barge not running");
 		} else {
-		}
-	}
-
-	@Test
-	public void fGetPurchaserAccount() {
-		System.out.println("=== fGetPurchaserAccount ===");
-		if (ocean == null)  {
-			System.out.println("WARNING: barge not running");
-		} else {
-			String purchaserAddress = squid.getConfigString("account.parity.address2");
-			String purchaserPassword = squid.getConfigString("account.parity.password2");
-			purchaserAccount = SquidAccount.create(purchaserAddress, purchaserPassword, squid);
-			try {
-				System.out.println("purchaserAddress: " + purchaserAddress + " balance: " + purchaserAccount.balance());
-			} catch (EthereumException e) {
-				System.out.println("purchaserAddress: " + purchaserAddress + " UNABLE to get balance");
-			}
-			try {
-				purchaserAccount.unlock();
-				// try {
-				// 	purchaserAccount.requestTokens(10);
-				// } catch (AuthorizationException e) {
-				// 	System.out.println("unable to request purchaser tokens: " + e);
-				// }
-			} catch (AuthorizationException e) {
-				System.out.println("unable to unlock purchaser account: " + e);
-			}
 		}
 	}
 

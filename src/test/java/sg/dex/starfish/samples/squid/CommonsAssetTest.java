@@ -1,7 +1,9 @@
 package sg.dex.starfish.samples.squid;
 
+import java.math.BigInteger;
 import java.util.Properties;
 
+import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
@@ -11,6 +13,7 @@ import com.oceanprotocol.squid.models.Balance;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.util.DID;
 
 /**
@@ -64,8 +67,12 @@ public class CommonsAssetTest {
 			
 			System.out.println(a.getMetadataString());
 			
-			Balance balance = oceanAPI.getAccountsAPI().balance(oceanAPI.getMainAccount());
-			System.out.println(balance.getEth());
+			AccountsAPI accountsAPI=oceanAPI.getAccountsAPI();
+			
+			SquidAccount account=SquidAccount.create(ocean,oceanAPI.getMainAccount());
+			System.out.println(account.getID());
+			System.out.println(account.getOceanBalance());
+			System.out.println(account.getEthBalance());
 			
 		} catch (Throwable t) {
 			t.printStackTrace();
