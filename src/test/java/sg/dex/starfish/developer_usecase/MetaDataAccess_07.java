@@ -7,8 +7,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
 import sg.dex.crypto.Hash;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.connection_check.AssumingConnection;
 import sg.dex.starfish.connection_check.ConnectionChecker;
 import sg.dex.starfish.impl.memory.MemoryAsset;

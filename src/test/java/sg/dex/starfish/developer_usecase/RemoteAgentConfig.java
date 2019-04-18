@@ -69,9 +69,8 @@ public class RemoteAgentConfig {
         ocean.registerLocalDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        RemoteAgent surfer = RemoteAgent.create(ocean, surferDID);
+        return  RemoteAgent.create(ocean, surferDID);
 
-        return surfer;
     }
 
     public static String getSurferUrl() {
