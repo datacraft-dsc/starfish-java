@@ -1,6 +1,6 @@
 package sg.dex.starfish.samples;
 
-import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
@@ -18,8 +18,8 @@ public class AuthSample {
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
         // credential
         Map<String, Object> credentialMap = new HashMap<>();
-        credentialMap.put("username", "Aladdin");
-        credentialMap.put("password", "6e29fef5d289293d");
+        credentialMap.put("username", RemoteAgentConfig.getSurferUser());
+        credentialMap.put("password", RemoteAgentConfig.getSurferPassword());
 
         // creating remote Account
         RemoteAccount surferAccount = RemoteAccount.create("9671e2c4dabf1b0ea4f4db909b9df3814ca481e3d110072e0e7d776774a68e0d",

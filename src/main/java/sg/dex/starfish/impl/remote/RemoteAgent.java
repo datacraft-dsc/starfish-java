@@ -90,10 +90,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	// for debugging only
+	//TODO need to delete this method
 	private RemoteAccount defaultAccount() {
 		RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), null);
 		account.setCredential("username", "Aladdin");
-		account.setCredential("password", "6e29fef5d289293d");
+		account.setCredential("password", "OpenSesame");
 		return account;
 	}
 

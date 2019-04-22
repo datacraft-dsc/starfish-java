@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.JSON;
 
