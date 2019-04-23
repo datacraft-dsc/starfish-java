@@ -12,5 +12,8 @@ public class AuthorizationException extends RuntimeException {
 	public AuthorizationException(String message, Exception e) {
 		super(message,e);
 	}
+	public AuthorizationException(String message) {
+		super(message);
+	}
 
 }

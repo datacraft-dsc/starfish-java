@@ -1,6 +1,6 @@
 package sg.dex.starfish.samples;
 
-import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.url.ResourceAsset;
 

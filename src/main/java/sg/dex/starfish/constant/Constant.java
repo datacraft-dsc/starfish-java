@@ -10,6 +10,9 @@ public class Constant {
     public static final String CONTENT_TYPE ="contentType";
     public static final String FILE_NAME ="fileName";
     public static final String ID="id";
+    public static final String CONTENTS="contents";
+    public static final String ASSETID="assetID";
+    public static final String BUNDLE_NAME="name";
 
 
 }
