@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static sg.dex.starfish.constant.Constant.*;
 
-public class RemoteBundleAsset extends ABundleAsset implements BundleAsset {
+public class RemoteBundleAsset extends ABundleAsset  {
     private static AAgent remoteAgent;
 
     protected RemoteBundleAsset(String meta) {
