@@ -15,7 +15,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TestRemoteBundleAsset {
 
     RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
-    
+
     public void testAssetBundleCreationWithoutBundleName() {
 
         // creating  assets
