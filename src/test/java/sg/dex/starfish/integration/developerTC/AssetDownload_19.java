@@ -15,7 +15,6 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class AssetDownload_19 {
 
-    private RemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;
 
     @Before
@@ -23,9 +22,6 @@ public class AssetDownload_19 {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
         // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, "Test Asset publish");
-
-
     }
 
     @Test

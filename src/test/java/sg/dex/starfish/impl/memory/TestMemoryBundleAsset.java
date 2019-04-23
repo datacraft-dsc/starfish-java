@@ -1,6 +1,8 @@
 package sg.dex.starfish.impl.memory;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryBundleAsset {
 
     @Test
