@@ -26,7 +26,7 @@ import sg.dex.starfish.util.HTTP;
  *
  * @author Mike
  */
-public class RemoteAsset extends ADataAsset implements DataAsset {
+public class RemoteAsset extends ARemoteAsset implements DataAsset {
 
 	private final RemoteAgent agent;
 
