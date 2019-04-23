@@ -1,20 +1,17 @@
 package sg.dex.starfish.impl.memory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
-
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-
+import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.impl.memory.MemoryAgent;
-import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
+import java.util.Arrays;
+
+import static org.junit.Assert.*;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
 

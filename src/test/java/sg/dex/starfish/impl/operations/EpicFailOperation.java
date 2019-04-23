@@ -1,11 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.Map;
-
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 
-import sg.dex.starfish.exception.JobFailedException;
+import java.util.Map;
 
 /**
  * Basic implementation of an operation which always fails
@@ -14,6 +13,7 @@ import sg.dex.starfish.exception.JobFailedException;
  * @author Mike
  *
  */
+
 public class EpicFailOperation extends AMemoryOperation {
 
 	protected EpicFailOperation(String meta) {

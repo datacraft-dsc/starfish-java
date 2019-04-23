@@ -3,14 +3,17 @@ package sg.dex.starfish.impl.operations;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
+import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
 
 	@Test public void testReverseBytes() {
