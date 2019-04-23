@@ -19,8 +19,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * The singleton default memory agent instance
      */
-    public static final MemoryAgent DEFAULT = new MemoryAgent(Ocean.connect(), DID.createRandomString());
-
     /**
      * A cached thread pool for jobs executed in memory
      */
@@ -61,10 +59,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public Asset registerAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
-        // TODO: consider removing because ID collision is impossible?
-        //if(null != assetStore.get(a.getAssetID())){
-        //		throw new IllegalStateException("Asset with id "+ a.getAssetID() +"is already register");
-        //}
         assetStore.put(ma.getAssetID(), ma);
         return ma;
     }

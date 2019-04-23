@@ -1,8 +1,11 @@
-package sg.dex.starfish.impl.remote;
+package sg.dex.starfish.samples;
 
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteBundleAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
 import java.util.HashMap;

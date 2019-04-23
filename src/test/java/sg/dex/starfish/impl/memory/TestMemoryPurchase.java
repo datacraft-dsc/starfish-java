@@ -1,13 +1,16 @@
 package sg.dex.starfish.impl.memory;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.util.Hex;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryPurchase {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
