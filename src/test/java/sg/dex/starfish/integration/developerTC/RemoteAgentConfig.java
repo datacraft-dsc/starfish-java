@@ -1,7 +1,9 @@
 package sg.dex.starfish.integration.developerTC;
 
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
@@ -33,6 +35,11 @@ public class RemoteAgentConfig {
         String port = properties.getProperty("surfer.port");
         surferUrl = ip + ":" + port;
         socketTimeout = properties.getProperty("socket.timeout");
+
+        //username and password
+        username = properties.getProperty("surfer.username");
+        password = properties.getProperty("surfer.password");
+
         surfer = getSurfer(surferUrl);
 
         // setting barge URL
@@ -40,9 +47,7 @@ public class RemoteAgentConfig {
         String barge_port = properties.getProperty("barge.port");
         bargeUrl = barge_ip + ":" + barge_port;
 
-        //username and password
-        username = properties.getProperty("surfer.username");
-        password = properties.getProperty("surfer.password");
+
 
     }
 
@@ -74,9 +79,16 @@ public class RemoteAgentConfig {
         // registering the DID and DDO
         ocean.registerLocalDID(surferDID, ddoString);
 
-        // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, surferDID);
 
+
+        //Creating remote Account
+        Map<String,Object> credentialMap = new HashMap<>();
+        credentialMap.put("username",username);
+        credentialMap.put("password",password);
+
+        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
+        // creating a Remote agent instance for given Ocean and DID
+        return RemoteAgent.create(ocean, surferDID,account);
     }
 
     public static String getSurferUrl() {
