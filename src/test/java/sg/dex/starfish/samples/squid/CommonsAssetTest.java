@@ -68,8 +68,10 @@ public class CommonsAssetTest {
 			System.out.println(a.getMetadataString());
 			
 			AccountsAPI accountsAPI=oceanAPI.getAccountsAPI();
-			
 			SquidAccount account=SquidAccount.create(ocean,oceanAPI.getMainAccount());
+			
+			accountsAPI.requestTokens(BigInteger.valueOf(Long.MAX_VALUE));
+			
 			System.out.println(account.getID());
 			System.out.println(account.getOceanBalance());
 			System.out.println(account.getEthBalance());
