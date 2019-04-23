@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.BundleAsset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.ADataAsset;
@@ -26,7 +27,7 @@ import sg.dex.starfish.util.HTTP;
  * @author Mike
  *
  */
-public class RemoteAsset extends ADataAsset implements DataAsset {
+public class RemoteAsset extends ADataAsset implements Asset {
 
 	private final RemoteAgent agent;
 
