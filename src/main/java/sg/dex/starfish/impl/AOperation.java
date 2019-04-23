@@ -29,17 +29,6 @@ public abstract class AOperation extends AAsset implements Operation {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Map<String, Object> getParamSpec() {
-		Map<String,Object> meta=getMetadata();
-		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
-		return paramSpec;
-	}
-	
-	@Override
-	public Job invoke(Asset... params) {
-		return invoke(Params.namedParams(this, params));
-	}
+
 	
 }

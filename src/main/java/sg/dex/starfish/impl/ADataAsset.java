@@ -1,12 +1,6 @@
 package sg.dex.starfish.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
 
 public abstract class ADataAsset extends AAsset implements DataAsset {
 
@@ -24,31 +18,5 @@ public abstract class ADataAsset extends AAsset implements DataAsset {
 		return false;
 	}
 
-	public abstract long getContentSize();
 
-	/**
-	 * Gets raw data corresponding to this Asset
-	 *
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
-	 */
-	@Override
-	public byte[] getContent() {
-		InputStream is = getContentStream();
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-		byte[] buf = new byte[16384];
-
-		int bytesRead;
-		try {
-			while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {
-				buffer.write(buf, 0, bytesRead);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
-		return buffer.toByteArray();
-	}
 }
