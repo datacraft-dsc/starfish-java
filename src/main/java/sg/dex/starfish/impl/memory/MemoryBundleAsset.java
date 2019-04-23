@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.impl.ABundleAsset;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -38,6 +39,7 @@ public class MemoryBundleAsset extends ABundleAsset {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
+            // TODO: why is this here?
             memoryAgent.uploadAsset(asset);
 
         }

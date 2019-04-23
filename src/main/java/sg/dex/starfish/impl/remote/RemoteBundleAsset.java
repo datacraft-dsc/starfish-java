@@ -1,7 +1,7 @@
 package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.BundleAsset;
+import sg.dex.starfish.Bundle;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.impl.ABundleAsset;
 import sg.dex.starfish.util.JSON;

@@ -1,7 +1,7 @@
 package sg.dex.starfish.impl;
 
 import sg.dex.crypto.Hash;
-import sg.dex.starfish.BundleAsset;
+import sg.dex.starfish.Bundle;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.JSONObjectCache;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static sg.dex.starfish.constant.Constant.CONTENTS;
 
-public class ABundleAsset implements BundleAsset {
+public abstract class ABundleAsset implements Bundle {
 
     protected final String metadataString;
     protected final Map<String, Object> assetMap;

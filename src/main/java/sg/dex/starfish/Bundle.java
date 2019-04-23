@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Mike
  */
-public interface BundleAsset extends Asset {
+public interface Bundle extends Asset {
 
     /**
      * Setting the asset type as bundle
