@@ -71,11 +71,5 @@ public abstract class AAsset implements Asset {
 	@Override
 	public abstract boolean isDataAsset();
 
-	@Override
-	public  boolean isBundle(){
-		return getMetadata().get("type").toString().equals("bundle");
-	}
-
-
 
 }

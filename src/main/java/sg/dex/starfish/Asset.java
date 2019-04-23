@@ -47,7 +47,9 @@ public interface 	Asset {
 	 *
 	 * @return true if the asset is a data asset, false otherwise
 	 */
-	public boolean isDataAsset();
+	public default boolean isDataAsset(){
+		return false;
+	}
 
 	/**
 	 * Returns this asset as a DataAsset.
@@ -65,7 +67,9 @@ public interface 	Asset {
 	 *
 	 * @return true if this asset is an operation, false otherwise
 	 */
-	public boolean isOperation();
+	public default boolean isOperation(){
+		return false;
+	}
 
 	/**
 	 * Returns the metadata for this asset as a String. Assets should store their metadata by deafult 
@@ -101,5 +105,7 @@ public interface 	Asset {
 	 *
 	 * @return true if this asset is an bundle, false otherwise
 	 */
-	public boolean isBundle();
+	public default boolean isBundle(){
+		return false;
+	}
 }

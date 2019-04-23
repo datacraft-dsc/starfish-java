@@ -99,32 +99,36 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.0</version>
-				<configuration>
-					<includes>
-						<include>**/Test**.java</include>
-						<include>**/ParamTest**.java</include>
-					</includes>
-					<excludes>
-						<exclude>**/*IntegrationTests.java</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<phase>integration-test</phase>
-						<configuration>
-							<excludes>
-								<exclude>none</exclude>
-							</excludes>
-							<includes>
-								<include>**/*IntegrationTests.java</include>
-							</includes>
-						</configuration>
-					</execution>
-				</executions>
+                                <configuration>
+                                  <includes>
+                                    <include>**/Test**.java</include>
+                                    <include>**/ParamTest**.java</include>
+                                  </includes>
+                                  <excludes>
+                                    <exclude>**/*IntegrationTests.java</exclude>
+                                  </excludes>
+                                </configuration>
+                                <executions>
+                                  <execution>
+                                    <id>integration-test</id>
+                                    <goals>
+                                      <goal>test</goal>
+                                    </goals>
+                                    <phase>integration-test</phase>
+                                    <configuration>
+                                      <excludes>
+                                        <exclude>none</exclude>
+                                      </excludes>
+                                      <includes>
+                                        <include>**/*IntegrationTests.java</include>
+                                      </includes>
+										<parallel>classes</parallel>
+										<threadCount>10</threadCount>
+										<useUnlimitedThreads>false</useUnlimitedThreads>
+										<perCoreThreadCount>true</perCoreThreadCount>
+                                    </configuration>
+                                  </execution>
+                                </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -145,6 +149,27 @@
 						<dependencyConvergence />
 					</rules>
 				</configuration>
+
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 

@@ -1,8 +1,10 @@
 package sg.dex.starfish.impl.remote;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.auth.AUTH;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,7 +17,6 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
-import org.apache.http.util.EncodingUtils;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
@@ -54,15 +55,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
 		super(ocean, did);
-		// TODO: remove defaultAccount!! 
-		this.account = (account == null) ? defaultAccount() : account;
-		// Remove: shouldn't call remote APIs in constructor
-		//		String token = getToken();
-		//		if ((token == null)&&(account!=null)) {
-		//			System.out.println("creating a token...");
-		//			token = createToken(this.account);
-		//		}
-		//		System.out.println("token: " + token);
+		this.account =  account;
 	}
 
 	/**
@@ -89,14 +82,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did) {
 		return new RemoteAgent(ocean, did, null);
-	}
-
-	// for debugging only
-	private RemoteAccount defaultAccount() {
-		RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), null);
-		account.setCredential("username", "Aladdin");
-		account.setCredential("password", "6e29fef5d289293d");
-		return account;
 	}
 
 	/**
@@ -188,7 +173,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	void addAuthHeaders(HttpRequest request) {
 		if (account == null) {
-			System.out.println("account = null");
+			throw new AuthorizationException("User don`t have account credentials" );
 		} else {
 			String token = null;
 			String username = null;
@@ -204,26 +189,29 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				password = account.getCredentials().get("password").toString();
 			}
 			if ((token == null) && (username == null)) {
-				System.out.println("account has no credentials");
+				throw new AuthorizationException("Username or Token is not available for respective account" );
 			} else {
 				final CharArrayBuffer buffer = new CharArrayBuffer(32);
 				if (token != null) {
 					buffer.append("token ");
 					buffer.append(token);
-				} else {
-					final StringBuilder tmp = new StringBuilder();
-					tmp.append(username);
-					tmp.append(":");
-					tmp.append((password == null) ? "null" : password);
-					final Base64 base64codec = new Base64(0);
-					final byte[] base64password = base64codec.encode(EncodingUtils.getBytes(tmp.toString(), Consts.UTF_8.name()));
-					buffer.append("Basic ");
-					buffer.append(base64password, 0, base64password.length);
+				}
+				// will create toke for given account
+				else {
+//					final StringBuilder tmp = new StringBuilder();
+//					tmp.append(username);
+//					tmp.append(":");
+//					tmp.append((password == null) ? "null" : password);
+//					final Base64 base64codec = new Base64(0);
+//					final byte[] base64password = base64codec.encode(EncodingUtils.getBytes(tmp.toString(), Consts.UTF_8.name()));
+//					buffer.append("Basic ");
+//					buffer.append(base64password, 0, base64password.length);
+					createToken(account);
+					buffer.append("token ");
+					buffer.append(account.getUserDataMap().get("token").toString());
 				}
 				String header = AUTH.WWW_AUTH_RESP;
 				String value = buffer.toString();
-				//System.out.println("account = " + account);
-				//System.out.println("RemoteAgent.addAuthHeaders(" + header + ", " + value + ")");
 				request.setHeader(header, value);
 			}
 		}
@@ -924,41 +912,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * API to get the Oath Token from the Agent
-	 *
-	 * @return
-	 */
-	public String getToken() {
-		HttpGet httpget = new HttpGet(getAuthURI("token"));
-		addAuthHeaders(httpget);
-		CloseableHttpResponse response = HTTP.execute(httpget);
-		try {
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 404) {
-				throw new RemoteException("Can't get token: " + statusCode);
-			} else if (statusCode == 200) {
-				String body = Utils.stringFromStream(HTTP.getContent(response));
-				List<String> allTokenLst = JSON.parse(body);
-				// NOTE: only save the first one, NOT the entire list!
-				account.getUserDataMap().put("token", allTokenLst.get(0));
-				return allTokenLst.get(0);
-			} else {
-				throw new TODOException("status code not handled: " + statusCode);
-			}
-		} finally {
-			HTTP.close(response);
-		}
-
-
-	}
-
-	/**
 	 * The will create the token base on user name and password configured
 	 *
 	 * @return new token
 	 */
-	public String createToken(RemoteAccount account) {
+	private void createToken(RemoteAccount account) {
 		// TODO this probably needs refactoring
 		String url = "token";
 		HttpPost httpPost = new HttpPost(getAuthURI(url));
@@ -978,9 +936,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					String id = JSON.parse(body);
 					updateAccountData(id);
-					return id;
 				}
-				throw new TODOException("Result not handled: " + statusLine);
+				else {
+					throw new TODOException("Result not handled: " + statusLine);
+				}
 			} finally {
 				response.close();
 			}
@@ -1003,16 +962,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			return;
 		}
 		account.getUserDataMap().put("token", token);
-		/* if we keep a list of tokens...
-		if (null != account.getUserDataMap().get("token")) {
-			List<String> tokenLst = ((List<String>) account.getUserDataMap().get("token"));
-			tokenLst.add(token);
-		} else {
-			List<String> tokenLst = new ArrayList<>();
-			tokenLst.add(token);
-			account.getUserDataMap().put("token", tokenLst);
-		}
-		*/
+
 	}
 
 
