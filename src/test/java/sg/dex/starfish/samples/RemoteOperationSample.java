@@ -1,9 +1,9 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.developer_usecase.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteOperation;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
