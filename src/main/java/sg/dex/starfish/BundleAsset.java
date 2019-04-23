@@ -5,7 +5,7 @@ import sg.dex.starfish.util.DID;
 import java.util.Map;
 
 /**
- * Class representing an asset bundle. The contents of the bundle are defined in the asset
+ * Interface representing an immutable asset bundle. The contents of the bundle are defined in the asset
  * metadata.
  *
  * @author Mike
@@ -24,6 +24,7 @@ public interface BundleAsset extends Asset {
 
     /**
      * API to add an asset to a existing Asset bundle
+     * TODO: needs to return new Bundle
      *
      * @param name  : name of the asset
      * @param asset : Asset the need to be added
@@ -32,6 +33,7 @@ public interface BundleAsset extends Asset {
 
     /**
      * API to all map of assests and their respective names.
+     * TODO: needs to return new Bundle
      * All asset present in the map will be added to the Asset bundle
      *
      * @param assetMap
