@@ -1,6 +1,5 @@
 package sg.dex.starfish.samples;
 
-import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -16,7 +15,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TestRemoteBundleAsset {
 
     RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
-    @Test
+    
     public void testAssetBundleCreationWithoutBundleName() {
 
         // creating  assets

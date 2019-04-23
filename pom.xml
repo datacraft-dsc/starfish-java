@@ -192,10 +192,10 @@
                             <includes>
                                 <include>**/*IntegrationTests.java</include>
                             </includes>
-                            <parallel>classes</parallel>
-                            <threadCount>10</threadCount>
-                            <useUnlimitedThreads>false</useUnlimitedThreads>
-                            <perCoreThreadCount>true</perCoreThreadCount>
+                            <!--<parallel>classes</parallel>-->
+                            <!--<threadCount>10</threadCount>-->
+                            <!--<useUnlimitedThreads>false</useUnlimitedThreads>-->
+                            <!--<perCoreThreadCount>true</perCoreThreadCount>-->
                         </configuration>
                     </execution>
                 </executions>
