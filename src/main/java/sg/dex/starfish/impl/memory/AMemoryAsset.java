@@ -7,11 +7,11 @@ import sg.dex.starfish.impl.AAsset;
  * MemoryAsset/MemoryBundle/MemoryOperation class.
  *
  */
-public  abstract class AMemory extends AAsset {
+public abstract class AMemoryAsset extends AAsset {
 
     private  MemoryAgent memoryAgent;
 
-    public AMemory(String metaData,MemoryAgent aAgent) {
+    public AMemoryAsset(String metaData,MemoryAgent aAgent) {
         super(metaData);
         memoryAgent = aAgent;
 
@@ -21,7 +21,7 @@ public  abstract class AMemory extends AAsset {
      * Constructor
      * @param metaData
      */
-    public AMemory(String metaData) {
+    public AMemoryAsset(String metaData) {
         super(metaData);
         memoryAgent = MemoryAgent.create();
 

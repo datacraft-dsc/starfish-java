@@ -19,12 +19,10 @@ import static sg.dex.starfish.constant.Constant.TYPE;
  * Intended for use in testing or local development situations.
  * Abstract class that have common code required for different memory operation implementation
  */
-public abstract class MemoryOperation extends AMemory implements Operation {
+public abstract class AMemoryOperation extends AMemoryAsset implements Operation {
 
-    protected MemoryOperation(Map<String, Object> meta) {
-
-        super(buildMetaData(null, meta));
-
+    protected AMemoryOperation(String metaString) {
+        super(metaString);
     }
 
     /**

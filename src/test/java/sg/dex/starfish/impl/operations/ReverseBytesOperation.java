@@ -2,7 +2,7 @@ package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.memory.MemoryOperation;
+import sg.dex.starfish.impl.memory.AMemoryOperation;
 
 import java.util.Map;
 
@@ -13,10 +13,10 @@ import java.util.Map;
  * @author Mike
  *
  */
-public class ReverseBytesOperation extends MemoryOperation {
+public class ReverseBytesOperation extends AMemoryOperation {
 
 	protected ReverseBytesOperation(String meta) {
-		super(null);
+		super(meta);
 	}
 
 	/**

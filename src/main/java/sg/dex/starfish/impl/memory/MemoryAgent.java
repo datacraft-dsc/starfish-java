@@ -103,7 +103,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Asset... params) {
-        if (!(operation instanceof MemoryOperation)) {
+        if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
         return operation.invoke(params);
@@ -121,7 +121,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Map<String, Asset> params) {
-        if (!(operation instanceof MemoryOperation)) {
+        if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
         return operation.invoke(params);

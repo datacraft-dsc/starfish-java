@@ -31,7 +31,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Mike
  *
  */
-public class MemoryAsset extends AMemory implements DataAsset {
+public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     private byte[] data;
 

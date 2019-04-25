@@ -6,7 +6,7 @@ import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.memory.MemoryOperation;
+import sg.dex.starfish.impl.memory.AMemoryOperation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class TestMemoryOperations {
 	@Test public void testReverseBytes() {
 		byte[] data=new byte[] {1,2,3};
 		
-		MemoryOperation memoryOperation=ReverseBytesOperation.create();
+		AMemoryOperation memoryOperation=ReverseBytesOperation.create();
 		
 		Asset a=MemoryAsset.create(data);
 		Map<String,Asset> test = new HashMap<>();

@@ -21,7 +21,7 @@ import static sg.dex.starfish.constant.Constant.*;
  *
  * @author Ayush
  */
-public class MemoryBundle extends AMemory implements Bundle {
+public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     private Map<String, Asset> assetMap;
 
