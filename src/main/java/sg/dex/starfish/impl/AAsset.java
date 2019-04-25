@@ -2,7 +2,6 @@ package sg.dex.starfish.impl;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
@@ -68,11 +67,5 @@ public abstract class AAsset implements Asset {
 	public String getMetadataString() {
 		return metadataString;
 	}
-
-	@Override
-	public boolean isDataAsset() {
-		return Constant.DATA_ASSET.equals(this.getMetadata().get(Constant.TYPE));
-	}
-
 
 }

@@ -69,11 +69,6 @@ public abstract class MemoryOperation extends AMemory implements Operation {
         return MemoryJob.create(future);
     }
 
-    @Override
-    public final boolean isDataAsset() {
-        return false;
-    }
-
     /**
      * Computes the result of the invoke job using the provided assets
      *
