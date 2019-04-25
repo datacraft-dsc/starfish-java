@@ -1,32 +1,22 @@
 package sg.dex.starfish.impl.squid;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-import java.math.BigInteger;
+
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+
+import com.oceanprotocol.squid.api.OceanAPI;
+import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.models.Account;
+import com.oceanprotocol.squid.models.Balance;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
-import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.DID;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.remote.RemoteAsset;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-
-import com.oceanprotocol.squid.api.OceanAPI;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import com.oceanprotocol.squid.models.Account;
-import com.oceanprotocol.squid.models.Balance;
-import com.oceanprotocol.squid.exceptions.EthereumException;
-
-/* DESIGN CONSIDERATION
-   It may be more apropos for SquidAgent to be a subclass of RemoteAgent.
-   In this case the constructor would need to pass an Account
-   to the superclass.
-   If so then the signatures of registerAsset, getAsset, uploadAsset
-   would need to change to return a RemoteAsset and
-   SquidAsset would need to be a subclass of RemoteAsset.
-*/
+import sg.dex.starfish.impl.AAgent;
+import sg.dex.starfish.util.DID;
 
 /**
  * Class implementing a Squid Agent
@@ -36,8 +26,9 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
  */
 public class SquidAgent extends AAgent {
 
-	private OceanAPI oceanAPI;
-	private Map<String,String> config;
+	private final Ocean ocean;
+	private final OceanAPI oceanAPI;
+	private final Map<String,String> config;
 
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
@@ -46,11 +37,12 @@ public class SquidAgent extends AAgent {
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(OceanAPI oceanAPI, Map<String,String> config,
+	protected SquidAgent(Map<String,String> config,
 			     Ocean ocean, DID did) {
 		super(ocean, did);
 		this.config = config;
-		this.oceanAPI = oceanAPI;
+		this.ocean=ocean;
+		this.oceanAPI = ocean.getOceanAPI();
 	}
 
 	/**
@@ -63,7 +55,7 @@ public class SquidAgent extends AAgent {
 	 * @return RemoteAgent
 	 */
 	public static SquidAgent create(OceanAPI oceanAPI, Map<String,String> config, Ocean ocean, DID did) {
-		return new SquidAgent(oceanAPI, config, ocean, did);
+		return new SquidAgent(config, ocean, did);
 	}
 
 
@@ -94,6 +86,11 @@ public class SquidAgent extends AAgent {
 	@Override
 	public SquidAsset getAsset(String id) {
 		return null;
+	}
+	
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
 	}
 
 	/**
@@ -166,5 +163,9 @@ public class SquidAgent extends AAgent {
 	 */
 	public List<Account> list() throws EthereumException {
 		return oceanAPI.getAccountsAPI().list();
+	}
+
+	public OceanAPI getOceanAPI() {
+		return oceanAPI;
 	}
 }

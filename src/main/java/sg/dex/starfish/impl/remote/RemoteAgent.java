@@ -68,6 +68,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return RemoteAgent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did, RemoteAccount account) {
+		if (ocean==null) throw new IllegalArgumentException("OCean connection cannot be null for remote agent");
+		if (did==null) throw new IllegalArgumentException("DID cannot be null for remote agent");
 		return new RemoteAgent(ocean, did, account);
 	}
 
@@ -248,6 +250,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		} finally {
 			HTTP.close(response);
 		}
+	}
+	
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
 	}
 
 	/**
@@ -957,5 +964,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		account.getUserDataMap().put("token", token);
 
 	}
+
 
 }

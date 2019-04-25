@@ -27,7 +27,7 @@ public class ConnectToOcean_01 {
     @Before
     public void setup() {
 
-        ocean = new Ocean();
+        ocean = Ocean.connect();
     }
 
     @Test

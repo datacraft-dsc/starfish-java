@@ -49,6 +49,17 @@ public interface Agent {
 	 * @return Asset The asset found
 	 */
 	public Asset getAsset(String id);
+	
+	/**
+	 * Gets an asset for the given asset DID from this agent.
+	 * Returns null if the asset not exist.
+	 *
+	 * @param did The DID of the asset to get from this agent
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @return Asset The asset found, or null if not found
+	 */	
+	public Asset getAsset(DID did);
 
 	/**
 	 * Uploads an asset to this agent. Registers the asset with the agent if required.
@@ -63,4 +74,6 @@ public interface Agent {
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */
 	public Asset uploadAsset(Asset a);
+
+
 }

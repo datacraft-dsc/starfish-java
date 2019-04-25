@@ -127,6 +127,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return operation.invoke(params);
     }
 
+	@Override
+	public Asset getAsset(DID did) {
+		return getAsset(did.getID());
+	}
+
     @Override
     public Listing getListing(String id) {
         return listingStore.get(id);
@@ -221,7 +226,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         responseMetadata.put("utime", purchaseData.get("utime") == null ? Instant.now() : purchaseData.get("agreement"));
 
         return responseMetadata;
-
 
     }
 }
