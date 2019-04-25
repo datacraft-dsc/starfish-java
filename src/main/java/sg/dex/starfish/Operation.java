@@ -2,6 +2,8 @@ package sg.dex.starfish;
 
 import java.util.Map;
 
+import sg.dex.starfish.util.Params;
+
 /**
  * Interface representing an invokable operation
  * @author Mike
@@ -21,7 +23,9 @@ public interface Operation extends Asset {
 	 * @throws IllegalArgumentException if required parameters are not available.
 	 * @return The Job for this invoked operation
 	 */
-	public Job invoke(Asset... params);
+	public default Job invoke(Asset... params) {
+		return invoke(Params.namedParams(this, params));
+	}
 	
 	/**
 	 * Invokes this operation with the given named parameters. Operations should override
@@ -42,6 +46,10 @@ public interface Operation extends Asset {
 	 *
 	 * @return A map of parameter names to specifications
 	 */
-	public Map<String, Object> getParamSpec();
-
+	@SuppressWarnings("unchecked")
+	public default Map<String, Object> getParamSpec() {
+		Map<String,Object> meta=getMetadata();
+		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
+		return paramSpec;
+	}
 }

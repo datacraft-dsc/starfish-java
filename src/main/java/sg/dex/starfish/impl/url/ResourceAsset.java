@@ -1,86 +1,110 @@
 package sg.dex.starfish.impl.url;
 
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
+import static sg.dex.starfish.constant.Constant.DATA_ASSET;
 
 /**
  * Class exposing a Java classpath resource as an Ocean asset.
- * 
- * Mainly useful for testing, or for applications that wish to embed some default assets such as 
+ * <p>
+ * Mainly useful for testing, or for applications that wish to embed some default assets such as
  * scripts as fixed resources.
  *
  * @author Mike
  */
-public class ResourceAsset extends ADataAsset {
-	private final String resourceName;
+public class ResourceAsset extends AAsset implements DataAsset {
+    private final String resourceName;
 
-	protected ResourceAsset(String meta, String resourceName) {
-		super(meta);
-		this.resourceName=resourceName;
-	}
+    protected ResourceAsset(String meta, String resourceName) {
+        super(meta);
+        this.resourceName = resourceName;
+    }
 
-	public static ResourceAsset create(String meta, String resourcePath) {
-		return new ResourceAsset(meta,resourcePath);
-	}
-	
-	public static ResourceAsset create(String resourceName) {
-		return create(buildMetaData(resourceName,null),resourceName);
-	}
-	
-	private static String buildMetaData(String resourcePath,Map<String,Object> meta) {
-		String hash=Hex.toString(Hash.keccak256(resourcePath));
+    /**
+     * API to crete resurce name wth meta data and the resource path
+     *
+     * @param meta
+     * @param resourcePath
+     * @return
+     */
+    public static ResourceAsset create(String meta, String resourcePath) {
+        return new ResourceAsset(meta, resourcePath);
+    }
 
-		Map<String,Object> ob=new HashMap<>();
-		ob.put("name", resourcePath);
-		ob.put("dateCreated", Instant.now().toString());
-		ob.put("contentHash", hash);
-		ob.put("type", "dataset");
-		ob.put("contentType","application/octet-stream");
+    /**
+     * API to crete a Resource Asset with resource Name
+     *
+     * @param resourceName
+     * @return
+     */
+    public static ResourceAsset create(String resourceName) {
+        return create(buildMetaData(resourceName, null), resourceName);
+    }
 
-		if (meta!=null) {
-			for (Map.Entry<String,Object> me:meta.entrySet()) {
-				ob.put(me.getKey(), me.getValue());
-			}
-		}
+    /**
+     * API to build the metadata of the Resource Asset
+     *
+     * @param resourcePath
+     * @param meta
+     * @return
+     */
+    private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
+        String hash = Hex.toString(Hash.keccak256(resourcePath));
 
-		return JSON.toString(ob);
-	}
+        Map<String, Object> ob = new HashMap<>();
+        ob.put("name", resourcePath);
+        ob.put("dateCreated", Instant.now().toString());
+        ob.put("contentHash", hash);
+        ob.put("type", DATA_ASSET);
+        ob.put("contentType", "application/octet-stream");
 
-	/**
-	 * Gets InputStream corresponding to this Asset
-	 *
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
-	 */
-	@Override
-	public InputStream getContentStream() {
-		InputStream istream= Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
-		if (istream==null) throw new IllegalStateException("Resource does not exist on classpath: "+resourceName);
-		return istream;
-	}
+        if (meta != null) {
+            for (Map.Entry<String, Object> me : meta.entrySet()) {
+                ob.put(me.getKey(), me.getValue());
+            }
+        }
 
-	@Override
-	public long getContentSize() {
-		throw new TODOException();
-	}
+        return JSON.toString(ob);
+    }
 
-	public String getName() {
-		return resourceName;
-	}
+    /**
+     * Gets InputStream corresponding to this Asset
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    public InputStream getContentStream() {
+        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourceName);
+        return istream;
+    }
 
+    @Override
+    public long getContentSize() {
+        throw new TODOException();
+    }
 
-
+    /**
+     * API to get the name of the resource
+     *
+     * @return
+     */
+    public String getName() {
+        return resourceName;
+    }
 
 
 }

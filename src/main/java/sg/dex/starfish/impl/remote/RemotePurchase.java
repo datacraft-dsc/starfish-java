@@ -7,6 +7,13 @@ import sg.dex.starfish.exception.TODOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class representing an purchase managed via a remote agent.
+ *
+ * This purcahse will be present in Ocean ecosystem and be referred by using the purchase ID.
+ *
+ * @author Ayush
+ */
 public class RemotePurchase implements Purchase {
 
 

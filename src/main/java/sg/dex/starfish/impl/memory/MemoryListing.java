@@ -3,12 +3,16 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.impl.AListing;
 import sg.dex.starfish.util.JSON;
 
 import java.util.Map;
 
-public class MemoryListing extends AListing {
+/**
+ *Class representing a local in-memory Listing instance.
+ *
+ * Intended for use in testing or local development situations.
+ */
+public class MemoryListing implements Listing {
 	private MemoryAgent agent;
 	
     private final Map<String,Object> meta;

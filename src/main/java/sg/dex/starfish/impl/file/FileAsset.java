@@ -1,4 +1,12 @@
+
 package sg.dex.starfish.impl.file;
+
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,13 +16,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
-import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.JSON;
-
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
@@ -23,7 +24,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Mike
  *
  */
-public class FileAsset extends ADataAsset {
+public class FileAsset extends AAsset {
 	private final File file;
 
 	protected FileAsset(String meta, File file) {
@@ -59,7 +60,7 @@ public class FileAsset extends ADataAsset {
 
 		Map<String,Object> ob=new HashMap<>();
 		ob.put(DATE_CREATED, Instant.now().toString());
-		ob.put(TYPE, "dataset");
+		ob.put(TYPE, DATA_ASSET);
 		ob.put(SIZE, f.length());
 		ob.put(FILE_NAME, f.getName());
 		ob.put(CONTENT_TYPE,"application/octet-stream");
@@ -82,7 +83,6 @@ public class FileAsset extends ADataAsset {
 	 * @throws StorageException if unable to load the Asset
 	 * @return An input stream allowing consumption of the asset data
 	 */
-	@Override
 	public InputStream getContentStream() {
 		try {
 			return new FileInputStream(file);
@@ -92,7 +92,6 @@ public class FileAsset extends ADataAsset {
 		}
 	}
 
-	@Override
 	public long getContentSize() {
 		return file.length();
 	}

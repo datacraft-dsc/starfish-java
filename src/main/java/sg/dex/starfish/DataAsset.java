@@ -1,5 +1,7 @@
 package sg.dex.starfish;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import sg.dex.starfish.exception.AuthorizationException;
@@ -41,5 +43,28 @@ public interface DataAsset extends Asset {
 	 * @return An input stream allowing consumption of the asset data
 	 */
 	@Override
-	public byte[] getContent();
+	public default byte[] getContent() {
+		InputStream is = getContentStream();
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+		byte[] buf = new byte[16384];
+
+		int bytesRead;
+		try {
+			while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {
+				buffer.write(buf, 0, bytesRead);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return buffer.toByteArray();
+	}
+	
+	/**
+	 * Gets the size of this data asset's content, in bytes
+	 * @return
+	 */
+	public abstract long getContentSize();
+
 }
