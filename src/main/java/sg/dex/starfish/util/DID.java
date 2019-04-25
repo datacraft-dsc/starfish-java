@@ -4,6 +4,8 @@ import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sg.dex.starfish.constant.Constant;
+
 /**
  * Class representing a valid W3C DID
  * See: https://w3c-ccg.github.io/did-spec/
@@ -98,7 +100,7 @@ public class DID {
 
 	/**
 	 * Gets the DID method for this DID
-	 * @return String The DID method, e.g. "ocn"
+	 * @return String The DID method, e.g. "op"
 	 */
 	public String getMethod() {
 		return method;
@@ -202,7 +204,7 @@ public class DID {
 		SecureRandom sr=new SecureRandom();
 		byte[] bytes=new byte[Utils.DID_LENGTH];
 		sr.nextBytes(bytes);
-		return "did:ocn:"+Hex.toString(bytes);
+		return "did:"+Constant.DID_METHOD+":"+Hex.toString(bytes);
 	}
 
 	/**

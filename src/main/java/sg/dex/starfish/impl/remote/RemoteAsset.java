@@ -4,6 +4,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
@@ -85,7 +86,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	public Map<String,Object> getParamValue() {
 		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
-		o.put("did", getAssetDID());
+		o.put(Constant.DID, getAssetDID());
 		return o;
 	}
 

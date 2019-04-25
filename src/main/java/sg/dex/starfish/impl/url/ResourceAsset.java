@@ -1,20 +1,19 @@
 package sg.dex.starfish.impl.url;
 
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-
-import java.io.InputStream;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
-import static sg.dex.starfish.constant.Constant.DATA_ASSET;
 
 /**
  * Class exposing a Java classpath resource as an Ocean asset.
@@ -64,11 +63,11 @@ public class ResourceAsset extends AAsset implements DataAsset {
         String hash = Hex.toString(Hash.keccak256(resourcePath));
 
         Map<String, Object> ob = new HashMap<>();
-        ob.put("name", resourcePath);
-        ob.put("dateCreated", Instant.now().toString());
-        ob.put("contentHash", hash);
-        ob.put("type", DATA_ASSET);
-        ob.put("contentType", "application/octet-stream");
+        ob.put(Constant.NAME, resourcePath);
+        ob.put(Constant.DATE_CREATED, Instant.now().toString());
+        ob.put(Constant.CONTENT_HASH, hash);
+        ob.put(Constant.TYPE, Constant.DATASET);
+        ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 
         if (meta != null) {
             for (Map.Entry<String, Object> me : meta.entrySet()) {

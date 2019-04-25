@@ -2,6 +2,7 @@ package sg.dex.starfish.impl;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
@@ -55,7 +56,7 @@ public abstract class AAsset implements Asset {
 	public Map<String,Object> getParamValue() {
 		 Map<String,Object>  o=new HashMap<>();
 		// default is to pass the asset ID
-		o.put("did", getAssetDID());
+		o.put(Constant.DID, getAssetDID());
 		return o;
 	}
 

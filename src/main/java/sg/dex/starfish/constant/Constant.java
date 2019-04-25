@@ -12,7 +12,11 @@ public class Constant {
     public static final String ID="id";
     public static final String CONTENTS="contents";
     public static final String ASSETID="assetID";
-    public static final String BUNDLE_NAME="name";
 
-    public static final Object DATA_ASSET = "dataasset";
+    public static final Object DATASET = "dataset";
+	public static final String NAME = "name";
+	public static final String DID = "did";
+	
+	public static final String DID_METHOD = "op";
+
 }

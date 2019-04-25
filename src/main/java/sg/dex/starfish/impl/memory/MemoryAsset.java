@@ -51,7 +51,7 @@ public class MemoryAsset extends AMemory implements DataAsset {
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
         ob.put(CONTENT_HASH, hash);
-        ob.put(TYPE, DATA_ASSET);
+        ob.put(TYPE, DATASET);
         ob.put(SIZE, Integer.toString(data.length));
         ob.put(CONTENT_TYPE, "application/octet-stream");
 
