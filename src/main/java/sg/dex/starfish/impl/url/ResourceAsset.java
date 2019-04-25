@@ -85,7 +85,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @throws AuthorizationException if requestor does not have access permission
      * @throws StorageException       if unable to load the Asset
      */
-    public InputStream getContentStream() {
+    @Override
+	public InputStream getContentStream() {
         InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
         if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourceName);
         return istream;

@@ -164,7 +164,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
 
     private Map<String, Asset> getAssetMap() {
-
+    	/// FIXME metadata shouldn't contain map of Strings to Assets!
         Map<String, Asset> assetMap = (Map<String, Asset>) getMetadata().get(CONTENTS);
         return assetMap.entrySet()
                 .stream()

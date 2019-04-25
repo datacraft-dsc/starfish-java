@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.impl.url.RemoteHttpAsset;
 
 public class TestRemoteHttpAsset {
 

@@ -95,7 +95,7 @@ public class RemoteListing extends AListing {
 
     @Override
     public Map<String, Object> getInfo() {
-
+    	// FIXME info could be null?
         Map<String, Object> info = (Map<String, Object>) getMetaData().get("info");
         return info.entrySet()
                 .stream()

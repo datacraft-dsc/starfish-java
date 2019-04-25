@@ -6,6 +6,7 @@ package sg.dex.starfish.exception;
  * @author Tom
  *
  */
+@SuppressWarnings("serial")
 public class AuthorizationException extends RuntimeException {
 
 	public AuthorizationException(String message, Exception e) {

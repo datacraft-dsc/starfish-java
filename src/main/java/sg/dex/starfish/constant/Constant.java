@@ -14,6 +14,9 @@ public class Constant {
     public static final String ASSETID="assetID";
 
     public static final Object DATASET = "dataset";
+	public static final Object BUNDLE = "bundle";
+
+	
 	public static final String NAME = "name";
 	public static final String DID = "did";
 	

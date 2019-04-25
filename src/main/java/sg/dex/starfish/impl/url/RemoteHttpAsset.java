@@ -1,6 +1,5 @@
-package sg.dex.starfish.impl.remote;
+package sg.dex.starfish.impl.url;
 
-import static sg.dex.starfish.constant.Constant.CONTENTS;
 import static sg.dex.starfish.constant.Constant.DATE_CREATED;
 import static sg.dex.starfish.constant.Constant.TYPE;
 
@@ -17,6 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
@@ -41,7 +41,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
     private static String buildMetadata(URI uri) {
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(TYPE, "bundle");
+        ob.put(TYPE, Constant.BUNDLE);
 
         return JSON.toPrettyString(ob);	
     }
