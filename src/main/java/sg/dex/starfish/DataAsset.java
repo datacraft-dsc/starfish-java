@@ -36,11 +36,12 @@ public interface DataAsset extends Asset {
 	public InputStream getContentStream();
 
 	/**
-	 * Gets raw data corresponding to this Asset
+	 * Gets the data content of this data asset as a byte[] array.
 	 *
+	 * @throws UnsupportedOperationException If this asset does not support getting byte data
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
+	 * @return The byte contents of this asset.
 	 */
 	@Override
 	public default byte[] getContent() {

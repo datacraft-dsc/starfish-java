@@ -60,7 +60,7 @@ public class TestMemoryAsset {
 		Map<String,Object> metaMap = new HashMap<>();
 		metaMap.put("test1","success");
 		Asset a=MemoryAsset.create(data,metaMap);
-		assertEquals(metaMap.get("test1"), "success");
+		assertEquals(a.getMetadata().get("test1"), "success");
 	}
 
 	@Test

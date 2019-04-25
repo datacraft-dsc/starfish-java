@@ -85,7 +85,7 @@ public interface Asset {
 
 	/**
 	 * Gets the contents of this data asset as a byte[] array.
-	 *If the asset is not data asset it wll throw  UnsupportedOperationException
+	 * 
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if unable to load the Asset
