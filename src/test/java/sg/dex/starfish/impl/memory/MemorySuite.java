@@ -9,7 +9,7 @@ import sg.dex.starfish.impl.operations.TestMemoryOperations;
         TestMemoryAgent.class,
         TestMemoryAsset.class,
         TestMemoryOperations.class,
-        TestMemoryBundleAsset.class,
+        TestMemoryBundle.class,
         TestMemoryListing.class,
         TestMemoryPurchase.class
 })

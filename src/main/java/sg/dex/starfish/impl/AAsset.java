@@ -2,15 +2,13 @@ package sg.dex.starfish.impl;
 
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSONObjectCache;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.api.client.googleapis.util.Utils;
-import com.kenai.constantine.Constant;
 
 /**
  * Abstract base class for immutable asset implementations
@@ -73,7 +71,7 @@ public abstract class AAsset implements Asset {
 
 	@Override
 	public boolean isDataAsset() {
-		return "dataset".equals(this.getMetadata().get("type"));
+		return Constant.DATA_ASSET.equals(this.getMetadata().get(Constant.TYPE));
 	}
 
 

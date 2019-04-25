@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Interface representing an immutable asset bundle. The contents of the bundle are defined in the asset
- * metadata.
+ * metadata.The content of the bundle can be other named asset
  *
  * @author Mike
  */
@@ -15,7 +15,7 @@ public interface Bundle extends Asset {
     /**
      * Setting the asset type as bundle
      *
-     * @return
+     * @return true for bundle asset
      */
     @Override
     default boolean isBundle() {
@@ -23,22 +23,19 @@ public interface Bundle extends Asset {
     }
 
     /**
-     * API to add an asset to a existing Asset bundle
-     * TODO: needs to return new Bundle
+     * API to create a new bundle and add  named sub-asset passed as parameter
      *
      * @param name  : name of the asset
      * @param asset : Asset the need to be added
      */
-    public void add(String name, Object asset);
+    public Bundle add(String name, Asset asset);
 
     /**
-     * API to all map of assests and their respective names.
-     * TODO: needs to return new Bundle
-     * All asset present in the map will be added to the Asset bundle
+     * API to create a new bundle and add all named sub-asset passed as parameter
      *
      * @param assetMap
      */
-    public void addAll(Map<String, Object> assetMap);
+    public Bundle addAll(Map<String, Asset> assetMap);
 
     /**
      * API to get an specific asset from an asset Bundle
@@ -46,10 +43,10 @@ public interface Bundle extends Asset {
      * @param name
      * @return
      */
-    public Object get(String name);
+    public Asset get(String name);
 
     /**
-     * API to get all Asset belong to asset Bundle
+     * API to get an immutable all named  sub Asset belong to asset Bundle
      *
      * @return
      */

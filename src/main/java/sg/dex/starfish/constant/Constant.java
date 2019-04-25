@@ -14,5 +14,5 @@ public class Constant {
     public static final String ASSETID="assetID";
     public static final String BUNDLE_NAME="name";
 
-
+    public static final Object DATA_ASSET = "dataasset";
 }

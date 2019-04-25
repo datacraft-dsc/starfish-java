@@ -2,7 +2,7 @@ package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryOperation;
 
 import java.util.Map;
 
@@ -14,10 +14,10 @@ import java.util.Map;
  *
  */
 
-public class EpicFailOperation extends AMemoryOperation {
+public class EpicFailOperation extends MemoryOperation {
 
 	protected EpicFailOperation(String meta) {
-		super(meta);
+		super(null);
 	}
 
 	/**

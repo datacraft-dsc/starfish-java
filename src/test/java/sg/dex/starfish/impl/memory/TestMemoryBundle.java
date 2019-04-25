@@ -11,7 +11,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestMemoryBundleAsset {
+public class TestMemoryBundle {
 
     @Test
     public void testAssetBundleCreationWithoutBundleName() {
@@ -41,7 +41,7 @@ public class TestMemoryBundleAsset {
         MemoryAgent memoryAgent = MemoryAgent.create();
 
         // create assetbundle without any custom metadata // so passing null
-        MemoryBundleAsset memoryAssetBundle = MemoryBundleAsset.create(memoryAgent, assetBundle, null);
+        MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
 
         // getting the ceated assetbundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
@@ -58,6 +58,7 @@ public class TestMemoryBundleAsset {
         assertEquals(contents.get("three").get("assetID"), a3.getAssetID());
         assertEquals(contents.get("four").get("assetID"), a4.getAssetID());
 
+       // System.out.println(JSON.toPrettyString(contents));
 
         // getting the contents of asset bundle through API
         Map<String, Object> allAssetMap = memoryAssetBundle.getAll();
@@ -69,10 +70,10 @@ public class TestMemoryBundleAsset {
         assertEquals(((Map<String, Asset>) allAssetMap.get("four")).get("assetID"), a4.getAssetID());
 
         // validating the singe asset
-        Map<String, String> assetIdOfOne = (Map<String, String>) memoryAssetBundle.get("one");
+       // Map<String, String> assetIdOfOne = (Map<String, String>) memoryAssetBundle.get("one");
 
-        Asset oneAsset = memoryAgent.getAsset(assetIdOfOne.get("assetID"));
-        assertEquals(oneAsset.getAssetID(), a1.getAssetID());
+        //Asset oneAsset = memoryAgent.getAsset(assetIdOfOne.get("assetID"));
+       // assertEquals(oneAsset.getAssetID(), a1.getAssetID());
 
 
     }
@@ -103,7 +104,7 @@ public class TestMemoryBundleAsset {
         MemoryAgent memoryAgent = MemoryAgent.create();
 
         // create assetbundle without any custom metadata // so passing null
-        MemoryBundleAsset memoryAssetBundle = MemoryBundleAsset.create(memoryAgent, assetBundle, customeData);
+        MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, customeData);
 
         // getting the ceated asset bundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
