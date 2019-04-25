@@ -14,11 +14,12 @@ import sg.dex.starfish.exception.StorageException;
  *
  * @author Mike
  */
-public interface 	Asset {
+public interface Asset {
 
 	/**
 	 * Gets DID for this Asset
-	 *
+	 * @see <a href="https://w3c-ccg.github.io/did-spec"></a>
+	 *See {@linktourl https://w3c-ccg.github.io/did-spec/}
 	 * @throws UnsupportedOperationException if unable to obtain DID
 	 * @return the assetID
 	 */
@@ -27,7 +28,7 @@ public interface 	Asset {
 	/**
 	 * Gets the Ocean DID for this asset. The DID may include a DID path to specify
 	 * the precise asset if the DID refers to an agent managing the asset.
-	 *
+	 * @see <a href="https://w3c-ccg.github.io/did-spec"></a>
 	 * Throws an exception if a DID is not available or cannot be constructed.
 	 *
 	 * @return The global DID for this asset.
@@ -36,7 +37,7 @@ public interface 	Asset {
 
 	/**
 	 * Gets a copy of the JSON metadata for this asset.
-	 *
+	 *Metadata will be the key value pair .Asset metadata will differ as per type of asset:DataAsset /Operation/Bundle
 	 * @return New clone of the parsed JSON metadata for this asset
 	 */
 	public Map<String, Object> getMetadata();
@@ -79,8 +80,8 @@ public interface 	Asset {
 	public String getMetadataString();
 
 	/**
-	 * Gets the contents of this data asset as a byte[] array
-	 *
+	 * Gets the contents of this data asset as a byte[] array.
+	 *If the asset is not data asset it wll throw  UnsupportedOperationException
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if unable to load the Asset

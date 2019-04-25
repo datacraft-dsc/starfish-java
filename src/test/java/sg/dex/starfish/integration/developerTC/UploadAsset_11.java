@@ -67,7 +67,7 @@ public class UploadAsset_11 {
     public void testUploadAssetWithMetaData() {
 
         byte [] data ={2,3,4,5,6,7,8,9,0};
-        Asset a = MemoryAsset.create(getMetaData(),data);
+        Asset a = MemoryAsset.create(data,getMetaData());
         RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
         String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());
 

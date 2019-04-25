@@ -1,23 +1,20 @@
 package sg.dex.starfish.impl.remote;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.impl.ADataAsset;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.exception.TODOException;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.HTTP;
 
 /**
  * Class representing an asset managed via a remote agent.
@@ -28,11 +25,9 @@ import sg.dex.starfish.util.HTTP;
  */
 public class RemoteAsset extends ARemoteAsset implements DataAsset {
 
-	private final RemoteAgent agent;
 
 	protected RemoteAsset(String meta, RemoteAgent agent) {
-		super(meta);
-		this.agent=agent;
+		super(meta,agent);
 	}
 
 	/**
@@ -59,9 +54,9 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	 */
 	@Override
 	public InputStream getContentStream() {
-        URI uri = agent.getStorageURI(getAssetID());
+        URI uri = getRemoteAgent().getStorageURI(getAssetID());
         HttpGet httpget = new HttpGet(uri);
-        agent.addAuthHeaders(httpget);
+		getRemoteAgent().addAuthHeaders(httpget);
         HttpResponse response = HTTP.execute(httpget);
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
@@ -102,7 +97,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	@Override
 	public DID getAssetDID() {
 		// DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
-		DID agentDID=agent.getDID();
+		DID agentDID=getRemoteAgent().getDID();
 		return agentDID.withPath(getAssetID());
 	}
 

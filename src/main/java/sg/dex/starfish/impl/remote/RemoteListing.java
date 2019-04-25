@@ -8,12 +8,14 @@ import sg.dex.starfish.impl.AListing;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * This class is responsible for creating the listing instance.
- * To create and instance user just need to pass the agent and the data(metadata)
- * for which the listing instance should be created.
- * It also sever getting the meta data of existing listing ,updating the existing listing.
+ * Class representing an Listing managed via a remote agent.
+ *
+ * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
+ *
+ * @author Ayush
  */
 
 public class RemoteListing extends AListing {
@@ -93,21 +95,42 @@ public class RemoteListing extends AListing {
 
     @Override
     public Map<String, Object> getInfo() {
-        return (Map<String, Object>) getMetaData().get("info");
+
+        Map<String, Object> info = (Map<String, Object>) getMetaData().get("info");
+        return info.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 
+    /**
+     * API to get the AssetID
+     * @return
+     */
     private String getAssetId() {
         return getMetaData().get("assetid").toString();
     }
 
+    /**
+     * API to get the USer ID
+     * @return
+     */
     private String getUserId() {
         return getMetaData().get("userid").toString();
     }
 
+    /**
+     * API to get the Aggrement
+     * @return
+     */
     private String getAggrement() {
         return getMetaData().get("agreement").toString();
     }
 
+    /**
+     * API to get the Listing ID
+     * @return
+     */
     private String getListing_id() {
         return getMetaData().get("id").toString();
     }

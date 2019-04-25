@@ -21,50 +21,7 @@ public class TestMemoryAsset {
 	@Before
 	public void setup(){
 
-		asset = new Asset() {
-			@Override
-			public String getAssetID() {
-				return "test";
-			}
-
-			@Override
-			public DID getAssetDID() {
-				return null;
-			}
-
-			@Override
-			public Map<String, Object> getMetadata() {
-				return null;
-			}
-
-			@Override
-			public boolean isDataAsset() {
-				return false;
-			}
-
-			@Override
-			public boolean isOperation() {
-				return false;
-			}
-
-			@Override
-			public String getMetadataString() {
-				return null;
-			}
-
-			@Override
-			public Map<String, Object> getParamValue() {
-				return null;
-			}
-
-			@Override
-			public boolean isBundle() {
-				return false;
-			}
-		};
-
 		memoryAsset = MemoryAsset.create(new byte[] {1,2,3});
-
 
 	}
 	@Test public void testCreation() {
@@ -102,13 +59,8 @@ public class TestMemoryAsset {
 		byte[] data=new byte[] {1,2,3};
 		Map<String,Object> metaMap = new HashMap<>();
 		metaMap.put("test1","success");
-		Asset a=MemoryAsset.create(metaMap,data);
+		Asset a=MemoryAsset.create(data,metaMap);
 		assertEquals(metaMap.get("test1"), "success");
-	}
-	@Test(expected = IllegalArgumentException.class)
-	public void testCreateAssetException(){
-		MemoryAsset.create(asset);
-		//assertEquals(memoryAsset.getAssetID(),"test");
 	}
 
 	@Test

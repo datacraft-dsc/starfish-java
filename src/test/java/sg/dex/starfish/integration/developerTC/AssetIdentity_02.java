@@ -61,7 +61,7 @@ public class AssetIdentity_02 {
         metaDataAsset.put("location", "Singapore");
 
         // creating asset with MetaData
-        Asset asset2 = MemoryAsset.create(metaDataAsset, data);
+        Asset asset2 = MemoryAsset.create( data,metaDataAsset);
 
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent

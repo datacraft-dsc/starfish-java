@@ -16,7 +16,7 @@ public class TestResources {
 		byte[] bs=ua.getContent();
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);
-		
+
 		assertEquals("{}",ua.getMetadataString());
 	}
 }

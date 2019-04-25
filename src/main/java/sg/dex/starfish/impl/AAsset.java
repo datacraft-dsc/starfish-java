@@ -9,9 +9,6 @@ import sg.dex.starfish.util.JSONObjectCache;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.api.client.googleapis.util.Utils;
-import com.kenai.constantine.Constant;
-
 /**
  * Abstract base class for immutable asset implementations
  *
@@ -70,11 +67,5 @@ public abstract class AAsset implements Asset {
 	public String getMetadataString() {
 		return metadataString;
 	}
-
-	@Override
-	public boolean isDataAsset() {
-		return "dataset".equals(this.getMetadata().get("type"));
-	}
-
 
 }

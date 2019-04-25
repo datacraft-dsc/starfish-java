@@ -1,10 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.Map;
-
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryOperation;
+
+import java.util.Map;
 
 /**
  * Basic implementation of an operation which reverses the byte sequence of a
@@ -13,10 +13,10 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
  * @author Mike
  *
  */
-public class ReverseBytesOperation extends AMemoryOperation {
+public class ReverseBytesOperation extends MemoryOperation {
 
 	protected ReverseBytesOperation(String meta) {
-		super(meta);
+		super(null);
 	}
 
 	/**
