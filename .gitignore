@@ -40,3 +40,5 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 /jssecacerts
+/release.properties
+/pom.xml.releaseBackup
