@@ -36,8 +36,10 @@ public interface Asset {
 	public DID getAssetDID();
 
 	/**
-	 * Gets a copy of the JSON metadata for this asset.
-	 *Metadata will be the key value pair .Asset metadata will differ as per type of asset:DataAsset /Operation/Bundle
+	 * Gets a copy of the JSON metadata for this asset, as a map of strings to values.
+	 * 
+	 * Asset metadata will differ as per type of asset: (e.g. dataset, operation, bundle)
+	 * 
 	 * @return New clone of the parsed JSON metadata for this asset
 	 */
 	public Map<String, Object> getMetadata();
@@ -101,8 +103,9 @@ public interface Asset {
 	 * @return A map representing this asset
 	 */
 	public Map<String, Object> getParamValue();
+	
 	/**
-	 * Returns true if this asset is an bundle, i.e. can have many sub-asset.
+	 * Tests if this asset is an bundle, i.e. can contain sub-assets.
 	 *
 	 * @return true if this asset is an bundle, false otherwise
 	 */
