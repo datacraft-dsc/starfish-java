@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
- *Class representing a local in-memory bundle asset.
+ * Class representing a local in-memory bundle asset.
  *
  * Intended for use in testing or local development situations.
  *
@@ -39,7 +39,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     /**
-     * API to create a memory bundle asset asset with given given Asset named map and metadata
+     * Create a memory bundle asset asset with given given Asset named map and metadata
      *
      * @param assetMap map of all asset with name and assetID
      * @param meta     meta data
