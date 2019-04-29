@@ -99,7 +99,6 @@ public class MemoryJob implements Job {
 	 * asset is available.
 	 *
 	 * @throws JobFailedException if Job fails
-	 * @param timeoutMillis The number of milliseconds to wait for a result before returning null
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	@Override

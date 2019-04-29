@@ -31,7 +31,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
      * @param meta
      * @return
      */
-    private static String buildMetaData(String data, Map<String, Object> meta) {
+    protected static String buildMetaData(String data, Map<String, Object> meta) {
         data = data == null ? "" : data;
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
