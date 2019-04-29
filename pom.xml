@@ -188,6 +188,7 @@
 				<configuration>
 					<additionalparam>-Xdoclint:none</additionalparam>
 					<failOnError>false</failOnError>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 
