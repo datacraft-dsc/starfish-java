@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-
+		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<doclint>none</doclint>
 
 		<gpg.keyname>340395AC</gpg.keyname>
