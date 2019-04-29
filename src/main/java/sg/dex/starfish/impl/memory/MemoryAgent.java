@@ -156,7 +156,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     @Override
-    public Purchase getPurchasing(String id) {
+    public Purchase getPurchase(String id) {
         return null;
     }
 

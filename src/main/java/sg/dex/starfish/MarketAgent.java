@@ -12,25 +12,27 @@ public interface MarketAgent {
     /**
      * API to get all the Listing.
      * This will return all the listing that belong specific agent
-     *
-     * @return list of listing instacne if no listing found then return an empty list.
+     * 
+     * @param id The ID of the Listing to retrieve
+     * @return Listing instance, or null if not found
      */
     Listing getListing(String id);
 
     /**
      * API to get one  Listing.
      * This will return  the listing that belong specific agent
+     * @param id The ID 
      *
-     * @return list of listing instacne if no listing found then return an empty list.
+     * @return Purchase instance, or null if not found
      */
-    Purchase getPurchasing(String id);
+    Purchase getPurchase(String id);
 
     /**
      * API used to create a  new listing instance
      * it will have map of all metadata that need to be passed while creating the listing instance
      *
-     * @param listingData
-     * @return
+     * @param listingData The data to include in the listing
+     * @return Listing instance created
      */
     Listing createListing(Map<String, Object> listingData);
 

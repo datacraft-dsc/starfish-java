@@ -34,9 +34,10 @@ public interface Invokable {
 	
 	/**
 	 * Gets the parameter specification for this Invokable service given the specified operation
+	 * 
+	 * @param op The operation for which to obtain the parameter specification
 	 *
 	 * @throws UnsupportedOperationException if this service cannot support the given operation
-	 * @param op The operation for which to obtain the parameter specification
 	 * @return A map of parameter names to parameter specs
 	 */
 	public default Map<String,Object> getParamSpec(Operation op) {

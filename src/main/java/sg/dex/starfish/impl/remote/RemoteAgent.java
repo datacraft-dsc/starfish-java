@@ -772,7 +772,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Purchase getPurchasing(String id) {
+	public Purchase getPurchase(String id) {
 		return RemotePurchase.create(this, id);
 	}
 

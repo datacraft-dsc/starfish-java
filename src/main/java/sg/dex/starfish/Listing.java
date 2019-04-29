@@ -26,7 +26,6 @@ public interface Listing {
      */
      Asset getAsset();
 
-
     /**
      * Returns the service agreement associated with this listing.
      * TODO create service agreement abstraction
@@ -38,24 +37,26 @@ public interface Listing {
     /**
      * Gets the listing information for this listing.
      * 
+     * FIXME: what is the difference between "Info" and "Metadata"??
+     * 
      * Listing information is defined by the marketplace on which the Listing is present.
+     * @return The information associated with this Listing
      */
      Map<String,Object> getInfo();
 
     /**
      * Purchases this listing using the given account
+     * FIXME: should this return an asset or a purchase?
      *
      * @param account The account to use for the purchase
-     * @return
+     * @return The purchased asset
      */
      Asset purchase(Account account);
 
     /**
-     * This method can be used to refresh the cached listing data, if the implementation supports
-     * mutable listings with in-memory local caches. Implementations may wish to do this to 
-     * avoid calling the server for every time listing details are requested.
-     * 
-     * @throws UnsupportedOperationException If the implementation does not support listing refresh
+     * Refreshes the Listing data from the agent where it is stored, returning a new listing.
+	 *
+     * @return The latest version of the Listing
      */
      Listing refresh();
 
@@ -64,7 +65,5 @@ public interface Listing {
      * @return A map of listing metadata
      */
      Map<String, Object> getMetaData() ;
-
-
 
 }
