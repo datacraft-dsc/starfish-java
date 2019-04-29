@@ -68,6 +68,7 @@ public class MemoryPurchase implements Purchase {
     }
 
     /**
+     * FIXME: complete docs
      * API to ge
      *
      * @return
