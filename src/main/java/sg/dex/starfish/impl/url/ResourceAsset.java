@@ -36,7 +36,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      *
      * @param meta
      * @param resourcePath
-     * @return
+     * @return ResourceAsset
      */
     public static ResourceAsset create(String meta, String resourcePath) {
         return new ResourceAsset(meta, resourcePath);
@@ -46,7 +46,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * API to crete a Resource Asset with resource Name
      *
      * @param resourceName
-     * @return
+     * @return ResourceAsset
      */
     public static ResourceAsset create(String resourceName) {
         return create(buildMetaData(resourceName, null), resourceName);
@@ -57,7 +57,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      *
      * @param resourcePath
      * @param meta
-     * @return
+     * @return String buildMetadata
      */
     private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
         String hash = Hex.toString(Hash.keccak256(resourcePath));
@@ -100,7 +100,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     /**
      * API to get the name of the resource
      *
-     * @return
+     * @return String name
      */
     public String getName() {
         return resourceName;
