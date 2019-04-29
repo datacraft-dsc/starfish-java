@@ -98,10 +98,6 @@ public class MemoryJob implements Job {
 	 * or returns null if the timeout in milliseconds expires before the
 	 * asset is available.
 	 *
-	 * May throw these excpetions:
-	 * throws TimeoutException if result is not available in timeoutMillis
-	 * throws AuthorizationException if requestor does not have load permission
-	 * throws StorageException if unable to load the Asset
 	 * @throws JobFailedException if Job fails
 	 * @param timeoutMillis The number of milliseconds to wait for a result before returning null
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes

@@ -34,7 +34,6 @@ public class DID {
 	 * @param path PATH portion of DID (optional)
 	 * @param fragment FRAGMENT portion of DID  (optional)
 	 * @throws IllegalArgumentException if method or id are null
-	 * @return DID
 	 */
 	private DID(String method, String id, String path, String fragment) {
 		if (method==null) throw new IllegalArgumentException("DID method cannot be null");

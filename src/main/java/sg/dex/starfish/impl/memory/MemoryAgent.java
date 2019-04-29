@@ -15,6 +15,11 @@ import java.util.concurrent.Executors;
 
 // TODO: should implement MarketAgent, StorageAgent etc.
 
+/**
+ * An in-memory agent implementation
+ * 
+ * @author Mike
+ */
 public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * The singleton default memory agent instance
@@ -28,24 +33,37 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
     private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
 
-    private MemoryAgent(Ocean ocean, String did) {
-        this(ocean, DID.parse(did));
-    }
-
     private MemoryAgent(Ocean ocean, DID did) {
         super(ocean, did);
     }
 
+    /**
+     * Creates a new MemoryAgent with the given DID
+     * 
+     * @param did DID for this agent
+     * @return A MemoryAgent with the given DID
+     */
     public static MemoryAgent create(DID did) {
         return new MemoryAgent(Ocean.connect(), did);
     }
 
+    /**
+     * Creates a new MemoryAgent with a randomised DID
+     * 
+     * @return A MemoryAgent with the given DID
+     */
     public static MemoryAgent create() {
-        return new MemoryAgent(Ocean.connect(), DID.createRandomString());
+        return new MemoryAgent(Ocean.connect(), DID.parse(DID.createRandomString()));
     }
 
+    /**
+     * Creates a new MemoryAgent with the given DID
+     * 
+     * @param did DID for this agent
+     * @return A MemoryAgent with the given DID
+     */
     public static MemoryAgent create(String did) {
-        return new MemoryAgent(Ocean.connect(), did);
+        return create(DID.parse(did));
     }
 
     /**
@@ -144,10 +162,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
 
     /**
-     * API to ge the Listing instance
+     * Create a Listing with the given data
      *
      * @param listingData
-     * @return
+     * @return A listing for this agent
      */
     @Override
     public Listing createListing(Map<String, Object> listingData) {

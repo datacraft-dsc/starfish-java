@@ -25,32 +25,33 @@ public interface Bundle extends Asset {
     /**
      * API to create a new bundle and add  named sub-asset passed as parameter
      *
-     * @param name  : name of the asset
-     * @param asset : Asset the need to be added
+     * @param name Name of the asset
+     * @param asset Asset the need to be added
+     * @return An updated bundle including the new asset
      */
     public Bundle add(String name, Asset asset);
 
     /**
-     * API to create a new bundle and add all named sub-asset passed as parameter
+     * API to create a new bundle adding all named sub-assets passed as parameters
      *
      * @param assetMap
+     * @return An updated bundle including the given sub-assets
      */
     public Bundle addAll(Map<String, Asset> assetMap);
 
     /**
      * API to get an specific asset from an asset Bundle
      *
-     * @param name
-     * @return
+     * @param name The name of the sub-asset
+     * @return The sub-asset referenced by the given name, or null if not present
      */
     public Asset get(String name);
 
     /**
      * API to get an immutable all named  sub Asset belong to asset Bundle
      *
-     * @return
+     * @return A map of all sub-assets within this bundle
      */
-
     public Map<String, Object> getAll();
 
     @Override

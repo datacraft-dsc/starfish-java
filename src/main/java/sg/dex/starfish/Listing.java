@@ -60,8 +60,8 @@ public interface Listing {
      Listing refresh();
 
     /**
-     * API to get the meta data of this Lisiting
-     * @return
+     * API to get the meta data of this Listing
+     * @return A map of listing metadata
      */
      Map<String, Object> getMetaData() ;
 

@@ -22,7 +22,7 @@ import sg.dex.starfish.util.JSONObjectCache;
  *
  */
 public class Ocean {
-	public static final Ocean DEFAULT_OCEAN=new Ocean(null);
+	private static final Ocean DEFAULT_OCEAN=new Ocean(null);
 	
 	private final Map<DID, String> ddoCache = new HashMap<DID,String>();
 
@@ -43,7 +43,8 @@ public class Ocean {
 	
 	/**
 	 * Gets an instance of an Ocean object with the given OceanAPI instance.
-	 *
+	 * 
+	 * @param oceanAPI OceanAPI instance to create a connection with
 	 * @return An Ocean instance with default configuration
 	 */
 	public static Ocean connect(OceanAPI oceanAPI) {
@@ -100,26 +101,44 @@ public class Ocean {
 	}
 	
 	/**
-	 * Gets the OceanAPI instance
-	 * @return
+	 * Gets the Squid OceanAPI for this Ocean connection
+	 * @return OceanAPI instance
 	 */
 	public OceanAPI getOceanAPI() {
 		return oceanAPI;
 	}
 	
+	/**
+	 * Gets the Squid AssetsAPI for this Ocean connection
+	 * @return AssetsAPI instance
+	 */
 	public AssetsAPI getAssetsAPI() {
 		return oceanAPI.getAssetsAPI();
 	}
 	
+	/**
+	 * Gets the Squid AccountsAPI for this Ocean connection
+	 * @return AccountsAPI instance
+	 */
 	public AccountsAPI getAccountsAPI() {
 		return oceanAPI.getAccountsAPI();
 	}
 
+	/**
+	 * Gets the agent for a given DID
+	 * @param did The DID for the agent to resolve
+	 * @return Agent instance, or null if not able to resolve the DID
+	 */
 	public Agent getAgent(DID did) {
-		// TODO create an agent instance according to the given DID
 		throw new TODOException();
 	}
 
+	/**
+	 * Attempts to reolve an asset for a given DID
+	 * 
+	 * @param did The DID
+	 * @return The Asset for the given DID, or null if not found
+	 */
 	public Asset getAsset(DID did) {
 		if (did.getPath()==null) {
 			// resolve using Squid

@@ -1,6 +1,18 @@
 package sg.dex.starfish.impl.remote;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -17,24 +29,29 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
-import sg.dex.starfish.*;
-import sg.dex.starfish.exception.*;
-import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Invokable;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.Listing;
+import sg.dex.starfish.MarketAgent;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Operation;
+import sg.dex.starfish.Purchase;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.AAgent;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Params;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class implementing a remote storage agent using the Storage API

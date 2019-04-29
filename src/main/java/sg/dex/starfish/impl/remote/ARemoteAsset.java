@@ -3,7 +3,8 @@ package sg.dex.starfish.impl.remote;
 import sg.dex.starfish.impl.AAsset;
 
 /**
- * This is an abstract class which have common code required for RemoteAsset/RemoteBundle/RemoteOperation
+ * This is an abstract class which have common code required 
+ * for RemoteAsset/RemoteBundle/RemoteOperation
  */
 public abstract class ARemoteAsset extends AAsset {
 
@@ -14,6 +15,10 @@ public abstract class ARemoteAsset extends AAsset {
         this.remoteAgent = remoteAgent;
     }
 
+    /**
+     * Gets the remote agent associated with this asset
+     * @return A RemoteAgent instance for this asset
+     */
     public RemoteAgent getRemoteAgent() {
         return remoteAgent;
     }

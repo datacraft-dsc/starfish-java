@@ -63,8 +63,8 @@ public interface DataAsset extends Asset {
 	}
 	
 	/**
-	 * Gets the size of this data asset's content, in bytes
-	 * @return
+	 * Gets the size of this data asset's content
+	 * @return The size of the asset in bytes
 	 */
 	public abstract long getContentSize();
 

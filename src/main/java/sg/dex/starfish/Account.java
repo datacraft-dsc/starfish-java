@@ -27,7 +27,7 @@ public interface Account {
 	 * 
 	 * This map is immutable and can be used by Agent to get the credential
 	 * 
-	 * @return
+	 * @return A credential map for this account
 	 */
 	public Map<String,Object> getCredentials();
 }

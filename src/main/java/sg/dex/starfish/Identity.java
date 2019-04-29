@@ -19,7 +19,7 @@ public interface Identity {
 	/**
 	 * Gets the Accounts associated with this Identity
 	 * where the key is the Account.getID();
-	 * @return
+	 * @return A map of Accounts for this entity
 	 */
 	public Map<String,Account> getAccounts();
 
