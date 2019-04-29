@@ -17,7 +17,7 @@ import java.util.Map;
 public class EpicFailOperation extends AMemoryOperation {
 
 	protected EpicFailOperation(String meta) {
-		super(null);
+		super(meta);
 	}
 
 	/**

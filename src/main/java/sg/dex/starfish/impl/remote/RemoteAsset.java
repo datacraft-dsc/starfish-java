@@ -87,7 +87,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	public Map<String,Object> getParamValue() {
 		Map<String,Object> o=new HashMap<>();
 		// pass the asset ID, i.e. hash of content
-		o.put(Constant.DID, getAssetDID());
+		o.put(Constant.DID, getAssetID());
 		return o;
 	}
 

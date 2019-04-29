@@ -22,8 +22,13 @@ import java.util.*;
 public class RemoteAgentConfig {
 
     private static RemoteAgent surfer;
+    private static RemoteAgent invokeAgent;
     private static String surferUrl;
     private static String bargeUrl;
+
+
+
+    private static String invokeUrl;
     private static String socketTimeout;
     private static String username;
     private static String password;
@@ -42,6 +47,11 @@ public class RemoteAgentConfig {
 
         surfer = getSurfer(surferUrl);
 
+        String ip_invoke = properties.getProperty("koi.host");
+        String port_invoke = properties.getProperty("koi.port");
+
+        invokeUrl=ip_invoke+":"+port_invoke;
+        invokeAgent =getInvokeAgent(invokeUrl);
         // setting barge URL
         String barge_ip = properties.getProperty("barge.host");
         String barge_port = properties.getProperty("barge.port");
@@ -94,18 +104,20 @@ public class RemoteAgentConfig {
     public static String getSurferUrl() {
         return surferUrl;
     }
-
+    public static String getInvokeUrl() {
+        return invokeUrl;
+    }
     public static String getBargeUrl() {
         return bargeUrl;
     }
 
-    public static String getSurferUser() {
-        return username;
-    }
-
-    public static String getSurferPassword() {
-        return password;
-    }
+//    public static String getSurferUser() {
+//        return username;
+//    }
+//
+//    public static String getSurferPassword() {
+//        return password;
+//    }
 
     public static int getSocketTimeout() {
         return Integer.parseInt(socketTimeout);
@@ -124,6 +136,37 @@ public class RemoteAgentConfig {
         return properties;
     }
 
+
+
+    private static RemoteAgent getInvokeAgent(String host) {
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+
+        services.add(Utils.mapOf(
+                "type", "Ocean.Invoke.v1",
+                "serviceEndpoint", host ));
+        ddo.put("service", services);
+        String ddoString = JSON.toPrettyString(ddo);
+
+        // getting the default Ocean instance
+        Ocean ocean = Ocean.connect();
+        // creating unique DID
+        DID invokeDID = DID.createRandom();
+        // registering the DID and DDO
+        ocean.registerLocalDID(invokeDID, ddoString);
+
+
+
+        //Creating remote Account
+        Map<String,Object> credentialMap = new HashMap<>();
+        credentialMap.put("username",username);
+        credentialMap.put("password",password);
+
+        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
+        // creating a Remote agent instance for given Ocean and DID
+        return RemoteAgent.create(ocean, invokeDID,account);
+    }
+
     /**
      * Gets the surfer remote agent for testing purposes
      *
@@ -133,6 +176,17 @@ public class RemoteAgentConfig {
         return surfer;
 
     }
+
+    /**
+     * Gets the koi remote agent for testing purposes
+     *
+     * @return The RemoteAgent, or null if not up
+     */
+    public static RemoteAgent getInvoke() {
+        return invokeAgent;
+
+    }
+
 
     public static String getDataAsStirngFromInputStream(InputStream is) {
 

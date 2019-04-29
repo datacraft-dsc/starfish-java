@@ -389,9 +389,23 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
-	public URI getInvokeURI() {
+	public URI getInvokeSyncURI() {
 		try {
-			return new URI(getInvokeEndpoint() + "/invokesync");
+			return new URI(getInvokeEndpoint() + "/invoke/hashing");
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Gets URI for this agent's invoke endpoint
+	 *
+	 * @return The URI for this agent's invoke endpoint
+	 * @throws RuntimeException on URI syntax errors
+	 */
+	public URI getInvokeAsyncURI() {
+		try {
+			return new URI(getInvokeEndpoint() + "/invokeasync/assethashing");
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
@@ -400,15 +414,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * Gets URI for this agent's endpoint for jobID
 	 *
-	 * @param jobID of the URI to create
+	 * @param response of the URI to create
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws IllegalArgumentException on invalid URI for jobID
 	 */
-	private URI getJobURI(String jobID) {
+	private URI getJobURI(String response) {
 		try {
-			return new URI(getInvokeEndpoint() + "/jobs/" + jobID);
+			String jobId =JSON.toMap(response).get("jobid").toString();
+			return new URI(getInvokeEndpoint() + "/jobs/" + jobId);
 		} catch (URISyntaxException e) {
-			throw new IllegalArgumentException("Can't create valid URI for job: " + jobID, e);
+			throw new IllegalArgumentException("Can't create valid URI for job: " + response, e);
 		}
 	}
 
@@ -572,7 +587,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					Map<String, Object> result = JSON.toMap(body);
 					String status = (String) result.get("status");
 					if (status == null) throw new RemoteException("No status in job result: " + body);
-					if (status.equals("started") || status.equals("inprogress")) {
+					if (status.equals("started") || status.equals("inprogress")|| status.equals("accepted")) {
 						return null; // no result yet
 					}
 					if (status.equals("complete")) {
@@ -608,14 +623,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	private Job invoke(Map<String, Object> request) {
-		String req = JSON.toString(request);
+		Map<String, Object> req = (Map<String, Object>)request.get("params");
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(getInvokeURI());
-		StringEntity entity = new StringEntity(req, StandardCharsets.UTF_8);
+		HttpPost httppost = new HttpPost(getInvokeAsyncURI());
+		StringEntity entity = new StringEntity(JSON.toPrettyString(req), ContentType.APPLICATION_JSON);
 		httppost.setEntity(entity);
 		CloseableHttpResponse response;
 		try {
 			response = httpclient.execute(httppost);
+
 			try {
 				return RemoteAgent.createJob(this, response);
 			} finally {
@@ -626,6 +642,43 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		} catch (IOException e) {
 			throw new JobFailedException(" IOException occured  Expectopn :", e);
 		}
+	}
+
+	/**
+	 * Invokes Sync request on this RemoteAgent
+	 *
+	 * @param request Invoke request
+	 * @return Job for this request
+	 * @throws RuntimeException for protocol errors
+	 */
+	public Map<String, Object> invokeResult(Map<String, Asset> request){
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httppost = new HttpPost(getInvokeSyncURI());
+		Map<String,Object> resultMap = new HashMap<>();
+
+		for(String key:request.keySet()) {
+			Map<String, String> tempRequest = new HashMap<>();
+			RemoteAsset ra = (RemoteAsset)request.get(key);
+			String data = Utils.stringFromStream(ra.getContentStream());
+			tempRequest.put(key,data);
+			StringEntity entity = new StringEntity(JSON.toPrettyString(tempRequest), ContentType.APPLICATION_JSON);
+			httppost.setEntity(entity);
+			CloseableHttpResponse response;
+			try {
+				response = httpclient.execute(httppost);
+				if(response.getStatusLine().getStatusCode() ==200){
+					String body = Utils.stringFromStream(response.getEntity().getContent());
+					resultMap.put(key,body);
+				}
+
+
+			} catch (ClientProtocolException e) {
+				throw new JobFailedException(" Client Protocol Expectopn :", e);
+			} catch (IOException e) {
+				throw new JobFailedException(" IOException occured  Expectopn :", e);
+			}
+		}
+		return resultMap;
 	}
 
 	/**
@@ -981,6 +1034,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		account.getUserDataMap().put("token", token);
 
 	}
+
+
 
 
 }

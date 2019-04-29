@@ -67,6 +67,37 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         return MemoryJob.create(future);
     }
 
+    @Override
+    public Job invokeAsync(Map<String, Asset> params) {
+        // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+        // Implementations may override this for custom behaviour (e.g. a custom thread pool)
+        // But this should be sufficient for most cases.
+        final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
+
+        MemoryAgent.THREAD_POOL.submit(() -> {
+            try {
+                Asset result = compute(params);
+                future.complete(result); // success
+            } catch (Throwable t) {
+                future.completeExceptionally(t); // failure
+            }
+            assert (future.isDone());
+        });
+
+        return MemoryJob.create(future);
+    }
+    @Override
+    public Map<String,Object> invokeResult(Map<String, Asset> params) {
+        Map<String, Object> resultMap = new HashMap<>(params.keySet().size());
+
+        for(String key:params.keySet()){
+            Asset result = compute(params);
+            resultMap.put(key,result.getContent());
+
+        }
+        return resultMap;
+
+    }
     /**
      * Computes the result of the invoke job using the provided assets
      *

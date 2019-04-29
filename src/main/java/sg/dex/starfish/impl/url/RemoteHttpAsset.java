@@ -98,7 +98,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
     public Map<String,Object> getParamValue() {
         Map<String,Object> o=new HashMap<>();
         // pass the asset ID, i.e. hash of content
-        o.put("did", getAssetDID());
+        o.put("did", getAssetID());
         return o;
     }
 

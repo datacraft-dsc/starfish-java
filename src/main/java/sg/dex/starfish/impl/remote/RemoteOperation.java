@@ -20,13 +20,23 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 		this.remoteAgent=remoteAgent;
 	}
 	
-	public static Asset create(RemoteAgent a, String meta) {
+	public static RemoteOperation create(RemoteAgent a, String meta) {
 		return new RemoteOperation(a,meta);
 	}
 
 	@Override
 	public Job invoke(Asset... params) {
 		return remoteAgent.invoke(this,params);
+	}
+
+	@Override
+	public Job invokeAsync(Map<String, Asset> params) {
+		return remoteAgent.invoke(this,params);
+	}
+
+	@Override
+	public Map<String, Object> invokeResult(Map<String, Asset> params) {
+		return remoteAgent.invokeResult(params);
 	}
 
 	@Override
