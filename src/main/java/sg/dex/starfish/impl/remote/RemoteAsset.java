@@ -26,9 +26,10 @@ import java.util.Map;
  */
 public class RemoteAsset extends ARemoteAsset implements DataAsset {
 
-
-	protected RemoteAsset(String meta, RemoteAgent agent) {
-		super(meta,agent);
+    private RemoteAgent remoteAgent;
+	protected RemoteAsset(String meta, RemoteAgent remoteAgent) {
+		super(meta);
+		this.remoteAgent=remoteAgent;
 	}
 
 	/**
@@ -56,9 +57,9 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	 */
 	@Override
 	public InputStream getContentStream() {
-        URI uri = getRemoteAgent().getStorageURI(getAssetID());
+        URI uri = remoteAgent.getStorageURI(getAssetID());
         HttpGet httpget = new HttpGet(uri);
-		getRemoteAgent().addAuthHeaders(httpget);
+		remoteAgent.addAuthHeaders(httpget);
         HttpResponse response = HTTP.execute(httpget);
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
@@ -99,7 +100,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	@Override
 	public DID getAssetDID() {
 		// DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
-		DID agentDID=getRemoteAgent().getDID();
+		DID agentDID=remoteAgent.getDID();
 		return agentDID.withPath(getAssetID());
 	}
 

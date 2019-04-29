@@ -13,10 +13,11 @@ import java.util.Map;
  *
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
+    private RemoteAgent remoteAgent;
 
-
-	protected RemoteOperation(RemoteAgent agent, String meta) {
-		super(meta,agent);
+	protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
+		super(meta);
+		this.remoteAgent=remoteAgent;
 	}
 	
 	public static Asset create(RemoteAgent a, String meta) {
@@ -25,12 +26,12 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
 	@Override
 	public Job invoke(Asset... params) {
-		return getRemoteAgent().invoke(this,params);
+		return remoteAgent.invoke(this,params);
 	}
 
 	@Override
 	public Job invoke(Map<String, Asset> params) {
-		return getRemoteAgent().invoke(this,params);
+		return remoteAgent.invoke(this,params);
 	}
 
 
