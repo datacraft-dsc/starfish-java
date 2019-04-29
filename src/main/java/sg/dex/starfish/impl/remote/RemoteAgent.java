@@ -803,8 +803,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to get the listing meta data
 	 *
 	 * @param id
-	 * @return Map<String, Object> metadata
-n	 */
+	 * @return metadata
+	 */
 	public Map<String, Object> getListingMetaData(String id) {
 		String response = getMarketMetaData(LISTING_URL + "/" + id);
 		return JSON.toMap(response);
@@ -857,7 +857,7 @@ n	 */
 	 * API to get the Purchase MetaData
 	 *
 	 * @param id
-	 * @return Map<String, Object> purchaseMetadata
+	 * @return purchaseMetadata
 	 */
 	public Map<String, Object> getPurchaseMetaData(String id) {
 		String response = getMarketMetaData(PURCHASE_URL + "/" + id);
@@ -902,7 +902,7 @@ n	 */
 	/**
 	 * API to get the logged in user details from the Agent
 	 *
-	 * @return Map<String, Object> userDetails
+	 * @return userDetails
 	 */
 	public Map<String, Object> getUserDetails() {
 

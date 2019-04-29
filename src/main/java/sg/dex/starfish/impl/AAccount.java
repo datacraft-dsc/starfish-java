@@ -47,10 +47,10 @@ public abstract class AAccount implements Account {
 	 * Required credentials are defined by the agent implementation, but would typically include
 	 * things like user name, password etc.
 	 *
-	 * @return Map<String,Object> credentials
+	 * @return credentials
 	 */
         @Override
-	public Map<String,Object>p getCredentials() {
+	public Map<String,Object> getCredentials() {
 		// deep cloning the map
 		return  credentials.entrySet().stream()
 			.collect(Collectors.toMap(e -> e.getKey(),
