@@ -268,7 +268,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			HTTP.close(response);
 		}
 	}
-	
+
 	@Override
 	public Asset getAsset(DID did) {
 		return getAsset(did.getID());
@@ -278,7 +278,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to check if the Asset is present if present it will return true else false.
 	 *
 	 * @param assetId
-	 * @return
+	 * @return boolean
 	 */
 	private boolean isAssetRegistered(String assetId) {
 		URI uri = getMetaURI(assetId);
@@ -330,7 +330,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to upload the Asset content
 	 *
 	 * @param asset
-	 * @return
 	 */
 	private void uploadAssetContent(Asset asset) {
 		// get the storage API to upload the Asset content
@@ -685,7 +684,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API for Listing
 	 *
 	 * @param marketAgentUrl
-	 * @return
+	 * @return List<Map<String, Object>> marketMetaData
 	 */
 	private List<Map<String, Object>> getAllMarketMetaData(String marketAgentUrl) {
 		URI uri = getMarketLURI(marketAgentUrl);
@@ -840,7 +839,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to update the Lising data
 	 *
 	 * @param newValue
-	 * @return
+	 * @return Listing
 	 */
 	public Listing updateListing(Map<String, Object> newValue) {
 
@@ -857,7 +856,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to get the listing meta data
 	 *
 	 * @param id
-	 * @return
+	 * @return metadata
 	 */
 	public Map<String, Object> getListingMetaData(String id) {
 		String response = getMarketMetaData(LISTING_URL + "/" + id);
@@ -867,7 +866,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get all listing metaData.It may ab very heavy call .
 	 *
-	 * @return
+	 * @return List<Listing>
 	 */
 	public List<Listing> getAllListing() {
 
@@ -883,7 +882,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * APi to get listing by userID
 	 *
 	 * @param userID
-	 * @return
+	 * @return List<RemoteListing> listing
 	 */
 	public List<RemoteListing> getAllListing(String userID) {
 
@@ -899,7 +898,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to create the Purchase object
 	 *
 	 * @param data
-	 * @return
+	 * @return Purchase
 	 */
 	public Purchase createPurchase(Map<String, Object> data) {
 		String response = createMarketAgentInstance(data, PURCHASE_URL);
@@ -911,7 +910,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to get the Purchase MetaData
 	 *
 	 * @param id
-	 * @return
+	 * @return purchaseMetadata
 	 */
 	public Map<String, Object> getPurchaseMetaData(String id) {
 		String response = getMarketMetaData(PURCHASE_URL + "/" + id);
@@ -922,7 +921,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to update the Purchase
 	 *
 	 * @param newValue
-	 * @return
+	 * @return Purchase
 	 */
 	public Purchase updatePurchase(Map<String, Object> newValue) {
 
@@ -956,7 +955,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get the logged in user details from the Agent
 	 *
-	 * @return
+	 * @return userDetails
 	 */
 	public Map<String, Object> getUserDetails() {
 

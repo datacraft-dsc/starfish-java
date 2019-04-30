@@ -42,7 +42,7 @@ public class RemotePurchase implements Purchase {
      *
      * @param agent
      * @param id
-     * @return
+     * @return RemotePurchase
      */
     public static RemotePurchase create(RemoteAgent agent, String id) {
         RemotePurchase remotePurchase = new RemotePurchase(agent, id);

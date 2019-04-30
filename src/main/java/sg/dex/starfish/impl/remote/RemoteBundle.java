@@ -34,7 +34,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
-     * @return
+     * @return RemoteBundle
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
@@ -58,7 +58,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
-     * @return
+     * @return RemoteBundle
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
 
@@ -81,7 +81,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
-     * @return
+     * @return RemoteBundle
      */
     public static RemoteBundle create(Map<String, Asset> assetMap) {
 
@@ -104,7 +104,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
-     * @return
+     * @return RemoteBundle
      */
     public static RemoteBundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
 
@@ -144,7 +144,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to get the map of AssetID based on AssetId
      *
      * @param assetId
-     * @return
+     * @return Map<String, String> assetIdMap
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();

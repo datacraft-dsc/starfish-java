@@ -44,7 +44,7 @@ public class RemoteListing extends AListing {
      *
      * @param agent
      * @param id
-     * @return
+     * @return RemoteListing
      */
     public static RemoteListing create(RemoteAgent agent, String id) {
         RemoteListing remoteListing = new RemoteListing(agent, id);
@@ -105,7 +105,7 @@ public class RemoteListing extends AListing {
 
     /**
      * API to get the AssetID
-     * @return
+     * @return String assetId
      */
     private String getAssetId() {
         return getMetaData().get("assetid").toString();
@@ -113,7 +113,7 @@ public class RemoteListing extends AListing {
 
     /**
      * API to get the USer ID
-     * @return
+     * @return String userId
      */
     private String getUserId() {
         return getMetaData().get("userid").toString();
@@ -121,7 +121,7 @@ public class RemoteListing extends AListing {
 
     /**
      * API to get the Aggrement
-     * @return
+     * @return String agreement
      */
     private String getAggrement() {
         return getMetaData().get("agreement").toString();
@@ -129,7 +129,7 @@ public class RemoteListing extends AListing {
 
     /**
      * API to get the Listing ID
-     * @return
+     * @return String listingId
      */
     private String getListing_id() {
         return getMetaData().get("id").toString();

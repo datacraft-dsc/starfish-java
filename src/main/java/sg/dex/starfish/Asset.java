@@ -18,8 +18,8 @@ public interface Asset {
 
 	/**
 	 * Gets DID for this Asset
-	 * @see <a href="https://w3c-ccg.github.io/did-spec"></a>
-	 *See {@linktourl https://w3c-ccg.github.io/did-spec/}
+	 * @see <a href="https://w3c-ccg.github.io/did-spec">W3C DID spec</a>
+	 *
 	 * @throws UnsupportedOperationException if unable to obtain DID
 	 * @return the assetID
 	 */
@@ -28,8 +28,8 @@ public interface Asset {
 	/**
 	 * Gets the Ocean DID for this asset. The DID may include a DID path to specify
 	 * the precise asset if the DID refers to an agent managing the asset.
-	 * @see <a href="https://w3c-ccg.github.io/did-spec"></a>
 	 * Throws an exception if a DID is not available or cannot be constructed.
+	 * @see <a href="https://w3c-ccg.github.io/did-spec">W3C DID spec</a>
 	 *
 	 * @return The global DID for this asset.
 	 */
@@ -37,9 +37,9 @@ public interface Asset {
 
 	/**
 	 * Gets a copy of the JSON metadata for this asset, as a map of strings to values.
-	 * 
+	 *
 	 * Asset metadata will differ as per type of asset: (e.g. dataset, operation, bundle)
-	 * 
+	 *
 	 * @return New clone of the parsed JSON metadata for this asset
 	 */
 	public Map<String, Object> getMetadata();
@@ -75,9 +75,9 @@ public interface Asset {
 	}
 
 	/**
-	 * Returns the metadata for this asset as a String. Assets should store their metadata by deafult 
+	 * Returns the metadata for this asset as a String. Assets should store their metadata by deafult
 	 * as a valid JSON string.
-	 * 
+	 *
 	 * Warning: Some implementations may not validate the JSON on asset creation and it is possible
 	 * for the metadata String to contain invalid JSON.
 	 *
@@ -87,7 +87,7 @@ public interface Asset {
 
 	/**
 	 * Gets the contents of this data asset as a byte[] array.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
 	 * @throws AuthorizationException if requestor does not have access permission
 	 * @throws StorageException if unable to load the Asset
@@ -103,7 +103,7 @@ public interface Asset {
 	 * @return A map representing this asset
 	 */
 	public Map<String, Object> getParamValue();
-	
+
 	/**
 	 * Tests if this asset is an bundle, i.e. can contain sub-assets.
 	 *
