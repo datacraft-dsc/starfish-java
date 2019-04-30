@@ -47,7 +47,7 @@ public abstract class AAccount implements Account {
 	 * Required credentials are defined by the agent implementation, but would typically include
 	 * things like user name, password etc.
 	 *
-	 * @return
+	 * @return credentials
 	 */
         @Override
 	public Map<String,Object> getCredentials() {

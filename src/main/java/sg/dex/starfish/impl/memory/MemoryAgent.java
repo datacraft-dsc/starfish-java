@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 
 /**
  * An in-memory agent implementation
- * 
+ *
  * @author Mike
  */
 public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
@@ -39,7 +39,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * Creates a new MemoryAgent with the given DID
-     * 
+     *
      * @param did DID for this agent
      * @return A MemoryAgent with the given DID
      */
@@ -49,7 +49,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * Creates a new MemoryAgent with a randomised DID
-     * 
+     *
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create() {
@@ -58,7 +58,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * Creates a new MemoryAgent with the given DID
-     * 
+     *
      * @param did DID for this agent
      * @return A MemoryAgent with the given DID
      */
@@ -210,7 +210,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * API to get the Purchase instance
      *
      * @param purchaseData
-     * @return
+     * @return MemoryPurchase
      */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {
         if (purchaseData.get("listingid") == null) {
@@ -227,7 +227,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * API to create a response similar to Remote Agents responses.
      *
      * @param purchaseData
-     * @return
+     * @return Map<String, Object> responseMetaDataPurchase
      */
     private Map<String, Object> getResponseMetaDataPurchase(Map<String, Object> purchaseData) {
 
