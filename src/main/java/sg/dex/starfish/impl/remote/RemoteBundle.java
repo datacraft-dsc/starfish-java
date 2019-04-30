@@ -21,12 +21,10 @@ import static sg.dex.starfish.constant.Constant.*;
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     private Map<String, Asset> assetMap;
-    private RemoteAgent remoteAgent;
 
     private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
-        super(metaData);
+        super(metaData,remoteAgent);
         this.assetMap = assetMap;
-        this.remoteAgent=remoteAgent;
 
     }
 

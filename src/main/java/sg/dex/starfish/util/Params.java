@@ -1,10 +1,11 @@
 package sg.dex.starfish.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility class for handling invoke parameters
@@ -29,16 +30,24 @@ public class Params {
 		Map<String,Object> paramSpec=operation.getParamSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
-			Map<String,Object> spec=(Map<String,Object>)me.getValue();
-			// String type=(String) spec.get("type");
-			boolean required=Utils.coerceBoolean(spec.get("required"));
-			if (params.containsKey(paramName)) {
-				Asset a=params.get(paramName);
-				Map<String,Object> value=a.getParamValue();
-				result.put(paramName,value);
+			if(Constant.DID.equals(paramName)){
+				result.put(Constant.DID,me.getValue());
 			}
-			if (required) {
-				throw new IllegalArgumentException("Paramter "+paramName+" is required but not supplied");
+			else {
+				Map<String, Object> spec = (Map<String, Object>) me.getValue();
+				// String type=(String) spec.get("type");
+				boolean required = Utils.coerceBoolean(spec.get("required"));
+				if (params.containsKey(paramName)) {
+					Asset a = params.get(paramName);
+					Map<String, Object> value = a.getParamValue();
+					result.put(paramName, value);
+				}
+				// added additional check so ,if the param is required then
+				// it must be present in the params map
+				// if required is false then it may or may not present
+				if (required && !params.containsKey(paramName)) {
+					throw new IllegalArgumentException("Parameter " + paramName + " is required but not supplied");
+				}
 			}
 		}
 		return result;

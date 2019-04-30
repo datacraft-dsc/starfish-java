@@ -21,8 +21,10 @@ import static sg.dex.starfish.constant.Constant.TYPE;
  */
 public abstract class AMemoryOperation extends AMemoryAsset implements Operation {
 
-    protected AMemoryOperation(String metaString) {
+    protected MemoryAgent memoryAgent;
+    protected AMemoryOperation(String metaString,MemoryAgent memoryAgent) {
         super(metaString);
+        this.memoryAgent=memoryAgent;
     }
 
     /**
@@ -86,18 +88,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
         return MemoryJob.create(future);
     }
-    @Override
-    public Map<String,Object> invokeResult(Map<String, Asset> params) {
-        Map<String, Object> resultMap = new HashMap<>(params.keySet().size());
 
-        for(String key:params.keySet()){
-            Asset result = compute(params);
-            resultMap.put(key,result.getContent());
-
-        }
-        return resultMap;
-
-    }
     /**
      * Computes the result of the invoke job using the provided assets
      *
@@ -106,4 +97,13 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
      * @throws IllegalArgumentException is a required parameter is not present or of incorrect type
      */
     protected abstract Asset compute(Map<String, Asset> params);
+
+    /**
+     * Reverse the result of the sync invoke of the provided Data
+     *
+     * @param params The named parameters for this computation
+     * @return Map of result of the computation
+     * @throws IllegalArgumentException is a required parameter is not present or of incorrect type
+     */
+    public abstract Map<String,Object> syncCallToReverse(Map<String, Object> params);
 }

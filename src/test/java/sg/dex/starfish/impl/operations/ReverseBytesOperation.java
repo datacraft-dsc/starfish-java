@@ -1,8 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryAgent;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 
 import java.util.Map;
 
@@ -15,8 +17,8 @@ import java.util.Map;
  */
 public class ReverseBytesOperation extends AMemoryOperation {
 
-	protected ReverseBytesOperation(String meta) {
-		super(meta);
+	protected ReverseBytesOperation(String meta, MemoryAgent memoryAgent) {
+		super(meta,memoryAgent);
 	}
 
 	/**
@@ -34,9 +36,10 @@ public class ReverseBytesOperation extends AMemoryOperation {
 	 *
 	 * @return new instance of ReverseBytesOperation
 	 */
-	public static ReverseBytesOperation create() {
-		String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-		return new ReverseBytesOperation(meta);
+	public static ReverseBytesOperation create(String meta) {
+
+
+		return new ReverseBytesOperation(meta,MemoryAgent.create());
 	}
 	
 	private Asset doCompute(Asset input) {
@@ -56,6 +59,17 @@ public class ReverseBytesOperation extends AMemoryOperation {
 		Asset input=params.get("input");
 		if (input==null) throw new IllegalArgumentException("Missing parameter 'input'");
 		return doCompute(input);
+	}
+
+	@Override
+	public Map<String, Object> syncCallToReverse(Map<String, Object> params) {
+		return memoryAgent.syncCallToReverse(this,params);
+	}
+
+	@Override
+	public Map<String,Object> invokeResult(Map<String, Object> params) {
+		throw  new TODOException("Need to implement");
+
 	}
 
 }

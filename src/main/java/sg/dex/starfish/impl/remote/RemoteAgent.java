@@ -1,18 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -29,29 +17,23 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Invokable;
-import sg.dex.starfish.Job;
-import sg.dex.starfish.Listing;
-import sg.dex.starfish.MarketAgent;
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Operation;
-import sg.dex.starfish.Purchase;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.*;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Params;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class implementing a remote storage agent using the Storage API
@@ -388,9 +370,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
-	public URI getInvokeSyncURI() {
+	public URI getInvokeSyncURI(Object did) {
 		try {
-			return new URI(getInvokeEndpoint() + "/invoke/hashing");
+			if(did==null) {
+				return new URI(getInvokeEndpoint() );
+			}
+			else{
+				return new URI(getInvokeEndpoint() +"/invoke/"+ "/"+did.toString()+"/");
+			}
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
@@ -402,9 +389,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
-	public URI getInvokeAsyncURI() {
+	public URI getInvokeAsyncURI(Object did) {
 		try {
-			return new URI(getInvokeEndpoint() + "/invokeasync/assethashing");
+			if(did==null) {
+				return new URI(getInvokeEndpoint() );
+			}
+			else{
+				return new URI(getInvokeEndpoint() +"/invokeasync/"+ "/"+did.toString()+"/");
+			}
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
@@ -624,7 +616,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	private Job invoke(Map<String, Object> request) {
 		Map<String, Object> req = (Map<String, Object>)request.get("params");
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(getInvokeAsyncURI());
+
+		HttpPost httppost = new HttpPost(getInvokeAsyncURI(req.get(Constant.DID)));
 		StringEntity entity = new StringEntity(JSON.toPrettyString(req), ContentType.APPLICATION_JSON);
 		httppost.setEntity(entity);
 		CloseableHttpResponse response;
@@ -637,47 +630,56 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				response.close();
 			}
 		} catch (ClientProtocolException e) {
-			throw new JobFailedException(" Client Protocol Expectopn :", e);
+			throw new JobFailedException(" Client Protocol Exception :", e);
 		} catch (IOException e) {
-			throw new JobFailedException(" IOException occured  Expectopn :", e);
+			throw new JobFailedException(" IOException occurred  Exception :", e);
 		}
 	}
 
 	/**
-	 * Invokes Sync request on this RemoteAgent
 	 *
-	 * @param request Invoke request
-	 * @return Job for this request
-	 * @throws RuntimeException for protocol errors
+	 * @param operation
+	 * @param params
+	 * @return
 	 */
-	public Map<String, Object> invokeResult(Map<String, Asset> request){
+	public Map<String, Object> invokeResult(Operation operation,Map<String, Object> params){
+
+		// check if the mode is sync else throw exception
+		if(!isSyncMode(operation)){
+			 throw new TODOException("Mode must be sync for this operation");
+		}
+		Map<String, Object> req = operation.getParamSpec();
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(getInvokeSyncURI());
+		HttpPost httppost = new HttpPost(getInvokeSyncURI(req.get(Constant.DID)));
 		Map<String,Object> resultMap = new HashMap<>();
 
-		for(String key:request.keySet()) {
-			Map<String, String> tempRequest = new HashMap<>();
-			RemoteAsset ra = (RemoteAsset)request.get(key);
-			String data = Utils.stringFromStream(ra.getContentStream());
-			tempRequest.put(key,data);
-			StringEntity entity = new StringEntity(JSON.toPrettyString(tempRequest), ContentType.APPLICATION_JSON);
+			StringEntity entity = new StringEntity(JSON.toPrettyString(params), ContentType.APPLICATION_JSON);
 			httppost.setEntity(entity);
 			CloseableHttpResponse response;
 			try {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
 					String body = Utils.stringFromStream(response.getEntity().getContent());
-					resultMap.put(key,body);
+					resultMap.put("hash_value",body);
 				}
 
 
 			} catch (ClientProtocolException e) {
-				throw new JobFailedException(" Client Protocol Expectopn :", e);
+				throw new JobFailedException(" Client Protocol Exception :", e);
 			} catch (IOException e) {
-				throw new JobFailedException(" IOException occured  Expectopn :", e);
+				throw new JobFailedException(" IOException occurred  Exception :", e);
 			}
-		}
 		return resultMap;
+	}
+
+	private boolean isSyncMode(Operation operation) {
+		Map<String,Object> metatData = operation.getMetadata();
+		Object mode = metatData.get("mode");
+		if(mode!=null && mode.toString().equals("sync")){
+			return true;
+		}
+		return false;
 	}
 
 	/**

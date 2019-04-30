@@ -49,9 +49,18 @@ public class OperationTest_23 {
         Map<String, Asset> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset);
 
-
-        String meta = "{\"params\": {\"to-hash\": {}}}";
-        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta);
+       String meta1="{\n" +
+               "  \"params\": {\n" +
+               "    \"to-hash\": {\n" +
+               "      \"required\": true,\n" +
+               "      \"position\": 0,\n" +
+               "      \"type\": \"asset\"\n" +
+               "    },\n" +
+               "    \"did\":\"assethashing\"\n" +
+               "  }\n" +
+               "}";
+       // String meta = "{\"params\": {\"to-hash\": {}}}";
+        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta1);
 
         Job job = remoteOperation.invoke(metaMap);
 
@@ -73,7 +82,16 @@ public class OperationTest_23 {
         RemoteAsset remoteA = remoteAgentSurfer.uploadAsset(a);
         metaMap.put("to-hash", remoteA);
 
-        String meta = "{\"params\": {\"to-hash\": {}}}";
+        String meta="{\n" +
+                "  \"params\": {\n" +
+                "    \"to-hash\": {\n" +
+                "      \"required\": true,\n" +
+                "      \"position\": 0,\n" +
+                "      \"type\": \"asset\"\n" +
+                "    },\n" +
+                "    \"did\":\"assethashing\"\n" +
+                "  }\n" +
+                "}";
         RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta);
 
         Job job = remoteOperation.invoke(metaMap);
@@ -90,16 +108,33 @@ public class OperationTest_23 {
     public void testSyncOperation() {
 
         // asset must be uploaded as invoke will work only on RemoteAsset
-        Asset a = MemoryAsset.create("this is a asset to test syncdata operation");
+        String data_to_hash ="this is a asset to test syncdata operation";
         // uploading the asset, it will do the registration and upload both
-        RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
+       // RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
 
         // creating invoke remote agent
         remoteAgentInvoke = RemoteAgentConfig.getInvoke();
-        Map<String, Asset> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset);
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("to-hash", data_to_hash);
 
-        String meta = "{\"params\": {\"to-hash\": { }}}";
+        String meta="{\n" +
+                "  \"params\": {\n" +
+                "    \"to-hash\": {\n" +
+                "      \"required\": \"true\",\n" +
+                "      \"position\": 0,\n" +
+                "      \"type\": \"asset\"\n" +
+                "      \n" +
+                "    },\n" +
+                "    \"did\": \"hashing\"\n" +
+                "  },\n" +
+                "  \"mode\":\"sync\",\n" +
+                "  \"result\": {\n" +
+                "        \"hash-value\": {\n" +
+                "           \"type\": \"asset\"\n" +
+                "      \n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
 
 
         // creating an instance of Remote operation based on remote agent and metaData
@@ -112,27 +147,92 @@ public class OperationTest_23 {
         assertNotNull(result);
     }
 
-    @Test
-    public void testInvokeAsync() {
+    @Test(expected = Exception.class)
+    public void testSyncOperationWithDifferentMode() {
 
         // asset must be uploaded as invoke will work only on RemoteAsset
-        Asset a = MemoryAsset.create("this is a asset to test Async data operation");
+        String data_to_hash ="this is a asset to test syncdata operation";
         // uploading the asset, it will do the registration and upload both
-        RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
+        // RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
+
+        // creating invoke remote agent
+        remoteAgentInvoke = RemoteAgentConfig.getInvoke();
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("to-hash", data_to_hash);
+
+        String meta="{\n" +
+                "  \"params\": {\n" +
+                "    \"to-hash\": {\n" +
+                "      \"required\": \"true\",\n" +
+                "      \"position\": 0,\n" +
+                "      \"type\": \"asset\"\n" +
+                "      \n" +
+                "    },\n" +
+                "    \"did\": \"hashing\"\n" +
+                "  },\n" +
+                "  \"mode\":\"Notsync\",\n" +
+                "  \"result\": {\n" +
+                "        \"hash-value\": {\n" +
+                "           \"type\": \"asset\"\n" +
+                "      \n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
 
 
-        //
-        Map<String, Asset> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset);
-
-
-        String meta = "{\"params\": {\"to-hash\": {}}}";
+        // creating an instance of Remote operation based on remote agent and metaData
         RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta);
 
-        Job job = remoteOperation.invoke(metaMap);
+        // call Sync Operation
+        Object result = remoteOperation.invokeResult(metaMap);
+        System.out.println("Hashing result : " + result);
 
-        Asset asset = job.awaitResult();
-        // currently asset is coming null so that need to be fixed
-        assertNull(asset);
+        assertNotNull(result);
     }
+
+    @Test(expected = Exception.class)
+    public void testSyncOperationWithoutRequireData() {
+
+        // asset must be uploaded as invoke will work only on RemoteAsset
+        String data_to_hash ="this is a asset to test syncdata operation";
+        // uploading the asset, it will do the registration and upload both
+        // RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
+
+        // creating invoke remote agent
+        remoteAgentInvoke = RemoteAgentConfig.getInvoke();
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("test", data_to_hash);
+
+        // this meta data will expect to-hash
+        String meta="{\n" +
+                "  \"params\": {\n" +
+                "    \"to-hash\": {\n" +
+                "      \"required\": \"true\",\n" +
+                "      \"position\": 0,\n" +
+                "      \"type\": \"asset\"\n" +
+                "      \n" +
+                "    },\n" +
+                "    \"did\": \"hashing\"\n" +
+                "  },\n" +
+                "  \"mode\":\"Notsync\",\n" +
+                "  \"result\": {\n" +
+                "        \"hash-value\": {\n" +
+                "           \"type\": \"asset\"\n" +
+                "      \n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+
+        // creating an instance of Remote operation based on remote agent and metaData
+        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta);
+
+        // call Sync Operation
+        // thie metaMAp donot have to-hash
+        Object result = remoteOperation.invokeResult(metaMap);
+        System.out.println("Hashing result : " + result);
+
+        assertNotNull(result);
+    }
+
 }

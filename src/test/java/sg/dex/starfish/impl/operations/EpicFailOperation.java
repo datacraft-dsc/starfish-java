@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.operations;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryAgent;
 
 import java.util.Map;
 
@@ -16,8 +17,9 @@ import java.util.Map;
 
 public class EpicFailOperation extends AMemoryOperation {
 
-	protected EpicFailOperation(String meta) {
-		super(meta);
+	protected EpicFailOperation(String meta,MemoryAgent memoryAgent) {
+
+		super(meta,memoryAgent);
 	}
 
 	/**
@@ -37,7 +39,8 @@ public class EpicFailOperation extends AMemoryOperation {
 	 */
 	public static EpicFailOperation create() {
 		String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-		return new EpicFailOperation(meta);
+		MemoryAgent memoryAgent = MemoryAgent.create();
+		return new EpicFailOperation(meta,memoryAgent);
 	}
 
 	/**
@@ -54,4 +57,13 @@ public class EpicFailOperation extends AMemoryOperation {
 					     new Exception("Fail by design"));
 	}
 
+	@Override
+	public Map<String, Object> syncCallToReverse(Map<String, Object> params) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> invokeResult(Map<String, Object> params) {
+		return null;
+	}
 }

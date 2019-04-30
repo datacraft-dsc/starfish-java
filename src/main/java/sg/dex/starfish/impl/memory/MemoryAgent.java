@@ -246,4 +246,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return responseMetadata;
 
     }
+
+    /**
+     * API to test the Sync call execution
+     * @param operation
+     * @param params
+     * @return
+     */
+    public  Map<String, Object> syncCallToReverse(Operation operation,Map<String, Object> params){
+
+        Map<String,Object> result = new HashMap<>();
+
+        String str =new StringBuilder(params.get("to-reverse").toString()).reverse().toString();
+        result.put("hash-value",str);
+
+        return result;
+
+    }
 }

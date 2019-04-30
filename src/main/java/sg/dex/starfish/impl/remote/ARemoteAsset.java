@@ -8,9 +8,10 @@ import sg.dex.starfish.impl.AAsset;
  */
 public abstract class ARemoteAsset extends AAsset {
 
-
-    protected ARemoteAsset(String meta) {
+    protected RemoteAgent remoteAgent;
+    protected ARemoteAsset(String meta,RemoteAgent remoteAgent) {
         super(meta);
+        this.remoteAgent=remoteAgent;
     }
 
 }
