@@ -7,7 +7,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.exception.TODOException;
-import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
 
@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
+    private MemoryAgent memoryAgent = MemoryAgent.create();
 
     /**
      * This test is to test the Async Operation
@@ -29,7 +30,7 @@ public class TestMemoryOperations {
     public void testReverseBytes() {
         byte[] data = new byte[]{1, 2, 3};
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        AMemoryOperation memoryOperation = ReverseBytesOperation.create(meta);
+        ReverseBytesOperation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Asset> test = new HashMap<>();
@@ -42,11 +43,52 @@ public class TestMemoryOperations {
         assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
     }
 
+    /**
+     * This test is to test the Async Operation but providing mode as Sync
+     */
+    @Test
+    public void testReverseBytesAsyncWithModeSync() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\n" +
+                "  \"params\": {\n" +
+                "    \"input\": {\n" +
+                "      \"required\": \"true\",\n" +
+                "      \"position\": 0,\n" +
+                "      \"type\": \"Object\"\n" +
+                "      \n" +
+                "    },\n" +
+                "    \"did\": \"hashing\"\n" +
+                "  },\n" +
+                "  \"mode\":\"sync\",\n" +
+                "  \"result\": {\n" +
+                "        \"hash-value\": {\n" +
+                "           \"type\": \"Object\"\n" +
+                "      \n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+
+        ReverseBytesOperation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Asset> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+        Asset result = job.awaitResult(1000);
+
+        assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
+
+    }
+
     @Test
     public void testNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        Operation op = ReverseBytesOperation.create(meta);
+        ReverseBytesOperation op = ReverseBytesOperation.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
         Asset result = job.awaitResult(1000);
@@ -57,7 +99,7 @@ public class TestMemoryOperations {
     public void testBadNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        Operation op = ReverseBytesOperation.create(meta);
+        ReverseBytesOperation op = ReverseBytesOperation.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
         try {
@@ -71,7 +113,7 @@ public class TestMemoryOperations {
     @Test(expected = Exception.class)
     public void testInsufficientParams() {
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        Operation op = ReverseBytesOperation.create(meta);
+        ReverseBytesOperation op = ReverseBytesOperation.create(meta, memoryAgent);
         try {
             Job badJob = op.invokeAsync(null); // should not yet fail since this is async
             Asset result2 = badJob.awaitResult(10);
@@ -84,9 +126,10 @@ public class TestMemoryOperations {
     @Test
     public void testFailingOperation() {
         byte[] data = new byte[]{1, 2, 3};
-        Operation op = EpicFailOperation.create();
+        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
+        EpicFailOperation op = EpicFailOperation.create(meta);
         Asset a = MemoryAsset.create(data);
-        Job job = op.invoke(a);
+        Job job = op.invokeAsync(Utils.mapOf("test-fail", a));
         try {
             Asset result = job.awaitResult(1000);
             fail("Should not succeed! Got: " + Utils.getClass(result));
@@ -123,7 +166,7 @@ public class TestMemoryOperations {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        AMemoryOperation memoryOperation = ReverseBytesOperation.create(meta);
+        ReverseBytesOperation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
         Map<String, Object> result = memoryOperation.invokeResult(param);
         assertNotNull(result);
         assertNotNull(result.get("hash-value"));
@@ -162,7 +205,7 @@ public class TestMemoryOperations {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        AMemoryOperation memoryOperation = ReverseBytesOperation.create(meta);
+        Operation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
         Map<String, Object> result = memoryOperation.invokeResult(param);
         assertNotNull(result);
         assertNotNull(result.get("hash-value"));
@@ -197,7 +240,7 @@ public class TestMemoryOperations {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        AMemoryOperation memoryOperation = ReverseBytesOperation.create(meta);
+        Operation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
         Map<String, Object> result = memoryOperation.invokeResult(param);
         assertNotNull(result);
         assertNotNull(result.get("hash-value"));

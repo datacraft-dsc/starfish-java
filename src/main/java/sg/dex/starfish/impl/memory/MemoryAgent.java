@@ -11,6 +11,7 @@ import sg.dex.starfish.util.Utils;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -128,35 +129,62 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return operation.invoke(params);
     }
 
-    /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
-     * exception.
-     *
-     * @param operation The operation to invoke on this agent
-     * @param params    named parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
-     * @throws IllegalArgumentException if operation not a AMemoryOperation
-     */
-    @Override
-    public Job invoke(Operation operation, Map<String, Asset> params) {
-        if (!(operation instanceof AMemoryOperation)) {
-            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
-        }
-        return operation.invoke(params);
+
+    //@Override
+    public Job invoke(Operation operation,Map<String, Asset> params) {
+        // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+        // Implementations may override this for custom behaviour (e.g. a custom thread pool)
+        // But this should be sufficient for most cases.
+        final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
+
+        MemoryAgent.THREAD_POOL.submit(() -> {
+            try {
+                Asset result = compute(params);
+                future.complete(result); // success
+            } catch (Throwable t) {
+                future.completeExceptionally(t); // failure
+            }
+            assert (future.isDone());
+        });
+
+        return MemoryJob.create(future);
     }
 
     @Override
-    public Job invokeAsync(Operation operation, Map<String, Asset> params) {
+    public Job invokeAsync(Operation operation,Map<String, Asset> params) {
+        // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+        // Implementations may override this for custom behaviour (e.g. a custom thread pool)
+        // But this should be sufficient for most cases.
+        final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
 
-        // check the mode if sync then throw exception
-         if(isSyncMode(operation)){
-             throw new TODOException("Mode must be Async for this operation");
-         }
-        if (!(operation instanceof AMemoryOperation)) {
-            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
+        MemoryAgent.THREAD_POOL.submit(() -> {
+            try {
+                Asset result = compute(params);
+                future.complete(result); // success
+            } catch (Throwable t) {
+                future.completeExceptionally(t); // failure
+            }
+            assert (future.isDone());
+        });
+
+        return MemoryJob.create(future);
+    }
+
+    private Asset doCompute(Asset input) {
+        byte[] bytes = input.getContent();
+        int length = bytes.length;
+        for (int i = 0; i < (length / 2); i++) {
+            byte temp = bytes[i];
+            bytes[i] = bytes[length - i - 1];
+            bytes[length - i - 1] = temp;
         }
-        return operation.invoke(params);
+        Asset result = MemoryAsset.create(bytes);
+        return result;
+    }
+
+    protected Asset compute(Map<String, Asset> params) {
+        if (params==null ||params.get("input")==null) throw new IllegalArgumentException("Missing parameter 'input'");
+        return doCompute(params.get("input"));
     }
 
     @Override
