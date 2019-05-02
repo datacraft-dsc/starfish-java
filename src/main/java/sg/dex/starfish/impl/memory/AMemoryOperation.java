@@ -3,15 +3,9 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.util.JSON;
 
-import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import static sg.dex.starfish.constant.Constant.DATE_CREATED;
-import static sg.dex.starfish.constant.Constant.TYPE;
 
 /**
  *Class representing a local in-memory operation asset.
@@ -25,28 +19,6 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
     protected AMemoryOperation(String metaString,MemoryAgent memoryAgent) {
         super(metaString);
         this.memoryAgent=memoryAgent;
-    }
-
-    /**
-     * API to build the metadata
-     * @param data
-     * @param meta
-     * @return
-     */
-    protected static String buildMetaData(String data, Map<String, Object> meta) {
-        data = data == null ? "" : data;
-        Map<String, Object> ob = new HashMap<>();
-        ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put("data", data);
-        ob.put(TYPE, "operation");
-
-        if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
-                ob.put(me.getKey(), me.getValue());
-            }
-        }
-
-        return JSON.toString(ob);
     }
 
     @Override
@@ -98,12 +70,5 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
      */
     protected abstract Asset compute(Map<String, Asset> params);
 
-    /**
-     * Reverse the result of the sync invoke of the provided Data
-     *
-     * @param params The named parameters for this computation
-     * @return Map of result of the computation
-     * @throws IllegalArgumentException is a required parameter is not present or of incorrect type
-     */
-    public abstract Map<String,Object> syncCallToReverse(Map<String, Object> params);
+
 }

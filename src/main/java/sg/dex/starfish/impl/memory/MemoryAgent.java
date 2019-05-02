@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
@@ -255,6 +256,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public  Map<String, Object> syncCallToReverse(Operation operation,Map<String, Object> params){
 
+        // verify if the mode is sync or not
+        // check if the mode is sync else throw exception
+        if(!isSyncMode(operation)){
+            throw new TODOException("Mode must be sync for this operation");
+        }
+
         Map<String,Object> result = new HashMap<>();
 
         String str =new StringBuilder(params.get("to-reverse").toString()).reverse().toString();
@@ -262,5 +269,13 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
         return result;
 
+    }
+    private boolean isSyncMode(Operation operation) {
+        Map<String,Object> metatData = operation.getMetadata();
+        Object mode = metatData.get("mode");
+        if(mode!=null && mode.toString().equals("sync")){
+            return true;
+        }
+        return false;
     }
 }

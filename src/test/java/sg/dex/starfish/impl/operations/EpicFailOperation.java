@@ -57,10 +57,6 @@ public class EpicFailOperation extends AMemoryOperation {
 					     new Exception("Fail by design"));
 	}
 
-	@Override
-	public Map<String, Object> syncCallToReverse(Map<String, Object> params) {
-		return null;
-	}
 
 	@Override
 	public Map<String, Object> invokeResult(Map<String, Object> params) {
