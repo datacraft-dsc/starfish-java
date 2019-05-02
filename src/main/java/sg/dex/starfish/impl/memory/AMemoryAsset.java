@@ -9,7 +9,7 @@ import sg.dex.starfish.impl.AAsset;
  */
 public abstract class AMemoryAsset extends AAsset {
 
-    private  MemoryAgent memoryAgent;
+    protected   MemoryAgent memoryAgent;
 
     protected AMemoryAsset(String metaData,MemoryAgent aAgent) {
         super(metaData);
@@ -27,14 +27,7 @@ public abstract class AMemoryAsset extends AAsset {
 
     }
 
-    /**
-     * API to get the memory agent reference
-     * @return The MemoryAgent associated with this asset
-     */
-    public MemoryAgent getMemoryAgent() {
-        return memoryAgent;
-    }
-    
+
     @Override
     public String toString() {
         return getAssetID();

@@ -51,6 +51,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
+        assetMap =  assetMap==null? new HashMap<>():assetMap;
         Asset asset;
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
@@ -177,13 +178,13 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     @Override
     public Bundle add(String name, Asset asset) {
         assetMap.put(name, asset);
-        return create(getMemoryAgent(), assetMap, getMetadata());
+        return create(memoryAgent, assetMap, getMetadata());
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
-        assetMap.putAll(assetMapp);
-        return create(getMemoryAgent(), assetMap, getMetadata());
+       // assetMap.putAll(assetMapp);
+        return create(memoryAgent, assetMapp, null);
     }
 
     @Override

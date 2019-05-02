@@ -79,6 +79,75 @@ public class TestMemoryBundle {
     }
 
     @Test
+    public void testAssetBundleCreationWithCustomMetadata() {
+
+        // creating  assets
+
+        byte[] data1 = {2, 3, 4};
+        Asset a1 = MemoryAsset.create(data1);
+
+        byte[] data2 = {5, 6, 7};
+        Asset a2 = MemoryAsset.create(data2);
+
+        byte[] data3 = {2, 3, 4};
+        Asset a3 = MemoryAsset.create(data3);
+
+        byte[] data4 = {2, 3, 4};
+        Asset a4 = MemoryAsset.create(data4);
+
+        //assigning each asset with name and adding to map
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("one", a1);
+        assetBundle.put("two", a2);
+        assetBundle.put("three", a3);
+        assetBundle.put("four", a4);
+
+        // creating additional metada
+        Map<String, Object> additionalMetaData = new HashMap<>();
+        additionalMetaData.put("name","Bundle1-Test");
+
+        // creating a memory Agent
+        MemoryAgent memoryAgent = MemoryAgent.create();
+
+        // create assetbundle without any custom metadata // so passing null
+        MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, additionalMetaData);
+
+        // getting the ceated assetbundle metadata
+        Map<String, Object> metadata = memoryAssetBundle.getMetadata();
+
+        // checking  name
+        assertEquals(metadata.get("name"),"Bundle1-Test");
+
+        // getting the contents of asset bundle from metadata
+        Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
+
+        //comparing id
+        assertEquals(contents.get("two").get("assetID"), a2.getAssetID());
+        assertEquals(contents.get("one").get("assetID"), a1.getAssetID());
+        assertEquals(contents.get("three").get("assetID"), a3.getAssetID());
+        assertEquals(contents.get("four").get("assetID"), a4.getAssetID());
+
+         System.out.println(contents);
+
+        // getting the contents of asset bundle through API
+        Map<String, Object> allAssetMap = memoryAssetBundle.getAll();
+
+
+        assertEquals(((Map<String, Asset>) allAssetMap.get("two")).get("assetID"), a2.getAssetID());
+        assertEquals(((Map<String, Asset>) allAssetMap.get("three")).get("assetID"), a3.getAssetID());
+        assertEquals(((Map<String, Asset>) allAssetMap.get("one")).get("assetID"), a1.getAssetID());
+        assertEquals(((Map<String, Asset>) allAssetMap.get("four")).get("assetID"), a4.getAssetID());
+
+        // validating the singe asset
+        // Map<String, String> assetIdOfOne = (Map<String, String>) memoryAssetBundle.get("one");
+
+        //Asset oneAsset = memoryAgent.getAsset(assetIdOfOne.get("assetID"));
+        // assertEquals(oneAsset.getAssetID(), a1.getAssetID());
+
+
+    }
+
+    @Test
     public void testAssetBundleCreationWithBundleName() {
 
         // creating  assets
@@ -110,6 +179,54 @@ public class TestMemoryBundle {
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
 
         assertEquals(metadata.get("name"), "My First Bundle");
+
+    }
+
+    @Test
+    public void testAssetEmptyBundleCreation() {
+
+        // creating  assets
+
+        byte[] data1 = {2, 3, 4};
+        Asset a1 = MemoryAsset.create(data1);
+
+        byte[] data2 = {5, 6, 7};
+        Asset a2 = MemoryAsset.create(data2);
+
+        //assigning each asset with name and adding to map
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("one", a1);
+        assetBundle.put("two", a2);
+
+        // creating a memory Agent
+        MemoryAgent memoryAgent = MemoryAgent.create();
+
+        // create assetbundle without any custom metadata // so passing null
+        MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, null, null);
+
+        // adding add asset now
+        memoryAssetBundle = (MemoryBundle)memoryAssetBundle.addAll(assetBundle);
+
+        // getting the ceated assetbundle metadata
+        Map<String, Object> metadata = memoryAssetBundle.getMetadata();
+
+        // checking default name
+        assertEquals(metadata.get("name"), null);
+
+        // getting the contents of asset bundle from metadata
+        Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
+
+        //comparing id
+        assertEquals(contents.get("two").get("assetID"), a2.getAssetID());
+        assertEquals(contents.get("one").get("assetID"), a1.getAssetID());
+
+        // getting the contents of asset bundle through API
+        Map<String, Object> allAssetMap = memoryAssetBundle.getAll();
+
+
+        assertEquals(((Map<String, Asset>) allAssetMap.get("two")).get("assetID"), a2.getAssetID());
+        assertEquals(((Map<String, Asset>) allAssetMap.get("one")).get("assetID"), a1.getAssetID());
+
 
     }
 

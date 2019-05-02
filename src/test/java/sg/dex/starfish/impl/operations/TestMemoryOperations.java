@@ -186,7 +186,7 @@ public class TestMemoryOperations {
         Map<String, Object> param = new HashMap<>();
         param.put("to-reverse", data);
 
-        // this meta data will expect to-hash
+        // this meta data will expect to-reverse
         String meta = "{\n" +
                 "  \"params\": {\n" +
                 "    \"to-reverse\": {\n" +
