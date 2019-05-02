@@ -636,6 +636,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
+	@Override
+	public Job invokeAsync(Operation operation,Map<String,Asset> params){
+		Map<String, Object> request = new HashMap<String, Object>(2);
+		request.put("operation", operation.getAssetID());
+		request.put("params", Params.formatParams(operation, params));
+		return invoke(request);
+	}
 	/**
 	 *
 	 * @param operation

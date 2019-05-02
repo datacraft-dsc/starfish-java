@@ -43,4 +43,14 @@ public interface Invokable {
 	public default Map<String,Object> getParamSpec(Operation op) {
 		return op.getParamSpec();
 	}
+	/**
+	 * Invokes this operation with the given named parameters. Operations should override
+	 * this method to provide an implementation of asynchronous invocation via the
+	 * Job interface
+	 *
+	 * @param params Positional parameters for this invoke job
+	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @return The Job for this invoked operation
+	 */
+	public Job invokeAsync(Operation operation,Map<String,Asset> params);
 }

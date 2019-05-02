@@ -146,7 +146,20 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return operation.invoke(params);
     }
 
-	@Override
+    @Override
+    public Job invokeAsync(Operation operation, Map<String, Asset> params) {
+
+        // check the mode if sync then throw exception
+         if(isSyncMode(operation)){
+             throw new TODOException("Mode must be Async for this operation");
+         }
+        if (!(operation instanceof AMemoryOperation)) {
+            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
+        }
+        return operation.invoke(params);
+    }
+
+    @Override
 	public Asset getAsset(DID did) {
 		return getAsset(did.getID());
 	}
