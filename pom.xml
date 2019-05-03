@@ -172,7 +172,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.7.1</version>
 				<configuration>
-					<!--<failOnError>false</failOnError>-->
+					<failOnError>false</failOnError>
 				</configuration>
 			</plugin>
 
