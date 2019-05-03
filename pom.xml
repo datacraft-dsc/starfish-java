@@ -15,16 +15,11 @@
 
 		<gpg.useagent>true</gpg.useagent>
 	</properties>
-	
-	<prerequisites>
-		<maven>3.5.0</maven>
-	</prerequisites>
 
 	<scm>
 		<connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
-		<tag>starfish-java-0.0.1</tag>
 	</scm>
 
 	<repositories>
@@ -108,7 +103,7 @@
 			<version>4.5.8</version>
 		</dependency>
 	</dependencies>
-
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -203,6 +198,16 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.7.1</version>
 				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<show>public</show>
 					<failOnError>false</failOnError>
 				</configuration>
 			</plugin>
