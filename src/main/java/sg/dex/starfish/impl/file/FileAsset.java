@@ -60,7 +60,7 @@ public class FileAsset extends AAsset {
 
 		Map<String,Object> ob=new HashMap<>();
 		ob.put(DATE_CREATED, Instant.now().toString());
-		ob.put(TYPE, DATASET);
+		ob.put(TYPE, DATA_SET);
 		ob.put(SIZE, f.length());
 		ob.put(FILE_NAME, f.getName());
 		ob.put(CONTENT_TYPE,"application/octet-stream");
