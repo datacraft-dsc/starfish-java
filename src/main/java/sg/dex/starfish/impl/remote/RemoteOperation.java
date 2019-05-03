@@ -14,23 +14,32 @@ import java.util.Map;
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
-
-	protected RemoteOperation(RemoteAgent agent, String meta) {
-		super(meta,agent);
+	protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
+		super(meta,remoteAgent);
 	}
 	
-	public static Asset create(RemoteAgent a, String meta) {
+	public static RemoteOperation create(RemoteAgent a, String meta) {
 		return new RemoteOperation(a,meta);
 	}
 
 	@Override
 	public Job invoke(Asset... params) {
-		return getRemoteAgent().invoke(this,params);
+		return remoteAgent.invoke(this,params);
+	}
+
+	@Override
+	public Job invokeAsync(Map<String, Asset> params) {
+		return remoteAgent.invoke(this,params);
+	}
+
+	@Override
+	public Map<String, Object> invokeResult(Map<String, Object> params) {
+		return remoteAgent.invokeResult(this,params);
 	}
 
 	@Override
 	public Job invoke(Map<String, Asset> params) {
-		return getRemoteAgent().invoke(this,params);
+		return remoteAgent.invoke(this,params);
 	}
 
 

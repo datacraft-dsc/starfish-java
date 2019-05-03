@@ -11,12 +11,13 @@ public class Constant {
     public static final String FILE_NAME ="fileName";
     public static final String ID="id";
     public static final String CONTENTS="contents";
-    public static final String ASSETID="assetID";
+    public static final String ASSET_ID ="assetID";
 
-    public static final Object DATASET = "dataset";
-	public static final Object BUNDLE = "bundle";
+    public static final String DATASET = "dataset";
+	public static final String BUNDLE = "bundle";
 
-	
+
+
 	public static final String NAME = "name";
 	public static final String DID = "did";
 	

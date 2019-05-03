@@ -56,7 +56,9 @@ public abstract class AAsset implements Asset {
 	public Map<String,Object> getParamValue() {
 		 Map<String,Object>  o=new HashMap<>();
 		// default is to pass the asset ID
-		o.put(Constant.DID, getAssetDID());
+		// check if DID is present:
+		Object did =getMetadata().get(Constant.DID)!=null? getMetadata().get(Constant.DID):getAssetDID();
+		o.put(Constant.DID, did);
 		return o;
 	}
 

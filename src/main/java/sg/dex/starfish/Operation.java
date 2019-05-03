@@ -1,8 +1,8 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
 import sg.dex.starfish.util.Params;
+
+import java.util.Map;
 
 /**
  * Interface representing an invokable operation
@@ -36,6 +36,26 @@ public interface Operation extends Asset {
 	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
 	 * @return The Job for this invoked operation
 	 */
+	public Job invokeAsync(Map<String,Asset> params);
+	/**
+	 * Invokes this operation with the given named parameters. Operations should override
+	 * this method to provide an implementation of asynchronous invocation via the
+	 * Job interface
+	 *
+	 * @param params Positional parameters for this invoke job
+	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @return The Job for this invoked operation
+	 */
+	public Map<String,Object> invokeResult(Map<String, Object> params);
+	/**
+	 * Invokes this operation with the given named parameters. Operations should override
+	 * this method to provide an implementation of asynchronous invocation via the
+	 * Job interface
+	 *
+	 * @param params Positional parameters for this invoke job
+	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @return The Job for this invoked operation
+	 */
 	public Job invoke(Map<String,Asset> params);
 
 	/**
@@ -52,4 +72,5 @@ public interface Operation extends Asset {
 		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
 		return paramSpec;
 	}
+
 }

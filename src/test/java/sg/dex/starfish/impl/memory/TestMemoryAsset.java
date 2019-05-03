@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAsset {
 
-	Asset asset;
 	MemoryAsset memoryAsset;
 	@Before
 	public void setup(){

@@ -23,7 +23,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     private Map<String, Asset> assetMap;
 
     private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
-        super(metaData, remoteAgent);
+        super(metaData,remoteAgent);
         this.assetMap = assetMap;
 
     }
@@ -146,7 +146,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();
-        assetIDMap.put(ASSETID, assetId);
+        assetIDMap.put(ASSET_ID, assetId);
         return assetIDMap;
 
     }
@@ -160,13 +160,13 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     @Override
     public Bundle add(String name, Asset asset) {
         assetMap.put(name, asset);
-        return create(getRemoteAgent(), assetMap, getMetadata());
+        return create(remoteAgent, assetMap, getMetadata());
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
         assetMap.putAll(assetMapp);
-        return create(getRemoteAgent(), assetMap, getMetadata());
+        return create(remoteAgent, assetMap, getMetadata());
     }
 
     @Override

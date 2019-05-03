@@ -1,8 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryAgent;
 
 import java.util.Map;
 
@@ -14,10 +16,11 @@ import java.util.Map;
  *
  */
 
-public class EpicFailOperation extends AMemoryOperation {
+public class EpicFailOperation extends AMemoryOperation implements Operation {
 
-	protected EpicFailOperation(String meta) {
-		super(null);
+	protected EpicFailOperation(String meta,MemoryAgent memoryAgent) {
+
+		super(meta,memoryAgent);
 	}
 
 	/**
@@ -35,23 +38,26 @@ public class EpicFailOperation extends AMemoryOperation {
 	 *
 	 * @return new instance of EpicFailOperation
 	 */
-	public static EpicFailOperation create() {
-		String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-		return new EpicFailOperation(meta);
+	public static EpicFailOperation create(String meta) {
+		//String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
+		MemoryAgent memoryAgent = MemoryAgent.create();
+		return new EpicFailOperation(meta,memoryAgent);
 	}
 
-	/**
-	 * Computes the result of the invoke job using the provided assets
-	 *
-	 * @param params The positional parameters for this computation
-	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @throws JobFailedException if the computation fails
-	 * @return Asset The result of the computation as an asset
-	 */
 	@Override
-	public Asset compute(Map<String, Asset> params) {
-		throw new JobFailedException("EPIC FAIL",
-					     new Exception("Fail by design"));
+	public Job invokeAsync(Map<String, Asset> params) {
+		return memoryAgent.invokeAsync(this,params);
 	}
+
+	@Override
+	public Map<String, Object> invokeResult(Map<String, Object> params) {
+		return memoryAgent.syncCallToReverse(this,params);
+	}
+
+	@Override
+	public Job invoke(Map<String, Asset> params) {
+		return memoryAgent.invoke(this,params);
+	}
+
 
 }

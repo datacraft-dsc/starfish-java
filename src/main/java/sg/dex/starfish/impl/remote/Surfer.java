@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Surfer {
 
-	public static RemoteAgent getSurfer(String host,RemoteAccount account) {
+	public static RemoteAgent getSurfer(String host) {
 		Map<String, Object> ddo = new HashMap<>();
 		List<Map<String, Object>> services = new ArrayList<>();
 		services.add(Utils.mapOf(
@@ -38,7 +38,7 @@ public class Surfer {
 		DID surferDID = DID.createRandom();
 		ocean.registerLocalDID(surferDID, ddoString);
 
-		RemoteAgent surfer = RemoteAgent.create(ocean, surferDID,account);
+		RemoteAgent surfer = RemoteAgent.create(ocean, surferDID);
 
 		return surfer;
 	}
