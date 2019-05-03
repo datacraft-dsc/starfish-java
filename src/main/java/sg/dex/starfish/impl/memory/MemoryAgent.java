@@ -130,7 +130,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
 
-    //@Override
+    @Override
     public Job invoke(Operation operation,Map<String, Asset> params) {
         // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
         // Implementations may override this for custom behaviour (e.g. a custom thread pool)
