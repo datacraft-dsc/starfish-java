@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7-SNAPSHOT</version>
 
 	<name>Starfish - Developer Toolkit for the Ocean ecosystem</name>
 	<url>https://github.com/DEX-company/starfish-java</url>
@@ -39,7 +39,7 @@
 		<connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
-		<tag>starfish-java-0.0.6</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<repositories>
