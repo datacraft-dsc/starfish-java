@@ -1,8 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
 	<version>0.0.6-SNAPSHOT</version>
+	
+	<name>Starfish - Developer Toolkit for the Ocean ecosystem</name>
+    <url>https://github.com/DEX-company/starfish-java</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <description>Starfish supports developing interoperable data exchange solutions using the Ocean Protocol</description>
+    
+ 	<developers>
+        <developer>
+            <name>Mike Anderson</name>
+            <email>mike.anderson@dex.sg</email>
+            <organization>DEX</organization>
+            <organizationUrl>https://www.dex.sg</organizationUrl>
+        </developer>
+    </developers>
 
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
@@ -191,6 +213,18 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>4.2.0</version>
 				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 
 			<plugin>
