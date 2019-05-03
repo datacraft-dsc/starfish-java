@@ -121,6 +121,12 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     }
 
+    /**
+     * API to build the metadata for the bundle
+     * @param contents
+     * @param meta
+     * @return
+     */
     private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
         //String hash = Hex.toString(Hash.keccak256(data));
 
@@ -151,7 +157,10 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     }
 
-
+    /**
+     * API to get the AssetMap
+     * @return assetMap that belong to bundle
+     */
     private Map<String, Asset> getAssetMap() {
 
         return (Map<String, Asset>) getMetadata().get(CONTENTS);

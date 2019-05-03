@@ -1,11 +1,10 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
-import sg.dex.starfish.util.DID;
-
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.DID;
+
+import java.util.Map;
 
 /**
  * Interface representing an Agent in the Ocean ecosystem
@@ -32,7 +31,7 @@ public interface Agent {
 	 * The agent must support metadata storage.
 	 *
 	 * @param asset The asset to register
-	 * @throws AuthorizationException if requestor does not have register permission
+	 * @throws AuthorizationException if requester does not have register permission
 	 * @throws StorageException if unable to register the Asset
 	 * @throws UnsupportedOperationException if the agent does not support metadata storage
 	 * @return Asset
@@ -44,8 +43,8 @@ public interface Agent {
 	 * Returns null if the asset ID does not exist.
 	 *
 	 * @param id The ID of the asset to get from this agent
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @throws AuthorizationException if requester does not have access permission
+	 * @throws StorageException if there is an error in requester the Asset
 	 * @return Asset The asset found
 	 */
 	public Asset getAsset(String id);
@@ -55,8 +54,8 @@ public interface Agent {
 	 * Returns null if the asset not exist.
 	 *
 	 * @param did The DID of the asset to get from this agent
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if there is an error in retreiving the Asset
+	 * @throws AuthorizationException if requester does not have access permission
+	 * @throws StorageException if there is an error in retrieving the Asset
 	 * @return Asset The asset found, or null if not found
 	 */	
 	public Asset getAsset(DID did);
@@ -69,7 +68,7 @@ public interface Agent {
 	 * - The data for the asset cannot be accessed by the agent
 	 *
 	 * @param a Asset to upload
-	 * @throws AuthorizationException if requestor does not have upload permission
+	 * @throws AuthorizationException if requester does not have upload permission
 	 * @throws StorageException if there is an error in uploading the Asset
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */

@@ -1,10 +1,10 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
-import sg.dex.starfish.util.DID;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.DID;
+
+import java.util.Map;
 
 /**
  * Interface representing an Asset. An Asset in Starfish is an entity in the Ocean Ecosystem
@@ -89,7 +89,7 @@ public interface Asset {
 	 * Gets the contents of this data asset as a byte[] array.
 	 *
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
-	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws AuthorizationException if requester does not have access permission
 	 * @throws StorageException if unable to load the Asset
 	 * @return The byte contents of this asset.
 	 */

@@ -17,7 +17,13 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 	protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
 		super(meta,remoteAgent);
 	}
-	
+
+    /**
+     * API to create the remote operation instance by passing the remote agent and the metadata
+     * @param a
+     * @param meta
+     * @return
+     */
 	public static RemoteOperation create(RemoteAgent a, String meta) {
 		return new RemoteOperation(a,meta);
 	}

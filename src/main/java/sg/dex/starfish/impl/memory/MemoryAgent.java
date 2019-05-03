@@ -170,6 +170,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return MemoryJob.create(future);
     }
 
+    /**
+     * API to reverse the byte array
+     * @param input
+     * @return
+     */
     private Asset doCompute(Asset input) {
         byte[] bytes = input.getContent();
         int length = bytes.length;
@@ -182,6 +187,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return result;
     }
 
+    /**
+     * API that implement the compute logic that will reverse the content of an Asset.
+     * @param params
+     * @return
+     */
     protected Asset compute(Map<String, Asset> params) {
         if (params==null ||params.get("input")==null) throw new IllegalArgumentException("Missing parameter 'input'");
         return doCompute(params.get("input"));
@@ -311,6 +321,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return result;
 
     }
+
+    /**
+     * API to check if the operation mode is sync or Async
+     * @param operation operation of which mode need to be checked
+     * @return true if mode is sync else false
+     */
     private boolean isSyncMode(Operation operation) {
         Map<String,Object> metatData = operation.getMetadata();
         Object mode = metatData.get("mode");

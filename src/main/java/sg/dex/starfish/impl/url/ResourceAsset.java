@@ -1,10 +1,5 @@
 package sg.dex.starfish.impl.url;
 
-import java.io.InputStream;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
@@ -14,6 +9,11 @@ import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
+
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class exposing a Java classpath resource as an Ocean asset.
@@ -82,7 +82,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * Gets InputStream corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override

@@ -3,7 +3,6 @@ package sg.dex.starfish.integration.developerTC;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.Surfer;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;

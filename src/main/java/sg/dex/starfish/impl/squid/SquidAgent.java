@@ -1,22 +1,20 @@
 package sg.dex.starfish.impl.squid;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Map;
-
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
-
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class implementing a Squid Agent
@@ -33,7 +31,7 @@ public class SquidAgent extends AAgent {
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
 	 *
-	 * @param oceanapi Squid OceanAPI to use
+	 * @param config Squid OceanAPI to use
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
@@ -80,7 +78,7 @@ public class SquidAgent extends AAgent {
 	 *
 	 * @param id The ID of the asset to get from this agent
 	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if there is an error in retreiving the SquidAsset
+	 * @throws StorageException if there is an error in retrieving the SquidAsset
 	 * @return SquidAsset The asset found
 	 */
 	@Override
@@ -94,7 +92,7 @@ public class SquidAgent extends AAgent {
 	}
 
 	/**
-	 * Uploads an asset to this agent. Registers the asset with the agent if required.
+	 * API to uploads an squid asset to this agent. Registers the asset with the agent if required.
 	 *
 	 * Throws an exception if upload is not possible, with the following likely causes:
 	 * - The agent does not support uploads of this asset type / size
@@ -111,7 +109,7 @@ public class SquidAgent extends AAgent {
 	}
 
 	/**
-	 * Returns a configuration String value for key
+	 * Api that will returns a configuration String value for key
 	 *
 	 * @param key to find in the config
 	 * @return value corresponding to the key (or null if not found)
@@ -136,7 +134,7 @@ public class SquidAgent extends AAgent {
 	}
 
 	/**
-	 * Request some ocean tokens to be transfer to this Account
+	 * API to request some ocean tokens to be transfer to this Account
 	 *
 	 * @param amount The amount of ocean tokens to transfer
 	 * @throws EthereumException on error
@@ -147,7 +145,7 @@ public class SquidAgent extends AAgent {
 	}
 
 	/**
-	 * Returns the Balance of an account
+	 * Returns the Balance of an account register in the Keeper
 	 * @param account the account we want to get the balance
 	 * @return the Balance of the account
 	 * @throws EthereumException EthereumException
@@ -157,7 +155,7 @@ public class SquidAgent extends AAgent {
 	}
 
 	/**
-	 * Returns a list of the accounts registered in Keeper
+	 * API to get the list of accounts register in the Keeper
 	 * @return a List of all Account registered in Keeper
 	 * @throws EthereumException EthereumException
 	 */
@@ -165,6 +163,10 @@ public class SquidAgent extends AAgent {
 		return oceanAPI.getAccountsAPI().list();
 	}
 
+	/**
+	 * API to get the Ocean API instance reference
+	 * @return oceanAPI instance reference
+	 */
 	public OceanAPI getOceanAPI() {
 		return oceanAPI;
 	}
