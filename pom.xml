@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.4</version>
 
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
@@ -19,7 +19,8 @@
 		<connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
-	</scm>
+	  <tag>starfish-java-0.0.4</tag>
+  </scm>
 
 	<repositories>
 		<repository>
