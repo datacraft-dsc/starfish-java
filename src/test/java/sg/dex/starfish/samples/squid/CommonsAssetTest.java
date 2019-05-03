@@ -62,6 +62,7 @@ public class CommonsAssetTest {
 			Ocean ocean=Ocean.connect(oceanAPI);
 			
 			DID did=DID.parse("did:op:8e511d4c54b34454bbf7947473517a8347ada436ec034f799fdb84ce3e8683f3");
+			System.out.println(did);
 			
 			Asset a=ocean.getAsset(did);
 			
