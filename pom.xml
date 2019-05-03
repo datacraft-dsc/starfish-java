@@ -15,7 +15,6 @@
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<doclint>none</doclint>
 
-		<gpg.keyname>340395AC</gpg.keyname>
 		<gpg.useagent>true</gpg.useagent>
 	</properties>
 

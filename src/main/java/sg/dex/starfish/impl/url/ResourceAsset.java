@@ -66,7 +66,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
         ob.put(Constant.NAME, resourcePath);
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
         ob.put(Constant.CONTENT_HASH, hash);
-        ob.put(Constant.TYPE, Constant.DATASET);
+        ob.put(Constant.TYPE, Constant.DATA_SET);
         ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 
         if (meta != null) {
