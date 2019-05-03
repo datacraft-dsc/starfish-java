@@ -13,7 +13,7 @@ public class Constant {
     public static final String CONTENTS = "contents";
     public static final String ASSET_ID = "assetID";
 
-    public static final String DATASET = "dataset";
+    public static final String DATA_SET = "dataset";
     public static final String BUNDLE = "bundle";
 
 
