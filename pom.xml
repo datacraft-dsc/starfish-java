@@ -5,26 +5,26 @@
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
 	<version>0.0.6-SNAPSHOT</version>
-	
+
 	<name>Starfish - Developer Toolkit for the Ocean ecosystem</name>
-    <url>https://github.com/DEX-company/starfish-java</url>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <description>Starfish supports developing interoperable data exchange solutions using the Ocean Protocol</description>
-    
- 	<developers>
-        <developer>
-            <name>Mike Anderson</name>
-            <email>mike.anderson@dex.sg</email>
-            <organization>DEX</organization>
-            <organizationUrl>https://www.dex.sg</organizationUrl>
-        </developer>
-    </developers>
+	<url>https://github.com/DEX-company/starfish-java</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<description>Starfish supports developing interoperable data exchange solutions using the Ocean Protocol</description>
+
+	<developers>
+		<developer>
+			<name>Mike Anderson</name>
+			<email>mike.anderson@dex.sg</email>
+			<organization>DEX</organization>
+			<organizationUrl>https://www.dex.sg</organizationUrl>
+		</developer>
+	</developers>
 
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
@@ -258,6 +258,14 @@
 					<show>public</show>
 					<failOnError>false</failOnError>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
