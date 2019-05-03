@@ -35,15 +35,12 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     private byte[] data;
 
-
     private MemoryAsset(byte[] data,String metaData) {
         super(metaData);
 
         this.data = data;
 
     }
-
-
 
     private static String buildMetaData(byte[] data, Map<String, Object> meta) {
         String hash = Hex.toString(Hash.keccak256(data));

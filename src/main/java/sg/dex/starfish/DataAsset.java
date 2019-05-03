@@ -1,11 +1,11 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
 
 /**
  * Interface representing a data asset.
@@ -29,7 +29,7 @@ public interface DataAsset extends Asset {
 	 * Gets an input stream that can be used to consume the content of this asset.
 	 *
 	 * Will throw an exception if consumption of the asset data in not possible locally.
-	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws AuthorizationException if requester does not have access permission
 	 * @throws StorageException if unable to load the Asset
 	 * @return An input stream allowing consumption of the asset data
 	 */
@@ -39,7 +39,7 @@ public interface DataAsset extends Asset {
 	 * Gets the data content of this data asset as a byte[] array.
 	 *
 	 * @throws UnsupportedOperationException If this asset does not support getting byte data
-	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws AuthorizationException if requester does not have access permission
 	 * @throws StorageException if unable to load the Asset
 	 * @return The byte contents of this asset.
 	 */

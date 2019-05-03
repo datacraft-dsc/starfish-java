@@ -23,11 +23,21 @@ public class MemoryPurchase implements Purchase {
         this.id = listingID;
     }
 
+    /**
+     * API to create a instance of Memory Purchase
+     * @param agent
+     * @param metaMap
+     * @return
+     */
     public static MemoryPurchase create(MemoryAgent agent, Map<String, Object> metaMap) {
 
         return new MemoryPurchase(agent, metaMap.get("id").toString(), metaMap);
     }
 
+    /**
+     * API to get the listing id associated with the this purchase
+     * @return
+     */
     public String getListingId() {
         return meta.get("listingid").toString();
     }
@@ -68,10 +78,9 @@ public class MemoryPurchase implements Purchase {
     }
 
     /**
-     * FIXME: complete docs
-     * API to ge
+     * API to get the metadata of this purchase
      *
-     * @return
+     * @return map of metadata associated with this purchase
      */
     @Override
     public Map<String, Object> getMetaData() {

@@ -136,6 +136,12 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     }
 
+    /**
+     * API to build the metadata for bundle Asset
+     * @param contents
+     * @param meta
+     * @return
+     */
     private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
 
         Map<String, Object> ob = new HashMap<>();
@@ -166,6 +172,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     }
 
+    /**
+     * API to get the AssetMap.Asset map will have all asset belong to given bundle.
+     * @return
+     */
     private Map<String, Asset> getAssetMap() {
     	/// FIXME metadata shouldn't contain map of Strings to Assets!
         Map<String, Asset> assetMap = (Map<String, Asset>) getMetadata().get(CONTENTS);

@@ -12,6 +12,7 @@ package sg.dex.starfish.exception;
 @SuppressWarnings("serial")
 public class JobFailedException extends RuntimeException {
 
+
 	public JobFailedException(String message, Exception e) {
 		super(message,e);
 	}

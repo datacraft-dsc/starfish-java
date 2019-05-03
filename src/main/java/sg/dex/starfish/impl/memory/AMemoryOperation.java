@@ -8,10 +8,9 @@ package sg.dex.starfish.impl.memory;
  */
 public abstract class AMemoryOperation extends AMemoryAsset {
 
-    protected MemoryAgent memoryAgent;
+
     protected AMemoryOperation(String metaString,MemoryAgent memoryAgent) {
-        super(metaString);
-        this.memoryAgent=memoryAgent;
+        super(metaString,memoryAgent);
     }
 
 }

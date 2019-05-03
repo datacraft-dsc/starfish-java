@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static sg.dex.starfish.constant.Constant.MODE;
+import static sg.dex.starfish.constant.Constant.SYNC;
+
 /**
  * Class implementing a remote storage agent using the Storage API
  *
@@ -67,7 +70,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return RemoteAgent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did, RemoteAccount account) {
-		if (ocean==null) throw new IllegalArgumentException("OCean connection cannot be null for remote agent");
+		if (ocean==null) throw new IllegalArgumentException("Ocean connection cannot be null for remote agent");
 		if (did==null) throw new IllegalArgumentException("DID cannot be null for remote agent");
 		return new RemoteAgent(ocean, did, account);
 	}
@@ -592,9 +595,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				response.close();
 			}
 		} catch (ClientProtocolException e) {
-			throw new JobFailedException(" Client Protocol Expectopn :", e);
+			throw new JobFailedException(" Client Protocol Exception :", e);
 		} catch (IOException e) {
-			throw new JobFailedException(" IOException occured  Expectopn :", e);
+			throw new JobFailedException(" IOException occurred  Exception :", e);
 		}
 	}
 
@@ -681,16 +684,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	private boolean isSyncMode(Operation operation) {
-		Map<String,Object> metatData = operation.getMetadata();
-		Object mode = metatData.get("mode");
-		if(mode!=null && mode.toString().equals("sync")){
+		Map<String,Object> metaData = operation.getMetadata();
+		Object mode = metaData.get(MODE);
+		if(mode!=null && mode.toString().equals(SYNC)){
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * API for Listing
+	 * API to get List of map of all Metadata
 	 *
 	 * @param marketAgentUrl
 	 * @return List<Map<String, Object>> marketMetaData
@@ -727,6 +730,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * API to get Market agent instance from the Agent
+	 * @param listingData
+	 * @param marketAgentUrl
+	 * @return
+	 */
 	private String createMarketAgentInstance(Map<String, Object> listingData, String marketAgentUrl) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));
@@ -758,6 +767,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
+	/**
+	 * API to get the Market metadata from the agent by providing market URL.
+	 * @param marketAgentUrl market url
+	 * @return
+	 */
 	private String getMarketMetaData(String marketAgentUrl) {
 		HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));
 		addAuthHeaders(httpget);
@@ -845,7 +859,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * API to update the Lising data
+	 * API to update the data of existing listing.
+	 * if the listing id passed is not exist it will throw Exception
 	 *
 	 * @param newValue
 	 * @return Listing
@@ -888,10 +903,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * APi to get listing by userID
+	 * APi to get all the listing that belong to user id passed in the argument
 	 *
-	 * @param userID
-	 * @return List<RemoteListing> listing
+	 * @param userID user id for which the listing data need to be retrieved form agent
+	 * @return List of all listing belong to given user id
 	 */
 	public List<RemoteListing> getAllListing(String userID) {
 
@@ -1042,8 +1057,5 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		account.getUserDataMap().put("token", token);
 
 	}
-
-
-
 
 }

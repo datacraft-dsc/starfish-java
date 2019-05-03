@@ -8,10 +8,19 @@ package sg.dex.starfish.exception;
  */
 @SuppressWarnings("serial")
 public class AuthorizationException extends RuntimeException {
-
+	/**
+	 * API to create Authorization Exception instance
+	 * @param message message tht need to pass.
+	 * @param e Exception
+	 */
 	public AuthorizationException(String message, Exception e) {
 		super(message,e);
 	}
+
+	/**
+	 * API to create Authorization Exception instance
+	 * @param message
+	 */
 	public AuthorizationException(String message) {
 		super(message);
 	}

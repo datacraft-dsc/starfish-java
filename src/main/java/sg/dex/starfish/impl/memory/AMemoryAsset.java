@@ -10,24 +10,22 @@ import sg.dex.starfish.impl.AAsset;
 public abstract class AMemoryAsset extends AAsset {
 
     protected   MemoryAgent memoryAgent;
-
+    /**
+     *
+     * @param metaData
+     * @param aAgent
+     */
     protected AMemoryAsset(String metaData,MemoryAgent aAgent) {
         super(metaData);
         memoryAgent = aAgent;
-
     }
-
     /**
-     * Constructor
+     *
      * @param metaData
      */
-    public AMemoryAsset(String metaData) {
+    protected AMemoryAsset(String metaData) {
         super(metaData);
-        memoryAgent = MemoryAgent.create();
-
     }
-
-
     @Override
     public String toString() {
         return getAssetID();
