@@ -146,7 +146,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();
-        assetIDMap.put(ASSETID, assetId);
+        assetIDMap.put(ASSET_ID, assetId);
         return assetIDMap;
 
     }

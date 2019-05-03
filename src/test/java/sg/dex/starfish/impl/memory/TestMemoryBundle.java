@@ -14,7 +14,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TestMemoryBundle {
 
     @Test
-    public void testAssetBundleCreationWithoutBundleName() {
+    public void testCreationWithoutBundleName() {
 
         // creating  assets
 
@@ -79,7 +79,7 @@ public class TestMemoryBundle {
     }
 
     @Test
-    public void testAssetBundleCreationWithCustomMetadata() {
+    public void testCreationWithCustomMetadata() {
 
         // creating  assets
 
@@ -138,17 +138,10 @@ public class TestMemoryBundle {
         assertEquals(((Map<String, Asset>) allAssetMap.get("one")).get("assetID"), a1.getAssetID());
         assertEquals(((Map<String, Asset>) allAssetMap.get("four")).get("assetID"), a4.getAssetID());
 
-        // validating the singe asset
-        // Map<String, String> assetIdOfOne = (Map<String, String>) memoryAssetBundle.get("one");
-
-        //Asset oneAsset = memoryAgent.getAsset(assetIdOfOne.get("assetID"));
-        // assertEquals(oneAsset.getAssetID(), a1.getAssetID());
-
-
     }
 
     @Test
-    public void testAssetBundleCreationWithBundleName() {
+    public void testCreationWithBundleName() {
 
         // creating  assets
 
@@ -183,7 +176,7 @@ public class TestMemoryBundle {
     }
 
     @Test
-    public void testAssetEmptyBundleCreation() {
+    public void testAddAssetMapInEmptyBundle() {
 
         // creating  assets
 
@@ -202,9 +195,10 @@ public class TestMemoryBundle {
         MemoryAgent memoryAgent = MemoryAgent.create();
 
         // create assetbundle without any custom metadata // so passing null
+        // if assetMap is passed as null it will create an empty map for that
         MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, null, null);
 
-        // adding add asset now
+        // adding add asset now after bundle gets created
         memoryAssetBundle = (MemoryBundle)memoryAssetBundle.addAll(assetBundle);
 
         // getting the ceated assetbundle metadata
@@ -227,6 +221,50 @@ public class TestMemoryBundle {
         assertEquals(((Map<String, Asset>) allAssetMap.get("two")).get("assetID"), a2.getAssetID());
         assertEquals(((Map<String, Asset>) allAssetMap.get("one")).get("assetID"), a1.getAssetID());
 
+
+    }
+
+    @Test
+    public void testAddAssetInExistingBundle() {
+
+        // creating  assets
+
+        byte[] data1 = {2, 3, 4};
+        Asset a1 = MemoryAsset.create(data1);
+
+        byte[] data2 = {5, 6, 7};
+        Asset a2 = MemoryAsset.create(data2);
+
+        //assigning each asset with name and adding to map
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("one", a1);
+
+        // creating a memory Agent
+        MemoryAgent memoryAgent = MemoryAgent.create();
+
+        // create asset bundle without any custom metadata // so passing null
+        MemoryBundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
+
+        // getting the created asset bundle metadata
+        Map<String, Object> metadata = memoryAssetBundle.getMetadata();
+
+        // checking default name
+        assertEquals(metadata.get("name"), null);
+
+        // getting the contents of asset bundle through metadata
+        Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
+
+        //comparing id
+        assertEquals(contents.get("two"), null);
+        assertEquals(contents.get("one").get("assetID"), a1.getAssetID());
+
+        // adding two asset
+
+        memoryAssetBundle = (MemoryBundle)memoryAssetBundle.add("two",a2);
+
+            // getting the contents of asset bundle through metadata
+         contents = (Map<String, Map<String, String>>) memoryAssetBundle.getMetadata().get("contents");
+        assertEquals(contents.get("two").get("assetID"), a2.getAssetID());
 
     }
 

@@ -140,9 +140,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(TYPE, "bundle");
+        ob.put(TYPE, BUNDLE);
         ob.put(CONTENTS, contents);
 
+        // adding the meta data provide
         if (meta != null) {
             for (Map.Entry<String, Object> me : meta.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
@@ -160,7 +161,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();
-        assetIDMap.put(ASSETID, assetId);
+        assetIDMap.put(ASSET_ID, assetId);
         return assetIDMap;
 
     }
@@ -178,12 +179,12 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     @Override
     public Bundle add(String name, Asset asset) {
         assetMap.put(name, asset);
-        return create(memoryAgent, assetMap, getMetadata());
+        return create(memoryAgent, assetMap, null);
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
-       // assetMap.putAll(assetMapp);
+        assetMap.putAll(assetMapp);
         return create(memoryAgent, assetMapp, null);
     }
 
