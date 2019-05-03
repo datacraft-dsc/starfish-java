@@ -54,6 +54,11 @@
 	</repositories>
 
 	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
 			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
