@@ -17,10 +17,11 @@ import java.util.Map;
 public interface Asset {
 
 	/**
-	 * Gets DID for this Asset
-	 * @see <a href="https://w3c-ccg.github.io/did-spec">W3C DID spec</a>
+	 * Gets the ID for this Asset. 
+	 * 
+	 * The format of the asset ID is determined by the implementation.
 	 *
-	 * @throws UnsupportedOperationException if unable to obtain DID
+	 * @throws UnsupportedOperationException if unable to obtain ID
 	 * @return the assetID
 	 */
 	public String getAssetID();

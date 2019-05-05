@@ -23,8 +23,8 @@ public abstract class AAsset implements Asset {
 	protected final String id;
 
 	protected AAsset(String meta) {
-		this.metadataString=meta;
-		this.id=Hex.toString(Hash.keccak256(meta));
+		this.metadataString = meta;
+		this.id = Hex.toString(Hash.keccak256(meta));
 	}
 
 	@Override
@@ -36,8 +36,9 @@ public abstract class AAsset implements Asset {
 	public String getAssetID() {
 		return id;
 	}
+
 	@Override
-	public Map<String,Object> getMetadata() {
+	public Map<String, Object> getMetadata() {
 		return JSONObjectCache.parse(metadataString);
 	}
 
@@ -49,21 +50,22 @@ public abstract class AAsset implements Asset {
 	 */
 	@Override
 	public DID getAssetDID() {
-		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
+		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: " + getClass());
 	}
 
 	@Override
-	public Map<String,Object> getParamValue() {
-		 Map<String,Object>  o=new HashMap<>();
+	public Map<String, Object> getParamValue() {
+		Map<String, Object> o = new HashMap<>();
 		// default is to pass the asset ID
 		// check if DID is present:
-		Object did =getMetadata().get(Constant.DID)!=null? getMetadata().get(Constant.DID):getAssetDID();
+		Object did = getMetadata().get(Constant.DID) != null ? getMetadata().get(Constant.DID) : getAssetDID();
 		o.put(Constant.DID, did);
 		return o;
 	}
 
 	/**
 	 * Gets the metadata for this asset as a String
+	 * 
 	 * @return The metadata as a String
 	 */
 	@Override

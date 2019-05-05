@@ -9,26 +9,29 @@ import sg.dex.starfish.impl.AAsset;
  */
 public abstract class AMemoryAsset extends AAsset {
 
-    protected   MemoryAgent memoryAgent;
-    /**
-     *
-     * @param metaData
-     * @param aAgent
-     */
-    protected AMemoryAsset(String metaData,MemoryAgent aAgent) {
-        super(metaData);
-        memoryAgent = aAgent;
-    }
-    /**
-     *
-     * @param metaData
-     */
-    protected AMemoryAsset(String metaData) {
-        super(metaData);
-    }
-    @Override
-    public String toString() {
-        return getAssetID();
-    }
+	protected MemoryAgent memoryAgent;
+
+	/**
+	 *
+	 * @param metaData
+	 * @param aAgent
+	 */
+	protected AMemoryAsset(String metaData, MemoryAgent aAgent) {
+		super(metaData);
+		memoryAgent = aAgent;
+	}
+
+	/**
+	 *
+	 * @param metaData
+	 */
+	protected AMemoryAsset(String metaData) {
+		super(metaData);
+	}
+
+	@Override
+	public String toString() {
+		return getAssetID();
+	}
 
 }
