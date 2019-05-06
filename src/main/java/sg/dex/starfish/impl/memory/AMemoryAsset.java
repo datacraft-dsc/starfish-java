@@ -3,8 +3,10 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.impl.AAsset;
 
 /**
- * This is an abstract class which have common code required for
- * MemoryAsset/MemoryBundle/MemoryOperation class.
+ * Abstract base class for in-memory assets
+ * 
+ * Contains common code required for
+ * MemoryAsset/MemoryBundle/MemoryOperation classes.
  *
  */
 public abstract class AMemoryAsset extends AAsset {

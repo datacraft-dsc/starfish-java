@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * Interface representing an invokable operation
+ * 
  * @author Mike
  *
  */
@@ -26,37 +27,42 @@ public interface Operation extends Asset {
 	public default Job invoke(Asset... params) {
 		return invoke(Params.namedParams(this, params));
 	}
-	
+
 	/**
-	 * Invokes this operation with the given named parameters. Operations should override
-	 * this method to provide an implementation of asynchronous invocation via the
-	 * Job interface
+	 * Invokes this operation with the given named parameters. Operations should
+	 * override this method to provide an implementation of asynchronous invocation
+	 * via the Job interface
 	 * 
 	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @throws IllegalArgumentException if required parameters are not available, or
+	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job invokeAsync(Map<String,Asset> params);
+	public Job invokeAsync(Map<String, Asset> params);
+
 	/**
-	 * Invokes this operation with the given named parameters. Operations should override
-	 * this method to provide an implementation of asynchronous invocation via the
-	 * Job interface
+	 * Invokes this operation with the given named parameters. Operations should
+	 * override this method to provide an implementation of asynchronous invocation
+	 * via the Job interface
 	 *
 	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @throws IllegalArgumentException if required parameters are not available, or
+	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Map<String,Object> invokeResult(Map<String, Object> params);
+	public Map<String, Object> invokeResult(Map<String, Object> params);
+
 	/**
-	 * Invokes this operation with the given named parameters. Operations should override
-	 * this method to provide an implementation of asynchronous invocation via the
-	 * Job interface
+	 * Invokes this operation with the given named parameters. Operations should
+	 * override this method to provide an implementation of asynchronous invocation
+	 * via the Job interface
 	 *
 	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
+	 * @throws IllegalArgumentException if required parameters are not available, or
+	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job invoke(Map<String,Asset> params);
+	public Job invoke(Map<String, Asset> params);
 
 	/**
 	 * Returns the parameter specification for this operation. Operations must
@@ -68,8 +74,8 @@ public interface Operation extends Asset {
 	 */
 	@SuppressWarnings("unchecked")
 	public default Map<String, Object> getParamSpec() {
-		Map<String,Object> meta=getMetadata();
-		Map<String, Object> paramSpec= (Map<String, Object>) meta.get("params");
+		Map<String, Object> meta = getMetadata();
+		Map<String, Object> paramSpec = (Map<String, Object>) meta.get("params");
 		return paramSpec;
 	}
 

@@ -190,4 +190,22 @@ public class Utils {
 			return false;
 		}
 	}
+	
+	/**
+	 * Merges two metadata maps.
+	 * 
+	 * 
+	 * @param a First map to merge
+	 * @param b Second map to merge
+	 * @return A new map containing the merged metadata
+	 */
+	public Map<String,Object> mergeMeta(Map<String,Object> a, Map<String,Object> b) {
+		HashMap<String,Object> ob=new HashMap<>(a);
+		if (b!=null) {
+			for (Map.Entry<String,Object> me:b.entrySet()) {
+				ob.put(me.getKey(), me.getValue());
+			}
+		}
+		return ob;
+	}
 }

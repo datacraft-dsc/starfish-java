@@ -38,7 +38,8 @@ public class FileAsset extends AAsset {
 	 * @return FileAsset
 	 */
 	public static FileAsset create(File f) {
-		return new FileAsset(buildMetadata(f,null),f);
+		String metaString=JSON.toString(buildMetadata(f,null));
+		return new FileAsset(metaString,f);
 	}
 
 	/**
@@ -56,7 +57,7 @@ public class FileAsset extends AAsset {
 	 * @param f The file to use for this file asset
 	 * @return The default metadata as a String
 	 */
-	private static String buildMetadata(File f,Map<String,Object> meta) {
+	private static Map<String,Object> buildMetadata(File f,Map<String,Object> meta) {
 
 		Map<String,Object> ob=new HashMap<>();
 		ob.put(DATE_CREATED, Instant.now().toString());
@@ -65,13 +66,7 @@ public class FileAsset extends AAsset {
 		ob.put(FILE_NAME, f.getName());
 		ob.put(CONTENT_TYPE,"application/octet-stream");
 
-		if (meta!=null) {
-			for (Map.Entry<String,Object> me:meta.entrySet()) {
-				ob.put(me.getKey(), me.getValue());
-			}
-		}
-
-		return JSON.toString(ob);
+		return ob;
 	}
 
 
