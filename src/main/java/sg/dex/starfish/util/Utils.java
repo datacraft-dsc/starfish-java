@@ -1,5 +1,7 @@
 package sg.dex.starfish.util;
 
+import static sg.dex.starfish.constant.Constant.DATE_CREATED;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,8 +80,6 @@ public class Utils {
 	 * Strings "false" and "true" are interpreted appropriately - Boolean values are
 	 * retained as-is
 	 *
-	 * @throws IllegalArgumentException if the object cannot be successfully
-	 *             converted to a boolean
 	 * @param o The object to attempt to coerce to a boolean value
 	 * @return The boolean value of this object if coercion is successful
 	 */
@@ -98,8 +99,6 @@ public class Utils {
 	/**
 	 * Coerces an object to an int value.
 	 *
-	 * @throws IllegalArgumentException if the object cannot be successfully
-	 *             converted to an int
 	 * @param o An object to be converted to an int
 	 * @return The coerced int value of the object
 	 */
@@ -206,6 +205,18 @@ public class Utils {
 				ob.put(me.getKey(), me.getValue());
 			}
 		}
+		return ob;
+	}
+
+	/**
+	 * Creates a default metadata map using:
+	 * - The current system time
+	 * 
+	 * @return A HashMap containing the default metadata
+	 */
+	public static HashMap<String, Object> createDefaultMetadata() {
+		HashMap<String,Object> ob=new HashMap<>();
+		ob.put(DATE_CREATED, Instant.now().toString());
 		return ob;
 	}
 }

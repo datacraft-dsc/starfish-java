@@ -91,13 +91,14 @@ public class HTTP {
     /**
      * Gets HTTP response content
      *
-     * @param response A valid successful response from the remote Invoke API
+     * @param response A valid successful response from the remote API
      * @return InputStream for the content
      * @throws RuntimeException for protocol errors
      */
     public static InputStream getContent(HttpResponse response) {
         try {
-            return getEntity(response).getContent();
+        	HttpEntity entity=response.getEntity();
+            return entity.getContent();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
