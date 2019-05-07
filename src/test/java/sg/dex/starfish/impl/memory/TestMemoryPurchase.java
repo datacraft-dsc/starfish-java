@@ -5,8 +5,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +30,12 @@ public class TestMemoryPurchase {
         //data.put( "status", "unpublished");
         metaDataForListing.put("assetid", a.getAssetID());
 
-        Listing listing = memoryAgent.createListing(metaDataForListing);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataPurchase(metaDataForListing));
 
         Map<String, Object> metaDataForPurchase = new HashMap<>();
         metaDataForPurchase.put("listingid", listing.getMetaData().get("id"));
 
-        MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
+        MemoryPurchase memoryPurchase = memoryAgent.createPurchase(getResponseMetaDataPurchase(metaDataForPurchase));
 
 
         Assert.assertNotNull(memoryPurchase);
@@ -53,7 +55,7 @@ public class TestMemoryPurchase {
         //data.put( "status", "unpublished");
         metaDataForListing.put("assetid", a.getAssetID());
 
-        Listing listing = memoryAgent.createListing(metaDataForListing);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataPurchase(metaDataForListing));
 
         Map<String, Object> metaDataForPurchase = new HashMap<>();
        // metaDataForPurchase.put("listingid", listing.getMetaData().get("id"));
@@ -65,6 +67,28 @@ public class TestMemoryPurchase {
         Assert.assertNotNull(memoryPurchase.getListingId());
         Assert.assertNotNull(memoryPurchase.getId());
     }
+    /**
+     * API to create a response similar to Remote Agents responses.
+     *
+     * @param purchaseData
+     * @return Map<String, Object> responseMetaDataPurchase
+     */
+    private Map<String, Object> getResponseMetaDataPurchase(Map<String, Object> purchaseData) {
 
+
+        Map<String, Object> responseMetadata = new HashMap<>();
+        responseMetadata.putAll(purchaseData);
+        responseMetadata.put("status", "wishlist");
+        responseMetadata.put("id", DID.createRandomString());
+
+        responseMetadata.put("userid", purchaseData.get("userid") == null ? 1234 : purchaseData.get("userid"));
+        responseMetadata.put("info", purchaseData.get("info") == null ? 0 : purchaseData.get("info"));
+        responseMetadata.put("agreement", purchaseData.get("agreement") == null ? Instant.now() : purchaseData.get("agreement"));
+        responseMetadata.put("ctime", purchaseData.get("ctime") == null ? Instant.now() : purchaseData.get("agreement"));
+        responseMetadata.put("utime", purchaseData.get("utime") == null ? Instant.now() : purchaseData.get("agreement"));
+
+        return responseMetadata;
+
+    }
 
 }

@@ -2,7 +2,6 @@ package sg.dex.starfish.util;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +26,9 @@ public class Params {
 	public
 	static Map<String,Object> formatParams(Operation operation, Map<String,Asset> params) {
 		HashMap<String,Object> result=new HashMap<>(params.size());
-		Map<String,Object> paramSpec=operation.getParamSpec();
+		Map<String,Object> paramSpec=(Map<String,Object>)operation.getParamSpec().get("params");
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
-			if(Constant.DID.equals(paramName)){
-				result.put(Constant.DID,me.getValue());
-			}
-			else {
 				Map<String, Object> spec = (Map<String, Object>) me.getValue();
 				// String type=(String) spec.get("type");
 				boolean required = Utils.coerceBoolean(spec.get("required"));
@@ -48,7 +43,6 @@ public class Params {
 				if (required && !params.containsKey(paramName)) {
 					throw new IllegalArgumentException("Parameter " + paramName + " is required but not supplied");
 				}
-			}
 		}
 		return result;
 	}

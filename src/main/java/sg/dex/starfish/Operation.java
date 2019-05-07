@@ -75,7 +75,7 @@ public interface Operation extends Asset {
 	@SuppressWarnings("unchecked")
 	public default Map<String, Object> getParamSpec() {
 		Map<String, Object> meta = getMetadata();
-		Map<String, Object> paramSpec = (Map<String, Object>) meta.get("params");
+		Map<String, Object> paramSpec = (Map<String, Object>) meta.get("operation");
 		return paramSpec;
 	}
 

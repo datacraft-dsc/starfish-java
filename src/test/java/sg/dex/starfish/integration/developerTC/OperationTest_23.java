@@ -5,18 +5,21 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteOperation;
 import sg.dex.starfish.integration.connection_check.AssumingConnection;
 import sg.dex.starfish.integration.connection_check.ConnectionChecker;
+import sg.dex.starfish.integration.developerTC.remoteoperation.HashingRemoteOperation;
+import sg.dex.starfish.integration.developerTC.remoteoperation.ToHashRemoteOperation;
+import sg.dex.starfish.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
 
 public class OperationTest_23 {
 
@@ -47,26 +50,39 @@ public class OperationTest_23 {
 
         //
         Map<String, Asset> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset);
+        metaMap.put("to-hash",remoteAsset);
 
        String meta1="{\n" +
-               "  \"params\": {\n" +
-               "    \"to-hash\": {\n" +
-               "      \"required\": true,\n" +
-               "      \"position\": 0,\n" +
-               "      \"type\": \"asset\"\n" +
+               "  \"name\": \"hashing\",\n" +
+               "  \"description\": \"hashes the input\",\n" +
+               "  \"type\": \"operation\",\n" +
+               "  \"operation\": {\n" +
+               "    \"modes\": [\n" +
+               "      \"sync\",\n" +
+               "      \"async\"\n" +
+               "    ],\n" +
+               "    \"params\": {\n" +
+               "      \"to-hash\": {\n" +
+               "        \"type\": \"asset\",\n" +
+               "        \"position\": 0,\n" +
+               "        \"required\": true\n" +
+               "      }\n" +
                "    },\n" +
-               "    \"did\":\"assethashing\"\n" +
+               "    \"results\": {\n" +
+               "      \"hash_value\": {\n" +
+               "        \"type\": \"asset\"\n" +
+               "      }\n" +
+               "    }\n" +
                "  }\n" +
                "}";
        // String meta = "{\"params\": {\"to-hash\": {}}}";
-        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta1);
+        HashingRemoteOperation hashingRemoteOperation = HashingRemoteOperation.create(remoteAgentInvoke, meta1);
 
-        Job job = remoteOperation.invoke(metaMap);
+        Job job = hashingRemoteOperation.invokeAsync(metaMap);
 
         Asset asset = job.awaitResult();
         // currently asset is coming null so that need to be fixed
-        assertNull(asset);
+        assertNotNull(asset);
     }
 
 
@@ -151,7 +167,7 @@ public class OperationTest_23 {
     public void testSyncOperationWithDifferentMode() {
 
         // asset must be uploaded as invoke will work only on RemoteAsset
-        String data_to_hash ="this is a asset to test syncdata operation";
+        String data_to_hash ="this is a asset to test sync data operation";
         // uploading the asset, it will do the registration and upload both
         // RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
 
@@ -190,49 +206,67 @@ public class OperationTest_23 {
         assertNotNull(result);
     }
 
-    @Test(expected = Exception.class)
-    public void testSyncOperationWithoutRequireData() {
-
-        // asset must be uploaded as invoke will work only on RemoteAsset
-        String data_to_hash ="this is a asset to test syncdata operation";
-        // uploading the asset, it will do the registration and upload both
-        // RemoteAsset remoteAsset = remoteAgentSurfer.uploadAsset(a);
+    @Test
+    public void testHashing() {
 
         // creating invoke remote agent
         remoteAgentInvoke = RemoteAgentConfig.getInvoke();
-        Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("test", data_to_hash);
 
-        // this meta data will expect to-hash
-        String meta="{\n" +
-                "  \"params\": {\n" +
-                "    \"to-hash\": {\n" +
-                "      \"required\": \"true\",\n" +
-                "      \"position\": 0,\n" +
-                "      \"type\": \"asset\"\n" +
-                "      \n" +
-                "    },\n" +
-                "    \"did\": \"hashing\"\n" +
-                "  },\n" +
-                "  \"mode\":\"Notsync\",\n" +
-                "  \"result\": {\n" +
-                "        \"hash-value\": {\n" +
-                "           \"type\": \"asset\"\n" +
-                "      \n" +
-                "    }\n" +
-                "  }\n" +
+
+        Map<String, Object> metaMap1 = new HashMap<>();
+       // metaMap1.put("to_hash", "Test123");
+        metaMap1.put("to-hash","ttttt")   ;
+
+
+        String meta1="{\n" +
+                "  \"name\": \"hashing\",\n" +
+                "  \"description\":\"hashes the input\",\n" +
+                "  \"type\":\"operation\",\n" +
+                "  \"operation\" : {\"modes\":\"sync\",\n" +
+                "                  \"params\":{\"to_hash\": {\"type\":\"json\"}},\n" +
+                "                  \"results\":{\"hash-value\": {\"type\":\"json\"}}}\n" +
+                "}";
+
+        // creating an instance of Remote operation based on remote agent and metaData
+        ToHashRemoteOperation remoteOperation = ToHashRemoteOperation.create(remoteAgentInvoke, meta1);
+
+        Map<String,Object> response =remoteOperation.invokeResult(metaMap1);
+        Map<String,Object> didMap =JSON.toMap( JSON.toMap(response.get("results").toString()).get("hash_value").toString());
+        assertNotNull(didMap.get("did"));
+    }
+
+    @Test
+    public void testOperationPrimeSync() {
+
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("first-n", "10");
+
+        String meta1="{\n" +
+                "   \"name\": \"Prime computation operation\",\n" +
+                "   \"type\": \"operation\",\n" +
+                "   \"description\": \"Computes prime numbers\",\n" +
+                "   \"author\": \"Primely Inc\",\n" +
+                "   \"license\": \"CC-BY\",\n" +
+                "   \"inLanguage\": \"en\",\n" +
+                "   \"tags\": [\"weather\", \"uk\", \"2011\", \"temperature\", \"humidity\"],\n" +
+                "   \"operation\" : {\"modes\":[\"sync\", \"async\"],\n" +
+                "                  \"params\":{\"first-n\": {\"type\":\"json\"}},\n" +
+                "                  \"results\":{\"primes\": {\"type\":\"asset\"}}}\n" +
                 "}";
 
 
-        // creating an instance of Remote operation based on remote agent and metaData
-        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta);
+//        PrimeRemoteOperation remoteOperation = PrimeRemoteOperation.create(remoteAgentInvoke, meta1);
+        Operation remoteOperation = RemoteOperation.create(remoteAgentInvoke, meta1);
+        System.out.println(remoteOperation.getAssetID());
 
-        // call Sync Operation
-        // thie metaMAp donot have to-hash
-        Object result = remoteOperation.invokeResult(metaMap);
-        System.out.println("Hashing result : " + result);
+        Map<String,Object> response =remoteOperation.invokeResult(metaMap);
+        Map<String,Object> didMap =JSON.toMap( JSON.toMap(response.get("results").toString()).get("primes").toString());
+        System.out.println("Did : "+ didMap.get("did"));
+        assertNotNull(didMap.get("did"));
 
-        assertNotNull(result);
     }
 
+
+
 }
+

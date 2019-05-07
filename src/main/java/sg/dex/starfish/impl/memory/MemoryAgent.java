@@ -8,10 +8,8 @@ import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -130,71 +128,44 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
 
-    @Override
-    public Job invoke(Operation operation,Map<String, Asset> params) {
-        // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
-        // Implementations may override this for custom behaviour (e.g. a custom thread pool)
-        // But this should be sufficient for most cases.
-        final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
-
-        MemoryAgent.THREAD_POOL.submit(() -> {
-            try {
-                Asset result = compute(params);
-                future.complete(result); // success
-            } catch (Throwable t) {
-                future.completeExceptionally(t); // failure
-            }
-            assert (future.isDone());
-        });
-
-        return MemoryJob.create(future);
-    }
-
-    @Override
-    public Job invokeAsync(Operation operation,Map<String, Asset> params) {
-        // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
-        // Implementations may override this for custom behaviour (e.g. a custom thread pool)
-        // But this should be sufficient for most cases.
-        final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
-
-        MemoryAgent.THREAD_POOL.submit(() -> {
-            try {
-                Asset result = compute(params);
-                future.complete(result); // success
-            } catch (Throwable t) {
-                future.completeExceptionally(t); // failure
-            }
-            assert (future.isDone());
-        });
-
-        return MemoryJob.create(future);
-    }
-
     /**
-     * API to reverse the byte array
-     * @param input
-     * @return
+     * Invokes the specified operation on this agent. If the invoke is successfully launched,
+     * will return a Job instance that can be used to access the result, otherwise throws an
+     * exception.
+     *
+     * @param operation The operation to invoke on this agent
+     * @param params    named parameters for the invoke operation
+     * @return A Job instance allowing access to the invoke job status and result
+     * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
-    private Asset doCompute(Asset input) {
-        byte[] bytes = input.getContent();
-        int length = bytes.length;
-        for (int i = 0; i < (length / 2); i++) {
-            byte temp = bytes[i];
-            bytes[i] = bytes[length - i - 1];
-            bytes[length - i - 1] = temp;
+    @Override
+    public Job invoke(Operation operation, Map<String, Asset> params) {
+        if (!(operation instanceof AMemoryOperation)) {
+            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-        Asset result = MemoryAsset.create(bytes);
-        return result;
+        return operation.invoke(params);
     }
-
     /**
-     * API that implement the compute logic that will reverse the content of an Asset.
-     * @param params
-     * @return
+     * Invokes the specified operation on this agent. If the invoke is successfully launched,
+     * will return a Job instance that can be used to access the result, otherwise throws an
+     * exception.
+     *
+     * @param operation The operation to invoke on this agent
+     * @param params    named parameters for the invoke operation
+     * @return A Job instance allowing access to the invoke job status and result
+     * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
-    protected Asset compute(Map<String, Asset> params) {
-        if (params==null ||params.get("input")==null) throw new IllegalArgumentException("Missing parameter 'input'");
-        return doCompute(params.get("input"));
+    @Override
+    public Job invokeAsync(Operation operation, Map<String, Asset> params) {
+
+        // check the mode if sync then throw exception
+        if(isSyncMode(operation)){
+            throw new TODOException("Mode must be Async for this operation");
+        }
+        if (!(operation instanceof AMemoryOperation)) {
+            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
+        }
+        return operation.invoke(params);
     }
 
     @Override
@@ -209,7 +180,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     @Override
     public Purchase getPurchase(String id) {
-        return null;
+        return purchaseStore.get(id);
     }
 
 
@@ -225,37 +196,8 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
             throw new IllegalArgumentException("Assset Id is mandatory");
         }
 
-        Map<String, Object> responseMetaData = getResponseMetaDataListing(listingData);
-        //String data =JSON.toPrettyString(responseMetaData);
-        listingStore.put(responseMetaData.get("id").toString(), MemoryListing.create(this, responseMetaData));
-        return listingStore.get(responseMetaData.get("id").toString());
-    }
-
-    /**
-     * API to create a response similar to Remote Agents responses.
-     *
-     * @param meta
-     * @return
-     */
-    private Map<String, Object> getResponseMetaDataListing(Map<String, Object> meta) {
-        Map<String, Object> responseMetadata = new HashMap<>();
-
-        responseMetadata.putAll(meta);
-        // default status
-        responseMetadata.put("status", "unpublished");
-
-        responseMetadata.put("id", DID.createRandom());
-
-        responseMetadata.put("trust_level", meta.get("trust_level") == null ? 0 : meta.get("trust_level"));
-        responseMetadata.put("userid", meta.get("userid") == null ? 1234 : meta.get("userid"));
-        responseMetadata.put("agreement", meta.get("agreement") == null ? 0 : meta.get("agreement"));
-        responseMetadata.put("info", meta.get("info") == null ? 0 : meta.get("info"));
-        responseMetadata.put("utime", meta.get("utime") == null ? Instant.now() : meta.get("utime"));
-        responseMetadata.put("ctime", meta.get("ctime") == null ? Instant.now() : meta.get("ctime"));
-
-        return responseMetadata;
-
-
+        listingStore.put(listingData.get("id").toString(), MemoryListing.create(this, listingData));
+        return listingStore.get(listingData.get("id").toString());
     }
 
     /**
@@ -269,58 +211,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
             throw new IllegalArgumentException("Listing Id is mandatory");
         }
 
-        Map<String, Object> responseMetaData = getResponseMetaDataPurchase(purchaseData);
-
-        purchaseStore.put(responseMetaData.get("id").toString(), MemoryPurchase.create(this, responseMetaData));
-        return purchaseStore.get(responseMetaData.get("id").toString());
+        purchaseStore.put(purchaseData.get("id").toString(), MemoryPurchase.create(this, purchaseData));
+        return purchaseStore.get(purchaseData.get("id").toString());
     }
 
-    /**
-     * API to create a response similar to Remote Agents responses.
-     *
-     * @param purchaseData
-     * @return Map<String, Object> responseMetaDataPurchase
-     */
-    private Map<String, Object> getResponseMetaDataPurchase(Map<String, Object> purchaseData) {
-
-
-        Map<String, Object> responseMetadata = new HashMap<>();
-        responseMetadata.putAll(purchaseData);
-        responseMetadata.put("status", "wishlist");
-        responseMetadata.put("id", DID.createRandomString());
-
-        responseMetadata.put("userid", purchaseData.get("userid") == null ? 1234 : purchaseData.get("userid"));
-        responseMetadata.put("info", purchaseData.get("info") == null ? 0 : purchaseData.get("info"));
-        responseMetadata.put("agreement", purchaseData.get("agreement") == null ? Instant.now() : purchaseData.get("agreement"));
-        responseMetadata.put("ctime", purchaseData.get("ctime") == null ? Instant.now() : purchaseData.get("agreement"));
-        responseMetadata.put("utime", purchaseData.get("utime") == null ? Instant.now() : purchaseData.get("agreement"));
-
-        return responseMetadata;
-
-    }
-
-    /**
-     * API to test the Sync call execution
-     * @param operation
-     * @param params
-     * @return
-     */
-    public  Map<String, Object> syncCallToReverse(Operation operation,Map<String, Object> params){
-
-        // verify if the mode is sync or not
-        // check if the mode is sync else throw exception
-        if(!isSyncMode(operation)){
-            throw new TODOException("Mode must be sync for this operation");
-        }
-
-        Map<String,Object> result = new HashMap<>();
-
-        String str =new StringBuilder(params.get("to-reverse").toString()).reverse().toString();
-        result.put("hash-value",str);
-
-        return result;
-
-    }
 
     /**
      * API to check if the operation mode is sync or Async

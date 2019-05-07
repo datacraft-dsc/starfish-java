@@ -22,6 +22,6 @@ public class Constant {
 
     public static final String DID_METHOD = "op";
     public static final String SYNC = "sync";
-    public static final String MODE = "mode";
+    public static final String MODE = "modes";
 
 }

@@ -51,7 +51,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 
 	@Override
 	public Map<String, Object> invokeResult(Map<String, Object> params) {
-		return memoryAgent.syncCallToReverse(this,params);
+		return null;
 	}
 
 	@Override
