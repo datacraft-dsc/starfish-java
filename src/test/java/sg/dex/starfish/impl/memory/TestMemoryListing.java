@@ -6,6 +6,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
 import java.nio.file.Files;
@@ -40,7 +41,7 @@ public class TestMemoryListing {
             e.printStackTrace();
         }
         metaData.put("assetid",a.getAssetID());
-        Listing listing = memoryAgent.createListing(metaData);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
         Assert.assertNotNull(listing.getMetaData());
@@ -60,7 +61,7 @@ public class TestMemoryListing {
         metaData.put("assetid", a.getAssetID());
 
 
-        Listing listing = memoryAgent.createListing(metaData);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
         Assert.assertNull(listing.getInfo());
@@ -84,7 +85,7 @@ public class TestMemoryListing {
         metaData.put("description", "this is a test listing");
         metaData.put("trust_level", 0);
 
-        Listing listing = memoryAgent.createListing(metaData);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
         Assert.assertNull(listing.getInfo());
@@ -114,9 +115,35 @@ public class TestMemoryListing {
         }
 
 
-        Listing listing = memoryAgent.createListing(metaData);
+        Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
         Assert.assertNotNull(listing.getMetaData());
+    }
+    /**
+     * API to create a response similar to Remote Agents responses.
+     *
+     * @param meta
+     * @return
+     */
+    private Map<String, Object> getResponseMetaDataListing(Map<String, Object> meta) {
+        Map<String, Object> responseMetadata = new HashMap<>();
+
+        responseMetadata.putAll(meta);
+        // default status
+        responseMetadata.put("status", "unpublished");
+
+        responseMetadata.put("id", DID.createRandom());
+
+        responseMetadata.put("trust_level", meta.get("trust_level") == null ? 0 : meta.get("trust_level"));
+        responseMetadata.put("userid", meta.get("userid") == null ? 1234 : meta.get("userid"));
+        responseMetadata.put("agreement", meta.get("agreement") == null ? 0 : meta.get("agreement"));
+        responseMetadata.put("info", meta.get("info") == null ? 0 : meta.get("info"));
+        responseMetadata.put("utime", meta.get("utime") == null ? Instant.now() : meta.get("utime"));
+        responseMetadata.put("ctime", meta.get("ctime") == null ? Instant.now() : meta.get("ctime"));
+
+        return responseMetadata;
+
+
     }
 }

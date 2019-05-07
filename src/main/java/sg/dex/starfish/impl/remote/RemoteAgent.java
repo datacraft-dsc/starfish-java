@@ -17,8 +17,8 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
+import org.json.simple.JSONArray;
 import sg.dex.starfish.*;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.*;
@@ -117,7 +117,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public static Job createJob(RemoteAgent agent, HttpResponse response) {
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
-		if (statusCode == 200) {
+		if (statusCode == 201 ) {
 			return RemoteAgent.createJobWith200(agent, response);
 		}
 		String reason = statusLine.getReasonPhrase();
@@ -550,7 +550,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		Map<String, Object> request = new HashMap<String, Object>(2);
 		request.put("operation", operation.getAssetID());
 		request.put("params", Params.formatParams(operation, params));
-		return invoke(request);
+		return invoke(request,operation.getAssetID());
 	}
 
 	/**
@@ -584,8 +584,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					if (status.equals("started") || status.equals("inprogress")|| status.equals("accepted")) {
 						return null; // no result yet
 					}
-					if (status.equals("complete")) {
-						String assetID = (String) result.get("result");
+					if (status.equals("completed")) {
+					    //ToDO this hardcoding need to be removed
+						String assetID = ((Map<String, Object>)result.get("results")).get("hash_value").toString();
 						if (assetID == null) throw new RemoteException("No asset in completed job result: " + body);
 						return RemoteAsset.create(this, assetID);
 					}
@@ -606,7 +607,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		Map<String, Object> request = new HashMap<String, Object>(2);
 		request.put("operation", operation.getAssetID());
 		request.put("params", Params.formatParams(operation, params));
-		return invoke(request);
+		return invoke(request,operation.getAssetID());
 	}
 
 	/**
@@ -616,11 +617,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private Job invoke(Map<String, Object> request) {
+	private Job invoke(Map<String, Object> request,String assetID) {
 		Map<String, Object> req = (Map<String, Object>)request.get("params");
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
-		HttpPost httppost = new HttpPost(getInvokeAsyncURI(req.get(Constant.DID)));
+		HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
 		StringEntity entity = new StringEntity(JSON.toPrettyString(req), ContentType.APPLICATION_JSON);
 		httppost.setEntity(entity);
 		CloseableHttpResponse response;
@@ -644,7 +645,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		Map<String, Object> request = new HashMap<String, Object>(2);
 		request.put("operation", operation.getAssetID());
 		request.put("params", Params.formatParams(operation, params));
-		return invoke(request);
+		return invoke(request,operation.getAssetID());
 	}
 	/**
 	 *
@@ -655,13 +656,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public Map<String, Object> invokeResult(Operation operation,Map<String, Object> params){
 
 		// check if the mode is sync else throw exception
-		if(!isSyncMode(operation)){
+		if(!isSyncModeSupported(operation)){
 			 throw new TODOException("Mode must be sync for this operation");
 		}
-		Map<String, Object> req = operation.getParamSpec();
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httppost = new HttpPost(getInvokeSyncURI(req.get(Constant.DID)));
+		HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
 		Map<String,Object> resultMap = new HashMap<>();
 
 			StringEntity entity = new StringEntity(JSON.toPrettyString(params), ContentType.APPLICATION_JSON);
@@ -671,7 +671,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
 					String body = Utils.stringFromStream(response.getEntity().getContent());
-					resultMap.put("hash_value",body);
+					return JSON.toMap(body);
 				}
 
 
@@ -683,13 +683,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return resultMap;
 	}
 
-	private boolean isSyncMode(Operation operation) {
-		Map<String,Object> metaData = operation.getMetadata();
-		Object mode = metaData.get(MODE);
-		if(mode!=null && mode.toString().equals(SYNC)){
-			return true;
-		}
-		return false;
+	private boolean isSyncModeSupported(Operation operation) {
+		Map<String, Object> metaData = operation.getParamSpec();
+		JSONArray modes = (JSONArray) metaData.get(MODE);
+		return modes.contains(SYNC);
+
 	}
 
 	/**

@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
-import sg.dex.starfish.Operation;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
@@ -14,10 +12,8 @@ import sg.dex.starfish.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
@@ -123,125 +119,20 @@ public class TestMemoryOperations {
         }
     }
 
-    @Test
-    public void testFailingOperation() {
-        byte[] data = new byte[]{1, 2, 3};
-        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        EpicFailOperation op = EpicFailOperation.create(meta);
-        Asset a = MemoryAsset.create(data);
-        Job job = op.invokeAsync(Utils.mapOf("test-fail", a));
-        try {
-            Asset result = job.awaitResult(1000);
-            fail("Should not succeed! Got: " + Utils.getClass(result));
-        } catch (Exception ex) {
-            /* OK */
-        }
-    }
-
-    /**
-     * This test is to test the Sync Operation
-     */
-    @Test
-    public void testReverseSyncString() {
-        String data = "i am going to be reversed";
-        Map<String, Object> param = new HashMap<>();
-        param.put("to-reverse", data);
-
-        // this meta data will expect to-hash
-        String meta = "{\n" +
-                "  \"params\": {\n" +
-                "    \"to-reverse\": {\n" +
-                "      \"required\": \"true\",\n" +
-                "      \"position\": 0,\n" +
-                "      \"type\": \"Object\"\n" +
-                "      \n" +
-                "    },\n" +
-                "    \"did\": \"hashing\"\n" +
-                "  },\n" +
-                "  \"mode\":\"sync\",\n" +
-                "  \"result\": {\n" +
-                "        \"hash-value\": {\n" +
-                "           \"type\": \"Object\"\n" +
-                "      \n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
-        ReverseBytesOperation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
-        Map<String, Object> result = memoryOperation.invokeResult(param);
-        assertNotNull(result);
-        assertNotNull(result.get("hash-value"));
-        String str_rev = new StringBuilder(data).reverse().toString();
-        assertEquals(result.get("hash-value"), str_rev);
-
-
-    }
-
-    /**
-     * This test is to test the Sync Operation but metadata have Async mode.
-     * So it will throw exception
-     */
-    @Test(expected = TODOException.class)
-    public void testReverseSyncWithModeAsync() {
-        String data = "i am going to be reversed";
-        Map<String, Object> param = new HashMap<>();
-        param.put("to-reverse", data);
-
-        // this meta data will expect to-reverse
-        String meta = "{\n" +
-                "  \"params\": {\n" +
-                "    \"to-reverse\": {\n" +
-                "      \"required\": \"true\",\n" +
-                "      \"position\": 0,\n" +
-                "      \"type\": \"Object\"\n" +
-                "      \n" +
-                "    },\n" +
-                "    \"did\": \"hashing\"\n" +
-                "  },\n" +
-                "  \"mode\":\"Async\",\n" +
-                "  \"result\": {\n" +
-                "        \"hash-value\": {\n" +
-                "           \"type\": \"Object\"\n" +
-                "      \n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
-        Operation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
-        Map<String, Object> result = memoryOperation.invokeResult(param);
-        assertNotNull(result);
-
-    }
-
-    @Test(expected = Exception.class)
-    public void testReverseSyncStringBadParam() {
-        String data = "i am going to be reversed";
-        Map<String, Object> param = new HashMap<>();
-        param.put("to-reverse_incorrect", data);
-
-        // this meta data will expect to-hash
-        String meta = "{\n" +
-                "  \"params\": {\n" +
-                "    \"to-reverse\": {\n" +
-                "      \"required\": \"true\",\n" +
-                "      \"position\": 0,\n" +
-                "      \"type\": \"Object\"\n" +
-                "      \n" +
-                "    },\n" +
-                "    \"did\": \"hashing\"\n" +
-                "  },\n" +
-                "  \"mode\":\"sync\",\n" +
-                "  \"result\": {\n" +
-                "        \"hash-value\": {\n" +
-                "           \"type\": \"Object\"\n" +
-                "      \n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
-        Operation memoryOperation = ReverseBytesOperation.create(meta, memoryAgent);
-        Map<String, Object> result = memoryOperation.invokeResult(param);
-        assertNotNull(result);
-
-
-    }
+//    @Test
+//    public void testFailingOperation() {
+//        byte[] data = new byte[]{1, 2, 3};
+//        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
+//        EpicFailOperation op = EpicFailOperation.create(null);
+//        Asset a = MemoryAsset.create(data);
+//        Job job = op.invokeAsync(Utils.mapOf("test-fail", a));
+//        try {
+//            Asset result = job.awaitResult(1000);
+//            fail("Should not succeed! Got: " + Utils.getClass(result));
+//        } catch (Exception ex) {
+//            /* OK */
+//        }
+//    }
 
 
 }
