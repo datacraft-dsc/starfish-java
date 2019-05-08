@@ -38,7 +38,7 @@ public class AssetIdentity_02 {
         Asset asset1 = MemoryAsset.create(data);
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset1);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset1);
 
         // register to the remote agent
         // get the Remote asset ID which has been register using remote Agent
@@ -65,7 +65,7 @@ public class AssetIdentity_02 {
 
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset2);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
@@ -97,13 +97,13 @@ public class AssetIdentity_02 {
         Asset asset3 = MemoryAsset.create("Testing using String");
 
         //Registering the Asset
-        RemoteAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
+        RemoteAsset remoteAsset3 = (RemoteAsset)remoteAgent.registerAsset(asset3);
         // uploading the Asset, it will upload the content of an asset
         remoteAgent.uploadAsset(asset3);
 
         assertEquals(remoteAsset3.getAssetID(), asset3.getAssetID());
         // verify the content
-        assertEquals(RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAsset3.getContentStream()),
+        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
                 "Testing using String");
     }
 
@@ -112,17 +112,17 @@ public class AssetIdentity_02 {
         if (remoteAgent == null) return;
 
         Asset asset3 = MemoryAsset.create("Testing using String");
-        RemoteAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
+        RemoteAsset remoteAsset3 = (RemoteAsset)remoteAgent.registerAsset(asset3);
 
         Asset asset4 = MemoryAsset.create("Testing using String");
-        RemoteAsset remoteAsset4 = remoteAgent.registerAsset(asset4);
+        RemoteAsset remoteAsset4 = (RemoteAsset)remoteAgent.registerAsset(asset4);
 
         // uploading both the Asset
         remoteAgent.uploadAsset(asset3);
         remoteAgent.uploadAsset(asset4);
 
-        assertEquals(RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAsset3.getContentStream()),
-                RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAsset4.getContentStream()));
+        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+                RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
     }
 
     @Test(expected = NullPointerException.class)

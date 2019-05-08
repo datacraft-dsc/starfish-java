@@ -52,5 +52,5 @@ public interface Invokable {
 	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job invokeAsync(Operation operation,Map<String,Asset> params);
+	public Job invokeAsync(Operation operation,Map<String,Object> params);
 }

@@ -54,8 +54,8 @@ public class UploadAsset_11 {
     public void testUploadAsset() {
 
         Asset a = MemoryAsset.create("Testing to upload of asset");
-        RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
-        String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());
+        RemoteAsset remoteAssetUpload = (RemoteAsset)remoteAgent.uploadAsset(a);
+        String actual = RemoteAgentConfig.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
 
         assertEquals(actual, "Testing to upload of asset");
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
@@ -68,8 +68,8 @@ public class UploadAsset_11 {
 
         byte [] data ={2,3,4,5,6,7,8,9,0};
         Asset a = MemoryAsset.create(data,getMetaData());
-        RemoteAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
-        String actual = RemoteAgentConfig.getDataAsStirngFromInputStream(remoteAssetUpload.getContentStream());
+        RemoteAsset remoteAssetUpload = (RemoteAsset)remoteAgent.uploadAsset(a);
+        String actual = RemoteAgentConfig.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
 
         assertEquals(remoteAssetUpload.getContent().length, data.length);
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());

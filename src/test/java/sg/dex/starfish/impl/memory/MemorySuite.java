@@ -2,13 +2,13 @@ package sg.dex.starfish.impl.memory;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import sg.dex.starfish.impl.operations.TestMemoryOperations;
+//import sg.dex.starfish.impl.operations.TestMemoryOperations;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         TestMemoryAgent.class,
         TestMemoryAsset.class,
-        TestMemoryOperations.class,
+//        TestMemoryOperations.class,
         TestMemoryBundle.class,
         TestMemoryListing.class,
         TestMemoryPurchase.class

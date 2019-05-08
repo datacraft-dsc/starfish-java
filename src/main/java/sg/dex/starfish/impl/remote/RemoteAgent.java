@@ -142,7 +142,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	@Override
-	public RemoteAsset registerAsset(Asset a) {
+	public Asset registerAsset(Asset a) {
 		URI uri = getMetaURI();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(uri);
@@ -232,7 +232,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws TODOException          for unhandled status codes
 	 */
 	@Override
-	public RemoteAsset getAsset(String id) {
+	public Asset getAsset(String id) {
 		URI uri = getMetaURI(id);
 		HttpGet httpget = new HttpGet(uri);
 		addAuthHeaders(httpget);
@@ -244,8 +244,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				throw new RemoteException("Asset ID not found for at: " + uri);
 			} else if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
-				// TODO: consider if this this an operation rather than data asset?
-				return RemoteAsset.create(this, body);
+				Map<String,Object> metaMap=JSON.toMap(body);
+				if(metaMap.get("type").equals("operation")){
+					 return RemoteOperation.create(this, body);
+				}
+				else {
+					// TODO: consider if this this an operation rather than data asset?
+					//
+					return RemoteAsset.create(this, body);
+				}
 			} else {
 				throw new TODOException("status code not handled: " + statusCode);
 			}
@@ -293,8 +300,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RemoteException        if there is an problem executing the task on remote Server.
 	 */
 	@Override
-	public RemoteAsset uploadAsset(Asset a) {
-		RemoteAsset remoteAsset;
+	public Asset uploadAsset(Asset a) {
+		Asset remoteAsset;
 
 		// asset alredy registered then only upload
 		if (isAssetRegistered(a.getAssetID())) {
@@ -581,14 +588,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					Map<String, Object> result = JSON.toMap(body);
 					String status = (String) result.get("status");
 					if (status == null) throw new RemoteException("No status in job result: " + body);
-					if (status.equals("started") || status.equals("inprogress")|| status.equals("accepted")) {
+					if (status.equals("started") || status.equals("inprogress")|| status.equals("accepted")||status.equals("scheduled")) {
 						return null; // no result yet
 					}
-					if (status.equals("completed")) {
-					    //ToDO this hardcoding need to be removed
-						String assetID = ((Map<String, Object>)result.get("results")).get("hash_value").toString();
-						if (assetID == null) throw new RemoteException("No asset in completed job result: " + body);
-						return RemoteAsset.create(this, assetID);
+					if (status.equals("completed")|| status.equals("succeeded")) {
+                       Map<String,Object> didMap=Params.formatResult(result);
+						if (didMap == null) throw new RemoteException("No asset in completed job result: " + body);
+						return RemoteAsset.create(this, JSON.toPrettyString(didMap));
 					}
 				}
 				throw new TODOException("status code not handled: " + statusCode);
@@ -606,7 +612,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public Job invoke(Operation operation, Map<String, Asset> params) {
 		Map<String, Object> request = new HashMap<String, Object>(2);
 		request.put("operation", operation.getAssetID());
-		request.put("params", Params.formatParams(operation, params));
+		//request.put("params", Params.formatParams(operation, params));
 		return invoke(request,operation.getAssetID());
 	}
 
@@ -641,7 +647,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job invokeAsync(Operation operation,Map<String,Asset> params){
+	public Job invokeAsync(Operation operation,Map<String,Object> params){
 		Map<String, Object> request = new HashMap<String, Object>(2);
 		request.put("operation", operation.getAssetID());
 		request.put("params", Params.formatParams(operation, params));
@@ -663,7 +669,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
 		Map<String,Object> resultMap = new HashMap<>();
-
+//        addAuthHeaders(httpget);
 			StringEntity entity = new StringEntity(JSON.toPrettyString(params), ContentType.APPLICATION_JSON);
 			httppost.setEntity(entity);
 			CloseableHttpResponse response;
@@ -671,7 +677,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
 					String body = Utils.stringFromStream(response.getEntity().getContent());
-					return JSON.toMap(body);
+					return Params.formatResult(JSON.toMap(body));
 				}
 
 

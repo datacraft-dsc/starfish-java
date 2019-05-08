@@ -38,7 +38,7 @@ public interface Operation extends Asset {
 	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job invokeAsync(Map<String, Asset> params);
+	public Job invokeAsync(Map<String, Object> params);
 
 	/**
 	 * Invokes this operation with the given named parameters. Operations should

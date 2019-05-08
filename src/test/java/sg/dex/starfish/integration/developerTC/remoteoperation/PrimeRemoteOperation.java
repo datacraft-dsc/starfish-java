@@ -8,7 +8,7 @@ import java.util.Map;
 public class PrimeRemoteOperation extends RemoteOperation {
 
     protected PrimeRemoteOperation(RemoteAgent remoteAgent, String meta) {
-        super(remoteAgent, meta);
+        super(remoteAgent, meta,null);
     }
 
     public static PrimeRemoteOperation create(RemoteAgent a, String meta) {

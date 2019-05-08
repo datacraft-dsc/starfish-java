@@ -7,7 +7,6 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -32,7 +31,7 @@ public class AssetRegistration_08 {
         String data = "Simple memory Asset";
         Asset asset = MemoryAsset.create(data);
 
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+        Asset remoteAsset = remoteAgent.registerAsset(asset);
 
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
@@ -45,8 +44,8 @@ public class AssetRegistration_08 {
     public void testRegisterWithTwoAssetSameContent() {
         String data = "Simple Test two  Asset with same content";
 
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(MemoryAsset.create(data));
-        RemoteAsset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.create(data));
+        Asset remoteAsset = remoteAgent.registerAsset(MemoryAsset.create(data));
+        Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.create(data));
 
         assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
 

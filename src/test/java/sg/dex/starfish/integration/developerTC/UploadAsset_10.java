@@ -35,10 +35,10 @@ public class UploadAsset_10 {
         Asset asset = MemoryAsset.create("test upload of asset");
 
         // upload will do the registration and upload the content
-        RemoteAsset ra = remoteAgent.uploadAsset(asset);
+        RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
         // getting the content form Remote Agent (Downloading the content)
 
-        String downloadData = RemoteAgentConfig.getDataAsStirngFromInputStream(ra.getContentStream());
+        String downloadData = RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
 
 
         assertEquals(asset.getAssetID(), ra.getAssetID());

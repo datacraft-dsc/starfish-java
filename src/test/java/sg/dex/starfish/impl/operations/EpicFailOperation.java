@@ -45,7 +45,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 	}
 
 	@Override
-	public Job invokeAsync(Map<String, Asset> params) {
+	public Job invokeAsync(Map<String, Object> params) {
 		return memoryAgent.invokeAsync(this,params);
 	}
 

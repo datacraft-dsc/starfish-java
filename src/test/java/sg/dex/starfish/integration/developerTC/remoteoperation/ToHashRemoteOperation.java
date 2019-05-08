@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ToHashRemoteOperation extends RemoteOperation {
     protected ToHashRemoteOperation(RemoteAgent remoteAgent, String meta) {
-        super(remoteAgent, meta);
+        super(remoteAgent, meta,null);
     }
 
     public static ToHashRemoteOperation create(RemoteAgent a, String meta) {

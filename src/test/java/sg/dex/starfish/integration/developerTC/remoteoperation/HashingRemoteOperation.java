@@ -8,7 +8,7 @@ import java.util.Map;
 public class HashingRemoteOperation extends RemoteOperation {
 
     protected HashingRemoteOperation(RemoteAgent remoteAgent, String meta) {
-        super(remoteAgent, meta);
+        super(remoteAgent, meta,null);
     }
 
     public static HashingRemoteOperation create(RemoteAgent a, String meta) {

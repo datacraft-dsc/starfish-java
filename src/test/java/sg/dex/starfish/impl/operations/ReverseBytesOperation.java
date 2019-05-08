@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.operations;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -50,8 +51,8 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 
 
 	@Override
-	public Job invokeAsync(Map<String, Asset> params) {
-		return memoryAgent.invokeAsync(this,params);
+	public Job invokeAsync(Map<String, Object> params) {
+		throw new TODOException("need to implement");
 	}
 
 	@Override
