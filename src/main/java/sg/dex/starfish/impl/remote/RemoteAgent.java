@@ -676,6 +676,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			try {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
+					//TODO return an Memory Asset
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					return Params.formatResult(JSON.toMap(body));
 				}

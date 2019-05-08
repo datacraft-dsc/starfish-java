@@ -235,75 +235,29 @@ public class OperationTest_23 {
         Map<String,Object> didMap =JSON.toMap( JSON.toMap(response.get("results").toString()).get("hash_value").toString());
         assertNotNull(didMap.get("did"));
     }
-//
-//    @Test
-//    public void testOperationPrimeSync() {
-//
-//        Map<String, Object> metaMap = new HashMap<>();
-//        metaMap.put("first-n", "10");
-////
-////        String meta1="{\n" +
-////                "   \"name\": \"Prime computation operation\",\n" +
-////                "   \"type\": \"operation\",\n" +
-////                "   \"description\": \"Computes prime numbers\",\n" +
-////                "   \"author\": \"Primely Inc\",\n" +
-////                "   \"license\": \"CC-BY\",\n" +
-////                "   \"inLanguage\": \"en\",\n" +
-////                "   \"tags\": [\"weather\", \"uk\", \"2011\", \"temperature\", \"humidity\"],\n" +
-////                "   \"operation\" : {\"modes\":[\"sync\", \"async\"],\n" +
-////                "                  \"params\":{\"first-n\": {\"type\":\"json\"}},\n" +
-////                "                  \"results\":{\"primes\": {\"type\":\"asset\"}}}\n" +
-////                "}";
-////        RemoteOperation remoteOperation = RemoteOperation.create(remoteAgentSurfer, meta1);
-////
-////
-////        // get Asset from AssetID
-////
-////
-////        RemoteAgent surfer  = RemoteAgentConfig.getRemoteAgent();
-////        Asset asset =surfer.registerAsset(remoteOperation);
-////
-////        //Asset a=surfer.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
-////        Asset a=surfer.getAsset(asset.getAssetID());
-//
-////        Asset a11= remoteAgentSurfer.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
-////        System.out.println(a.getAssetID());
-////        System.out.println(a11.getAssetID());
-//
-//
-//
-////        System.out.println(JSON.toPrettyString(remoteAsset.getMetadata()));
-////        System.out.println(remoteAsset.getMetadata());
-////        System.out.println(a11.getMetadata());
-////        PrimeRemoteOperation remoteOperation = PrimeRemoteOperation.create(remoteAgentInvoke, meta1);
-////        Operation remoteOperation = RemoteOperation.create(remoteAgentInvoke, a11.getMetadataString());
-//        Operation remoteOperation = RemoteOperation.materialize(remoteAgentSurfer, "8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
-////        Operation remoteOperation1 = RemoteOperation.materialize(remoteAgentSurfer, asset.getAssetID());
-////
-//        System.out.println(remoteOperation.getAssetID());
-////
-//        Map<String,Object> response =remoteOperation.invokeResult(metaMap);
-//        Map<String,Object> didMap =JSON.toMap( JSON.toMap(response.get("results").toString()).get("primes").toString());
-//        System.out.println("Did : "+ didMap.get("did"));
-//        assertNotNull(didMap.get("did"));
-//
-//    }
+
 
     @Test
-    public void testOperationPrimeSync_1() {
+    public void testPrimeSync_1() {
 
+        // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "10");
 
+        // getting the prime operation based on assed id
         Operation remoteOperation = RemoteOperation.materialize(remoteAgentSurfer, "8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1",remoteAgentInvoke);
 
-        System.out.println(remoteOperation.getAssetID());
 
+        // response will have asset id as value which has the result of the operation
         Map<String,Object> response =remoteOperation.invokeResult(metaMap);
 
+        //getting the Asset which has the result
         RemoteAsset resultAsset=(RemoteAsset)remoteAgentSurfer.getAsset(response.get("did").toString());
+
+        // reading the content fo the asset
         String allPrimes=Utils.stringFromStream(resultAsset.getContentStream());
 
+        // printing result
         System.out.println(allPrimes);
         assertNotNull(resultAsset);
 
@@ -311,29 +265,100 @@ public class OperationTest_23 {
     }
 
     @Test
-    public void testOperationPrimeAsync_1() {
+    public void testPrimeAsync_1() {
 
+        // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "20");
 
+        // getting the prime operation based on assed id
         Operation remoteOperation = RemoteOperation.materialize(remoteAgentSurfer, "8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1",remoteAgentInvoke);
 
         System.out.println(remoteOperation.getAssetID());
 
+        // invoking the prime operation and will get the job associated
         Job job =remoteOperation.invokeAsync(metaMap);
 
+        // waiting for job to get completed
        Asset remoteAsset = job.awaitResult(10000);
+
+       // getting the metadata of the new Asset which has the operation result
        Map<String,Object> metaData = remoteAsset.getMetadata();
        String did = metaData.get("did").toString();
 
-//        DID did=(DID)remoteAsset.getMetadata().get("did");
+       //getting the Asset which has result
         RemoteAsset resultAsset=(RemoteAsset)remoteAgentSurfer.getAsset(did);
+        // getting the result form the asset content
         String allPrimes=Utils.stringFromStream(resultAsset.getContentStream());
 
-
+        // printing the result
         System.out.println(allPrimes);
         assertNotNull(remoteAsset);
 
     }
-}
 
+    @Test
+    public void testHashAsync_1() {
+
+        // asset must be uploaded as invoke will work only on RemoteAsset
+        Asset a = MemoryAsset.create("this is a asset to test Async data operation");
+        // uploading the asset, it will do the registration and upload both
+        RemoteAsset remoteAsset1 = (RemoteAsset)remoteAgentSurfer.uploadAsset(a);
+
+
+        //
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("to-hash",remoteAsset1);
+
+        // getting the prime operation based on assed id
+        Operation remoteOperation = RemoteOperation.materialize(remoteAgentSurfer, "37ace3efb694bff7a25f657920ecac27d6799f8096ec5f5bd3ddba270b4d228b",remoteAgentInvoke);
+
+        System.out.println(remoteOperation.getAssetID());
+
+        // invoking the prime operation and will get the job associated
+        Job job =remoteOperation.invokeAsync(metaMap);
+
+        // waiting for job to get completed
+        Asset remoteAsset = job.awaitResult(10000);
+
+        // getting the metadata of the new Asset which has the operation result
+        Map<String,Object> metaData = remoteAsset.getMetadata();
+        String did = metaData.get("did").toString();
+
+        //getting the Asset which has result
+        RemoteAsset resultAsset=(RemoteAsset)remoteAgentSurfer.getAsset(did);
+        // getting the result form the asset content
+        String allPrimes=Utils.stringFromStream(resultAsset.getContentStream());
+
+        // printing the result
+        System.out.println(allPrimes);
+        assertNotNull(remoteAsset);
+
+    }
+//    @Test
+//    public void testHashSync_1() {
+//
+//        // input to the operation
+//        Map<String, Object> metaMap = new HashMap<>();
+//        metaMap.put("to-hash", "test HAsing");
+//
+//        // getting the prime operation based on assed id
+//        Operation remoteOperation = RemoteOperation.materialize(remoteAgentSurfer, "37ace3efb694bff7a25f657920ecac27d6799f8096ec5f5bd3ddba270b4d228b",remoteAgentInvoke);
+//
+//        // response will have asset id as value which has the result of the operation
+//        Map<String,Object> response =remoteOperation.invokeResult(metaMap);
+//
+//        //getting the Asset which has the result
+//        RemoteAsset resultAsset=(RemoteAsset)remoteAgentSurfer.getAsset(response.get("did").toString());
+//
+//        // reading the content fo the asset
+//        String allPrimes=Utils.stringFromStream(resultAsset.getContentStream());
+//
+//        // printing result
+//        System.out.println(allPrimes);
+//        assertNotNull(resultAsset);
+//
+//
+//
+//    }
+}

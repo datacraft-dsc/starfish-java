@@ -33,7 +33,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 	}
 
     /**
-     * API to materialize the Assets
+     * API to materialize the operation which is available on remote server
      * @param agent
      * @param assetId
      * @param invokeAgent
