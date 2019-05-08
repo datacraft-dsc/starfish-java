@@ -2,6 +2,7 @@ package sg.dex.starfish.util;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.TODOException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,24 +34,38 @@ public class Params {
 				String type=(String) spec.get("type");
 				boolean required = Utils.coerceBoolean(spec.get("required"));
 				if (params.containsKey(paramName)) {
-           			if(type.equalsIgnoreCase("asset")) {
-						Asset a = (Asset)params.get(paramName);
-						Map<String, Object> value = a.getParamValue();
-						result.put(paramName, value);
-					}
-           			else{
-						result.putAll(params);
-					}
+					prepareResult(params, result, paramName, type);
 
 				}
 				// added additional check so ,if the param is required then
 				// it must be present in the params map
 				// if required is false then it may or may not present
-				if (required && !params.containsKey(paramName)) {
+				if (required && !result.containsKey(paramName)) {
 					throw new IllegalArgumentException("Parameter " + paramName + " is required but not supplied");
 				}
 		}
 		return result;
+	}
+
+	/**
+	 * API to prepare result for invoke call
+	 * @param params
+	 * @param result
+	 * @param paramName
+	 * @param type
+	 */
+	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
+		if(type.equals("asset")) {
+		 Asset a = (Asset)params.get(paramName);
+		 Map<String, Object> value = a.getParamValue();
+		 result.put(paramName, value);
+	 }
+		else if(type.equals("json")){
+		 result.put(paramName,params.get(paramName));
+	 }
+		else{
+			throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : "+type);
+	 }
 	}
 
 

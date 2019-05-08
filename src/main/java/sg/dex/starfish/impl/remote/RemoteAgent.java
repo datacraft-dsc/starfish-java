@@ -142,7 +142,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	@Override
-	public Asset registerAsset(Asset a) {
+	public ARemoteAsset registerAsset(Asset a) {
 		URI uri = getMetaURI();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(uri);
@@ -173,7 +173,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
-	void addAuthHeaders(HttpRequest request) {
+	private void addAuthHeaders(HttpRequest request) {
 		if (account == null) {
 			throw new AuthorizationException("User don`t have account credentials" );
 		} else {
@@ -232,7 +232,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws TODOException          for unhandled status codes
 	 */
 	@Override
-	public Asset getAsset(String id) {
+	public ARemoteAsset getAsset(String id) {
 		URI uri = getMetaURI(id);
 		HttpGet httpget = new HttpGet(uri);
 		addAuthHeaders(httpget);
@@ -245,14 +245,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			} else if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
 				Map<String,Object> metaMap=JSON.toMap(body);
-				if(metaMap.get("type").equals("operation")){
-					 return RemoteOperation.create(this, body);
-				}
-				else {
-					// TODO: consider if this this an operation rather than data asset?
-					//
-					return RemoteAsset.create(this, body);
-				}
+				return getRemoteAsset(body, metaMap);
 			} else {
 				throw new TODOException("status code not handled: " + statusCode);
 			}
@@ -261,8 +254,20 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
+	private ARemoteAsset getRemoteAsset(String body, Map<String, Object> metaMap) {
+		if(metaMap.get("type").equals("operation")){
+			 return RemoteOperation.create(this, body);
+		}
+		else if(metaMap.get("type").equals("dataset")){
+			return RemoteAsset.create(this, body);
+		}
+		else {
+			throw new TODOException("Invalid Type :" + metaMap.get("type"));
+		}
+	}
+
 	@Override
-	public Asset getAsset(DID did) {
+	public ARemoteAsset getAsset(DID did) {
 		return getAsset(did.getID());
 	}
 
@@ -300,8 +305,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RemoteException        if there is an problem executing the task on remote Server.
 	 */
 	@Override
-	public Asset uploadAsset(Asset a) {
-		Asset remoteAsset;
+	public ARemoteAsset uploadAsset(Asset a) {
+		ARemoteAsset remoteAsset;
 
 		// asset alredy registered then only upload
 		if (isAssetRegistered(a.getAssetID())) {
@@ -665,18 +670,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		if(!isSyncModeSupported(operation)){
 			 throw new TODOException("Mode must be sync for this operation");
 		}
-
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
 		Map<String,Object> resultMap = new HashMap<>();
 //        addAuthHeaders(httpget);
+		// TODO if params is a map of asset then form proper entity
 			StringEntity entity = new StringEntity(JSON.toPrettyString(params), ContentType.APPLICATION_JSON);
 			httppost.setEntity(entity);
 			CloseableHttpResponse response;
 			try {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
-					//TODO return an Memory Asset
+					//TODO return an Memory Asset if result type is an asset
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					return Params.formatResult(JSON.toMap(body));
 				}
@@ -1047,6 +1052,27 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	/**
+	 * API to get the content of an Asset based on Asset id
+	 * @param assetId
+	 * @return
+	 */
+	public InputStream getContentStream(String assetId) {
+		URI uri = getStorageURI(assetId);
+		HttpGet httpget = new HttpGet(uri);
+		addAuthHeaders(httpget);
+		HttpResponse response = HTTP.execute(httpget);
+		StatusLine statusLine = response.getStatusLine();
+		int statusCode = statusLine.getStatusCode();
+		if (statusCode == 404) {
+			throw new RemoteException("Asset ID not found at: " + uri);
+		}
+		if (statusCode == 200) {
+			return HTTP.getContent(response);
+		}
+		throw new TODOException("status code not handled: " + statusCode);
 	}
 
 	/**

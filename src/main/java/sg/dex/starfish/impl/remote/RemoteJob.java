@@ -32,6 +32,8 @@ public class RemoteJob implements Job {
         return pollResult();
     }
 
+
+
     /**
      * Polls the invokable service job for a complete asset.
      *

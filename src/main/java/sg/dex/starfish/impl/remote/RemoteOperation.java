@@ -64,14 +64,5 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 	public Job invoke(Map<String, Asset> params) {
 		return remoteAgent.invoke(this,params);
 	}
-//	@Override
-//	public String getAssetID() {
-//		return "464d5b1ec3018f95edb9a3359245ff4590ed391d1c9f5020c8ec8c0159fb4e6e";
-//	}
-//    @Override
-//    public Map<String, Object> getParamValue(){
-//	    return this.getParamSpec().get("params");
-//
-//    }
 
 }
