@@ -58,7 +58,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
             }
         }
 
-        return JSON.toString(ob);
+        return JSON.toPrettyString(ob);
     }
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset

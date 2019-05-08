@@ -32,9 +32,9 @@ public class AddNewAssetVersion_22 {
 
         String data ="test upload of asset";
         Asset asset = MemoryAsset.create(data);
-        RemoteAsset ra = remoteAgent.uploadAsset(asset);
+        RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
 
-        String assetData =RemoteAgentConfig.getDataAsStirngFromInputStream(ra.getContentStream());
+        String assetData =RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
 
         assertEquals(assetData,data);
         assertEquals(asset.getAssetID(), ra.getAssetID());

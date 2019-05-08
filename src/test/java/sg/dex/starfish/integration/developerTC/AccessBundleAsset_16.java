@@ -26,19 +26,19 @@ public class AccessBundleAsset_16 {
 
         byte[] data1 = {2, 3, 4};
         Asset a1 = MemoryAsset.create(data1);
-        RemoteAsset ra1 = remoteAgent.registerAsset(a1);
+        RemoteAsset ra1 = (RemoteAsset)remoteAgent.registerAsset(a1);
 
         byte[] data2 = {5, 6, 7};
         Asset a2 = MemoryAsset.create(data2);
-        RemoteAsset ra2 = remoteAgent.registerAsset(a2);
+        RemoteAsset ra2 = (RemoteAsset)remoteAgent.registerAsset(a2);
 
         byte[] data3 = {2, 3, 4};
         Asset a3 = MemoryAsset.create(data3);
-        RemoteAsset ra3 = remoteAgent.registerAsset(a3);
+        RemoteAsset ra3 = (RemoteAsset)remoteAgent.registerAsset(a3);
 
         byte[] data4 = {2, 3, 4};
         Asset a4 = MemoryAsset.create(data4);
-        RemoteAsset ra4 = remoteAgent.registerAsset(a4);
+        RemoteAsset ra4 = (RemoteAsset)remoteAgent.registerAsset(a4);
 
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();

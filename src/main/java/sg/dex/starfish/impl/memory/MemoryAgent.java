@@ -156,7 +156,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override
-    public Job invokeAsync(Operation operation, Map<String, Asset> params) {
+    public Job invokeAsync(Operation operation, Map<String, Object> params) {
 
         // check the mode if sync then throw exception
         if(isSyncMode(operation)){
@@ -165,7 +165,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-        return operation.invoke(params);
+         throw new TODOException("need to implement");
     }
 
     @Override

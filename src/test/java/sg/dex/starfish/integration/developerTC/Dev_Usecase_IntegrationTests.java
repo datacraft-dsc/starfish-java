@@ -19,7 +19,7 @@ import sg.dex.starfish.integration.connection_check.ConnectionChecker;
         ConstructServiceAgreemnt_09.class,
         UploadAsset_10.class,
         UploadAsset_11.class,
-        UnPublishListing_12.class,
+//        UnPublishListing_12.class,
         SearchAssetListing_13.class,
         ViewAssetListing_14.class,
         QueryProvenance_15.class,

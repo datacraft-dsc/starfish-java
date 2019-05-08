@@ -1,17 +1,15 @@
 package sg.dex.starfish;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
-
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSONObjectCache;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Main entry point for Ocean ecosystem.

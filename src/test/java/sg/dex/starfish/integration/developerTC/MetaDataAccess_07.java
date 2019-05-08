@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -42,7 +43,7 @@ public class MetaDataAccess_07 {
     public void testMEmoryAgentMetaData() {
         byte data[] = {2, 5, 7};
         MemoryAsset asset = MemoryAsset.create(data);
-        RemoteAsset remoteAsset =remoteAgent.registerAsset(asset);
+        Asset remoteAsset =remoteAgent.registerAsset(asset);
 
         assertNotNull(remoteAsset.getMetadata());
         assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(),asset.getMetadata().get(DATE_CREATED).toString());
@@ -56,7 +57,7 @@ public class MetaDataAccess_07 {
     @Test
     public void testRemoteAssetMetaDataAsset() {
 
-        RemoteAsset remoteAsset = RemoteAsset.create(remoteAgent,  JSON.toString(getMetaData()));
+        Asset remoteAsset = RemoteAsset.create(remoteAgent,  JSON.toString(getMetaData()));
         assertEquals(remoteAsset.getMetadata().get("title"),"First listing");
         assertEquals(remoteAsset.getMetadata().get("description"),"this is the Memory listing");
 

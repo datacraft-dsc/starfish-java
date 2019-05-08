@@ -1,17 +1,8 @@
 package sg.dex.starfish.samples;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -22,6 +13,10 @@ import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class RemoteOperationSample {
 
@@ -104,7 +99,7 @@ public class RemoteOperationSample {
 				"}";
 
 		String tesstAsset = "i am testing invoke";
-		RemoteAsset remoteAsset = surfer.registerAsset(MemoryAsset.create(tesstAsset));
+		RemoteAsset remoteAsset = (RemoteAsset)surfer.registerAsset(MemoryAsset.create(tesstAsset));
 		RemoteOperation remoteOperation = (RemoteOperation) RemoteOperation.create(surfer, meta);
 		Job job = surfer.invoke(remoteOperation, remoteAsset);
 

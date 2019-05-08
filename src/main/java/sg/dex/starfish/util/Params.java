@@ -2,6 +2,7 @@ package sg.dex.starfish.util;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.TODOException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,29 +25,66 @@ public class Params {
 	 */
 	@SuppressWarnings("unchecked")
 	public
-	static Map<String,Object> formatParams(Operation operation, Map<String,Asset> params) {
+	static Map<String,Object> formatParams(Operation operation, Map<String,Object> params) {
 		HashMap<String,Object> result=new HashMap<>(params.size());
 		Map<String,Object> paramSpec=(Map<String,Object>)operation.getParamSpec().get("params");
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
 				Map<String, Object> spec = (Map<String, Object>) me.getValue();
-				// String type=(String) spec.get("type");
+				String type=(String) spec.get("type");
 				boolean required = Utils.coerceBoolean(spec.get("required"));
 				if (params.containsKey(paramName)) {
-					Asset a = params.get(paramName);
-					Map<String, Object> value = a.getParamValue();
-					result.put(paramName, value);
+					prepareResult(params, result, paramName, type);
+
 				}
 				// added additional check so ,if the param is required then
 				// it must be present in the params map
 				// if required is false then it may or may not present
-				if (required && !params.containsKey(paramName)) {
+				if (required && !result.containsKey(paramName)) {
 					throw new IllegalArgumentException("Parameter " + paramName + " is required but not supplied");
 				}
 		}
 		return result;
 	}
 
+	/**
+	 * API to prepare result for invoke call
+	 * @param params
+	 * @param result
+	 * @param paramName
+	 * @param type
+	 */
+	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
+		if(type.equals("asset")) {
+		 Asset a = (Asset)params.get(paramName);
+		 Map<String, Object> value = a.getParamValue();
+		 result.put(paramName, value);
+	 }
+		else if(type.equals("json")){
+		 result.put(paramName,params.get(paramName));
+	 }
+		else{
+			throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : "+type);
+	 }
+	}
+
+
+	public
+	static Map<String,Object> formatResult( Map<String,Object> response) {
+		Map<String,Object> result=new HashMap<>(response.size());
+		Map<String,Object> paramSpec=(Map<String,Object>)response.get("results");
+
+		//TODO need to check the result type is json or asset then form the response accordingly
+		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
+			String paramName = me.getKey();
+
+			Map<String, Object> res = JSON.toMap(response.get("results").toString());
+			result = JSON.toMap(res.get(paramName).toString());
+		}
+
+
+		return result;
+	}
 	/**
 	 * Creates the "params" part of the invoke payload using the spec in the operation metadata
 	 * and the passed positional arguments

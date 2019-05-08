@@ -14,8 +14,11 @@ import java.util.Map;
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
-	protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
+    private RemoteAgent invokeAgent;
+	protected RemoteOperation(RemoteAgent remoteAgent, String meta,RemoteAgent invokeAgent) {
+
 		super(meta,remoteAgent);
+        this.invokeAgent=invokeAgent;
 	}
 
     /**
@@ -25,7 +28,21 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
      * @return
      */
 	public static RemoteOperation create(RemoteAgent a, String meta) {
-		return new RemoteOperation(a,meta);
+
+		return new RemoteOperation(a,meta,null);
+	}
+
+    /**
+     * API to materialize the operation which is available on remote server
+     * @param agent
+     * @param assetId
+     * @param invokeAgent
+     * @return
+     */
+	public static RemoteOperation materialize(RemoteAgent agent,String assetId,RemoteAgent invokeAgent) {
+		Asset a = agent.getAsset(assetId);
+
+		return new RemoteOperation(agent,a.getMetadataString(),invokeAgent);
 	}
 
 	@Override
@@ -34,19 +51,18 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 	}
 
 	@Override
-	public Job invokeAsync(Map<String, Asset> params) {
-		return remoteAgent.invoke(this,params);
+	public Job invokeAsync(Map<String, Object> params) {
+		return invokeAgent.invokeAsync(this,params);
 	}
 
 	@Override
 	public Map<String, Object> invokeResult(Map<String, Object> params) {
-		return remoteAgent.invokeResult(this,params);
+		return invokeAgent.invokeResult(this,params);
 	}
 
 	@Override
 	public Job invoke(Map<String, Asset> params) {
 		return remoteAgent.invoke(this,params);
 	}
-
 
 }

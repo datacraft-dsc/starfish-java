@@ -38,7 +38,7 @@ public class SearchAssetListing_13 {
 
         // create memory Asset
         Asset asset = MemoryAsset.create("Test Searching of listing");
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
@@ -65,7 +65,7 @@ public class SearchAssetListing_13 {
     public void testSearchListingByInvalidId() {
 
         Asset asset = MemoryAsset.create("Test Searching of listing");
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
         // adding some invlaid assetid in the map and try to create the listing

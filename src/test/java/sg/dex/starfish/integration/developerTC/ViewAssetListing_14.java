@@ -39,7 +39,7 @@ public class ViewAssetListing_14 {
         // creating a memory asset
         Asset asset = MemoryAsset.create("Test listing searching by listing id");
 
-        RemoteAsset remoteAsset = remoteAgent.registerAsset(asset);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
 
         // creating metadata of listing
         Map<String, Object> data2 = new HashMap<>();

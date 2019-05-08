@@ -1,19 +1,13 @@
 package sg.dex.starfish.impl.remote;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.HTTP;
 
 import java.io.InputStream;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,19 +49,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	 */
 	@Override
 	public InputStream getContentStream() {
-        URI uri = remoteAgent.getStorageURI(getAssetID());
-        HttpGet httpget = new HttpGet(uri);
-		remoteAgent.addAuthHeaders(httpget);
-        HttpResponse response = HTTP.execute(httpget);
-        StatusLine statusLine = response.getStatusLine();
-        int statusCode = statusLine.getStatusCode();
-        if (statusCode == 404) {
-            throw new RemoteException("Asset ID not found at: " + uri);
-        }
-        if (statusCode == 200) {
-            return HTTP.getContent(response);
-        }
-        throw new TODOException("status code not handled: " + statusCode);
+        return remoteAgent.getContentStream(getAssetID());
 	}
 
 	/**

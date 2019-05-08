@@ -28,7 +28,7 @@ public class AssetDownload_19 {
     public void testDownloadAsset() {
 
         Asset asset = MemoryAsset.create("test upload of asset");
-        RemoteAsset ra = remoteAgent.uploadAsset(asset);
+        RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
 
         //ra.getContentStream()
         assertEquals(asset.getAssetID(), ra.getAssetID());

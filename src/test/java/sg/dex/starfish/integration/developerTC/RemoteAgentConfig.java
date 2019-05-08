@@ -71,7 +71,7 @@ public class RemoteAgentConfig {
                 "serviceEndpoint", host + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host + "/api/v1/invoke"));
+                "serviceEndpoint", host ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", host + "/api/v1/auth"));
@@ -144,6 +144,15 @@ public class RemoteAgentConfig {
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
                 "serviceEndpoint", host ));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Meta.v1",
+                "serviceEndpoint", host + "/api/v1/meta"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Storage.v1",
+                "serviceEndpoint", host + "/api/v1/assets"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Auth.v1",
+                "serviceEndpoint", host + "/api/v1/auth"));
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
@@ -187,7 +196,7 @@ public class RemoteAgentConfig {
     }
 
 
-    public static String getDataAsStirngFromInputStream(InputStream is) {
+    public static String getDataAsStringFromInputStream(InputStream is) {
 
         BufferedReader br = null;
         String result = "";
