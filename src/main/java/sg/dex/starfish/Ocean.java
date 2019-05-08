@@ -1,16 +1,15 @@
 package sg.dex.starfish;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
-
-import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSONObjectCache;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Main entry point for Ocean ecosystem.
@@ -85,7 +84,8 @@ public class Ocean {
 	}
  
 	/**
-	 * Gets a DDO for a specified DID via the Universal Resolver
+	 * Gets a DDO for a specified DID via the Universal Resolver.
+	 * Returns null if the DDO cannot be found.
 	 *
 	 * @param did DID to resolve
 	 * @throws UnsupportedOperationException not yet implemented
@@ -130,11 +130,12 @@ public class Ocean {
 	 * @return Agent instance, or null if not able to resolve the DID
 	 */
 	public Agent getAgent(DID did) {
-		throw new TODOException();
+		// TODO: resolve DDO for squid
+		return RemoteAgent.create(this, did);
 	}
 
 	/**
-	 * Attempts to reolve an asset for a given DID
+	 * Attempts to resolve an asset for a given DID
 	 * 
 	 * @param did The DID
 	 * @return The Asset for the given DID, or null if not found
