@@ -19,7 +19,7 @@ public class AuthorizationException extends RuntimeException {
 
 	/**
 	 * API to create Authorization Exception instance
-	 * @param message
+	 * @param message message need to pass for the exception
 	 */
 	public AuthorizationException(String message) {
 		super(message);

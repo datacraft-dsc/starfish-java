@@ -42,8 +42,8 @@ public class RemoteListing extends AListing {
     /**
      * To get the Reference of Existing Listing
      *
-     * @param agent
-     * @param id
+     * @param agent agent on which this listing needs to be created
+     * @param id listing id
      * @return RemoteListing
      */
     public static RemoteListing create(RemoteAgent agent, String id) {

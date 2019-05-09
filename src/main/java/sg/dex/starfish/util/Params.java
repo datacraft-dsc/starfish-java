@@ -121,8 +121,8 @@ public class Params {
 	 * Converts an array of positional parameters to a map of named parameters, according to the
 	 * parameter spec of the given operation.
 	 * 
-	 * @param operation
-	 * @param params
+	 * @param operation need to get the meta data
+	 * @param params all asset on which the validation need to be done
 	 * @return A new map containing the named parameters
 	 * @throws IllegalArgumentException if a require dparameter is not provided
 	 */

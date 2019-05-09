@@ -40,9 +40,9 @@ public class RemotePurchase implements Purchase {
     /**
      * To get the Reference of Existing Listing
      *
-     * @param agent
-     * @param id
-     * @return RemotePurchase
+     * @param agent agent on which the purchase instance need to be created
+     * @param id id
+     * @return RemotePurchase instance
      */
     public static RemotePurchase create(RemoteAgent agent, String id) {
         RemotePurchase remotePurchase = new RemotePurchase(agent, id);

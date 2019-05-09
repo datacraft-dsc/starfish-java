@@ -26,8 +26,8 @@ public class MemoryListing implements Listing {
 
     /**
      * API will create the listing instance based on the metaMap data passed.
-     * @param agent
-     * @param metaMap
+     * @param agent Agent on which the listing has to be created
+     * @param metaMap Map of metadata that need to create listing
      * @return The new Listing
      */
     public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {

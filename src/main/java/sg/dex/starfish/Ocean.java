@@ -75,7 +75,7 @@ public class Ocean {
 	/**
 	 * Registers an agent DDO with this Ocean connection,
 	 * @return did The newly created DID for the agent
-	 * @param ddo
+	 * @param ddo associated with the DID
 	 */
 	public DID registerDDO(String ddo) {
 		DID did=DID.createRandom();

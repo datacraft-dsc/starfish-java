@@ -30,9 +30,10 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     /**
      * API to create a Remote bundle asset asset with given Bundle name
-     *
+     * @param remoteAgent agent on which the  bundle need to create
      * @param assetMap map of all asset with name and assetID
-     * @return RemoteBundle
+     * @param meta additional meta data needs to be added while creating bundle
+     * @return RemoteBundle instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
@@ -56,7 +57,8 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
-     * @return RemoteBundle
+     * @param remoteAgent agent on which this bundle need to be created
+     * @return RemoteBundle new instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
 
@@ -102,6 +104,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * API to create a Remote bundle asset asset with given Bundle name
      *
      * @param assetMap map of all asset with name and assetID
+     * @param meta additional meta data
      * @return RemoteBundle
      */
     public static RemoteBundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
@@ -123,9 +126,9 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     /**
      * API to build the metadata for the bundle
-     * @param contents
-     * @param meta
-     * @return
+     * @param contents contents
+     * @param meta additional metadata
+     * @return metadata as string
      */
     private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
         //String hash = Hex.toString(Hash.keccak256(data));
@@ -141,13 +144,13 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
             }
         }
 
-        return JSON.toString(ob);
+        return JSON.toPrettyString(ob);
     }
 
     /**
      * API to get the map of AssetID based on AssetId
      *
-     * @param assetId
+     * @param assetId asset id
      * @return Map<String, String> assetIdMap
      */
     private static Map<String, String> getAssetIdMap(String assetId) {

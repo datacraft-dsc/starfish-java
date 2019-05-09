@@ -203,7 +203,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * API to get the Purchase instance
      *
-     * @param purchaseData
+     * @param purchaseData map of purchased data
      * @return MemoryPurchase
      */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {

@@ -23,9 +23,9 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     /**
      * API to create the remote operation instance by passing the remote agent and the metadata
-     * @param a
-     * @param meta
-     * @return
+     * @param a agent on which this operation instance needs to be created
+     * @param meta meta data for creating remote operation instance
+     * @return new Remote operation instance
      */
 	public static RemoteOperation create(RemoteAgent a, String meta) {
 
@@ -34,10 +34,10 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     /**
      * API to materialize the operation which is available on remote server
-     * @param agent
-     * @param assetId
-     * @param invokeAgent
-     * @return
+     * @param agent remote agent where asset is register
+     * @param assetId asset id of the operation
+     * @param invokeAgent remote agent where the operation need to be invoke
+     * @return new Remote operation instance
      */
 	public static RemoteOperation materialize(RemoteAgent agent,String assetId,RemoteAgent invokeAgent) {
 		Asset a = agent.getAsset(assetId);
