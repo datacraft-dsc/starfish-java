@@ -34,7 +34,7 @@ public interface Bundle extends Asset {
     /**
      * API to create a new bundle adding all named sub-assets passed as parameters
      *
-     * @param assetMap
+     * @param assetMap sub Asset map that need to be bundled
      * @return An updated bundle including the given sub-assets
      */
     public Bundle addAll(Map<String, Asset> assetMap);

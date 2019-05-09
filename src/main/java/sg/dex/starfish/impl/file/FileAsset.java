@@ -1,18 +1,6 @@
 
 package sg.dex.starfish.impl.file;
 
-import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.FILE_NAME;
-import static sg.dex.starfish.constant.Constant.SIZE;
-import static sg.dex.starfish.constant.Constant.TYPE;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.Map;
-
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -21,6 +9,14 @@ import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class exposing a file on the local file system as an Ocean asset
@@ -39,7 +35,7 @@ public class FileAsset extends AAsset implements DataAsset {
 	/**
 	 * Create a FileAsset to read from an existing file
 	 * 
-	 * @param f
+	 * @param f file handle one which the File Asset will be created
 	 * @return FileAsset
 	 */
 	public static FileAsset create(File f) {
@@ -51,8 +47,8 @@ public class FileAsset extends AAsset implements DataAsset {
 	 * Create a new FileAsset at the given file location, using the specified asset
 	 * as a source.
 	 * 
-	 * @param f
-	 * @param source
+	 * @param f file reference
+	 * @param source source of the file
 	 * @return FileAsset
 	 */
 	public static FileAsset create(File f, Asset source) {

@@ -73,6 +73,7 @@ public class Hashing_test {
 
         //getting the Asset which has result
         RemoteAsset resultAsset=(RemoteAsset)remoteAgentSurfer.getAsset(did);
+        // universal resolver
         // getting the result form the asset content
         String hashResult=Utils.stringFromStream(resultAsset.getContentStream());
 

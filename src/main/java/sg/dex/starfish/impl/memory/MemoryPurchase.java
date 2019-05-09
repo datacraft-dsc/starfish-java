@@ -25,9 +25,9 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * API to create a instance of Memory Purchase
-     * @param agent
-     * @param metaMap
-     * @return
+     * @param agent Agent on which the listing has to be created
+     * @param metaMap Map of metadata that need to create listing
+     * @return Return the new Memory Purchase instance
      */
     public static MemoryPurchase create(MemoryAgent agent, Map<String, Object> metaMap) {
 
@@ -36,7 +36,7 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * API to get the listing id associated with the this purchase
-     * @return
+     * @return Listing id
      */
     public String getListingId() {
         return meta.get("listingid").toString();
@@ -45,7 +45,7 @@ public class MemoryPurchase implements Purchase {
     /**
      * API to get the Purchase ID
      *
-     * @return
+     * @return purchase id
      */
     public String getId() {
         return id;
@@ -60,7 +60,7 @@ public class MemoryPurchase implements Purchase {
     /**
      * API to get the information of the Purchase
      *
-     * @return
+     * @return map of info present in metadata
      */
     @Override
     public Map<String, Object> getInfo() {

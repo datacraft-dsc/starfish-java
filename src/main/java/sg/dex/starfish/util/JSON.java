@@ -1,14 +1,14 @@
 package sg.dex.starfish.util;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
-
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utility class for handling JSON objects
@@ -132,7 +132,8 @@ public class JSON {
 	 * Converts a string assumed to contain valid JSON object to an Object
 	 * @param jsonString A string containing valid JSON
 	 * @throws Error on JSON parsing error
-	 * @return A Java object represnting the JSON provided
+	 * @param jsonString string need to be parsed
+	 * @return A Java object representing the JSON provided
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T parse(String jsonString) {

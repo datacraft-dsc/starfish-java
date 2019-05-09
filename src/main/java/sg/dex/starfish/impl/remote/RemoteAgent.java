@@ -381,7 +381,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * Gets URI for this agent's invoke endpoint
-	 *
+	 * @param did did
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
@@ -400,7 +400,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * Gets URI for this agent's invoke endpoint
-	 *
+     * @param did did
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
@@ -659,10 +659,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return invoke(request,operation.getAssetID());
 	}
 	/**
-	 *
-	 * @param operation
-	 * @param params
-	 * @return
+	 *API to invoke a sync operation
+	 * @param operation operation asset
+	 * @param params params contain int the input data need for the operation
+	 * @return Map of operation result
 	 */
 	public Map<String, Object> invokeResult(Operation operation,Map<String, Object> params){
 
@@ -872,8 +872,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to update the data of existing listing.
 	 * if the listing id passed is not exist it will throw Exception
 	 *
-	 * @param newValue
-	 * @return Listing
+	 * @param newValue map of new value need to be updated for listing
+	 * @return Listing return updated listing instance
 	 */
 	public Listing updateListing(Map<String, Object> newValue) {
 
@@ -889,7 +889,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get the listing meta data
 	 *
-	 * @param id
+	 * @param id id
 	 * @return metadata
 	 */
 	public Map<String, Object> getListingMetaData(String id) {
@@ -900,7 +900,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get all listing metaData.It may ab very heavy call .
 	 *
-	 * @return List<Listing>
+	 * @return List of all listing
 	 */
 	public List<Listing> getAllListing() {
 
@@ -931,7 +931,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to create the Purchase object
 	 *
-	 * @param data
+	 * @param data map of meta data need to create purchase instance
 	 * @return Purchase
 	 */
 	public Purchase createPurchase(Map<String, Object> data) {
@@ -943,7 +943,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get the Purchase MetaData
 	 *
-	 * @param id
+	 * @param id id
 	 * @return purchaseMetadata
 	 */
 	public Map<String, Object> getPurchaseMetaData(String id) {
@@ -954,7 +954,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to update the Purchase
 	 *
-	 * @param newValue
+	 * @param newValue map of new value to update purchase
 	 * @return Purchase
 	 */
 	public Purchase updatePurchase(Map<String, Object> newValue) {
@@ -970,7 +970,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * Gets Auth URI for this agent
-	 *
+	 * @param  authpath auth path
 	 * @return The URI for listing metadata
 	 * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
 	 * @throws IllegalArgumentException      on invalid URI for asset metadata
@@ -989,7 +989,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * API to get the logged in user details from the Agent
 	 *
-	 * @return userDetails
+	 * @return userDetails map
 	 */
 	public Map<String, Object> getUserDetails() {
 
@@ -1016,7 +1016,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * The will create the token base on user name and password configured
-	 *
+	 * @param account remote account reference
 	 * @return new token
 	 */
 	private void createToken(RemoteAccount account) {
@@ -1056,8 +1056,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * API to get the content of an Asset based on Asset id
-	 * @param assetId
-	 * @return
+	 * @param assetId asset id
+	 * @return Stream of asset content
 	 */
 	public InputStream getContentStream(String assetId) {
 		URI uri = getStorageURI(assetId);
@@ -1079,7 +1079,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * API to update the Account Data based on response received from the Agent
 	 *
 	 *
-	 * @param token
+	 * @param token auth token
 	 */
 	private void updateAccountData(String token) {
 		if (null == account) {

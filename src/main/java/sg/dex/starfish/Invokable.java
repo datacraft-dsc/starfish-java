@@ -49,6 +49,7 @@ public interface Invokable {
 	 * Job interface
 	 *
 	 * @param params Positional parameters for this invoke job
+	 * @param operation The operation for which to obtain the parameter specification
 	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
 	 * @return The Job for this invoked operation
 	 */

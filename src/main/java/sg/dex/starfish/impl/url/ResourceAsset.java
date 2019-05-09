@@ -32,10 +32,10 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * API to crete resurce name wth meta data and the resource path
+     * API to crete resource name wth meta data and the resource path
      *
-     * @param meta
-     * @param resourcePath
+     * @param meta metadata
+     * @param resourcePath path of the resource
      * @return ResourceAsset
      */
     public static ResourceAsset create(String meta, String resourcePath) {
@@ -45,7 +45,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     /**
      * API to crete a Resource Asset with resource Name
      *
-     * @param resourceName
+     * @param resourceName Resource name
      * @return ResourceAsset
      */
     public static ResourceAsset create(String resourceName) {
