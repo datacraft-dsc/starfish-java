@@ -10,7 +10,7 @@ import sg.dex.starfish.exception.StorageException;
  * @author Mike
  *
  */
-public interface Job {
+public interface Job<T> {
 
 	/**
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
@@ -36,7 +36,7 @@ public interface Job {
 	 * @throws JobFailedException if the job failed during execution
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
-	public Asset getResult();
+	public T getResult();
 
 
 	/**
@@ -48,7 +48,7 @@ public interface Job {
 	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job
 	 */
-	public default Asset awaitResult() {
+	public default T awaitResult() {
 		return awaitResult(Long.MAX_VALUE);
 	}
 
@@ -65,5 +65,5 @@ public interface Job {
 	 * @param timeoutMillis The number of milliseconds to wait for a result before returning null
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
-	public Asset awaitResult(long timeoutMillis);
+	public T awaitResult(long timeoutMillis);
 }

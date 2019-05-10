@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Mike
  *
  */
-public interface Invokable {
+public interface Invokable<T> {
 
 	/**
 	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
@@ -19,7 +19,7 @@ public interface Invokable {
 	 * @param params Positional parameters for the invoke operation
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
-	public Job invoke(Operation operation, Asset... params);
+	public Job invoke(Operation operation, T... params);
 	
 	/**
 	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
@@ -30,7 +30,7 @@ public interface Invokable {
 	 * @param params Named parameters for the invoke operation
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
-	public Job invoke(Operation operation, Map<String, Asset> params);
+	public Job invoke(Operation operation, Map<String,Object> params);
 	
 	/**
 	 * Gets the parameter specification for this Invokable service given the specified operation
@@ -41,7 +41,7 @@ public interface Invokable {
 	 * @return A map of parameter names to parameter specs
 	 */
 	public default Map<String,Object> getParamSpec(Operation op) {
-		return op.getParamSpec();
+		return op.getParamsSpec();
 	}
 	/**
 	 * Invokes this operation with the given named parameters. Operations should override

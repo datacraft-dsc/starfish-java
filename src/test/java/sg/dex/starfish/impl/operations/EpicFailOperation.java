@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.operations;
 
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
@@ -55,7 +54,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 	}
 
 	@Override
-	public Job invoke(Map<String, Asset> params) {
+	public Job invoke(Map<String, Object> params) {
 		return memoryAgent.invoke(this,params);
 	}
 

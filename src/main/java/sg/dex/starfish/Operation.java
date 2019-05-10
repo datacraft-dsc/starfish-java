@@ -62,21 +62,31 @@ public interface Operation extends Asset {
 	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job invoke(Map<String, Asset> params);
+	public Job invoke(Map<String, Object> params);
 
 	/**
-	 * Returns the parameter specification for this operation. Operations must
-	 * override this method to define what parameters they accept.
+	 * Returns the operation specification for this operation. Operations must
+	 * override this method to define what operation input and result  they accept.
 	 * 
 	 * TODO: add brief description of format and link to DEP6
 	 *
 	 * @return A map of parameter names to specifications
 	 */
 	@SuppressWarnings("unchecked")
-	public default Map<String, Object> getParamSpec() {
-		Map<String, Object> meta = getMetadata();
-		Map<String, Object> paramSpec = (Map<String, Object>) meta.get("operation");
-		return paramSpec;
+	public default Map<String, Object> getOperationSpec() {
+		return  (Map<String, Object>) getMetadata().get("operation");
+	}
+	/**
+	 * Returns the parameter specification for this operation. Operations must
+	 * override this method to define what parameters they accept.
+	 *
+	 * TODO: add brief description of format and link to DEP6
+	 *
+	 * @return A map of parameter names to specifications
+	 */
+	@SuppressWarnings("unchecked")
+	public default Map<String, Object> getParamsSpec() {
+		return (Map<String, Object> ) getOperationSpec().get("params");
 	}
 
 }

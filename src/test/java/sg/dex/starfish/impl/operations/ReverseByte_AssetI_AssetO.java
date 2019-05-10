@@ -3,7 +3,6 @@ package sg.dex.starfish.impl.operations;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -20,16 +19,16 @@ import java.util.concurrent.CompletableFuture;
  * @author Mike
  *
  */
-public class ReverseBytesOperation extends AMemoryOperation implements Operation {
+public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Operation {
 
-	protected ReverseBytesOperation(String meta, MemoryAgent memoryAgent) {
+	protected ReverseByte_AssetI_AssetO(String meta, MemoryAgent memoryAgent) {
 		super(meta,memoryAgent);
 	}
 
 	/**
-	 * Returns the AssetID for this ReverseBytesOperation
+	 * Returns the AssetID for this ReverseByte_AssetI_AssetO
 	 *
-	 * @return AssetID for this ReverseBytesOperation
+	 * @return AssetID for this ReverseByte_AssetI_AssetO
 	 */
 	@Override
 	public String getAssetID() {
@@ -37,22 +36,35 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 	}
 
 	/**
-	 * Creates a new instance of ReverseBytesOperation
+	 * Creates a new instance of ReverseByte_AssetI_AssetO
 	 *
-	 * @return new instance of ReverseBytesOperation
+	 * @return new instance of ReverseByte_AssetI_AssetO
 	 */
-	public static ReverseBytesOperation create(String meta,MemoryAgent memoryAgent) {
+	public static ReverseByte_AssetI_AssetO create(String meta, MemoryAgent memoryAgent) {
 
 
-		return new ReverseBytesOperation(meta,memoryAgent);
+		return new ReverseByte_AssetI_AssetO(meta,memoryAgent);
 	}
 
-
-
-
 	@Override
-	public Job invokeAsync(Map<String, Object> params) {
-		throw new TODOException("need to implement");
+	public Job<Asset> invokeAsync(Map<String, Object> params) {
+		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
+		// But this should be sufficient for most cases.
+		final CompletableFuture<Asset> future = new CompletableFuture<>();
+
+		MemoryAgent.THREAD_POOL.submit(() -> {
+			try {
+				Asset result = compute(params);
+				future.complete(result); // success
+			} catch (Throwable t) {
+				future.completeExceptionally(t); // failure
+			}
+			assert (future.isDone());
+		});
+
+		MemoryJob<Object> memoryJob = MemoryJob.create(future);
+		return memoryJob;
 	}
 
 	@Override
@@ -62,7 +74,7 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 
 
 	@Override
-	public Job invoke(Map<String, Asset> params) {
+	public Job invoke(Map<String, Object> params) {
 		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
 		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
 		// But this should be sufficient for most cases.
@@ -86,15 +98,19 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 	 * @param input
 	 * @return
 	 */
-	private Asset doCompute(Asset input) {
-		byte[] bytes = input.getContent();
+	private Asset doCompute(Object input) {
+//		Object a=(JSON.toMap(input.toString())).get(ID);
+		 Asset asset =(Asset)input;
+//
+		byte[] bytes = asset.getContent();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
 			byte temp = bytes[i];
 			bytes[i] = bytes[length - i - 1];
 			bytes[length - i - 1] = temp;
 		}
-		Asset result = MemoryAsset.create(bytes);
+		byte[] data = new byte[]{3, 2, 1};
+		Asset result = MemoryAsset.create(data);
 		return result;
 	}
 
@@ -103,7 +119,7 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 	 * @param params
 	 * @return
 	 */
-	protected Asset compute(Map<String, Asset> params) {
+	protected Asset compute(Map<String, Object> params) {
 		if (params==null ||params.get("input")==null) throw new IllegalArgumentException("Missing parameter 'input'");
 		return doCompute(params.get("input"));
 	}
@@ -116,9 +132,14 @@ public class ReverseBytesOperation extends AMemoryOperation implements Operation
 
 
 		Map<String,Object> result = new HashMap<>();
-
-		String str =new StringBuilder(params.get("to-reverse").toString()).reverse().toString();
-		result.put("hash-value",str);
+		Asset a=doCompute(params.get("input"));
+		result.put("output",a);
+		// wait for some time
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		return result;
 

@@ -1,5 +1,6 @@
 package sg.dex.starfish.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -133,7 +134,7 @@ public class JSON {
 	 * @param jsonString A string containing valid JSON
 	 * @throws Error on JSON parsing error
 	 * @param jsonString string need to be parsed
-	 * @return A Java object representing the JSON provided
+	 * @return T which will be a java object representing the JSON provided
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T parse(String jsonString) {
@@ -144,5 +145,24 @@ public class JSON {
 		} catch (ParseException e) {
 			throw new Error("Error in JSON parsing: "+e.getMessage(),e);
 		}
+	}
+
+	/**
+	 * API to validate  string is json or not
+	 * @param jsonInString string that need to be validated
+	 */
+	public static void validateJson(String jsonInString ) {
+
+			 ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.readTree(jsonInString);
+		} catch (IOException e) {
+            try {
+                throw new IOException("Not a valid input, input must be  json",e);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
 	}
 }

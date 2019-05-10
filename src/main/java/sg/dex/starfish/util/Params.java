@@ -27,7 +27,7 @@ public class Params {
 	public
 	static Map<String,Object> formatParams(Operation operation, Map<String,Object> params) {
 		HashMap<String,Object> result=new HashMap<>(params.size());
-		Map<String,Object> paramSpec=(Map<String,Object>)operation.getParamSpec().get("params");
+		Map<String,Object> paramSpec= operation.getParamsSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
 				Map<String, Object> spec = (Map<String, Object>) me.getValue();
@@ -55,17 +55,18 @@ public class Params {
 	 * @param type
 	 */
 	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
-		if(type.equals("asset")) {
-		 Asset a = (Asset)params.get(paramName);
-		 Map<String, Object> value = a.getParamValue();
-		 result.put(paramName, value);
-	 }
-		else if(type.equals("json")){
-		 result.put(paramName,params.get(paramName));
-	 }
-		else{
-			throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : "+type);
-	 }
+		if (type.equals("asset")) {
+			// validate if input is type asset or not
+			//Utils.validateIfAssetType(params.get(paramName));
+			Asset a = (Asset) params.get(paramName);
+			Map<String, Object> value = a.getParamValue();
+			result.put(paramName, value);
+		} else if (type.equals("json")) {
+			JSON.validateJson(JSON.toPrettyString(params));
+			result.put(paramName, params.get(paramName));
+		} else {
+			throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : " + type);
+		}
 	}
 
 
@@ -97,7 +98,7 @@ public class Params {
 	public
 	static Map<String,Object> formatParams(Operation operation, Asset... params) {
 		HashMap<String,Object> result=new HashMap<>(params.length);
-		Map<String,Object> paramSpec=operation.getParamSpec();
+		Map<String,Object> paramSpec=operation.getParamsSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
 			Map<String,Object> spec=(Map<String,Object>)me.getValue();
@@ -111,7 +112,7 @@ public class Params {
 				result.put(paramName,value);
 			}
 			if (required) {
-				throw new IllegalArgumentException("Paramter "+paramName+" is required but not supplied");
+				throw new IllegalArgumentException("Parameter "+paramName+" is required but not supplied");
 			}
 		}
 		return result;
@@ -128,9 +129,9 @@ public class Params {
 	 */
 	@SuppressWarnings("unchecked")
 	public
-	static Map<String,Asset> namedParams(Operation operation, Asset... params) {
-		HashMap<String,Asset> result=new HashMap<>(params.length);
-		Map<String,Object> paramSpec=operation.getParamSpec();
+	static Map<String,Object> namedParams(Operation operation, Asset... params) {
+		HashMap<String,Object> result=new HashMap<>(params.length);
+		Map<String,Object> paramSpec=operation.getParamsSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
 			Map<String,Object> spec=(Map<String,Object>)me.getValue();
@@ -142,7 +143,7 @@ public class Params {
 				Asset a=params[pos];
 				result.put(paramName,a);
 			} else if (required) {
-				throw new IllegalArgumentException("Paramter "+paramName+" is required but not supplied");
+				throw new IllegalArgumentException("Parameter "+paramName+" is required but not supplied");
 			}
 		}
 		return result;
