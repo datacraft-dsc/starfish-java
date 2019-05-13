@@ -21,6 +21,7 @@ import org.json.simple.JSONArray;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
+import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
 
 import java.io.IOException;
@@ -35,18 +36,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static sg.dex.starfish.constant.Constant.MODE;
-import static sg.dex.starfish.constant.Constant.SYNC;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class implementing a remote storage agent using the Storage API
  *
  * @author Mike
  */
-public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
+public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent {
 
-	private static final String LISTING_URL = "/listings";
-	private static final String PURCHASE_URL = "/purchases";
+
 	private final RemoteAccount account;
 
 	/**
@@ -94,7 +93,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private static Job createJobWith200(RemoteAgent agent, HttpResponse response) {
+	private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
 		HttpEntity entity = response.getEntity();
 		if (entity == null) throw new RuntimeException("Invoke failed: no response body");
 		try {
@@ -118,7 +117,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
 		if (statusCode == 201 ) {
-			return RemoteAgent.createJobWith200(agent, response);
+			return RemoteAgent.createSuccessJob(agent, response);
 		}
 		String reason = statusLine.getReasonPhrase();
 		if ((statusCode) == 400) {
@@ -190,8 +189,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			if (account.getCredentials().get("password").toString() != null) {
 				password = account.getCredentials().get("password").toString();
 			}
-			if ((token == null) && (username == null)) {
-				throw new AuthorizationException("Username or Token is not available for respective account" );
+			if ((token == null) && (username == null)&&(password == null)) {
+				throw new AuthorizationException("Username or Token or Password is not available for given account :"+account );
 			} else {
 				final CharArrayBuffer buffer = new CharArrayBuffer(32);
 				if (token != null) {
@@ -255,10 +254,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	private ARemoteAsset getRemoteAsset(String body, Map<String, Object> metaMap) {
-		if(metaMap.get("type").equals("operation")){
+		if(metaMap.get(TYPE).equals(OPERATION)){
 			 return RemoteOperation.create(this, body);
 		}
-		else if(metaMap.get("type").equals("dataset")){
+		else if(metaMap.get(TYPE).equals(DATA_SET)){
 			return RemoteAsset.create(this, body);
 		}
 		else {
@@ -391,7 +390,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				return new URI(getInvokeEndpoint() );
 			}
 			else{
-				return new URI(getInvokeEndpoint() +"/invoke/"+ "/"+did.toString()+"/");
+				return new URI(getInvokeEndpoint() +INVOKE_SYNC+"/" +did.toString());
 			}
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -410,7 +409,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				return new URI(getInvokeEndpoint() );
 			}
 			else{
-				return new URI(getInvokeEndpoint() +"/invokeasync/"+ "/"+did.toString()+"/");
+				return new URI(getInvokeEndpoint() +INVOKE_ASYNC+"/" +did.toString());
 			}
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -426,8 +425,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	private URI getJobURI(String response) {
 		try {
-			String jobId =JSON.toMap(response).get("jobid").toString();
-			return new URI(getInvokeEndpoint() + "/jobs/" + jobId);
+			String jobId =JSON.toMap(response).get(JOB_ID).toString();
+			return new URI(getInvokeEndpoint()+JOBS + "/" + jobId);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for job: " + response, e);
 		}
@@ -446,7 +445,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		if (metaEndpoint == null)
 			throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
 		try {
-			return new URI(metaEndpoint + "/data/" + assetID);
+			return new URI(metaEndpoint + DATA+"/" + assetID);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for asset metadata with ID: " + assetID, e);
 		}
@@ -483,7 +482,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		if (metaEndpoint == null)
 			throw new UnsupportedOperationException("This agent does not support the Meta API (no endpoint defined)");
 		try {
-			return new URI(metaEndpoint + "/data");
+			return new URI(metaEndpoint + DATA);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
 		}
@@ -559,9 +558,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	@Override
 	public Job invoke(Operation operation, Asset... params) {
-		Map<String, Object> request = new HashMap<String, Object>(2);
-		request.put("operation", operation.getAssetID());
-		request.put("params", Params.formatParams(operation, params));
+		Map<String, Object> request = new HashMap(2);
+		request.put(OPERATION, operation.getAssetID());
+		request.put(PARAMS, Params.formatParams(operation, params));
 		return invoke(request,operation.getAssetID());
 	}
 
@@ -591,12 +590,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					Map<String, Object> result = JSON.toMap(body);
-					String status = (String) result.get("status");
+					String status = (String) result.get(STATUS);
 					if (status == null) throw new RemoteException("No status in job result: " + body);
-					if (status.equals("started") || status.equals("inprogress")|| status.equals("accepted")||status.equals("scheduled")) {
+					if (status.equals(STARTED) || status.equals(IN_PROGRESS)|| status.equals(ACCEPTED)||status.equals(SCHEDULED)) {
 						return null; // no result yet
 					}
-					if (status.equals("completed")|| status.equals("succeeded")) {
+					if (status.equals(COMPLETED)|| status.equals(SUCCEEDED)) {
                        Map<String,Object> didMap=Params.formatResult(result);
 						if (didMap == null) throw new RemoteException("No asset in completed job result: " + body);
 						return RemoteAsset.create(this, JSON.toPrettyString(didMap));
@@ -614,10 +613,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job invoke(Operation operation, Map<String, Asset> params) {
+	public Job invoke(Operation operation, Map<String, Object> params) {
 		Map<String, Object> request = new HashMap<String, Object>(2);
-		request.put("operation", operation.getAssetID());
-		//request.put("params", Params.formatParams(operation, params));
+		request.put(OPERATION, operation.getAssetID());
+		request.put(PARAMS, Params.formatParams(operation, params));
 		return invoke(request,operation.getAssetID());
 	}
 
@@ -653,10 +652,33 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	@Override
 	public Job invokeAsync(Operation operation,Map<String,Object> params){
-		Map<String, Object> request = new HashMap<String, Object>(2);
-		request.put("operation", operation.getAssetID());
-		request.put("params", Params.formatParams(operation, params));
-		return invoke(request,operation.getAssetID());
+
+		Map<String,Object> paramValueMap= Params.formatParams(operation, params);
+
+		// check if the mode is sync else throw exception
+		if(!isModeSupported(operation,ASYNC)){
+			throw new TODOException("Mode must be Async for this operation");
+		}
+
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+
+		HttpPost httppost = new HttpPost(getInvokeAsyncURI(operation.getAssetID()));
+		StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
+		httppost.setEntity(entity);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httppost);
+
+			try {
+				return RemoteAgent.createJob(this, response);
+			} finally {
+				response.close();
+			}
+		} catch (ClientProtocolException e) {
+			throw new JobFailedException(" Client Protocol Exception :", e);
+		} catch (IOException e) {
+			throw new JobFailedException(" IOException occurred  Exception :", e);
+		}
 	}
 	/**
 	 *API to invoke a sync operation
@@ -666,16 +688,20 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Map<String, Object> invokeResult(Operation operation,Map<String, Object> params){
 
+		// this will validate if the required input is provided or not
+		Map<String,Object> paramValueMap= Params.formatParams(operation, params);
+
 		// check if the mode is sync else throw exception
-		if(!isSyncModeSupported(operation)){
-			 throw new TODOException("Mode must be sync for this operation");
+		if(!isModeSupported(operation,SYNC)){
+			throw new TODOException("Mode must be sync for this operation");
 		}
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
 		Map<String,Object> resultMap = new HashMap<>();
 //        addAuthHeaders(httpget);
 		// TODO if params is a map of asset then form proper entity
-			StringEntity entity = new StringEntity(JSON.toPrettyString(params), ContentType.APPLICATION_JSON);
+			StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
 			httppost.setEntity(entity);
 			CloseableHttpResponse response;
 			try {
@@ -695,10 +721,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return resultMap;
 	}
 
-	private boolean isSyncModeSupported(Operation operation) {
-		Map<String, Object> metaData = operation.getParamSpec();
+
+	private boolean isModeSupported(Operation operation,String mode) {
+		Map<String, Object> metaData = operation.getOperationSpec();
 		JSONArray modes = (JSONArray) metaData.get(MODE);
-		return modes.contains(SYNC);
+		 if(modes.contains(mode)){
+		 	return true;
+		 }
+		 return false;
+
 
 	}
 
@@ -877,7 +908,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Listing updateListing(Map<String, Object> newValue) {
 
-		String id = newValue.get("id").toString();
+		String id = newValue.get(ID).toString();
 		if (id == null) {
 			throw new GenericException("Listing ID not found");
 		}
@@ -907,7 +938,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
 
 		return result.stream()
-			.map(p -> RemoteListing.create(this, p.get("id").toString()))
+			.map(p -> RemoteListing.create(this, p.get(ID).toString()))
 			.collect(Collectors.toList());
 
 	}
@@ -936,7 +967,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Purchase createPurchase(Map<String, Object> data) {
 		String response = createMarketAgentInstance(data, PURCHASE_URL);
-		String id = JSON.toMap(response).get("id").toString();
+		String id = JSON.toMap(response).get(ID).toString();
 		return RemotePurchase.create(this, id);
 	}
 
@@ -947,7 +978,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return purchaseMetadata
 	 */
 	public Map<String, Object> getPurchaseMetaData(String id) {
-		String response = getMarketMetaData(PURCHASE_URL + "/" + id);
+		String response = getMarketMetaData( PURCHASE_URL+ "/" + id);
 		return JSON.toMap(response);
 	}
 
@@ -959,7 +990,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Purchase updatePurchase(Map<String, Object> newValue) {
 
-		String id = newValue.get("id").toString();
+		String id = newValue.get(ID).toString();
 		if (id == null) {
 			throw new GenericException("Listing ID not found");
 		}
@@ -970,17 +1001,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	/**
 	 * Gets Auth URI for this agent
-	 * @param  authpath auth path
+	 * @param  path auth path
 	 * @return The URI for listing metadata
 	 * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
 	 * @throws IllegalArgumentException      on invalid URI for asset metadata
 	 */
-	private URI getAuthURI(String authpath) {
+	private URI getAuthURI(String path) {
 		String authEndpoint = getAuthEndpoint();
 		if (authEndpoint == null)
 			throw new UnsupportedOperationException("This agent does not support the Auth API (no endpoint defined)");
 		try {
-			return new URI(authEndpoint + "/" + authpath);
+			return new URI(authEndpoint + "/" + path);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
 		}
@@ -993,7 +1024,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Map<String, Object> getUserDetails() {
 
-		HttpGet httpget = new HttpGet(getAuthURI("user"));
+		HttpGet httpget = new HttpGet(getAuthURI(USER));
 		addAuthHeaders(httpget);
 		CloseableHttpResponse response = HTTP.execute(httpget);
 		try {
@@ -1003,6 +1034,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				throw new RemoteException("Auth not found for at: " + statusCode);
 			} else if (statusCode == 200) {
 				String body = Utils.stringFromStream(HTTP.getContent(response));
+				// updating the user details in map
 				account.getUserDataMap().putAll(JSON.toMap(body));
 				return JSON.toMap(body);
 			} else {
@@ -1020,13 +1052,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return new token
 	 */
 	private void createToken(RemoteAccount account) {
+
 		// TODO this probably needs refactoring
-		String url = "token";
-		HttpPost httpPost = new HttpPost(getAuthURI(url));
+		HttpPost httpPost = new HttpPost(getAuthURI(TOKEN));
 		CloseableHttpResponse response;
 		try {
-			String username = account.getCredentials().get("username").toString();
-			String password = account.getCredentials().get("password").toString();
+			String username = account.getCredentials().get(USER_NAME).toString();
+			String password = account.getCredentials().get(PASSWORD).toString();
 
 			response = HTTP.executeWithAuth(httpPost, username, password);
 			try {
@@ -1085,7 +1117,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		if (null == account) {
 			return;
 		}
-		account.getUserDataMap().put("token", token);
+		account.getUserDataMap().put(TOKEN, token);
 
 	}
 

@@ -1,16 +1,15 @@
 package sg.dex.starfish.impl.memory;
 
+import sg.dex.starfish.Job;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Hex;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Job;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
 
 /**
  * Class representing a job being conducted asynchronously in the local JVM.
@@ -25,11 +24,11 @@ import sg.dex.starfish.exception.StorageException;
  * @author Mike
  *
  */
-public class MemoryJob implements Job {
+public class MemoryJob<T> implements Job {
 
-	private final Future<Asset> future;
+	private final Future<T> future;
 
-	private MemoryJob(Future<Asset> future) {
+	private MemoryJob(Future<T> future) {
 		this.future=future;
 	}
 
@@ -39,8 +38,8 @@ public class MemoryJob implements Job {
 	 * @param future A Future to be used to complete this job
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
-	public static MemoryJob create(Future<Asset> future) {
-		return new MemoryJob(future);
+	public static<T> MemoryJob create(Future<T> future) {
+		return new <T>MemoryJob<T>(future);
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class MemoryJob implements Job {
 	 * @return The Asset resulting from the job, or null if not available
 	 */
 	@Override
-	public Asset getResult() {
+	public T getResult() {
 		try {
 			return future.isDone()?future.get():null;
 		}
@@ -80,7 +79,7 @@ public class MemoryJob implements Job {
 	 * @return The Asset resulting from the job
 	 */
 	@Override
-	public Asset awaitResult() {
+	public T awaitResult() {
 		try {
 			return future.get();
 		}
@@ -102,7 +101,7 @@ public class MemoryJob implements Job {
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	@Override
-	public Asset awaitResult(long timeoutMillis) {
+	public T awaitResult(long timeoutMillis) {
 		try {
 			return future.get(timeoutMillis, TimeUnit.MILLISECONDS);
 		}

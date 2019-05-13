@@ -1,7 +1,5 @@
 package sg.dex.starfish.util;
 
-import static sg.dex.starfish.constant.Constant.DATE_CREATED;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +10,8 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.DATE_CREATED;
 
 /**
  * Utility class for StarFish
@@ -47,7 +47,8 @@ public class Utils {
 	 * @return boolean true if the arguments are equal, false otherwise
 	 */
 	public static boolean equals(Object a, Object b) {
-		if (a == null) return b == null;
+		if (a == null)
+			return b == null;
 		return a.equals(b);
 	}
 
@@ -84,7 +85,7 @@ public class Utils {
 	 * @return The boolean value of this object if coercion is successful
 	 */
 	public static boolean coerceBoolean(Object o) {
-		if (o == null) return false;
+		if (o == null) return true;
 		if (o instanceof Boolean) {
 			return (Boolean) o;
 		}
@@ -219,4 +220,5 @@ public class Utils {
 		ob.put(DATE_CREATED, Instant.now().toString());
 		return ob;
 	}
+
 }

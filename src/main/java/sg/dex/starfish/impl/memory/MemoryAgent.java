@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
  *
  * @author Mike
  */
-public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
+public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent {
     /**
      * The singleton default memory agent instance
      */
@@ -29,7 +29,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
-    private HashMap<String, MemoryAsset> assetStore = new HashMap<String, MemoryAsset>();
+    private HashMap<String, MemoryAsset> assetStore = new HashMap<>();
     private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
     private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
 
@@ -139,7 +139,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override
-    public Job invoke(Operation operation, Map<String, Asset> params) {
+    public Job invoke(Operation operation, Map<String, Object> params) {
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
@@ -165,7 +165,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-         throw new TODOException("need to implement");
+       return operation.invoke(params);
     }
 
     @Override
