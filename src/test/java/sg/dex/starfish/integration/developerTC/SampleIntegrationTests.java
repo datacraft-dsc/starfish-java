@@ -1,12 +1,14 @@
 package sg.dex.starfish.integration.developerTC;
 
 import org.junit.ClassRule;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import sg.dex.starfish.integration.connection_check.AssumingConnection;
 import sg.dex.starfish.integration.connection_check.ConnectionChecker;
 import sg.dex.starfish.samples.*;
 
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SampleIntegrationTests {
 
     @ClassRule

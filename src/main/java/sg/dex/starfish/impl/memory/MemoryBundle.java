@@ -40,10 +40,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * Create a memory bundle asset asset with given given Asset named map and metadata
-     * 
+     *
      * @param memoryAgent MemoryAgent to associated with this bundle
-     * @param assetMap map of all asset with name and assetID
-     * @param meta     meta data
+     * @param assetMap    map of all asset with name and assetID
+     * @param meta        meta data
      * @return it will return the instance of Memory Bundle
      */
     public static MemoryBundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
@@ -51,13 +51,11 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        assetMap =  assetMap==null? new HashMap<>():assetMap;
+        assetMap = assetMap == null ? new HashMap<>() : assetMap;
         Asset asset;
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new MemoryBundle(buildMetaData(subAssetIdMap, meta), assetMap, memoryAgent);
@@ -69,7 +67,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * API to create a memory bundle asset asset with given given Asset named map and memory Agent
      *
      * @param memoryAgent MemoryAgent to associate with this asset
-     * @param assetMap map of all asset with name and assetID
+     * @param assetMap    map of all asset with name and assetID
      * @return it will return the instance of Memory Bundle
      */
     public static MemoryBundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
@@ -80,8 +78,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new MemoryBundle(buildMetaData(subAssetIdMap, null), assetMap, memoryAgent);
@@ -103,8 +99,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new MemoryBundle(buildMetaData(subAssetIdMap, null), assetMap, null);
@@ -127,8 +121,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new MemoryBundle(buildMetaData(subAssetIdMap, meta), assetMap, null);
@@ -138,6 +130,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * API to build the metadata for bundle Asset
+     *
      * @param contents
      * @param meta
      * @return
@@ -147,7 +140,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
         ob.put(TYPE, BUNDLE);
-        ob.put(CONTENTS, contents);
+
 
         // adding the meta data provide
         if (meta != null) {
@@ -155,7 +148,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-
+        ob.put(CONTENTS, contents);
         return JSON.toString(ob);
     }
 
@@ -174,11 +167,11 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * API to get the AssetMap.Asset map will have all asset belong to given bundle.
+     *
      * @return
      */
-    private Map<String, Asset> getAssetMap() {
-    	/// FIXME metadata shouldn't contain map of Strings to Assets!
-        Map<String, Asset> assetMap = (Map<String, Asset>) getMetadata().get(CONTENTS);
+    private Map<String, Object> getAssetMap() {
+        Map<String, Object> assetMap = (Map<String, Object>) getMetadata().get(CONTENTS);
         return assetMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
@@ -195,18 +188,18 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
         assetMap.putAll(assetMapp);
-        return create(memoryAgent, assetMapp, null);
+        return create(memoryAgent, assetMapp, this.getMetadata());
     }
 
     @Override
     public Asset get(String name) {
-        return getAssetMap().get(name);
+        return (Asset) getAssetMap().get(name);
     }
 
     @Override
     public Map<String, Object> getAll() {
 
-        return getAssetMap().entrySet()
+        return assetMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         Map.Entry::getValue));

@@ -1,11 +1,14 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Interface representing an immutable asset bundle. The contents of the bundle are defined in the asset
+ * Interface representing an immutable asset bundle.
+ * The sub-asset belongs to the bundle are defined in the asset
  * metadata.The content of the bundle can be other named asset
  *
  * @author Mike
@@ -23,11 +26,13 @@ public interface Bundle extends Asset {
     }
 
     /**
-     * API to create a new bundle and add  named sub-asset passed as parameter
+     * API to add a new sub-asset in existing bundle.
+     * It will add the sub-asset passed in the argument and
+     * return a new Bundle asset
      *
-     * @param name Name of the asset
-     * @param asset Asset the need to be added
-     * @return An updated bundle including the new asset
+     * @param name Name of the sub-asset
+     * @param asset Asset the need to be added in existing bundle
+     * @return An new bundle including the sub asset passed
      */
     public Bundle add(String name, Asset asset);
 
@@ -35,7 +40,7 @@ public interface Bundle extends Asset {
      * API to create a new bundle adding all named sub-assets passed as parameters
      *
      * @param assetMap sub Asset map that need to be bundled
-     * @return An updated bundle including the given sub-assets
+     * @return An new bundle including the all thee given sub-assets passed as argument
      */
     public Bundle addAll(Map<String, Asset> assetMap);
 
@@ -59,6 +64,15 @@ public interface Bundle extends Asset {
         throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
     }
 
-
+    /**
+     *
+     * @return
+     */
+    @Override
+    public default Map<String,Object> getParamValue() {
+        Map<String,Object> o=new HashMap<>();
+        o.put(Constant.DID, getAssetID());
+        return o;
+    }
 
 }
