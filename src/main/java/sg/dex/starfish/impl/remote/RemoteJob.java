@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.exception.JobFailedException;
 
@@ -11,7 +10,7 @@ import sg.dex.starfish.exception.JobFailedException;
 public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
-    private Asset asset;
+    private Object response;
 
     public RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
@@ -24,11 +23,11 @@ public class RemoteJob implements Job {
 
     @Override
     public boolean isComplete() {
-        return asset != null;
+        return response != null;
     }
 
     @Override
-    public Asset getResult() {
+    public Object getResult() {
         return pollResult();
     }
 
@@ -40,18 +39,18 @@ public class RemoteJob implements Job {
      * @return The resulting asset, or null if not yet available
      * @throws JobFailedException If the job has failed
      */
-    private synchronized Asset pollResult() {
-        if (asset != null) return asset;
-        asset = agent.pollJob(jobID);
-        return asset;
+    private synchronized Object pollResult() {
+        if (response != null) return response;
+        response = agent.pollJob(jobID);
+        return response;
     }
 
     @Override
-    public Asset awaitResult(long timeoutMillis) {
+    public Object awaitResult(long timeoutMillis) {
         long start = System.currentTimeMillis();
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
-            Asset a = pollResult();
+            Object a = pollResult();
             if (a != null) return a;
             try {
                 Thread.sleep(initialSleep);

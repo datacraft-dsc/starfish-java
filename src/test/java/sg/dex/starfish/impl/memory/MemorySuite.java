@@ -8,7 +8,7 @@ import sg.dex.starfish.impl.operations.TestMemoryOperations;
 @Suite.SuiteClasses({
         TestMemoryAgent.class,
         TestMemoryAsset.class,
-       TestMemoryOperations.class,
+        TestMemoryOperations.class,
         TestMemoryBundle.class,
         TestMemoryListing.class,
         TestMemoryPurchase.class

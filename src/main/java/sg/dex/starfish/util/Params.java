@@ -3,6 +3,7 @@ package sg.dex.starfish.util;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class Params {
 	}
 
 	/**
-	 * API to prepare result for invoke call
+	 * API to prepare required result from a raw result based on metadata of the asset
 	 * @param params
 	 * @param result
 	 * @param paramName
@@ -57,7 +58,6 @@ public class Params {
 	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
 		if (type.equals("asset")) {
 			// validate if input is type asset or not
-			//Utils.validateIfAssetType(params.get(paramName));
 			Asset a = (Asset) params.get(paramName);
 			Map<String, Object> value = a.getParamValue();
 			result.put(paramName, value);
@@ -69,22 +69,44 @@ public class Params {
 		}
 	}
 
+    /**
+     * API to format response form any REST call.
+     * It will map the raw response data  to respective response based on metadata.
+     * Eg: if the response is type Json ,then it map the response to Json
+     *     if the response is type asset, then it map to asset.
+     * @param operation
+     * @param res
+     * @param remoteAgent
+     * @return
+     */
+	public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> res, RemoteAgent remoteAgent) {
 
-	public
-	static Map<String,Object> formatResult( Map<String,Object> response) {
-		Map<String,Object> result=new HashMap<>(response.size());
-		Map<String,Object> paramSpec=(Map<String,Object>)response.get("results");
+		Map<String,Object> response = JSON.toMap(res.get("results").toString());
+		HashMap<String,Object> result=new HashMap<>(response.size());
+		Map<String,Object> paramSpec= (Map<String,Object>)operation.getOperationSpec().get("results");
 
-		//TODO need to check the result type is json or asset then form the response accordingly
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
-			String paramName = me.getKey();
+			String paramName=me.getKey();
+			Map<String, Object> spec = (Map<String, Object>) me.getValue();
+			String type=(String) spec.get("type");
+			if (response.containsKey(paramName)) {
+				if (type.equals("asset")) {
+					// get the did of the asset
+					Map<String,Object> didMap= (Map<String,Object>)response.get(paramName);
+					Asset a = (remoteAgent.getAsset(didMap.get("did").toString()));
+					result.put(paramName, a);
+				} else if (type.equals("json")) {
+					JSON.validateJson(JSON.toPrettyString(response));
+					result.put(paramName, response.get(paramName));
+				} else {
+					throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : " + type);
+				}
 
-			Map<String, Object> res = JSON.toMap(response.get("results").toString());
-			result = JSON.toMap(res.get(paramName).toString());
+			}
+
 		}
-
-
 		return result;
+
 	}
 	/**
 	 * Creates the "params" part of the invoke payload using the spec in the operation metadata
@@ -135,7 +157,6 @@ public class Params {
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
 			Map<String,Object> spec=(Map<String,Object>)me.getValue();
-			// String type=(String) spec.get("type");
 			Object positionObj=spec.get("position");
 			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
 			boolean required=Utils.coerceBoolean(spec.get("required"));

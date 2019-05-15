@@ -44,9 +44,6 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
-
         }
         return new RemoteBundle(buildMetaData(subAssetIdMap, meta), remoteAgent, assetMap);
 
@@ -68,11 +65,36 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new RemoteBundle(buildMetaData(subAssetIdMap, null), remoteAgent, assetMap);
+
+
+    }
+
+    /**
+     * API to create a Remote bundle asset  with given Asset Map and agent
+     * This API will be called from agent .
+     * it will create bundle asset based on the Asset passed as map.
+     * For each asset data passed in map it will first get the asset id then will create
+     * a Remote Asset respectively.
+     *
+     * @param remoteAgent agent on which this bundle need to be created
+     * @return RemoteBundle new instance
+     */
+    public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map<String, Object> responseMap) {
+
+        // get the contents
+        Map<String, Map<String, String>> allSubAsset=(Map<String, Map<String, String>>)responseMap.get("contents");
+        //build meta data
+        Map<String,Asset> assetMap = new HashMap<>();
+        for (String name : allSubAsset.keySet()) {
+            String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();
+            ARemoteAsset aRemoteAsset =remoteAgent.getAsset(assetId);
+            assetMap.put(name,aRemoteAsset);
+
+        }
+        return new RemoteBundle(buildMetaData(allSubAsset, responseMap), remoteAgent, assetMap);
 
 
     }
@@ -91,8 +113,6 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new RemoteBundle(buildMetaData(subAssetIdMap, null), null, assetMap);
@@ -115,8 +135,6 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
             subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-            // TODO: why is this here?
-            // memoryAgent.uploadAsset(asset);
 
         }
         return new RemoteBundle(buildMetaData(subAssetIdMap, meta), null, assetMap);
@@ -131,19 +149,16 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return metadata as string
      */
     private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
-        //String hash = Hex.toString(Hash.keccak256(data));
-
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(TYPE, "bundle");
-        ob.put(CONTENTS, contents);
+        ob.put(TYPE, BUNDLE);
 
         if (meta != null) {
             for (Map.Entry<String, Object> me : meta.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-
+        ob.put(CONTENTS, contents);
         return JSON.toPrettyString(ob);
     }
 
@@ -166,7 +181,10 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     private Map<String, Asset> getAssetMap() {
 
-        return (Map<String, Asset>) getMetadata().get(CONTENTS);
+        return assetMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 
     @Override
@@ -195,4 +213,5 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
                         Map.Entry::getValue));
 
     }
+
 }

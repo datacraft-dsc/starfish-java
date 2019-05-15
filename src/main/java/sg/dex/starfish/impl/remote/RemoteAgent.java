@@ -140,37 +140,67 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 	 * @throws TODOException    for unhandled results
 	 * @throws RuntimeException for protocol errors
 	 */
-	@Override
-	public ARemoteAsset registerAsset(Asset a) {
-		URI uri = getMetaURI();
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(uri);
-		addAuthHeaders(httpPost);
-		httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
-		CloseableHttpResponse response;
-		try {
-			response = httpclient.execute(httpPost);
-			try {
-				StatusLine statusLine = response.getStatusLine();
-				int statusCode = statusLine.getStatusCode();
-				if (statusCode == 404) {
-					throw new RemoteException("Asset ID not found for at: " + uri);
-				}
-				if (statusCode == 200) {
-					String body = Utils.stringFromStream(response.getEntity().getContent());
-					String id = JSON.parse(body);
-					return getAsset(id);
-				}
-				throw new TODOException("Result not handled: " + statusLine);
-			} finally {
-				response.close();
-			}
-		} catch (ClientProtocolException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public ARemoteAsset registerAsset(Asset a) {
+        URI uri = getMetaURI();
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+
+        if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
+            // register all sub asset
+            RemoteBundle  remoteBundle =(RemoteBundle)a;
+            Map<String, Object> allSubAsset = remoteBundle.getAll();
+            for (String name : allSubAsset.keySet()) {
+                HttpPost httpPost = new HttpPost(uri);
+                addAuthHeaders(httpPost);
+                Asset subAsset = (Asset)allSubAsset.get(name);
+                httpPost.setEntity(HTTP.textEntity(subAsset.getMetadataString()));
+                allSubAsset.put(name, getaRemoteAsset(uri, httpclient, httpPost));
+            }
+            // register bundle
+            HttpPost httpPost = new HttpPost(uri);
+            addAuthHeaders(httpPost);
+            httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+            return getaRemoteAsset(uri, httpclient, httpPost);
+
+
+        } else if (a.getMetadata().get(TYPE).equals(DATA_SET)
+                || a.getMetadata().get(TYPE).equals(OPERATION)) {
+            HttpPost httpPost = new HttpPost(uri);
+            addAuthHeaders(httpPost);
+            httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+            return getaRemoteAsset(uri, httpclient, httpPost);
+        } else {
+             throw new TODOException("Not a valid Asset type :" + a.getMetadata().get(TYPE));
+        }
+    }
+
+    private ARemoteAsset getaRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
+        CloseableHttpResponse response;
+        try {
+            response = httpclient.execute(httpPost);
+            try {
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 404) {
+                    throw new RemoteException("Asset ID not found for at: " + uri);
+                }
+                if (statusCode == 200) {
+                    String body = Utils.stringFromStream(response.getEntity().getContent());
+                    String id = JSON.parse(body);
+                    return getAsset(id);
+                }
+                throw new TODOException("Result not handled: " + statusLine);
+            } finally {
+                response.close();
+            }
+        } catch (ClientProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 	private void addAuthHeaders(HttpRequest request) {
 		if (account == null) {
@@ -260,6 +290,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 		else if(metaMap.get(TYPE).equals(DATA_SET)){
 			return RemoteAsset.create(this, body);
 		}
+        else if(metaMap.get(TYPE).equals(BUNDLE)){
+            return RemoteBundle.createBundle(this, metaMap);
+        }
 		else {
 			throw new TODOException("Invalid Type :" + metaMap.get("type"));
 		}
@@ -307,7 +340,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 	public ARemoteAsset uploadAsset(Asset a) {
 		ARemoteAsset remoteAsset;
 
-		// asset alredy registered then only upload
+		// asset already registered then only upload
 		if (isAssetRegistered(a.getAssetID())) {
 			remoteAsset = getAsset(a.getAssetID());
 			uploadAssetContent(a);
@@ -328,6 +361,13 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 	 * @param asset
 	 */
 	private void uploadAssetContent(Asset asset) {
+
+	    // check if the asset is operation or bundle it will not have content, so return without upload
+        if(asset.getMetadata().get(TYPE).equals("bundle")||
+                asset.getMetadata().get(TYPE).equals("operation")){
+            return;
+        }
+
 		// get the storage API to upload the Asset content
 		URI uri = getStorageURI(asset.getAssetID());
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -574,7 +614,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 	 * @throws TODOException            for unhandled status codes
 	 * @throws RuntimeException         for protocol errors
 	 */
-	public Asset pollJob(String jobID) {
+	public Object pollJob(String jobID) {
 		URI uri = getJobURI(jobID);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(uri);
@@ -596,11 +636,15 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 						return null; // no result yet
 					}
 					if (status.equals(COMPLETED)|| status.equals(SUCCEEDED)) {
-                       Map<String,Object> didMap=Params.formatResult(result);
-						if (didMap == null) throw new RemoteException("No asset in completed job result: " + body);
-						return RemoteAsset.create(this, JSON.toPrettyString(didMap));
+
+						return result;
 					}
-				}
+					else if(status.equals("error"))
+                    {
+                        throw new TODOException("Error code: " + result.get("errorcode")+
+                                "description is : "+ result.get("description"));
+                    }
+                }
 				throw new TODOException("status code not handled: " + statusCode);
 			} finally {
 				response.close();
@@ -698,7 +742,6 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
-		Map<String,Object> resultMap = new HashMap<>();
 //        addAuthHeaders(httpget);
 		// TODO if params is a map of asset then form proper entity
 			StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
@@ -707,9 +750,11 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 			try {
 				response = httpclient.execute(httppost);
 				if(response.getStatusLine().getStatusCode() ==200){
-					//TODO return an Memory Asset if result type is an asset
 					String body = Utils.stringFromStream(response.getEntity().getContent());
-					return Params.formatResult(JSON.toMap(body));
+					return JSON.toMap(body);
+				}
+				else{
+					throw new TODOException("Exception occur : "+response);
 				}
 
 
@@ -718,7 +763,6 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 			} catch (IOException e) {
 				throw new JobFailedException(" IOException occurred  Exception :", e);
 			}
-		return resultMap;
 	}
 
 
@@ -1120,5 +1164,6 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 		account.getUserDataMap().put(TOKEN, token);
 
 	}
+
 
 }
