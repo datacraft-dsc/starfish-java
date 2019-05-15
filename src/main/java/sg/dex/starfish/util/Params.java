@@ -74,10 +74,10 @@ public class Params {
      * It will map the raw response data  to respective response based on metadata.
      * Eg: if the response is type Json ,then it map the response to Json
      *     if the response is type asset, then it map to asset.
-     * @param operation
-     * @param res
-     * @param remoteAgent
-     * @return
+     * @param operation instance reference
+     * @param res response received from the Invoke call
+     * @param remoteAgent agent on which this operation has done.
+     * @return formatted map of the response received
      */
 	public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> res, RemoteAgent remoteAgent) {
 
