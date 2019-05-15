@@ -53,6 +53,9 @@ public class Constant {
     public static final String LISTING_URL = "/listings";
     public static final String PURCHASE_URL = "/purchases";
     public static final String DATA = "/data";
+    public static final String LISTING_ID = "listingid";
+    public static final String INFO = "info";
+    public static final String AGREEMENT = "agreement";
 
     //--------INVOKE -----------
 

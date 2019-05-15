@@ -131,7 +131,8 @@ public class RemoteListing extends AListing {
      * API to get the Listing ID
      * @return String listingId
      */
-    private String getListing_id() {
+    @Override
+    public String getId() {
         return getMetaData().get("id").toString();
     }
 

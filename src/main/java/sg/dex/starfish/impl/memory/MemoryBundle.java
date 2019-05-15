@@ -39,6 +39,18 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     /**
+     * Constructor to create the instance of memory bundle
+     *
+     * @param metaData
+     * @param assetMap
+     */
+    private MemoryBundle(String metaData, Map<String, Asset> assetMap) {
+        super(metaData);
+        this.assetMap = assetMap;
+
+    }
+
+    /**
      * Create a memory bundle asset asset with given given Asset named map and metadata
      *
      * @param memoryAgent MemoryAgent to associated with this bundle
@@ -46,7 +58,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @param meta        meta data
      * @return it will return the instance of Memory Bundle
      */
-    public static MemoryBundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
+    public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
 
         //build meta data
@@ -64,13 +76,28 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     /**
+     * Create a memory bundle asset asset with given given Asset named map and metadata
+     *
+     * @return it will return the instance of Memory Bundle
+     */
+    public static Bundle create() {
+
+
+        //build meta data
+        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
+        return new MemoryBundle(buildMetaData(subAssetIdMap, null), new HashMap<>());
+
+
+    }
+
+    /**
      * API to create a memory bundle asset asset with given given Asset named map and memory Agent
      *
      * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and assetID
      * @return it will return the instance of Memory Bundle
      */
-    public static MemoryBundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
+    public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
@@ -91,7 +118,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @param assetMap map of all asset with name and assetID
      * @return it will return the instance of Memory Bundle
      */
-    public static MemoryBundle create(Map<String, Asset> assetMap) {
+    public static Bundle create(Map<String, Asset> assetMap) {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
@@ -113,7 +140,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @param meta     meta data for the bundle
      * @return it will return the instance of Memory Bundle
      */
-    public static MemoryBundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
+    public static Bundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
@@ -171,7 +198,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @return
      */
     private Map<String, Object> getAssetMap() {
-        Map<String, Object> assetMap = (Map<String, Object>) getMetadata().get(CONTENTS);
+       // Map<String, Object> assetMap = (Map<String, Object>) getMetadata().get(CONTENTS);
         return assetMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,

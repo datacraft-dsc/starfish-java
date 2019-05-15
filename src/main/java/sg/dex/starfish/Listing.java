@@ -1,9 +1,9 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+
+import java.util.Map;
 
 /**
  * Interface representing a listing of an asset on the Ocean Network
@@ -65,5 +65,11 @@ public interface Listing {
      * @return A map of listing metadata
      */
      Map<String, Object> getMetaData() ;
+
+    /**
+     * API to get the Listing ID
+     * @return
+     */
+    public String getId();
 
 }

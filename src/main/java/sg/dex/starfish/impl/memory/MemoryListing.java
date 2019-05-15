@@ -7,6 +7,8 @@ import sg.dex.starfish.util.JSON;
 
 import java.util.Map;
 
+import static sg.dex.starfish.constant.Constant.*;
+
 /**
  *Class representing a local in-memory Listing instance.
  *
@@ -32,7 +34,7 @@ public class MemoryListing implements Listing {
      */
     public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {
 
-    	String listingID= metaMap.get("id").toString();
+    	String listingID= metaMap.get(ID).toString();
 
         return  new MemoryListing(agent,listingID,metaMap);
     }
@@ -47,13 +49,13 @@ public class MemoryListing implements Listing {
     }
 
     @Override
-    public Object getAgreement() {
-        return null;
+    public Map<String,Object> getAgreement() {
+       return getMetaData().get(AGREEMENT)!= null ?(Map<String, Object>)getMetaData().get(AGREEMENT): null;
     }
 
     @Override
     public Map<String, Object> getInfo() {
-        return null;
+        return  getMetaData().get(INFO)!= null ?(Map<String, Object>)getMetaData().get("info"): null;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MemoryListing implements Listing {
         return meta;
     }
 
-    // FIXME: is this meant to override an interface method?
+    @Override
     public String getId() {
         return id;
     }
