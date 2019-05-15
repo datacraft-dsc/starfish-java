@@ -15,14 +15,22 @@ import static org.junit.Assert.*;
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
 
+	/**
+	 * Test DID API and Create API
+	 */
 	@Test 
 	public void testAgentID() {
 		DID did=DID.parse(DID.createRandomString());
 		MemoryAgent ma=MemoryAgent.create(did);
 		assertEquals(did,ma.getDID());
 	}
-	
-	@Test public void testRegisterUpload() {
+
+	/**
+	 * Test register with 2 agents
+	 */
+
+	@Test
+	public void testRegisterUpload() {
 		// it will create Memory agent instance.
 		//the instance will be associated with default Ocean and will have unique DID.
 		MemoryAgent agent1=MemoryAgent.create();
@@ -62,6 +70,9 @@ public class TestMemoryAgent {
 		assertTrue(Arrays.equals(BYTE_DATA, a2.getContent()));
 	}
 
+	/**
+	 * Test upload with agent
+	 */
 	@Test
 	public void testUpload(){
 		MemoryAgent memoryAgent=MemoryAgent.create();
@@ -70,6 +81,10 @@ public class TestMemoryAgent {
 		assertNotNull(memoryAgent.getAsset(asset.getAssetID()));
 		assertEquals(asset.getMetadataString(),uploadAsset.getMetadataString());
 	}
+
+	/**
+	 * Test register with Agent
+	 */
 	@Test
 	public void testRegister(){
 		MemoryAgent agent1=MemoryAgent.create();
@@ -78,6 +93,38 @@ public class TestMemoryAgent {
 		Asset registeredAsset=agent1.registerAsset(asset);
 		assertNotNull(agent1.getAsset(id));
 		assertEquals(asset.getMetadataString(),registeredAsset.getMetadataString());
+
+	}
+
+	/**
+	 * Test GET Asset by asset ID
+	 *
+	 */
+	@Test
+	public  void testGetAsset(){
+		MemoryAgent agent1=MemoryAgent.create();
+		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		String id  = asset.getAssetID();
+		agent1.registerAsset(asset);
+		Asset assetFromAgent=agent1.getAsset(id);
+		assertEquals(assetFromAgent,asset);
+
+
+	}
+	/**
+	 * Test GET Asset by asset DID
+	 *
+	 */
+	//@Test
+	public  void testGetAssetByDID(){
+		DID did =DID.createRandom();
+		MemoryAgent agent1=MemoryAgent.create(did.toString());
+		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		String id  = asset.getAssetID();
+		agent1.registerAsset(asset);
+		Asset assetFromAgent=agent1.getAsset(did.getID());
+		assertEquals(assetFromAgent,asset);
+
 
 	}
 }

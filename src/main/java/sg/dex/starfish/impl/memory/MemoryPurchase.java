@@ -6,6 +6,8 @@ import sg.dex.starfish.util.JSON;
 
 import java.util.Map;
 
+import static sg.dex.starfish.constant.Constant.*;
+
 /**
  * Class representing a local in-memory  Purchase.
  * <p>
@@ -25,21 +27,23 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * API to create a instance of Memory Purchase
-     * @param agent Agent on which the listing has to be created
+     *
+     * @param agent   Agent on which the listing has to be created
      * @param metaMap Map of metadata that need to create listing
      * @return Return the new Memory Purchase instance
      */
     public static MemoryPurchase create(MemoryAgent agent, Map<String, Object> metaMap) {
 
-        return new MemoryPurchase(agent, metaMap.get("id").toString(), metaMap);
+        return new MemoryPurchase(agent, metaMap.get(ID).toString(), metaMap);
     }
 
     /**
      * API to get the listing id associated with the this purchase
+     *
      * @return Listing id
      */
     public String getListingId() {
-        return meta.get("listingid").toString();
+        return meta.get(LISTING_ID).toString();
     }
 
     /**
@@ -54,7 +58,7 @@ public class MemoryPurchase implements Purchase {
 
     @Override
     public Listing getListing() {
-        return null;
+        return agent.getListing(meta.get(LISTING_ID).toString());
     }
 
     /**
@@ -64,7 +68,7 @@ public class MemoryPurchase implements Purchase {
      */
     @Override
     public Map<String, Object> getInfo() {
-        return meta.get("info") == null ? null : (Map<String, Object>) meta.get("info");
+        return meta.get(INFO) == null ? null : (Map<String, Object>) meta.get(INFO);
     }
 
     @Override
@@ -74,7 +78,7 @@ public class MemoryPurchase implements Purchase {
 
     @Override
     public String status() {
-        return meta.get("status") == null ? null : meta.get("status").toString();
+        return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();
     }
 
     /**
