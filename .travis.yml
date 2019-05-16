@@ -29,7 +29,7 @@ before_install:
 install:
   - mvn clean install
 script:
-- mvn integration-test -- --coverage
+- mvn integration-test
 - mvn site
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
