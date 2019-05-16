@@ -1,18 +1,11 @@
 package sg.dex.starfish.impl.squid;
 
-import java.math.BigInteger;
-import java.util.Map;
-
-import sg.dex.starfish.impl.AAccount;
-import sg.dex.starfish.impl.AEVMAccount;
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.TODOException;
-
-import com.oceanprotocol.squid.models.Account;
-import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.api.AccountsAPI;
-import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.models.Account;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.impl.AAccount;
+
+import java.math.BigInteger;
 
 /**
  * Class implementing a Squid Account

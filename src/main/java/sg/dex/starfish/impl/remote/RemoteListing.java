@@ -3,7 +3,6 @@ package sg.dex.starfish.impl.remote;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AListing;
 
 import java.util.HashMap;
@@ -75,7 +74,8 @@ public class RemoteListing extends AListing {
 
     @Override
     public Asset purchase(Account account) {
-        throw new TODOException();
+        // Todo get Purchase based on account
+        return null;
     }
 
     @Override
@@ -95,8 +95,9 @@ public class RemoteListing extends AListing {
 
     @Override
     public Map<String, Object> getInfo() {
-    	// FIXME info could be null?
-        Map<String, Object> info = (Map<String, Object>) getMetaData().get("info");
+
+        Map<String, Object> info =getMetaData().get("info")==null ?
+                new HashMap<>(): (Map<String, Object>) getMetaData().get("info");
         return info.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,

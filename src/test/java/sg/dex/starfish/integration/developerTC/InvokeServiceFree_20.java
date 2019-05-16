@@ -6,11 +6,9 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.remote.RemoteAccount;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
-import sg.dex.starfish.impl.remote.RemoteBundle;
+import sg.dex.starfish.impl.remote.*;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
@@ -157,6 +155,42 @@ public class InvokeServiceFree_20 {
 
             }
         }
+
+
+    }
+
+    /**
+     * Validating wrong Job ID message.
+     */
+
+    /**
+     * TEST PRIME ::Testing for invalid job id.
+     * it support both SYNC and ASYNC
+     * this test case is for testing ASYNC behaviour SYNC
+     */
+    @Test(expected = JobFailedException.class)
+    public void testPrimeAsync_WrongJobID() {
+
+        // input to the operation
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("first-n", "20");
+
+        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
+        RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
+
+        // get asset form asset id
+        Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
+        // invoking the prime operation and will get the job associated
+        Job job = remoteOperation.invokeAsync(metaMap);
+        Map<String,Object> jobData = new HashMap<>();
+        jobData.put("jobid","invalid");
+        Job invalidJob =RemoteJob.create(agentI,JSON.toPrettyString(jobData));
+
+        // waiting for job to get completed
+        Object remoteAsset = invalidJob.awaitResult(10000);
+
+
+
 
 
     }

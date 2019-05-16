@@ -134,9 +134,10 @@ public class JSON {
 	 * @param jsonString A string containing valid JSON
 	 * @throws Error on JSON parsing error
 	 * @param jsonString string need to be parsed
+	 * @param <T> This describes my type parameter
 	 * @return T which will be a java object representing the JSON provided
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked","javadocs"})
 	public static <T> T parse(String jsonString) {
 		JSONParser parser=new JSONParser();
 		try {

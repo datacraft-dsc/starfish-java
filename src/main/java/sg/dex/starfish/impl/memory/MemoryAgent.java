@@ -2,8 +2,8 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
@@ -160,7 +160,7 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
         // check the mode if sync then throw exception
         if(isSyncMode(operation)){
-            throw new TODOException("Mode must be Async for this operation");
+            throw new StarfishValidationException("Mode must be Async for this operation");
         }
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
@@ -187,7 +187,7 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
     /**
      * Create a Listing with the given data
      *
-     * @param listingData
+     * @param listingData map of listing data
      * @return A listing for this agent
      */
     @Override

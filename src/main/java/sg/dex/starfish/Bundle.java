@@ -65,8 +65,8 @@ public interface Bundle extends Asset {
     }
 
     /**
-     *
-     * @return
+     *API to get the ParamValue
+     * @return map of did and AssetID
      */
     @Override
     public default Map<String,Object> getParamValue() {

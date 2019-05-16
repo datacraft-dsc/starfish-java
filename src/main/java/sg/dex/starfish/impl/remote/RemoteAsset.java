@@ -3,10 +3,11 @@ package sg.dex.starfish.impl.remote;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.util.DID;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +56,15 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	/**
 	 * Gets RemoteAsset size
 	 *
-	 * @throws TODOException not implemented yet
 	 * @return size of the RemoteAsset
 	 */
 	@Override
 	public long getContentSize() {
-		throw new TODOException();
+		try {
+			return remoteAgent.getContentStream(getAssetID()).available();
+		} catch (IOException e) {
+			throw  new GenericException("Exception occurred  for asset id :"+getAssetID()+" while finding getting the Content size :",e);
+		}
 	}
 
 	@Override

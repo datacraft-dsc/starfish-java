@@ -1,11 +1,9 @@
 
 package sg.dex.starfish.impl.file;
 
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
@@ -43,17 +41,6 @@ public class FileAsset extends AAsset implements DataAsset {
 		return new FileAsset(metaString, f);
 	}
 
-	/**
-	 * Create a new FileAsset at the given file location, using the specified asset
-	 * as a source.
-	 * 
-	 * @param f file reference
-	 * @param source source of the file
-	 * @return FileAsset
-	 */
-	public static FileAsset create(File f, Asset source) {
-		throw new TODOException("Create file asset on disk");
-	}
 
 	/**
 	 * Build default metadata for a file asset
