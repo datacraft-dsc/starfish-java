@@ -27,7 +27,7 @@ before_install:
 # - git clone https://github.com/DEX-Company/surfer.git
 # - ./surfer/test/bin/cli-test startup
 install:
-  - mvn clean install -- -- coverage
+  - mvn clean install -- --coverage
 script:
 - mvn integration-test
 - mvn site
