@@ -2,7 +2,6 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
-import sg.dex.starfish.exception.TODOException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,13 +62,7 @@ public class RemotePurchase implements Purchase {
     @Override
     public Listing getListing() {
         // get the Listing from Listing id
-        Listing listing;
-        try {
-            listing = remoteAgent.getListing(purchase_id);
-        } catch (Exception e) {
-            throw new TODOException("Exception occurred :" + e.getMessage());
-        }
-        return listing;
+           return remoteAgent.getListing(purchase_id);
     }
 
     @Override

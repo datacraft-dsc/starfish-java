@@ -142,11 +142,14 @@ public class Utils {
 	/**
 	 * Creates a map using the given arguments as keys and values
 	 *
-	 * @param params A sequence of (key,value) objects
+	 * @param params
+	 *        one or more argument
+	 * @param <K> This describes key parameter
+	 * @param <V> This describes value parameter
 	 * @throws IllegalArgumentException if mapOf has odd number of arguments
 	 * @return A map containing the key keys and values
 	 */
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings({"unchecked","javadocs"})
 	public static <K, V> Map<K, V> mapOf(Object... params) {
 		int len = params.length;
 		if ((len & 1) != 0)

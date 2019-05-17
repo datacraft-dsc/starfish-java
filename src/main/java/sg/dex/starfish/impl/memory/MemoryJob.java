@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
  * - Be in progress (getResult return null)
  * - Complete normally (getResult returns an Asset)
  * - Fail with some exception (getResult throws an exception)
- *
+ * @param <T> This describes my type parameter
  * It is possible that a memory job will never complete.
  *
  * @author Mike
@@ -36,8 +36,10 @@ public class MemoryJob<T> implements Job {
 	 * Create a MemoryJob instance using the provided Future.
 	 *
 	 * @param future A Future to be used to complete this job
+	 * @param <T> This describes my type parameter
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
+	@SuppressWarnings("javadocs")
 	public static<T> MemoryJob create(Future<T> future) {
 		return new <T>MemoryJob<T>(future);
 	}
@@ -56,12 +58,12 @@ public class MemoryJob<T> implements Job {
 	 * @return The Asset resulting from the job, or null if not available
 	 */
 	@Override
-	public T getResult() {
+	public  T getResult() {
 		try {
 			return future.isDone()?future.get():null;
 		}
 		catch (InterruptedException e) {
-			throw new Error("Job interruped",e);
+			throw new Error("Job interrupted",e);
 		}
 		catch (ExecutionException e) {
 			throw new Error("Job failed with exception: ",e.getCause());

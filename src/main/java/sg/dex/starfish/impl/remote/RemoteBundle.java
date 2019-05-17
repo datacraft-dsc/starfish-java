@@ -80,6 +80,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * a Remote Asset respectively.
      *
      * @param remoteAgent agent on which this bundle need to be created
+     * @param responseMap response map
      * @return RemoteBundle new instance
      */
     public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map<String, Object> responseMap) {

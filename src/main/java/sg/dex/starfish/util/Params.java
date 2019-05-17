@@ -2,7 +2,7 @@ package sg.dex.starfish.util;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
 import java.util.HashMap;
@@ -65,7 +65,8 @@ public class Params {
 			JSON.validateJson(JSON.toPrettyString(params));
 			result.put(paramName, params.get(paramName));
 		} else {
-			throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : " + type);
+			throw new StarfishValidationException("Invalid type of Input .Accepted Input: " +
+					"Asset or Json. Input given: " + type);
 		}
 	}
 
@@ -99,7 +100,8 @@ public class Params {
 					JSON.validateJson(JSON.toPrettyString(response));
 					result.put(paramName, response.get(paramName));
 				} else {
-					throw new TODOException("Invalid type of Input.It must be either Asset or Json , type is : " + type);
+					throw new StarfishValidationException("Invalid type of Input .Accepted Input: " +
+							"Asset or Json. Input given: " + type);
 				}
 
 			}

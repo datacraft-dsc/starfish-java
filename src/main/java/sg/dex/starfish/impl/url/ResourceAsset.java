@@ -4,12 +4,13 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.exception.TODOException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.HashMap;
@@ -94,7 +95,11 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
     @Override
     public long getContentSize() {
-        throw new TODOException();
+        try {
+            return getContentStream().available();
+        } catch (IOException e) {
+            throw  new GenericException("Exception occurred  for asset id :"+getAssetID()+" while finding getting the Content size :",e);
+        }
     }
 
     /**

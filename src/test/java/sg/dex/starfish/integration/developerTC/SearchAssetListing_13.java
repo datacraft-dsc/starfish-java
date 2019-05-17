@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.exception.TODOException;
+import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
@@ -61,7 +61,7 @@ public class SearchAssetListing_13 {
         }
 
     }
-    @Test(expected = TODOException.class)
+    @Test(expected = RemoteException.class)
     public void testSearchListingByInvalidId() {
 
         Asset asset = MemoryAsset.create("Test Searching of listing");
