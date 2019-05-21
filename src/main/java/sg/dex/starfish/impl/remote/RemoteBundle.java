@@ -37,15 +37,8 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
 
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-        }
-        return new RemoteBundle(buildMetaData(subAssetIdMap, meta), remoteAgent, assetMap);
+        return new RemoteBundle(buildMetaData(assetMap, meta), remoteAgent, assetMap);
 
 
     }
@@ -58,17 +51,8 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return RemoteBundle new instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
-
         //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-
-        }
-        return new RemoteBundle(buildMetaData(subAssetIdMap, null), remoteAgent, assetMap);
-
+        return create(remoteAgent,assetMap,null);
 
     }
 
@@ -95,61 +79,17 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
             assetMap.put(name,aRemoteAsset);
 
         }
-        return new RemoteBundle(buildMetaData(allSubAsset, responseMap), remoteAgent, assetMap);
-
-
-    }
-
-    /**
-     * API to create a Remote bundle asset asset with given Bundle name
-     *
-     * @param assetMap map of all asset with name and assetID
-     * @return RemoteBundle
-     */
-    public static RemoteBundle create(Map<String, Asset> assetMap) {
-
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-
-        }
-        return new RemoteBundle(buildMetaData(subAssetIdMap, null), null, assetMap);
-
-
-    }
-
-    /**
-     * API to create a Remote bundle asset asset with given Bundle name
-     *
-     * @param assetMap map of all asset with name and assetID
-     * @param meta additional meta data
-     * @return RemoteBundle
-     */
-    public static RemoteBundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
-
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-
-        }
-        return new RemoteBundle(buildMetaData(subAssetIdMap, meta), null, assetMap);
+        return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);
 
 
     }
 
     /**
      * API to build the metadata for the bundle
-     * @param contents contents
      * @param meta additional metadata
      * @return metadata as string
      */
-    private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
+    private static String buildMetaData(Map<String, Asset> assetMap, Map<String, Object> meta) {
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
         ob.put(TYPE, BUNDLE);
@@ -159,7 +99,17 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-        ob.put(CONTENTS, contents);
+
+        //build meta data
+        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
+
+        Asset asset;
+        for (String name : assetMap.keySet()) {
+            asset = assetMap.get(name);
+            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
+        }
+
+        ob.put(CONTENTS, subAssetIdMap);
         return JSON.toPrettyString(ob);
     }
 
@@ -190,14 +140,18 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     @Override
     public Bundle add(String name, Asset asset) {
-        assetMap.put(name, asset);
-        return create(remoteAgent, assetMap, getMetadata());
+        Map<String,Asset> copyMap =getAssetMap();
+        copyMap.put(name, asset);
+        return create(remoteAgent, copyMap, getMetadata());
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
-        assetMap.putAll(assetMapp);
-        return create(remoteAgent, assetMap, getMetadata());
+
+        Map<String,Asset> copyMap =getAssetMap();
+        copyMap.putAll(assetMapp);
+
+        return create(remoteAgent, copyMap, getMetadata());
     }
 
     @Override

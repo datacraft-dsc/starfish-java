@@ -146,34 +146,23 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         URI uri = getMetaURI();
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-
         if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
             // register all sub asset
             RemoteBundle  remoteBundle =(RemoteBundle)a;
             Map<String, Object> allSubAsset = remoteBundle.getAll();
             for (String name : allSubAsset.keySet()) {
-                HttpPost httpPost = new HttpPost(uri);
-                addAuthHeaders(httpPost);
                 Asset subAsset = (Asset)allSubAsset.get(name);
-                httpPost.setEntity(HTTP.textEntity(subAsset.getMetadataString()));
-                allSubAsset.put(name, getaRemoteAsset(uri, httpclient, httpPost));
+                return registerAsset(subAsset);
+
             }
-            // register bundle
+        } else  {
             HttpPost httpPost = new HttpPost(uri);
             addAuthHeaders(httpPost);
             httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
             return getaRemoteAsset(uri, httpclient, httpPost);
-
-
-        } else if (a.getMetadata().get(TYPE).equals(DATA_SET)
-                || a.getMetadata().get(TYPE).equals(OPERATION)) {
-            HttpPost httpPost = new HttpPost(uri);
-            addAuthHeaders(httpPost);
-            httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
-            return getaRemoteAsset(uri, httpclient, httpPost);
-        } else {
-             throw new StarfishValidationException("Not a valid Asset type :" + a.getMetadata().get(TYPE));
         }
+
+        throw new StarfishValidationException("issue while registering the Asset");
     }
 
     private ARemoteAsset getaRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {

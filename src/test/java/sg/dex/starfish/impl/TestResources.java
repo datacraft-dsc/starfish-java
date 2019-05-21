@@ -1,13 +1,13 @@
 package sg.dex.starfish.impl;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.impl.url.ResourceAsset;
 
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.impl.url.ResourceAsset;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 public class TestResources {
 
@@ -17,6 +17,7 @@ public class TestResources {
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);
 
-		assertEquals("{}",ua.getMetadataString());
+		assertNotNull(ua.getMetadataString());
+		assertNotNull(((ResourceAsset) ua).getContentSize());
 	}
 }
