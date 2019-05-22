@@ -53,11 +53,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
         return remoteAgent.getContentStream(getAssetID());
 	}
 
-	/**
-	 * Gets RemoteAsset size
-	 *
-	 * @return size of the RemoteAsset
-	 */
+
 	@Override
 	public long getContentSize() {
 		try {
@@ -75,12 +71,6 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 		return o;
 	}
 
-	/**
-	 * Gets DID for this Asset
-	 *
-	 * @throws UnsupportedOperationException if unable to obtain DID
-	 * @return DID
-	 */
 	@Override
 	public DID getAssetDID() {
 		// DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path

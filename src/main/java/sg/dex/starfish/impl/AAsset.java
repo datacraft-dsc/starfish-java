@@ -23,6 +23,7 @@ public abstract class AAsset implements Asset {
 	protected final String id;
 
 	protected AAsset(String meta) {
+		//Utils.validateAssetMetaData(meta);
 		this.metadataString = meta;
 		this.id = Hex.toString(Hash.keccak256(meta));
 	}
@@ -42,12 +43,6 @@ public abstract class AAsset implements Asset {
 		return JSONObjectCache.parse(metadataString);
 	}
 
-	/**
-	 * Gets the DID for this Asset
-	 *
-	 * @throws UnsupportedOperationException if unable to obtain DID
-	 * @return DID
-	 */
 	@Override
 	public DID getAssetDID() {
 		throw new UnsupportedOperationException("Unable to obtain DID for asset of class: " + getClass());
@@ -63,11 +58,6 @@ public abstract class AAsset implements Asset {
 		return o;
 	}
 
-	/**
-	 * Gets the metadata for this asset as a String
-	 * 
-	 * @return The metadata as a String
-	 */
 	@Override
 	public String getMetadataString() {
 		return metadataString;

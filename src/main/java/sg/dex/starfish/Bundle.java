@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Interface representing an immutable asset bundle.
  * The sub-asset belongs to the bundle are defined in the asset
- * metadata.The content of the bundle can be other named asset
+ * metadata contents.The contents of the bundle can be other named asset
  *
  * @author Mike
  */
@@ -45,7 +45,7 @@ public interface Bundle extends Asset {
     public Bundle addAll(Map<String, Asset> assetMap);
 
     /**
-     * API to get an specific asset from an asset Bundle
+     * API to get an specific asset from an asset Bundle by asset name
      *
      * @param name The name of the sub-asset
      * @return The sub-asset referenced by the given name, or null if not present

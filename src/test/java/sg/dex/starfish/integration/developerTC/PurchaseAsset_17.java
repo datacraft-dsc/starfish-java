@@ -3,10 +3,12 @@ package sg.dex.starfish.integration.developerTC;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.crypto.Hash;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
+import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
@@ -25,7 +27,7 @@ import static sg.dex.starfish.constant.Constant.*;
  */
 public class PurchaseAsset_17 {
 
-    RemoteAsset remoteAsset;
+    ARemoteAsset remoteAsset;
     RemoteAgent remoteAgent;
     Listing listing;
 
@@ -33,9 +35,10 @@ public class PurchaseAsset_17 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        Asset a = MemoryAsset.create("Test Asset purchase");
 
         // create remote Asset
-        remoteAsset = RemoteAsset.create(remoteAgent, buildMetaData("Test Asset purchase".getBytes(),null));
+        remoteAsset = remoteAgent.registerAsset(a);
         remoteAgent.registerAsset(remoteAsset);
         Map<String, Object> data2 = new HashMap<>();
         //data.put( "status", "unpublished");
