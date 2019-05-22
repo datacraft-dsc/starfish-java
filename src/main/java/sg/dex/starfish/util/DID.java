@@ -46,7 +46,7 @@ public class DID {
 
 	/**
 	 * Creates a DID with the specified method, id, path and fragment
-	 * @param method The DID method, e.g. "ocn"
+	 * @param method The DID method, e.g. "op"
 	 * @param id The DID idstring
 	 * @param path The DID path
 	 * @param fragment The DID fragment
@@ -195,7 +195,7 @@ public class DID {
 	/**
 	 * Creates a random Ocean-compliant DID as a string, of the format:
 	 *
-	 *   "did:ocn:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+	 *   "did:op:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
 	 *
 	 * @return A valid Ocean DID represented as a string
 	 */
