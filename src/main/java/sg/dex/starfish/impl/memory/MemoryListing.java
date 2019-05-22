@@ -39,9 +39,6 @@ public class MemoryListing implements Listing {
         return  new MemoryListing(agent,listingID,metaMap);
     }
 
-    public String getAssetID() {
-        return (String) meta.get("assetid");
-    }
 
     @Override
     public Asset getAsset() {
@@ -81,5 +78,10 @@ public class MemoryListing implements Listing {
     @Override
     public String toString() {
         return "MemoryListing: " + JSON.toString(meta);
+    }
+
+    @Override
+    public String getAssetID() {
+        return getMetaData().get("assetid").toString();
     }
 }

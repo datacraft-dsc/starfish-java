@@ -63,7 +63,7 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 			assert (future.isDone());
 		});
 
-		MemoryJob<Object> memoryJob = MemoryJob.create(future);
+		MemoryJob<Asset> memoryJob = MemoryJob.create(future);
 		return memoryJob;
 	}
 

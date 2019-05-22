@@ -64,7 +64,7 @@ public class RemoteListing extends AListing {
     @Override
     public Asset getAsset() {
 
-        return remoteAgent.getAsset(getAssetId());
+        return remoteAgent.getAsset(getAssetID());
     }
 
     @Override
@@ -108,7 +108,8 @@ public class RemoteListing extends AListing {
      * API to get the AssetID
      * @return String assetId
      */
-    private String getAssetId() {
+    @Override
+    public String getAssetID() {
         return getMetaData().get("assetid").toString();
     }
 
@@ -116,7 +117,7 @@ public class RemoteListing extends AListing {
      * API to get the USer ID
      * @return String userId
      */
-    private String getUserId() {
+    private String getUserID() {
         return getMetaData().get("userid").toString();
     }
 
