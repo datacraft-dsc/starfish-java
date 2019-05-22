@@ -9,8 +9,6 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
-import sg.dex.starfish.util.JSON;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,8 +54,10 @@ public class MetaDataAccess_07 {
 
     @Test
     public void testRemoteAssetMetaDataAsset() {
+        byte data[] = {2, 5, 7};
+        MemoryAsset asset = MemoryAsset.create(data,getMetaData());
 
-        Asset remoteAsset = RemoteAsset.create(remoteAgent,  JSON.toString(getMetaData()));
+        Asset remoteAsset = remoteAgent.registerAsset(asset);
         assertEquals(remoteAsset.getMetadata().get("title"),"First listing");
         assertEquals(remoteAsset.getMetadata().get("description"),"this is the Memory listing");
 

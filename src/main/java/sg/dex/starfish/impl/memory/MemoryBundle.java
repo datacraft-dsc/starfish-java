@@ -34,21 +34,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      */
     private MemoryBundle(String metaData, Map<String, Asset> assetMap, MemoryAgent memoryAgent) {
         super(metaData, memoryAgent);
-        this.assetMap = assetMap;
+        this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
 
-    /**
-     * Constructor to create the instance of memory bundle
-     *
-     * @param metaData
-     * @param assetMap
-     */
-    private MemoryBundle(String metaData, Map<String, Asset> assetMap) {
-        super(metaData);
-        this.assetMap = assetMap;
-
-    }
 
     /**
      * Create a memory bundle asset asset with given given Asset named map and metadata
@@ -62,30 +51,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
 
         //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        assetMap = assetMap == null ? new HashMap<>() : assetMap;
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
 
-        }
-        return new MemoryBundle(buildMetaData(subAssetIdMap, meta), assetMap, memoryAgent);
-
-
-    }
-
-    /**
-     * Create a memory bundle asset asset with given given Asset named map and metadata
-     *
-     * @return it will return the instance of Memory Bundle
-     */
-    public static Bundle create() {
-
-
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        return new MemoryBundle(buildMetaData(subAssetIdMap, null), new HashMap<>());
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);
 
 
     }
@@ -100,57 +67,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
 
         //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
 
-        }
-        return new MemoryBundle(buildMetaData(subAssetIdMap, null), assetMap, memoryAgent);
-
-
-    }
-
-    /**
-     * API to create a memory bundle asset asset with given given Asset named map
-     *
-     * @param assetMap map of all asset with name and assetID
-     * @return it will return the instance of Memory Bundle
-     */
-    public static Bundle create(Map<String, Asset> assetMap) {
-
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-
-        }
-        return new MemoryBundle(buildMetaData(subAssetIdMap, null), assetMap, null);
-
-
-    }
-
-    /**
-     * API to create a memory bundle asset asset with given Asset named map and its respective metadata name
-     *
-     * @param assetMap map of all asset with name and assetID
-     * @param meta     meta data for the bundle
-     * @return it will return the instance of Memory Bundle
-     */
-    public static Bundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
-
-        //build meta data
-        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-        Asset asset;
-        for (String name : assetMap.keySet()) {
-            asset = assetMap.get(name);
-            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
-
-        }
-        return new MemoryBundle(buildMetaData(subAssetIdMap, meta), assetMap, null);
+        return create(memoryAgent,assetMap,null);
 
 
     }
@@ -158,11 +76,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * API to build the metadata for bundle Asset
      *
-     * @param contents
      * @param meta
      * @return
      */
-    private static String buildMetaData(Map<String, Map<String, String>> contents, Map<String, Object> meta) {
+    private static String buildMetaData(Map<String, Asset> assetMap, Map<String, Object> meta) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
@@ -175,8 +92,24 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-        ob.put(CONTENTS, contents);
-        return JSON.toString(ob);
+        Map<String, Map<String, String>> subAssetIdMap = buildContent(assetMap);
+
+        ob.put(CONTENTS, subAssetIdMap);
+        return JSON.toPrettyString(ob);
+    }
+
+    private static Map<String, Map<String, String>> buildContent(Map<String, Asset> assetMap) {
+        //build meta data
+        Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
+        assetMap = assetMap == null ? new HashMap<>() : assetMap;
+        Asset asset;
+        for (String name : assetMap.keySet()) {
+
+            asset = assetMap.get(name);
+            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));
+
+        }
+        return subAssetIdMap;
     }
 
     /**
@@ -197,8 +130,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      *
      * @return
      */
-    private Map<String, Object> getAssetMap() {
-       // Map<String, Object> assetMap = (Map<String, Object>) getMetadata().get(CONTENTS);
+    private Map<String, Asset> getAssetMap() {
         return assetMap.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
@@ -208,19 +140,21 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     @Override
     public Bundle add(String name, Asset asset) {
-        assetMap.put(name, asset);
-        return create(memoryAgent, assetMap, null);
+        Map<String, Asset> copyMap = getAssetMap();
+        copyMap.put(name, asset);
+        return create(memoryAgent, copyMap, null);
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
-        assetMap.putAll(assetMapp);
-        return create(memoryAgent, assetMapp, this.getMetadata());
+        Map<String, Asset> copyMap = getAssetMap();
+        copyMap.putAll(assetMapp);
+        return create(memoryAgent, copyMap, this.getMetadata());
     }
 
     @Override
     public Asset get(String name) {
-        return (Asset) getAssetMap().get(name);
+        return  getAssetMap().get(name);
     }
 
     @Override

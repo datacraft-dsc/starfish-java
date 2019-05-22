@@ -8,7 +8,7 @@ import sg.dex.starfish.util.Params;
 import java.util.Map;
 
 /**
- * Class representing a remote operation callable via the Invoke API
+ * Class representing a Invokable operation callable via the Invoke API
  *
  * @author Mike
  */
