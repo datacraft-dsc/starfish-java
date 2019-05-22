@@ -13,6 +13,7 @@ import java.util.Map;
  * Agents are addressed with a W3C DID
  *
  * @author Mike
+ * @version 0.5
  *
  */
 public abstract class AAgent implements Agent {

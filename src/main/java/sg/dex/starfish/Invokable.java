@@ -6,7 +6,7 @@ import java.util.Map;
  * Interface representing an invokable service.
  * 
  * @author Mike
- *
+ * @version 0.5
  */
 public interface Invokable<T> {
 

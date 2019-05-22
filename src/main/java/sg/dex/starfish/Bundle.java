@@ -12,6 +12,7 @@ import java.util.Map;
  * metadata contents.The contents of the bundle can be other named asset
  *
  * @author Mike
+ * @version 0.5
  */
 public interface Bundle extends Asset {
 

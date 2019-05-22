@@ -21,6 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This is an HTTP class for executing REST calls.
+ * <p>
+ *     The method of this class will be used to create the the HTTP instance,
+ *     execute  the HTTP request, get the content of the HTTP response.
+ * </p>
+ *
+ */
 public class HTTP {
 
     /**
@@ -53,6 +61,13 @@ public class HTTP {
         }
     }
 
+    /**
+     * API to execute the HTPP request based on user name ,passwrod, and the request data.
+     * @param httpRequest will have request data
+     * @param user user name
+     * @param password password of the user
+     * @return
+     */
     public static CloseableHttpResponse executeWithAuth(HttpUriRequest httpRequest, String user, String password) {
         CredentialsProvider provider = new BasicCredentialsProvider();
         UsernamePasswordCredentials cred = new UsernamePasswordCredentials(user, password);
@@ -84,6 +99,11 @@ public class HTTP {
         }
     }
 
+    /**
+     * This method is used to get the HTTP entity based on HTTP response
+     * @param response
+     * @return
+     */
     public static HttpEntity getEntity(HttpResponse response) {
         return response.getEntity();
     }
@@ -104,6 +124,12 @@ public class HTTP {
         }
     }
 
+    /**
+     * This method is used to crate a Multipart instance bas on content.
+     * @param partName
+     * @param body
+     * @return
+     */
     public static HttpEntity createMultiPart(String partName, ContentBody body) {
         return MultipartEntityBuilder
                 .create()

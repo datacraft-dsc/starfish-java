@@ -68,11 +68,6 @@ public class MemoryPurchase implements Purchase {
     }
 
     @Override
-    public Purchase refresh() {
-        return null;
-    }
-
-    @Override
     public String status() {
         return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();
     }

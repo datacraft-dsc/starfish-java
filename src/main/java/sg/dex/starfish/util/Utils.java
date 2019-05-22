@@ -18,8 +18,11 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Utility class for StarFish
+ * This class has methods for creating random hex string,coerces argument to respective type,
+ * check if the resource exist, build default metadata
  *
  * @author Mike
+ * @version 0.5
  */
 public class Utils {
 

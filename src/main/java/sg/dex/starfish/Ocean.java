@@ -18,7 +18,7 @@ import java.util.Map;
  * and supports functionality related to accessing the on-chain state of the Ocean network.
  *
  * @author Mike
- *
+ * @version 0.5
  */
 public class Ocean {
 	private static final Ocean DEFAULT_OCEAN=new Ocean(null);

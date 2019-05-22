@@ -16,6 +16,7 @@ import java.util.Map;
  * Includes default handing of metadata
  *
  * @author Mike
+ * @version 0.5
  *
  */
 public abstract class AAsset implements Asset {

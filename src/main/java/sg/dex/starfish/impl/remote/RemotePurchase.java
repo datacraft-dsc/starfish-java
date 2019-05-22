@@ -6,12 +6,17 @@ import sg.dex.starfish.Purchase;
 import java.util.HashMap;
 import java.util.Map;
 
+import static sg.dex.starfish.constant.Constant.STATUS;
+
 /**
- * Class representing an purchase managed via a remote agent.
+ * This class representing an purchase managed via a remote agent.
  *
- * This purcahse will be present in Ocean ecosystem and be referred by using the purchase ID.
+ * This class included methods for create , get listing,
+ * get status and metadata of the purchase
+ * The instance of this class will be present in Ocean ecosystem and be referred by using the purchase ID.
  *
  * @author Ayush
+ * @version 0.5
  */
 public class RemotePurchase implements Purchase {
 
@@ -74,14 +79,8 @@ public class RemotePurchase implements Purchase {
 
 
     @Override
-    public Purchase refresh() {
-        metaDataCache.put(purchase_id, remoteAgent.getPurchaseMetaData(purchase_id));
-        return this;
-    }
-
-    @Override
     public String status() {
-        return getMetaData().get("status").toString();
+        return getMetaData().get(STATUS).toString();
     }
 
     @Override

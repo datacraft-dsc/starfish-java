@@ -4,9 +4,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sg.dex.starfish.Listing;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,11 +37,9 @@ public class ListingSample {
         // 1.create Listing
 
         Listing listing = createNewListing(surfer);
-        System.out.println("Listing is created....");
 
         // 2.get  listing details
         Map<String,Object>result2 =listing.getMetaData();
-        System.out.println(JSON.toPrettyString(result2));
         assertNotNull(result2);
 
 
@@ -63,9 +60,7 @@ public class ListingSample {
         data.put( "status", newVal);
         data.put( "id", oldData.get("id"));
 
-        System.out.println(JSON.toPrettyString(oldData));
         Listing updateListing =surfer.updateListing(data);
-        System.out.println(JSON.toPrettyString(updateListing.getMetaData()));
         assertNotNull(updateListing);
 
 

@@ -6,6 +6,7 @@ import java.util.Map;
  * Interface representing an Account with one or more agents in the Ocean ecosystem
  * 
  * @author Tom
+ * @version 0.5
  *
  */
 public interface Account {

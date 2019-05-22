@@ -16,7 +16,7 @@ import java.io.InputStream;
  * - The byte representation of the data can be obtained (subject to appropriate permissions)
  *
  * @author Mike
- *
+ * @version 0.5
  */
 public interface DataAsset extends Asset {
 
