@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  * @author Mike
  *
  */
-public class MemoryJob<T> implements Job {
+public class MemoryJob<T> implements Job<T> {
 
 	private final Future<T> future;
 
@@ -39,9 +39,8 @@ public class MemoryJob<T> implements Job {
 	 * @param <T> This describes my type parameter
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
-	@SuppressWarnings("javadocs")
-	public static<T> MemoryJob create(Future<T> future) {
-		return new <T>MemoryJob<T>(future);
+	public static<T> MemoryJob<T> create(Future<T> future) {
+		return new MemoryJob<T>(future);
 	}
 
 	@Override

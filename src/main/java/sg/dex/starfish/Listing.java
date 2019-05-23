@@ -71,5 +71,11 @@ public interface Listing {
      * @return Listing ID
      */
     public String getId();
+    
+    /**
+     * Gets the Asset ID of this listing
+     * @return The Asset ID
+     */
+    public String getAssetID();
 
 }
