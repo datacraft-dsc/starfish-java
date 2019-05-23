@@ -6,6 +6,7 @@ import java.util.Map;
  *
  * This interface is for all the basis functionality that Market provide.
  * It include the getting the listing ,updating and creating the listing.
+ * @version 0.5
  */
 
 public interface MarketAgent {

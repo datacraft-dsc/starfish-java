@@ -1,18 +1,17 @@
 package sg.dex.starfish.samples.squid;
 
-import java.math.BigInteger;
-import java.util.Properties;
-
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.InitializationException;
 import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
-
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.util.DID;
+
+import java.math.BigInteger;
+import java.util.Properties;
 
 /**
  * Test class for working with a Ocean Commons Marketplace asset

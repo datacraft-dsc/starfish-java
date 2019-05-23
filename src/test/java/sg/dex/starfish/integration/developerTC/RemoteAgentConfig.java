@@ -214,7 +214,7 @@ public class RemoteAgentConfig {
             }
 
         } catch (IOException ioe) {
-            System.out.println("Exception while reading input " + ioe);
+//            System.out.println("Exception while reading input " + ioe);
         } finally {
             // close the streams using close method
             try {

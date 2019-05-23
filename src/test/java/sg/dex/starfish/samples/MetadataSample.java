@@ -26,7 +26,6 @@ public class MetadataSample {
 		RemoteAgent surfer  = RemoteAgentConfig.getRemoteAgent();
 
 		Asset a=surfer.getAsset(assetID);
-		System.out.println(a.getAssetID());
 		if (assetID == defaultAssetID) {
 			assertEquals("{\"name\":\"My Test Asset\"}",a.getMetadataString());
 		} else {

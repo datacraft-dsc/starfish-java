@@ -1,13 +1,17 @@
 package sg.dex.starfish.impl;
 
+import sg.dex.starfish.Account;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import sg.dex.starfish.Account;
-
 /**
  * Class representing an Account in the Ocean Ecosystem
+ * <p>
+ *     This class include method to get the accoutn ID,
+ *     get the credential.
+ * </p>
  *
  * @author Tom
  */
@@ -23,12 +27,12 @@ public abstract class AAccount implements Account {
 	 */
 	protected AAccount(String id) {
 		this.id=id;
-		this.credentials = new HashMap<String,Object>();
+		this.credentials = new HashMap<>();
 	}
 
 	protected AAccount(String id, Map<String, Object> credentials) {
 		this.id=id;
-		this.credentials = (credentials == null) ? new HashMap<String,Object>() : credentials;
+		this.credentials = (credentials == null) ? new HashMap<>() : credentials;
 	}
 
 	/**

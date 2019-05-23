@@ -10,7 +10,8 @@ import java.util.Map;
 
 /**
  * Utility class for handling invoke parameters
- *
+ *This class includes the methods for formatting the input passed, preparing the result ,
+ * formatting the response
  * @author Mike
  *
  */
@@ -71,10 +72,10 @@ public class Params {
 	}
 
     /**
-     * API to format response form any REST call.
-     * It will map the raw response data  to respective response based on metadata.
-     * Eg: if the response is type Json ,then it map the response to Json
-     *     if the response is type asset, then it map to asset.
+     * This method is used to format result of the response form Invoke calls.
+     * It will map the result data of the response to result defined in the metadata
+     * Eg: if the result of the response is type Json ,then it type caste the response to Json
+     *     if the result of the response is type asset, then it ype caste the response map to asset.
      * @param operation instance reference
      * @param res response received from the Invoke call
      * @param remoteAgent agent on which this operation has done.

@@ -9,7 +9,7 @@ import java.util.Map;
  * Interface representing a listing of an asset on the Ocean Network
  * <p>
  * Listings can be used to query and purchase Assets
- *
+ * @version 0.5
  * @author Mike
  */
 public interface Listing {

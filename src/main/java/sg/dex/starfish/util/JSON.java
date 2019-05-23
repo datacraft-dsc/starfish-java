@@ -13,10 +13,19 @@ import java.util.Map;
 
 /**
  * Utility class for handling JSON objects
+ * <p>
+ *     This class include method to covert json string to map ,
+ *     parse the json string.
+ * </p>
  * @author Mike
+ * @version 0.5
  *
  */
 public class JSON {
+
+	private static String WHITESPACE="                                                             ";
+	private static int WHITESPACE_LENGTH=WHITESPACE.length();
+
 	/**
 	 * Converts an object to an efficient JSON string representation
 	 * @param value Object to represent as a JSON String
@@ -90,9 +99,6 @@ public class JSON {
 		}
 		return sb;
 	}
-
-	private static String WHITESPACE="                                                             ";
-	private static int WHITESPACE_LENGTH=WHITESPACE.length();
 
 	/**
 	 * Appends a whitespace string of the specified length.

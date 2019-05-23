@@ -49,7 +49,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      */
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-
         //build meta data
 
         return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);

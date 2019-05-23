@@ -147,7 +147,6 @@ public class InvokeServiceFree_20 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for PRIME OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
@@ -188,6 +187,7 @@ public class InvokeServiceFree_20 {
 
         // waiting for job to get completed
         Object remoteAsset = invalidJob.awaitResult(10000);
+        assertNotNull(remoteAsset);
 
 
 
@@ -229,11 +229,9 @@ public class InvokeServiceFree_20 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 Asset a = (Asset) response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.getContent());
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
@@ -267,11 +265,9 @@ public class InvokeServiceFree_20 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for HASHING OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for  Hashing Sync >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
@@ -303,13 +299,10 @@ public class InvokeServiceFree_20 {
         // get asset form asset id
         Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
 
-
-        System.out.println(remoteOperation.getAssetID());
-
         // invoking the prime operation and will get the job associated
         Map<String, Object> metaData = remoteOperation.invokeResult(metaMap);
+        assertNotNull(metaData);
 
-        System.out.println(metaData);
 
 
     }
@@ -356,11 +349,9 @@ public class InvokeServiceFree_20 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for ASSET HASHING OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
@@ -415,11 +406,9 @@ public class InvokeServiceFree_20 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for ASSET HASHING OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
