@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static sg.dex.starfish.constant.Constant.*;
+
 
 /**
  * An in-memory agent implementation
@@ -198,8 +198,8 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
             throw new IllegalArgumentException("Asset Id is mandatory, cannot be null");
         }
 
-        listingStore.put(listingData.get(ID).toString(), MemoryListing.create(this, listingData));
-        return listingStore.get(listingData.get(ID).toString());
+        listingStore.put(listingData.get("id").toString(), MemoryListing.create(this, listingData));
+        return listingStore.get(listingData.get("id").toString());
     }
 
     /**
@@ -209,12 +209,12 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {
-        if (purchaseData.get(LISTING_ID) == null) {
+        if (purchaseData.get("listingid") == null) {
             throw new IllegalArgumentException("Listing Id is mandatory, cannot be null");
         }
 
-        purchaseStore.put(purchaseData.get(ID).toString(), MemoryPurchase.create(this, purchaseData));
-        return purchaseStore.get(purchaseData.get(ID).toString());
+        purchaseStore.put(purchaseData.get("id").toString(), MemoryPurchase.create(this, purchaseData));
+        return purchaseStore.get(purchaseData.get("id").toString());
     }
 
 
@@ -225,8 +225,8 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
      */
     private boolean isSyncMode(Operation operation) {
         Map<String,Object> metaData = operation.getMetadata();
-        Object mode = metaData.get(MODE);
-        if(mode!=null && mode.toString().equals(SYNC)){
+        Object mode = metaData.get("modes");
+        if(mode!=null && mode.toString().equals("sync")){
             return true;
         }
         return false;
