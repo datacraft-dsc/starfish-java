@@ -40,6 +40,8 @@ public class InvokeServiceFree_20 {
         did=getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin","OpenSesame");
         ocean.registerLocalDID(did,getDdo());
+//        ocean.registerDDO(getDdo());
+
 
     }
 
@@ -58,7 +60,7 @@ public class InvokeServiceFree_20 {
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "http://localhost:3000" ));
+                "serviceEndpoint", "http://localhost:3000/api/v1" ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
                 "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
