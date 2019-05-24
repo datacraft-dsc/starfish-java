@@ -27,17 +27,6 @@ public interface Purchase {
 
 
     /**
-     * FIXME: what is the different between info and metadata?
-     * 
-     * Gets the Purchase information for this Purchase.
-     * <p>
-     * Purchase information is defined by the marketplace on which the Purchase is present.
-     * @return Information map
-     */
-    Map<String, Object> getInfo();
-
-
-    /**
      * API to ge the status of Purchase.
      * Possible status can be :
      * FIXME: what are the states?

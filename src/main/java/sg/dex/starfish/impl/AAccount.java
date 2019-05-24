@@ -35,24 +35,11 @@ public abstract class AAccount implements Account {
 		this.credentials = (credentials == null) ? new HashMap<>() : credentials;
 	}
 
-	/**
-	 * Gets the ID for an Account
-	 *
-	 * @return Account identifier
-	 */
 	@Override
 	public String getID() {
 		return id;
 	}
 
-	/**
-	 * Gets the credentials stored for this Account.
-	 *
-	 * Required credentials are defined by the agent implementation, but would typically include
-	 * things like user name, password etc.
-	 *
-	 * @return credentials
-	 */
         @Override
 	public Map<String,Object> getCredentials() {
 		// deep cloning the map
@@ -60,10 +47,6 @@ public abstract class AAccount implements Account {
 			.collect(Collectors.toMap(e -> e.getKey(),
 						  e -> e.getValue()));
         }
-
-	public void setCredential(String key, Object value) {
-		credentials.put(key, value);
-	}
 
 	@Override
 	public String toString() {

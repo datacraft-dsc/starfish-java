@@ -7,7 +7,8 @@ import sg.dex.starfish.util.JSON;
 
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.AGREEMENT;
+import static sg.dex.starfish.constant.Constant.ID;
 
 /**
  *Class representing a local in-memory Listing instance.
@@ -33,7 +34,6 @@ public class MemoryListing implements Listing {
      * @return The new Listing
      */
     public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {
-
     	String listingID= metaMap.get(ID).toString();
 
         return  new MemoryListing(agent,listingID,metaMap);
@@ -48,11 +48,6 @@ public class MemoryListing implements Listing {
     @Override
     public Map<String,Object> getAgreement() {
        return getMetaData().get(AGREEMENT)!= null ?(Map<String, Object>)getMetaData().get(AGREEMENT): null;
-    }
-
-    @Override
-    public Map<String, Object> getInfo() {
-        return  getMetaData().get(INFO)!= null ?(Map<String, Object>)getMetaData().get("info"): null;
     }
 
     @Override

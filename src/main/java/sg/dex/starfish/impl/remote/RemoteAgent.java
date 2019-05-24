@@ -27,10 +27,8 @@ import sg.dex.starfish.util.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -84,10 +82,12 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
     /**
      * Creates a RemoteAgent with the specified Ocean connection and DID
+     * This method will create a new instance of Remote agent based on
+     * Ocean and DID reference passed as an argument
      *
      * @param ocean Ocean connection to use
      * @param did   DID for this agent
-     * @return RemoteAgent
+     * @return RemoteAgent new instance of remote Agent
      */
     public static RemoteAgent create(Ocean ocean, DID did) {
         return new RemoteAgent(ocean, did, null);
@@ -146,29 +146,41 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         return new RemoteAgent(ocean, did, acc);
     }
 
+    private ARemoteAsset registerBundle(Asset a) {
+        RemoteBundle remoteBundle = (RemoteBundle) a;
+
+        Map<String, Asset> resultAsset = new HashMap<>();
+        // getting  all sub asset
+        Map<String, Object> allSubAsset = remoteBundle.getAll();
+        for (String name : allSubAsset.keySet()) {
+            Asset subAsset = (Asset) allSubAsset.get(name);
+            if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {
+                registerBundle(subAsset);
+            }
+            // registering each sub asset
+            resultAsset.put(name, registerRemoteAsset(subAsset));
+        }
+        // registering bundle itself
+
+        return registerRemoteAsset(RemoteBundle.create(this, resultAsset,a.getMetadata()));
+    }
+
     @Override
     public ARemoteAsset registerAsset(Asset a) {
+        if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
+            return registerBundle(a);
+        }
+        return registerRemoteAsset(a);
+
+    }
+
+    private ARemoteAsset registerRemoteAsset(Asset a) {
         URI uri = getMetaURI();
         CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        //TODO need to update this logic for bundle
-        if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
-            // register all sub asset
-            RemoteBundle remoteBundle = (RemoteBundle) a;
-            Map<String, Object> allSubAsset = remoteBundle.getAll();
-            for (String name : allSubAsset.keySet()) {
-                Asset subAsset = (Asset) allSubAsset.get(name);
-                return registerAsset(subAsset);
-
-            }
-        } else {
-            HttpPost httpPost = new HttpPost(uri);
-            addAuthHeaders(httpPost);
-            httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
-            return createRemoteAsset(uri, httpclient, httpPost);
-        }
-
-        throw new StarfishValidationException("issue while registering the Asset");
+        HttpPost httpPost = new HttpPost(uri);
+        addAuthHeaders(httpPost);
+        httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+        return createRemoteAsset(uri, httpclient, httpPost);
     }
 
     /**
@@ -208,7 +220,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      *
      * @param request HttpRequest on which the header will be updated
      */
-    private void addAuthHeaders(HttpRequest request) {
+    protected void addAuthHeaders(HttpRequest request) {
         if (account == null) {
             throw new AuthorizationException("User don`t have account credentials");
         } else {
@@ -290,7 +302,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (IOException e) {
-            throw new JobFailedException(" Getting asset by ID failed  :", e);
+            throw new JobFailedException(" Getting asset by ID failed for asset ID :" + id, e);
         }
     }
 
@@ -381,7 +393,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
         // check if the asset is operation or bundle it will not have content, so return without upload
         if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {
-            throw new UnsupportedOperationException("Unable to obtain DID for asset of class: " + getClass());
+            throw new UnsupportedOperationException("Bundle don`t have content,so cannot be upload " + asset.getMetadata());
         } else if (asset.getMetadata().get(TYPE).equals(OPERATION)) {
             return;
         }
@@ -395,7 +407,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         post.addHeader("Accept", "application/json");
 
         InputStream assetContentAsStream = asset.asDataAsset().getContentStream();
-        HttpEntity entity = HTTP.createMultiPart("file", new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
+        HttpEntity entity = HTTP.createMultiPart(FILE, new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
 
         post.setEntity(entity);
 
@@ -419,7 +431,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (IOException e) {
-            throw new RemoteException(" Upload asset Content failed:  :", e);
+            throw new RemoteException(" Upload asset Content failed for asset id : " + asset.getAssetID(), e);
         }
     }
 
@@ -505,7 +517,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @throws UnsupportedOperationException if the agent does not support the Storage API
      * @throws IllegalArgumentException      on invalid URI for assetID
      */
-    private URI getStorageURI(String assetID) {
+    protected URI getStorageURI(String assetID) {
         String storageEndpoint = getStorageEndpoint();
         if (storageEndpoint == null) throw new UnsupportedOperationException(
                 "This agent does not support the Storage API (no endpoint defined)");
@@ -531,24 +543,6 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
             return new URI(metaEndpoint + DATA);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create valid URI for asset metadata", e);
-        }
-    }
-
-    /**
-     * Gets URL for a given remoteAsset
-     *
-     * @param remoteAsset for the URL
-     * @return The URL for the remoteAsset
-     * @throws IllegalStateException No storage endpoint available for agent
-     * @throws Error                 on failure to get asset URL
-     */
-    private URL getURL(RemoteAsset remoteAsset) {
-        String storageEndpoint = getStorageEndpoint();
-        if (storageEndpoint == null) throw new IllegalStateException("No storage endpoint available for agent");
-        try {
-            return new URL(storageEndpoint + "/" + remoteAsset.getAssetID());
-        } catch (MalformedURLException e) {
-            throw new Error("Failed to get asset URL", e);
         }
     }
 
@@ -634,7 +628,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     Map<String, Object> result = JSON.toMap(body);
                     String status = (String) result.get(STATUS);
-                    if (status == null) throw new RemoteException("No status in job result: " + body);
+                    if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + body);
                     if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED) || status.equals(SCHEDULED)) {
                         return null; // no result yet
                     }
@@ -655,13 +649,13 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (IOException e) {
-            throw new JobFailedException(" Job invocation failed:  :", e);
+            throw new JobFailedException(" Job invocation failed for job id : " + jobID, e);
         }
     }
 
     @Override
     public Job invoke(Operation operation, Map<String, Object> params) {
-        Map<String, Object> request = new HashMap<String, Object>(2);
+        Map<String, Object> request = new HashMap<>(2);
         request.put(OPERATION, operation.getAssetID());
         request.put(PARAMS, Params.formatParams(operation, params));
         return invoke(request, operation.getAssetID());
@@ -691,9 +685,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (ClientProtocolException e) {
-            throw new JobFailedException(" Client Protocol Exception :", e);
+            throw new JobFailedException(" Client Protocol Exception for asset ID: " + assetID + "request :" + JSON.toPrettyString(request), e);
         } catch (IOException e) {
-            throw new JobFailedException(" IOException occurred  Exception :", e);
+            throw new JobFailedException(" IOException occurred  for asset ID: " + assetID + "request :" + JSON.toPrettyString(request), e);
         }
     }
 
@@ -722,9 +716,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (ClientProtocolException e) {
-            throw new JobFailedException(" Client Protocol Exception :", e);
+            throw new JobFailedException(" Client Protocol operation : " + operation.toString() + "params :" + JSON.toPrettyString(params), e);
         } catch (IOException e) {
-            throw new JobFailedException(" IOException occurred  Exception :", e);
+            throw new JobFailedException(" IOException occurred  operation : " + operation.toString() + "params :" + JSON.toPrettyString(params), e);
         }
     }
 
@@ -766,7 +760,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (IOException e) {
-            throw new JobFailedException(" Job invocation failed:  :", e);
+            throw new JobFailedException(" Job invocation failed for operation : " + operation.toString() + "params :" + JSON.toPrettyString(params), e);
         }
     }
 
@@ -862,7 +856,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
     }
 
     /**
-     * API to get the Market metadata from the agent by providing market URL.
+     * This method is to get the Market metadata from the agent by providing market URL.
      *
      * @param marketAgentUrl market url
      * @return
@@ -950,6 +944,11 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
     @Override
     public Listing createListing(Map<String, Object> listingData) {
+        Object assetId = listingData.get("assetid");
+        if (assetId == null) {
+            throw new StarfishValidationException("Asset ID not found, asset id is mandatory for creating listing");
+        }
+
         String response = createMarketAgentInstance(listingData, LISTING_URL);
         String id = JSON.toMap(response).get("id").toString();
         return RemoteListing.create(this, id);
@@ -959,16 +958,17 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * API to update the data of existing listing.
      * if the listing id passed is not exist it will throw Exception
      *
-     * @param newValue map of new value need to be updated for listing
+     * @param metaMap map of new value need to be updated for listing
      * @return Listing return updated listing instance
      */
-    public Listing updateListing(Map<String, Object> newValue) {
+    public Listing updateListing(Map<String, Object> metaMap) {
 
-        String id = newValue.get(ID).toString();
-        if (id == null) {
-            throw new GenericException("Listing ID not found");
+        if (null == metaMap || metaMap.get(ID)==null) {
+            throw new StarfishValidationException("Either the argument pass is null or Listing " +
+                    "ID not found in the meta map passed");
         }
-        updateMarketMetaData(newValue, LISTING_URL + "/" + id);
+        String id =metaMap.get(ID).toString();
+        updateMarketMetaData(metaMap, LISTING_URL + "/" + id);
         return RemoteListing.create(this, id);
 
     }
@@ -979,7 +979,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @param id id
      * @return metadata
      */
-    public Map<String, Object> getListingMetaData(String id) {
+    protected Map<String, Object> getListingMetaData(String id) {
         String response = getMarketMetaData(LISTING_URL + "/" + id);
         return JSON.toMap(response);
     }
@@ -989,7 +989,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      *
      * @return List of all listing
      */
-    public List<Listing> getAllListing() {
+    protected List<Listing> getAllListing() {
 
         List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
 
@@ -1022,6 +1022,10 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @return Purchase
      */
     public Purchase createPurchase(Map<String, Object> data) {
+        // check if the data is not null and it must have listing id
+        if(null == data || data.get(LISTING_ID)== null){
+            throw new StarfishValidationException("Either Purchase metadata is null or it doesn't have Listing ID.");
+        }
         String response = createMarketAgentInstance(data, PURCHASE_URL);
         String id = JSON.toMap(response).get(ID).toString();
         return RemotePurchase.create(this, id);
@@ -1075,7 +1079,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
     }
 
     /**
-     * API to get the logged in user details from the Agent
+     * This method is to get the log in user details from the this agent
      *
      * @return userDetails map
      */
@@ -1142,13 +1146,14 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 response.close();
             }
         } catch (IOException e) {
-            throw new RemoteException(" Create token failed:  :", e);
+            throw new RemoteException(" Create token failed for account  :" + account, e);
         }
 
     }
 
     /**
-     * This method is  to get the content of an Asset based on Asset id passed.
+     * This method is  to get the content of an Asset based on Asset id passed
+     * as an argument.
      *
      * @param assetId of the asset
      * @return Stream of asset content
@@ -1164,7 +1169,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
                 if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found at: " + uri);
+                    throw new RemoteException("Asset ID not found for assetID :" + assetId + "and uri is : " + uri);
                 }
                 if (statusCode == 200) {
                     InputStream inputStream = HTTP.getContent(response);
@@ -1187,11 +1192,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @param token auth token
      */
     private void updateAccountData(String token) {
-        if (null == account) {
-            return;
-        }
         account.getUserDataMap().put(TOKEN, token);
-
     }
 
 

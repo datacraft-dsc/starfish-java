@@ -2,20 +2,17 @@ package sg.dex.starfish.integration.developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -46,7 +43,7 @@ public class PurchaseAsset_17 {
          listing = remoteAgent.createListing(data2);
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
-        remoteAgent.updateListing(data2);
+        listing =remoteAgent.updateListing(data2);
     }
 
 
@@ -61,24 +58,30 @@ public class PurchaseAsset_17 {
         assertNotNull(purchase);
 
     }
-    private  String buildMetaData(byte[] data, Map<String, Object> meta) {
-        String hash = Hex.toString(Hash.keccak256(data));
+    @Test
+    public void testPurchaseWithUnpublishedListing(){
+        Asset a = MemoryAsset.create("Test Asset purchase");
 
-        Map<String, Object> ob = new HashMap<>();
-        ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(CONTENT_HASH, hash);
-        ob.put(TYPE, DATA_SET);
-        ob.put(SIZE, Integer.toString(data.length));
-        ob.put(CONTENT_TYPE, "application/octet-stream");
+        // create remote Asset
+        remoteAsset = remoteAgent.registerAsset(a);
+        ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(remoteAsset);
+        Map<String, Object> data2 = new HashMap<>();
+        data2.put("assetid", remoteAsset.getAssetID());
+        Listing listing = remoteAgent.createListing(data2);
+        data2.put("id", listing.getMetaData().get("id"));
+        data2.put(STATUS, UNPUBLISHED);
+        listing =remoteAgent.updateListing(data2);
+        //System.out.println(listing.getId());
+       Map<String,Object> purchaseData = new HashMap<>();
+        purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
 
-        if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
-                ob.put(me.getKey(), me.getValue());
-            }
-        }
+        Purchase purchase = remoteAgent.createPurchase(purchaseData);
 
-        return JSON.toString(ob);
+        assertNotNull(purchase);
+        assertEquals(purchase.getMetaData().get(STATUS),WISHLIST);
+;
     }
+
 
 
 }

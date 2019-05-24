@@ -27,7 +27,7 @@ public class RemoteAccount extends AAccount {
 	}
 
 	/**
-	 * API to create instance of Remote Account
+	 * This method is to create instance of Remote Account
 	 * @param id The identifier for this account
 	 * @param credentials The credential for this account
 	 * @return instance of remote account
@@ -39,8 +39,8 @@ public class RemoteAccount extends AAccount {
 	}
 
 	/**
-	 * API to get the user data map.
-	 * Userdata map contain value related to user which may change like Role..
+	 * This method is to get the user data map.
+	 * Userdata map contains value related to user which may change like Role ,token,..
 	 * @return userdata map
 	 */
 	public Map<String, Object> getUserDataMap() {

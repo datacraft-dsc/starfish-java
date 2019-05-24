@@ -13,10 +13,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TODO: should implement MarketAgent, StorageAgent etc.
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * An in-memory agent implementation
+ * This class methods include creation of memory agent,
+ * get asset based on id, create listing ,create purchase,invoke service.
  *
  * @author Mike
  */
@@ -193,26 +195,26 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
     @Override
     public Listing createListing(Map<String, Object> listingData) {
         if (listingData.get("assetid") == null) {
-            throw new IllegalArgumentException("Assset Id is mandatory");
+            throw new IllegalArgumentException("Asset Id is mandatory, cannot be null");
         }
 
-        listingStore.put(listingData.get("id").toString(), MemoryListing.create(this, listingData));
-        return listingStore.get(listingData.get("id").toString());
+        listingStore.put(listingData.get(ID).toString(), MemoryListing.create(this, listingData));
+        return listingStore.get(listingData.get(ID).toString());
     }
 
     /**
      * API to get the Purchase instance
      *
-     * @param purchaseData map of purchased data
-     * @return MemoryPurchase
+     * @param purchaseData map of purchased data based on listing id
+     * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {
-        if (purchaseData.get("listingid") == null) {
-            throw new IllegalArgumentException("Listing Id is mandatory");
+        if (purchaseData.get(LISTING_ID) == null) {
+            throw new IllegalArgumentException("Listing Id is mandatory, cannot be null");
         }
 
-        purchaseStore.put(purchaseData.get("id").toString(), MemoryPurchase.create(this, purchaseData));
-        return purchaseStore.get(purchaseData.get("id").toString());
+        purchaseStore.put(purchaseData.get(ID).toString(), MemoryPurchase.create(this, purchaseData));
+        return purchaseStore.get(purchaseData.get(ID).toString());
     }
 
 
@@ -222,9 +224,9 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @return true if mode is sync else false
      */
     private boolean isSyncMode(Operation operation) {
-        Map<String,Object> metatData = operation.getMetadata();
-        Object mode = metatData.get("mode");
-        if(mode!=null && mode.toString().equals("sync")){
+        Map<String,Object> metaData = operation.getMetadata();
+        Object mode = metaData.get(MODE);
+        if(mode!=null && mode.toString().equals(SYNC)){
             return true;
         }
         return false;
