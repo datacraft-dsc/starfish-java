@@ -28,7 +28,7 @@ public class ProvUtilTest {
 
     @Test
     public void testProvA() {
-        JSONObject a=ProvUtil.getProvObject();
+        JSONObject a=ProvUtil.getBaseProvObject();
         try{
             File temp = new File(System.getProperty("java.io.tmpdir")+
                                  System.getProperty("file.separator")+
@@ -58,4 +58,29 @@ public class ProvUtilTest {
             fail("file has length = 0");
         }
     }
+
+    @Test
+    public void testPublishProv() {
+        try{
+            File temp = new File(System.getProperty("java.io.tmpdir")+
+                                 System.getProperty("file.separator")+
+                                 "publishprov.json");
+            Writer w= new FileWriter(temp);
+            String actId=UUID.randomUUID().toString();
+            String agentId=UUID.randomUUID().toString();
+            String jsonstring=JSON.toPrettyString(ProvUtil.createPublishProvenance(actId,agentId));
+            try{
+                JSON.validateJson(jsonstring);
+            }catch (Exception e){
+                fail("invalid json ");
+            }
+            w.write(jsonstring);
+            w.flush();
+            assertTrue(temp.length()>0);
+
+        }catch(IOException ioe){
+            fail("file has length = 0");
+        }
+    }
+
 }

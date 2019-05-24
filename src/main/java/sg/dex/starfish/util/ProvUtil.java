@@ -31,6 +31,9 @@ public class ProvUtil{
     }
 
 
+    /*
+     * Returns a Entity referring to "this", the asset being registered
+     */
     public static JSONObject createThisInput(){
         JSONObject type=new JSONObject();
         type.put("$",OPF+":asset");
@@ -54,12 +57,18 @@ public class ProvUtil{
         return res;
     }
 
+    /*
+     * Returns a JSON Object representing a list of entities 
+     */
     public static JSONObject createEntities(JSONObject... ent){
         return jsonMapEntry("entity",ent);
     }
 
     public static enum AgentIdType { ACCOUNT, ETHEREUMACCOUNT};
 
+    /*
+     * Returns a JSON Object representing an entity, given the id and type
+     */
     public static JSONObject createAgent(String agentId,AgentIdType agentType){
         JSONObject type=new JSONObject();
         type.put("$",OPF+":"+agentType.toString());
@@ -72,10 +81,17 @@ public class ProvUtil{
         return thisContainer;
     }
 
+    /*
+     * Returns a JSON Object representing a list of agents
+     */
     public static JSONObject createAgents(JSONObject... age){
         return jsonMapEntry("agent",age);
     }
 
+    /*
+     * Returns a JSON Object representing an associatedWith Relationship, which
+     * connects the agentID with the activityId
+     */
     public static JSONObject associatedWith(String agentId, String activityId){
         JSONObject type=new JSONObject();
         type.put("prov:agent",agentId);
@@ -89,6 +105,10 @@ public class ProvUtil{
         return ret;
     }
 
+    /*
+     * Returns a JSON Object representing an generatedBy Relationship, which
+     * connects the entityid with the activityId
+     */
     public static JSONObject generatedBy(String entityId, String activityId){
         JSONObject type=new JSONObject();
         type.put("prov:entity",entityId);
@@ -104,6 +124,9 @@ public class ProvUtil{
 
     public static enum ActivityType { PUBLISH, IMPORT, OPERATION};
 
+    /*
+     * Returns an Activity identified by activity id and type
+     */
     public static JSONObject createActivity(String actId,ActivityType activityType){
         JSONObject type=new JSONObject();
         type.put("$",OPF+":"+activityType.toString());
@@ -116,6 +139,9 @@ public class ProvUtil{
         return thisContainer;
     }
 
+    /*
+     * Returns a list of Activities 
+     */
     public static JSONObject createActivities(JSONObject... acts){
         return jsonMapEntry("activity",acts);
     }
@@ -123,11 +149,26 @@ public class ProvUtil{
     /**
      * Create a default Prov object with the prefixes and the "this" entity
      */
-    public static JSONObject getProvObject(){
+    public static JSONObject getBaseProvObject(){
         JSONObject e = createEntities(createThisInput());
         JSONObject res=defaultPrefix();
         res.putAll(e);
         return res;
     }
 
+    /**
+     * Create default provenance metadata for publishing an asset
+     */
+    public static JSONObject createPublishProvenance(String actId,
+                                        String agentId) {
+        JSONObject a=getBaseProvObject();
+        JSONObject act=createActivity(actId,ActivityType.PUBLISH);
+        JSONObject agent=createAgent(agentId,AgentIdType.ACCOUNT);
+
+        a.putAll(createActivities(act));
+        a.putAll(createAgents(agent));
+        a.putAll(associatedWith(agentId,actId));
+        a.putAll(generatedBy("this",actId));
+        return a;
+    }
 }
