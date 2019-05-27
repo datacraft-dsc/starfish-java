@@ -5,6 +5,7 @@ import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -82,6 +83,10 @@ public class PurchaseAsset_17 {
 ;
     }
 
+    @Test(expected = StarfishValidationException.class)
+    public void testPurchaseWithNull(){
+        remoteAgent.createPurchase(null);
+    }
 
 
 }

@@ -53,16 +53,16 @@ public class OperationTest_23 {
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "http://localhost:3000" ));
+                "serviceEndpoint", "http://localhost:3000/api/v1" ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/meta"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/assets"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/auth"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/auth"));
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
 

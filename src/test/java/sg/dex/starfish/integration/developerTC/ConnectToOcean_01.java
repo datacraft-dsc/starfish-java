@@ -46,7 +46,7 @@ public class ConnectToOcean_01 {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testOceanConnectException() {
+    public void testOceanConnectWithNullDdo() {
 
         //
         Ocean ocean = Ocean.connect();
@@ -73,6 +73,16 @@ public class ConnectToOcean_01 {
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "testAgain");
 
+
+    }
+
+    @Test
+    public void testnullDID(){
+        Map<String, Object> ddo = new HashMap<>();
+        DID surferDID = null;
+        ddo.put("test", "test");
+        ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
+        assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
 
     }
 

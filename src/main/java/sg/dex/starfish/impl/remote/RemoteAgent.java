@@ -167,6 +167,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
 
     @Override
     public ARemoteAsset registerAsset(Asset a) {
+        if(null == a){
+            throw  new StarfishValidationException("Asset cannot be null");
+        }
         if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
             return registerBundle(a);
         }
@@ -366,6 +369,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
      */
     @Override
     public ARemoteAsset uploadAsset(Asset a) {
+        if(null==a){
+            throw  new StarfishValidationException("Asset cannot be null");
+        }
         ARemoteAsset remoteAsset;
 
         // asset already registered then only upload

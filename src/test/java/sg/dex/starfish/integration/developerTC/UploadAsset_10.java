@@ -31,7 +31,6 @@ public class UploadAsset_10 {
     @Test
     public void testUploadDownloadAsset() {
 
-
         Asset asset = MemoryAsset.create("test upload of asset");
 
         // upload will do the registration and upload the content
