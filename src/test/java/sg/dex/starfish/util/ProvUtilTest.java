@@ -28,16 +28,16 @@ public class ProvUtilTest {
 
     @Test
     public void testProvA() {
-        JSONObject a=ProvUtil.getBaseProvObject();
+        Map<String,Object> a=ProvUtil.getBaseProvObject();
         try{
             File temp = new File(System.getProperty("java.io.tmpdir")+
                                  System.getProperty("file.separator")+
                                  "publish1.json");
             Writer w= new FileWriter(temp);
             String actId=UUID.randomUUID().toString();
-            JSONObject act=ProvUtil.createActivity(actId,ProvUtil.ActivityType.PUBLISH);
+            Map<String,Object> act=ProvUtil.createActivity(actId,ProvUtil.ActivityType.PUBLISH);
             String agentId=UUID.randomUUID().toString();
-            JSONObject agent=ProvUtil.createAgent(agentId,ProvUtil.AgentIdType.ACCOUNT);
+            Map<String,Object> agent=ProvUtil.createAgent(agentId,ProvUtil.AgentIdType.ACCOUNT);
 
             a.putAll(ProvUtil.createActivities(act));
             a.putAll(ProvUtil.createAgents(agent));

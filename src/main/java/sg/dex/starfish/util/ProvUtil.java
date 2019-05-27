@@ -19,13 +19,13 @@ public class ProvUtil{
     /*
      * Create a default namespace which includes the prefix and path for Oceanprotocol schema
      */
-    public static JSONObject defaultPrefix(){
-        JSONObject prefix=new JSONObject();
+    public static Map<String,Object> defaultPrefix(){
+        Map<String,Object> prefix=new HashMap<String,Object>();
         prefix.put("xsd","http://www.w3.org/2001/XMLSchema#");
         prefix.put("prov","http://www.w3.org/ns/prov#");
         prefix.put(OPF,"http://oceanprotocol.com/schemas");
 
-        JSONObject pre=new JSONObject();
+        Map<String,Object> pre=new HashMap<String,Object>();
         pre.put("prefix",prefix);
         return pre;
     }
@@ -34,25 +34,25 @@ public class ProvUtil{
     /*
      * Returns a Entity referring to "this", the asset being registered
      */
-    public static JSONObject createThisInput(){
-        JSONObject type=new JSONObject();
+    public static Map<String,Object> createThisInput(){
+        Map<String,Object> type=new HashMap<String,Object>();
         type.put("$",OPF+":asset");
         type.put("type","xsd:string");
 
-        JSONObject typeContainer=new JSONObject();
+        Map<String,Object> typeContainer=new HashMap<String,Object>();
         typeContainer.put("prov:type",type);
-        JSONObject thisContainer=new JSONObject();
+        Map<String,Object> thisContainer=new HashMap<String,Object>();
         thisContainer.put(OPF+":this",typeContainer);
         return thisContainer;
     }
 
 
-    private static JSONObject jsonMapEntry(String key,JSONObject ent[]){
-        JSONObject eContainer=new JSONObject();
+    private static Map<String,Object> jsonMapEntry(String key,Map<String,Object> ent[]){
+        Map<String,Object> eContainer=new HashMap<String,Object>();
         for (Map<String,Object> m:ent){
             eContainer.putAll(m);
         }
-        JSONObject res=new JSONObject();
+        Map<String,Object> res=new HashMap<String,Object>();
         res.put(key,eContainer);
         return res;
     }
@@ -60,7 +60,7 @@ public class ProvUtil{
     /*
      * Returns a JSON Object representing a list of entities 
      */
-    public static JSONObject createEntities(JSONObject... ent){
+    public static Map<String,Object> createEntities(Map<String,Object>... ent){
         return jsonMapEntry("entity",ent);
     }
 
@@ -69,14 +69,14 @@ public class ProvUtil{
     /*
      * Returns a JSON Object representing an entity, given the id and type
      */
-    public static JSONObject createAgent(String agentId,AgentIdType agentType){
-        JSONObject type=new JSONObject();
+    public static Map<String,Object> createAgent(String agentId,AgentIdType agentType){
+        Map<String,Object> type=new HashMap<String,Object>();
         type.put("$",OPF+":"+agentType.toString());
         type.put("type","xsd:string");
 
-        JSONObject typeContainer=new JSONObject();
+        Map<String,Object> typeContainer=new HashMap<String,Object>();
         typeContainer.put("prov:type",type);
-        JSONObject thisContainer=new JSONObject();
+        Map<String,Object> thisContainer=new HashMap<String,Object>();
         thisContainer.put(OPF+":"+agentId,typeContainer);
         return thisContainer;
     }
@@ -84,7 +84,7 @@ public class ProvUtil{
     /*
      * Returns a JSON Object representing a list of agents
      */
-    public static JSONObject createAgents(JSONObject... age){
+    public static Map<String,Object> createAgents(Map<String,Object>... age){
         return jsonMapEntry("agent",age);
     }
 
@@ -92,15 +92,15 @@ public class ProvUtil{
      * Returns a JSON Object representing an associatedWith Relationship, which
      * connects the agentID with the activityId
      */
-    public static JSONObject associatedWith(String agentId, String activityId){
-        JSONObject type=new JSONObject();
+    public static Map<String,Object> associatedWith(String agentId, String activityId){
+        Map<String,Object> type=new HashMap<String,Object>();
         type.put("prov:agent",agentId);
         type.put("prov:activity",activityId);
         
-        JSONObject asid=new JSONObject();
+        Map<String,Object> asid=new HashMap<String,Object>();
         asid.put("_:"+UUID.randomUUID().toString(),type);
 
-        JSONObject ret=new JSONObject();
+        Map<String,Object> ret=new HashMap<String,Object>();
         ret.put("wasAssociatedWith",asid);
         return ret;
     }
@@ -109,15 +109,15 @@ public class ProvUtil{
      * Returns a JSON Object representing an generatedBy Relationship, which
      * connects the entityid with the activityId
      */
-    public static JSONObject generatedBy(String entityId, String activityId){
-        JSONObject type=new JSONObject();
+    public static Map<String,Object> generatedBy(String entityId, String activityId){
+        Map<String,Object> type=new HashMap<String,Object>();
         type.put("prov:entity",entityId);
         type.put("prov:activity",activityId);
         
-        JSONObject asid=new JSONObject();
+        Map<String,Object> asid=new HashMap<String,Object>();
         asid.put("_:"+UUID.randomUUID().toString(),type);
 
-        JSONObject ret=new JSONObject();
+        Map<String,Object> ret=new HashMap<String,Object>();
         ret.put("wasGeneratedBy",asid);
         return ret;
     }
@@ -127,14 +127,14 @@ public class ProvUtil{
     /*
      * Returns an Activity identified by activity id and type
      */
-    public static JSONObject createActivity(String actId,ActivityType activityType){
-        JSONObject type=new JSONObject();
+    public static Map<String,Object> createActivity(String actId,ActivityType activityType){
+        Map<String,Object> type=new HashMap<String,Object>();
         type.put("$",OPF+":"+activityType.toString());
         type.put("type","xsd:string");
 
-        JSONObject typeContainer=new JSONObject();
+        Map<String,Object> typeContainer=new HashMap<String,Object>();
         typeContainer.put("prov:type",type);
-        JSONObject thisContainer=new JSONObject();
+        Map<String,Object> thisContainer=new HashMap<String,Object>();
         thisContainer.put(OPF+":"+actId,typeContainer);
         return thisContainer;
     }
@@ -142,16 +142,16 @@ public class ProvUtil{
     /*
      * Returns a list of Activities 
      */
-    public static JSONObject createActivities(JSONObject... acts){
+    public static Map<String,Object> createActivities(Map<String,Object>... acts){
         return jsonMapEntry("activity",acts);
     }
 
     /**
      * Create a default Prov object with the prefixes and the "this" entity
      */
-    public static JSONObject getBaseProvObject(){
-        JSONObject e = createEntities(createThisInput());
-        JSONObject res=defaultPrefix();
+    public static Map<String,Object> getBaseProvObject(){
+        Map<String,Object> e = createEntities(createThisInput());
+        Map<String,Object> res=defaultPrefix();
         res.putAll(e);
         return res;
     }
@@ -159,11 +159,11 @@ public class ProvUtil{
     /**
      * Create default provenance metadata for publishing an asset
      */
-    public static JSONObject createPublishProvenance(String actId,
+    public static Map<String,Object> createPublishProvenance(String actId,
                                         String agentId) {
-        JSONObject a=getBaseProvObject();
-        JSONObject act=createActivity(actId,ActivityType.PUBLISH);
-        JSONObject agent=createAgent(agentId,AgentIdType.ACCOUNT);
+        Map<String,Object> a=getBaseProvObject();
+        Map<String,Object> act=createActivity(actId,ActivityType.PUBLISH);
+        Map<String,Object> agent=createAgent(agentId,AgentIdType.ACCOUNT);
 
         a.putAll(createActivities(act));
         a.putAll(createAgents(agent));
