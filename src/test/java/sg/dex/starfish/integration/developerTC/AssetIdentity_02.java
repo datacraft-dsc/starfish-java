@@ -5,12 +5,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
+import static junit.framework.TestCase.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -87,6 +91,35 @@ public class AssetIdentity_02 {
         assertEquals(remoteAsset.getMetadata().get("id").toString(), "123");
         assertEquals(remoteAsset.getMetadata().get("name").toString(), "Fig");
         assertEquals(remoteAsset.getMetadata().get("location").toString(), "Singapore");
+
+    }
+
+    //@Test
+    public void createAssetWithProvMetadata(){
+        byte[] data = new byte[]{1, 2, 3};
+        // update the metadata
+        Map<String, Object> metaDataAsset = new HashMap<>();
+        metaDataAsset.put("id", "123");
+        metaDataAsset.put("name", "Fig");
+        metaDataAsset.put("location", "Singapore");
+
+        String actId=UUID.randomUUID().toString();
+        String agentId=UUID.randomUUID().toString();
+        
+        Map<String, Object> provmetadata=ProvUtil.createPublishProvenance(actId,agentId);
+        metaDataAsset.put("provenance",provmetadata);
+        // creating asset with MetaData
+        Asset asset2 = MemoryAsset.create( data,metaDataAsset);
+        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset2);
+
+        // uploading the Asset this remote Agent
+        remoteAgent.uploadAsset(asset2);
+
+        // get the Remote asset ID which has been register using remote Agent
+        String assetID = remoteAsset.getAssetID();
+
+        //verify prov info exists
+        assertNotNull(remoteAsset.getMetadata().get("provenance").toString());
 
     }
 
