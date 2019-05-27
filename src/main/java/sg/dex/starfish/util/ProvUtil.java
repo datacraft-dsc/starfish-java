@@ -58,7 +58,7 @@ public class ProvUtil{
     }
 
     /*
-     * Returns a JSON Object representing a list of entities 
+     * Returns a Map representing a list of entities 
      */
     public static Map<String,Object> createEntities(Map<String,Object>... ent){
         return jsonMapEntry("entity",ent);
@@ -67,7 +67,7 @@ public class ProvUtil{
     public static enum AgentIdType { ACCOUNT, ETHEREUMACCOUNT};
 
     /*
-     * Returns a JSON Object representing an entity, given the id and type
+     * Returns a Map representing an entity, given the id and type
      */
     public static Map<String,Object> createAgent(String agentId,AgentIdType agentType){
         Map<String,Object> type=new HashMap<String,Object>();
@@ -82,14 +82,14 @@ public class ProvUtil{
     }
 
     /*
-     * Returns a JSON Object representing a list of agents
+     * Returns a Map representing a list of agents
      */
     public static Map<String,Object> createAgents(Map<String,Object>... age){
         return jsonMapEntry("agent",age);
     }
 
     /*
-     * Returns a JSON Object representing an associatedWith Relationship, which
+     * Returns a Map representing an associatedWith Relationship, which
      * connects the agentID with the activityId
      */
     public static Map<String,Object> associatedWith(String agentId, String activityId){
@@ -106,7 +106,7 @@ public class ProvUtil{
     }
 
     /*
-     * Returns a JSON Object representing an generatedBy Relationship, which
+     * Returns a Map representing an generatedBy Relationship, which
      * connects the entityid with the activityId
      */
     public static Map<String,Object> generatedBy(String entityId, String activityId){
