@@ -12,7 +12,7 @@ public class RemoteJob implements Job {
     private String jobID;
     private Object response;
 
-    public RemoteJob(RemoteAgent agent, String jobID) {
+    private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
     }

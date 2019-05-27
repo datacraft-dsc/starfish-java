@@ -73,7 +73,6 @@ public class TestMemoryListing {
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
-        Assert.assertNull(listing.getInfo());
         Assert.assertNotNull(listing.getMetaData());
     }
 
@@ -105,7 +104,6 @@ public class TestMemoryListing {
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
         Assert.assertNotNull(listing);
         Assert.assertNotNull(listing.getAsset());
-        Assert.assertNull(listing.getInfo());
         Assert.assertNotNull(listing.getMetaData());
         assertNotNull(listing.getAgreement());
 

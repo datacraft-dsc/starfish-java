@@ -35,16 +35,6 @@ public interface Listing {
      Object getAgreement();
     
     /**
-     * Gets the listing information for this listing.
-     * 
-     * FIXME: what is the difference between "Info" and "Metadata"??
-     * 
-     * Listing information is defined by the marketplace on which the Listing is present.
-     * @return The information associated with this Listing
-     */
-     Map<String,Object> getInfo();
-
-    /**
      * Purchases this listing using the given account
      * FIXME: should this return an asset or a purchase?
      *

@@ -23,7 +23,8 @@ import static junit.framework.TestCase.assertNotNull;
 
 /**
  * As a developer working with Ocean,
- * I wish to invoke a free service available on the Ocean ecosystem and obtain the results as a new Ocean Asset
+ * I wish to invoke a free service available on the Ocean ecosystem
+ * and obtain the results as a new Ocean Asset
  */
 public class InvokeServiceFree_20 {
 
@@ -39,6 +40,8 @@ public class InvokeServiceFree_20 {
         did=getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin","OpenSesame");
         ocean.registerLocalDID(did,getDdo());
+//        ocean.registerDDO(getDdo());
+
 
     }
 
@@ -57,16 +60,16 @@ public class InvokeServiceFree_20 {
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "http://localhost:3000" ));
+                "serviceEndpoint", "http://localhost:3000/api/v1" ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/meta"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/assets"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/auth"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/auth"));
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
 
@@ -92,13 +95,16 @@ public class InvokeServiceFree_20 {
 //        RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
-        // get asset form asset id
+        // get asset form asset id of remote operation asset
         Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
 
 //        // response will have asset id as value which has the result of the operation
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
 //
         Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
+
+
+
         for (Map.Entry<String, Object> me : result.entrySet()) {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");

@@ -10,7 +10,6 @@ import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -43,9 +42,9 @@ public class ListingSample {
         assertNotNull(result2);
 
 
-        // 3.get all listing details
-        List<Listing> allListingLst =surfer.getAllListing();
-        assertNotNull(allListingLst);
+//        // 3.get all listing details
+//        List<Listing> allListingLst =surfer.getAllListing();
+//        assertNotNull(allListingLst);
 
 
 
@@ -87,7 +86,6 @@ public class ListingSample {
         // Listing newListing =remoteListing.createListing(data2);
         assertNotNull(listing);
         assertNotNull(listing.getAsset());
-        assertNotNull(listing.getInfo());
         assertNotNull(listing.getMetaData());
         //assertNotNull(listing.getAgreement());
 

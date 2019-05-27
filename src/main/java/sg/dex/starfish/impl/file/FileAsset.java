@@ -54,7 +54,7 @@ public class FileAsset extends AAsset implements DataAsset {
 		ob.put(TYPE, DATA_SET);
 		ob.put(SIZE, f.length());
 		ob.put(FILE_NAME, f.getName());
-		ob.put(CONTENT_TYPE, "application/octet-stream");
+		ob.put(CONTENT_TYPE, OCTET_STREAM);
 
 		return ob;
 	}
@@ -75,13 +75,13 @@ public class FileAsset extends AAsset implements DataAsset {
 			return new FileInputStream(file);
 		}
 		catch (FileNotFoundException e) {
-			throw new StorageException("File not found", e);
+			throw new StorageException("File not found ,file : "+file , e);
 		}
 	}
 
 	@Override
 	public long getContentSize() {
-		return file.length();
+		return null != file ? file.length(): -1;
 	}
 
 	/**

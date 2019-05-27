@@ -50,7 +50,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
         ob.put(CONTENT_HASH, hash);
         ob.put(TYPE, DATA_SET);
         ob.put(SIZE, Integer.toString(data.length));
-        ob.put(CONTENT_TYPE, "application/octet-stream");
+        ob.put(CONTENT_TYPE, OCTET_STREAM);
 
         if (meta != null) {
             for (Map.Entry<String, Object> me : meta.entrySet()) {
@@ -86,7 +86,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      */
     public static MemoryAsset create(byte[] data) {
         if (data == null) {
-            throw new IllegalArgumentException("Missing data");
+            throw new IllegalArgumentException("Missing data,data cannot be null");
         }
         return new MemoryAsset(data,buildMetaData(data,null));
     }
@@ -152,7 +152,6 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     @Override
     public long getContentSize() {
-
         return this.data != null ? this.data.length : -1;
     }
 }

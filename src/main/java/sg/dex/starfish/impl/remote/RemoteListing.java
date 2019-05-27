@@ -7,7 +7,8 @@ import sg.dex.starfish.impl.AListing;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing an Listing managed via a remote agent.
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
  *
  * @author Ayush
+ * @version 0.5
  */
 
 public class RemoteListing extends AListing {
@@ -52,7 +54,7 @@ public class RemoteListing extends AListing {
     }
 
     /**
-     * API to create the local cache instance
+     * This method is to create the local cache instance
      */
     private static void initializeCache() {
         if (null == metaDataCache) {
@@ -93,19 +95,8 @@ public class RemoteListing extends AListing {
 
     }
 
-    @Override
-    public Map<String, Object> getInfo() {
-
-        Map<String, Object> info =getMetaData().get("info")==null ?
-                new HashMap<>(): (Map<String, Object>) getMetaData().get("info");
-        return info.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        Map.Entry::getValue));
-    }
-
     /**
-     * API to get the AssetID
+     * This method is to get the AssetID
      * @return String assetId
      */
     @Override
@@ -114,28 +105,28 @@ public class RemoteListing extends AListing {
     }
 
     /**
-     * API to get the USer ID
+     * This method is to get the USer ID
      * @return String userId
      */
     private String getUserID() {
-        return getMetaData().get("userid").toString();
+        return getMetaData().get(USER_ID).toString();
     }
 
     /**
-     * API to get the Aggrement
+     * This method is to get the Aggrement
      * @return String agreement
      */
     private String getAggrement() {
-        return getMetaData().get("agreement").toString();
+        return getMetaData().get(AGREEMENT).toString();
     }
 
     /**
-     * API to get the Listing ID
+     * This method is to get the Listing ID
      * @return String listingId
      */
     @Override
     public String getId() {
-        return getMetaData().get("id").toString();
+        return getMetaData().get(ID).toString();
     }
 
 }

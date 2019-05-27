@@ -2,6 +2,7 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -18,29 +19,26 @@ import static sg.dex.starfish.constant.Constant.*;
  * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
  *
  * @author Ayush
+ * @version 0.5
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     private Map<String, Asset> assetMap;
 
     private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
         super(metaData,remoteAgent);
-        this.assetMap = assetMap;
+        this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
 
     /**
-     * API to create a Remote bundle asset asset with given Bundle name
+     * This method is to create a Remote bundle asset asset with given Bundle name
      * @param remoteAgent agent on which the  bundle need to create
      * @param assetMap map of all asset with name and assetID
      * @param meta additional meta data needs to be added while creating bundle
      * @return RemoteBundle instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
-
-
         return new RemoteBundle(buildMetaData(assetMap, meta), remoteAgent, assetMap);
-
-
     }
 
     /**
@@ -51,14 +49,17 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return RemoteBundle new instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
+        if(null ==remoteAgent){
+            throw new StarfishValidationException("Remote agent cannot be null for creating remote Bundle");
+        }
         //build meta data
         return create(remoteAgent,assetMap,null);
 
     }
 
     /**
-     * API to create a Remote bundle asset  with given Asset Map and agent
-     * This API will be called from agent .
+     * This method is to create a Remote bundle asset  with given Asset Map and agent
+     * This method  will be called from agent .
      * it will create bundle asset based on the Asset passed as map.
      * For each asset data passed in map it will first get the asset id then will create
      * a Remote Asset respectively.
@@ -85,7 +86,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     }
 
     /**
-     * API to build the metadata for the bundle
+     * This method is to build the metadata for the bundle
      * @param meta additional metadata
      * @return metadata as string
      */
@@ -102,7 +103,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
         //build meta data
         Map<String, Map<String, String>> subAssetIdMap = new HashMap<>();
-
+        assetMap = assetMap == null ? new HashMap<>() : assetMap;
         Asset asset;
         for (String name : assetMap.keySet()) {
             asset = assetMap.get(name);
@@ -114,7 +115,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     }
 
     /**
-     * API to get the map of AssetID based on AssetId
+     * This method is to get the map of AssetID based on AssetId
      *
      * @param assetId asset id
      * @return Map<String, String> assetIdMap
@@ -127,7 +128,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     }
 
     /**
-     * API to get the AssetMap
+     * This method is to get the AssetMap
      * @return assetMap that belong to bundle
      */
     private Map<String, Asset> getAssetMap() {

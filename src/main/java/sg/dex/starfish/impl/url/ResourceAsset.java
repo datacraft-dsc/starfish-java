@@ -33,7 +33,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * API to crete resource name wth meta data and the resource path
+     * This method is to crete resource name wth meta data and the resource path
      *
      * @param meta metadata
      * @param resourcePath path of the resource
@@ -44,7 +44,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * API to crete a Resource Asset with resource Name
+     * This method is to crete a Resource Asset with resource Name
      *
      * @param resourceName Resource name
      * @return ResourceAsset
@@ -54,7 +54,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * API to build the metadata of the Resource Asset
+     * This method is to build the metadata of the Resource Asset
      *
      * @param resourcePath
      * @param meta
