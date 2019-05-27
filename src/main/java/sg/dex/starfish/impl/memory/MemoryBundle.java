@@ -20,6 +20,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * Intended for use in testing or local development situations.
  *
  * @author Ayush
+ * @version 0.5
  */
 public class MemoryBundle extends AMemoryAsset implements Bundle {
 
@@ -40,37 +41,32 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
 
     /**
-     * Create a memory bundle asset asset with given given Asset named map and metadata
+     * Create a memory bundle asset.
+     * This method will create a bundle asset which may contain zero or more sub-asset
+     * based on assetMap  passed in the argument.
      *
-     * @param memoryAgent MemoryAgent to associated with this bundle
-     * @param assetMap    map of all asset with name and assetID
-     * @param meta        meta data
-     * @return it will return the instance of Memory Bundle
+     * @param memoryAgent MemoryAgent to associate with this asset
+     * @param assetMap    map of all asset with name and Asset
+     * @param meta    additional meta data need for creating bundle asset
+     * @return   the newly created instance of Memory Bundle
      */
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-
-        //build meta data
-
         return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);
-
-
     }
 
     /**
-     * API to create a memory bundle asset asset with given given Asset named map and memory Agent
+     * Create a memory bundle asset.
+     * This method will create a bundle asset which may contain zero or more sub-asset
+     * based on assetMap map passed in the argument.
      *
      * @param memoryAgent MemoryAgent to associate with this asset
-     * @param assetMap    map of all asset with name and assetID
-     * @return it will return the instance of Memory Bundle
+     * @param assetMap    map of all asset with name and Asset
+     * @return   the newly created instance of Memory Bundle
      */
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
 
-        //build meta data
-
         return create(memoryAgent,assetMap,null);
-
-
     }
 
     /**
@@ -84,8 +80,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
         ob.put(TYPE, BUNDLE);
-
-
         // adding the meta data provide
         if (meta != null) {
             for (Map.Entry<String, Object> me : meta.entrySet()) {

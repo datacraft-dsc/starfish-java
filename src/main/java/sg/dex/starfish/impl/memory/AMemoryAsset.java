@@ -31,9 +31,6 @@ public abstract class AMemoryAsset extends AAsset {
 		super(metaData);
 	}
 
-	@Override
-	public String toString() {
-		return getAssetID();
-	}
+
 
 }

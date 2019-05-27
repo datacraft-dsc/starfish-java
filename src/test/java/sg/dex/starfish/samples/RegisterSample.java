@@ -1,9 +1,9 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.JSON;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +26,7 @@ public class RegisterSample {
 		// a new memory asset
 		Asset a=MemoryAsset.create("Hello World");
 		String assetID = a.getAssetID();
-		System.out.println("Asset ID: "+assetID);
 		String prettyJSON = JSON.toPrettyString(a.getMetadata());
-		System.out.println(prettyJSON);
 
 		Asset ra=surfer.registerAsset(a);
 

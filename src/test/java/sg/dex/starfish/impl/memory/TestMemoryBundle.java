@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
-import sg.dex.starfish.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +46,6 @@ public class TestMemoryBundle {
 
         // create asset bundle without any custom metadata // so passing null
         Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
-        System.out.println(memoryAssetBundle.getMetadata());
 
         // getting the created asset bundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
@@ -64,7 +62,6 @@ public class TestMemoryBundle {
         assertEquals(contents.get("three").get("assetID"), a3.getAssetID());
         assertEquals(contents.get("four").get("assetID"), a4.getAssetID());
 
-         System.out.println(JSON.toPrettyString(contents));
 
         // getting the contents of asset bundle through API
         Map<String, Object> allAssetMap = memoryAssetBundle.getAll();
@@ -389,7 +386,6 @@ public class TestMemoryBundle {
         MemoryAgent memoryAgent = MemoryAgent.create();
 
         Bundle nestedBundle =MemoryBundle.create(memoryAgent,assetBundle);
-        System.out.println(JSON.toPrettyString(nestedBundle.getMetadata()));
 
         Asset subAsset2 = MemoryAsset.create("Test bundle Main");
         //assigning each asset with name and adding to map
@@ -398,12 +394,11 @@ public class TestMemoryBundle {
         assetBundle2.put("2", nestedBundle);
 
         Bundle mainBundle =MemoryBundle.create(memoryAgent,assetBundle2);
-        System.out.println(JSON.toPrettyString(mainBundle.getMetadata()));
+        //System.out.println(JSON.toPrettyString(mainBundle.getMetadata()));
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) mainBundle.getMetadata().get("contents");
         assertEquals(contents.get("2").get("assetID"), nestedBundle.getAssetID());
 
 
-        System.out.println(JSON.toPrettyString(mainBundle.getMetadata()));
 
 
     }

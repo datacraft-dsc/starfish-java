@@ -11,16 +11,12 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 
 /**
- * As a developer working with Ocean,
- * I need a way to view an asset available for puchase and any associated terms / service agreements that may be purchased
- * "
+ * Class to test the Remote listing functionality
  */
 @RunWith(JUnit4.class)
 public class ViewAssetListing_14 {
@@ -59,18 +55,6 @@ public class ViewAssetListing_14 {
 
     }
 
-    @Test
-    public void testSearchAllListing() {
 
-        // getting all listing instance present on this Remote Agent
-        List<Listing> listingLst = remoteAgent.getAllListing();
-        // iterating each listing
-        for (Listing listing : listingLst) {
-            // verifying none of the listing ID should be null
-            String listingId = listing.getMetaData().get("id").toString();
-            assertNotNull(remoteAgent.getListing(listingId));
-        }
-
-    }
 
 }

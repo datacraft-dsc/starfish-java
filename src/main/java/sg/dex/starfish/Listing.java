@@ -9,7 +9,7 @@ import java.util.Map;
  * Interface representing a listing of an asset on the Ocean Network
  * <p>
  * Listings can be used to query and purchase Assets
- *
+ * @version 0.5
  * @author Mike
  */
 public interface Listing {
@@ -34,16 +34,6 @@ public interface Listing {
      */
      Object getAgreement();
     
-    /**
-     * Gets the listing information for this listing.
-     * 
-     * FIXME: what is the difference between "Info" and "Metadata"??
-     * 
-     * Listing information is defined by the marketplace on which the Listing is present.
-     * @return The information associated with this Listing
-     */
-     Map<String,Object> getInfo();
-
     /**
      * Purchases this listing using the given account
      * FIXME: should this return an asset or a purchase?

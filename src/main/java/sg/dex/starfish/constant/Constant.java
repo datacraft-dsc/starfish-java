@@ -25,6 +25,8 @@ public class Constant {
     public static final String SYNC = "sync";
     public static final String ASYNC = "async";
     public static final String MODE = "modes";
+    public static final String OCTET_STREAM = "application/octet-stream";
+    public static final String FILE = "file";
 
     //-----JOB  -------
 
@@ -44,6 +46,7 @@ public class Constant {
 
     //-------AUTH -----------
     public static final String USER = "user";
+    public static final String USER_ID = "userid";
     public static final String TOKEN = "token";
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";
@@ -54,8 +57,17 @@ public class Constant {
     public static final String PURCHASE_URL = "/purchases";
     public static final String DATA = "/data";
     public static final String LISTING_ID = "listingid";
-    public static final String INFO = "info";
     public static final String AGREEMENT = "agreement";
+
+    //---------Listing status------------
+    public static final String PUBLISHED = "published";
+    public static final String UNPUBLISHED = "unpublished";
+    public static final String SUSPENDED = "suspended";
+
+    //-------Purchase status -------------
+    public static final String WISHLIST = "wishlist";
+    public static final String ORDERED = "ordered";
+    public static final String DELIVERED = "delivered";
 
     //--------INVOKE -----------
 

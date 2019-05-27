@@ -1,13 +1,17 @@
 package sg.dex.starfish.impl;
 
+import sg.dex.starfish.Account;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import sg.dex.starfish.Account;
-
 /**
  * Class representing an Account in the Ocean Ecosystem
+ * <p>
+ *     This class include method to get the accoutn ID,
+ *     get the credential.
+ * </p>
  *
  * @author Tom
  */
@@ -23,32 +27,19 @@ public abstract class AAccount implements Account {
 	 */
 	protected AAccount(String id) {
 		this.id=id;
-		this.credentials = new HashMap<String,Object>();
+		this.credentials = new HashMap<>();
 	}
 
 	protected AAccount(String id, Map<String, Object> credentials) {
 		this.id=id;
-		this.credentials = (credentials == null) ? new HashMap<String,Object>() : credentials;
+		this.credentials = (credentials == null) ? new HashMap<>() : credentials;
 	}
 
-	/**
-	 * Gets the ID for an Account
-	 *
-	 * @return Account identifier
-	 */
 	@Override
 	public String getID() {
 		return id;
 	}
 
-	/**
-	 * Gets the credentials stored for this Account.
-	 *
-	 * Required credentials are defined by the agent implementation, but would typically include
-	 * things like user name, password etc.
-	 *
-	 * @return credentials
-	 */
         @Override
 	public Map<String,Object> getCredentials() {
 		// deep cloning the map
@@ -56,10 +47,6 @@ public abstract class AAccount implements Account {
 			.collect(Collectors.toMap(e -> e.getKey(),
 						  e -> e.getValue()));
         }
-
-	public void setCredential(String key, Object value) {
-		credentials.put(key, value);
-	}
 
 	@Override
 	public String toString() {

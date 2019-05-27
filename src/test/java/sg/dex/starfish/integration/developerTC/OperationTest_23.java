@@ -53,16 +53,16 @@ public class OperationTest_23 {
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "http://localhost:3000" ));
+                "serviceEndpoint", "http://localhost:3000/api/v1" ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/meta"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/assets"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint", "http://localhost:8082" + "/api/v1/auth"));
+                "serviceEndpoint", "http://localhost:8080" + "/api/v1/auth"));
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
 
@@ -85,7 +85,6 @@ public class OperationTest_23 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-//        RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
@@ -143,7 +142,6 @@ public class OperationTest_23 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for PRIME OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
@@ -189,11 +187,9 @@ public class OperationTest_23 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 Asset a = (Asset) response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.getContent());
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
@@ -227,11 +223,9 @@ public class OperationTest_23 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for HASHING OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for  Hashing Sync >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
@@ -258,18 +252,12 @@ public class OperationTest_23 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset1);
 
-
-
         // get asset form asset id
         Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
-
-
-        System.out.println(remoteOperation.getAssetID());
 
         // invoking the prime operation and will get the job associated
         Map<String, Object> metaData = remoteOperation.invokeResult(metaMap);
 
-        System.out.println(metaData);
 
 
     }
@@ -316,18 +304,13 @@ public class OperationTest_23 {
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
                 RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-                System.out.println("Result value for ASSET HASHING OPERATION Async >" + me.getKey() + "is : " + Utils.stringFromStream(a.getContentStream()));
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
-                System.out.println("Result value for Hashing Async >" + me.getKey() + "is : " + a.toString());
                 assertNotNull(a);
 
             }
         }
     }
 
-//    registering  prime_asset_metadata.json->:8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1
-//    hashing_asset_metadata.json->:3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07
-//    hashing_metadata.json->:8ade9c7505bcadaab8dacf6848e88ddb4aa6a295612eb01759e35aeb65daeac2
 }

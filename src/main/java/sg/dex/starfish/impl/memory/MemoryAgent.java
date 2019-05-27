@@ -13,10 +13,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// TODO: should implement MarketAgent, StorageAgent etc.
+
 
 /**
  * An in-memory agent implementation
+ * This class methods include creation of memory agent,
+ * get asset based on id, create listing ,create purchase,invoke service.
  *
  * @author Mike
  */
@@ -193,7 +195,7 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
     @Override
     public Listing createListing(Map<String, Object> listingData) {
         if (listingData.get("assetid") == null) {
-            throw new IllegalArgumentException("Assset Id is mandatory");
+            throw new IllegalArgumentException("Asset Id is mandatory, cannot be null");
         }
 
         listingStore.put(listingData.get("id").toString(), MemoryListing.create(this, listingData));
@@ -203,12 +205,12 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
     /**
      * API to get the Purchase instance
      *
-     * @param purchaseData map of purchased data
-     * @return MemoryPurchase
+     * @param purchaseData map of purchased data based on listing id
+     * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map<String, Object> purchaseData) {
         if (purchaseData.get("listingid") == null) {
-            throw new IllegalArgumentException("Listing Id is mandatory");
+            throw new IllegalArgumentException("Listing Id is mandatory, cannot be null");
         }
 
         purchaseStore.put(purchaseData.get("id").toString(), MemoryPurchase.create(this, purchaseData));
@@ -222,8 +224,8 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @return true if mode is sync else false
      */
     private boolean isSyncMode(Operation operation) {
-        Map<String,Object> metatData = operation.getMetadata();
-        Object mode = metatData.get("mode");
+        Map<String,Object> metaData = operation.getMetadata();
+        Object mode = metaData.get("modes");
         if(mode!=null && mode.toString().equals("sync")){
             return true;
         }

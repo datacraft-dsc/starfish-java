@@ -8,7 +8,7 @@ import java.util.Map;
  * Interface representing an invokable operation
  * 
  * @author Mike
- *
+ * @version 0.5
  */
 public interface Operation extends Asset {
 

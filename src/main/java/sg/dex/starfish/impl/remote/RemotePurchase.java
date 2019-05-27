@@ -6,12 +6,17 @@ import sg.dex.starfish.Purchase;
 import java.util.HashMap;
 import java.util.Map;
 
+import static sg.dex.starfish.constant.Constant.*;
+
 /**
- * Class representing an purchase managed via a remote agent.
+ * This class representing an purchase managed via a remote agent.
  *
- * This purcahse will be present in Ocean ecosystem and be referred by using the purchase ID.
+ * This class included methods for create , get listing,
+ * get status and metadata of the purchase
+ * The instance of this class will be present in Ocean ecosystem and be referred by using the purchase ID.
  *
  * @author Ayush
+ * @version 0.5
  */
 public class RemotePurchase implements Purchase {
 
@@ -25,7 +30,8 @@ public class RemotePurchase implements Purchase {
 
 
     /**
-     * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
+     * To get the reference of existing listing user need to pass the remote Agent
+     * and the existing listing id.
      *
      * @param remoteAgent
      * @param id
@@ -50,7 +56,7 @@ public class RemotePurchase implements Purchase {
     }
 
     /**
-     * API to create the local cache when the Purchase instance is create
+     * This method to create the local cache when the Purchase instance is create
      */
     private static void initializeCache() {
         if (null == metaDataCache) {
@@ -62,26 +68,12 @@ public class RemotePurchase implements Purchase {
     @Override
     public Listing getListing() {
         // get the Listing from Listing id
-           return remoteAgent.getListing(purchase_id);
-    }
-
-    @Override
-    public Map<String, Object> getInfo() {
-
-
-        return (Map<String, Object>) getMetaData().get("info");
-    }
-
-
-    @Override
-    public Purchase refresh() {
-        metaDataCache.put(purchase_id, remoteAgent.getPurchaseMetaData(purchase_id));
-        return this;
+           return remoteAgent.getListing(this.getListingId());
     }
 
     @Override
     public String status() {
-        return getMetaData().get("status").toString();
+        return getMetaData().get(STATUS).toString();
     }
 
     @Override
@@ -92,18 +84,18 @@ public class RemotePurchase implements Purchase {
     }
 
     private String getListingId() {
-        return getMetaData().get("listingid").toString();
+        return getMetaData().get(LISTING_ID).toString();
     }
 
     private String getAgreemnt() {
-        return getMetaData().get("agreement").toString();
+        return getMetaData().get(AGREEMENT).toString();
     }
 
     private String getUserId() {
-        return getMetaData().get("userid").toString();
+        return getMetaData().get(USER_ID).toString();
     }
 
     private String getPurchaseId() {
-        return getMetaData().get("id").toString();
+        return getMetaData().get(ID).toString();
     }
 }

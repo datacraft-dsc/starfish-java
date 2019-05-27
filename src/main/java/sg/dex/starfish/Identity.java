@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Interface representing an Identity in the Ocean ecosystem
  * @author Tom
- *
+ * @version 0.5
  */
 public interface Identity {
 

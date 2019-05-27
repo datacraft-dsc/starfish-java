@@ -1,9 +1,8 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.Purchase;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,9 +38,7 @@ public class PurchaseSample {
         newData.put("status", newVal);
         newData.put("id", oldData.get("id"));
 
-        System.out.println(JSON.toPrettyString(oldData));
         Purchase updatedPurchase = surfer.updatePurchase(newData);
-        System.out.println(JSON.toPrettyString(updatedPurchase.getMetaData()));
         assertNotNull(updatedPurchase);
 
 

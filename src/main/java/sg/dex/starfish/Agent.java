@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Interface representing an Agent in the Ocean ecosystem
  * @author Mike
- *
+ * @version 0.5
  */
 public interface Agent {
 

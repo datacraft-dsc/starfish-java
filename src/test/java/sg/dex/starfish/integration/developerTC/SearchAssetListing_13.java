@@ -12,7 +12,6 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -51,16 +50,7 @@ public class SearchAssetListing_13 {
 
     }
 
-    @Test
-    public void testSearchAllListing() {
 
-        List<Listing> listingLst = remoteAgent.getAllListing();
-        for(Listing listing: listingLst){
-            String listingId = listing.getMetaData().get("id").toString();
-            assertNotNull(remoteAgent.getListing(listingId));
-        }
-
-    }
     @Test(expected = RemoteException.class)
     public void testSearchListingByInvalidId() {
 

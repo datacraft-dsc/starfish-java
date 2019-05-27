@@ -13,6 +13,7 @@ import java.util.Map;
  * B) Able to be used in Data Supply Lines
  *
  * @author Mike
+ * @version 0.5
  */
 public interface Asset {
 

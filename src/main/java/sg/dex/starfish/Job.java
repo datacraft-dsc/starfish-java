@@ -8,7 +8,7 @@ import sg.dex.starfish.exception.StorageException;
  * Interface representing a job executed via the Invoke API
  *
  * @author Mike
- *
+ * @version 0.5
  */
 public interface Job<T> {
 

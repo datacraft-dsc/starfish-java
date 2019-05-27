@@ -81,8 +81,6 @@ public class TestMemoryOperations {
         Map<String ,Object> response = (Map<String ,Object> )res;
         response.get("output");
 
-        System.out.println(response.get("output"));
-
         assertNotNull(response.get("output"));
     }
 
@@ -98,7 +96,6 @@ public class TestMemoryOperations {
         // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Map<String,Object> result = memoryOperation.invokeResult(test);
-        System.out.println(result.get("output"));
         assertNotNull(result.get("output"));
 
 
@@ -128,7 +125,6 @@ public class TestMemoryOperations {
         Map<String ,Object> response = (Map<String ,Object> )res;
         response.get("output");
 
-        System.out.println(response.get("output"));
 
         assertNotNull(response.get("output"));
     }
@@ -151,7 +147,6 @@ public class TestMemoryOperations {
 
         Map<String,Object> res = hashOperation.invokeResult(test);
 
-        System.out.println(res.get("output"));
         assertNotNull(res.get("output"));
     }
     /**
