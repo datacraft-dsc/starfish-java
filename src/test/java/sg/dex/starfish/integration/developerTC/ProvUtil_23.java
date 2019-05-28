@@ -48,7 +48,7 @@ public class ProvUtil_23{
 
     @Test
     public void testProvA() {
-        Map<String,Object> a=ProvUtil.getBaseProvObject();
+        Map<String,Object> a=ProvUtil.defaultPrefix();
         try{
             File temp = new File(System.getProperty("java.io.tmpdir")+
                                  System.getProperty("file.separator")+

@@ -21,6 +21,7 @@ public class ProvUtil{
     public static String OPF="opf";
     /*
      * Create a default namespace which includes the prefix and path for Oceanprotocol schema
+     * @return a Map with prefixes respective IRIs used in this document
      */
     public static Map<String,Object> defaultPrefix(){
         Map<String,Object> prefix=new HashMap<String,Object>();
@@ -54,6 +55,7 @@ public class ProvUtil{
 
     /*
      * Returns a Entity referring to asset in the argument
+     * @param ast dependent asset
      */
     public static Map<String,Object> createAssetDependency(Asset ast){
         return createAssetEntity(ast.getAssetID());
@@ -70,7 +72,8 @@ public class ProvUtil{
     }
 
     /*
-     * Returns a Map representing a list of entities 
+     * Returns a Map representing a list of entities
+     * @param ent an array of entities to be added to the entity
      */
     public static Map<String,Object> createEntities(Map<String,Object>... ent){
         return jsonMapEntry("entity",ent);
@@ -80,6 +83,8 @@ public class ProvUtil{
 
     /*
      * Returns a Map representing an entity, given the id and type
+     * @param agentId the agent Id
+     * @param agentIdType the type of account (e.g. ethereum account)
      */
     public static Map<String,Object> createAgent(String agentId,AgentIdType agentType){
         Map<String,Object> type=new HashMap<String,Object>();
@@ -103,6 +108,8 @@ public class ProvUtil{
     /*
      * Returns a Map representing an associatedWith Relationship, which
      * connects the agentID with the activityId
+     * @param agentId the agent Id 
+     * @param activityId the activity Id
      */
     public static Map<String,Object> associatedWith(String agentId, String activityId){
         Map<String,Object> type=new HashMap<String,Object>();
@@ -120,6 +127,8 @@ public class ProvUtil{
     /*
      * Returns a Map representing an generatedBy Relationship, which
      * connects the entityid with the activityId
+     * @param entityId the entity Id (the generated entity)
+     * @param activityId the activity Id
      */
     public static Map<String,Object> generatedBy(String entityId, String activityId){
         Map<String,Object> type=new HashMap<String,Object>();
@@ -137,6 +146,7 @@ public class ProvUtil{
     /*
      * Returns a Map representing an derived by Relationship, which
      * connects the dependent entities
+     * @param entities list of entities that the generated entity is derived from 
      */
     public static Map<String,Object> derivedFrom(Collection<Asset> entities ){
         Map<String,Object> asid=new HashMap<String,Object>();
@@ -156,6 +166,8 @@ public class ProvUtil{
 
     /*
      * Returns an Activity identified by activity id and type
+     * @param actId the activity Id
+     * @param activityType The type of activity (e.g. publish or operation)
      */
     public static Map<String,Object> createActivity(String actId,ActivityType activityType){
         Map<String,Object> type=new HashMap<String,Object>();
@@ -171,6 +183,10 @@ public class ProvUtil{
 
     /*
      * Returns an Activity identified by activity id and type
+     * @param actId the activity Id
+     * @param activityType The type of activity (e.g. publish or operation)
+     * @param actEntries an array of activities 
+     * 
      */
     public static Map<String,Object> createActivity(String actId,ActivityType activityType,
                                                     Map<String,Object> actEntries){
@@ -187,23 +203,17 @@ public class ProvUtil{
     }
 
     /*
-     * Returns a list of Activities 
+     * Returns a list of Activities
+     * @param an array of activities 
      */
     public static Map<String,Object> createActivities(Map<String,Object>... acts){
         return jsonMapEntry("activity",acts);
     }
 
     /**
-     * Create a default Prov object with the prefixes and the "this" entity
-     */
-    public static Map<String,Object> getBaseProvObject(){
-        Map<String,Object> res=defaultPrefix();
-        return res;
-    }
-
-    /**
      * Create default provenance metadata for publishing an asset. This create a random
      * activity ID for tracking the provenance
+     * @param agentId the agent identifier
      */
     public static Map<String,Object> createPublishProvenance(String agentId) {
         String actId=UUID.randomUUID().toString();
@@ -211,10 +221,14 @@ public class ProvUtil{
     }
     /**
      * Create default provenance metadata for publishing an asset
+     * @param actId the activity Id
+     * @param agentId the agent identifier
+     * @return the prov metadata encoded in a Map 
+     * 
      */
     public static Map<String,Object> createPublishProvenance(String actId,
                                                              String agentId) {
-        Map<String,Object> a=getBaseProvObject();
+        Map<String,Object> a=defaultPrefix();
         Map<String,Object> e =createEntities(createThisInput());
         Map<String,Object> act=createActivity(actId,ActivityType.PUBLISH);
         Map<String,Object> agent=createAgent(agentId,AgentIdType.ACCOUNT);
@@ -230,6 +244,9 @@ public class ProvUtil{
     /**
      * Create dependencies. There are 2 sets of dependencies: one that
      * are assets, and the second which is JSON payloads.
+     * @param params the param string sent to the invoke rest API
+     * @param resultParamName the param name of the generated asset
+     * @return the input and output encoded as a Map
      */
     public static Map<String,Object> createDependencies(String params,
                                                         String resultParamName){
@@ -249,12 +266,17 @@ public class ProvUtil{
 
     /**
      * Create default provenance metadata for publishing an asset created using invoke.
+     * @param actId the activity Id
+     * @param agentId the agent identifier
+     * @param assetDependencies the list of assets that consumed by the operation
+     * @param params the argument string passed to the operation
+     * @param resultParamName the name of the result argument for the generated asset
      */
     public static Map<String,Object> createInvokeProvenance(String actId, String agentId,
                                                             Collection<Asset> assetDependencies,
                                                             String params,
                                                             String resultParamName) {
-        Map<String,Object> a=getBaseProvObject();
+        Map<String,Object> a=defaultPrefix();
         Map<String,Object> e= new HashMap<String,Object>();
         e.putAll(createThisInput());
         for(Asset k:assetDependencies){
