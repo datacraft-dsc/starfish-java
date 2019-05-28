@@ -1,39 +1,24 @@
 package sg.dex.starfish.integration.developerTC;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.junit.Before;
-import sg.dex.starfish.Asset;
 import org.junit.Test;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.util.UUID;
-
-import java.util.List;
-import java.io.OutputStream;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
-import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.ProvUtil;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.*;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(JUnit4.class)
 public class ProvUtil_23{
