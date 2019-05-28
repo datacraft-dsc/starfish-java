@@ -2,7 +2,7 @@
 
 Ocean protocol client API used for connecting to ocean protocol using Java.
 
-[![Maven Central](https://img.shields.io/maven-central/v/sg.dex/starfish-java.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22sg.dex%22%20AND%20a:%22starfish-java%22)
+[![Maven Central](https://img.shields.io/maven-central/v/sg.dex/starfish-java.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22sg.dex%22%20AND%20a:%22starfish-java%22) [![Build Status](https://travis-ci.com/DEX-Company/starfish-java.svg?branch=develop)](https://travis-ci.com/DEX-Company/starfish-java)
 
 ## Getting Started
 
