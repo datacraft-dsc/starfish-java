@@ -94,7 +94,7 @@ public class AssetIdentity_02 {
 
     }
 
-    //@Test
+    @Test
     public void createAssetWithProvMetadata(){
         byte[] data = new byte[]{1, 2, 3};
         // update the metadata
