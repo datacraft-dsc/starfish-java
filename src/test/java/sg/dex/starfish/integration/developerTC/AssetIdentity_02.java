@@ -5,18 +5,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.util.ProvUtil;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
-import static junit.framework.TestCase.assertNotNull;
+import sg.dex.starfish.util.ProvUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 /**
  * As a developer working with Ocean,
@@ -158,7 +158,7 @@ public class AssetIdentity_02 {
                 RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = StarfishValidationException.class)
     public void testForNullAsset(){
         // Null check should be there ?
         remoteAgent.registerAsset(null);
