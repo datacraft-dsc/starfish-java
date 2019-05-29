@@ -18,6 +18,8 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
+//import sg.dex.starfish.util.JSON;
+
 /**
  * As a developer working with Ocean,
  * I need a stable identifier (Asset ID) for an arbitrary asset in the Ocean ecosystem
@@ -120,6 +122,7 @@ public class AssetIdentity_02 {
 
         //verify prov info exists
         assertNotNull(remoteAsset.getMetadata().get("provenance").toString());
+        //System.out.println(JSON.toPrettyString(remoteAsset.getMetadata().get("provenance")));
 
     }
 

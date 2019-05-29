@@ -9,13 +9,17 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.ProvUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
+
+//import sg.dex.starfish.util.JSON;
 
 
 /**
@@ -38,7 +42,7 @@ public class ConfirmPurchase_18 {
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
-        remoteAgent.registerAsset(remoteAsset);
+        // remoteAgent.registerAsset(remoteAsset);
         Map<String, Object> data2 = new HashMap<>();
         //data.put( "status", "unpublished");
         data2.put("assetid", remoteAsset.getAssetID());
@@ -127,6 +131,40 @@ public class ConfirmPurchase_18 {
         Purchase purchase = remoteAgent.createPurchase(null);
         Map<String, Object> meta = purchase.getMetaData();
         assertEquals(meta.get(STATUS), DELIVERED);
+
+    }
+
+
+    @Test
+    public void testMetaDataWithProv() {
+        // create Asset
+        byte data[] = {3, 4, 5, 6};
+        // adding metadata
+        String actId = UUID.randomUUID().toString();
+        String agentId = UUID.randomUUID().toString();
+        Map<String, Object> provmetadata = ProvUtil.createPublishProvenance(actId, agentId);
+        Map<String, Object> metaDataAsset = new HashMap<>();
+        metaDataAsset.put("provenance", provmetadata);
+
+
+        MemoryAsset memoryAsset = MemoryAsset.create(data, metaDataAsset);
+        remoteAsset = remoteAgent.registerAsset(memoryAsset);
+
+        // create listing
+        Map<String, Object> data2 = new HashMap<>();
+        //data.put( "status", "unpublished");
+        data2.put("assetid", remoteAsset.getAssetID());
+        Listing listing = remoteAgent.createListing(data2);
+
+        Map<String, Object> purchaseData = new HashMap<>();
+        purchaseData.put(LISTING_ID, listing.getMetaData().get("id"));
+        purchaseData.put(STATUS, DELIVERED);
+
+        Purchase purchase = remoteAgent.createPurchase(purchaseData);
+        Map<String, Object> meta = purchase.getMetaData();
+
+        assertEquals(meta.get(STATUS), DELIVERED);
+        //System.out.println(JSON.toPrettyString(remoteAsset.getMetadata()));
 
     }
 

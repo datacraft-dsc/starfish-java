@@ -138,10 +138,10 @@ public class InvokeServiceFree_20 {
         // get asset form asset id
         Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
         // invoking the prime operation and will get the job associated
-        Job job = remoteOperation.invokeAsync(metaMap);
+        Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Object remoteAsset = job.awaitResult(10000);
+        Map<String, Object> remoteAsset = job.awaitResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
