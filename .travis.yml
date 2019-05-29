@@ -22,9 +22,9 @@ before_install:
     &
   - cd ..
   - sleep 240
-  - ./scripts/wait_for_migration_and_extract_keeper_artifacts.sh
-  - docker run -p 3000:3000 --env SURFER_URL=http://172.15.0.22:8080 canaradex/koi-clj:v0.1.1 2>&1 > koi.log
-    &
+#  - ./scripts/wait_for_migration_and_extract_keeper_artifacts.sh
+#  - docker run -p 3000:3000 --env SURFER_URL=http://172.15.0.22:8080 canaradex/koi-clj:v0.1.1 2>&1 > koi.log
+#    &
 #bash start_ocean.sh  --no-brizo --no-aquarius --no-pleuston --no-secret-store
 # NOTE this will not work while surfer is private
 # - git clone https://github.com/DEX-Company/surfer.git
