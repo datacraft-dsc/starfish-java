@@ -1,14 +1,16 @@
 Creation and Testing an Bundle Asset
 ============================
 
-Asset in Strafish can be of any of the 3 types :
-    -Data Asset
-    -Operation Asset
-    -Bundle Asset
+Asset Can be of threw types :
+    - Data Asset
+    - Operation Asset
+    - Bundle Asset
+
+To create a new Bundle Asset user need to do below mention steps:
 
 Creating a new Ocean instance
 -----------------------------
-First import the main starfish ocean library, and the logging library
+First import the main starfish ocean library:
   Ocean ocean=Ocean.connect();
 
 Creating  an Account Instance:
@@ -26,41 +28,30 @@ Create Bundle Asset
 Bundle asset can have zero or more Sub-asset.
 Sub-Asset can be added to bundle either at the time of Bundle creation or may be after bundle creation.
 
- >>> Create a new Bundle Asset with two sub-Asset.
-   1.Creat Sub-Asset
+   Create a new Bundle Asset with two sub-Asset.
+   1.Create Sub-Asset
        //Create a sub-asset for bundle
         Asset subAsset1 = createSubAsset("First Sub -Asset");
         Asset subAsset2 = createSubAsset("Second Sub -Asset");
-   2.create map of sub-asset where key is the name of the sub-asset
+
+   2.Create map of sub-asset where key is the name of the sub-asset
 
         Map<String, Asset> subAssetMap = new HashMap<>();
         subAssetMap.put("First-Asset", subAsset1);
         subAssetMap.put("Second-Asset", subAsset2);
+
    3. Create bundle with sub asset
         RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, subAssetMap);
-   4. Register the Bundle
+
+   4. Bundle Registration:
         ARemoteAsset remoteAsset = remoteAgent.registerAsset(remoteBundle);
+        
    5.Display bundle content:
      System.out.println(JSON.toPrettyString(remoteBundle.getMetadata()));
 
 
 Full Example:
 -------------------
-
-         package sg.dex.starfish.samples;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.remote.ARemoteAsset;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteBundle;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
-import sg.dex.starfish.util.JSON;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BundleSample {
 
