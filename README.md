@@ -37,10 +37,7 @@ mvn install
 </dependency>
 
 ```
-Example docs:
-## Asset Registration:
+Sample docs:
 [Asset Registration](src/test/resources/examples/registerAsset.md)
-
-## Bundle Creation:
-[https://github.com/DEX-Company/starfish-java/blob/develop/src/test/resources/examples/BundleCreation.html]
+[Bundle Creation](src/test/resources/examples/BundleCreation.md)
 
