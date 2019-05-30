@@ -47,7 +47,7 @@ public class ProvUtil_23{
             a.putAll(ProvUtil.createActivities(act));
             a.putAll(ProvUtil.createAgents(agent));
             a.putAll(ProvUtil.associatedWith(agentId,actId));
-            a.putAll(ProvUtil.generatedBy("this",actId));
+            a.putAll(ProvUtil.generatedBy(actId));
 
             String jsonstring=JSON.toPrettyString(a);
             try{

@@ -125,7 +125,8 @@ public class ProvUtil {
      * @param entityId   the entity Id (the generated entity)
      * @param activityId the activity Id
      */
-    public static Map<String, Object> generatedBy(String entityId, String activityId) {
+    public static Map<String, Object> generatedBy(String activityId) {
+        String entityId=OPF+":this";
         Map<String, Object> type = new HashMap<String, Object>();
         type.put("prov:entity", entityId);
         type.put("prov:activity", activityId);
@@ -233,7 +234,7 @@ public class ProvUtil {
         a.putAll(e);
         a.putAll(createAgents(agent));
         a.putAll(associatedWith(agentId, actId));
-        a.putAll(generatedBy("this", actId));
+        a.putAll(generatedBy(actId));
         return a;
     }
 
@@ -289,8 +290,10 @@ public class ProvUtil {
         a.putAll(createActivities(act));
         a.putAll(createAgents(agent));
         a.putAll(associatedWith(agentId, actId));
-        a.putAll(derivedFrom(assetDependencies));
-        a.putAll(generatedBy("this", actId));
+        if (assetDependencies.size() >  0){
+            a.putAll(derivedFrom(assetDependencies));
+        }
+        a.putAll(generatedBy(actId));
         return a;
     }
 

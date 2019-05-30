@@ -623,6 +623,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         URI uri = getJobURI(jobID);
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(uri);
+        addAuthHeaders(httpget);
         CloseableHttpResponse response;
         try {
             response = httpclient.execute(httpget);
@@ -679,6 +680,7 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
+        addAuthHeaders(httppost);
         StringEntity entity = new StringEntity(JSON.toPrettyString(req), ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
         CloseableHttpResponse response;
@@ -708,8 +710,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         }
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        HttpPost httppost = new HttpPost(getInvokeAsyncURI(operation.getAssetID()));
+	URI uri=getInvokeAsyncURI(operation.getAssetID());
+        HttpPost httppost = new HttpPost(uri);
+        addAuthHeaders(httppost);
         StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
         CloseableHttpResponse response;
@@ -746,8 +749,9 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
         }
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost(getInvokeSyncURI(operation.getAssetID()));
-//        addAuthHeaders(httpget);
+	URI uri=getInvokeSyncURI(operation.getAssetID());
+        HttpPost httppost = new HttpPost(uri);
+        addAuthHeaders(httppost);
         // TODO if params is a map of asset then form proper entity
         StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
