@@ -96,7 +96,8 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id of remote operation asset
-        Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
+        //  Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
+        Operation remoteOperation = (Operation) agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
 
 //        // response will have asset id as value which has the result of the operation
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
@@ -136,7 +137,7 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
+        Operation remoteOperation = (Operation) agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
         // invoking the prime operation and will get the job associated
         Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
@@ -184,7 +185,7 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("8d658b5b09ade5526aecf669e4291c07d88e9791420c09c51d2f922f721858d1");
+        Operation remoteOperation = (Operation) agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
         // invoking the prime operation and will get the job associated
         Job job = remoteOperation.invokeAsync(metaMap);
         Map<String,Object> jobData = new HashMap<>();
@@ -217,7 +218,8 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("8ade9c7505bcadaab8dacf6848e88ddb4aa6a295612eb01759e35aeb65daeac2");
+        //Operation remoteOperation =(Operation)agentI.getAsset("8ade9c7505bcadaab8dacf6848e88ddb4aa6a295612eb01759e35aeb65daeac2");
+        Operation remoteOperation = (Operation) agentI.getAsset("3eea0affa77814713e5b18f22761d433162d53530e9824cd14fcca7d38b64f73");
 
         // invoking the prime operation and will get the job associated
         Job job = remoteOperation.invokeAsync(metaMap);
@@ -261,7 +263,7 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("8ade9c7505bcadaab8dacf6848e88ddb4aa6a295612eb01759e35aeb65daeac2");
+        Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
         // invoking the prime operation and will get the job associated
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
@@ -303,7 +305,8 @@ public class InvokeServiceFree_20 {
 
 
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
+        // Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
+        Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
         // invoking the prime operation and will get the job associated
         Map<String, Object> metaData = remoteOperation.invokeResult(metaMap);
@@ -336,7 +339,7 @@ public class InvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset1);
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
+        Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
 
         // invoking the prime operation and will get the job associated
@@ -393,7 +396,7 @@ public class InvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset1);
         // get asset form asset id
-        Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
+        Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
 
         // invoking the prime operation and will get the job associated

@@ -37,7 +37,12 @@ import sg.dex.starfish.integration.connection_check.ConnectionChecker;
 public class Dev_Usecase_IntegrationTests {
 
     @ClassRule
-    public static AssumingConnection assumingConnection =
+    public static AssumingConnection assumingConnectionSurfer =
             new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+    @ClassRule
+    public static AssumingConnection assumingConnectionInvoke =
+            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getInvokeUrl()));
+
+
 
 }
