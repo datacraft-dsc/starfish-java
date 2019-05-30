@@ -57,15 +57,23 @@ public class Params {
 	 * @param type
 	 */
 	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
-		if (type.equals("asset")) {
-			// validate if input is type asset or not
-			Asset a = (Asset) params.get(paramName);
-			Map<String, Object> value = a.getParamValue();
-			result.put(paramName, value);
-		} else if (type.equals("json")) {
-			JSON.validateJson(JSON.toPrettyString(params));
-			result.put(paramName, params.get(paramName));
-		} else {
+		try {
+			if (type.equals("asset")) {
+				// validate if input is type asset or not
+				Asset a = (Asset) params.get(paramName);
+				Map<String, Object> value = a.getParamValue();
+				result.put(paramName, value);
+			} else if (type.equals("json")) {
+
+				if (null != params) {
+					//JSON.parse(params.toString());
+					result.put(paramName, params.get(paramName));
+				}
+			} else {
+				throw new StarfishValidationException("Invalid type of Input .Accepted Input: " +
+						"Asset or Json. Input given: " + type);
+			}
+		} catch (Exception e) {
 			throw new StarfishValidationException("Invalid type of Input .Accepted Input: " +
 					"Asset or Json. Input given: " + type);
 		}
