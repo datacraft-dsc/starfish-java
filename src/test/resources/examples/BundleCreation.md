@@ -45,7 +45,7 @@ Sub-Asset can be added to bundle either at the time of Bundle creation or may be
 
    4. Bundle Registration:
         ARemoteAsset remoteAsset = remoteAgent.registerAsset(remoteBundle);
-        
+
    5.Display bundle content:
      System.out.println(JSON.toPrettyString(remoteBundle.getMetadata()));
 
