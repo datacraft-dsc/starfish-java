@@ -38,6 +38,6 @@ mvn install
 
 ```
 Sample docs:
-## [Asset Registration](src/test/resources/examples/registerAsset.md)
-## [Bundle Creation](src/test/resources/examples/BundleCreation.md)
+#### [Asset Registration](src/test/resources/examples/registerAsset.md)
+#### [Bundle Creation](src/test/resources/examples/BundleCreation.md)
 
