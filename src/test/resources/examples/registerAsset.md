@@ -2,9 +2,9 @@
 
 #### Types of Asset :
 
-##### [Data Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
-##### [Operation Asset](https://github.com/DEX-Company/DEPs/tree/master/6)
-##### [Bundle Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
+* [Data Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
+* [Operation Asset](https://github.com/DEX-Company/DEPs/tree/master/6)
+* [Bundle Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 	
 #### Steps to Register,Upload,Listing and Purchase of an Asset:
 
