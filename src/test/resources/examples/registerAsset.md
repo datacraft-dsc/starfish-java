@@ -3,7 +3,7 @@
 
 Types of Asset :
 
-	###[Data Asset](DEX-Company/DEPs/tree/master/8)
+###[Data Asset](DEX-Company/DEPs/tree/master/8)
 	Operation Asset
 	Bundle Asset
 	
