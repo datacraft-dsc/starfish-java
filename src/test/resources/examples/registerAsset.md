@@ -1,8 +1,6 @@
- Asset (Register,Upload,Listing and Purchase of an Asset)
-======
+ ### Asset (Register,Upload,Listing and Purchase of an Asset)
 
-Types of Asset :
----------------
+#### Types of Asset :
 
 ##### [Data Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 ##### [Operation Asset](https://github.com/DEX-Company/DEPs/tree/master/6)
