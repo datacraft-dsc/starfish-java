@@ -26,6 +26,7 @@ Now we need to load an account and see how much ocean tokens and Etherum ether w
 
 3.Create Data Asset
 -----------------
+
 Data asset can be local(in-memory) or remote(URL/remote path)
 
  1.Create Data Asset from local(in-momory) from byte Array
@@ -45,13 +46,23 @@ Data asset can be local(in-memory) or remote(URL/remote path)
    
       System.out.print(a.getMetadata());
 
-  2.To create data assst from string literal:( it will also have same metadata a above)
+  2.To create data asset from string literal:( it will also have same metadata a above)
   
      MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
 
   3.To create data assst from File, eg:
   
       FileAsset fa=FileAsset.create(file);
+  4. Create Data Asset from Resource:
+                
+         Asset ua=ResourceAsset.create("{}","assets/hello.txt");
+         byte[] bs=ua.getContent();
+	String s=new String(bs,StandardCharsets.UTF_8);
+  5.Create RemoteHttpAsset
+    Asset can be created by giving the URL:
+    
+    RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
+     Asset asset =RemoteHttpAsset.create("url-test",remoteAgent,"http://httpbin.org/ip");
 
 4.Setup the Agent
 -----------------
@@ -94,8 +105,8 @@ Listing listing = remoteAgent.createListing(getListingMetaDataMap());
 
         // updating the listing with new values
         remoteAgent.updateListing(listingMetaData);
- 8.Purchase an Asset
----------------------
+ 9.Purchase an Asset
+--------------------
 To Purcahse an Asset ,listing should be created and status must be publishd.
 ListingId is mandatory for Purchase.
 
@@ -104,7 +115,7 @@ ListingId is mandatory for Purchase.
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
 	
 Full Example:
--------------------
+-------------
 
          DID did=getInvokeDid();
          RemoteAccount remoteAccount = getRemoteAccount("Aladdin","OpenSesame");
