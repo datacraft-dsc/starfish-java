@@ -1,7 +1,10 @@
-Creation and Testing an Bundle Asset
+Ocean has a core mission of making data assets visible and discoverable, with a decentralised protocol for data exchange.
+As such, each Ocean Asset (dataset, algorithm, etc.) has Asset Metadata associated with it.
+
+Create and Verfiy a Bundle Asset
 ============================
 
-Asset Can be of threw types :
+Types of Asset:
     - Data Asset
     - Operation Asset
     - Bundle Asset
@@ -26,16 +29,14 @@ Creating  an Account Instance:
 Create Bundle Asset
 --------------------
 Bundle asset can have zero or more Sub-asset.
-Sub-Asset can be added to bundle either at the time of Bundle creation or may be after bundle creation.
+Sub-Asset can be added to bundle either at the time of Bundle creation or after creation.
 
    Create a new Bundle Asset with two sub-Asset.
-   1.Create Sub-Asset
-       //Create a sub-asset for bundle
+   1.Create a sub-asset for bundle
         Asset subAsset1 = createSubAsset("First Sub -Asset");
         Asset subAsset2 = createSubAsset("Second Sub -Asset");
 
    2.Create map of sub-asset where key is the name of the sub-asset
-
         Map<String, Asset> subAssetMap = new HashMap<>();
         subAssetMap.put("First-Asset", subAsset1);
         subAssetMap.put("Second-Asset", subAsset2);
