@@ -15,12 +15,12 @@ To create a new Bundle Asset user need to do below mention steps:
 Creating a new Ocean instance
 -----------------------------
 First import the main starfish ocean library:
+
   Ocean ocean=Ocean.connect();
 
 Creating  an Account Instance:
---------------------------------------
-    Now we need to load an account and see how much ocean tokens and Etherum ether we have. We will always need some ether to be able to pay for the transaction costs to register and buy an asset on the Ethereum network. For our test Ocean network, we will use some ethereum for registering an asset, but no ocean tokens, since we are not purchasing an asset yet
-    Eg:
+-----------------------------
+Now we need to load an account and see how much ocean tokens and Etherum ether we have. We will always need some ether to be able to pay for the transaction costs to register and buy an asset on the Ethereum network. For our test Ocean network, we will use some ethereum for registering an asset, but no ocean tokens, since we are not purchasing an asset yet.
         
         Map<String,Object> credentialMap = new HashMap<>();
         credentialMap.put("username",userName);
@@ -34,21 +34,26 @@ Sub-Asset can be added to bundle either at the time of Bundle creation or after 
 
    Create a new Bundle Asset with two sub-Asset.
    1.Create a sub-asset for bundle
+   
         Asset subAsset1 = createSubAsset("First Sub -Asset");
         Asset subAsset2 = createSubAsset("Second Sub -Asset");
 
    2.Create map of sub-asset where key is the name of the sub-asset
+   
         Map<String, Asset> subAssetMap = new HashMap<>();
         subAssetMap.put("First-Asset", subAsset1);
         subAssetMap.put("Second-Asset", subAsset2);
 
    3. Create bundle with sub asset
-        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, subAssetMap);
+   
+     RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, subAssetMap);
 
-   4. Bundle Registration:
-        ARemoteAsset remoteAsset = remoteAgent.registerAsset(remoteBundle);
+   4. Bundle Registration
+   
+     ARemoteAsset remoteAsset = remoteAgent.registerAsset(remoteBundle);
 
-   5.Display bundle content:
+   5.Display bundle content
+   
      System.out.println(JSON.toPrettyString(remoteBundle.getMetadata()));
 
 
