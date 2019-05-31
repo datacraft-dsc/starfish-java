@@ -4,10 +4,11 @@ As such, each Ocean Asset (dataset, algorithm, etc.) has Asset Metadata associat
 Create and Verfiy a Bundle Asset
 ============================
 
-Types of Asset:
-     . Data Asset
-     . Operation Asset
-     . Bundle Asset
+Types of Asset :
+
+     Data Asset
+     Operation Asset
+     Bundle Asset
 
 To create a new Bundle Asset user need to do below mention steps:
 
