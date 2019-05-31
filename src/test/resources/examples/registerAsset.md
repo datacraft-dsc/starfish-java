@@ -10,12 +10,12 @@ Types of Asset :
 	
 #### Steps to Register,Upload,Listing and Purchase of an Asset:
 
-##### 1.Creating a new Ocean instance
+#### 1.Creating a new Ocean instance
 
 First import the main starfish ocean library, and the logging library
   Ocean ocean=Ocean.connect();
 
-##### 2.Creating  an Account Instance:
+#### 2.Creating  an Account Instance:
 Now we need to load an account and see how much ocean tokens and Etherum ether we have. We will always need some ether to be able to pay for the transaction costs to register and buy an asset on the Ethereum network. For our test Ocean network, we will use some ethereum for registering an asset, but no ocean tokens, since we are not purchasing an asset yet
 	Eg:
         
@@ -24,11 +24,11 @@ Now we need to load an account and see how much ocean tokens and Etherum ether w
          credentialMap.put("password",password);
          return RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
 
-##### 3.Create Data Asset
+#### 3.Create Data Asset
 
 Data asset can be local(in-memory) or remote(URL/remote path)
 
- ###### 1.Create Data Asset from local(in-momory) from byte Array
+ ######   1.Create Data Asset from local(in-momory) from byte Array
  
     byte[] data = new byte[]{1, 2, 3};
     Asset a = MemoryAsset.create(data);
@@ -45,27 +45,27 @@ Data asset can be local(in-memory) or remote(URL/remote path)
    
       System.out.print(a.getMetadata());
 
-  ###### 2.To create data asset from string literal:( it will also have same metadata a above)
+  ######    2.To create data asset from string literal:( it will also have same metadata a above)
   
      MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
 
-  ###### 3.To create data assst from File, eg:
+  ######    3.To create data assst from File, eg:
   
       FileAsset fa=FileAsset.create(file);
       
-  ###### 4. Create Data Asset from Resource:
+  ######    4. Create Data Asset from Resource:
                 
          Asset ua=ResourceAsset.create("{}","assets/hello.txt");
          byte[] bs=ua.getContent();
 	String s=new String(bs,StandardCharsets.UTF_8);
 	
-  ###### 5.Create RemoteHttpAsset
+  ######   5.Create RemoteHttpAsset
     Asset can be created by giving the URL:
     
     RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
      Asset asset =RemoteHttpAsset.create("url-test",remoteAgent,"http://httpbin.org/ip");
 
-##### 4.Setup the Agent
+#### 4.Setup the Agent
 
 We now need an agent to register and manage our Asset. The agents 
 task is to do the actual work of registration.
@@ -74,25 +74,25 @@ task is to do the actual work of registration.
     RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
 
-##### 5.Register the Asset
+#### 5.Register the Asset
 Now we can register the asset with the ocean account. This will return
 a reference of Remote Asset which.
 
 	Asset remoteAsset = agentI.registerAsset(asset);
 	
-##### 6.Upload an Asset
+#### 6.Upload an Asset
  Upload will check if the asset is already registered if not it will first register than upload.
  Also upload is only for Data Asset, if Asset is Operation or Bundle ,an Exception will be thrown.
         
 	RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
-##### 7.Listing an Asset
+#### 7.Listing an Asset
 To create listing ,assetId is mandatory.By default asset will be in un-published 
 
  	Map<String, Object> data2 = new HashMap<>();
  	data2.put("assetid", remoteAsset.getAssetID());
  	Listing listing = remoteAgent.createListing(data2);
 	
-##### 8.Publish as asset
+#### 8.Publish as asset
 To publish an asset ,its status need to be modify.
 Listing listing = remoteAgent.createListing(getListingMetaDataMap());
 
@@ -102,7 +102,7 @@ Listing listing = remoteAgent.createListing(getListingMetaDataMap());
 
         // updating the listing with new values
         remoteAgent.updateListing(listingMetaData);
- ##### 9.Purchase an Asset
+ #### 9.Purchase an Asset
 To Purcahse an Asset ,listing should be created and status must be publishd.
 ListingId is mandatory for Purchase.
 
@@ -110,7 +110,7 @@ ListingId is mandatory for Purchase.
         purchaseData.put("listingid", listing.getMetaData().get("id"));
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
 	
-####Full Example:
+#### Full Example:
 
          DID did=getInvokeDid();
          RemoteAccount remoteAccount = getRemoteAccount("Aladdin","OpenSesame");
