@@ -1,14 +1,14 @@
- Asset
+ Asset (Register,Upload,Listing and Purchase of an Asset)
 ======
 
 Types of Asset :
+---------------
 
 #### [Data Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 #### [Operation Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 #### [Bundle Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 	
-Register,Upload,Listing and Purchase of an Asset
-================================================
+#### Steps to Register,Upload,Listing and Purchase of an Asset:
 
 1.Creating a new Ocean instance
 -------------------------------
