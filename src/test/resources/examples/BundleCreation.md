@@ -5,10 +5,11 @@ Create and Verfiy a Bundle Asset
 ============================
 
 Types of Asset :
+---------------
 
-     Data Asset
-     Operation Asset
-     Bundle Asset
+##### [Data Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
+##### [Operation Asset](https://github.com/DEX-Company/DEPs/tree/master/6)
+##### [Bundle Asset](https://github.com/DEX-Company/DEPs/tree/master/8)
 
 To create a new Bundle Asset user need to do below mention steps:
 
