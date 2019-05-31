@@ -6,17 +6,17 @@ Types of Asset :
 	Data Asset
 	Operation Asset
 	Bundle Asset
-Register,Upload,Listing of an Asset.
-===================================
+Register,Upload,Listing and Purchase of an Asset
+================================================
 
 1.Creating a new Ocean instance
------------------------------
+-------------------------------
 First import the main starfish ocean library, and the logging library
   Ocean ocean=Ocean.connect();
 
 2.Creating  an Account Instance:
---------------------------------------
-	Now we need to load an account and see how much ocean tokens and Etherum ether we have. We will always need some ether to be able to pay for the transaction costs to register and buy an asset on the Ethereum network. For our test Ocean network, we will use some ethereum for registering an asset, but no ocean tokens, since we are not purchasing an asset yet
+-------------------------------
+Now we need to load an account and see how much ocean tokens and Etherum ether we have. We will always need some ether to be able to pay for the transaction costs to register and buy an asset on the Ethereum network. For our test Ocean network, we will use some ethereum for registering an asset, but no ocean tokens, since we are not purchasing an asset yet
 	Eg:
         
         Map<String,Object> credentialMap = new HashMap<>();
