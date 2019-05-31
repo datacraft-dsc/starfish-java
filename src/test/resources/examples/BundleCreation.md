@@ -5,9 +5,9 @@ Create and Verfiy a Bundle Asset
 ============================
 
 Types of Asset:
-    - Data Asset
-    - Operation Asset
-    - Bundle Asset
+     . Data Asset
+     . Operation Asset
+     . Bundle Asset
 
 To create a new Bundle Asset user need to do below mention steps:
 
