@@ -1,11 +1,12 @@
  Asset
-============================
+======
 
 Types of Asset :
 
 	Data Asset
 	Operation Asset
 	Bundle Asset
+	
 Register,Upload,Listing and Purchase of an Asset
 ================================================
 
@@ -53,11 +54,13 @@ Data asset can be local(in-memory) or remote(URL/remote path)
   3.To create data assst from File, eg:
   
       FileAsset fa=FileAsset.create(file);
+      
   4. Create Data Asset from Resource:
                 
          Asset ua=ResourceAsset.create("{}","assets/hello.txt");
          byte[] bs=ua.getContent();
 	String s=new String(bs,StandardCharsets.UTF_8);
+	
   5.Create RemoteHttpAsset
     Asset can be created by giving the URL:
     
