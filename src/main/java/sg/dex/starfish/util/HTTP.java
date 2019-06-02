@@ -66,7 +66,7 @@ public class HTTP {
 	}
 
 	/**
-	 * API to execute the HTPP request based on user name ,passwrod, and the request
+	 * Execute the HTTP request based on user name ,password, and the request
 	 * data.
 	 * 
 	 * @param httpRequest will have request data

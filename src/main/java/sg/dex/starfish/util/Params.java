@@ -9,10 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class for handling invoke parameters
- *This class includes the methods for formatting the input passed, preparing the result ,
- * formatting the response
- * @author Mike
+ * Utility class for handling invokable operation parameters
  *
  */
 public class Params {
