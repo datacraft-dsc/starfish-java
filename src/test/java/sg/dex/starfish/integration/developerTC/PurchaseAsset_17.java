@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assume.assumeNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
@@ -85,6 +86,7 @@ public class PurchaseAsset_17 {
 
     @Test(expected = StarfishValidationException.class)
     public void testPurchaseWithNull(){
+    	assumeNotNull(remoteAgent);
         remoteAgent.createPurchase(null);
     }
 

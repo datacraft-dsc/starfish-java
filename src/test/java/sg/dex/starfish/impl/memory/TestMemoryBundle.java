@@ -11,13 +11,15 @@ import java.util.Map;
 
 import static junit.framework.TestCase.*;
 
+@SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryBundle {
 
     /**
      * Test bundle creation with bundle name, so name will be null
      */
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testCreationWithoutBundleName() {
 
         // creating  assets
@@ -77,7 +79,8 @@ public class TestMemoryBundle {
      * Test bundle creation wth name given
      */
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testCreationWithCustomMetadata() {
 
         // creating  assets
@@ -181,7 +184,8 @@ public class TestMemoryBundle {
     /**
      * Add sub-Asset map in empty bundle
      */
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testAddAssetMapInEmptyBundle() {
 
         // creating  assets
@@ -205,7 +209,6 @@ public class TestMemoryBundle {
         // if assetMap is passed as null it will create an empty map for that
         Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
 
-        Map<String, Asset> assetBundleNEW = new HashMap<>();
         byte[] data3 = {4, 16, 7};
         Asset a3 = MemoryAsset.create(data3);
 
@@ -244,7 +247,8 @@ public class TestMemoryBundle {
     /**
      * Add sub-asset map in Existing bundle which has asset
      */
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testAddAssetInExistingBundle() {
 
         // creating  assets
@@ -376,7 +380,8 @@ public class TestMemoryBundle {
         assertNotNull(bundle.get("3"));
 
     }
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testNestedBundle(){
 
         Asset subAsset = MemoryAsset.create("Test bundle asset by sub asset name");

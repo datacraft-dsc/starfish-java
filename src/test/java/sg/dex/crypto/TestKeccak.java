@@ -7,6 +7,7 @@ import org.junit.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.util.Hex;
 
+@SuppressWarnings("javadoc")
 public class TestKeccak {
 
 	@Test public void testEmptyKeccak256() {

@@ -272,6 +272,8 @@ public class Utils {
         // mandatoryList.add("author");
         return mandatoryList;
     }
+    
+    
 
     /**
      * Merges two metadata maps.

@@ -1,4 +1,4 @@
-package sg.dex.starfish.impl;
+package sg.dex.starfish.impl.file;
 
 import org.junit.Test;
 import sg.dex.starfish.impl.file.FileAsset;
@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("javadoc")
 public class TestFileAsset {
 
 	@Test public void testTempFile() {

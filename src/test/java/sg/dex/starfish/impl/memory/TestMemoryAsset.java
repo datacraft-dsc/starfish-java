@@ -15,6 +15,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import static sg.dex.starfish.constant.Constant.ID;
 
+@SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAsset {
 

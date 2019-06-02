@@ -51,12 +51,11 @@ public class RemoteAgentConfig {
 
         invokeUrl=ip_invoke+":"+port_invoke;
         invokeAgent =getInvokeAgent(invokeUrl);
+        
         // setting barge URL
         String barge_ip = properties.getProperty("barge.host");
         String barge_port = properties.getProperty("barge.port");
         bargeUrl = barge_ip + ":" + barge_port;
-
-
 
     }
 

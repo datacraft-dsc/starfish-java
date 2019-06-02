@@ -1,14 +1,6 @@
 package sg.dex.starfish.impl.memory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Listing;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Hex;
+import static junit.framework.TestCase.assertNotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,8 +8,18 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertNotNull;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Listing;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+
+@SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryListing {
 
@@ -39,9 +41,8 @@ public class TestMemoryListing {
 
         Map<String, Object> metaData = new HashMap<>();
         try {
-            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            ObjectMapper objectMapper = new ObjectMapper();
-            HashMap json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            String metaContent = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            Map<String,Object> json = JSON.toMap(metaContent);
             metaData.put("info", json);
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,9 +127,8 @@ public class TestMemoryListing {
         Map<String, Object> metaData = new HashMap<>();
 
         try {
-            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            ObjectMapper objectMapper = new ObjectMapper();
-            HashMap json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
+            String metaContent = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+            Map<String,Object> json = JSON.toMap(metaContent);
             metaData.put("info", json);
         } catch (Exception e) {
             e.printStackTrace();

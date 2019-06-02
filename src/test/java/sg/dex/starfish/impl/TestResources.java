@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("javadoc")
 public class TestResources {
 
 	@Test public void testResourceAsset() {

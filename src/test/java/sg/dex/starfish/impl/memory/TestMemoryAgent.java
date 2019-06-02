@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAgent {
 	private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
@@ -121,6 +122,8 @@ public class TestMemoryAgent {
 		MemoryAgent agent1=MemoryAgent.create(did.toString());
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		String id  = asset.getAssetID();
+		assertEquals(64,id.length());
+	
 		agent1.registerAsset(asset);
 		Asset assetFromAgent=agent1.getAsset(did.getID());
 		assertEquals(assetFromAgent,asset);
