@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 
 	<name>Starfish - Developer Toolkit for the Ocean ecosystem</name>
 	<url>https://github.com/DEX-company/starfish-java</url>
@@ -27,12 +27,13 @@
 	<properties>
 		<gpg.keyname>340395AC</gpg.keyname>
 		<gpg.useagent>true</gpg.useagent>
+		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-
-		<gpg.useagent>true</gpg.useagent>
 	</properties>
 
 	<scm>
@@ -161,7 +162,7 @@
 							<goal>sign</goal>
 						</goals>
 						<configuration>
-							<skip>true</skip>
+							<!-- <skip>true</skip> -->
 						</configuration>
 					</execution>
 				</executions>
