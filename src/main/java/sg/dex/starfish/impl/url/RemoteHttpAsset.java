@@ -1,36 +1,41 @@
 package sg.dex.starfish.impl.url;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.remote.ARemoteAsset;
-import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
- * This class is for reading the data from a given URL
+ * A specialised asset class that references data at a given URI.
+ * 
+ * It is assumed that asset content can be accessed with a HTTP GET to the given URI.
+ *
+ * 
  */
-public class RemoteHttpAsset extends ARemoteAsset implements DataAsset {
+public class RemoteHttpAsset extends AAsset implements DataAsset {
 
 	private final URI uri;
 
-	protected RemoteHttpAsset(String meta, RemoteAgent remoteAgent, URI uri) {
-		super(meta, remoteAgent);
+	protected RemoteHttpAsset(String meta, URI uri) {
+		super(meta);
 		this.uri = uri;
 	}
 
@@ -45,8 +50,20 @@ public class RemoteHttpAsset extends ARemoteAsset implements DataAsset {
 		return uri;
 	}
 
-	public static RemoteHttpAsset create(String meta, RemoteAgent remoteAgent, String uri) {
-		return new RemoteHttpAsset(meta, remoteAgent, getUri(uri));
+	/**
+	 * Creates a HTTP asset using the given URI string.
+	 * 
+	 * @param uriString
+	 * @return A new HTTP asset
+	 */
+	public static RemoteHttpAsset create(String uriString) {
+		return new RemoteHttpAsset(buildMetadata(uriString), getUri(uriString));
+	}
+
+	private static String buildMetadata(String uri) {
+		HashMap<String,Object> m=Utils.createDefaultMetadata();
+		m.put(Constant.TYPE, Constant.DATA_SET);
+		return JSON.toPrettyString(m);
 	}
 
 	/**
@@ -95,14 +112,6 @@ public class RemoteHttpAsset extends ARemoteAsset implements DataAsset {
 					"Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :",
 					e);
 		}
-	}
-
-	@Override
-	public Map<String, Object> getParamValue() {
-		Map<String, Object> o = new HashMap<>();
-		// pass the asset ID, i.e. hash of content
-		o.put(Constant.DID, getAssetID());
-		return o;
 	}
 
 	@Override
