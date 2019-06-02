@@ -159,7 +159,7 @@ public class HTTP {
 	}
 
 	/**
-	 * This method is used to crate a Multipart instance bas on content.
+	 * This method is used to crate a Multipart instance with the given content.
 	 * 
 	 * @param partName
 	 * @param body

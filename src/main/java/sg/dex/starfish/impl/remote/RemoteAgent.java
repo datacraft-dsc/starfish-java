@@ -49,7 +49,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Mike
  * @version 0.5
  */
-public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent {
+public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 
     private final RemoteAccount account;
@@ -603,8 +603,8 @@ public class RemoteAgent extends AAgent implements Invokable<Asset>, MarketAgent
     }
 
     @Override
-    public Job invoke(Operation operation, Asset... params) {
-        Map<String, Object> request = new HashMap(2);
+    public Job invoke(Operation operation, Object... params) {
+        Map<String, Object> request = new HashMap<>(2);
         request.put(OPERATION, operation.getAssetID());
         request.put(PARAMS, Params.formatParams(operation, params));
         return invoke(request, operation.getAssetID());

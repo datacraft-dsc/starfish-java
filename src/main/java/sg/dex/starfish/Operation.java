@@ -24,7 +24,7 @@ public interface Operation extends Asset {
 	 * @throws IllegalArgumentException if required parameters are not available.
 	 * @return The Job for this invoked operation
 	 */
-	public default Job invoke(Asset... params) {
+	public default Job invoke(Object... params) {
 		return invoke(Params.namedParams(this, params));
 	}
 

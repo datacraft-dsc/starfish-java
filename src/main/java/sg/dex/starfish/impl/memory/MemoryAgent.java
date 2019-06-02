@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
  *
  * @author Mike
  */
-public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent {
+public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * The singleton default memory agent instance
      */
@@ -122,7 +122,7 @@ public class MemoryAgent extends AAgent implements Invokable<Asset>, MarketAgent
      * @throws IllegalArgumentException if required parameters are not available.
      */
     @Override
-    public Job invoke(Operation operation, Asset... params) {
+    public Job invoke(Operation operation, Object... params) {
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }

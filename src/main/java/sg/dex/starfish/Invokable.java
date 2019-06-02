@@ -3,12 +3,12 @@ package sg.dex.starfish;
 import java.util.Map;
 
 /**
- * Interface representing an invokable service.
+ * Interface representing an invokable service agent.
  * 
  * @author Mike
  * @version 0.5
  */
-public interface Invokable<T> {
+public interface Invokable {
 
 	/**
 	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
@@ -19,7 +19,7 @@ public interface Invokable<T> {
 	 * @param params Positional parameters for the invoke operation
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
-	public Job invoke(Operation operation, T... params);
+	public Job invoke(Operation operation, Object... params);
 	
 	/**
 	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
@@ -43,6 +43,7 @@ public interface Invokable<T> {
 	public default Map<String,Object> getParamSpec(Operation op) {
 		return op.getParamsSpec();
 	}
+	
 	/**
 	 * Invokes this operation with the given named parameters. Operations should override
 	 * this method to provide an implementation of asynchronous invocation via the

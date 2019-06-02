@@ -1,6 +1,7 @@
 package sg.dex.starfish.constant;
 
 
+@SuppressWarnings("javadoc")
 public class Constant {
 
     //-----GENERAL---------------------

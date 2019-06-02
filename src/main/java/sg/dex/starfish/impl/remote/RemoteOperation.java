@@ -35,7 +35,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
 
     @Override
-    public Job invoke(Asset... params) {
+    public Job invoke(Object... params) {
         return remoteAgent.invoke(this, params);
     }
 

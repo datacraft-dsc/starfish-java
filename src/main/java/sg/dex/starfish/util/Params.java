@@ -126,7 +126,7 @@ public class Params {
 	 */
 	@SuppressWarnings("unchecked")
 	public
-	static Map<String,Object> formatParams(Operation operation, Asset... params) {
+	static Map<String,Object> formatParams(Operation operation, Object... params) {
 		HashMap<String,Object> result=new HashMap<>(params.length);
 		Map<String,Object> paramSpec=operation.getParamsSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
@@ -137,7 +137,8 @@ public class Params {
 			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
 			boolean required=Utils.coerceBoolean(spec.get("required"));
 			if ((pos>=0)&&(pos<params.length)) {
-				Asset a=params[pos];
+				// TODO: Handle non-asset parameters?
+				Asset a=(Asset) params[pos];
 				Map<String,Object> value=a.getParamValue();
 				result.put(paramName,value);
 			}
@@ -159,7 +160,7 @@ public class Params {
 	 */
 	@SuppressWarnings("unchecked")
 	public
-	static Map<String,Object> namedParams(Operation operation, Asset... params) {
+	static Map<String,Object> namedParams(Operation operation, Object... params) {
 		HashMap<String,Object> result=new HashMap<>(params.length);
 		Map<String,Object> paramSpec=operation.getParamsSpec();
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
@@ -169,7 +170,8 @@ public class Params {
 			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;
 			boolean required=Utils.coerceBoolean(spec.get("required"));
 			if ((pos>=0)&&(pos<params.length)) {
-				Asset a=params[pos];
+				// TODO: handle non-asset parameters>
+				Asset a=(Asset) params[pos];
 				result.put(paramName,a);
 			} else if (required) {
 				throw new IllegalArgumentException("Parameter "+paramName+" is required but not supplied");

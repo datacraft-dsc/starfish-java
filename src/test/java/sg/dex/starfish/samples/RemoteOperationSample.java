@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+@SuppressWarnings("javadoc")
 public class RemoteOperationSample {
 
 	private static Properties getProperties() {

@@ -160,7 +160,7 @@ public class Utils {
      * @return A map containing the key keys and values
      * @throws IllegalArgumentException if mapOf has odd number of arguments
      */
-//	@SuppressWarnings({"unchecked","javadocs"})
+	@SuppressWarnings({"unchecked"})
     public static <K, V> Map<K, V> mapOf(Object... params) {
         int len = params.length;
         if ((len & 1) != 0)
