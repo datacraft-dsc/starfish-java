@@ -32,15 +32,15 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
     }
 
     @Override
-    public Job<Object> invokeAsync(Map<String, Object> params) {
+    public Job<Map<String,Object>> invokeAsync(Map<String, Object> params) {
         // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
         // Implementations may override this for custom behaviour (e.g. a custom thread pool)
         // But this should be sufficient for most cases.
-        final CompletableFuture<Object> future = new CompletableFuture<>();
+        final CompletableFuture<Map<String,Object>> future = new CompletableFuture<>();
 
         MemoryAgent.THREAD_POOL.submit(() -> {
             try {
-                Object result = compute(params);
+            	Map<String,Object> result = compute(params);
                 future.complete(result); // success
             } catch (Throwable t) {
                 future.completeExceptionally(t); // failure
@@ -48,7 +48,7 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
             assert (future.isDone());
         });
 
-        MemoryJob<Object> memoryJob = MemoryJob.create(future);
+        MemoryJob<Map<String,Object>> memoryJob = MemoryJob.create(future);
         return memoryJob;
     }
 
@@ -79,7 +79,7 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
     }
 
 
-    private Object doCompute(Object input) {
+    private Map<String,Object> doCompute(Object input) {
         Asset a= (Asset)input;
         String hash =Hex.toString(Hash.keccak256(a.getContent()));
 
@@ -89,7 +89,7 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
     }
 
 
-    protected Object compute(Map<String, Object> params) {
+    protected Map<String,Object> compute(Map<String, Object> params) {
         if (params == null || params.get("input") == null)
             throw new IllegalArgumentException("Missing parameter 'input'");
         return doCompute(params.get("input"));

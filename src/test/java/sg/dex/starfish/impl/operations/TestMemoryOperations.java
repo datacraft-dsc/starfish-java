@@ -16,6 +16,7 @@ import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
     private MemoryAgent memoryAgent = MemoryAgent.create();
@@ -34,9 +35,9 @@ public class TestMemoryOperations {
         test.put("input", a);
         // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
-        Job<Asset> job = memoryOperation.invokeAsync(test);
+        Job<Map<String,Object>> job = memoryOperation.invokeAsync(test);
 
-        Asset response = job.awaitResult(1000);
+        Asset response = (Asset) job.awaitResult(1000).get("output");
 
         assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
     }
@@ -75,13 +76,13 @@ public class TestMemoryOperations {
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
-        Job<Object> job = memoryOperation.invokeAsync(test);
+        Job<Map<String,Object>> job = memoryOperation.invokeAsync(test);
 
-        Object res = job.awaitResult(1000);
+        Map<String,Object> res = job.awaitResult(1000);
         Map<String ,Object> response = (Map<String ,Object> )res;
-        response.get("output");
+        Object r=response.get("output");
 
-        assertNotNull(response.get("output"));
+        assertNotNull(r);
     }
 
     /**
@@ -119,14 +120,13 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job<Object> job = hashOperation.invokeAsync(test);
+        Job<Map<String,Object>> job = hashOperation.invokeAsync(test);
 
-        Object res = job.awaitResult(1000);
-        Map<String ,Object> response = (Map<String ,Object> )res;
-        response.get("output");
+        Map<String ,Object> response = job.awaitResult(1000);
+        Object r=response.get("output");
 
 
-        assertNotNull(response.get("output"));
+        assertNotNull(r);
     }
 
     /**
@@ -255,9 +255,9 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = memoryOperation.invokeAsync(test);
+        Job<Map<String, Object>> job = memoryOperation.invokeAsync(test);
 
-        Asset result = (Asset) job.awaitResult(1000);
+        Asset result = (Asset) job.awaitResult(1000).get("output");
 
         assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
 
@@ -269,20 +269,20 @@ public class TestMemoryOperations {
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
-        Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Asset result = (Asset) job.awaitResult(1000);
+        Job<Map<String,Object>> job = op.invokeAsync(Utils.mapOf("input", a));
+        Asset result = (Asset) job.awaitResult(1000).get("output");
         assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
     }
 
-    @Test
+	@Test
     public void testBadNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
-        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
+        Job<Map<String,Object>> badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
         try {
-            Asset result2 = (Asset) badJob.awaitResult(1000);
+            Object result2 = badJob.awaitResult(1000);
             fail("Should not succeed! Got: " + Utils.getClass(result2));
         } catch (Exception ex) {
             /* OK */
@@ -294,8 +294,9 @@ public class TestMemoryOperations {
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         try {
-            Job badJob = op.invokeAsync(null); // should not yet fail since this is async
-            Asset result2 = (Asset) badJob.awaitResult(10);
+        	Map<String,Object> emptyParams=new HashMap<>();
+            Job<Map<String,Object>> badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
+            Object result2 = badJob.awaitResult(10);
             fail("Should not succeed! Got: " + Utils.getClass(result2));
         } catch (IllegalArgumentException ex) {
             /* OK */

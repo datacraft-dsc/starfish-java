@@ -7,6 +7,7 @@ import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryJob;
+import sg.dex.starfish.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Operation {
 
 	protected ReverseByte_AssetI_AssetO(String meta, MemoryAgent memoryAgent) {
-		super(meta,memoryAgent);
+		super(meta, memoryAgent);
 	}
 
 	/**
@@ -42,28 +43,30 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 	 */
 	public static ReverseByte_AssetI_AssetO create(String meta, MemoryAgent memoryAgent) {
 
-
-		return new ReverseByte_AssetI_AssetO(meta,memoryAgent);
+		return new ReverseByte_AssetI_AssetO(meta, memoryAgent);
 	}
 
 	@Override
-	public Job<Asset> invokeAsync(Map<String, Object> params) {
-		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
-		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
+	public Job<Map<String, Object>> invokeAsync(Map<String, Object> params) {
+		// default implementation for an asynchronous invoke job in memory, using a
+		// Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread
+		// pool)
 		// But this should be sufficient for most cases.
-		final CompletableFuture<Asset> future = new CompletableFuture<>();
+		final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
 
 		MemoryAgent.THREAD_POOL.submit(() -> {
 			try {
-				Asset result = compute(params);
+				Map<String, Object> result = compute(params);
 				future.complete(result); // success
-			} catch (Throwable t) {
+			}
+			catch (Throwable t) {
 				future.completeExceptionally(t); // failure
 			}
 			assert (future.isDone());
 		});
 
-		MemoryJob<Asset> memoryJob = MemoryJob.create(future);
+		MemoryJob<Map<String, Object>> memoryJob = MemoryJob.create(future);
 		return memoryJob;
 	}
 
@@ -72,19 +75,21 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 		return syncCallToReverse(params);
 	}
 
-
 	@Override
 	public Job invoke(Map<String, Object> params) {
-		// default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
-		// Implementations may override this for custom behaviour (e.g. a custom thread pool)
+		// default implementation for an asynchronous invoke job in memory, using a
+		// Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread
+		// pool)
 		// But this should be sufficient for most cases.
-		final CompletableFuture<Asset> future = new CompletableFuture<Asset>();
+		final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
 
 		MemoryAgent.THREAD_POOL.submit(() -> {
 			try {
-				Asset result = compute(params);
+				Map<String, Object> result = compute(params);
 				future.complete(result); // success
-			} catch (Throwable t) {
+			}
+			catch (Throwable t) {
 				future.completeExceptionally(t); // failure
 			}
 			assert (future.isDone());
@@ -95,13 +100,14 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 
 	/**
 	 * API to reverse the byte array
+	 * 
 	 * @param input
 	 * @return
 	 */
-	private Asset doCompute(Object input) {
-//		Object a=(JSON.toMap(input.toString())).get(ID);
-		 Asset asset =(Asset)input;
-//
+	private Map<String, Object> doCompute(Object input) {
+		// Object a=(JSON.toMap(input.toString())).get(ID);
+		Asset asset = (Asset) input;
+		//
 		byte[] bytes = asset.getContent();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
@@ -109,35 +115,39 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 			bytes[i] = bytes[length - i - 1];
 			bytes[length - i - 1] = temp;
 		}
-		byte[] data = new byte[]{3, 2, 1};
+		byte[] data = new byte[] { 3, 2, 1 };
 		Asset result = MemoryAsset.create(data);
-		return result;
+
+		return Utils.mapOf("output", result);
 	}
 
 	/**
-	 * API that implement the compute logic that will reverse the content of an Asset.
+	 * API that implement the compute logic that will reverse the content of an
+	 * Asset.
+	 * 
 	 * @param params
 	 * @return
 	 */
-	protected Asset compute(Map<String, Object> params) {
-		if (params==null ||params.get("input")==null) throw new IllegalArgumentException("Missing parameter 'input'");
+	protected Map<String, Object> compute(Map<String, Object> params) {
+		if (params == null || params.get("input") == null)
+			throw new IllegalArgumentException("Missing parameter 'input'");
 		return doCompute(params.get("input"));
 	}
+
 	/**
 	 * API to test the Sync call execution
+	 * 
 	 * @param params
 	 * @return
 	 */
-	public  Map<String, Object> syncCallToReverse(Map<String, Object> params){
+	public Map<String, Object> syncCallToReverse(Map<String, Object> params) {
 
-
-		Map<String,Object> result = new HashMap<>();
-		Asset a=doCompute(params.get("input"));
-		result.put("output",a);
+		Map<String, Object> result = doCompute(params.get("input"));
 		// wait for some time
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			Thread.sleep(10);
+		}
+		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

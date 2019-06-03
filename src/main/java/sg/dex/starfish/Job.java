@@ -9,6 +9,7 @@ import sg.dex.starfish.exception.StorageException;
  *
  * @author Mike
  * @version 0.5
+ * @param <T> The type of result returned by the Job
  */
 public interface Job<T> {
 
