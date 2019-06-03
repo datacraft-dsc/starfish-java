@@ -72,7 +72,7 @@ public class HTTP {
 	 * @param httpRequest will have request data
 	 * @param user user name
 	 * @param password password of the user
-	 * @return
+	 * @return An HTTP Response object
 	 */
 	public static CloseableHttpResponse executeWithAuth(HttpUriRequest httpRequest, String user, String password) {
 		CredentialsProvider provider = new BasicCredentialsProvider();
@@ -106,16 +106,6 @@ public class HTTP {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	/**
-	 * This method is used to get the HTTP entity based on HTTP response
-	 * 
-	 * @param response
-	 * @return
-	 */
-	public static HttpEntity getEntity(HttpResponse response) {
-		return response.getEntity();
 	}
 
 	/**
@@ -163,7 +153,7 @@ public class HTTP {
 	 * 
 	 * @param partName
 	 * @param body
-	 * @return
+	 * @return A multipart HttpEntity with the given  content
 	 */
 	public static HttpEntity createMultiPart(String partName, ContentBody body) {
 		return MultipartEntityBuilder

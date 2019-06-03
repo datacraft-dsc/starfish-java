@@ -279,6 +279,10 @@
 		</resources>
 		<testResources>
 			<testResource>
+				<directory>src/test/clojure</directory>
+			</testResource>
+		
+			<testResource>
 				<directory>src/test/resources</directory>
 			</testResource>
 		</testResources>

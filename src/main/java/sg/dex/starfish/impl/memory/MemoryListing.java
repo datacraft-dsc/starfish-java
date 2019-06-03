@@ -45,7 +45,8 @@ public class MemoryListing implements Listing {
         return agent.getAsset(getAssetID());
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Map<String,Object> getAgreement() {
        return getMetaData().get(AGREEMENT)!= null ?(Map<String, Object>)getMetaData().get(AGREEMENT): null;
     }
