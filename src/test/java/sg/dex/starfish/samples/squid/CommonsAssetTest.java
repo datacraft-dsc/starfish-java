@@ -44,6 +44,7 @@ public class CommonsAssetTest {
 		properties.put(OceanConfig.ESCROWREWARD_CONDITIONS_ADDRESS, "0xeD4Ef53376C6f103d2d7029D7E702e082767C6ff");
 		properties.put(OceanConfig.ESCROW_ACCESS_SS_CONDITIONS_ADDRESS, "0xfA16d26e9F4fffC6e40963B281a0bB08C31ed40C");
 		properties.put(OceanConfig.ACCESS_SS_CONDITIONS_ADDRESS, "0x45DE141F8Efc355F1451a102FB6225F1EDd2921d");
+		properties.put(OceanConfig.CONDITION_STORE_MANAGER_ADDRESS, "0x9768c8ae44f1dc81cAA98F48792aA5730cAd2F73");
 		properties.put(OceanConfig.TEMPLATE_STORE_MANAGER_ADDRESS, "0x9768c8ae44f1dc81cAA98F48792aA5730cAd2F73");
 		properties.put(OceanConfig.TOKEN_ADDRESS, "0x9861Da395d7da984D5E8C712c2EDE44b41F777Ad");
 		properties.put(OceanConfig.DISPENSER_ADDRESS, "0x865396b7ddc58C693db7FCAD1168E3BD95Fe3368");
@@ -69,7 +70,7 @@ public class CommonsAssetTest {
 			AccountsAPI accountsAPI=oceanAPI.getAccountsAPI();
 			SquidAccount account=SquidAccount.create(ocean,oceanAPI.getMainAccount());
 			
-			accountsAPI.requestTokens(BigInteger.valueOf(Long.MAX_VALUE));
+			// accountsAPI.requestTokens(BigInteger.valueOf(Long.MAX_VALUE));
 			
 			System.out.println(account.getID());
 			System.out.println(account.getOceanBalance());
