@@ -59,7 +59,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
 	 * @return A new HTTP asset
 	 */
 	public static RemoteHttpAsset create( String uri) {
-		return new RemoteHttpAsset(buildMetaData(uri, null),  getUri(uri));
+		return new RemoteHttpAsset(buildMetaData( null),  getUri(uri));
 	}
 
     /**
@@ -70,15 +70,12 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @return A new HTTP asset
      */
     public static RemoteHttpAsset create( String uri,Map<String,Object> meta) {
-        return new RemoteHttpAsset(buildMetaData(uri, meta),  getUri(uri));
+        return new RemoteHttpAsset(buildMetaData( meta),  getUri(uri));
     }
 
-	private static String buildMetaData(String uri, Map<String, Object> meta) {
-		String hash = Hex.toString(Hash.keccak256(uri));
-
+	private static String buildMetaData( Map<String, Object> meta) {
 		Map<String, Object> ob = new HashMap<>();
 		ob.put(Constant.DATE_CREATED, Instant.now().toString());
-		ob.put(Constant.CONTENT_HASH, hash);
 		ob.put(Constant.TYPE, Constant.DATA_SET);
 		ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 

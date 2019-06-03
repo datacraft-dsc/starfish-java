@@ -9,6 +9,7 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
 import java.util.HashMap;
@@ -118,7 +119,11 @@ public class AssetIdentity_02 {
 
 
         //verify prov info exists
-        assertNotNull(remoteAsset.getMetadata().get("provenance").toString());
+        assertNotNull(remoteAsset.getMetadata().get("provenance"));
+        Map<String,Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
+
+        assertNotNull(provData.get("activity"));
+        assertNotNull(provData.get("wasGeneratedBy"));
     }
 
     @Test

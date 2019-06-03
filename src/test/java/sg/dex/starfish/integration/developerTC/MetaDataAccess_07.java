@@ -9,6 +9,7 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.JSON;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -68,9 +69,7 @@ public class MetaDataAccess_07 {
     private Map<String,Object> getMetaData(){
         try {
             String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            ObjectMapper objectMapper = new ObjectMapper();
-            HashMap<String,Object> json = objectMapper.readValue(METADATA_JSON_CONTENT, HashMap.class);
-            return json;
+            return JSON.toMap(METADATA_JSON_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
         }
