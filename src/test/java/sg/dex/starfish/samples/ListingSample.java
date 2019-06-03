@@ -7,27 +7,13 @@ import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
 
 public class ListingSample {
 
-    private static Properties getProperties() {
-        Properties properties = new Properties();
-        try {
-            try (InputStream is = ListingSample.class.getClassLoader().getResourceAsStream("application_test.properties")) {
-                properties.load(is);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
 
     public static void main(String arg[]) {
 
@@ -40,12 +26,6 @@ public class ListingSample {
         // 2.get  listing details
         Map<String,Object>result2 =listing.getMetaData();
         assertNotNull(result2);
-
-
-//        // 3.get all listing details
-//        List<Listing> allListingLst =surfer.getAllListing();
-//        assertNotNull(allListingLst);
-
 
 
         // 3. update existing Listing
@@ -83,11 +63,9 @@ public class ListingSample {
         data2.put( "info", json);
         Listing listing =surfer.createListing(data2);
 
-        // Listing newListing =remoteListing.createListing(data2);
         assertNotNull(listing);
         assertNotNull(listing.getAsset());
         assertNotNull(listing.getMetaData());
-        //assertNotNull(listing.getAgreement());
 
         return listing;
     }

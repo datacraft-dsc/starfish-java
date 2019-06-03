@@ -18,7 +18,6 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
-//import sg.dex.starfish.util.JSON;
 
 /**
  * As a developer working with Ocean,
@@ -117,13 +116,9 @@ public class AssetIdentity_02 {
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
 
-        // get the Remote asset ID which has been register using remote Agent
-        String assetID = remoteAsset.getAssetID();
 
         //verify prov info exists
         assertNotNull(remoteAsset.getMetadata().get("provenance").toString());
-        //System.out.println(JSON.toPrettyString(remoteAsset.getMetadata().get("provenance")));
-
     }
 
     @Test

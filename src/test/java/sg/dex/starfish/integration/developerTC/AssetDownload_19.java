@@ -28,6 +28,7 @@ public class AssetDownload_19 {
     public void testDownloadAsset() {
 
         Asset asset = MemoryAsset.create("test upload of asset");
+        // upload will register and upload the asset
         RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
 
         //ra.getContentStream()

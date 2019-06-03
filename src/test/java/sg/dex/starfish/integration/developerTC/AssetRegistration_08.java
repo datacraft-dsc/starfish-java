@@ -17,7 +17,6 @@ import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-//import sg.dex.starfish.util.JSON;
 
 /**
  * As a developer working with Ocean, I need a way to register a new asset with Ocean
@@ -80,7 +79,6 @@ public class AssetRegistration_08 {
         assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
         assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
         assertNotNull(asset.getMetadata().get("provenance"));
-        //System.out.println(JSON.toPrettyString(asset.getMetadata().get("provenance")));
     }
 
 

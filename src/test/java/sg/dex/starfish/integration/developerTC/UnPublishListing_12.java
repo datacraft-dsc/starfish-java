@@ -131,7 +131,7 @@ public class UnPublishListing_12 {
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(getListingMetaDataMap());
         Listing listing1 =remoteAgent.getListing(listing.getId());
-        // to maitain the immutability
+        // to maintain the immutability
         assertFalse(listing1.equals(listing));
 
 

@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
-//import sg.dex.starfish.util.JSON;
-
 
 /**
  * "As a developer building a service provider Agent for Ocean,
@@ -164,7 +162,6 @@ public class ConfirmPurchase_18 {
         Map<String, Object> meta = purchase.getMetaData();
 
         assertEquals(meta.get(STATUS), DELIVERED);
-        //System.out.println(JSON.toPrettyString(remoteAsset.getMetadata()));
 
     }
 

@@ -39,8 +39,5 @@ public class AddNewAssetVersion_22 {
         assertEquals(assetData,data);
         assertEquals(asset.getAssetID(), ra.getAssetID());
 
-        // modify the content
-
-
     }
 }

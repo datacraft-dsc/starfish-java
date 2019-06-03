@@ -66,7 +66,6 @@ public class MetaDataAccess_07 {
 
 
     private Map<String,Object> getMetaData(){
-        Map<String, Object> metaData = new HashMap<>();
         try {
             String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
             ObjectMapper objectMapper = new ObjectMapper();

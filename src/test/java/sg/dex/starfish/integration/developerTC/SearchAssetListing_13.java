@@ -58,7 +58,7 @@ public class SearchAssetListing_13 {
         RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
-        // adding some invlaid assetid in the map and try to create the listing
+        // adding some invalid asset-id in the map and try to create the listing
         data2.put("assetid", remoteAsset.getAssetID()+"Invalid");
 
         Listing listing = remoteAgent.createListing(data2);
