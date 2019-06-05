@@ -1,16 +1,10 @@
 package sg.dex.starfish.impl.url;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -20,8 +14,16 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A specialised asset class that references data at a given URI.
@@ -53,17 +55,37 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
 	/**
 	 * Creates a HTTP asset using the given URI string.
 	 * 
-	 * @param uriString
+	 * @param uri of the resource
 	 * @return A new HTTP asset
 	 */
-	public static RemoteHttpAsset create(String uriString) {
-		return new RemoteHttpAsset(buildMetadata(uriString), getUri(uriString));
+	public static RemoteHttpAsset create( String uri) {
+		return new RemoteHttpAsset(buildMetaData( null),  getUri(uri));
 	}
 
-	private static String buildMetadata(String uri) {
-		HashMap<String,Object> m=Utils.createDefaultMetadata();
-		m.put(Constant.TYPE, Constant.DATA_SET);
-		return JSON.toPrettyString(m);
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri of the resource
+     * @param meta of the resource
+     * @return A new HTTP asset
+     */
+    public static RemoteHttpAsset create( String uri,Map<String,Object> meta) {
+        return new RemoteHttpAsset(buildMetaData( meta),  getUri(uri));
+    }
+
+	private static String buildMetaData( Map<String, Object> meta) {
+		Map<String, Object> ob = new HashMap<>();
+		ob.put(Constant.DATE_CREATED, Instant.now().toString());
+		ob.put(Constant.TYPE, Constant.DATA_SET);
+		ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
+
+		if (meta != null) {
+			for (Map.Entry<String, Object> me : meta.entrySet()) {
+				ob.put(me.getKey(), me.getValue());
+			}
+		}
+
+		return JSON.toString(ob);
 	}
 
 	/**

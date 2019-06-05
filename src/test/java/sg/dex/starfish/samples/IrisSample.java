@@ -20,12 +20,6 @@ public class IrisSample {
 		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
-
-		//String prettyJSON = JSON.toPrettyString(iris.getMetadata());
-//		System.out.println(Utils.stringFromStream(iris.getContentStream()));
-//		System.out.println("Asset ID = "+iris.getAssetID());
-//		System.out.println(prettyJSON);
-
 		surfer.registerAsset(iris);
 	}
 

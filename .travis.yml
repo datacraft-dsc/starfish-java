@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk8
+  - openjdk11
 
 dist: xenial
 sudo: false
@@ -26,9 +26,9 @@ before_install:
   - docker run -p 3000:3000 --env SURFER_URL=http://172.15.0.22:8080 --network="ocean_backend" --ip="172.15.0.21" canaradex/koi-clj:v0.1.1 2>&1 koi.log
     &
 install:
-  - mvn clean install
+  - mvn clean install -Dgpg.skip
 script:
-- mvn integration-test
+- mvn integration-test -Dgpg.skip
 - mvn site
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown

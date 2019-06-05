@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.integration.connection_check.AssumingConnection;
 import sg.dex.starfish.integration.connection_check.ConnectionChecker;
-import sg.dex.starfish.samples.InvokeSample;
 import sg.dex.starfish.samples.IrisSample;
 import sg.dex.starfish.samples.MetadataSample;
 import sg.dex.starfish.samples.RegisterSample;
@@ -20,20 +19,6 @@ public class SampleIntegrationTests {
 
     private static String registerAssetID = null;
 
-
-//    @Test
-//    public void aAuthSample() {
-//        System.out.println("=== aAuthSample ===");
-//
-//        AuthSample.main();
-//
-//    }
-
-    @Test
-    public void aTestInvokeSample() {
-        System.out.println("=== aTestInvokeSample ===");
-        InvokeSample.main();
-    }
 
     @Test
     public void bTestIrisSample() {

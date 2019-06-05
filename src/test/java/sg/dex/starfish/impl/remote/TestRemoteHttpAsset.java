@@ -8,6 +8,7 @@ import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.url.RemoteHttpAsset;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 
 @SuppressWarnings("javadoc")
 public class TestRemoteHttpAsset {
@@ -16,7 +17,6 @@ public class TestRemoteHttpAsset {
     public void testURLConnection(){
 
         Asset asset =RemoteHttpAsset.create("http://httpbin.org/ip");
-
         assertEquals(Constant.DATA_SET,asset.getMetadata().get(Constant.TYPE));
         assertNotNull(asset);
         assertNotNull(asset.getContent());

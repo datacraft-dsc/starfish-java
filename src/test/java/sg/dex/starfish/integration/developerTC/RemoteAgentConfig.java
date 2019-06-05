@@ -109,13 +109,6 @@ public class RemoteAgentConfig {
         return bargeUrl;
     }
 
-//    public static String getSurferUser() {
-//        return username;
-//    }
-//
-//    public static String getSurferPassword() {
-//        return password;
-//    }
 
     public static int getSocketTimeout() {
         return Integer.parseInt(socketTimeout);

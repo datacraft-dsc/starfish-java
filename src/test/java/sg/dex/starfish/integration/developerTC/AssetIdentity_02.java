@@ -9,6 +9,7 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
-//import sg.dex.starfish.util.JSON;
 
 /**
  * As a developer working with Ocean,
@@ -117,13 +117,13 @@ public class AssetIdentity_02 {
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
 
-        // get the Remote asset ID which has been register using remote Agent
-        String assetID = remoteAsset.getAssetID();
 
         //verify prov info exists
-        assertNotNull(remoteAsset.getMetadata().get("provenance").toString());
-        //System.out.println(JSON.toPrettyString(remoteAsset.getMetadata().get("provenance")));
+        assertNotNull(remoteAsset.getMetadata().get("provenance"));
+        Map<String,Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
 
+        assertNotNull(provData.get("activity"));
+        assertNotNull(provData.get("wasGeneratedBy"));
     }
 
     @Test
