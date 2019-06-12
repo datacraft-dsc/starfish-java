@@ -37,52 +37,52 @@ public class SquidBuilder {
 		return options;
 	}
 
-	public static SquidAgent create(Ocean ocean) throws Exception {
-		SquidAgent squid = null;
-
-		Map<String,Object> ddo=new HashMap<>();
-		List<Map<String,Object>> services=new ArrayList<>();
-		ddo.put("service",services);
-		String ddoString=JSON.toPrettyString(ddo);
-		Map<String,Object> squidDDO=JSON.toMap(ddoString);
-
-		DID squidDID=DID.createRandom();
-		ocean.registerLocalDID(squidDID,ddoString);
-
-		Config config = null;
-		String squidConf = "application.conf";
-		String squidConfDefault = "squid.conf";
-		if (Utils.resourceExists(squidConf)) {
-			config = ConfigFactory.load(squidConf);
-		} else {
-			config = ConfigFactory.load(squidConfDefault);
-		}
-
-		// This map is an example of overidding config file defaults
-		// with specfic values
-		Map<String,String> cliOptions = new HashMap<String,String>();
-		cliOptions.put("starfish.java.testing", "true");
-		if (cliOptions.size() > 0) {
-			Config cliConfig = ConfigFactory.parseMap(cliOptions);
-			config = cliConfig.withFallback(config);
-		}
-
-		try {
-			OceanAPI oceanAPI = OceanAPI.getInstance(config);
-			assertNotNull(oceanAPI.getMainAccount());
-			assertEquals(config.getString("account.main.address"), oceanAPI.getMainAccount().address);
-			assertNotNull(oceanAPI.getAssetsAPI());
-			assertNotNull(oceanAPI.getAccountsAPI());
-			assertNotNull(oceanAPI.getSecretStoreAPI());
-
-			squid=SquidAgent.create(oceanAPI,configToHashMap(config),
-						ocean,squidDID);
-			assertEquals(squidDID,squid.getDID());
-			assertEquals(squidDDO,squid.getDDO());
-		} catch (Exception e) {
-			fail("unable to create squid oceanAPI: " + e);
-		}
-		return squid;
-	}
+//	public static SquidAgent create(Ocean ocean) throws Exception {
+//		SquidAgent squid = null;
+//
+//		Map<String,Object> ddo=new HashMap<>();
+//		List<Map<String,Object>> services=new ArrayList<>();
+//		ddo.put("service",services);
+//		String ddoString=JSON.toPrettyString(ddo);
+//		Map<String,Object> squidDDO=JSON.toMap(ddoString);
+//
+//		DID squidDID=DID.createRandom();
+//		ocean.registerLocalDID(squidDID,ddoString);
+//
+//		Config config = null;
+//		String squidConf = "application.conf";
+//		String squidConfDefault = "squid.conf";
+//		if (Utils.resourceExists(squidConf)) {
+//			config = ConfigFactory.load(squidConf);
+//		} else {
+//			config = ConfigFactory.load(squidConfDefault);
+//		}
+//
+//		// This map is an example of overidding config file defaults
+//		// with specfic values
+//		Map<String,String> cliOptions = new HashMap<String,String>();
+//		cliOptions.put("starfish.java.testing", "true");
+//		if (cliOptions.size() > 0) {
+//			Config cliConfig = ConfigFactory.parseMap(cliOptions);
+//			config = cliConfig.withFallback(config);
+//		}
+//
+//		try {
+//			OceanAPI oceanAPI = OceanAPI.getInstance(config);
+//			assertNotNull(oceanAPI.getMainAccount());
+//			assertEquals(config.getString("account.main.address"), oceanAPI.getMainAccount().address);
+//			assertNotNull(oceanAPI.getAssetsAPI());
+//			assertNotNull(oceanAPI.getAccountsAPI());
+//			assertNotNull(oceanAPI.getSecretStoreAPI());
+//
+//			squid=SquidAgent.create(oceanAPI,configToHashMap(config),
+//						ocean,squidDID);
+//			assertEquals(squidDID,squid.getDID());
+//			assertEquals(squidDDO,squid.getDDO());
+//		} catch (Exception e) {
+//			fail("unable to create squid oceanAPI: " + e);
+//		}
+//		return squid;
+//	}
 
 }

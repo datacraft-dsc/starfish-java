@@ -72,16 +72,16 @@ public class Ocean {
 		ddoCache.put(did,ddo);
 	}
 	
-	/**
-	 * Registers an agent DDO with this Ocean connection,
-	 * @return did The newly created DID for the agent
-	 * @param ddo associated with the DID
-	 */
-	public DID registerDDO(String ddo) {
-		DID did=DID.createRandom();
-		registerLocalDID(did,ddo);
-		return did;
-	}
+//	/**
+//	 * Registers an agent DDO with this Ocean connection,
+//	 * @return did The newly created DID for the agent
+//	 * @param ddo associated with the DID
+//	 */
+//	public DID registerDDO(String ddo) {
+//		DID did=DID.createRandom();
+//		registerLocalDID(did,ddo);
+//		return did;
+//	}
  
 	/**
 	 * Gets a DDO for a specified DID via the Universal Resolver.

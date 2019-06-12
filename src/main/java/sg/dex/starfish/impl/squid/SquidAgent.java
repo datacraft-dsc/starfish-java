@@ -26,19 +26,17 @@ public class SquidAgent extends AAgent {
 
 	private final Ocean ocean;
 	private final OceanAPI oceanAPI;
-	private final Map<String,String> config;
+
 
 	/**
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
 	 *
-	 * @param config Squid OceanAPI to use
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(Map<String,String> config,
+	protected SquidAgent(
 			     Ocean ocean, DID did) {
 		super(ocean, did);
-		this.config = config;
 		this.ocean=ocean;
 		this.oceanAPI = ocean.getOceanAPI();
 	}
@@ -47,13 +45,12 @@ public class SquidAgent extends AAgent {
 	 * Creates a RemoteAgent with the specified OceanAPI, Ocean connection and DID
 	 *
 	 * @param oceanAPI Squid OceanAPI to use
-	 * @param config Configuration Map
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create(OceanAPI oceanAPI, Map<String,String> config, Ocean ocean, DID did) {
-		return new SquidAgent(config, ocean, did);
+	public static SquidAgent create(OceanAPI oceanAPI,  Ocean ocean, DID did) {
+		return new SquidAgent(ocean, did);
 	}
 
 
@@ -83,7 +80,7 @@ public class SquidAgent extends AAgent {
 	 */
 	@Override
 	public SquidAsset getAsset(String id) {
-		return null;
+		return (SquidAsset)ocean.getAsset(did);
 	}
 	
 	@Override
@@ -108,15 +105,6 @@ public class SquidAgent extends AAgent {
 		return (SquidAsset)a; // TODO: FIXME
 	}
 
-	/**
-	 * Api that will returns a configuration String value for key
-	 *
-	 * @param key to find in the config
-	 * @return value corresponding to the key (or null if not found)
-	 */
-	public String getConfigString(String key) {
-		return config.get(key);
-	}
 
 	/**
 	 * Request some ocean tokens
