@@ -4,18 +4,21 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.InitializationException;
 import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
+import com.oceanprotocol.squid.external.AquariusService;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.impl.squid.SquidAgent;
-import sg.dex.starfish.integration.connection_check.AssumingConnection;
-import sg.dex.starfish.integration.connection_check.ConnectionChecker;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
+import sg.dex.starfish.impl.url.RemoteHttpAsset;
 
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -26,18 +29,16 @@ public class SquidIntegrationTests {
 	private static SquidAccount purchaserAccount = null;
 
 
-    @ClassRule
-    public static AssumingConnection assumingConnection =
-            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getBargeUrl()));
 
     @BeforeClass
-	public  void initialize() throws InvalidConfiguration, InitializationException {
+	public  static void initialize() throws InvalidConfiguration, InitializationException {
 		OceanAPI oceanAPI = buildOceanAPI();
 
 		 ocean = Ocean.connect(oceanAPI);
 
 		publisherAccount = SquidAccount.create(ocean, oceanAPI.getMainAccount());
 		purchaserAccount = SquidAccount.create(ocean, oceanAPI.getMainAccount());
+
 	}
 
 	@Test
@@ -56,6 +57,18 @@ public class SquidIntegrationTests {
 		if (ocean == null)  {
 			System.out.println("WARNING: barge not running");
 		} else {
+			Map<String, Object> additionaldataMap = new HashMap<>();
+			additionaldataMap.put(Constant.DATE_CREATED, "2012-10-10T17:00:000Z");
+			additionaldataMap.put(Constant.TYPE, Constant.DATA_SET);
+			additionaldataMap.put(Constant.NAME, "Test Starfish Asset registration");
+			additionaldataMap.put("license", "NA");
+			additionaldataMap.put("author", "Test user _01 ");
+			additionaldataMap.put("price", 10);
+
+
+			// creating starfish Asset
+			RemoteHttpAsset remoteHttpAsset = RemoteHttpAsset.create("https://oceanprotocol.com/tech-whitepaper.pdf", additionaldataMap);
+			//squid.registerAsset(remoteHttpAsset);
 		}
 	}
 
@@ -65,6 +78,8 @@ public class SquidIntegrationTests {
 		if (ocean == null)  {
 			System.out.println("WARNING: barge not running");
 		} else {
+//			ocean.getOceanAPI().getAssetsAPI().g.aquariusService
+//			AquariusService.getInstance(oceanAPI.aquariusService);
 		}
 	}
 
