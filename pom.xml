@@ -160,9 +160,9 @@
 					<execution>
 						<id>sign-artifacts</id>
 						<phase>install</phase>
-						<!--<goals>-->
-							<!--<goal>sign</goal>-->
-						<!--</goals>-->
+						<goals>
+							<goal>sign</goal>
+						</goals>
 						<configuration>
 							<!-- <skip>true</skip> -->
 						</configuration>
