@@ -1,9 +1,15 @@
 package sg.dex.starfish.impl.squid;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.oceanprotocol.squid.api.OceanAPI;
+import com.oceanprotocol.squid.exceptions.DDOException;
+import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
+import com.oceanprotocol.squid.models.DDO;
+import com.oceanprotocol.squid.models.asset.AssetMetadata;
+import com.oceanprotocol.squid.models.service.ProviderConfig;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
@@ -11,8 +17,11 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.JSON;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +35,8 @@ public class SquidAgent extends AAgent {
 
 	private final Ocean ocean;
 	private final OceanAPI oceanAPI;
+	private final Map<String,String> config;
+	private final ProviderConfig providerConfig;
 
 
 	/**
@@ -34,13 +45,25 @@ public class SquidAgent extends AAgent {
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(
+	protected SquidAgent(Map<String,String> config,
 			     Ocean ocean, DID did) {
 		super(ocean, did);
+		this.config = config;
 		this.ocean=ocean;
 		this.oceanAPI = ocean.getOceanAPI();
+		providerConfig = getProvideConfig();
 	}
 
+	static public ProviderConfig getProvideConfig() {
+
+		String metadataUrl = "http://localhost:5000" + "/api/v1/aquarius/assets/ddo/{did}";
+		String consumeUrl = "http://localhost:8030" + "/api/v1/brizo/services/consume";
+		String purchaseEndpoint = "http://localhost:8030" + "/api/v1/brizo/services/access/initialize";
+		String secretStoreEndpoint = "http://localhost:12001";
+		String providerAddress = "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e";
+
+		return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);
+	}
 	/**
 	 * Creates a RemoteAgent with the specified OceanAPI, Ocean connection and DID
 	 *
@@ -49,8 +72,8 @@ public class SquidAgent extends AAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create(OceanAPI oceanAPI,  Ocean ocean, DID did) {
-		return new SquidAgent(ocean, did);
+	public static SquidAgent create(OceanAPI oceanAPI, Map<String,String> config, Ocean ocean, DID did) {
+		return new SquidAgent(config, ocean, did);
 	}
 
 
@@ -66,7 +89,37 @@ public class SquidAgent extends AAgent {
 	 */
 	@Override
 	public SquidAsset registerAsset(Asset asset) {
-		return (SquidAsset)asset; // TODO: FIXME
+
+		try {
+			return getSquidAsset(asset);
+
+		} catch (DIDFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DDOException e) {
+			e.printStackTrace();
+		}
+		//Todo FIX IT, may throw exception
+		return null;
+	}
+
+	private SquidAsset getSquidAsset(Asset asset) throws DIDFormatException, IOException, DDOException {
+		Map<String, Object> squidMetaDAta = new HashMap<>();
+		squidMetaDAta.put("base", asset.getMetadata());
+
+		AssetMetadata metadataBase = DDO.fromJSON(new TypeReference<AssetMetadata>() {
+		}, JSON.toString(squidMetaDAta));
+
+		DDO ddo = oceanAPI.getAssetsAPI().create(metadataBase, providerConfig);
+
+		//System.out.println(ddo);
+
+		com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(ddo.id);
+
+		DID surferDID = DID.parse(squidDID.toString());
+
+		return  getAsset(surferDID);
 	}
 
 	/**
@@ -84,8 +137,8 @@ public class SquidAgent extends AAgent {
 	}
 	
 	@Override
-	public Asset getAsset(DID did) {
-		return getAsset(did.getID());
+	public SquidAsset getAsset(DID did) {
+		return (SquidAsset)ocean.getAsset(did);
 	}
 
 	/**
