@@ -46,34 +46,24 @@ public class SquidAgent extends AAgent {
 	 * @param did DID for this agent
 	 */
 	protected SquidAgent(Map<String,String> config,
-			     Ocean ocean, DID did) {
+			     Ocean ocean, DID did,ProviderConfig providerConfig) {
 		super(ocean, did);
 		this.config = config;
 		this.ocean=ocean;
 		this.oceanAPI = ocean.getOceanAPI();
-		providerConfig = getProvideConfig();
+		this.providerConfig = providerConfig;
 	}
 
-	static public ProviderConfig getProvideConfig() {
 
-		String metadataUrl = "http://localhost:5000" + "/api/v1/aquarius/assets/ddo/{did}";
-		String consumeUrl = "http://localhost:8030" + "/api/v1/brizo/services/consume";
-		String purchaseEndpoint = "http://localhost:8030" + "/api/v1/brizo/services/access/initialize";
-		String secretStoreEndpoint = "http://localhost:12001";
-		String providerAddress = "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e";
-
-		return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);
-	}
 	/**
 	 * Creates a RemoteAgent with the specified OceanAPI, Ocean connection and DID
 	 *
-	 * @param oceanAPI Squid OceanAPI to use
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create(OceanAPI oceanAPI, Map<String,String> config, Ocean ocean, DID did) {
-		return new SquidAgent(config, ocean, did);
+	public static SquidAgent create( Map<String,String> config, Ocean ocean, DID did,ProviderConfig providerConfig) {
+		return new SquidAgent(config, ocean, did,providerConfig);
 	}
 
 
@@ -91,7 +81,7 @@ public class SquidAgent extends AAgent {
 	public SquidAsset registerAsset(Asset asset) {
 
 		try {
-			return getSquidAsset(asset);
+			return getSquidAsset((SquidAsset)asset);
 
 		} catch (DIDFormatException e) {
 			e.printStackTrace();
@@ -104,22 +94,27 @@ public class SquidAgent extends AAgent {
 		return null;
 	}
 
-	private SquidAsset getSquidAsset(Asset asset) throws DIDFormatException, IOException, DDOException {
+	/**
+	 * API to get the Squid Asset after registering to Ocean Network
+	 * @param squidAsset
+	 * @return
+	 * @throws IOException
+	 * @throws DDOException
+	 * @throws DIDFormatException
+	 */
+	private SquidAsset getSquidAsset(SquidAsset squidAsset) throws IOException, DDOException, DIDFormatException {
+
 		Map<String, Object> squidMetaDAta = new HashMap<>();
-		squidMetaDAta.put("base", asset.getMetadata());
+		squidMetaDAta.put("base", squidAsset.getMetadata());
 
 		AssetMetadata metadataBase = DDO.fromJSON(new TypeReference<AssetMetadata>() {
 		}, JSON.toString(squidMetaDAta));
 
-		DDO ddo = oceanAPI.getAssetsAPI().create(metadataBase, providerConfig);
-
-		//System.out.println(ddo);
-
-		com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(ddo.id);
-
+		DDO squidDDO = oceanAPI.getAssetsAPI().create(metadataBase, providerConfig);
+		com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(squidDDO.id);
 		DID surferDID = DID.parse(squidDID.toString());
+		return  SquidAsset.create(squidAsset.getMetadataString(),surferDID,squidDDO,squidAsset.getOcean());
 
-		return  getAsset(surferDID);
 	}
 
 	/**
@@ -204,11 +199,4 @@ public class SquidAgent extends AAgent {
 		return oceanAPI.getAccountsAPI().list();
 	}
 
-	/**
-	 * API to get the Ocean API instance reference
-	 * @return oceanAPI instance reference
-	 */
-	public OceanAPI getOceanAPI() {
-		return oceanAPI;
-	}
 }

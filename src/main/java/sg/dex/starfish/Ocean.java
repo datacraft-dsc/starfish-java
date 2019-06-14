@@ -96,8 +96,13 @@ public class Ocean {
 		if (localDDO!=null) {
 			return JSONObjectCache.parse(localDDO);
 		}
-		// TODO universal resolver
-		throw new UnsupportedOperationException("Not yet implemented");
+		// it is squid did
+		else {
+			DID didSquid = DID.parse(did.toString());
+			return getAsset(didSquid).getMetadata();
+		}
+//		// TODO universal resolver
+//		throw new UnsupportedOperationException("Not yet implemented");
 	}
 	
 	/**
