@@ -6,21 +6,25 @@ import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.Ocean;
-import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.ProvUtil;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Class representing a SquidAsset on the Ocean Network.
  *
  * @author Tom
  */
-public class SquidAsset extends AAsset {
+public class SquidAsset extends AAsset implements  DataAsset{
 
 
     private final Ocean ocean;
@@ -35,25 +39,23 @@ public class SquidAsset extends AAsset {
         this.ocean = ocean;
     }
 
-    private SquidAsset(String meta, DID did, Ocean ocean) {
-        super(meta);
-        this.did = did;
-        this.ocean = ocean;
-    }
+    public static SquidAsset create(String metaData, DID did, DDO ddo, Ocean ocean) {
 
-    public static SquidAsset create(String meta, DID did, DDO ddo, Ocean ocean) {
-        return new SquidAsset(meta, did, ddo, ocean);
+        return new SquidAsset(metaData, did, ddo, ocean);
     }
 
 
     public static Asset create(Ocean ocean, DID did) {
+
         com.oceanprotocol.squid.models.DID squidDID;
         try {
-            squidDID = com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());
+            squidDID =
+                    com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());
             DDO ddo = ocean.getAssetsAPI().resolve(squidDID);
 
-            String metaString = wrapDDOMeta(ddo);
-            return create(metaString, did, ddo, ocean);
+           Map<String,Object> metaData =wrapDDOMeta(ddo);
+
+            return create(JSON.toPrettyString(metaData), did, ddo, ocean);
         } catch (DIDFormatException e) {
             throw new Error(e);
         } catch (EthereumException e) {
@@ -64,46 +66,11 @@ public class SquidAsset extends AAsset {
     }
 
     /**
-     * API to create Squid Asset using metaData DID and Ocean instance
-     * @param metadata
-     * @param did
-     * @param ocean
-     * @return
+     * Method that wrap the squid DDO data  into starfish metadata as additional information
+     * @param ddo squid ddo
+     * @return map of metadata which have squid DDO information
      */
-    public static SquidAsset create(String metadata, DID did, Ocean ocean) {
-
-        return new SquidAsset(buildMetaData(metadata), did, ocean);
-
-    }
-
-    /**
-     * API to build metadata with default value
-     * @param metadata
-     * @return
-     */
-    private static String buildMetaData(String metadata) {
-
-
-        // create default metadata
-        Map<String, Object> defaultMetadataMap = new HashMap<>();
-        defaultMetadataMap.put(Constant.DATE_CREATED, "2012-10-10T17:00:000Z");
-        defaultMetadataMap.put(Constant.TYPE, Constant.DATA_SET);
-        defaultMetadataMap.put(Constant.NAME, "NA");
-        defaultMetadataMap.put("license", "NA");
-        defaultMetadataMap.put("author", "NA");
-        defaultMetadataMap.put("price", 1);
-
-        if (metadata != null) {
-            Map<String, Object> metaMap = JSON.toMap(metadata);
-            for (Map.Entry<String, Object> me : metaMap.entrySet()) {
-                defaultMetadataMap.put(me.getKey(), me.getValue());
-            }
-        }
-        return JSON.toPrettyString(defaultMetadataMap);
-
-    }
-
-    private static String wrapDDOMeta(DDO ddo) {
+    private static HashMap<String, Object>  wrapDDOMeta(DDO ddo) {
         HashMap<String, Object> info = new HashMap<>();
         try {
             info.put("ddoString", JSON.toMap(ddo.toJson()));
@@ -115,15 +82,29 @@ public class SquidAsset extends AAsset {
         meta.put("type", "dataset");
         meta.put("additionalInformation", info);
 
-        String result = JSON.toPrettyString(meta);
-        return result;
+        // adding default provenance
+        String actId= UUID.randomUUID().toString();
+        String agentId=UUID.randomUUID().toString();
+
+        Map<String, Object> provenanceData= ProvUtil.createPublishProvenance(actId,agentId);
+        meta.put("provenance",provenanceData);
+
+        return meta;
     }
 
+    /**
+     * Method to get the Ocean reference
+     * @return
+     */
     public Ocean getOcean() {
         return ocean;
     }
 
-    public DDO getDdo() {
+    /**
+     * Method to get the Squid DDO
+     * @return
+     */
+    public DDO getSquidDDO() {
         return ddo;
     }
 
@@ -152,5 +133,17 @@ public class SquidAsset extends AAsset {
     public boolean isOperation() {
         return false;
     }
+    @Override
+    public InputStream getContentStream(){
+        // todo
+        throw new GenericException("Need to implement");
+    }
+
+    @Override
+    public long getContentSize() {
+        // todo
+        throw new GenericException("Need to implement");
+    }
+
 
 }

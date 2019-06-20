@@ -45,8 +45,6 @@ public class ConnectToOcean_01 {
 
     }
 
-
-
     @Test
     public void testOceanConnectDoubleRegistration() {
 

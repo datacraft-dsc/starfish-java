@@ -2,25 +2,26 @@ package sg.dex.starfish.impl.squid;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.oceanprotocol.squid.api.OceanAPI;
+import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
-import com.oceanprotocol.squid.models.Account;
-import com.oceanprotocol.squid.models.Balance;
 import com.oceanprotocol.squid.models.DDO;
+import com.oceanprotocol.squid.models.aquarius.SearchResult;
 import com.oceanprotocol.squid.models.asset.AssetMetadata;
 import com.oceanprotocol.squid.models.service.ProviderConfig;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,7 @@ public class SquidAgent extends AAgent {
 
 	private final Ocean ocean;
 	private final OceanAPI oceanAPI;
-	private final Map<String,String> config;
-	private final ProviderConfig providerConfig;
+	private final Map<String,String> configMap;
 
 
 	/**
@@ -45,13 +45,12 @@ public class SquidAgent extends AAgent {
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
 	 */
-	protected SquidAgent(Map<String,String> config,
-			     Ocean ocean, DID did,ProviderConfig providerConfig) {
+	protected SquidAgent(Map<String,String> configMap,
+			     Ocean ocean, DID did) {
 		super(ocean, did);
-		this.config = config;
+		this.configMap = configMap;
 		this.ocean=ocean;
 		this.oceanAPI = ocean.getOceanAPI();
-		this.providerConfig = providerConfig;
 	}
 
 
@@ -62,8 +61,8 @@ public class SquidAgent extends AAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent
 	 */
-	public static SquidAgent create( Map<String,String> config, Ocean ocean, DID did,ProviderConfig providerConfig) {
-		return new SquidAgent(config, ocean, did,providerConfig);
+	public static SquidAgent create( Map<String,String> config, Ocean ocean, DID did) {
+		return new SquidAgent(config, ocean, did);
 	}
 
 
@@ -81,7 +80,7 @@ public class SquidAgent extends AAgent {
 	public SquidAsset registerAsset(Asset asset) {
 
 		try {
-			return getSquidAsset((SquidAsset)asset);
+			return createSquidAssetInNetwork(asset);
 
 		} catch (DIDFormatException e) {
 			e.printStackTrace();
@@ -91,30 +90,57 @@ public class SquidAgent extends AAgent {
 			e.printStackTrace();
 		}
 		//Todo FIX IT, may throw exception
-		return null;
+		throw  new GenericException("Exception while registering Asset into OCN");
 	}
 
 	/**
-	 * API to get the Squid Asset after registering to Ocean Network
-	 * @param squidAsset
+	 * Methods to get the Squid Asset after registering to Ocean Network
+	 * @param asset
 	 * @return
 	 * @throws IOException
 	 * @throws DDOException
 	 * @throws DIDFormatException
 	 */
-	private SquidAsset getSquidAsset(SquidAsset squidAsset) throws IOException, DDOException, DIDFormatException {
+	private SquidAsset createSquidAssetInNetwork(Asset asset) throws IOException, DDOException, DIDFormatException {
 
+		AssetMetadata metadataBase = createSquidDDO(asset);
+
+		DDO squidDDO = ocean.getAssetsAPI().create(metadataBase, getProvideConfig(configMap));
+
+		DID did = DID.parse(squidDDO.getDid().toString());
+		return  SquidAsset.create(asset.getMetadataString(),did,squidDDO,ocean);
+
+	}
+
+	private AssetMetadata createSquidDDO(Asset asset) throws IOException {
+
+		// todo map mandatory attribute
 		Map<String, Object> squidMetaDAta = new HashMap<>();
-		squidMetaDAta.put("base", squidAsset.getMetadata());
+		// modify get metadata to squid..metadata
+		squidMetaDAta.put("base", getMetaData(asset));
 
-		AssetMetadata metadataBase = DDO.fromJSON(new TypeReference<AssetMetadata>() {
+		return DDO.fromJSON(new TypeReference<AssetMetadata>() {
 		}, JSON.toString(squidMetaDAta));
+	}
 
-		DDO squidDDO = oceanAPI.getAssetsAPI().create(metadataBase, providerConfig);
-		com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(squidDDO.id);
-		DID surferDID = DID.parse(squidDID.toString());
-		return  SquidAsset.create(squidAsset.getMetadataString(),surferDID,squidDDO,squidAsset.getOcean());
+	private Map<String, Object>  getMetaData(Asset asset) {
+		Map<String, Object> meta = new HashMap<>();
+		Map<String, Object> assetMetadata=asset.getMetadata();
+		meta.put(Constant.TYPE, Constant.DATA_SET);
+		meta.put(Constant.NAME, Constant.DEFAULT_NAME);
+		meta.put("license", Constant.DEFAULT_LICENSE);
+		meta.put("author", Constant.DEFAULT_AUTHOR);
+		meta.put("price", Constant.DEFAULT_PRICE);
 
+		if (assetMetadata != null) {
+			for (Map.Entry<String, Object> me : meta.entrySet()) {
+				if( assetMetadata.get(me.getKey()) != null){
+					meta.put(me.getKey(),me.getValue());
+				}
+			}
+		}
+        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);
+		return meta;
 	}
 
 	/**
@@ -128,7 +154,8 @@ public class SquidAgent extends AAgent {
 	 */
 	@Override
 	public SquidAsset getAsset(String id) {
-		return (SquidAsset)ocean.getAsset(did);
+		DID did = DID.create("op",id,null,null);
+		return getAsset(did);
 	}
 	
 	@Override
@@ -150,53 +177,48 @@ public class SquidAgent extends AAgent {
 	 */
 	@Override
 	public SquidAsset uploadAsset(Asset a) {
-		return (SquidAsset)a; // TODO: FIXME
+		throw new UnsupportedOperationException("Upload not supported by squid agent");
 	}
 
-
 	/**
-	 * Request some ocean tokens
-	 *
-	 * @param amount The amount of ocean tokens to transfer
-	 * @throws EthereumException on error
-	 * @return number of tokens requested
+	 * Method to search an asset
+	 * @param text
+	 * @return List of Squid Asset that matches
 	 */
-	public BigInteger requestTokens(BigInteger amount) throws EthereumException {
-		TransactionReceipt receipt = oceanAPI.getAccountsAPI().requestTokens(amount);
-		if (!receipt.isStatusOK()) {
-			amount = BigInteger.ZERO;
+
+	public List<SquidAsset> searchAsset(String text) throws DDOException {
+		SearchResult searchResult = ocean.getOceanAPI().getAssetsAPI().search(text);
+		List<DDO> listDDO = searchResult.results;
+		List<SquidAsset> squidAssetLst = new ArrayList<>();
+		for(DDO ddo: listDDO){
+			DID did = DID.parse(ddo.getDid().toString());
+			SquidAsset asset =getAsset(did);
+			squidAssetLst.add(asset);
 		}
-		return amount;
+		return squidAssetLst;
+
 	}
 
-	/**
-	 * API to request some ocean tokens to be transfer to this Account
-	 *
-	 * @param amount The amount of ocean tokens to transfer
-	 * @throws EthereumException on error
-	 * @return number of tokens requested
-	 */
-	public int requestTokens(int amount) throws EthereumException {
-		return requestTokens(BigInteger.valueOf(amount)).intValue();
-	}
+	private static ProviderConfig getProvideConfig(Map<String,String> configMap) {
 
-	/**
-	 * Returns the Balance of an account register in the Keeper
-	 * @param account the account we want to get the balance
-	 * @return the Balance of the account
-	 * @throws EthereumException EthereumException
-	 */
-	public Balance balance(Account account) throws EthereumException {
-		return oceanAPI.getAccountsAPI().balance(account);
-	}
+		String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + "/api/v1/aquarius/assets/ddo/{did}";
+		String consumeUrl = "http://localhost:8030" + "/api/v1/brizo/services/consume";
+		String purchaseEndpoint = "http://localhost:8030" + "/api/v1/brizo/services/access/initialize";
+		String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);
+		String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);
 
-	/**
-	 * API to get the list of accounts register in the Keeper
-	 * @return a List of all Account registered in Keeper
-	 * @throws EthereumException EthereumException
-	 */
-	public List<Account> list() throws EthereumException {
-		return oceanAPI.getAccountsAPI().list();
+		return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);
 	}
+    /**
+     * API to return Squid DDO based on Squid DID
+     * @param did
+     * @return
+     */
+    public DDO resolveDID(DID did) throws EthereumException, DDOException, DIDFormatException {
+
+        com.oceanprotocol.squid.models.DID squidDid = new com.oceanprotocol.squid.models.DID(did.toString());
+        return oceanAPI.getAssetsAPI().resolve(squidDid);
+    }
+
 
 }
