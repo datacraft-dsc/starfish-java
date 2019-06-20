@@ -116,13 +116,15 @@
 		<dependency>
 			<groupId>com.oceanprotocol</groupId>
 			<artifactId>squid</artifactId>
-			<version>0.5.1</version>
+			<version>0.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.5.8</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+
 	</dependencies>
 
 	<reporting>

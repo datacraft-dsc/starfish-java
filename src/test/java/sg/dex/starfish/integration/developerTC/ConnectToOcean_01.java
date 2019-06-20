@@ -45,20 +45,6 @@ public class ConnectToOcean_01 {
 
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testOceanConnectWithNullDdo() {
-
-        //
-        Ocean ocean = Ocean.connect();
-        DID surferDID = DID.createRandom();
-        Map<String, Object> ddo = new HashMap<>();
-        ddo.put("test", "test");
-        ocean.registerLocalDID(surferDID, null);
-        assertNotNull(ocean);
-        assertEquals(ocean.getDDO(surferDID), null);
-
-    }
-
     @Test
     public void testOceanConnectDoubleRegistration() {
 
