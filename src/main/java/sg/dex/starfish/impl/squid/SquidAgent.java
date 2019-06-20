@@ -214,10 +214,9 @@ public class SquidAgent extends AAgent {
      * @param did
      * @return
      */
-    public DDO resolveDID(DID did) throws EthereumException, DDOException, DIDFormatException {
+    public DDO resolveSquidDID(com.oceanprotocol.squid.models.DID did) throws EthereumException, DDOException, DIDFormatException {
 
-        com.oceanprotocol.squid.models.DID squidDid = new com.oceanprotocol.squid.models.DID(did.toString());
-        return oceanAPI.getAssetsAPI().resolve(squidDid);
+        return oceanAPI.getAssetsAPI().resolve(did);
     }
 
 
