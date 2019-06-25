@@ -21,7 +21,6 @@ import sg.dex.starfish.util.DID;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,17 +149,6 @@ public class SquidAssetTests {
 
 
         ARemoteAsset aRemoteAsset =surfer.getAsset(surferAsset.getAssetID());
-
-        String content_01=new String(aRemoteAsset.getContent(), StandardCharsets.UTF_8);
-//        System.out.println("*******************");
-//        System.out.println(content_01);
-//
-//        System.out.println("*******************");
-//        System.out.println("SURFER: "+aRemoteAsset.getAssetDID());
-//        System.out.println("SURFER ASsetID: "+aRemoteAsset.getAssetID());
-//        System.out.println("SQUID: "+squidAsset_FromChain.getAssetDID());
-//        System.out.println("SQUID AssetID: "+squidAsset_FromChain.getAssetID());
-//        System.out.println("SF AssetID: "+surferAsset.getAssetID());
 
         // verifying the asset ddo , not it will not be null
         assertNotNull(squidAsset_FromChain.getSquidDDO());
