@@ -8,13 +8,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
+import sg.dex.starfish.impl.url.ResourceAsset;
+import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -115,6 +124,48 @@ public class SquidAssetTests {
 
 
     }
+    @Test
+    public void registerAssetOnChain() throws IOException {
 
+
+        Map<String,Object> metaMAp = new HashMap<>();
+        metaMAp.put("type","dataset");
+
+        Asset surferAsset= ResourceAsset.create("examples/metadata.json");
+
+        System.out.println("ID is :::"+ surferAsset.getAssetID());
+
+
+        RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
+
+        //register to surfer
+        surfer.uploadAsset(surferAsset);
+
+
+        // register the BlockChain
+        SquidAsset squidAsset = squidAgent.registerAsset(surferAsset);
+
+        // getting the registered from squid agent using asset DID
+        SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getAssetDID());
+
+
+        ARemoteAsset aRemoteAsset =surfer.getAsset(surferAsset.getAssetID());
+
+        String content_01=new String(aRemoteAsset.getContent(), StandardCharsets.UTF_8);
+//        System.out.println("*******************");
+//        System.out.println(content_01);
+//
+//        System.out.println("*******************");
+//        System.out.println("SURFER: "+aRemoteAsset.getAssetDID());
+//        System.out.println("SURFER ASsetID: "+aRemoteAsset.getAssetID());
+//        System.out.println("SQUID: "+squidAsset_FromChain.getAssetDID());
+//        System.out.println("SQUID AssetID: "+squidAsset_FromChain.getAssetID());
+//        System.out.println("SF AssetID: "+surferAsset.getAssetID());
+
+        // verifying the asset ddo , not it will not be null
+        assertNotNull(squidAsset_FromChain.getSquidDDO());
+        // look up did , form squid agent ...
+
+    }
 
 }
