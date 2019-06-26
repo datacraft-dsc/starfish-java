@@ -28,13 +28,7 @@ mvn test
 mvn install
 
 ```
-### Dependency
-```
-<dependency>
-	<groupId>sg.dex</groupId>
-	<artifactId>starfish-java</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-</dependency>
+
 
 ## License
 
