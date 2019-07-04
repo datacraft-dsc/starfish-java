@@ -1,0 +1,67 @@
+{
+  "base": {
+    "name": "SG CarMart Know your Vehicle: SJR8961K",
+    "type": "dataset",
+    "description": "This is a KYV dataset from SG CarMart for the vehicle no. SJR8961K .The vehicle is a 10 year old BMW 325I Coupe XL in excellent condition.",
+    "dateCreated": "2012-10-10T17:00:000Z",
+    "author": "SG CarMart ",
+    "license": "SG CarMart KYV License",
+    "copyrightHolder": "SG CarMart ",
+    "files": [
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_1b.jpg",
+        "index": 0,
+        "checksum": "efb2c764274b745f5fc37f97c6b0e761",
+        "contentLength": 4535,
+        "contentType": "text/json",
+        "encoding": "UTF-8",
+        "compression": "zip"
+      }
+    ],
+
+    "inLanguage": "en",
+    "price": "15"
+
+  },
+  "additionalInformation": {
+    "carplate": "SJR8961K",
+    "vin": "WBAWB320X0PV53794",
+    "manufacturer": "BMW",
+    "model": "BMW 325I Coupe XL",
+    "year": "2009",
+    "colour": "blue",
+    "type": "Sports Car",
+    "transmission": "Auto",
+    "engine_capacity": 2497,
+    "fuel_type": "Petrol",
+    "registration_date": "2009-07-17",
+    "coe_date": "2019-07-16",
+    "coe": 16801,
+    "omv": 50880,
+    "max_power_output": 214,
+    "price_sgd": 15,
+    "images": [
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_1b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_2b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_3b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_4b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_5b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_6b.jpg"
+      },
+      {
+        "url": "https://i.i-sgcm.com/quotz/cars/201712/20328_7b.jpg"
+      }
+    ]
+  }
+}

@@ -202,8 +202,8 @@ public class SquidAgent extends AAgent {
 	private static ProviderConfig getProvideConfig(Map<String,String> configMap) {
 
 		String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + "/api/v1/aquarius/assets/ddo/{did}";
-		String consumeUrl = "http://localhost:8030" + "/api/v1/brizo/services/consume";
-		String purchaseEndpoint = "http://localhost:8030" + "/api/v1/brizo/services/access/initialize";
+		String consumeUrl = configMap.get("brizo.url") + "/api/v1/brizo/services/consume";
+		String purchaseEndpoint = configMap.get("brizo.url") + "/api/v1/brizo/services/access/initialize";
 		String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);
 		String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);
 
