@@ -3,7 +3,6 @@ package sg.dex.starfish.integration.squid;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EncryptionException;
-import com.oceanprotocol.squid.external.BrizoService;
 import com.oceanprotocol.squid.helpers.HttpHelper;
 import org.junit.Before;
 import org.junit.Test;

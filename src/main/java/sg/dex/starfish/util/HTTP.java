@@ -127,8 +127,8 @@ public class HTTP {
 
 	/**
 	 * Tests is a server is listening on the given port
-	 * @param host
-	 * @param port
+	 * @param host hostname
+	 * @param port name
 	 * @return True if the server is listening, false otherwise
 	 */
 	public static boolean testServerListening(String host, int port) {
@@ -151,8 +151,8 @@ public class HTTP {
 	/**
 	 * This method is used to crate a Multipart instance with the given content.
 	 * 
-	 * @param partName
-	 * @param body
+	 * @param partName name
+	 * @param body body
 	 * @return A multipart HttpEntity with the given  content
 	 */
 	public static HttpEntity createMultiPart(String partName, ContentBody body) {
