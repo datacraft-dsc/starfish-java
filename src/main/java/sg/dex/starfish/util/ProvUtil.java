@@ -97,7 +97,9 @@ public class ProvUtil {
 
     /**
      * Returns a Map representing a list of agents
+     * @param age age
      * @return Map
+     *
      */
     public static Map<String, Object> createAgents(Map<String, Object>... age) {
         return jsonMapEntry("agent", age);
@@ -208,7 +210,7 @@ public class ProvUtil {
 
     /**
      * Returns a list of Activities
-     * @param an array of activities
+     * @param acts array of activities
      * @return Map
      */
     public static Map<String, Object> createActivities(Map<String, Object>... acts) {
@@ -281,6 +283,7 @@ public class ProvUtil {
      * @param assetDependencies the list of assets that consumed by the operation
      * @param params            the argument string passed to the operation
      * @param resultParamName   the name of the result argument for the generated asset
+     * @return Map
      */
     public static Map<String, Object> createInvokeProvenance(String actId, String agentId,
                                                              Collection<Asset> assetDependencies,
