@@ -52,7 +52,7 @@ public class SquidHelperTest {
         Properties properties = new Properties();
         try {
             try (InputStream is = RemoteAgentConfig.class.getClassLoader()
-                    .getResourceAsStream("application_live.properties")) {
+                    .getResourceAsStream("application_test.properties")) {
                 properties.load(is);
             }
         } catch (IOException e) {
