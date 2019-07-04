@@ -182,8 +182,9 @@ public class SquidAgent extends AAgent {
 
 	/**
 	 * Method to search an asset
-	 * @param text
+	 * @param text asset to be searched
 	 * @return List of Squid Asset that matches
+     * @throws DDOException
 	 */
 
 	public List<SquidAsset> searchAsset(String text) throws DDOException {
@@ -211,10 +212,12 @@ public class SquidAgent extends AAgent {
 	}
     /**
      * API to return Squid DDO based on Squid DID
-     * @param did
-     * @return
+     * @param did to be resolved
+     * @return DDO
+     * @throws EthereumException
+     * @throws DDOException
      */
-    public DDO resolveSquidDID(com.oceanprotocol.squid.models.DID did) throws EthereumException, DDOException, DIDFormatException {
+    public DDO resolveSquidDID(com.oceanprotocol.squid.models.DID did) throws EthereumException, DDOException {
 
         return oceanAPI.getAssetsAPI().resolve(did);
     }

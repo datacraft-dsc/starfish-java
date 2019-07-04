@@ -94,7 +94,7 @@ public class SquidAsset extends AAsset implements  DataAsset{
 
     /**
      * Method to get the Ocean reference
-     * @return
+     * @return Ocean instance
      */
     public Ocean getOcean() {
         return ocean;
@@ -102,7 +102,7 @@ public class SquidAsset extends AAsset implements  DataAsset{
 
     /**
      * Method to get the Squid DDO
-     * @return
+     * @return DDO ddo
      */
     public DDO getSquidDDO() {
         return ddo;

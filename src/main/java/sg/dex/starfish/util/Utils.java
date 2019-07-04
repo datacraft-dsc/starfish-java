@@ -221,7 +221,7 @@ public class Utils {
      * If any mandatory attribute is missing it will throw StarfishValidationException
      * @param metaData need to be validated
      * @return true if valid metadata
-     * @throws StarfishValidationException
+     * @throws StarfishValidationException for exception
      */
     public static boolean validateAssetMetaData(String metaData) {
         Map<String, Object> metaDataMap = JSON.toMap(metaData);
