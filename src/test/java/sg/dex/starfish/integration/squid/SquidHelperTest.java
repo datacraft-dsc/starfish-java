@@ -49,10 +49,16 @@ public class SquidHelperTest {
     }
 
     private static Properties getProperties() {
+//
+        String propFileName = System.getProperty("PROP_FILE");
+        if(null == propFileName || !propFileName.equals("application_live.properties")){
+            propFileName="application_test.properties";
+        }
+
         Properties properties = new Properties();
         try {
             try (InputStream is = RemoteAgentConfig.class.getClassLoader()
-                    .getResourceAsStream("application_test.properties")) {
+                    .getResourceAsStream(propFileName)) {
                 properties.load(is);
             }
         } catch (IOException e) {
