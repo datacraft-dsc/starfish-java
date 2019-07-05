@@ -19,7 +19,6 @@ import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,12 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * To run the testcase you need to take latest pull of
+ * https://github.com/oceanprotocol/barge
+ * cd barge
+ * ./start_ocean.sh
+ */
 @RunWith(JUnit4.class)
 public class SquidAssetTests {
     private Ocean ocean;
