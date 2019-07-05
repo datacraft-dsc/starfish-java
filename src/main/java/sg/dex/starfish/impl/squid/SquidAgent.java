@@ -125,7 +125,10 @@ public class SquidAgent extends AAgent {
 
 	private Map<String, Object>  getMetaData(Asset asset) {
 		Map<String, Object> meta = new HashMap<>();
-		Map<String, Object> assetMetadata=asset.getMetadata();
+		// getting asset meta data
+		Map<String, Object> assetMetadata=JSON.toMap(asset.getMetadataString());//.getMetadata();
+		// initialize with default value
+
 		meta.put(Constant.TYPE, Constant.DATA_SET);
 		meta.put(Constant.NAME, Constant.DEFAULT_NAME);
 		meta.put("license", Constant.DEFAULT_LICENSE);
@@ -135,7 +138,7 @@ public class SquidAgent extends AAgent {
 		if (assetMetadata != null) {
 			for (Map.Entry<String, Object> me : meta.entrySet()) {
 				if( assetMetadata.get(me.getKey()) != null){
-					meta.put(me.getKey(),me.getValue());
+					meta.put(me.getKey(),assetMetadata.get(me.getKey()));
 				}
 			}
 		}
