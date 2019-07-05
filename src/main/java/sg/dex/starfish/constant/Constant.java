@@ -77,10 +77,10 @@ public class Constant {
 
     //----------SQUID CONSTANT----------------------
 
-    public static final String DEFAULT_NAME="Dex_Developer";
-    public static final String DEFAULT_LICENSE="DEX_license";
-    public static final String DEFAULT_AUTHOR="Dex_developer";
+    public static final String DEFAULT_NAME="Test_user";
+    public static final String DEFAULT_LICENSE="Test_license";
+    public static final String DEFAULT_AUTHOR="Test_author";
     public static final String DEFAULT_DATE_CREATED="2012-10-10T17:00:000Z";
-    public static final Object DEFAULT_PRICE=10;
+    public static final Object DEFAULT_PRICE=5;
 
 }
