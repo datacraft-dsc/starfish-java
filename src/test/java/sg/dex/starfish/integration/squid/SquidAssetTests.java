@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -19,9 +20,10 @@ import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
 
+import java.io.IOException;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -87,9 +89,9 @@ public class SquidAssetTests {
         // look up did , form squid agent ...
 
         // search asset by DDO and verify respective data
-        assertEquals(squidAsset_1.getSquidDDO().metadata.base.name, "Dex_Developer");
-        assertEquals(squidAsset_1.getSquidDDO().metadata.base.license, "DEX_license");
-        assertTrue(squidAsset_1.getSquidDDO().metadata.base.price.equals("10"));
+        assertEquals(squidAsset_1.getSquidDDO().metadata.base.name, Constant.DEFAULT_NAME);
+        assertEquals(squidAsset_1.getSquidDDO().metadata.base.license, Constant.DEFAULT_LICENSE);
+        assertTrue(squidAsset_1.getSquidDDO().metadata.base.price.equals("5"));
 
     }
 
@@ -129,32 +131,41 @@ public class SquidAssetTests {
 
     }
     @Test
-    public void registerAssetOnChain(){
+    public void testRegisterOnSurferAndChain() throws IOException {
 
+         String METADATA_JSON_SAMPLE = "src/test/resources/assets/SJR8961K_metadata.json";
+        String metadata = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
 
-        Map<String,Object> metaMAp = new HashMap<>();
-        metaMAp.put("type","dataset");
-
-        Asset surferAsset= ResourceAsset.create("examples/metadata.json");
+        Asset memory_asset= ResourceAsset.create(metadata,"assets/SJR8961K_content.json");
 
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
-        //register to surfer
-        surfer.uploadAsset(surferAsset);
+        //register and upload to surfer
+        surfer.uploadAsset(memory_asset);
 
 
         // register the BlockChain
-        SquidAsset squidAsset = squidAgent.registerAsset(surferAsset);
+        SquidAsset squidAsset = squidAgent.registerAsset(memory_asset);
+
 
         // getting the registered from squid agent using asset DID
         SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getAssetDID());
 
+        // getting the same asset from Surfer
+        ARemoteAsset aRemoteAsset =surfer.getAsset(memory_asset.getAssetID());
 
-        ARemoteAsset aRemoteAsset =surfer.getAsset(surferAsset.getAssetID());
+       // validating name : this will not the default name
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,memory_asset.getMetadata().get("name"));
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,aRemoteAsset.getMetadata().get("name"));
 
-        // verifying the asset ddo , not it will not be null
-        assertNotNull(squidAsset_FromChain.getSquidDDO());
-        // look up did , form squid agent ...
+        // validating author: his will not the default author
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,memory_asset.getMetadata().get("author"));
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,aRemoteAsset.getMetadata().get("author"));
+
+
+        assertEquals(aRemoteAsset.getContent().length ,memory_asset.getContent().length);
+
+
 
     }
 
