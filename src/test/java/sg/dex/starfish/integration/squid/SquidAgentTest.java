@@ -81,11 +81,8 @@ public class SquidAgentTest {
 
     @Test
     public void testSearchAsset() throws DDOException {
-        List<SquidAsset> allSquidAsset = squidAgent.searchAsset("Dex_Developer");
+        List<SquidAsset> allSquidAsset = squidAgent.searchAsset("Test_Developer");
         assertNotNull(allSquidAsset);
-//            boolean isMatch = allSquidAsset.stream().anyMatch(n
-//                    -> n.getAssetID()metadata.base.name.equals("Dex_Developer"));
-//            assertTrue(isMatch);
 
     }
 
