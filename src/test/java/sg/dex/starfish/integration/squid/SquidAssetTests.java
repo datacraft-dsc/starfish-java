@@ -12,13 +12,14 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -103,11 +104,11 @@ public class SquidAssetTests {
 
     }
 
-//    @Test
+    @Test
     public void purchaseAndBalanceAsset() throws EthereumException {
 
-        String receiverAddress = "00bd138abd70e2f00903268f3db08f2d25677c9e";
-        String receiverPasswd = "node0";
+        String receiverAddress = "0x064789569D09b4d40b54383d84A25A840E5D67aD";
+        String receiverPasswd = "ocean_secret";
 
         Account receiverAccount = new Account(receiverAddress, receiverPasswd);
 
@@ -126,47 +127,76 @@ public class SquidAssetTests {
         //eg:  //eg: 6.9E-17
         Balance balanceAfter = ocean.getBalance(receiverAccount);
 
-        assertEquals(-1, balanceBefore.getOceanTokens().compareTo(balanceAfter.getOceanTokens()));
+        assertEquals(1, balanceBefore.getEth().compareTo(balanceAfter.getEth()));
 
 
     }
     @Test
-    public void testRegisterOnSurferAndChain() throws IOException {
+    public void testRegisterOnSurferAndChain() throws IOException, EthereumException {
 
-         String METADATA_JSON_SAMPLE = "src/test/resources/assets/SJR8961K_metadata.json";
-        String metadata = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
-        Asset memory_asset= ResourceAsset.create(metadata,"assets/SJR8961K_content.json");
+        // create asset using metadata and given content
+        Asset memory_asset= ResourceAsset.create(asset_metaData,"assets/SJR8961K_content.json");
 
+        // create surfer agent
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
-        //register and upload to surfer
+        //register and upload the asset to surfer
         surfer.uploadAsset(memory_asset);
 
-
-        // register the BlockChain
+        // register the asset on Ocean Network
         SquidAsset squidAsset = squidAgent.registerAsset(memory_asset);
 
 
         // getting the registered from squid agent using asset DID
         SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getAssetDID());
 
-        // getting the same asset from Surfer
-        ARemoteAsset aRemoteAsset =surfer.getAsset(memory_asset.getAssetID());
 
-       // validating name : this will not the default name
+        // verifying registration
+        RemoteAsset aRemoteAsset =(RemoteAsset)surfer.getAsset(memory_asset.getAssetID());
+
+
+       // validating name
         assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,memory_asset.getMetadata().get("name"));
         assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,aRemoteAsset.getMetadata().get("name"));
 
-        // validating author: his will not the default author
+        // validating author
         assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,memory_asset.getMetadata().get("author"));
         assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,aRemoteAsset.getMetadata().get("author"));
 
 
+        // validating content
         assertEquals(aRemoteAsset.getContent().length ,memory_asset.getContent().length);
 
 
+        //*****Consume Asset ************
+
+        // get the consumer account details
+
+        String receiverAddress = "0x064789569D09b4d40b54383d84A25A840E5D67aD";
+        String receiverPasswd = "ocean_secret";
+
+        Account consumerAccount = new Account(receiverAddress, receiverPasswd);
+
+        Balance balanceBefore = ocean.getBalance(consumerAccount);
+
+        // get price of asset
+        String price =squidAsset_FromChain.getSquidDDO().metadata.base.price ;
+        BigInteger priceOfAsset=new BigInteger(price);
+
+        // validate price
+        if(-1== priceOfAsset.compareTo(balanceBefore.getEth())){
+            ocean.transfer(receiverAddress, priceOfAsset);
+            String content=Utils.stringFromStream(aRemoteAsset.getContentStream());
+            assertNotNull(content);
+
+        }
+
 
     }
+
+
 
 }
