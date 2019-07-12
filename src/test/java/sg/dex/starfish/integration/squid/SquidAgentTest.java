@@ -3,7 +3,6 @@ package sg.dex.starfish.integration.squid;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EncryptionException;
-import com.oceanprotocol.squid.helpers.HttpHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,6 +105,6 @@ public class SquidAgentTest {
     @Test
     public void testConsumeAsset() throws IOException, URISyntaxException {
        // BrizoService.consumeUrl()
-        HttpHelper.downloadResource("https://www.robots.ox.ac.uk/~vgg/publications/2012/parkhi12a/parkhi12a.pdf", "/Users/ayush/Downloads/123/");
+       // HttpHelper.downloadResource("https://www.robots.ox.ac.uk/~vgg/publications/2012/parkhi12a/parkhi12a.pdf", "/Users/ayush/Downloads/123/");
     }
 }
