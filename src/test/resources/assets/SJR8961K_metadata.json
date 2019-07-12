@@ -1,11 +1,11 @@
 {
 
-    "name": "SG CarMart Know your Vehicle: SJR8961K",
+    "name": "Know your Vehicle: Metada",
     "type": "dataset",
-    "description": "This is a KYV dataset from SG CarMart for the vehicle no. SJR8961K .The vehicle is a 10 year old BMW 325I Coupe XL in excellent condition.",
+    "description": "This is a KYV dataset  .The vehicle is a 10 year old BMW 325I Coupe XL in excellent condition.",
     "dateCreated": "2012-10-10T17:00:000Z",
-    "author": "SG CarMart ",
-    "license": "SG CarMart KYV License",
-    "copyrightHolder": "SG CarMart "
+    "author": "Vehicle Owner ",
+    "license": "Vehicle Owner",
+    "copyrightHolder": "Vehicle Owner "
 
 }
