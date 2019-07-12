@@ -189,7 +189,8 @@ public class SquidAssetTests {
         // validate price
         if(-1== priceOfAsset.compareTo(balanceBefore.getEth())){
             ocean.transfer(receiverAddress, priceOfAsset);
-            Utils.stringFromStream(aRemoteAsset.getContentStream());
+            String content=Utils.stringFromStream(aRemoteAsset.getContentStream());
+            assertNotNull(content);
 
         }
 
