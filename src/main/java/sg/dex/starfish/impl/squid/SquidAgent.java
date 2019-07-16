@@ -215,15 +215,30 @@ public class SquidAgent extends AAgent {
 	}
     /**
      * API to return Squid DDO based on Squid DID
-     * @param did to be resolved
      * @return DDO ddo
      * @throws EthereumException exception
      * @throws DDOException exception
      */
-    public DDO resolveSquidDID(com.oceanprotocol.squid.models.DID did) throws EthereumException, DDOException {
+    public SquidAsset resolveSquidDID(DID assetId)  {
 
-        return oceanAPI.getAssetsAPI().resolve(did);
+    	if(null == assetId){
+    		throw  new UnsupportedOperationException("Asset Id cannot be null");
+		}
+			SquidAsset squidAsset =getAsset(assetId);
+			return squidAsset;
+
     }
 
+    public List<SquidAsset> queryAsset(Map<String,Object> queryMapData)throws Exception{
+
+		List<DDO> listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();
+		List<SquidAsset> squidAssetLst = new ArrayList<>();
+		for(DDO ddo: listDDO){
+			DID did = DID.parse(ddo.getDid().toString());
+			SquidAsset asset =getAsset(did);
+			squidAssetLst.add(asset);
+		}
+		return squidAssetLst;
+	}
 
 }
