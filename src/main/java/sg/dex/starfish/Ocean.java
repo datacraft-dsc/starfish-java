@@ -1,18 +1,29 @@
 package sg.dex.starfish;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
 import sg.dex.starfish.util.JSONObjectCache;
+import sg.dex.starfish.util.Utils;
 
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +111,6 @@ public class Ocean {
 //		// TODO universal resolver
 //		throw new UnsupportedOperationException("Not yet implemented");
     }
-
 
 
     /**
@@ -204,6 +214,43 @@ public class Ocean {
      */
     public TransactionReceipt transfer(String receiverAddress, BigInteger amount) throws EthereumException {
         return getOceanAPI().getTokensAPI().transfer(receiverAddress, amount);
+    }
+
+    /**
+     * API to get the Transaction details from Submarine based on account and the submarine url
+     *
+     * @param account account number
+     * @return Map of all transaction
+     * @throws URISyntaxException
+     */
+
+    public Map<String,Object> getTransaction(String url,String account) throws URISyntaxException {
+
+        URI uri = new URI(url);
+
+         uri = new URIBuilder(uri).addParameter("module",
+                "account").addParameter("action", "txlist").addParameter("address", account).build();
+
+        HttpGet httpGet = new HttpGet(uri);
+        CloseableHttpResponse closeableHttpResponse = HTTP.execute(httpGet);
+
+        try {
+            StatusLine statusLine = closeableHttpResponse.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 404) {
+            } else if (statusCode == 200) {
+                String body = Utils.stringFromStream(HTTP.getContent(closeableHttpResponse));
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String,Object> transactionDetailsMap = mapper.readValue(body, Map.class);
+                return transactionDetailsMap;
+
+            }
+        } catch (Exception e) {
+           throw new RemoteException("Error in parsing response for "+ uri);
+
+        }
+        return Collections.emptyMap();
+
     }
 
 

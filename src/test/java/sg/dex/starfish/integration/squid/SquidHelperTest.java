@@ -50,9 +50,10 @@ public class SquidHelperTest {
 
     private static Properties getProperties() {
 //
-        String propFileName = System.getProperty("PROP_FILE");
-        if(null == propFileName || !propFileName.equals("application_live.properties")){
-            propFileName="application_test.properties";
+        String profile = System.getProperty("profiles.active");
+        String propFileName = "application_test.properties";
+        if (null != profile && !profile.equals("live")) {
+            propFileName = "application_live.properties";
         }
 
         Properties properties = new Properties();
