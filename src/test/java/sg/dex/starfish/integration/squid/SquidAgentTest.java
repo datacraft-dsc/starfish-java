@@ -1,10 +1,6 @@
 package sg.dex.starfish.integration.squid;
 
 import com.oceanprotocol.squid.exceptions.DDOException;
-import com.oceanprotocol.squid.exceptions.DIDFormatException;
-import com.oceanprotocol.squid.exceptions.EncryptionException;
-import com.oceanprotocol.squid.external.BrizoService;
-import com.oceanprotocol.squid.helpers.HttpHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +11,11 @@ import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(JUnit4.class)
 public class SquidAgentTest {
@@ -31,7 +24,6 @@ public class SquidAgentTest {
     private SquidAgent squidAgent;
     private Ocean ocean = SquidHelperTest.getOcean();
     private Map<String, String> configMap = SquidHelperTest.getPropertiesMap();
-    private SquidAsset squidAsset;
 
     @Before
     public void setup() {
@@ -43,70 +35,69 @@ public class SquidAgentTest {
 
         MemoryAsset asset = MemoryAsset.create(data);
         assertNotNull(asset);
-        // register created asset
-        // any sf asset
-        squidAsset = squidAgent.registerAsset(asset);
     }
 
-    @Test
-    public void testRegisterAsset() {
-        byte[] data = {1, 2, 3, 4};
 
-        MemoryAsset asset = MemoryAsset.create(data);
-        assertNotNull(asset);
-        // register created asset
-        // any sf asset
-        SquidAsset squidAsset = squidAgent.registerAsset(asset);
-
-        assertNotNull(squidAsset);
-    }
-
-    @Test
-    public void testGetAssetByAssetDID() {
-
-        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetID());
-        assertNotNull(squidAsset_1);
-        // assertEquals(squidAsset_1.getAssetID(), squidAsset.getAssetID());
-
-
-    }
-
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testUploadAsset() {
-        throw new UnsupportedOperationException("Upload not supported by squid ");
+        byte[] data = {1, 2, 3, 4};
+        MemoryAsset asset = MemoryAsset.create(data);
+        squidAgent.uploadAsset(asset);
     }
 
     @Test
     public void testGetAssetByAssetID() {
-        assertNull(squidAgent.getAsset(squidAsset.getAssetID()));
+        byte[] data = {1, 2, 3, 4};
+        MemoryAsset asset = MemoryAsset.create(data);
+        SquidAsset squidAsset = squidAgent.registerAsset(asset);
+        // getting the registered from squid agent using asset DID
+        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetDID());
+
+        // verifying the asset ddo , not it will not be null
+        assertNotNull(squidAsset_1.getSquidDDO());
     }
 
     @Test
     public void testSearchAsset() throws DDOException {
-        List<SquidAsset> allSquidAsset = squidAgent.searchAsset("Dex_Developer");
+        byte[] data = {1, 2, 3, 4};
+        MemoryAsset asset = MemoryAsset.create(data);
+        SquidAsset squidAsset = squidAgent.registerAsset(asset);
+        List<SquidAsset> allSquidAsset = squidAgent.searchAsset(squidAsset.getSquidDDO().metadata.base.name);
         assertNotNull(allSquidAsset);
-//            boolean isMatch = allSquidAsset.stream().anyMatch(n
-//                    -> n.getAssetID()metadata.base.name.equals("Dex_Developer"));
-//            assertTrue(isMatch);
+
 
     }
 
     @Test
-    public void testEncryption() throws DIDFormatException, EncryptionException {
+    public void testQueryAsset() throws Exception {
 
-        String did = com.oceanprotocol.squid.models.DID.builder().getHash();
+        byte[] data = {1, 2, 3, 4};
+        MemoryAsset asset = MemoryAsset.create(data);
 
-        String  test ="Testting";
-        String encryptedDocument = ocean.getOceanAPI().getSecretStoreAPI().encrypt(did, test, 0);
+        SquidAsset squidAsset = squidAgent.registerAsset(asset);
 
-        String decryptedDocument = ocean.getOceanAPI().getSecretStoreAPI().decrypt(did, encryptedDocument);
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("license", "Test_license");
+        List<SquidAsset> allSquidAsset = squidAgent.queryAsset(queryMap);
+        assertNotNull(allSquidAsset);
 
-        assertEquals(test, decryptedDocument);
+
     }
 
+
     @Test
-    public void testConsumeAsset() throws IOException, URISyntaxException {
-       // BrizoService.consumeUrl()
-        HttpHelper.downloadResource("https://www.robots.ox.ac.uk/~vgg/publications/2012/parkhi12a/parkhi12a.pdf", "/Users/ayush/Downloads/123/");
+    public void testResolveSquidDID() {
+
+        byte[] data = {1, 2, 3, 4};
+        MemoryAsset asset = MemoryAsset.create(data);
+
+        SquidAsset squidAsset = squidAgent.registerAsset(asset);
+        System.out.println("Asset ID" + squidAsset.getAssetID());
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("license", "Test_license");
+        SquidAsset squidAsset1 = squidAgent.resolveSquidDID(squidAsset.getAssetDID());
+        assertNotNull(squidAsset1);
+
+
     }
 }

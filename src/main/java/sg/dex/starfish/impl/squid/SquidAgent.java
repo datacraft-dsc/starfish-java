@@ -125,7 +125,10 @@ public class SquidAgent extends AAgent {
 
 	private Map<String, Object>  getMetaData(Asset asset) {
 		Map<String, Object> meta = new HashMap<>();
-		Map<String, Object> assetMetadata=asset.getMetadata();
+		// getting asset meta data
+		Map<String, Object> assetMetadata=JSON.toMap(asset.getMetadataString());//.getMetadata();
+		// initialize with default value
+
 		meta.put(Constant.TYPE, Constant.DATA_SET);
 		meta.put(Constant.NAME, Constant.DEFAULT_NAME);
 		meta.put("license", Constant.DEFAULT_LICENSE);
@@ -135,7 +138,7 @@ public class SquidAgent extends AAgent {
 		if (assetMetadata != null) {
 			for (Map.Entry<String, Object> me : meta.entrySet()) {
 				if( assetMetadata.get(me.getKey()) != null){
-					meta.put(me.getKey(),me.getValue());
+					meta.put(me.getKey(),assetMetadata.get(me.getKey()));
 				}
 			}
 		}
@@ -182,8 +185,9 @@ public class SquidAgent extends AAgent {
 
 	/**
 	 * Method to search an asset
-	 * @param text
+	 * @param text asset to be searched
 	 * @return List of Squid Asset that matches
+     * @throws DDOException exception
 	 */
 
 	public List<SquidAsset> searchAsset(String text) throws DDOException {
@@ -202,8 +206,8 @@ public class SquidAgent extends AAgent {
 	private static ProviderConfig getProvideConfig(Map<String,String> configMap) {
 
 		String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + "/api/v1/aquarius/assets/ddo/{did}";
-		String consumeUrl = "http://localhost:8030" + "/api/v1/brizo/services/consume";
-		String purchaseEndpoint = "http://localhost:8030" + "/api/v1/brizo/services/access/initialize";
+		String consumeUrl = configMap.get("brizo.url") + "/api/v1/brizo/services/consume";
+		String purchaseEndpoint = configMap.get("brizo.url") + "/api/v1/brizo/services/access/initialize";
 		String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);
 		String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);
 
@@ -211,13 +215,30 @@ public class SquidAgent extends AAgent {
 	}
     /**
      * API to return Squid DDO based on Squid DID
-     * @param did
-     * @return
+     * @return DDO ddo
+     * @throws EthereumException exception
+     * @throws DDOException exception
      */
-    public DDO resolveSquidDID(com.oceanprotocol.squid.models.DID did) throws EthereumException, DDOException, DIDFormatException {
+    public SquidAsset resolveSquidDID(DID assetId)  {
 
-        return oceanAPI.getAssetsAPI().resolve(did);
+    	if(null == assetId){
+    		throw  new UnsupportedOperationException("Asset Id cannot be null");
+		}
+			SquidAsset squidAsset =getAsset(assetId);
+			return squidAsset;
+
     }
 
+    public List<SquidAsset> queryAsset(Map<String,Object> queryMapData)throws Exception{
+
+		List<DDO> listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();
+		List<SquidAsset> squidAssetLst = new ArrayList<>();
+		for(DDO ddo: listDDO){
+			DID did = DID.parse(ddo.getDid().toString());
+			SquidAsset asset =getAsset(did);
+			squidAssetLst.add(asset);
+		}
+		return squidAssetLst;
+	}
 
 }

@@ -41,6 +41,7 @@ public class ProvUtil {
 
     /**
      * Returns a Entity referring to "this", the asset being registered
+     * @return  Map
      */
     public static Map<String, Object> createThisInput() {
         return createAssetEntity("this");
@@ -50,6 +51,7 @@ public class ProvUtil {
      * Returns a Entity referring to asset in the argument
      *
      * @param ast dependent asset
+     * @return Map
      */
     public static Map<String, Object> createAssetDependency(Asset ast) {
         return createAssetEntity(ast.getAssetID());
@@ -68,6 +70,7 @@ public class ProvUtil {
     /**
      * Returns a Map representing a list of entities
      * @param ent an array of entities to be added to the entity
+     * @return Map
      */
     public static Map<String, Object> createEntities(Map<String, Object>... ent) {
         return jsonMapEntry("entity", ent);
@@ -78,6 +81,7 @@ public class ProvUtil {
      *
      * @param agentId     the agent Id
      * @param agentType the type of account (e.g. ethereum account)
+     * @return Map
      */
     public static Map<String, Object> createAgent(String agentId, AgentIdType agentType) {
         Map<String, Object> type = new HashMap<String, Object>();
@@ -93,6 +97,9 @@ public class ProvUtil {
 
     /**
      * Returns a Map representing a list of agents
+     * @param age age
+     * @return Map
+     *
      */
     public static Map<String, Object> createAgents(Map<String, Object>... age) {
         return jsonMapEntry("agent", age);
@@ -104,6 +111,7 @@ public class ProvUtil {
      *
      * @param agentId    the agent Id
      * @param activityId the activity Id
+     * @return Map
      */
     public static Map<String, Object> associatedWith(String agentId, String activityId) {
         Map<String, Object> type = new HashMap<String, Object>();
@@ -122,8 +130,8 @@ public class ProvUtil {
      * Returns a Map representing an generatedBy Relationship, which
      * connects the entityid with the activityId
      *
-     * @param entityId   the entity Id (the generated entity)
      * @param activityId the activity Id
+     * @return Map
      */
     public static Map<String, Object> generatedBy(String activityId) {
         String entityId=OPF+":this";
@@ -144,6 +152,7 @@ public class ProvUtil {
      * connects the dependent entities
      *
      * @param entities list of entities that the generated entity is derived from
+     * @return Map
      */
     public static Map<String, Object> derivedFrom(Collection<Asset> entities) {
         Map<String, Object> asid = new HashMap<String, Object>();
@@ -163,6 +172,7 @@ public class ProvUtil {
      *
      * @param actId        the activity Id
      * @param activityType The type of activity (e.g. publish or operation)
+     * @return Map
      */
     public static Map<String, Object> createActivity(String actId, ActivityType activityType) {
         Map<String, Object> type = new HashMap<String, Object>();
@@ -182,6 +192,7 @@ public class ProvUtil {
      * @param actId        the activity Id
      * @param activityType The type of activity (e.g. publish or operation)
      * @param actEntries   an array of activities
+     * @return Map
      */
     public static Map<String, Object> createActivity(String actId, ActivityType activityType,
                                                      Map<String, Object> actEntries) {
@@ -197,9 +208,10 @@ public class ProvUtil {
         return thisContainer;
     }
 
-    /*
+    /**
      * Returns a list of Activities
-     * @param an array of activities
+     * @param acts array of activities
+     * @return Map
      */
     public static Map<String, Object> createActivities(Map<String, Object>... acts) {
         return jsonMapEntry("activity", acts);
@@ -210,6 +222,7 @@ public class ProvUtil {
      * activity ID for tracking the provenance
      *
      * @param agentId the agent identifier
+     * @return Map
      */
     public static Map<String, Object> createPublishProvenance(String agentId) {
         String actId = UUID.randomUUID().toString();
@@ -270,6 +283,7 @@ public class ProvUtil {
      * @param assetDependencies the list of assets that consumed by the operation
      * @param params            the argument string passed to the operation
      * @param resultParamName   the name of the result argument for the generated asset
+     * @return Map
      */
     public static Map<String, Object> createInvokeProvenance(String actId, String agentId,
                                                              Collection<Asset> assetDependencies,
