@@ -1,6 +1,6 @@
 # Starfish
 
-[![Build Status](https://travis-ci.com/DEX-Company/starfish-java]
+[![Build Status](https://travis-ci.com/DEX-Company/starfish-java)
 [![Maven Central](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.5.0)
 
 Starfish is a free, open source ([Apache License, v2.0][1]) developer toolkit for the data economy.
