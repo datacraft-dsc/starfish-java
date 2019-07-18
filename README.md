@@ -58,10 +58,9 @@ For developing the code base of Starfish, it is suggested to use one of the majo
   1. Choose "Import Project from external model", select "Maven" and click `Next`.
   1. Configure the project to your liking, but make sure to check "Import Maven projects automatically" and have "Generated sources folders" set to "Detect automatically".
   1. Click `Next` until the project is imported (no Maven profile needs to be selected).
-  1. In order to have both development versions of AutomataLib and LearnLib available at once, continue to import AutomataLib as documented in the project's README, but choose `File` -> `New` -> `Module from existing sources` as the first step.
 
 * For [Eclipse][eclipse]:
-  1. **Note**: LearnLib uses annotation processing on several occasions throughout the build process.
+  1. **Note**: Starfish uses annotation processing on several occasions throughout the build process.
   This is usually handled correctly by Maven, however, for Eclipse you need to install the [m2e-apt-plugin](https://marketplace.eclipse.org/content/m2e-apt) and activate annotation processing afterwards).
   1. Select `File` -> `Import...` and select "Existing Maven Projects".
   1. Select the folder containing the development checkout as the root directory and click `Finish`.
