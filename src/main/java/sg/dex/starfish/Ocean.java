@@ -20,13 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Main entry point for Ocean ecosystem.
+ * Main entry point for Ocean ecosystem capabilities.
  * <p>
  * An instance of the Ocean class is used to represent a connection to the Ocean network
  * and supports functionality related to accessing the on-chain state of the Ocean network.
  *
  * @author Mike
- * @version 0.5
  */
 public class Ocean {
     private static final Ocean DEFAULT_OCEAN = new Ocean(null);
