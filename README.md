@@ -33,6 +33,10 @@ git clone -b develop --single-branch https://github.com/DEX-Company/starfish-jav
 
 and run a single `mvn clean install`.
 This will build all the required maven artifacts and will install them in your local Maven repository, so that you can reference them in other projects.
+## Learn about Guava
+
+- Our users' guide, [docs.dex.sg]
+
 #### Installation
 
 Typically in Maven you can add squid-java as a dependency:
