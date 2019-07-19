@@ -73,7 +73,7 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 ## Documentation
 
 * **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
-* **API Documentation:** [latest release](http://shrimp.octet.services/)
+* **API Documentation:** [latest release](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)
 
 ## Learn about Starfish
 
@@ -81,14 +81,12 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 
 ## Mailing Lists
 
-  * [Q&A @dex.sg][starfish-qa] -- General questions regarding the usage of Starfish.
-  * [Discussion @ @dex.sg][starfish-discussion] -- Discussions about the internals of Starfish.
-  * [Internal (private) @dex.sg][starfish-internal] -- Discussions about future development plans.
+  * [developer@dex.sg][starfish-qa] -- General questions regarding the usage of Starfish.
 
 
 ## Maintainers
 
-* [Developer Dex team]
+ [Developer Dex team][developer@dex.sg]
 
 ## License
 
