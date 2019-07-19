@@ -72,7 +72,7 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 
 ## Documentation
 
-* **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.5.0)
+* **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
 * **API Documentation:** [latest release](http://shrimp.octet.services/)
 
 ## Learn about Starfish
