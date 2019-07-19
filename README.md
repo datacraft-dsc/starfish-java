@@ -33,9 +33,7 @@ git clone -b develop --single-branch https://github.com/DEX-Company/starfish-jav
 
 and run a single `mvn clean install`.
 This will build all the required maven artifacts and will install them in your local Maven repository, so that you can reference them in other projects.
-## Learn about Starfish
 
-- Our users' guide, [http://docs.dex.sg/]
 
 #### Installation
 
@@ -75,6 +73,9 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 * **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.5.0)
 * **API Documentation:** [latest release](http://shrimp.octet.services/)
 
+## Learn about Starfish
+
+- Our users' guide, [http://docs.dex.sg/]
 
 ## Mailing Lists
 
