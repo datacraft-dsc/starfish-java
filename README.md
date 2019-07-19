@@ -3,6 +3,11 @@
 [![Build Status](https://travis-ci.com/DEX-Company/starfish-java)](https://travis-ci.com/DEX-Company/starfish-java)
 
 
+[![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
+[![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
+[![Squid Version](https://img.shields.io/badge/squid--py-v0.6.15-blue.svg)](https://github.com/oceanprotocol/squid-py/releases/tag/v0.6.15)
+[![Barge Version](https://img.shields.io/badge/barge-dex--2019--08--08-blue.svg)](https://github.com/DEX-Company/barge/releases/tag/dex-2019-08-08)
+
 Starfish is an open-sourced developer toolkit for the data economy.
 
 
