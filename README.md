@@ -1,7 +1,7 @@
 # Starfish
 
 [![Build Status](https://travis-ci.com/DEX-Company/starfish-java)](https://travis-ci.com/DEX-Company/starfish-java)
-[![Maven Central](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
+[![Maven Central](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)]
 
 Starfish is a free, open source ([Apache License, v2.0][1]) developer toolkit for the data economy.
 
@@ -42,7 +42,7 @@ Typically in Maven you can add squid-java as a dependency:
 <dependency>
     <groupId>sg.dex</groupId>
     <artifactId>starfish-java</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 
 ```
