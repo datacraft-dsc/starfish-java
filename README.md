@@ -1,9 +1,9 @@
 # Starfish
-
+[![Latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
 [![Build Status](https://travis-ci.com/DEX-Company/starfish-java)](https://travis-ci.com/DEX-Company/starfish-java)
-[![Maven Central](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)]
 
-Starfish is a free, open source ([Apache License, v2.0][1]) developer toolkit for the data economy.
+
+Starfish is an open-sourced developer toolkit for the data economy.
 
 
 ## About
@@ -83,7 +83,7 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 
 * [Developer Dex team]
 
-##License
+## License
 
 Copyright 2018 Ocean Protocol Foundation Ltd.
 Copyright 2018-2019 DEX Pte. Ltd.
