@@ -15,8 +15,10 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import sg.dex.starfish.exception.RemoteException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -117,8 +119,7 @@ public class HTTP {
 	 */
 	public static InputStream getContent(HttpResponse response) {
 		try {
-			HttpEntity entity = response.getEntity();
-			return entity.getContent();
+			return  new ByteArrayInputStream(EntityUtils.toByteArray(response.getEntity()));
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
