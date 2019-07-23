@@ -77,7 +77,7 @@ For developing the code base of Starfish, it is suggested to use one of the majo
 
 ## Learn about Starfish
 
-- Our users' guide, [http://docs.dex.sg/]
+- Our Developer Site, [http://developer.dex.sg/]
 
 ## Mailing Lists
 
