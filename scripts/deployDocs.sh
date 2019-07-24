@@ -4,7 +4,7 @@
 
 DOC_PATH='./target/site/'
 # FIXME get version from mvn
-VERSION="0.0.1-SNAPSHOT"
+VERSION="0.6"
 # FIXME get project name from mvn
 PROJECT_NAME="starfish-java"
 PACKAGE_NAME="docs_${PROJECT_NAME}_${VERSION}"
