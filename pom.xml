@@ -185,6 +185,7 @@
                     <excludes>
                         <exclude>**/*IntegrationTests.java</exclude>
                     </excludes>
+                    <skipTests>false</skipTests>
                 </configuration>
                 <executions>
                     <execution>
