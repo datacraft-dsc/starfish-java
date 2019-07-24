@@ -30,7 +30,7 @@ If you intend to use development versions of Starfish, you can either use the de
 Simply clone the development branch of the repository
 
 ```
-git clone -b develop --single-branch https://github.com/DEX-Company/starfish-java
+git clone -b develop https://github.com/DEX-Company/starfish-java
 ```
 
 and run a single `mvn clean install`.
