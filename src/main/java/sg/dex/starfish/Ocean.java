@@ -219,6 +219,7 @@ public class Ocean {
      * API to get the Transaction details from Submarine based on account and the submarine url
      *
      * @param account account number
+     * @param url url
      * @return Map of all transaction
      * @throws URISyntaxException
      */

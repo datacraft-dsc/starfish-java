@@ -59,6 +59,7 @@ public class SquidAgent extends AAgent {
 	 *
 	 * @param ocean Ocean connection to use
 	 * @param did DID for this agent
+	 * @param config config configuration
 	 * @return RemoteAgent
 	 */
 	public static SquidAgent create( Map<String,String> config, Ocean ocean, DID did) {
@@ -215,9 +216,9 @@ public class SquidAgent extends AAgent {
 	}
     /**
      * API to return Squid DDO based on Squid DID
+	 * @param assetId assetID
      * @return DDO ddo
-     * @throws EthereumException exception
-     * @throws DDOException exception
+     * @throws UnsupportedOperationException exception
      */
     public SquidAsset resolveSquidDID(DID assetId)  {
 
@@ -229,6 +230,12 @@ public class SquidAgent extends AAgent {
 
     }
 
+	/**
+	 * API to Query Asset based on map argument passed
+	 * @param queryMapData map data
+	 * @return list of Squid Asset
+	 * @throws Exception any exception occur while calling squid API
+	 */
     public List<SquidAsset> queryAsset(Map<String,Object> queryMapData)throws Exception{
 
 		List<DDO> listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();
