@@ -22,7 +22,7 @@ Contributions -- whether it is in the form of new features, better documentation
 ## Build Instructions
 
 For simply using Starfish, you may use the Maven artifacts which are available in the [Maven Central repository][maven-central].
-Note, that Starfish requires Java 8.
+Squid-java requires Java 10 and Maven >= 3.5.2
 
 #### Building development versions
 
