@@ -34,7 +34,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 
 	/**
 	 * Creates a new instance of EpicFailOperation
-	 *
+	 * @param meta metadata
 	 * @return new instance of EpicFailOperation
 	 */
 	public static EpicFailOperation create(String meta) {

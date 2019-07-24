@@ -38,7 +38,8 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 
 	/**
 	 * Creates a new instance of ReverseByte_AssetI_AssetO
-	 *
+	 * @param memoryAgent memory agent
+	 * @param meta meta
 	 * @return new instance of ReverseByte_AssetI_AssetO
 	 */
 	public static ReverseByte_AssetI_AssetO create(String meta, MemoryAgent memoryAgent) {
@@ -137,8 +138,8 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 	/**
 	 * API to test the Sync call execution
 	 * 
-	 * @param params
-	 * @return
+	 * @param params map data
+	 * @return Map
 	 */
 	public Map<String, Object> syncCallToReverse(Map<String, Object> params) {
 
