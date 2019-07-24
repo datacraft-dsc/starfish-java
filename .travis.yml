@@ -2,9 +2,8 @@ language: java
 jdk:
   - oraclejdk11
   - openjdk10
-  - openjdk8
   - openjdk11
-  -
+  
 dist: xenial
 sudo: false
 
