@@ -1,6 +1,5 @@
 package sg.dex.starfish;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.api.AssetsAPI;
 import com.oceanprotocol.squid.api.OceanAPI;
@@ -17,6 +16,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.JSONObjectCache;
 import sg.dex.starfish.util.Utils;
 
@@ -240,8 +240,7 @@ public class Ocean {
             if (statusCode == 404) {
             } else if (statusCode == 200) {
                 String body = Utils.stringFromStream(HTTP.getContent(closeableHttpResponse));
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String,Object> transactionDetailsMap = mapper.readValue(body, Map.class);
+                Map<String,Object> transactionDetailsMap = JSON.parse(body);
                 return transactionDetailsMap;
 
             }
