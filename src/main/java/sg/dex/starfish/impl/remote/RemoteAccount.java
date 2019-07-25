@@ -19,7 +19,6 @@ public class RemoteAccount extends AAccount {
 	 * Create an AAccount with the provided ID
 	 * @param id The identifier for this account
 	 * @param credentials The credential for this account
-	 * @retun instance of remote account
 	 */
 	protected RemoteAccount(String id, Map<String, Object> credentials) {
 		super(id, credentials);
@@ -30,7 +29,7 @@ public class RemoteAccount extends AAccount {
 	 * This method is to create instance of Remote Account
 	 * @param id The identifier for this account
 	 * @param credentials The credential for this account
-	 * @return instance of remote account
+	 * @return RemoteAccount RemoteAccount instance
 	 */
 	public static RemoteAccount create(String id,
 					   Map<String, Object> credentials) {

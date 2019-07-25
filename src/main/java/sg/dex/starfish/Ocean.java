@@ -221,7 +221,7 @@ public class Ocean {
      * @param account account number
      * @param url url
      * @return Map of all transaction
-     * @throws URISyntaxException
+     * @throws URISyntaxException URI Syntax Exception will be thrown
      */
 
     public Map<String,Object> getTransaction(String url,String account) throws URISyntaxException {
