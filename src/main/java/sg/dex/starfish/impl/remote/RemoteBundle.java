@@ -18,8 +18,6 @@ import static sg.dex.starfish.constant.Constant.*;
  *
  * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
  *
- * @author Ayush
- * @version 0.5
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     private Map<String, Asset> assetMap;
@@ -88,6 +86,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     /**
      * This method is to build the metadata for the bundle
      * @param meta additional metadata
+     * @param assetMap assetMap
      * @return metadata as string
      */
     private static String buildMetaData(Map<String, Asset> assetMap, Map<String, Object> meta) {
@@ -118,7 +117,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * This method is to get the map of AssetID based on AssetId
      *
      * @param assetId asset id
-     * @return Map<String, String> assetIdMap
+     * @return Map assetIdMap
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();

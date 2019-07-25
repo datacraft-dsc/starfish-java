@@ -22,7 +22,7 @@ Contributions -- whether it is in the form of new features, better documentation
 ## Build Instructions
 
 For simply using Starfish, you may use the Maven artifacts which are available in the [Maven Central repository][maven-central].
-Note, that Starfish requires Java 8.
+Squid-java requires Java 10 and Maven >= 3.5.2
 
 #### Building development versions
 
@@ -30,7 +30,7 @@ If you intend to use development versions of Starfish, you can either use the de
 Simply clone the development branch of the repository
 
 ```
-git clone -b develop --single-branch https://github.com/DEX-Company/starfish-java
+git clone -b develop https://github.com/DEX-Company/starfish-java
 ```
 
 and run a single `mvn clean install`.
@@ -68,16 +68,27 @@ For developing the code base of Starfish, it is suggested to use one of the majo
   This is usually handled correctly by Maven, however, for Eclipse you need to install the [m2e-apt-plugin](https://marketplace.eclipse.org/content/m2e-apt) and activate annotation processing afterwards).
   1. Select `File` -> `Import...` and select "Existing Maven Projects".
   1. Select the folder containing the development checkout as the root directory and click `Finish`.
+## Testing
 
+You can run both, the unit and integration tests by using:
 
+```bash
+mvn clean install -DskipTests=false
+```
+
+### Unit Tests
+
+You can execute the unit tests only using the following command:
+
+```bash
+mvn clean test
+mvn clean install
+```
 ## Documentation
 
 * **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
 * **API Documentation:** [latest release](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)
 
-## Learn about Starfish
-
-- Our Developer Site, [http://developer.dex.sg/]
 
 ## Mailing Lists
 

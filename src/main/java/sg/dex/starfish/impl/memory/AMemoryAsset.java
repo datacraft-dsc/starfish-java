@@ -14,9 +14,9 @@ public abstract class AMemoryAsset extends AAsset {
 	protected MemoryAgent memoryAgent;
 
 	/**
-	 *
-	 * @param metaData
-	 * @param aAgent
+	 * Constructor for Memory Asset
+	 * @param metaData metaData
+	 * @param aAgent memory Agent
 	 */
 	protected AMemoryAsset(String metaData, MemoryAgent aAgent) {
 		super(metaData);
@@ -24,8 +24,8 @@ public abstract class AMemoryAsset extends AAsset {
 	}
 
 	/**
-	 *
-	 * @param metaData
+	 * Constructor for Memory Asset
+	 * @param metaData metadata
 	 */
 	protected AMemoryAsset(String metaData) {
 		super(metaData);

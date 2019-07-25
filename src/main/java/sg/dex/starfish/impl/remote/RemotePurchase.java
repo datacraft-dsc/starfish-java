@@ -33,8 +33,8 @@ public class RemotePurchase implements Purchase {
      * To get the reference of existing listing user need to pass the remote Agent
      * and the existing listing id.
      *
-     * @param remoteAgent
-     * @param id
+     * @param remoteAgent remote Agent
+     * @param id id
      */
     private RemotePurchase(RemoteAgent remoteAgent, String id) {
         this.remoteAgent = remoteAgent;
