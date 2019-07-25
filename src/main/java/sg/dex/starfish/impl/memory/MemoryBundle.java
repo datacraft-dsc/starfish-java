@@ -29,9 +29,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * Constructor to create the instance of memory bundle
      *
-     * @param metaData
-     * @param assetMap
-     * @param memoryAgent
+     * @param metaData metaDAta
+     * @param assetMap asset map
+     * @param memoryAgent memory Agent
      */
     private MemoryBundle(String metaData, Map<String, Asset> assetMap, MemoryAgent memoryAgent) {
         super(metaData, memoryAgent);
@@ -72,8 +72,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * API to build the metadata for bundle Asset
      *
-     * @param meta
-     * @return
+     * @param meta metaData
+     * @param assetMap assetMap
+     * @return String
      */
     private static String buildMetaData(Map<String, Asset> assetMap, Map<String, Object> meta) {
 
@@ -109,8 +110,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * API to get the map of AssetID based on AssetId
      *
-     * @param assetId
-     * @return
+     * @param assetId assetId
+     * @return Map
      */
     private static Map<String, String> getAssetIdMap(String assetId) {
         Map<String, String> assetIDMap = new HashMap<>();
@@ -122,7 +123,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * API to get the AssetMap.Asset map will have all asset belong to given bundle.
      *
-     * @return
+     * @return Map
      */
     private Map<String, Asset> getAssetMap() {
         return assetMap.entrySet()

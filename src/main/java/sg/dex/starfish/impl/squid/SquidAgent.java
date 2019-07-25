@@ -43,6 +43,7 @@ public class SquidAgent extends AAgent {
 	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
 	 *
 	 * @param ocean Ocean connection to use
+	 * @param configMap config map
 	 * @param did DID for this agent
 	 */
 	protected SquidAgent(Map<String,String> configMap,
@@ -96,11 +97,11 @@ public class SquidAgent extends AAgent {
 
 	/**
 	 * Methods to get the Squid Asset after registering to Ocean Network
-	 * @param asset
-	 * @return
-	 * @throws IOException
-	 * @throws DDOException
-	 * @throws DIDFormatException
+	 * @param asset aaset
+	 * @return Squid Asset
+	 * @throws IOException IOException will be thrown
+	 * @throws DDOException DDOException will be thrown
+	 * @throws DIDFormatException DIDFormatException will be thrown
 	 */
 	private SquidAsset createSquidAssetInNetwork(Asset asset) throws IOException, DDOException, DIDFormatException {
 

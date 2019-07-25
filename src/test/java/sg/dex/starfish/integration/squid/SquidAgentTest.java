@@ -2,6 +2,7 @@ package sg.dex.starfish.integration.squid;
 
 import com.oceanprotocol.squid.exceptions.DDOException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -18,6 +19,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(JUnit4.class)
+@Ignore
 public class SquidAgentTest {
 
 
