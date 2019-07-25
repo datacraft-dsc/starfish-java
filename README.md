@@ -68,12 +68,24 @@ For developing the code base of Starfish, it is suggested to use one of the majo
   This is usually handled correctly by Maven, however, for Eclipse you need to install the [m2e-apt-plugin](https://marketplace.eclipse.org/content/m2e-apt) and activate annotation processing afterwards).
   1. Select `File` -> `Import...` and select "Existing Maven Projects".
   1. Select the folder containing the development checkout as the root directory and click `Finish`.
+## Documentation
+
+All the API documentation is hosted of javadoc.io:
+
+- **[http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)**
+
+You can also generate the Javadoc locally using the following command:
+
+```bash
+mvn javadoc:javadoc
+```
+
 ## Testing
 
 You can run both, the unit and integration tests by using:
 
 ```bash
-mvn clean install -DskipTests=false
+mvn clean verify -P all-tests
 ```
 
 ### Unit Tests
@@ -82,13 +94,31 @@ You can execute the unit tests only using the following command:
 
 ```bash
 mvn clean test
-mvn clean install
 ```
-## Documentation
 
-* **Maven Project Site:** [latest release](https://mvnrepository.com/artifact/sg.dex/starfish-java/0.6.0)
-* **API Documentation:** [latest release](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)
+### Integration Tests
 
+You can execute the integration tests using the following command:
+
+```bash
+mvn clean verify -P integration-test
+```
+
+### Documentation
+
+You can generate the Javadoc using the following command:
+
+```bash
+mvn javadoc:javadoc
+```
+
+### All the tests
+
+You can run the unit and integration tests running:
+
+```bash
+mvn clean verify -P all-tests
+```
 
 ## Mailing Lists
 
