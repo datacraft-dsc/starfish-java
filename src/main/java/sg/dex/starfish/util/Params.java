@@ -48,10 +48,10 @@ public class Params {
 
 	/**
 	 * API to prepare required result from a raw result based on metadata of the asset
-	 * @param params
-	 * @param result
-	 * @param paramName
-	 * @param type
+	 * @param params params
+	 * @param result result
+	 * @param paramName param Name
+	 * @param type type
 	 */
 	private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
 		try {

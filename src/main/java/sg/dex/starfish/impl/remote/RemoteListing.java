@@ -32,8 +32,8 @@ public class RemoteListing extends AListing {
     /**
      * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
      *
-     * @param remoteAgent
-     * @param id
+     * @param remoteAgent remote agent
+     * @param id id
      */
     private RemoteListing(RemoteAgent remoteAgent, String id) {
         this.remoteAgent = remoteAgent;

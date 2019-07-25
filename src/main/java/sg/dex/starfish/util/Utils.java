@@ -261,7 +261,7 @@ public class Utils {
 
     /**
      * API to get the mandatory attribute list
-     * @return
+     * @return list of String
      */
     private static List<String> getMadatoryAttribute() {
         List<String> mandatoryList = new ArrayList<>();

@@ -56,8 +56,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param resourcePath
-     * @param meta
+     * @param resourcePath resourcePath
+     * @param meta meta
      * @return String buildMetadata
      */
     private static String buildMetaData(String resourcePath, Map<String, Object> meta) {

@@ -59,6 +59,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param ocean Ocean connection to use
      * @param did   DID for this agent
+     * @param account account
      */
     protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
         super(ocean, did);
@@ -189,10 +190,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * This method  to get the Remote Asset
      *
-     * @param uri
-     * @param httpclient
-     * @param httpPost
-     * @return
+     * @param uri URI
+     * @param httpclient httpclient
+     * @param httpPost httpPost
+     * @return instance of remote Asset
      */
     private ARemoteAsset createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
         CloseableHttpResponse response;
@@ -392,7 +393,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * This method is to upload the content of an data asset to this agent.
      * if the asset type is operation it will do nothing
      *
-     * @param asset
+     * @param asset Asset
      * @throws UnsupportedOperationException if the asset type is bundle
      */
     private void uploadAssetContent(Asset asset) {
@@ -672,6 +673,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Invokes request on this RemoteAgent
      *
      * @param request Invoke request
+     * @param assetID assetID
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
@@ -786,8 +788,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * API to get List of map of all Metadata
      *
-     * @param marketAgentUrl
-     * @return List<Map < String, Object>> marketMetaData
+     * @param marketAgentUrl market url
+     * @return List marketMetaData
      */
     private List<Map<String, Object>> getAllMarketMetaData(String marketAgentUrl) {
         URI uri = getMarketLURI(marketAgentUrl);
@@ -830,9 +832,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * API to get Market agent instance from the Agent
      *
-     * @param listingData
-     * @param marketAgentUrl
-     * @return
+     * @param listingData listing data
+     * @param marketAgentUrl market url
+     * @return String
      */
     private String createMarketAgentInstance(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -869,7 +871,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * This method is to get the Market metadata from the agent by providing market URL.
      *
      * @param marketAgentUrl market url
-     * @return
+     * @return market metadata as String
      */
     private String getMarketMetaData(String marketAgentUrl) {
         HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));
@@ -926,7 +928,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * Gets market URI for this agent
-     *
+     * @param marketAgentUrl marketAgentUrl
      * @return The URI for listing metadata
      * @throws UnsupportedOperationException if the agent does not support the Meta API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
@@ -1127,7 +1129,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * The will create the token base on user name and password configured
      *
      * @param account remote account reference
-     * @return new token
      */
     private void createToken(RemoteAccount account) {
 
