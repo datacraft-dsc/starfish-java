@@ -26,10 +26,7 @@ before_install:
   - docker run -p 3000:3000 --env SURFER_URL=http://52.187.164.74:8080 --network="ocean_backend" --ip="172.15.0.21" canaradex/koi-clj:v0.1.1 2>&1 koi.log
     &
 install:
-  - mvn --settings .maven.xml install -P dev -Dgpg.skip -Dmaven.javadoc.skip=true -B -V # Unit tests only
   - mvn --settings .maven.xml install -P integration-test -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
-  - mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]'
-  - export project_version=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
 script:
 after_success:
 - ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
