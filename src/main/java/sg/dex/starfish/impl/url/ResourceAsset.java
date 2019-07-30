@@ -5,10 +5,12 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     private final String resourceName;
 
     protected ResourceAsset(String meta, String resourceName) {
+
         super(meta);
         this.resourceName = resourceName;
     }
@@ -40,7 +43,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset
      */
     public static ResourceAsset create(String meta, String resourcePath) {
-        return new ResourceAsset(buildMetaData(meta,JSON.toMap(meta)), resourcePath);
+        return new ResourceAsset(buildMetaData(resourcePath,JSON.toMap(meta)), resourcePath);
     }
 
     /**
@@ -61,7 +64,12 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return String buildMetadata
      */
     private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
-        String hash = Hex.toString(Hash.keccak256(resourcePath));
+
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        if(null ==inputStream){
+            throw new StarfishValidationException("Given Resource path " +resourcePath +" is not valid");
+        }
+        String hash = Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.NAME, resourcePath);
@@ -75,7 +83,6 @@ public class ResourceAsset extends AAsset implements DataAsset {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-
         return JSON.toString(ob);
     }
 
@@ -100,15 +107,6 @@ public class ResourceAsset extends AAsset implements DataAsset {
         } catch (IOException e) {
             throw  new GenericException("Exception occurred  for asset id :"+getAssetID()+" while finding getting the Content size :",e);
         }
-    }
-
-    /**
-     * API to get the name of the resource
-     *
-     * @return String name
-     */
-    public String getName() {
-        return resourceName;
     }
 
 
