@@ -96,7 +96,7 @@ public class AssetRegistration_08 {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create(asset_metaData, "assets/contentFile.json");
+        ResourceAsset resourceAsset = ResourceAsset.create(asset_metaData, "assets/SJR8961K_content.json");
         String content = Utils.stringFromStream(resourceAsset.getContentStream());
         String expected = Hex.toString(Hash.keccak256(content));
         String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
@@ -107,7 +107,7 @@ public class AssetRegistration_08 {
     public void testHashForResourceAssetWithoutMetadata() throws IOException {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/contentFile.json");
+        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
         String content = Utils.stringFromStream(resourceAsset.getContentStream());
         String expected = Hex.toString(Hash.keccak256(content));
         String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
@@ -119,7 +119,7 @@ public class AssetRegistration_08 {
     public void testBadResourceFile() throws IOException {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/contentFile11.json");
+        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content_NA.json");
         String content = Utils.stringFromStream(resourceAsset.getContentStream());
         String expected = Hex.toString(Hash.keccak256(content));
         String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
@@ -133,7 +133,7 @@ public class AssetRegistration_08 {
         // read metadata
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
-        Path path = Paths.get("src/test/resources/assets/contentFile.json");
+        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
         // create asset using metadata and given content
 
         FileAsset fileAsset = FileAsset.create(path.toFile(), asset_metaData);
@@ -150,7 +150,7 @@ public class AssetRegistration_08 {
 
         // read metadata
 
-        Path path = Paths.get("src/test/resources/assets/contentFile.json");
+        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
@@ -165,7 +165,7 @@ public class AssetRegistration_08 {
 
         // read metadata
 
-        Path path = Paths.get("src/test/resources/assets/contentFile1.json");
+        Path path = Paths.get("src/test/resources/assets/SJR8961K_content_NA.json");
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
