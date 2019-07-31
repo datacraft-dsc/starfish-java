@@ -1,7 +1,7 @@
 # Starfish-java
 
 >Starfish is an open-sourced developer toolkit for the data economy.
->[dex.sg](https://dex.sg)
+>[Developer site](https://developer.dex.sg/)
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
 [![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
