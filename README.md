@@ -12,8 +12,7 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Configuration](#configuration)
-  * [Using Squid-Java with Barge](#using-squid-java-with-barge)
-  * [Dealing with Flowables](#dealing-with-flowables)
+  * [Using Squid-Java with Barge](#using-squid-java-with-surfer)
 * [Documentation](#documentation)
 * [Testing](#testing)
   * [Unit Tests](#unit-tests)
@@ -26,7 +25,7 @@
 
 ## Features
 
-This library enables to integrate the Ocean Protocol capabilities from JVM clients.
+This is developer toolkit for the data economy.
 
 
 ## Installation
@@ -51,7 +50,7 @@ You can configure the library using a Java Properties Object
 
 ### Using Squid-Java with Surfer
 
-If you are using [Barge](https://github.com/oceanprotocol/barge/) for playing with the Ocean Protocol stack, you can use the following command to run the components necessary to have a fully functional environment
+If you are using [Surfer](https://github.com/DEX-Company/surfer/) for playing with the Starfish , you can refer the developer testcase (https://github.com/DEX-Company/starfish-java/tree/develop/src/test/java/sg/dex/starfish/integration/developerTC)
 
 ## Documentation
 
