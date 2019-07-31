@@ -12,12 +12,11 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Configuration](#configuration)
-  * [Using Squid-Java with Barge](#using-squid-java-with-surfer)
+  * [Using Squid-Java with Surfer](#using-squid-java-with-surfer)
 * [Documentation](#documentation)
 * [Testing](#testing)
   * [Unit Tests](#unit-tests)
   * [Integration Tests](#integration-tests)
-* [Mailing Lists](#Mailing Lists)
 * [Maintainers](#Maintainers)
 * [License](#license)
 
@@ -90,11 +89,6 @@ You can run the unit and integration tests running:
 ```bash
 mvn clean install -P all-tests
 ```
-
-## Mailing Lists
-
-  * [developer@dex.sg][starfish-qa] -- General questions regarding the usage of Starfish.
-
 
 ## Maintainers
 
