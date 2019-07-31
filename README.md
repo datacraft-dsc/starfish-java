@@ -1,7 +1,7 @@
 # Starfish-java
 
-> Starfish is an open-sourced developer toolkit for the data economy.
-> [dex.sg](https://dex.sg)
+>Starfish is an open-sourced developer toolkit for the data economy.
+>[dex.sg](https://dex.sg)
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
 [![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
@@ -24,9 +24,11 @@
 
 ## Features
 
-This is developer toolkit for the data economy.
+This is developer toolkit for the data economy.Based on an underlying data ecosystem standard, Starfish provides high-level APIs for common tasks within the data economy, for example, registering/publishing an asset, for subsequent use in a data supply line. In this case, an asset can be any data set, model or data service.
 
+Starfish works with blockchain networks, such as Ocean Protocol, and common web services through agents, allowing unprecedented flexibility in asset discovery and data supply line management.
 
+---
 ## Installation
 
 Typically in Maven you can add squid-java as a dependency:
