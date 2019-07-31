@@ -49,7 +49,7 @@ Starfish-java requires Java 11 and Maven >= 3.0
 
 You can configure the library using a Java Properties Object
 
-### Using Squid-Java with Surfer
+### Using Starfish-Java with Surfer
 
 If you are using [Surfer](https://github.com/DEX-Company/surfer/) for playing with the Starfish , you can refer the developer testcase (https://github.com/DEX-Company/starfish-java/tree/develop/src/test/java/sg/dex/starfish/integration/developerTC)
 
