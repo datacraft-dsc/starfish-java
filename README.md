@@ -2,8 +2,6 @@
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
 [![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
-[![Squid Version](https://img.shields.io/badge/squid--java-v0.6.15-blue.svg)](https://github.com/oceanprotocol/squid-java/releases/tag/v0.6.2)
-[![Barge Version](https://img.shields.io/badge/barge-dex--2019--08--08-blue.svg)](https://github.com/DEX-Company/barge/releases/tag/dex-2019-08-08)
 
 Starfish is an open-sourced developer toolkit for the data economy.
 
@@ -53,39 +51,19 @@ Typically in Maven you can add squid-java as a dependency:
 
 Starfish-java requires Java 8 and Maven >= 3.0
 
-#### Developing Starfish
-
-For developing the code base of Starfish, it is suggested to use one of the major Java IDEs, which come with out-of-the-box Maven support.
-
-* For [IntelliJ IDEA][intellij]:
-  1. Select `File` -> `New` -> `Project from existing sources` and select the folder containing the development checkout.
-  1. Choose "Import Project from external model", select "Maven" and click `Next`.
-  1. Configure the project to your liking, but make sure to check "Import Maven projects automatically" and have "Generated sources folders" set to "Detect automatically".
-  1. Click `Next` until the project is imported (no Maven profile needs to be selected).
-
-* For [Eclipse][eclipse]:
-  1. **Note**: Starfish uses annotation processing on several occasions throughout the build process.
-  This is usually handled correctly by Maven, however, for Eclipse you need to install the [m2e-apt-plugin](https://marketplace.eclipse.org/content/m2e-apt) and activate annotation processing afterwards).
-  1. Select `File` -> `Import...` and select "Existing Maven Projects".
-  1. Select the folder containing the development checkout as the root directory and click `Finish`.
 ## Documentation
 
 All the API documentation is hosted of javadoc.io:
 
 - **[http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)**
 
-You can also generate the Javadoc locally using the following command:
-
-```bash
-mvn javadoc:javadoc
-```
 
 ## Testing
 
 You can run both, the unit and integration tests by using:
 
 ```bash
-mvn clean verify -P all-tests
+mvn clean install -P all-tests
 ```
 
 ### Unit Tests
@@ -93,7 +71,7 @@ mvn clean verify -P all-tests
 You can execute the unit tests only using the following command:
 
 ```bash
-mvn clean test
+mvn clean install
 ```
 
 ### Integration Tests
@@ -101,15 +79,7 @@ mvn clean test
 You can execute the integration tests using the following command:
 
 ```bash
-mvn clean verify -P integration-test
-```
-
-### Documentation
-
-You can generate the Javadoc using the following command:
-
-```bash
-mvn javadoc:javadoc
+mvn clean install -P integration-test
 ```
 
 ### All the tests
@@ -117,7 +87,7 @@ mvn javadoc:javadoc
 You can run the unit and integration tests running:
 
 ```bash
-mvn clean verify -P all-tests
+mvn clean install -P all-tests
 ```
 
 ## Mailing Lists
