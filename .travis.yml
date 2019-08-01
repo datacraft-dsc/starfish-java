@@ -6,7 +6,7 @@ dist: xenial
 sudo: false
 
 addons:
-  ssh_known_hosts: shrimp.octet.services
+  ssh_known_hosts: 52.163.231.198
 
 branches:
   only:
@@ -40,7 +40,7 @@ script:
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-- ./scripts/deployDocs.sh shrimp.octet.services docs_deploy dev
+- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev
 - mvn javadoc:javadoc
 
 deploy:
