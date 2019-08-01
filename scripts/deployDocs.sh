@@ -4,11 +4,11 @@
 
 DOC_PATH='./target/site/'
 # FIXME get version from mvn
-VERSION="0.6"
+
 # FIXME get project name from mvn
-PROJECT_NAME="starfish-java"
-PACKAGE_NAME="docs_${PROJECT_NAME}_${VERSION}"
-DEPLOY_FILENAME="./target/${PACKAGE_NAME}.tar.gz"
+
+
+
 
 DEPLOY_USER=docs_deploy
 
@@ -26,6 +26,11 @@ if [ "$3" = "dev" ]; then
 else
     DEV_BRANCH=""
 fi
+
+VERSION="$4"
+PROJECT_NAME="starfish-java"
+PACKAGE_NAME="docs_${PROJECT_NAME}_${VERSION}"
+DEPLOY_FILENAME="./target/${PACKAGE_NAME}.tar.gz"
 
 echo "building docs package $PACKAGE_NAME"
 
