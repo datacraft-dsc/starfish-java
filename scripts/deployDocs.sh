@@ -4,11 +4,11 @@
 
 DOC_PATH='./target/site/'
 # FIXME get version from mvn
-VERSION="0.6"
+
 # FIXME get project name from mvn
-PROJECT_NAME="starfish-java"
-PACKAGE_NAME="docs_${PROJECT_NAME}_${VERSION}"
-DEPLOY_FILENAME="./target/${PACKAGE_NAME}.tar.gz"
+
+
+
 
 DEPLOY_USER=docs_deploy
 
@@ -27,6 +27,11 @@ else
     DEV_BRANCH=""
 fi
 
+VERSION="$4"
+PROJECT_NAME="starfish-java"
+PACKAGE_NAME="docs_${PROJECT_NAME}_${VERSION}"
+DEPLOY_FILENAME="./target/${PACKAGE_NAME}.tar.gz"
+
 echo "building docs package $PACKAGE_NAME"
 
 # make the docs from source
@@ -40,9 +45,9 @@ if [ ! -z "$DEPLOY_SERVER" ]; then
     DEPLOY_BUILD_URL="http://${DEPLOY_SERVER}/docs_build"
 
     echo "Deploying doc file to $DEPLOY_SERVER"
-    openssl aes-256-cbc -K $encrypted_f390bb15dfe8_key -iv $encrypted_f390bb15dfe8_iv \
-    -in dex-docs-deploy.enc \
-    -out dex-docs-deploy -d
+     openssl aes-256-cbc -K $encrypted_db37c2782ac9_key -iv $encrypted_db37c2782ac9_iv \
+     -in scripts/keys/dex-docs-deploy.enc \
+     -out /tmp/dex-docs-deploy -d
 
     chmod 0600 /tmp/dex-docs-deploy
 
