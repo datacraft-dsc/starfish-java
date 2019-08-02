@@ -37,11 +37,11 @@ script:
 # the below  code added for issue "The job exceeded the maximum log length, and has been terminated. travis"
 - echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"\n    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <mirrors>\n    <mirror>\n      <id>mvnsearch-unavailable</id>\n      <name>mvnsearch-unavailable</name>\n      <mirrorOf>mvnsearch</mirrorOf>\n      <url>http://repo1.maven.org/maven2</url>\n    </mirror>\n  </mirrors>\n  <profiles>\n    <profile>\n      <id>no-mvnsearch</id>\n      <repositories>\n        <repository>\n          <id>mvnsearch</id>\n          <url>http://www.mvnsearch.org/maven2</url>\n          <releases>\n            <enabled>true</enabled>\n          </releases>\n          <snapshots>\n            <enabled>true</enabled>\n          </snapshots>\n        </repository>\n      </repositories>\n    </profile>\n  </profiles>\n  <activeProfiles>\n    <activeProfile>no-mvnsearch</activeProfile>\n  </activeProfiles>\n</settings>' > $HOME/.m2/settings.xml
 - cat $HOME/.m2/settings.xml
-- mvn javadoc:javadoc
+#- mvn javadoc:javadoc
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev $project_version
+#- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev $project_version
 
 deploy:
   - provider: releases
