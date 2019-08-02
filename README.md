@@ -12,7 +12,7 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Configuration](#configuration)
-  * [Using Squid-Java with Surfer](#using-squid-java-with-surfer)
+  * [Using Starfish-Java with Surfer](#using-squid-java-with-surfer)
 * [Documentation](#documentation)
 * [Testing](#testing)
   * [Unit Tests](#unit-tests)
