@@ -6,12 +6,10 @@
  */
 package sg.dex.starfish.impl.memory;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
 import java.io.ByteArrayInputStream;
@@ -25,17 +23,16 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory data asset.
- *
+ * <p>
  * Intended for use in testing or local development situations.
  *
  * @author Mike
- *
  */
 public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     private byte[] data;
 
-    private MemoryAsset(byte[] data,String metaData) {
+    private MemoryAsset(byte[] data, String metaData) {
         super(metaData);
 
         this.data = data;
@@ -43,11 +40,9 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     }
 
     private static String buildMetaData(byte[] data, Map<String, Object> meta) {
-        String hash = Hex.toString(Hash.keccak256(data));
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(CONTENT_HASH, hash);
         ob.put(TYPE, DATA_SET);
         ob.put(SIZE, Integer.toString(data.length));
         ob.put(CONTENT_TYPE, OCTET_STREAM);
@@ -60,6 +55,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
         return JSON.toPrettyString(ob);
     }
+
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
@@ -71,7 +67,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
             return (MemoryAsset) asset;
         } else if (asset.isDataAsset()) {
             byte[] data = asset.getContent();
-            return new MemoryAsset(data,buildMetaData(data,null));
+            return new MemoryAsset(data, buildMetaData(data, null));
         } else {
             throw new IllegalArgumentException("Asset must be a data asset");
         }
@@ -88,7 +84,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return new MemoryAsset(data,buildMetaData(data,null));
+        return new MemoryAsset(data, buildMetaData(data, null));
     }
 
     /**
@@ -100,7 +96,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      */
     public static Asset create(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        return new MemoryAsset(data,buildMetaData(data,null));
+        return new MemoryAsset(data, buildMetaData(data, null));
     }
 
     /**
@@ -111,16 +107,16 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
-        return new MemoryAsset(data,buildMetaData(data,meta));
+        return new MemoryAsset(data, buildMetaData(data, meta));
     }
 
 
     /**
      * Gets InputStream corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public InputStream getContentStream() {
@@ -131,9 +127,9 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     /**
      * Gets raw data corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public byte[] getContent() {

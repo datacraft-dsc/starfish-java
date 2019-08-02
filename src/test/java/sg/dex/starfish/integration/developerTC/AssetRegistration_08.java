@@ -4,22 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StarfishValidationException;
-import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.url.ResourceAsset;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.ProvUtil;
-import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -89,89 +78,4 @@ public class AssetRegistration_08 {
         assertNotNull(asset.getMetadata().get("provenance"));
     }
 
-    @Test
-    public void testHashForResourceAsset() throws IOException {
-
-        // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
-
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create(asset_metaData, "assets/SJR8961K_content.json");
-        String content = Utils.stringFromStream(resourceAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-        String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
-    @Test
-    public void testHashForResourceAssetWithoutMetadata() throws IOException {
-
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
-        String content = Utils.stringFromStream(resourceAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-        String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test(expected = StarfishValidationException.class)
-    public void testBadResourceFile() throws IOException {
-
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content_NA.json");
-        String content = Utils.stringFromStream(resourceAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-        String actual = resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testHashForFileAsset() throws IOException {
-
-        // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
-
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
-        // create asset using metadata and given content
-
-        FileAsset fileAsset = FileAsset.create(path.toFile(), asset_metaData);
-
-        String content = Utils.stringFromStream(fileAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-
-        String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
-    @Test
-    public void testHashForFileAssetWithDefaultMetadata()  {
-
-        // read metadata
-
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
-        // create asset using metadata and given content
-        FileAsset fileAsset = FileAsset.create(path.toFile());
-        String content = Utils.stringFromStream(fileAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-        String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test(expected = StarfishValidationException.class)
-    public void testfileNotExist()  {
-
-        // read metadata
-
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content_NA.json");
-        // create asset using metadata and given content
-        FileAsset fileAsset = FileAsset.create(path.toFile());
-        String content = Utils.stringFromStream(fileAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
-        String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
-        assertEquals(expected, actual);
-    }
 }

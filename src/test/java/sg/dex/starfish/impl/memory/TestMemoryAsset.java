@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
@@ -38,7 +37,6 @@ public class TestMemoryAsset {
         assertEquals(SIZE, a.getContentSize());
         Map<String, Object> meta = a.getMetadata();
         assertEquals(Integer.toString(SIZE), meta.get("size"));
-        assertEquals(Hash.keccak256String(data), meta.get("contentHash"));
     }
 
     @Test

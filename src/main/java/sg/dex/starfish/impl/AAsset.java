@@ -1,11 +1,11 @@
 package sg.dex.starfish.impl;
 
-import sg.dex.crypto.Hash;
+import sg.dex.crypto.ComputeHashFactory;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSONObjectCache;
+import sg.dex.starfish.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public abstract class AAsset implements Asset {
 	protected AAsset(String meta) {
 		//Utils.validateAssetMetaData(meta);
 		this.metadataString = meta;
-		this.id = Hex.toString(Hash.keccak256(meta));
+		this.id = Hex.toString(new ComputeHashFactory().getHashfunction(Constant.Keccak256).compute(meta));
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public abstract class AAsset implements Asset {
 
 	@Override
 	public Map<String, Object> getMetadata() {
-		return JSONObjectCache.parse(metadataString);
+		return JSON.toMap(metadataString);
 	}
 
 	@Override

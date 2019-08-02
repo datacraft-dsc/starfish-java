@@ -4,7 +4,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -14,7 +13,6 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;

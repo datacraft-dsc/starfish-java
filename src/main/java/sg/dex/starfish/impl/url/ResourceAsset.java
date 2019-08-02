@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.url;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -65,16 +64,10 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
 
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if(null ==inputStream){
-            throw new StarfishValidationException("Given Resource path " +resourcePath +" is not valid");
-        }
-        String hash = Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.NAME, resourcePath);
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
-        ob.put(Constant.CONTENT_HASH, hash);
         ob.put(Constant.TYPE, Constant.DATA_SET);
         ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 

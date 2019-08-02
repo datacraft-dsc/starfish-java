@@ -83,4 +83,7 @@ public class Constant {
     public static final String DEFAULT_DATE_CREATED="2012-10-10T17:00:000Z";
     public static final Object DEFAULT_PRICE=5;
 
+    //----------HASH ALGO CONSTANT----------------------
+    public static final String Keccak256="Keccak256";
+    public static final String SHA3_256="SHA3_256";
 }

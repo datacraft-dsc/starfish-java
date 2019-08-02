@@ -1,6 +1,6 @@
 package sg.dex.starfish.impl.operations;
 
-import sg.dex.crypto.Hash;
+import sg.dex.crypto.ComputeHashFactory;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
@@ -81,7 +81,7 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
     private Map<String,Object> doCompute(Object input) {
         Asset a= (Asset)input;
-        String hash =Hex.toString(Hash.keccak256(a.getContent()));
+        String hash =Hex.toString(new ComputeHashFactory().getHashfunction("keccak256").compute(a.getContent()));
 
         Map<String,Object> result = new HashMap<>();
         result.put("output", hash);
