@@ -61,6 +61,8 @@ public class FileAsset extends AAsset implements DataAsset {
      * Create a FileAsset to read from an existing file
      *
      * @param f file handle one which the File Asset will be created
+     * @param computeHash instance that can be used to compute the hash of the content
+     *                    if no instance is pass i.e null than default compute will be used to compute hash
      * @return FileAsset
      */
     public static FileAsset createWithContenthash(File f, ComputeHash computeHash) {
@@ -74,6 +76,9 @@ public class FileAsset extends AAsset implements DataAsset {
      * Create a FileAsset to read from an existing file
      *
      * @param f file handle one which the File Asset will be created
+     * @param metaData additional information about data that user want to provide.
+     * @param computeHash instance that can be used to compute the hash of the content
+     *                    if no instance is pass i.e null than default compute will be used to compute hash
      * @return FileAsset
      */
     public static FileAsset createWithContenthash(File f, String metaData, ComputeHash computeHash) {
