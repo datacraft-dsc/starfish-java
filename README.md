@@ -1,41 +1,35 @@
-# Starfish
+# Starfish-java
+
+>Starfish is an open-sourced developer toolkit for the data economy.
+>[Developer site](https://developer.dex.sg/)
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
 [![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
 
-Starfish is an open-sourced developer toolkit for the data economy.
+---
+## Table of Contents
 
+* [Features](#features)
+* [Installation](#installation)
+* [Configuration](#configuration)
+  * [Using Starfish-Java with Surfer](#using-squid-java-with-surfer)
+* [Documentation](#documentation)
+* [Testing](#testing)
+  * [Unit Tests](#unit-tests)
+  * [Integration Tests](#integration-tests)
+* [Maintainers](#Maintainers)
+* [License](#license)
 
-## About
+---
 
-Starfish is an open-sourced developer toolkit for the data economy. Available in flavours of Java, Python, Clojure and JavaScript*, it allows developers, data scientists and enterprises to create, interact, integrate and manage a data supply line through standardised and simple-to-use APIs.
+## Features
 
-Based on an underlying data ecosystem standard, Starfish provides high-level APIs for common tasks within the data economy, for example, registering/publishing an asset, for subsequent use in a data supply line. In this case, an asset can be any data set, model or data service. The high-level API also allows developers to invoke operation on an asset, e.g. computing a predictive model or anonymising sensitive personal information, among other capabilities. 
+This is developer toolkit for the data economy.Based on an underlying data ecosystem standard, Starfish provides high-level APIs for common tasks within the data economy, for example, registering/publishing an asset, for subsequent use in a data supply line. In this case, an asset can be any data set, model or data service.
 
 Starfish works with blockchain networks, such as Ocean Protocol, and common web services through agents, allowing unprecedented flexibility in asset discovery and data supply line management.
 
-While we strive to deliver code at a high quality, please note, that there exist parts of the library that still need thorough testing.
-Contributions -- whether it is in the form of new features, better documentation or tests -- are welcome.
-
-## Build Instructions
-
-For simply using Starfish, you may use the Maven artifacts which are available in the [Maven Central repository][maven-central].
-Squid-java requires Java 10 and Maven >= 3.5.2
-
-#### Building development versions
-
-If you intend to use development versions of Starfish, you can either use the deployed SNAPSHOT artifacts from the continuous integration server (see [Using Development Versions](https://github.com/DEX-Company/starfish-java)), or build them yourself.
-Simply clone the development branch of the repository
-
-```
-git clone -b develop https://github.com/DEX-Company/starfish-java
-```
-
-and run a single `mvn clean install`.
-This will build all the required maven artifacts and will install them in your local Maven repository, so that you can reference them in other projects.
-
-
-#### Installation
+---
+## Installation
 
 Typically in Maven you can add squid-java as a dependency:
 
@@ -49,7 +43,15 @@ Typically in Maven you can add squid-java as a dependency:
 
 ```
 
-Starfish-java requires Java 8 and Maven >= 3.0
+Starfish-java requires Java 11 and Maven >= 3.0
+
+## Configuration
+
+You can configure the library using a Java Properties Object
+
+### Using Starfish-Java with Surfer
+
+If you are using [Surfer](https://github.com/DEX-Company/surfer/) for playing with the Starfish , you can refer the developer testcase (https://github.com/DEX-Company/starfish-java/tree/develop/src/test/java/sg/dex/starfish/integration/developerTC)
 
 ## Documentation
 
@@ -89,11 +91,6 @@ You can run the unit and integration tests running:
 ```bash
 mvn clean install -P all-tests
 ```
-
-## Mailing Lists
-
-  * [developer@dex.sg][starfish-qa] -- General questions regarding the usage of Starfish.
-
 
 ## Maintainers
 
