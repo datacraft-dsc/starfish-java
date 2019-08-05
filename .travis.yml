@@ -44,7 +44,7 @@ script:
 # after_script:
 # - ./surfer/test/bin/cli-test shutdown
 after_success:
-- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev $project_version
+#- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev $project_version
 
 deploy:
   - provider: releases
