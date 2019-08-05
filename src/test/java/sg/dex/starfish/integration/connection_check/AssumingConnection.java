@@ -19,6 +19,7 @@ public class AssumingConnection implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 if (!checker.connect()) {
+                    System.out.println(" Skipping integration test as Server ("+checker.toString() +") is not reachable.");
                     throw new AssumptionViolatedException("Could not connect to Surfer. Skipping test!!!!");
                 } else {
                     base.evaluate();

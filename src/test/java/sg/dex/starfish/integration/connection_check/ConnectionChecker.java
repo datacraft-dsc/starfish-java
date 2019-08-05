@@ -9,6 +9,7 @@ import java.net.URL;
 
 public class ConnectionChecker {
 
+
     private String uri;
 
     public ConnectionChecker(String uri) {
@@ -36,8 +37,14 @@ public class ConnectionChecker {
             socket.close();
             return true;
         } catch (Exception e) {
+
             return false;
         }
+    }
+    @Override
+    public String toString() {
+        return
+                "uri='" + uri ;
     }
 
 }
