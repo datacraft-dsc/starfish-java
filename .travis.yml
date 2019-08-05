@@ -30,7 +30,7 @@ before_install:
   - cd ..
   - sleep 60
   - ./scripts/wait_for_migration_and_extract_keeper_artifacts.sh
-  - docker run -p 3000:3000 --env SURFER_URL=http://52.187.164.74:8080 --network="ocean_backend" --ip="172.15.0.21" canaradex/koi-clj:v0.1.1 2>&1 koi.log
+  - docker run -p 3000:3000 --env SURFER_URL=http://localhost:8080 --network="ocean_backend" --ip="172.15.0.21" canaradex/koi-clj:v0.1.1 2>&1 koi.log
     &
 install:
   - mvn clean install -P all-test
