@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
  * ./start_ocean.sh
  */
 @RunWith(JUnit4.class)
-//@Ignore
+@Ignore
 public class SquidAssetTests {
     private Ocean ocean;
     private SquidAgent squidAgent;

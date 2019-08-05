@@ -19,7 +19,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(JUnit4.class)
-//@Ignore
+@Ignore
 public class SquidAgentTest {
 
 
