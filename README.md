@@ -57,7 +57,7 @@ If you are using [Surfer](https://github.com/DEX-Company/surfer/) for playing wi
 
 All the API documentation is hosted of javadoc.io:
 
-- **[http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/](http://shrimp.octet.services/starfish/starfish-java/latest/apidocs/)**
+- **[https://dex-company.github.io/starfish-java/](https://dex-company.github.io/starfish-java/)**
 
 
 ## Testing
