@@ -32,21 +32,17 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <final-name>starfish</final-name>
+        <!--<java.version>1.8</java.version>-->
+
         <junit.version>4.12</junit.version>
-
-        <maven.versions.version>2.7</maven.versions.version>
-        <maven.compiler.version>3.8.0</maven.compiler.version>
-        <maven.assembly.version>3.1.0</maven.assembly.version>
-
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.enforced.version>3.5.2</maven.enforced.version>
-
         <build.profile.id>dev</build.profile.id>
         <!-- Only unit tests are run by default. -->
         <skip.integration.tests>true</skip.integration.tests>
         <skip.unit.tests>false</skip.unit.tests>
+
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
     </properties>
 
@@ -131,11 +127,18 @@
             <groupId>com.oceanprotocol</groupId>
             <artifactId>squid</artifactId>
             <version>0.6.2</version>
+            <!--<scope>test</scope>-->
+            <!--<optional>true</optional>-->
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.9</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
 
@@ -143,20 +146,11 @@
 
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <show>public</show>
-                    <failOnError>false</failOnError>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
-            </plugin>
+
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-site-plugin</artifactId>-->
+            <!--</plugin>-->
         </plugins>
     </reporting>
     <profiles>
@@ -208,7 +202,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -221,7 +214,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -251,13 +243,11 @@
         </profile>
     </profiles>
     <build>
-        <finalName>${final-name}-${project.version}</finalName>
 
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <!--
                         States that the plugin's add-test-source goal is executed at
@@ -283,49 +273,21 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>${maven.versions.version}</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.version}</version>
-                <configuration>
-                    <release>${maven.compiler.release}</release>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-
-            <!-- Used for unit tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
-                <configuration>
-                    <!-- Sets the VM argument line used when unit tests are run. -->
-                    <argLine>
-                        --illegal-access=permit
-                    </argLine>                    <!-- Skips unit tests if the value of skip.unit.tests property is true -->
-                    <skipTests>${skip.unit.tests}</skipTests>
-                    <!-- Excludes integration tests when unit tests are run. -->
-                    <excludes>
-                        <exclude>**/IT*.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <!-- Used for integration tests -->
+            <!--&lt;!&ndash; Used for unit tests &ndash;&gt;-->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-compiler-plugin</artifactId>-->
+            <!--<version>3.8.0</version>-->
+            <!--<configuration>-->
+            <!--<release>11</release>  &lt;!&ndash;or <release>10</release>&ndash;&gt;-->
+            <!--</configuration>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -353,20 +315,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <show>private</show>
-                    <nohelp>true</nohelp>
-                </configuration>
-            </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version>
-                </plugin>
 
         </plugins>
     </build>
