@@ -27,63 +27,76 @@ import java.util.Map;
  * @author Mike
  */
 public class ResourceAsset extends AAsset implements DataAsset {
-    private final String resourceName;
+    private final String resourcePath;
 
-    protected ResourceAsset(String meta, String resourceName) {
-
-        super(meta);
-        this.resourceName = resourceName;
+    protected ResourceAsset(String resourceName, String meta, boolean isHashOfContentRequired) {
+        super(buildMetaData(resourceName, meta, isHashOfContentRequired));
+        this.resourcePath = resourceName;
     }
 
     /**
-     * This method is to crete resource name wth meta data and the resource path
+     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
-     * @param meta metadata
-     * @param resourcePath path of the resource
-     * @return ResourceAsset
+     * @param resourcePath            path of the resource
+     * @param meta                    metadata associated with the asset
+     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
+     *                                Hash of content will be calculated using Keccak256 hash function
+     *                                if false then content hash is not included in metadata
+     * @return ResourceAsset instance created using given params
      */
-    public static ResourceAsset create(String meta, String resourcePath) {
-        return new ResourceAsset(buildMetaData(resourcePath,JSON.toMap(meta)), resourcePath);
+
+    public static ResourceAsset create(String resourcePath, String meta, boolean isHashOfContentRequired) {
+        return new ResourceAsset(resourcePath, meta, isHashOfContentRequired);
     }
 
     /**
-     * This method is to crete a Resource Asset with resource Name
+     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
-     * @param resourceName Resource name
-     * @return ResourceAsset
+     * @param resourcePath            path of the resource
+     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
+     *                                Hash of content will be calculated using Keccak256 hash function
+     *                                if false then content hash is not included in metadata
+     * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static ResourceAsset create(String resourceName) {
-        return create(buildMetaData(resourceName, null), resourceName);
+    public static ResourceAsset create(String resourcePath, boolean isHashOfContentRequired) {
+        return new ResourceAsset(resourcePath, null, isHashOfContentRequired);
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
      * @param resourcePath resourcePath
-     * @param meta meta
+     * @param meta         meta
      * @return String buildMetadata
      */
-    private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
+    private static String buildMetaData(String resourcePath, String meta, boolean isHashOfContentRequired) {
 
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if(null ==inputStream){
-            throw new StarfishValidationException("Given Resource path " +resourcePath +" is not valid");
-        }
-        String hash = Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
 
         Map<String, Object> ob = new HashMap<>();
-        ob.put(Constant.NAME, resourcePath);
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
-        ob.put(Constant.CONTENT_HASH, hash);
         ob.put(Constant.TYPE, Constant.DATA_SET);
         ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 
+
         if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
+
+            for (Map.Entry<String, Object> me : JSON.toMap(meta).entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
         }
+
+        if (isHashOfContentRequired) {
+            ob.put(Constant.CONTENT_HASH, getHashOfContent(resourcePath));
+        }
         return JSON.toString(ob);
+    }
+
+    private static String getHashOfContent(String resourcePath) {
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        if (null == inputStream) {
+            throw new StarfishValidationException("Given Resource path " + resourcePath + " is not valid");
+        }
+        return Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
     }
 
     /**
@@ -95,8 +108,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
-        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourceName);
+        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
         return istream;
     }
 
@@ -105,7 +118,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
         try {
             return getContentStream().available();
         } catch (IOException e) {
-            throw  new GenericException("Exception occurred  for asset id :"+getAssetID()+" while finding getting the Content size :",e);
+            throw new GenericException("Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :", e);
         }
     }
 

@@ -19,7 +19,7 @@ public class IrisSample {
 	public static void main(String... args) {
 		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
-		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
+		ResourceAsset iris=ResourceAsset.create("assets/iris.csv",false);
 		surfer.registerAsset(iris);
 	}
 

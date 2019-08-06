@@ -19,7 +19,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.*;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
@@ -1184,6 +1186,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 }
                 if (statusCode == 200) {
                     InputStream inputStream = HTTP.getContent(response);
+                    validateHashOfContent(inputStream,assetId);
                     return inputStream;
                 } else {
                     throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
@@ -1206,5 +1209,23 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         account.getUserDataMap().put(TOKEN, token);
     }
 
+
+    /**
+     * This method is to validate the hash of the content of an asset.
+     * it will calculate the hash of the content received from the agent and
+     * then compare with the value hash if content present is metadata,
+     * if both are not the same , exception will be thrown
+     *
+     * @throws StarfishValidationException if hash content is not matched , exception will be thrown
+     */
+    public void validateHashOfContent(InputStream inputStream,String assetId) {
+
+        String contentHash = (String) this.getAsset(assetId).getMetadata().get(Constant.CONTENT_HASH);
+        String hashOfContent = Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
+        if (!contentHash.equals(hashOfContent)) {
+            throw new StarfishValidationException("Asset Content is not valid");
+        }
+
+    }
 
 }
