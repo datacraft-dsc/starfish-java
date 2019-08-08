@@ -154,4 +154,9 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     public long getContentSize() {
         return this.data != null ? this.data.length : -1;
     }
+
+
+    public byte[] getSource(){
+        return data;
+    }
 }

@@ -30,34 +30,6 @@ public class FileAsset extends AAsset implements DataAsset {
         this.file = file;
     }
 
-    /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
-     *
-     * @param f                       path of the resource
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return FileAsset instance created using given params
-     */
-    public static FileAsset create(File f, boolean isHashOfContentRequired) {
-        return new FileAsset(buildMetadata(f, null, isHashOfContentRequired), f);
-    }
-
-    /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
-     *
-     * @param f                       path of the file
-     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
-     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                                default value will be overridden.
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return FileAsset instance created using given params
-     */
-    public static FileAsset create(File f, String metaData, boolean isHashOfContentRequired) {
-        return new FileAsset(buildMetadata(f, metaData, isHashOfContentRequired), f);
-    }
 
     /**
      * This method is to crete File Asset with specific given path.
@@ -66,7 +38,7 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
-        return new FileAsset(buildMetadata(f, null, false), f);
+        return new FileAsset(buildMetadata(f, null), f);
     }
 
     /**
@@ -79,7 +51,7 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f, String metaData) {
-        return new FileAsset(buildMetadata(f, metaData, false), f);
+        return new FileAsset(buildMetadata(f, metaData), f);
     }
 
     /**
@@ -91,7 +63,7 @@ public class FileAsset extends AAsset implements DataAsset {
      *             default value will be overridden.
      * @return The default metadata as a String
      */
-    protected static String buildMetadata(File f, String meta, boolean isHashOfContentRequired) {
+    protected static String buildMetadata(File f, String meta) {
 
         Map<String, Object> ob = Utils.createDefaultMetadata();
         ob.put(TYPE, DATA_SET);
@@ -102,9 +74,6 @@ public class FileAsset extends AAsset implements DataAsset {
             for (Map.Entry<String, Object> me : metaMap.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
-        }
-        if (isHashOfContentRequired) {
-            ob.put(CONTENT_HASH, getHashContent(f));
         }
 
         return JSON.toString(ob);
@@ -150,6 +119,8 @@ public class FileAsset extends AAsset implements DataAsset {
     public long getContentSize() {
         return null != file ? file.length() : -1;
     }
-
+    public File getSource() {
+        return file;
+    }
 
 }

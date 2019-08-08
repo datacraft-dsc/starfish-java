@@ -1,16 +1,12 @@
 package sg.dex.starfish.impl.url;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +24,8 @@ import java.util.Map;
  */
 
 public class ResourceAsset extends AAsset implements DataAsset {
+
+
     private final String resourcePath;
 
     protected ResourceAsset(String metaData, String resourcePath) {
@@ -35,35 +33,6 @@ public class ResourceAsset extends AAsset implements DataAsset {
         this.resourcePath = resourcePath;
     }
 
-    /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
-     *
-     * @param resourcePath            path of the resource
-     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
-     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                                default value will be overridden.
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return ResourceAsset instance created using given params
-     */
-
-    public static ResourceAsset create(String resourcePath, String metaData, boolean isHashOfContentRequired) {
-        return new ResourceAsset(buildMetaData(resourcePath, metaData, isHashOfContentRequired), resourcePath);
-    }
-
-    /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
-     *
-     * @param resourcePath            path of the resource
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
-     */
-    public static ResourceAsset create(String resourcePath, boolean isHashOfContentRequired) {
-        return new ResourceAsset(buildMetaData(resourcePath, null, isHashOfContentRequired), resourcePath);
-    }
 
     /**
      * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
@@ -76,7 +45,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, String metaData) {
-        return new ResourceAsset(buildMetaData(resourcePath, metaData, false), resourcePath);
+        return new ResourceAsset(buildMetaData( metaData), resourcePath);
     }
 
     /**
@@ -86,20 +55,19 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
-        return new ResourceAsset(buildMetaData(resourcePath, null, false), resourcePath);
+        return new ResourceAsset(buildMetaData( null), resourcePath);
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param resourcePath resourcePath
      * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
      *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
      *                     default value will be overridden.
      * @return String buildMetadata
      */
 
-    private static String buildMetaData(String resourcePath, String metaData, boolean isHashOfContentRequired) {
+    private static String buildMetaData( String metaData) {
 
 
         Map<String, Object> ob = new HashMap<>();
@@ -115,25 +83,10 @@ public class ResourceAsset extends AAsset implements DataAsset {
             }
         }
 
-        if (isHashOfContentRequired) {
-            ob.put(Constant.CONTENT_HASH, getHashContent(resourcePath));
-        }
         return JSON.toString(ob);
     }
 
-    /**
-     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
-     *
-     * @param resourcePath path of the resource
-     * @return the content of hash as string
-     */
-    private static String getHashContent(String resourcePath) {
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if (null == inputStream) {
-            throw new StarfishValidationException("Given Resource path " + resourcePath + " is not valid");
-        }
-        return Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
-    }
+
 
     /**
      * Gets InputStream corresponding to this Asset
@@ -157,6 +110,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
             throw new GenericException("Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :", e);
         }
     }
-
+    public String getSource() {
+        return resourcePath;
+    }
 
 }

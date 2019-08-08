@@ -43,7 +43,7 @@ public class AssetSample {
 
         String path = "example/software_training_data.pdf";
         //System.out.println("local file :" + path);
-        Asset assetPath = ResourceAsset.create(path,false);
+        Asset assetPath = ResourceAsset.create(path);
 
         assetFlow(remoteAgent, assetPath);
     }

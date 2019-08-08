@@ -96,11 +96,35 @@ public class AssetRegistration_08 {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create(asset_metaData, "assets/SJR8961K_content.json",false);
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", asset_metaData);
+
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
+
         RemoteAsset remoteAsset =(RemoteAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
-        remoteAsset.getContentStream();
+
+        resourceAsset =(ResourceAsset) resourceAsset.includeContentHash();
+        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+
+
+    }
+
+    @Test(expected = StarfishValidationException.class)
+    public void testHashForRemoteAsset() throws IOException {
+
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
+
+        // create asset using metadata and given content
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", asset_metaData);
+
+        remoteAgent.uploadAsset(resourceAsset);
+        remoteAgent.getContentStream(resourceAsset.getAssetID());
+
+        RemoteAsset remoteAsset =(RemoteAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
+
+        remoteAsset =(RemoteAsset) remoteAsset.includeContentHash();
+        assertNotNull(remoteAsset.getMetadata().get(Constant.CONTENT_HASH));
 
 
     }
@@ -109,14 +133,17 @@ public class AssetRegistration_08 {
     public void testMetadataWithHash()  {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json",true);
+        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
+        assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        resourceAsset.includeContentHash();
         assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        resourceAsset.validateContentHash();
     }
     @Test
     public void testMetadataWithoutHash() {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json",false);
+        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
         assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
     }
 
@@ -127,26 +154,35 @@ public class AssetRegistration_08 {
 
         Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
         // create asset using metadata and given content
-        FileAsset fileAsset = FileAsset.create(path.toFile(),true);
+        FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
         String expected = Hex.toString(Hash.keccak256(content));
+
+        fileAsset =(FileAsset)fileAsset.includeContentHash();
         String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
 
         assertEquals(expected, actual);
     }
 
-    @Test(expected = StarfishValidationException.class)
     public void testfileNotExist()  {
 
         // read metadata
 
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content_NA.json");
+        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
         // create asset using metadata and given content
-        FileAsset fileAsset = FileAsset.create(path.toFile(),true);
+        FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
+
+
+
+        assertNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
+        fileAsset =(FileAsset)fileAsset.includeContentHash();
+        assertNotNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
+        fileAsset.validateContentHash();
+
+
         String expected = Hex.toString(Hash.keccak256(content));
         String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-
         assertEquals(expected, actual);
     }
 }

@@ -46,34 +46,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
         return uri;
     }
 
-    /**
-     * Creates a HTTP asset using the given URI string.
-     *
-     * @param uri                     of the resource
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
-     */
-    public static RemoteHttpAsset create(String uri, boolean isHashOfContentRequired) {
-        return new RemoteHttpAsset(buildMetaData(uri, null, isHashOfContentRequired), getUri(uri));
-    }
 
-    /**
-     * Creates a HTTP asset using the given URI string.
-     *
-     * @param uri                     of the resource
-     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
-     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                                default value will be overridden.
-     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
-     *                                Hash of content will be calculated using Keccak256 hash function
-     *                                if false then content hash is not included in metadata
-     * @return RemoteHttpAsset instance created using given params with given metadata
-     */
-    public static RemoteHttpAsset create(String uri, String metaData, boolean isHashOfContentRequired) {
-        return new RemoteHttpAsset(buildMetaData(uri, metaData, isHashOfContentRequired), getUri(uri));
-    }
 
     /**
      * Creates a HTTP asset using the given URI string.
@@ -82,7 +55,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static RemoteHttpAsset create(String uri) {
-        return new RemoteHttpAsset(buildMetaData(uri, null, false), getUri(uri));
+        return new RemoteHttpAsset(buildMetaData(uri, null), getUri(uri));
     }
 
     /**
@@ -95,7 +68,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static RemoteHttpAsset create(String uri, String metaData) {
-        return new RemoteHttpAsset(buildMetaData(uri, metaData, false), getUri(uri));
+        return new RemoteHttpAsset(buildMetaData(uri, metaData), getUri(uri));
     }
 
     /**
@@ -105,10 +78,9 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
      *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
      *                                default value will be overridden.
-     * @param isHashOfContentRequired is Hash Of Content Required
      * @return String buildMetadata
      */
-    private static String buildMetaData(String uri, String metaData, boolean isHashOfContentRequired) {
+    private static String buildMetaData(String uri, String metaData) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
@@ -123,9 +95,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
             }
         }
 
-        if (isHashOfContentRequired) {
-            ob.put(Constant.CONTENT_HASH, getHashContent(getUri(uri)));
-        }
+
         return JSON.toString(ob);
     }
 
@@ -205,6 +175,10 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
     @Override
     public DID getAssetDID() {
         throw new UnsupportedOperationException("Can't get DID for asset of type " + this.getClass());
+    }
+
+    public URI getSource(){
+        return uri;
     }
 
 }
