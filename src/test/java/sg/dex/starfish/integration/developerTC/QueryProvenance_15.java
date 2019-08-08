@@ -32,7 +32,7 @@ public class QueryProvenance_15 {
         metaDataAsset.put("provenance", provmetadata);
 
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
-        Asset assetUrl = RemoteHttpAsset.create( url,metaDataAsset);
+        Asset assetUrl = RemoteHttpAsset.create( url,JSON.toString(metaDataAsset));
         remoteAgent.registerAsset(assetUrl);
         assertNotNull(assetUrl.getMetadata().get("provenance"));
         Map<String,Object> provData =JSON.toMap(assetUrl.getMetadata().get("provenance").toString());

@@ -1,19 +1,21 @@
 package sg.dex.starfish.impl.file;
 
 import org.junit.Test;
-import sg.dex.starfish.impl.file.FileAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.Utils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {
 
-	@Test public void testTempFile() {
+	@Test
+	public void testFileAsset() {
 		String name=Utils.createRandomHexString(16);
 		
 		File f;
@@ -25,12 +27,55 @@ public class TestFileAsset {
 		} 
 		f.deleteOnExit();
 		
-		FileAsset fa=FileAsset.create(f);
+		FileAsset fa=FileAsset.create(f,false);
 		Map<String,Object> md=fa.getMetadata();
-		assertEquals(0,fa.getContentSize()); // should be empty file
-		assertEquals(f.getName(),md.get("fileName"));
-		assertEquals(0,Utils.coerceInt(md.get("size")));
+		assertNotNull(fa.getMetadata());
+		assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
 
 		
+	}
+
+	@Test
+	public void testFileAssetWithContentHAsh() {
+		String name=Utils.createRandomHexString(16);
+
+		File f;
+		try {
+			f = File.createTempFile(name, ".tmp");
+		}
+		catch (IOException e) {
+			throw new Error(e);
+		}
+		f.deleteOnExit();
+
+		FileAsset fa=FileAsset.create(f,true);
+		Map<String,Object> md=fa.getMetadata();
+		assertNotNull(fa.getMetadata());
+		assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+
+
+	}
+
+	@Test
+	public void testValidateContentHash() {
+		String name=Utils.createRandomHexString(16);
+
+		File f;
+		try {
+			f = File.createTempFile(name, ".tmp");
+		}
+		catch (IOException e) {
+			throw new Error(e);
+		}
+		f.deleteOnExit();
+
+		FileAsset fa=FileAsset.create(f,true);
+		Map<String,Object> md=fa.getMetadata();
+		assertNotNull(fa.getMetadata());
+		assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+		// if the content of hash is not valid this method will throw Starfish Validation Exception
+		fa.validateContentHash();
+
+
 	}
 }

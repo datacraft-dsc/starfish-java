@@ -1,8 +1,12 @@
 package sg.dex.starfish;
 
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
 
 import java.util.Map;
 
@@ -113,5 +117,23 @@ public interface Asset {
 	 */
 	public default boolean isBundle(){
 		return false;
+	}
+
+
+	/**
+	 * This method is to validate the hash of the asset content .
+	 * it will calculate the hash of the content of an Asset
+	 * then compare with the hash value included in metadata,
+	 * if both are not the same , StarfishValidation Exception will be thrown
+	 *
+	 * @throws StarfishValidationException if hash content is not matched , exception will be thrown
+	 */
+	public default void validateContentHash() {
+
+		String contentHashFromMetadata = (String)getMetadata().get(Constant.CONTENT_HASH);
+		String contentHash = Hex.toString(Hash.keccak256(this.getContent()));
+		if (!contentHashFromMetadata.equals(contentHash)) {
+			throw new StarfishValidationException("Failed to validate content hash");
+		}
 	}
 }

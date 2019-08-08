@@ -12,10 +12,7 @@ import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,118 +24,187 @@ import java.util.Map;
 
 /**
  * A specialised asset class that references data at a given URI.
- * 
+ * <p>
  * It is assumed that asset content can be accessed with a HTTP GET to the given URI.
- *
- * 
  */
 public class RemoteHttpAsset extends AAsset implements DataAsset {
 
-	private final URI uri;
+    private final URI uri;
 
-	protected RemoteHttpAsset(String meta, URI uri) {
-		super(meta);
-		this.uri = uri;
-	}
+    protected RemoteHttpAsset(String meta, URI uri) {
+        super(meta);
+        this.uri = uri;
+    }
 
-	private static URI getUri(String urlString) {
-		URI uri;
-		try {
-			uri = new URI(urlString);
-		}
-		catch (URISyntaxException e) {
-			throw new IllegalArgumentException(e);
-		}
-		return uri;
-	}
+    private static URI getUri(String urlString) {
+        URI uri;
+        try {
+            uri = new URI(urlString);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return uri;
+    }
 
-	/**
-	 * Creates a HTTP asset using the given URI string.
-	 * 
-	 * @param uri of the resource
-	 * @return A new HTTP asset
-	 */
-	public static RemoteHttpAsset create( String uri) {
-		return new RemoteHttpAsset(buildMetaData( null),  getUri(uri));
-	}
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri                     of the resource
+     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
+     *                                Hash of content will be calculated using Keccak256 hash function
+     *                                if false then content hash is not included in metadata
+     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     */
+    public static RemoteHttpAsset create(String uri, boolean isHashOfContentRequired) {
+        return new RemoteHttpAsset(buildMetaData(uri, null, isHashOfContentRequired), getUri(uri));
+    }
+
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri                     of the resource
+     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
+     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                                default value will be overridden.
+     * @param isHashOfContentRequired if true then hash of content is calculated and included in metadata.
+     *                                Hash of content will be calculated using Keccak256 hash function
+     *                                if false then content hash is not included in metadata
+     * @return RemoteHttpAsset instance created using given params with given metadata
+     */
+    public static RemoteHttpAsset create(String uri, String metaData, boolean isHashOfContentRequired) {
+        return new RemoteHttpAsset(buildMetaData(uri, metaData, isHashOfContentRequired), getUri(uri));
+    }
 
     /**
      * Creates a HTTP asset using the given URI string.
      *
      * @param uri of the resource
-     * @param meta of the resource
-     * @return A new HTTP asset
+     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static RemoteHttpAsset create( String uri,Map<String,Object> meta) {
-        return new RemoteHttpAsset(buildMetaData( meta),  getUri(uri));
+    public static RemoteHttpAsset create(String uri) {
+        return new RemoteHttpAsset(buildMetaData(uri, null, false), getUri(uri));
     }
 
-	private static String buildMetaData( Map<String, Object> meta) {
-		Map<String, Object> ob = new HashMap<>();
-		ob.put(Constant.DATE_CREATED, Instant.now().toString());
-		ob.put(Constant.TYPE, Constant.DATA_SET);
-		ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri      of the resource
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
+     * @return RemoteHttpAsset instance created using given params with given metadata.
+     */
+    public static RemoteHttpAsset create(String uri, String metaData) {
+        return new RemoteHttpAsset(buildMetaData(uri, metaData, false), getUri(uri));
+    }
 
-		if (meta != null) {
-			for (Map.Entry<String, Object> me : meta.entrySet()) {
-				ob.put(me.getKey(), me.getValue());
-			}
-		}
+    /**
+     * This method is to build the metadata of the Resource Asset
+     *
+     * @param uri                     uri
+     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
+     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                                default value will be overridden.
+     * @param isHashOfContentRequired is Hash Of Content Required
+     * @return String buildMetadata
+     */
+    private static String buildMetaData(String uri, String metaData, boolean isHashOfContentRequired) {
 
-		return JSON.toString(ob);
-	}
+        Map<String, Object> ob = new HashMap<>();
+        ob.put(Constant.DATE_CREATED, Instant.now().toString());
+        ob.put(Constant.TYPE, Constant.DATA_SET);
+        ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 
-	/**
-	 * Gets raw data corresponding to this Asset
-	 *
-	 * @return An input stream allowing consumption of the asset data
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 */
-	@Override
-	public InputStream getContentStream() {
-		HttpGet httpget = new HttpGet(uri);
-		CloseableHttpResponse response = null;
-		try {
-			response = HTTP.execute(httpget);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 404) {
-				throw new RemoteException("Asset ID not found at: " + uri);
-			}
-			if (statusCode == 200) {
-				InputStream inputStream = HTTP.getContent(response);
-				return inputStream;
-			} else {
-				throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-			}
-		}
-		catch (IOException e) {
-			throw new RemoteException(" Getting Remote Asset content failed: ", e);
-		}
 
-	}
+        if (metaData != null) {
 
-	/**
-	 * Gets RemoteAsset size
-	 *
-	 * @return size of the RemoteAsset
-	 */
-	@Override
-	public long getContentSize() {
-		try {
-			return getContentStream().available();
-		}
-		catch (IOException e) {
-			throw new GenericException(
-					"Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :",
-					e);
-		}
-	}
+            for (Map.Entry<String, Object> me : JSON.toMap(metaData).entrySet()) {
+                ob.put(me.getKey(), me.getValue());
+            }
+        }
 
-	@Override
-	public DID getAssetDID() {
-		throw new UnsupportedOperationException("Can't get DID for asset of type " + this.getClass());
-	}
+        if (isHashOfContentRequired) {
+            ob.put(Constant.CONTENT_HASH, getHashContent(getUri(uri)));
+        }
+        return JSON.toString(ob);
+    }
+
+    /**
+     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
+     *
+     * @param uri URI
+     * @return the content of hash as string
+     */
+    private static String getHashContent(URI uri) {
+        HttpGet httpget = new HttpGet(uri);
+        CloseableHttpResponse response = null;
+        try {
+            response = HTTP.execute(httpget);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 404) {
+                throw new RemoteException("Asset ID not found at: " + uri);
+            }
+            if (statusCode == 200) {
+                InputStream inputStream = HTTP.getContent(response);
+                return Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
+            } else {
+                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
+            }
+        } catch (IOException e) {
+            throw new RemoteException(" Getting Remote Asset content failed: ", e);
+        }
+    }
+
+    /**
+     * Gets raw data corresponding to this Asset
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    @Override
+    public InputStream getContentStream() {
+        HttpGet httpget = new HttpGet(uri);
+        CloseableHttpResponse response = null;
+        try {
+            response = HTTP.execute(httpget);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 404) {
+                throw new RemoteException("Asset ID not found at: " + uri);
+            }
+            if (statusCode == 200) {
+                InputStream inputStream = HTTP.getContent(response);
+                return inputStream;
+            } else {
+                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
+            }
+        } catch (IOException e) {
+            throw new RemoteException(" Getting Remote Asset content failed: ", e);
+        }
+
+    }
+
+    /**
+     * Gets RemoteAsset size
+     *
+     * @return size of the RemoteAsset
+     */
+    @Override
+    public long getContentSize() {
+        try {
+            return getContentStream().available();
+        } catch (IOException e) {
+            throw new GenericException(
+                    "Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :",
+                    e);
+        }
+    }
+
+    @Override
+    public DID getAssetDID() {
+        throw new UnsupportedOperationException("Can't get DID for asset of type " + this.getClass());
+    }
 
 }

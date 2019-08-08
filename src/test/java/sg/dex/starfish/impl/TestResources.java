@@ -42,4 +42,15 @@ public class TestResources {
 
 		assertNotNull(ua.getMetadataString());
 	}
+
+	@Test public void testValidateHash() {
+		Asset ua=ResourceAsset.create("assets/hello.txt","{}",true);
+		byte[] bs=ua.getContent();
+		String s=new String(bs,StandardCharsets.UTF_8);
+		assertEquals("Hello Starfish",s);
+		assertNotNull(ua.getMetadata().get(Constant.CONTENT_HASH));
+
+		assertNotNull(ua.getMetadataString());
+		ua.validateContentHash();
+	}
 }
