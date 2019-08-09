@@ -10,8 +10,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -22,7 +20,7 @@ import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -147,7 +145,7 @@ public class SquidAssetTests {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset memory_asset= ResourceAsset.create(asset_metaData,"assets/SJR8961K_content.json");
+        ResourceAsset memory_asset= ResourceAsset.create("assets/SJR8961K_content.json",JSON.toMap(asset_metaData));
 
         // create surfer agent
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();

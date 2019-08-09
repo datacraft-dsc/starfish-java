@@ -14,6 +14,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.Utils;
 
@@ -96,7 +97,7 @@ public class AssetRegistration_08 {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", asset_metaData);
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", JSON.toMap(asset_metaData));
 
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
@@ -116,7 +117,7 @@ public class AssetRegistration_08 {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", asset_metaData);
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", JSON.toMap(asset_metaData));
 
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());

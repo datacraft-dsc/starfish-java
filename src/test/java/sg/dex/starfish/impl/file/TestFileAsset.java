@@ -70,15 +70,11 @@ public class TestFileAsset {
 
         FileAsset fa = FileAsset.create(f);
         Map<String, Object> md = fa.getMetadata();
-        assertNotNull(fa.getMetadata());
-//		assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
-        // if the content of hash is not valid this method will throw Starfish Validation Exception
-        fa.validateContentHash();
-        assertNotNull(fa.getMetadata());
-        assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
-        FileAsset newFa = (FileAsset) fa.includeContentHash();
-        assertNotNull(newFa.getMetadata().get(Constant.CONTENT_HASH));
 
+        assertNotNull(fa.getMetadata());
+        FileAsset newFa = (FileAsset) fa.includeContentHash();
+        newFa.validateContentHash();
+        assertNotNull(newFa.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 }

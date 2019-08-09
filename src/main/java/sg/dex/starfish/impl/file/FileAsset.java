@@ -38,7 +38,7 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
-        return new FileAsset(buildMetadata(f, null), f);
+        return new FileAsset(buildMetadata( null), f);
     }
 
     /**
@@ -50,27 +50,25 @@ public class FileAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return FileAsset instance created using given params
      */
-    public static FileAsset create(File f, String metaData) {
-        return new FileAsset(buildMetadata(f, metaData), f);
+    public static FileAsset create(File f, Map <String,Object> metaData) {
+        return new FileAsset(buildMetadata( metaData), f);
     }
 
     /**
      * Build default metadata for a file asset
      *
-     * @param f    The file to use for this file asset
-     * @param meta metadata associated with the asset.This metadata will be be added in addition to default
+     * @param metaMap metadata associated with the asset.This metadata will be be added in addition to default
      *             metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
      *             default value will be overridden.
      * @return The default metadata as a String
      */
-    protected static String buildMetadata(File f, String meta) {
+    protected static String buildMetadata(Map<String,Object> metaMap) {
 
         Map<String, Object> ob = Utils.createDefaultMetadata();
         ob.put(TYPE, DATA_SET);
         ob.put(CONTENT_TYPE, OCTET_STREAM);
 
-        if (meta != null) {
-            Map<String, Object> metaMap = JSON.toMap(meta);
+        if (metaMap != null) {
             for (Map.Entry<String, Object> me : metaMap.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
@@ -78,22 +76,6 @@ public class FileAsset extends AAsset implements DataAsset {
 
         return JSON.toString(ob);
 
-    }
-    /**
-     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
-     *
-     * @param f path of the file
-     * @return the content of hash as string
-     */
-
-    private static String getHashContent(File f) {
-        String content = null;
-        try {
-            content = Utils.stringFromStream(new FileInputStream(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return Hex.toString(Hash.keccak256(content));
     }
 
     /**

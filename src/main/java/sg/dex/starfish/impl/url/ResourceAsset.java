@@ -44,7 +44,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given resource path and metadata
      */
 
-    public static ResourceAsset create(String resourcePath, String metaData) {
+    public static ResourceAsset create(String resourcePath, Map <String,Object> metaData) {
         return new ResourceAsset(buildMetaData( metaData), resourcePath);
     }
 
@@ -67,7 +67,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return String buildMetadata
      */
 
-    private static String buildMetaData( String metaData) {
+    private static String buildMetaData( Map<String,Object> metaData) {
 
 
         Map<String, Object> ob = new HashMap<>();
@@ -78,7 +78,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
         if (metaData != null) {
 
-            for (Map.Entry<String, Object> me : JSON.toMap(metaData).entrySet()) {
+            for (Map.Entry<String, Object> me : metaData.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
         }

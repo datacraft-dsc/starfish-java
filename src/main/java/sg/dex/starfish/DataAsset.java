@@ -92,9 +92,13 @@ public interface DataAsset extends Asset {
 	 */
 	public default void validateContentHash() {
 
-		String contentHashFromMetadata = (String) getMetadata().get(Constant.CONTENT_HASH);
+		Object contentHashFromMetadata =  this.getMetadata().get(Constant.CONTENT_HASH);
+		if(null == contentHashFromMetadata){
+            throw new StarfishValidationException("Content hash is not included in the metadata");
+        }
+
 		String contentHash = Hex.toString(Hash.keccak256(Utils.stringFromStream(this.getContentStream())));
-		if (null != contentHashFromMetadata && !contentHashFromMetadata.equals(contentHash)) {
+		if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
 			throw new StarfishValidationException("Failed to validate content hash");
 		}
 	}
@@ -104,7 +108,8 @@ public interface DataAsset extends Asset {
 	 *
 	 * @return the content of hash as string
 	 */
-	public default String getHashContent() {
+
+	public default String getContentHash() {
 
 		return Hex.toString(Hash.keccak256(this.getContent()));
 	}
@@ -120,18 +125,18 @@ public interface DataAsset extends Asset {
 	public default DataAsset includeContentHash() {
 
 		Map<String, Object> metaMap = this.getMetadata();
-		((Map) metaMap).put(Constant.CONTENT_HASH, getHashContent());
+		((Map) metaMap).put(Constant.CONTENT_HASH, getContentHash());
 
 		if (this instanceof FileAsset) {
-			return FileAsset.create(((FileAsset) this).getSource(), JSON.toString(metaMap));
+			return FileAsset.create(((FileAsset) this).getSource(), metaMap);
 
 		} else if (this instanceof ResourceAsset) {
-			return ResourceAsset.create(((ResourceAsset) this).getSource(), JSON.toString(metaMap));
+			return ResourceAsset.create(((ResourceAsset) this).getSource(), metaMap);
 
 		} else if (this instanceof MemoryAsset) {
 			return MemoryAsset.create(((MemoryAsset) this).getSource(), metaMap);
 		} else if (this instanceof RemoteHttpAsset) {
-			return RemoteHttpAsset.create(((RemoteHttpAsset) this).getSource().toString(), JSON.toString(metaMap));
+			return RemoteHttpAsset.create(((RemoteHttpAsset) this).getSource().toString(),metaMap);
 		}
 		else if (this instanceof RemoteAsset) {
 			throw new StarfishValidationException("This operation is not applicable for Remote Asset");

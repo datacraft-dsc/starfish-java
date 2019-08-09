@@ -12,6 +12,7 @@ import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.*;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static RemoteHttpAsset create(String uri) {
-        return new RemoteHttpAsset(buildMetaData(uri, null), getUri(uri));
+        return new RemoteHttpAsset(buildMetaData( null), getUri(uri));
     }
 
     /**
@@ -67,20 +68,19 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
-    public static RemoteHttpAsset create(String uri, String metaData) {
-        return new RemoteHttpAsset(buildMetaData(uri, metaData), getUri(uri));
+    public static RemoteHttpAsset create(String uri, Map<String,Object> metaData) {
+        return new RemoteHttpAsset(buildMetaData( metaData), getUri(uri));
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param uri                     uri
      * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
      *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
      *                                default value will be overridden.
      * @return String buildMetadata
      */
-    private static String buildMetaData(String uri, String metaData) {
+    private static String buildMetaData( Map<String,Object> metaData) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
@@ -90,7 +90,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
 
         if (metaData != null) {
 
-            for (Map.Entry<String, Object> me : JSON.toMap(metaData).entrySet()) {
+            for (Map.Entry<String, Object> me : metaData.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
         }
