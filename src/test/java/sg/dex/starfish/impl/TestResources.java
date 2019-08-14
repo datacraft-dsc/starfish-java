@@ -29,7 +29,7 @@ public class TestResources {
 
 	}
 
-	@Test public void testResourceAssetWithContetHash() {
+	@Test public void testResourceAssetWithContentHash() {
 		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt",null);
 		byte[] bs=dataAsset.getContent();
 		String s=new String(bs,StandardCharsets.UTF_8);
