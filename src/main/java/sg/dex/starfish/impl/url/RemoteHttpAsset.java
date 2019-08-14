@@ -12,8 +12,10 @@ import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.util.*;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +35,10 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
     private final URI uri;
 
     protected RemoteHttpAsset(String meta, URI uri) {
+        super(meta);
+        this.uri = uri;
+    }
+    protected RemoteHttpAsset(Map<String,Object> meta, URI uri) {
         super(meta);
         this.uri = uri;
     }
@@ -80,7 +86,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      *                                default value will be overridden.
      * @return String buildMetadata
      */
-    private static String buildMetaData( Map<String,Object> metaData) {
+    private static Map<String,Object> buildMetaData( Map<String,Object> metaData) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
@@ -96,7 +102,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
         }
 
 
-        return JSON.toString(ob);
+        return ob;
     }
 
     /**
@@ -179,6 +185,10 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
 
     public URI getSource(){
         return uri;
+    }
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(uri.toString(),newMeta);
     }
 
 }

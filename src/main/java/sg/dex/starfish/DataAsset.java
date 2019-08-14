@@ -5,13 +5,7 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.file.FileAsset;
-import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.remote.RemoteAsset;
-import sg.dex.starfish.impl.url.RemoteHttpAsset;
-import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -87,10 +81,11 @@ public interface DataAsset extends Asset {
 	 * it will calculate the hash of the content of an Asset
 	 * then compare with the hash value included in metadata,
 	 * if both are not the same , StarfishValidation Exception will be thrown
+	 * @return boolean  true if the content is valid else false
 	 *
 	 * @throws StarfishValidationException if hash content is not matched , exception will be thrown
 	 */
-	public default void validateContentHash() {
+	public default boolean validateContentHash() {
 
 		Object contentHashFromMetadata =  this.getMetadata().get(Constant.CONTENT_HASH);
 		if(null == contentHashFromMetadata){
@@ -101,6 +96,7 @@ public interface DataAsset extends Asset {
 		if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
 			throw new StarfishValidationException("Failed to validate content hash");
 		}
+		return true;
 	}
 
 	/**
@@ -118,31 +114,41 @@ public interface DataAsset extends Asset {
 	 * This method is to include the content of hash in the asset metadata.
 	 * Hash of the content will be calculated based on keccak256 hashing algo , and the hash content will
 	 * be included in the asset metadata.
-	 * This hash content will be used to validate the integritry of asset content
+	 * This hash content will be used to validate the integrity of asset content
 	 *
 	 * @return respective data asset sub class.
 	 */
 	public default DataAsset includeContentHash() {
 
+		// check if the hash content is already present
+		if(null != this.getMetadata().get(Constant.CONTENT_HASH)){
+
+			if(validateContentHash()){
+				return this;
+			}
+		}
+
 		Map<String, Object> metaMap = this.getMetadata();
-		((Map) metaMap).put(Constant.CONTENT_HASH, getContentHash());
+		metaMap.put(Constant.CONTENT_HASH, getContentHash());
 
-		if (this instanceof FileAsset) {
-			return FileAsset.create(((FileAsset) this).getSource(), metaMap);
+		if (this instanceof DataAsset){
+			return this.updateMeta(metaMap);
 
-		} else if (this instanceof ResourceAsset) {
-			return ResourceAsset.create(((ResourceAsset) this).getSource(), metaMap);
-
-		} else if (this instanceof MemoryAsset) {
-			return MemoryAsset.create(((MemoryAsset) this).getSource(), metaMap);
-		} else if (this instanceof RemoteHttpAsset) {
-			return RemoteHttpAsset.create(((RemoteHttpAsset) this).getSource().toString(),metaMap);
 		}
-		else if (this instanceof RemoteAsset) {
-			throw new StarfishValidationException("This operation is not applicable for Remote Asset");
-		}
+
 		throw new StarfishValidationException("Asset or its content is not Valid");
 	}
 
+	/**
+	 * Get the new Data Asset base on metaData passed as n argument.
+	 * This method will be implemented by the sub class
+	 *
+	 * @param newMetaData new meta data that will be used to create a Data Asset.
+	 * @return the respective dataAsset based on sub-class
+	 * @throws UnsupportedOperationException if this operation  is not supported by sub-class
+	 */
+	public default DataAsset updateMeta(Map<String, Object> newMetaData) {
+		throw new UnsupportedOperationException("This Operation is not supported");
+	}
 
 }

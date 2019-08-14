@@ -25,7 +25,7 @@ public class TestResources {
 		assertNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 		dataAsset =dataAsset.includeContentHash();
 		assertNotNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
-		dataAsset.validateContentHash();
+		assertEquals(dataAsset.validateContentHash(),true);
 
 	}
 
@@ -42,7 +42,7 @@ public class TestResources {
 		assertNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 		dataAsset =dataAsset.includeContentHash();
 		assertNotNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
-		dataAsset.validateContentHash();
+		assertEquals(dataAsset.validateContentHash(),true);
 	}
 
 	@Test public void testValidateHash() {
@@ -56,6 +56,6 @@ public class TestResources {
 		assertNotNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
 		assertNotNull(dataAsset.getMetadataString());
-		dataAsset.validateContentHash();
+		assertEquals(dataAsset.validateContentHash(),true);
 	}
 }

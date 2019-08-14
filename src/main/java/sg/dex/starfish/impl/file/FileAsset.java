@@ -1,11 +1,9 @@
 package sg.dex.starfish.impl.file;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
@@ -30,7 +28,10 @@ public class FileAsset extends AAsset implements DataAsset {
         this.file = file;
     }
 
-
+    protected FileAsset(Map<String,Object> meta, File file) {
+        super(meta);
+        this.file = file;
+    }
     /**
      * This method is to crete File Asset with specific given path.
      *
@@ -62,7 +63,7 @@ public class FileAsset extends AAsset implements DataAsset {
      *             default value will be overridden.
      * @return The default metadata as a String
      */
-    protected static String buildMetadata(Map<String,Object> metaMap) {
+    protected static Map<String,Object> buildMetadata(Map<String,Object> metaMap) {
 
         Map<String, Object> ob = Utils.createDefaultMetadata();
         ob.put(TYPE, DATA_SET);
@@ -74,7 +75,7 @@ public class FileAsset extends AAsset implements DataAsset {
             }
         }
 
-        return JSON.toString(ob);
+        return ob;
 
     }
 
@@ -105,4 +106,8 @@ public class FileAsset extends AAsset implements DataAsset {
         return file;
     }
 
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(this.getSource(),newMeta);
+    }
 }

@@ -8,8 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {
@@ -29,7 +28,20 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(f);
         Map<String, Object> md = fa.getMetadata();
         assertNotNull(fa.getMetadata());
+        // validate by dafault hashcontent is not included in metadata
         assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+
+        // include hash content
+        fa =(FileAsset)fa.includeContentHash();
+        // now content hash will be included
+        assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+
+        // verify the content
+        assertEquals(fa.validateContentHash(),true);
+
+
+
+
 
 
     }
@@ -73,8 +85,7 @@ public class TestFileAsset {
 
         assertNotNull(fa.getMetadata());
         FileAsset newFa = (FileAsset) fa.includeContentHash();
-        newFa.validateContentHash();
-        assertNotNull(newFa.getMetadata().get(Constant.CONTENT_HASH));
+        assertEquals(newFa.validateContentHash(),true);
 
     }
 }

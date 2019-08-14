@@ -6,7 +6,6 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +32,10 @@ public class ResourceAsset extends AAsset implements DataAsset {
         this.resourcePath = resourcePath;
     }
 
+    protected ResourceAsset(Map<String, Object> metaData, String resourcePath) {
+        super(metaData);
+        this.resourcePath = resourcePath;
+    }
 
     /**
      * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
@@ -67,7 +70,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return String buildMetadata
      */
 
-    private static String buildMetaData( Map<String,Object> metaData) {
+    private static Map<String,Object> buildMetaData( Map<String,Object> metaData) {
 
 
         Map<String, Object> ob = new HashMap<>();
@@ -83,7 +86,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
             }
         }
 
-        return JSON.toString(ob);
+        return ob;
     }
 
 
@@ -112,6 +115,11 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
     public String getSource() {
         return resourcePath;
+    }
+
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(this.getSource(),newMeta);
     }
 
 }

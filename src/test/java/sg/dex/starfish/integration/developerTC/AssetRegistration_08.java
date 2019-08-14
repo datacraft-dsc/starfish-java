@@ -137,7 +137,11 @@ public class AssetRegistration_08 {
         ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
         assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
         resourceAsset.includeContentHash();
-        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        // calculate content hash
+       String expected= Hex.toString(Hash.keccak256(resourceAsset.getContent()));
+
+//        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        assertEquals(expected,resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString());
         resourceAsset.validateContentHash();
     }
     @Test
