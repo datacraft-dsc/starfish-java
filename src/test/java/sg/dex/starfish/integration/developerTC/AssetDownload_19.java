@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -21,6 +22,7 @@ public class AssetDownload_19 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
         // create remote Asset
     }
 

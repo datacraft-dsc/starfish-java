@@ -1,6 +1,7 @@
 package sg.dex.starfish.integration.developerTC;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,7 @@ public class AgentIdentity_03 {
     public void setup() {
 
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
     }
 
     @Test

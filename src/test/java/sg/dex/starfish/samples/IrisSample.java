@@ -1,8 +1,12 @@
 package sg.dex.starfish.samples;
 
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.url.ResourceAsset;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This class describe a dummy implementation(Sample) how to register any local asset to the Ocean echosystem
@@ -20,7 +24,10 @@ public class IrisSample {
 		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
-		surfer.registerAsset(iris);
+		RemoteAsset remoteAsset =(RemoteAsset)surfer.registerAsset(iris);
+		iris =(ResourceAsset)iris.includeContentHash();
+		iris.validateContentHash();
+		assertNotNull(iris.getMetadata().get(Constant.CONTENT_HASH));
 	}
 
 

@@ -103,4 +103,24 @@ public class Hash {
 		return Hex.toString(keccak256(data));
 	}
 
+	/**
+	 * Compute the sha3_256 hash of byte array
+	 *
+	 * @param data Input data
+	 * @return sha3_256 hash as a hex string
+	 */
+	public static String sha3_256String(byte[] data) {
+		return Hex.toString(sha3_256(data));
+	}
+
+    /**
+     * Compute the sha3_256 hash of string, with UTF-8 encoding
+     *
+     * @param string Input string
+     * @return sha3_256 hash as a hex string
+     */
+    public static String sha3_256String(String string) {
+        return Hex.toString(sha3_256(string));
+    }
+
 }

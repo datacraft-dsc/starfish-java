@@ -38,7 +38,6 @@ public class TestMemoryAsset {
         assertEquals(SIZE, a.getContentSize());
         Map<String, Object> meta = a.getMetadata();
         assertEquals(Integer.toString(SIZE), meta.get("size"));
-        assertEquals(Hash.keccak256String(data), meta.get("contentHash"));
     }
 
     @Test

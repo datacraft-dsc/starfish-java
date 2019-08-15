@@ -5,6 +5,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.JSONObjectCache;
 
 import java.util.HashMap;
@@ -26,9 +27,13 @@ public abstract class AAsset implements Asset {
 	protected AAsset(String meta) {
 		//Utils.validateAssetMetaData(meta);
 		this.metadataString = meta;
-		this.id = Hex.toString(Hash.keccak256(meta));
+		this.id = Hex.toString(Hash.sha3_256(meta));
 	}
-
+	protected AAsset(Map<String,Object> meta) {
+		//Utils.validateAssetMetaData(meta);
+		this.metadataString = JSON.toString(meta);
+		this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));
+	}
 	@Override
 	public String toString() {
 		return getAssetID();

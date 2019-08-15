@@ -1,16 +1,11 @@
 package sg.dex.starfish.impl.url;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,65 +21,75 @@ import java.util.Map;
  *
  * @author Mike
  */
+
 public class ResourceAsset extends AAsset implements DataAsset {
-    private final String resourceName;
 
-    protected ResourceAsset(String meta, String resourceName) {
 
-        super(meta);
-        this.resourceName = resourceName;
+    private final String resourcePath;
+
+    protected ResourceAsset(String metaData, String resourcePath) {
+        super(metaData);
+        this.resourcePath = resourcePath;
+    }
+
+    protected ResourceAsset(Map<String, Object> metaData, String resourcePath) {
+        super(metaData);
+        this.resourcePath = resourcePath;
     }
 
     /**
-     * This method is to crete resource name wth meta data and the resource path
+     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
-     * @param meta metadata
      * @param resourcePath path of the resource
-     * @return ResourceAsset
+     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
+     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                     default value will be overridden.
+     * @return ResourceAsset instance created using given resource path and metadata
      */
-    public static ResourceAsset create(String meta, String resourcePath) {
-        return new ResourceAsset(buildMetaData(resourcePath,JSON.toMap(meta)), resourcePath);
+
+    public static ResourceAsset create(String resourcePath, Map <String,Object> metaData) {
+        return new ResourceAsset(buildMetaData( metaData), resourcePath);
     }
 
     /**
-     * This method is to crete a Resource Asset with resource Name
+     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
-     * @param resourceName Resource name
-     * @return ResourceAsset
+     * @param resourcePath path of the resource
+     * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static ResourceAsset create(String resourceName) {
-        return create(buildMetaData(resourceName, null), resourceName);
+    public static ResourceAsset create(String resourcePath) {
+        return new ResourceAsset(buildMetaData( null), resourcePath);
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param resourcePath resourcePath
-     * @param meta meta
+     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
+     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                     default value will be overridden.
      * @return String buildMetadata
      */
-    private static String buildMetaData(String resourcePath, Map<String, Object> meta) {
 
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if(null ==inputStream){
-            throw new StarfishValidationException("Given Resource path " +resourcePath +" is not valid");
-        }
-        String hash = Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
+    private static Map<String,Object> buildMetaData( Map<String,Object> metaData) {
+
 
         Map<String, Object> ob = new HashMap<>();
-        ob.put(Constant.NAME, resourcePath);
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
-        ob.put(Constant.CONTENT_HASH, hash);
         ob.put(Constant.TYPE, Constant.DATA_SET);
         ob.put(Constant.CONTENT_TYPE, "application/octet-stream");
 
-        if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
+
+        if (metaData != null) {
+
+            for (Map.Entry<String, Object> me : metaData.entrySet()) {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-        return JSON.toString(ob);
+
+        return ob;
     }
+
+
 
     /**
      * Gets InputStream corresponding to this Asset
@@ -95,8 +100,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
-        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourceName);
+        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
         return istream;
     }
 
@@ -105,9 +110,16 @@ public class ResourceAsset extends AAsset implements DataAsset {
         try {
             return getContentStream().available();
         } catch (IOException e) {
-            throw  new GenericException("Exception occurred  for asset id :"+getAssetID()+" while finding getting the Content size :",e);
+            throw new GenericException("Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :", e);
         }
     }
+    public String getSource() {
+        return resourcePath;
+    }
 
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(this.getSource(),newMeta);
+    }
 
 }

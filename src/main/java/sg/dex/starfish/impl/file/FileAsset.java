@@ -1,13 +1,9 @@
-
 package sg.dex.starfish.impl.file;
 
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
@@ -23,96 +19,95 @@ import static sg.dex.starfish.constant.Constant.*;
  * Class exposing a file on the local file system as an Ocean asset
  *
  * @author Mike
- *
  */
 public class FileAsset extends AAsset implements DataAsset {
-	private final File file;
+    private final File file;
 
-	protected FileAsset(String meta, File file) {
-		super(meta);
-		this.file = file;
-	}
+    protected FileAsset(String meta, File file) {
+        super(meta);
+        this.file = file;
+    }
 
-	/**
-	 * Create a FileAsset to read from an existing file
-	 * 
-	 * @param f file handle one which the File Asset will be created
-	 * @return FileAsset
-	 */
-	public static FileAsset create(File f) {
-		String metaString = JSON.toString(buildMetadata(f,null));
-		return new FileAsset(metaString, f);
-	}
+    protected FileAsset(Map<String,Object> meta, File file) {
+        super(meta);
+        this.file = file;
+    }
+    /**
+     * This method is to crete File Asset with specific given path.
+     *
+     * @param f path of the file
+     * @return FileAsset instance created using given params
+     */
+    public static FileAsset create(File f) {
+        return new FileAsset(buildMetadata( null), f);
+    }
 
-	/**
-	 * Create a FileAsset to read from an existing file
-	 *
-	 * @param f file handle one which the File Asset will be created
-	 * @return FileAsset
-	 */
-	public static FileAsset create(File f,String metaData) {
-		String metaString = JSON.toString(buildMetadata(f,metaData));
-		return new FileAsset(metaString, f);
-	}
+    /**
+     * This method is to crete Resource Asset with specific given path, metadata
+     *
+     * @param f        path of the file
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
+     * @return FileAsset instance created using given params
+     */
+    public static FileAsset create(File f, Map <String,Object> metaData) {
+        return new FileAsset(buildMetadata( metaData), f);
+    }
 
-	/**
-	 * Build default metadata for a file asset
-	 *
-	 * @param f The file to use for this file asset
-	 * @return The default metadata as a String
-	 */
-	protected static Map<String, Object> buildMetadata(File f,String meta) {
-		try {
+    /**
+     * Build default metadata for a file asset
+     *
+     * @param metaMap metadata associated with the asset.This metadata will be be added in addition to default
+     *             metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *             default value will be overridden.
+     * @return The default metadata as a String
+     */
+    protected static Map<String,Object> buildMetadata(Map<String,Object> metaMap) {
 
-			String content = Utils.stringFromStream(new FileInputStream(f));
-			String hashOfContent = Hex.toString(Hash.keccak256(content));
+        Map<String, Object> ob = Utils.createDefaultMetadata();
+        ob.put(TYPE, DATA_SET);
+        ob.put(CONTENT_TYPE, OCTET_STREAM);
 
-			Map<String, Object> ob = Utils.createDefaultMetadata();
-			ob.put(TYPE, DATA_SET);
-			ob.put(SIZE, f.length());
-			ob.put(FILE_NAME, f.getName());
-			ob.put(CONTENT_TYPE, OCTET_STREAM);
-			ob.put(CONTENT_HASH, hashOfContent);
+        if (metaMap != null) {
+            for (Map.Entry<String, Object> me : metaMap.entrySet()) {
+                ob.put(me.getKey(), me.getValue());
+            }
+        }
 
-			if (meta != null) {
-				Map<String,Object> metaMap = JSON.toMap(meta);
-				for (Map.Entry<String, Object> me : metaMap.entrySet()) {
-					ob.put(me.getKey(), me.getValue());
-				}
-			}
+        return ob;
 
-			return ob;
+    }
 
-		} catch (FileNotFoundException e) {
-			throw new StarfishValidationException(e.getMessage());
-		}
-	}
+    /**
+     * Gets an input stream that can be used to consume the content of this asset.
+     * <p>
+     * Will throw an exception if consumption of the asset data in not possible
+     * locally.
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    @Override
+    public InputStream getContentStream() {
+        try {
+            return new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new StorageException("File not found ,file : " + file, e);
+        }
+    }
 
-	/**
-	 * Gets an input stream that can be used to consume the content of this asset.
-	 *
-	 * Will throw an exception if consumption of the asset data in not possible
-	 * locally.
-	 * 
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
-	 */
-	@Override
-	public InputStream getContentStream() {
-		try {
-			return new FileInputStream(file);
-		}
-		catch (FileNotFoundException e) {
-			throw new StorageException("File not found ,file : "+file , e);
-		}
-	}
+    @Override
+    public long getContentSize() {
+        return null != file ? file.length() : -1;
+    }
+    public File getSource() {
+        return file;
+    }
 
-	@Override
-	public long getContentSize() {
-		return null != file ? file.length(): -1;
-	}
-
-
-
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(this.getSource(),newMeta);
+    }
 }

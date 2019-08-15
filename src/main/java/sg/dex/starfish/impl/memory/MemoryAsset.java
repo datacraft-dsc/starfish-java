@@ -11,8 +11,8 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Mike
  *
  */
-public class MemoryAsset extends AMemoryAsset implements DataAsset {
+public class MemoryAsset extends AAsset implements DataAsset {
 
     private byte[] data;
 
@@ -41,13 +41,17 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
         this.data = data;
 
     }
+    private MemoryAsset(byte[] data,Map<String,Object> metaData) {
+        super(metaData);
 
-    private static String buildMetaData(byte[] data, Map<String, Object> meta) {
-        String hash = Hex.toString(Hash.keccak256(data));
+        this.data = data;
+
+    }
+
+    private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> meta) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(CONTENT_HASH, hash);
         ob.put(TYPE, DATA_SET);
         ob.put(SIZE, Integer.toString(data.length));
         ob.put(CONTENT_TYPE, OCTET_STREAM);
@@ -58,7 +62,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
             }
         }
 
-        return JSON.toPrettyString(ob);
+        return ob;
     }
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
@@ -153,5 +157,15 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     @Override
     public long getContentSize() {
         return this.data != null ? this.data.length : -1;
+    }
+
+
+    public byte[] getSource(){
+        return data;
+    }
+
+    @Override
+    public DataAsset updateMeta(Map<String, Object> newMeta) {
+        return create(this.getSource(),newMeta);
     }
 }

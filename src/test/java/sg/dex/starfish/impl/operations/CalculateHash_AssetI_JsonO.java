@@ -81,7 +81,7 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
     private Map<String,Object> doCompute(Object input) {
         Asset a= (Asset)input;
-        String hash =Hex.toString(Hash.keccak256(a.getContent()));
+        String hash =Hex.toString(Hash.sha3_256(a.getContent()));
 
         Map<String,Object> result = new HashMap<>();
         result.put("output", hash);

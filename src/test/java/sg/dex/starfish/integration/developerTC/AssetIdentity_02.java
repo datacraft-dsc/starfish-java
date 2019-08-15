@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,7 @@ public class AssetIdentity_02 {
     public void setup() {
         // Initialize Remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
     }
 
     @Test

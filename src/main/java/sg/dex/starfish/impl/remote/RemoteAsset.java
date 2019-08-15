@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Class representing an asset managed via a remote agent.
- * 
+ *
  * This asset will be present in Ocean ecosystem and be referred by using the asset ID.
  *
  * @author Mike
@@ -35,7 +35,7 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	/**
 	 * Creates a RemoteAsset with the given metadata on the specified remote agent
 	 * @param agent RemoteAgent on which to create the RemoteAsset
-	 * 
+	 *
 	 * @param meta Asset metadata which must be a valid JSON string
 	 * @return RemoteAsset
 	 */

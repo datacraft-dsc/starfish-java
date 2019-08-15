@@ -4,7 +4,7 @@ import sg.dex.starfish.impl.AAsset;
 
 /**
  * Abstract base class for in-memory assets
- * 
+ *
  * Contains common code required for
  * MemoryAsset/MemoryBundle/MemoryOperation classes.
  *
