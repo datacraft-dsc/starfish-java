@@ -112,31 +112,35 @@ public interface DataAsset extends Asset {
 
 	/**
 	 * This method is to include the content of hash in the asset metadata.
-	 * Hash of the content will be calculated based on keccak256 hashing algo , and the hash content will
+	 * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
 	 * be included in the asset metadata.
 	 * This hash content will be used to validate the integrity of asset content
+	 * Also this operation is only applicable if the Asset is of type DataAsset , if Asset is not
+	 * DataAsset Unsupported Operation Exception will be thrown
 	 *
 	 * @return respective data asset sub class.
+	 * @throws UnsupportedOperationException if the Asset type is not DataAsset
 	 */
 	public default DataAsset includeContentHash() {
 
-		// check if the hash content is already present
-		if(null != this.getMetadata().get(Constant.CONTENT_HASH)){
+		// check if the hash content is already present also
+		// validate if content is valid or not
+		if (null != this.getMetadata().get(Constant.CONTENT_HASH) && validateContentHash()) {
 
-			if(validateContentHash()){
-				return this;
+			return this;
+		} else {
+			Map<String, Object> metaMap = this.getMetadata();
+			metaMap.put(Constant.CONTENT_HASH, getContentHash());
+
+			// this operation is only valid for dataAsset
+			if (this instanceof DataAsset) {
+				return this.updateMeta(metaMap);
+			} else {
+				throw new UnsupportedOperationException("This method only applicable for Asset type DataAsset");
 			}
 		}
 
-		Map<String, Object> metaMap = this.getMetadata();
-		metaMap.put(Constant.CONTENT_HASH, getContentHash());
 
-		if (this instanceof DataAsset){
-			return this.updateMeta(metaMap);
-
-		}
-
-		throw new StarfishValidationException("Asset or its content is not Valid");
 	}
 
 	/**

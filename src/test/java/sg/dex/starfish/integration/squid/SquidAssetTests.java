@@ -142,10 +142,10 @@ public class SquidAssetTests {
     public void testRegisterOnSurferAndChain() throws IOException, EthereumException {
 
         // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset memory_asset= ResourceAsset.create("assets/SJR8961K_content.json",JSON.toMap(asset_metaData));
+        ResourceAsset memory_asset= ResourceAsset.create("assets/test_content.json",JSON.toMap(asset_metaData));
 
         // create surfer agent
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();

@@ -96,10 +96,10 @@ public class AssetRegistration_08 {
     public void testHashForResourceAsset() throws IOException {
 
         // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", JSON.toMap(asset_metaData));
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
 
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
@@ -116,10 +116,10 @@ public class AssetRegistration_08 {
     public void testHashForRemoteAsset() throws IOException {
 
         // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/SJR8961K_metadata.json")));
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/SJR8961K_content.json", JSON.toMap(asset_metaData));
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
 
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
@@ -136,7 +136,7 @@ public class AssetRegistration_08 {
     public void testMetadataWithHash()  {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
         assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
         resourceAsset.includeContentHash();
         // calculate content hash
@@ -150,7 +150,7 @@ public class AssetRegistration_08 {
     public void testMetadataWithoutHash() {
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create( "assets/SJR8961K_content.json");
+        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
         assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
     }
 
@@ -159,7 +159,7 @@ public class AssetRegistration_08 {
 
         // read metadata
 
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
+        Path path = Paths.get("src/test/resources/assets/test_content.json");
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
@@ -175,7 +175,7 @@ public class AssetRegistration_08 {
 
         // read metadata
 
-        Path path = Paths.get("src/test/resources/assets/SJR8961K_content.json");
+        Path path = Paths.get("src/test/resources/assets/test_content.json");
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
