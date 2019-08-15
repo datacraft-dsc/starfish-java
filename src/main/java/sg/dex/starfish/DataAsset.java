@@ -92,7 +92,7 @@ public interface DataAsset extends Asset {
             throw new StarfishValidationException("Content hash is not included in the metadata");
         }
 
-		String contentHash = Hex.toString(Hash.keccak256(Utils.stringFromStream(this.getContentStream())));
+            String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));
 		if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
 			throw new StarfishValidationException("Failed to validate content hash");
 		}
@@ -107,7 +107,7 @@ public interface DataAsset extends Asset {
 
 	public default String getContentHash() {
 
-		return Hex.toString(Hash.keccak256(this.getContent()));
+		return Hex.toString(Hash.sha3_256(this.getContent()));
 	}
 
 	/**

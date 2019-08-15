@@ -49,11 +49,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
     }
 
     private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> meta) {
-        String hash = Hex.toString(Hash.keccak256(data));
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(CONTENT_HASH, hash);
         ob.put(TYPE, DATA_SET);
         ob.put(SIZE, Integer.toString(data.length));
         ob.put(CONTENT_TYPE, OCTET_STREAM);

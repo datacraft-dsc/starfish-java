@@ -4,7 +4,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -14,8 +13,6 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,37 +97,9 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
                 ob.put(me.getKey(), me.getValue());
             }
         }
-
-
         return ob;
     }
 
-    /**
-     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
-     *
-     * @param uri URI
-     * @return the content of hash as string
-     */
-    private static String getHashContent(URI uri) {
-        HttpGet httpget = new HttpGet(uri);
-        CloseableHttpResponse response = null;
-        try {
-            response = HTTP.execute(httpget);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 404) {
-                throw new RemoteException("Asset ID not found at: " + uri);
-            }
-            if (statusCode == 200) {
-                InputStream inputStream = HTTP.getContent(response);
-                return Hex.toString(Hash.keccak256(Utils.stringFromStream(inputStream)));
-            } else {
-                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting Remote Asset content failed: ", e);
-        }
-    }
 
     /**
      * Gets raw data corresponding to this Asset

@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ public class AssetRegistration_08 {
     @Before
     public void setup() {
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
 
     }
 
@@ -138,7 +140,7 @@ public class AssetRegistration_08 {
         assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
         resourceAsset.includeContentHash();
         // calculate content hash
-       String expected= Hex.toString(Hash.keccak256(resourceAsset.getContent()));
+       String expected= Hex.toString(Hash.sha3_256(resourceAsset.getContent()));
 
 //        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
         assertEquals(expected,resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString());
@@ -161,7 +163,7 @@ public class AssetRegistration_08 {
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
         String content = Utils.stringFromStream(fileAsset.getContentStream());
-        String expected = Hex.toString(Hash.keccak256(content));
+        String expected = Hex.toString(Hash.sha3_256(content));
 
         fileAsset =(FileAsset)fileAsset.includeContentHash();
         String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
@@ -186,7 +188,7 @@ public class AssetRegistration_08 {
         fileAsset.validateContentHash();
 
 
-        String expected = Hex.toString(Hash.keccak256(content));
+        String expected = Hex.toString(Hash.sha3_256(content));
         String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
         assertEquals(expected, actual);
     }

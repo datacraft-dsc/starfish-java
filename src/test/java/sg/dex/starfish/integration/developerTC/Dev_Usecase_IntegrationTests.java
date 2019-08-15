@@ -30,7 +30,6 @@ import sg.dex.starfish.integration.connection_check.ConnectionChecker;
 //        InvokeServiceFree_20.class,
         InvokeServicePaid_21.class,
         AddNewAssetVersion_22.class
-//        SampleIntegrationTests.class
 
 
 })

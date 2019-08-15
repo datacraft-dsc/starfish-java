@@ -1,6 +1,5 @@
 package sg.dex.starfish.integration.connection_check;
 
-import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;

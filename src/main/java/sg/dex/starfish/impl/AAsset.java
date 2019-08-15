@@ -27,12 +27,12 @@ public abstract class AAsset implements Asset {
 	protected AAsset(String meta) {
 		//Utils.validateAssetMetaData(meta);
 		this.metadataString = meta;
-		this.id = Hex.toString(Hash.keccak256(meta));
+		this.id = Hex.toString(Hash.sha3_256(meta));
 	}
 	protected AAsset(Map<String,Object> meta) {
 		//Utils.validateAssetMetaData(meta);
 		this.metadataString = JSON.toString(meta);
-		this.id = Hex.toString(Hash.keccak256(JSON.toString(meta)));
+		this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));
 	}
 	@Override
 	public String toString() {

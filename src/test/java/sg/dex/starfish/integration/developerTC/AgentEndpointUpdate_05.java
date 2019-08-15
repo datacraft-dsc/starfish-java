@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,9 @@ public class AgentEndpointUpdate_05 {
     @Test
     public void testServiceEndPoint() {
         // creating an instance of Remote Agent
-        RemoteAgent remoteAgent = createRemoteAgent("localhost:8008");
+        String surferURL = RemoteAgentConfig.getSurferUrl();
+        RemoteAgent remoteAgent = createRemoteAgent(surferURL);
+        Assume.assumeNotNull(remoteAgent);
 
         assertTrue(remoteAgent.getStorageEndpoint().contains( "/api/v1/assets"));
         assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));

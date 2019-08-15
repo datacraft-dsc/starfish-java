@@ -54,21 +54,23 @@ public class InvokeServiceFree_20 {
     }
 
     private String getDdo(){
+        String surferURL = RemoteAgentConfig.getSurferUrl();
+        String invokeURL = RemoteAgentConfig.getInvokeUrl();
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "http://localhost:3000/api/v1" ));
+                "serviceEndpoint", invokeURL+"/api/v1" ));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
+                "serviceEndpoint", surferURL+ "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "http://localhost:8080" + "/api/v1/assets"));
+                "serviceEndpoint", surferURL+  "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint", "http://localhost:8080" + "/api/v1/auth"));
+                "serviceEndpoint", surferURL + "/api/v1/auth"));
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
 

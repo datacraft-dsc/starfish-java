@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -54,6 +55,7 @@ public class AgentRegistration_04 {
 
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
+        Assume.assumeNotNull(remoteAgent);
         assertNotNull(remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         assertNotNull(remoteAgent.getDID());
