@@ -33,6 +33,7 @@ install:
   - export project_version=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
 
 after_success:
+  mvn javadoc:javadoc
   touch ./target/site/.nojekyll
 
 deploy:
