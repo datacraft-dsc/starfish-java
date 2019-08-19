@@ -56,3 +56,11 @@ deploy:
       tags: true
       all_branches: true
 
+  - provider: pages
+    local_dir: target/site
+    skip_cleanup: true
+    github_token: $GIT_HUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    keep_history: true
+    on:
+      branch: develop
+      tags: true
