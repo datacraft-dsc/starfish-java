@@ -21,7 +21,7 @@ before_install:
 #  - cat $HOME/.m2/settings.xml
   - git clone https://github.com/DEX-Company/barge.git
   - cd barge
-  - git checkout tags/dex-2019-08-13
+  - git checkout tags/dex-2019-08-19
   - bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
     &
   - cd ..
