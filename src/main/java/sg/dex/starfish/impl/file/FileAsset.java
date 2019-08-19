@@ -2,9 +2,9 @@ package sg.dex.starfish.impl.file;
 
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.File;
@@ -39,6 +39,7 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
+        validateFileExist(f);
         return new FileAsset(buildMetadata( null), f);
     }
 
@@ -52,7 +53,20 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f, Map <String,Object> metaData) {
+        validateFileExist(f);
         return new FileAsset(buildMetadata( metaData), f);
+    }
+
+    /**
+     * Method to validate if the file exist.
+     * @param f file to be validated
+     */
+    private static void validateFileExist(File f){
+
+        if(f== null || !f.exists()){
+            throw new StarfishValidationException("Give file is null or may not exist");
+        }
+
     }
 
     /**

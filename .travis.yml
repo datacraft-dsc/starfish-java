@@ -8,9 +8,6 @@ jdk:
 dist: xenial
 sudo: false
 
-addons:
-  ssh_known_hosts: 52.163.231.198
-
 branches:
   only:
     - develop
@@ -20,31 +17,24 @@ cache:
 services:
   - docker
 before_install:
-  - echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"\n    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <mirrors>\n    <mirror>\n      <id>mvnsearch-unavailable</id>\n      <name>mvnsearch-unavailable</name>\n      <mirrorOf>mvnsearch</mirrorOf>\n      <url>http://repo1.maven.org/maven2</url>\n    </mirror>\n  </mirrors>\n  <profiles>\n    <profile>\n      <id>no-mvnsearch</id>\n      <repositories>\n        <repository>\n          <id>mvnsearch</id>\n          <url>http://www.mvnsearch.org/maven2</url>\n          <releases>\n            <enabled>true</enabled>\n          </releases>\n          <snapshots>\n            <enabled>true</enabled>\n          </snapshots>\n        </repository>\n      </repositories>\n    </profile>\n  </profiles>\n  <activeProfiles>\n    <activeProfile>no-mvnsearch</activeProfile>\n  </activeProfiles>\n</settings>' > $HOME/.m2/settings.xml
-  - cat $HOME/.m2/settings.xml
+#  - echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"\n    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <mirrors>\n    <mirror>\n      <id>mvnsearch-unavailable</id>\n      <name>mvnsearch-unavailable</name>\n      <mirrorOf>mvnsearch</mirrorOf>\n      <url>http://repo1.maven.org/maven2</url>\n    </mirror>\n  </mirrors>\n  <profiles>\n    <profile>\n      <id>no-mvnsearch</id>\n      <repositories>\n        <repository>\n          <id>mvnsearch</id>\n          <url>http://www.mvnsearch.org/maven2</url>\n          <releases>\n            <enabled>true</enabled>\n          </releases>\n          <snapshots>\n            <enabled>true</enabled>\n          </snapshots>\n        </repository>\n      </repositories>\n    </profile>\n  </profiles>\n  <activeProfiles>\n    <activeProfile>no-mvnsearch</activeProfile>\n  </activeProfiles>\n</settings>' > $HOME/.m2/settings.xml
+#  - cat $HOME/.m2/settings.xml
   - git clone https://github.com/DEX-Company/barge.git
   - cd barge
-  - git checkout dex-2019-05-24
-  - bash -x start_ocean.sh --no-brizo --no-pleuston --no-koi --local-spree-node 2>&1 > start_ocean.log
+  - git checkout tags/dex-2019-08-19
+  - bash -x start_ocean.sh --no-brizo --no-pleuston --local-spree-node 2>&1 > start_ocean.log
     &
   - cd ..
   - sleep 60
   - ./scripts/wait_for_migration_and_extract_keeper_artifacts.sh
-  - docker run -p 3000:3000 --env SURFER_URL=http://localhost:8080 --network="ocean_backend" --ip="172.15.0.21" canaradex/koi-clj:v0.1.1 2>&1 koi.log
-    &
 install:
   - mvn clean install -P all-test
   - mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]'
   - export project_version=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
-script:
-# the below  code added for issue "The job exceeded the maximum log length, and has been terminated. travis"
-- echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"\n    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <mirrors>\n    <mirror>\n      <id>mvnsearch-unavailable</id>\n      <name>mvnsearch-unavailable</name>\n      <mirrorOf>mvnsearch</mirrorOf>\n      <url>http://repo1.maven.org/maven2</url>\n    </mirror>\n  </mirrors>\n  <profiles>\n    <profile>\n      <id>no-mvnsearch</id>\n      <repositories>\n        <repository>\n          <id>mvnsearch</id>\n          <url>http://www.mvnsearch.org/maven2</url>\n          <releases>\n            <enabled>true</enabled>\n          </releases>\n          <snapshots>\n            <enabled>true</enabled>\n          </snapshots>\n        </repository>\n      </repositories>\n    </profile>\n  </profiles>\n  <activeProfiles>\n    <activeProfile>no-mvnsearch</activeProfile>\n  </activeProfiles>\n</settings>' > $HOME/.m2/settings.xml
-- cat $HOME/.m2/settings.xml
-#- mvn javadoc:javadoc
-# after_script:
-# - ./surfer/test/bin/cli-test shutdown
+
 after_success:
-#- ./scripts/deployDocs.sh 52.163.231.198 developersiteuser dev $project_version
+  - mvn javadoc:javadoc
+  - touch ./target/site/.nojekyll
 
 deploy:
   - provider: releases
@@ -56,3 +46,10 @@ deploy:
       tags: true
       all_branches: true
 
+  - provider: pages
+    local_dir: target/site
+    skip_cleanup: true
+    github_token: $GIT_HUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    keep_history: true
+    on:
+      branch: develop
