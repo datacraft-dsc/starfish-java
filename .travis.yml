@@ -64,4 +64,3 @@ deploy:
     keep_history: true
     on:
       branch: develop
-      tags: true
