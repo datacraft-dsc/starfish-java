@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteListing.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.remote</a> &gt; <span class="el_source">RemoteListing.java</span></div><h1>RemoteListing.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.remote;
+
+import sg.dex.starfish.Account;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Listing;
+import sg.dex.starfish.impl.AListing;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.*;
+
+/**
+ * Class representing an Listing managed via a remote agent.
+ *
+ * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
+ *
+ * @author Ayush
+ * @version 0.5
+ */
+
+public class RemoteListing extends AListing {
+
+    // local map to cache the listing data
+<span class="nc" id="L25">    private static Map&lt;String, Object&gt; metaDataCache = null;</span>
+    // remote agent reference
+    private RemoteAgent remoteAgent;
+    // listing id
+    private String listing_id;
+
+
+    /**
+     * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
+     *
+     * @param remoteAgent remote agent
+     * @param id id
+     */
+<span class="nc" id="L38">    private RemoteListing(RemoteAgent remoteAgent, String id) {</span>
+<span class="nc" id="L39">        this.remoteAgent = remoteAgent;</span>
+<span class="nc" id="L40">        this.listing_id = id;</span>
+<span class="nc" id="L41">    }</span>
+
+    /**
+     * To get the Reference of Existing Listing
+     *
+     * @param agent agent on which this listing needs to be created
+     * @param id listing id
+     * @return RemoteListing
+     */
+    public static RemoteListing create(RemoteAgent agent, String id) {
+<span class="nc" id="L51">        RemoteListing remoteListing = new RemoteListing(agent, id);</span>
+<span class="nc" id="L52">        initializeCache();</span>
+<span class="nc" id="L53">        return remoteListing;</span>
+    }
+
+    /**
+     * This method is to create the local cache instance
+     */
+    private static void initializeCache() {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (null == metaDataCache) {</span>
+<span class="nc" id="L61">            metaDataCache = new HashMap&lt;&gt;();</span>
+        }
+
+<span class="nc" id="L64">    }</span>
+
+    @Override
+    public Asset getAsset() {
+
+<span class="nc" id="L69">        return remoteAgent.getAsset(getAssetID());</span>
+    }
+
+    @Override
+    public Object getAgreement() {
+<span class="nc" id="L74">        return getAggrement();</span>
+    }
+
+    @Override
+    public Asset purchase(Account account) {
+        // Todo get Purchase based on account
+<span class="nc" id="L80">        return null;</span>
+    }
+
+    @Override
+    public Listing refresh() {
+<span class="nc" id="L85">        metaDataCache.put(listing_id, remoteAgent.getListingMetaData(listing_id));</span>
+<span class="nc" id="L86">        return this;</span>
+    }
+
+
+    @Override
+    public Map&lt;String, Object&gt; getMetaData() {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(listing_id) == null ?</span>
+<span class="nc" id="L93">                remoteAgent.getListingMetaData(listing_id) : (Map&lt;String, Object&gt;) metaDataCache.get(listing_id);</span>
+<span class="nc" id="L94">        return metaData;</span>
+
+    }
+
+    /**
+     * This method is to get the AssetID
+     * @return String assetId
+     */
+    @Override
+    public String getAssetID() {
+<span class="nc" id="L104">        return getMetaData().get(&quot;assetid&quot;).toString();</span>
+    }
+
+    /**
+     * This method is to get the USer ID
+     * @return String userId
+     */
+    private String getUserID() {
+<span class="nc" id="L112">        return getMetaData().get(USER_ID).toString();</span>
+    }
+
+    /**
+     * This method is to get the Aggrement
+     * @return String agreement
+     */
+    private String getAggrement() {
+<span class="nc" id="L120">        return getMetaData().get(AGREEMENT).toString();</span>
+    }
+
+    /**
+     * This method is to get the Listing ID
+     * @return String listingId
+     */
+    @Override
+    public String getId() {
+<span class="nc" id="L129">        return getMetaData().get(ID).toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

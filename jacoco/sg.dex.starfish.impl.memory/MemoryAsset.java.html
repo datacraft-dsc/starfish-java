@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemoryAsset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.memory</a> &gt; <span class="el_source">MemoryAsset.java</span></div><h1>MemoryAsset.java</h1><pre class="source lang-java linenums">/**
+ * Represents an Asset on the Ocean Network.
+ * &lt;p&gt;
+ * Assets are defined by JSON metadata, and the Asset ID is the keccak256 hash of the metadata
+ * as encoded in UTF-8.
+ */
+package sg.dex.starfish.impl.memory;
+
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.Hex;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.*;
+
+/**
+ * Class representing a local in-memory data asset.
+ *
+ * Intended for use in testing or local development situations.
+ *
+ * @author Mike
+ *
+ */
+public class MemoryAsset extends AAsset implements DataAsset {
+
+    private byte[] data;
+
+    private MemoryAsset(byte[] data,String metaData) {
+<span class="nc" id="L39">        super(metaData);</span>
+
+<span class="nc" id="L41">        this.data = data;</span>
+
+<span class="nc" id="L43">    }</span>
+    private MemoryAsset(byte[] data,Map&lt;String,Object&gt; metaData) {
+<span class="fc" id="L45">        super(metaData);</span>
+
+<span class="fc" id="L47">        this.data = data;</span>
+
+<span class="fc" id="L49">    }</span>
+
+    private static Map&lt;String, Object&gt; buildMetaData(byte[] data, Map&lt;String, Object&gt; meta) {
+
+<span class="fc" id="L53">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L54">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L55">        ob.put(TYPE, DATA_SET);</span>
+<span class="fc" id="L56">        ob.put(SIZE, Integer.toString(data.length));</span>
+<span class="fc" id="L57">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (meta != null) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="fc" id="L61">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L62">            }</span>
+        }
+
+<span class="fc" id="L65">        return ob;</span>
+    }
+    /**
+     * Gets a MemoryAsset using the content and metadata from the provided asset
+     *
+     * @param asset The asset to use to construct this MemoryAsset
+     * @return A new MemoryAsset containing the data from the passed asset argument
+     */
+    public static MemoryAsset create(Asset asset) {
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
+<span class="fc" id="L75">            return (MemoryAsset) asset;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
+<span class="nc" id="L77">            byte[] data = asset.getContent();</span>
+<span class="nc" id="L78">            return new MemoryAsset(data,buildMetaData(data,null));</span>
+        } else {
+<span class="nc" id="L80">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
+        }
+    }
+
+    /**
+     * Creates a MemoryAsset with the provided data. Default metadata will be
+     * generated.
+     *
+     * @param data Byte array containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data) {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L93">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
+        }
+<span class="fc" id="L95">        return new MemoryAsset(data,buildMetaData(data,null));</span>
+    }
+
+    /**
+     * Creates a MemoryAsset with the provided string data, encoded in UTF_8 Default
+     * metadata will be generated.
+     *
+     * @param string String containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static Asset create(String string) {
+<span class="fc" id="L106">        byte[] data = string.getBytes(StandardCharsets.UTF_8);</span>
+<span class="fc" id="L107">        return new MemoryAsset(data,buildMetaData(data,null));</span>
+    }
+
+    /**
+     * Creates a MemoryAsset with the provided metadata and content
+     *
+     * @param meta A map containing the metadata for this asset
+     * @param data Byte array containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data, Map&lt;String, Object&gt; meta) {
+<span class="fc" id="L118">        return new MemoryAsset(data,buildMetaData(data,meta));</span>
+    }
+
+
+    /**
+     * Gets InputStream corresponding to this Asset
+     *
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException if unable to load the Asset
+     * @return An input stream allowing consumption of the asset data
+     */
+    @Override
+    public InputStream getContentStream() {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
+<span class="fc" id="L132">        return new ByteArrayInputStream(data);</span>
+    }
+
+    /**
+     * Gets raw data corresponding to this Asset
+     *
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException if unable to load the Asset
+     * @return An input stream allowing consumption of the asset data
+     */
+    @Override
+    public byte[] getContent() {
+        // we take a copy of data to protected immutability of MemoryAsset instance
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
+    }
+
+
+    @Override
+    public Map&lt;String, Object&gt; getParamValue() {
+<span class="fc" id="L151">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+        // pass the asset ID, i.e. hash of content
+<span class="fc" id="L153">        o.put(ID, getAssetID());</span>
+<span class="fc" id="L154">        return o;</span>
+    }
+
+    @Override
+    public long getContentSize() {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
+    }
+
+
+    public byte[] getSource(){
+<span class="nc" id="L164">        return data;</span>
+    }
+
+    @Override
+    public DataAsset updateMeta(Map&lt;String, Object&gt; newMeta) {
+<span class="nc" id="L169">        return create(this.getSource(),newMeta);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

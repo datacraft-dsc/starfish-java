@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteHttpAsset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.url</a> &gt; <span class="el_source">RemoteHttpAsset.java</span></div><h1>RemoteHttpAsset.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.url;
+
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * A specialised asset class that references data at a given URI.
+ * &lt;p&gt;
+ * It is assumed that asset content can be accessed with a HTTP GET to the given URI.
+ */
+public class RemoteHttpAsset extends AAsset implements DataAsset {
+
+    private final URI uri;
+
+    protected RemoteHttpAsset(String meta, URI uri) {
+<span class="nc" id="L35">        super(meta);</span>
+<span class="nc" id="L36">        this.uri = uri;</span>
+<span class="nc" id="L37">    }</span>
+    protected RemoteHttpAsset(Map&lt;String,Object&gt; meta, URI uri) {
+<span class="fc" id="L39">        super(meta);</span>
+<span class="fc" id="L40">        this.uri = uri;</span>
+<span class="fc" id="L41">    }</span>
+
+    private static URI getUri(String urlString) {
+        URI uri;
+        try {
+<span class="fc" id="L46">            uri = new URI(urlString);</span>
+<span class="nc" id="L47">        } catch (URISyntaxException e) {</span>
+<span class="nc" id="L48">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">        return uri;</span>
+    }
+
+
+
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri of the resource
+     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     */
+    public static RemoteHttpAsset create(String uri) {
+<span class="fc" id="L62">        return new RemoteHttpAsset(buildMetaData( null), getUri(uri));</span>
+    }
+
+    /**
+     * Creates a HTTP asset using the given URI string.
+     *
+     * @param uri      of the resource
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
+     * @return RemoteHttpAsset instance created using given params with given metadata.
+     */
+    public static RemoteHttpAsset create(String uri, Map&lt;String,Object&gt; metaData) {
+<span class="nc" id="L75">        return new RemoteHttpAsset(buildMetaData( metaData), getUri(uri));</span>
+    }
+
+    /**
+     * This method is to build the metadata of the Resource Asset
+     *
+     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
+     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                                default value will be overridden.
+     * @return String buildMetadata
+     */
+    private static Map&lt;String,Object&gt; buildMetaData( Map&lt;String,Object&gt; metaData) {
+
+<span class="fc" id="L88">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L89">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L90">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
+<span class="fc" id="L91">        ob.put(Constant.CONTENT_TYPE, &quot;application/octet-stream&quot;);</span>
+
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (metaData != null) {</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
+<span class="nc" id="L97">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L98">            }</span>
+        }
+<span class="fc" id="L100">        return ob;</span>
+    }
+
+
+    /**
+     * Gets raw data corresponding to this Asset
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    @Override
+    public InputStream getContentStream() {
+<span class="fc" id="L113">        HttpGet httpget = new HttpGet(uri);</span>
+<span class="fc" id="L114">        CloseableHttpResponse response = null;</span>
+        try {
+<span class="fc" id="L116">            response = HTTP.execute(httpget);</span>
+<span class="fc" id="L117">            StatusLine statusLine = response.getStatusLine();</span>
+<span class="fc" id="L118">            int statusCode = statusLine.getStatusCode();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if (statusCode == 404) {</span>
+<span class="nc" id="L120">                throw new RemoteException(&quot;Asset ID not found at: &quot; + uri);</span>
+            }
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            if (statusCode == 200) {</span>
+<span class="fc" id="L123">                InputStream inputStream = HTTP.getContent(response);</span>
+<span class="fc" id="L124">                return inputStream;</span>
+            } else {
+<span class="nc" id="L126">                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+            }
+<span class="nc" id="L128">        } catch (IOException e) {</span>
+<span class="nc" id="L129">            throw new RemoteException(&quot; Getting Remote Asset content failed: &quot;, e);</span>
+        }
+
+    }
+
+    /**
+     * Gets RemoteAsset size
+     *
+     * @return size of the RemoteAsset
+     */
+    @Override
+    public long getContentSize() {
+        try {
+<span class="nc" id="L142">            return getContentStream().available();</span>
+<span class="nc" id="L143">        } catch (IOException e) {</span>
+<span class="nc" id="L144">            throw new GenericException(</span>
+<span class="nc" id="L145">                    &quot;Exception occurred  for asset id :&quot; + getAssetID() + &quot; while finding getting the Content size :&quot;,</span>
+                    e);
+        }
+    }
+
+    @Override
+    public DID getAssetDID() {
+<span class="nc" id="L152">        throw new UnsupportedOperationException(&quot;Can't get DID for asset of type &quot; + this.getClass());</span>
+    }
+
+    public URI getSource(){
+<span class="nc" id="L156">        return uri;</span>
+    }
+    @Override
+    public DataAsset updateMeta(Map&lt;String, Object&gt; newMeta) {
+<span class="nc" id="L160">        return create(uri.toString(),newMeta);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

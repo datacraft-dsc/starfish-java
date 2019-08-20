@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteBundle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.remote</a> &gt; <span class="el_source">RemoteBundle.java</span></div><h1>RemoteBundle.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.remote;
+
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Bundle;
+import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.util.JSON;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static sg.dex.starfish.constant.Constant.*;
+
+
+/**
+ * Class representing an bundle asset managed via a remote agent.
+ *
+ * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
+ *
+ */
+public class RemoteBundle extends ARemoteAsset implements Bundle {
+    private Map&lt;String, Asset&gt; assetMap;
+
+    private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap) {
+<span class="nc" id="L26">        super(metaData,remoteAgent);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        this.assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
+
+<span class="nc" id="L29">    }</span>
+
+    /**
+     * This method is to create a Remote bundle asset asset with given Bundle name
+     * @param remoteAgent agent on which the  bundle need to create
+     * @param assetMap map of all asset with name and assetID
+     * @param meta additional meta data needs to be added while creating bundle
+     * @return RemoteBundle instance
+     */
+    public static RemoteBundle create(RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
+<span class="nc" id="L39">        return new RemoteBundle(buildMetaData(assetMap, meta), remoteAgent, assetMap);</span>
+    }
+
+    /**
+     * API to create a Remote bundle asset asset with given Bundle name
+     *
+     * @param assetMap map of all asset with name and assetID
+     * @param remoteAgent agent on which this bundle need to be created
+     * @return RemoteBundle new instance
+     */
+    public static RemoteBundle create(RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if(null ==remoteAgent){</span>
+<span class="nc" id="L51">            throw new StarfishValidationException(&quot;Remote agent cannot be null for creating remote Bundle&quot;);</span>
+        }
+        //build meta data
+<span class="nc" id="L54">        return create(remoteAgent,assetMap,null);</span>
+
+    }
+
+    /**
+     * This method is to create a Remote bundle asset  with given Asset Map and agent
+     * This method  will be called from agent .
+     * it will create bundle asset based on the Asset passed as map.
+     * For each asset data passed in map it will first get the asset id then will create
+     * a Remote Asset respectively.
+     *
+     * @param remoteAgent agent on which this bundle need to be created
+     * @param responseMap response map
+     * @return RemoteBundle new instance
+     */
+    public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map&lt;String, Object&gt; responseMap) {
+
+        // get the contents
+<span class="nc" id="L72">        Map&lt;String, Map&lt;String, String&gt;&gt; allSubAsset=(Map&lt;String, Map&lt;String, String&gt;&gt;)responseMap.get(&quot;contents&quot;);</span>
+        //build meta data
+<span class="nc" id="L74">        Map&lt;String,Asset&gt; assetMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (String name : allSubAsset.keySet()) {</span>
+<span class="nc" id="L76">            String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();</span>
+<span class="nc" id="L77">            ARemoteAsset aRemoteAsset =remoteAgent.getAsset(assetId);</span>
+<span class="nc" id="L78">            assetMap.put(name,aRemoteAsset);</span>
+
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">        return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);</span>
+
+
+    }
+
+    /**
+     * This method is to build the metadata for the bundle
+     * @param meta additional metadata
+     * @param assetMap assetMap
+     * @return metadata as string
+     */
+    private static String buildMetaData(Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
+<span class="nc" id="L93">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L94">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="nc" id="L95">        ob.put(TYPE, BUNDLE);</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (meta != null) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="nc" id="L99">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L100">            }</span>
+        }
+
+        //build meta data
+<span class="nc" id="L104">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
+        Asset asset;
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        for (String name : assetMap.keySet()) {</span>
+<span class="nc" id="L108">            asset = assetMap.get(name);</span>
+<span class="nc" id="L109">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
+<span class="nc" id="L110">        }</span>
+
+<span class="nc" id="L112">        ob.put(CONTENTS, subAssetIdMap);</span>
+<span class="nc" id="L113">        return JSON.toPrettyString(ob);</span>
+    }
+
+    /**
+     * This method is to get the map of AssetID based on AssetId
+     *
+     * @param assetId asset id
+     * @return Map assetIdMap
+     */
+    private static Map&lt;String, String&gt; getAssetIdMap(String assetId) {
+<span class="nc" id="L123">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L124">        assetIDMap.put(ASSET_ID, assetId);</span>
+<span class="nc" id="L125">        return assetIDMap;</span>
+
+    }
+
+    /**
+     * This method is to get the AssetMap
+     * @return assetMap that belong to bundle
+     */
+    private Map&lt;String, Asset&gt; getAssetMap() {
+
+<span class="nc" id="L135">        return assetMap.entrySet()</span>
+<span class="nc" id="L136">                .stream()</span>
+<span class="nc" id="L137">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+                        Map.Entry::getValue));
+    }
+
+    @Override
+    public Bundle add(String name, Asset asset) {
+<span class="nc" id="L143">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
+<span class="nc" id="L144">        copyMap.put(name, asset);</span>
+<span class="nc" id="L145">        return create(remoteAgent, copyMap, getMetadata());</span>
+    }
+
+    @Override
+    public Bundle addAll(Map&lt;String, Asset&gt; assetMapp) {
+
+<span class="nc" id="L151">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
+<span class="nc" id="L152">        copyMap.putAll(assetMapp);</span>
+
+<span class="nc" id="L154">        return create(remoteAgent, copyMap, getMetadata());</span>
+    }
+
+    @Override
+    public Asset get(String name) {
+<span class="nc" id="L159">        return getAssetMap().get(name);</span>
+    }
+
+    @Override
+    public Map&lt;String, Object&gt; getAll() {
+
+<span class="nc" id="L165">        return getAssetMap().entrySet()</span>
+<span class="nc" id="L166">                .stream()</span>
+<span class="nc" id="L167">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+                        Map.Entry::getValue));
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

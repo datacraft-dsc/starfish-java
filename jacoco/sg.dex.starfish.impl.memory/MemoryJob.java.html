@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemoryJob.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.memory</a> &gt; <span class="el_source">MemoryJob.java</span></div><h1>MemoryJob.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.memory;
+
+import sg.dex.starfish.Job;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Hex;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * Class representing a job being conducted asynchronously in the local JVM.
+ *
+ * A memory job will either:
+ * - Be in progress (getResult return null)
+ * - Complete normally (getResult returns an Asset)
+ * - Fail with some exception (getResult throws an exception)
+ * @param &lt;T&gt; This describes my type parameter
+ * It is possible that a memory job will never complete.
+ *
+ * @author Mike
+ *
+ */
+public class MemoryJob&lt;T&gt; implements Job&lt;T&gt; {
+
+	private final Future&lt;T&gt; future;
+
+<span class="fc" id="L31">	private MemoryJob(Future&lt;T&gt; future) {</span>
+<span class="fc" id="L32">		this.future=future;</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * Create a MemoryJob instance using the provided Future.
+	 *
+	 * @param future A Future to be used to complete this job
+	 * @param &lt;T&gt; This describes my type parameter
+	 * @return A MemoryJob instance encapsulation the provided future
+	 */
+	public static&lt;T&gt; MemoryJob&lt;T&gt; create(Future&lt;T&gt; future) {
+<span class="fc" id="L43">		return new MemoryJob&lt;T&gt;(future);</span>
+	}
+
+	@Override
+	public boolean isComplete() {
+<span class="nc" id="L48">		return future.isDone();</span>
+	}
+
+	/**
+	 * Gets the result of the job as an Ocean asset
+	 *
+	 * @throws AuthorizationException if requestor does not have load permission
+	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
+	 * @return The Asset resulting from the job, or null if not available
+	 */
+	@Override
+	public  T getResult() {
+		try {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">			return future.isDone()?future.get():null;</span>
+		}
+<span class="nc" id="L64">		catch (InterruptedException e) {</span>
+<span class="nc" id="L65">			throw new Error(&quot;Job interrupted&quot;,e);</span>
+		}
+<span class="nc" id="L67">		catch (ExecutionException e) {</span>
+<span class="nc" id="L68">			throw new Error(&quot;Job failed with exception: &quot;,e.getCause());</span>
+		}
+	}
+
+	/**
+	 * Waits for the result of the Operation and returns the result Asset
+	 * WARNING: may never return if the job does not complete
+	 *
+	 * @throws AuthorizationException if requestor does not have load permission
+	 * @throws StorageException if unable to load the Asset
+	 * @throws JobFailedException if Job fails
+	 * @throws Error if Job interrupted
+	 * @return The Asset resulting from the job
+	 */
+	@Override
+	public T awaitResult() {
+		try {
+<span class="nc" id="L85">			return future.get();</span>
+		}
+<span class="nc" id="L87">		catch (InterruptedException e) {</span>
+<span class="nc" id="L88">			throw new Error(&quot;Job interrupted&quot;,e);</span>
+		}
+<span class="nc" id="L90">		catch (ExecutionException e) {</span>
+<span class="nc" id="L91">			Throwable cause=e.getCause();</span>
+<span class="nc" id="L92">			throw new JobFailedException(&quot;Job failed with exception: &quot;+cause,e);</span>
+		}
+	}
+
+	/**
+	 * Waits for the result of the Operation and returns the result Asset
+	 * or returns null if the timeout in milliseconds expires before the
+	 * asset is available.
+	 *
+	 * @throws JobFailedException if Job fails
+	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
+	 */
+	@Override
+	public T awaitResult(long timeoutMillis) {
+		try {
+<span class="fc" id="L107">			return future.get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+		}
+<span class="fc" id="L109">		catch (InterruptedException | ExecutionException | TimeoutException e) {</span>
+<span class="fc" id="L110">			Throwable cause=e.getCause();</span>
+<span class="fc" id="L111">			throw new JobFailedException(&quot;Job failed with exception: &quot;+cause,e);</span>
+		}
+	}
+
+	@Override
+	public String getJobID() {
+<span class="nc" id="L117">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

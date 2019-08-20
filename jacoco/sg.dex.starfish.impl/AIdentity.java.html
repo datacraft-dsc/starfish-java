@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AIdentity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl</a> &gt; <span class="el_source">AIdentity.java</span></div><h1>AIdentity.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import sg.dex.starfish.Account;
+import sg.dex.starfish.Identity;
+
+/**
+ * Class representing an Identity in the Ocean Ecosystem
+ *
+ * @author Tom
+ *
+ */
+public abstract class AIdentity implements Identity {
+
+	protected String id;
+	protected Map&lt;String,Account&gt; accounts;
+
+	/**
+	 * Create an AIdentity with the provided ID
+	 *
+	 * @param id The identifier for this account
+	 */
+<span class="nc" id="L25">	protected AIdentity(String id) {</span>
+<span class="nc" id="L26">		this.id=id;</span>
+<span class="nc" id="L27">		this.accounts = new HashMap&lt;String,Account&gt;();;</span>
+<span class="nc" id="L28">	}</span>
+
+	/**
+	 * Gets the ID for an Identity
+	 *
+	 * @return Identity identifier
+	 */
+	@Override
+	public String getID() {
+<span class="nc" id="L37">		return id;</span>
+	}
+
+	/**
+	 * Gets the Accounts associated with this Identity
+	 * where the key is the Account.getID();
+	 * @return accounts
+	 */
+	@Override
+	public Map&lt;String,Account&gt; getAccounts() {
+<span class="nc" id="L47">		return accounts;</span>
+	}
+
+	/**
+	 * Adds an Account to be associated with this Identity
+	 * @param account the Account to add
+	 */
+	@Override
+	public void addAccount(Account account) {
+<span class="nc" id="L56">		accounts.put(account.getID(), account);</span>
+<span class="nc" id="L57">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

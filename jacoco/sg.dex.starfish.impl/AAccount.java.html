@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AAccount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl</a> &gt; <span class="el_source">AAccount.java</span></div><h1>AAccount.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl;
+
+import sg.dex.starfish.Account;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * Class representing an Account in the Ocean Ecosystem
+ * &lt;p&gt;
+ *     This class include method to get the accoutn ID,
+ *     get the credential.
+ * &lt;/p&gt;
+ *
+ * @author Tom
+ */
+public abstract class AAccount implements Account {
+
+	protected String id;
+	private Map&lt;String, Object&gt; credentials;
+
+	/**
+	 * Create an AAccount with the provided ID
+	 *
+	 * @param id The identifier for this account
+	 */
+<span class="nc" id="L28">	protected AAccount(String id) {</span>
+<span class="nc" id="L29">		this.id=id;</span>
+<span class="nc" id="L30">		this.credentials = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L31">	}</span>
+
+<span class="nc" id="L33">	protected AAccount(String id, Map&lt;String, Object&gt; credentials) {</span>
+<span class="nc" id="L34">		this.id=id;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">		this.credentials = (credentials == null) ? new HashMap&lt;&gt;() : credentials;</span>
+<span class="nc" id="L36">	}</span>
+
+	@Override
+	public String getID() {
+<span class="nc" id="L40">		return id;</span>
+	}
+
+        @Override
+	public Map&lt;String,Object&gt; getCredentials() {
+		// deep cloning the map
+<span class="nc" id="L46">		return  credentials.entrySet().stream()</span>
+<span class="nc" id="L47">			.collect(Collectors.toMap(e -&gt; e.getKey(),</span>
+<span class="nc" id="L48">						  e -&gt; e.getValue()));</span>
+        }
+
+	@Override
+	public String toString() {
+<span class="nc" id="L53">		final StringBuilder tmp = new StringBuilder();</span>
+<span class="nc" id="L54">		tmp.append(getClass().getName());</span>
+<span class="nc" id="L55">		tmp.append(&quot;:&quot;);</span>
+<span class="nc" id="L56">		tmp.append(id);</span>
+<span class="nc" id="L57">		tmp.append(&quot;{&quot;);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">		for (Map.Entry&lt;String, Object&gt; entry : credentials.entrySet()) {</span>
+<span class="nc" id="L59">			tmp.append(entry.getKey());</span>
+<span class="nc" id="L60">			tmp.append(&quot;=&quot;);</span>
+<span class="nc" id="L61">			tmp.append(entry.getValue().toString());</span>
+<span class="nc" id="L62">			tmp.append(&quot;,&quot;);</span>
+<span class="nc" id="L63">		}</span>
+<span class="nc" id="L64">		tmp.append(&quot;}&quot;);</span>
+<span class="nc" id="L65">		return tmp.toString();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

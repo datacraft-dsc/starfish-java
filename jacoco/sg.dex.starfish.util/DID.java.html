@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DID.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">DID.java</span></div><h1>DID.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
+
+import java.security.SecureRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import sg.dex.starfish.constant.Constant;
+
+/**
+ * Class representing a valid W3C DID
+ * See: https://w3c-ccg.github.io/did-spec/
+ *
+ * @author Mike
+ *
+ */
+public class DID {
+	private static final String METHOD_REGEX=&quot;([a-z]+)&quot;;
+	private static final String ID_REGEX=&quot;([a-zA-z0-9\\\\d._]+)?&quot;;
+	private static final String PATH_REGEX=&quot;(?:/([a-z0-9\\-._~%!$&amp;'()*+,;=:@/]*))?&quot;;
+	private static final String FRAGMENT_REGEX=&quot;(?:#(.*))?&quot;;
+<span class="fc" id="L21">	private static final Pattern DID_PATTERN=Pattern.compile(&quot;did:&quot;+METHOD_REGEX+&quot;:&quot;+ID_REGEX+PATH_REGEX+FRAGMENT_REGEX+&quot;$&quot;);</span>
+
+	private final String method;
+	private final String id;
+	private final String path;
+	private final String fragment;
+<span class="fc" id="L27">	private String fullString=null;</span>
+
+	/**
+	 * Creates a DID
+	 *
+	 * @param method METHOD portion of DID
+	 * @param id ID portion of DID
+	 * @param path PATH portion of DID (optional)
+	 * @param fragment FRAGMENT portion of DID  (optional)
+	 * @throws IllegalArgumentException if method or id are null
+	 */
+<span class="fc" id="L38">	private DID(String method, String id, String path, String fragment) {</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		if (method==null) throw new IllegalArgumentException(&quot;DID method cannot be null&quot;);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">		if (id==null) throw new IllegalArgumentException(&quot;DID id cannot be null&quot;);</span>
+<span class="fc" id="L41">		this.method=method;</span>
+<span class="fc" id="L42">		this.id=id;</span>
+<span class="fc" id="L43">		this.path=path;</span>
+<span class="fc" id="L44">		this.fragment=fragment;</span>
+<span class="fc" id="L45">	}</span>
+
+	/**
+	 * Creates a DID with the specified method, id, path and fragment
+	 * @param method The DID method, e.g. &quot;op&quot;
+	 * @param id The DID idstring
+	 * @param path The DID path
+	 * @param fragment The DID fragment
+	 * @return DID The newly created DID
+	 */
+	public static DID create(String method, String id, String path, String fragment) {
+<span class="nc" id="L56">		return new DID(method,id,path,fragment);</span>
+	}
+
+	/**
+	 * Checks if the provided String is a valid DID
+	 *
+	 * @param did Any String to test as a DID
+	 * @return boolean true if the String is parseable as a valid DID, false otherwise
+	 */
+	public static boolean isValidDID(String did) {
+<span class="fc" id="L66">		Matcher m = DID_PATTERN.matcher(did);</span>
+<span class="fc" id="L67">		return m.matches();</span>
+	}
+
+	/**
+	 * Attempts to parse the given string as a DID
+	 *
+	 * @param did The String to parse as a DID
+	 * @throws IllegalArgumentException on DID parse error
+	 * @return DID The newly created DID
+	 */
+	public static DID parse(String did) {
+<span class="fc" id="L78">		Matcher m = DID_PATTERN.matcher(did);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		if (m.matches()) {</span>
+<span class="fc" id="L80">			String method=m.group(1);</span>
+<span class="fc" id="L81">			String id=m.group(2);</span>
+<span class="fc" id="L82">			String path=m.group(3);</span>
+<span class="fc" id="L83">			String fragment=m.group(4);</span>
+<span class="fc" id="L84">			DID newDID= new DID(method,id,path,fragment);</span>
+<span class="fc" id="L85">			newDID.fullString=did;</span>
+<span class="fc" id="L86">			return newDID;</span>
+		} else {
+<span class="nc" id="L88">			throw new IllegalArgumentException(&quot;Parse failure on invalid DID [&quot;+did+&quot;]&quot;);</span>
+		}
+	}
+
+	/**
+	 * Gets the DID scheme for this DID
+	 * @return String The DID scheme, always defined as &quot;did&quot;
+	 */
+	public String getScheme() {
+<span class="fc" id="L97">		return &quot;did&quot;;</span>
+	}
+
+	/**
+	 * Gets the DID method for this DID
+	 * @return String The DID method, e.g. &quot;op&quot;
+	 */
+	public String getMethod() {
+<span class="fc" id="L105">		return method;</span>
+	}
+
+	/**
+	 * Gets the DID idstring for this DID
+	 * @return String The DID idstring, e.g. &quot;2ee8d7d4dd764bc96e8f1c762b1ca4ff54688b22aeb851378aa9a543290bcbd9&quot;
+	 */
+	public String getID() {
+<span class="fc" id="L113">		return id;</span>
+	}
+
+	/**
+	 * Gets the DID path for this DID
+	 * @return String The DID path, or null if there is no path specified
+	 */
+	public String getPath() {
+<span class="fc" id="L121">		return path;</span>
+	}
+
+	/**
+	 * Gets the DID fragment for this DID
+	 * @return String The DID fragment, or null if there is no fragment specified
+	 */
+	public String getFragment() {
+<span class="fc" id="L129">		return fragment;</span>
+	}
+
+	private String createString() {
+<span class="nc" id="L133">		StringBuffer sb=new StringBuffer();</span>
+<span class="nc" id="L134">		sb.append(&quot;did&quot;);</span>
+<span class="nc" id="L135">		sb.append(':');</span>
+<span class="nc" id="L136">		sb.append(method);</span>
+<span class="nc" id="L137">		sb.append(':');</span>
+<span class="nc" id="L138">		sb.append(id);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (path!=null) {</span>
+<span class="nc" id="L140">			sb.append('/');</span>
+<span class="nc" id="L141">			sb.append(path);</span>
+		}
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (fragment!=null) {</span>
+<span class="nc" id="L144">			sb.append('/');</span>
+<span class="nc" id="L145">			sb.append(fragment);</span>
+		}
+
+<span class="nc" id="L148">		return sb.toString();</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (fullString==null) fullString=createString();</span>
+<span class="fc" id="L154">		return fullString;</span>
+	}
+
+	@Override
+	public boolean equals(Object o) {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">		if (!(o instanceof DID)) return false;</span>
+<span class="fc" id="L160">		return equals((DID)o);</span>
+	}
+
+	/**
+	 * Tests if this DID is equal to another DID
+	 * @param d The DID to compare for equality
+	 * @return boolean true if this DID equals the DID argument, false otherwise
+	 */
+	public boolean equals(DID d) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!method.equals(d.method)) return false;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!id.equals(d.id)) return false;</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (!Utils.equals(path,d.path)) return false;</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!Utils.equals(fragment,d.fragment)) return false;</span>
+<span class="fc" id="L173">		return true;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L178">		int h=0;</span>
+<span class="nc" id="L179">		h+=method.hashCode();</span>
+<span class="nc" id="L180">		h+=13*id.hashCode();</span>
+<span class="nc" id="L181">		h+=53*Utils.hashCode(path);</span>
+<span class="nc" id="L182">		h+=101*Utils.hashCode(path);</span>
+<span class="nc" id="L183">		return h;</span>
+	}
+
+	/**
+	 * Creates a new DID from this DID with an updated path
+	 * @param path The new path to add to this DID (may be null)
+	 * @return DID The updated DID with the specified path argument
+	 */
+	public DID withPath(String path) {
+<span class="nc" id="L192">		return DID.create(method,id,path,fragment);</span>
+	}
+
+	/**
+	 * Creates a random Ocean-compliant DID as a string, of the format:
+	 *
+	 *   &quot;did:op:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563&quot;
+	 *
+	 * @return A valid Ocean DID represented as a string
+	 */
+	public static String createRandomString() {
+<span class="fc" id="L203">		SecureRandom sr=new SecureRandom();</span>
+<span class="fc" id="L204">		byte[] bytes=new byte[Utils.DID_LENGTH];</span>
+<span class="fc" id="L205">		sr.nextBytes(bytes);</span>
+<span class="fc" id="L206">		return &quot;did:&quot;+Constant.DID_METHOD+&quot;:&quot;+Hex.toString(bytes);</span>
+	}
+
+	/**
+	 * Creates a random Ocean-compliant DID
+	 * @return The created DID
+	 */
+	public static DID createRandom() {
+<span class="fc" id="L214">		return parse(DID.createRandomString());</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

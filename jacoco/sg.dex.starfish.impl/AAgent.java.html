@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AAgent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl</a> &gt; <span class="el_source">AAgent.java</span></div><h1>AAgent.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl;
+
+import sg.dex.starfish.Agent;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.util.DID;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Class representing an Agent in the Ocean Ecosystem
+ *
+ * Agents are addressed with a W3C DID
+ *
+ * @author Mike
+ * @version 0.5
+ *
+ */
+public abstract class AAgent implements Agent {
+
+	protected final DID did;
+
+	private Map&lt;String,Object&gt; ddo;
+
+	protected final Ocean ocean;
+
+	/**
+	 * Create an agent with the provided Ocean connection and DID
+	 * 
+	 * @param ocean The ocean connection to use for this agent
+	 * @param did The DID for this agent
+	 */
+<span class="fc" id="L33">	protected AAgent(Ocean ocean, DID did) {</span>
+<span class="fc" id="L34">		this.ocean=ocean;</span>
+<span class="fc" id="L35">		this.did=did;</span>
+<span class="fc" id="L36">	}</span>
+
+	/**
+	 * Create an agent with the provided Ocean connection and DID
+	 * @param did The DID for this agent
+	 */
+<span class="nc" id="L42">	protected AAgent(DID did) {</span>
+<span class="nc" id="L43">		this.ocean=Ocean.connect();</span>
+<span class="nc" id="L44">		this.did=did;</span>
+<span class="nc" id="L45">	}</span>
+
+	@Override public DID getDID() {
+<span class="fc" id="L48">		return did;</span>
+	}
+
+	@Override
+	public Map&lt;String,Object&gt; getDDO() {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">		if (ddo==null) {</span>
+<span class="nc" id="L54">			ddo=refreshDDO();</span>
+		}
+<span class="nc" id="L56">		return ddo;</span>
+	}
+
+	/**
+	 * Fetches the latest DDO from Universal Resolver if not cached
+	 * @return JSONObject
+	 */
+	public Map&lt;String,Object&gt; refreshDDO() {
+<span class="nc" id="L64">		return ocean.getDDO(did);</span>
+	}
+	
+	/**
+	 * Returns the serviceEndpoint for the specified service type.
+	 * Searched the agent's DDO for the appropriate service.
+	 * 
+	 * @param type The type of the service to find
+	 * @return The service endpoint, or null if not found
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public String getEndpoint(String type) {
+<span class="nc" id="L76">		Map&lt;String,Object&gt; ddo=getDDO();</span>
+<span class="nc" id="L77">		List&lt;Object&gt; services = (List&lt;Object&gt;) ddo.get(&quot;service&quot;);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (services==null) return null;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		for (Object o: services) {</span>
+<span class="nc" id="L80">			Map&lt;String,Object&gt; service=(Map&lt;String,Object&gt;)o;</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">			if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(&quot;serviceEndpoint&quot;);</span>
+<span class="nc" id="L82">		}</span>
+<span class="nc" id="L83">		return null;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

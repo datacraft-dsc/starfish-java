@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSON.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">JSON.java</span></div><h1>JSON.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Utility class for handling JSON objects
+ * &lt;p&gt;
+ *     This class include method to covert json string to map ,
+ *     parse the json string.
+ * &lt;/p&gt;
+ * @author Mike
+ * @version 0.5
+ *
+ */
+<span class="nc" id="L24">public class JSON {</span>
+
+<span class="fc" id="L26">	private static String WHITESPACE=&quot;                                                             &quot;;</span>
+<span class="fc" id="L27">	private static int WHITESPACE_LENGTH=WHITESPACE.length();</span>
+
+	/**
+	 * Converts an object to an efficient JSON string representation
+	 * @param value Object to represent as a JSON String
+	 * @throws RuntimeException on failure to create JSON from value
+	 * @return JSON string representing the value
+	 */
+	public static String toString(Object value) {
+		// TODO refactor to remove json-simple?
+<span class="fc" id="L37">		StringWriter sw=new StringWriter();</span>
+		try {
+<span class="fc" id="L39">			JSONValue.writeJSONString(value,sw);</span>
+		}
+<span class="nc" id="L41">		catch (IOException e) {</span>
+<span class="nc" id="L42">			throw new RuntimeException(&quot;Can't create JSON string from object&quot;,e);</span>
+<span class="fc" id="L43">		}</span>
+<span class="fc" id="L44">		return sw.toString();</span>
+	}
+
+	/**
+	 * Converts an object to a pretty-printed JSON string representation suitable for human consumption
+	 * @param value Object to represent as a JSON String
+	 * @return JSON string representing the value
+	 */
+	public static String toPrettyString(Object value) {
+<span class="fc" id="L53">		StringBuilder sb=new StringBuilder();</span>
+<span class="fc" id="L54">		sb=appendPrettyString(sb,value,0);</span>
+<span class="fc" id="L55">		return sb.toString();</span>
+	}
+
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private static StringBuilder appendPrettyString(StringBuilder sb,Object o,int indent) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (o instanceof Map) {</span>
+<span class="fc" id="L61">			int entryIndent=indent+2;</span>
+<span class="fc" id="L62">			sb.append(&quot;{\n&quot;);</span>
+<span class="fc" id="L63">			Map&lt;String,Object&gt; m=((Map&lt;String,Object&gt;)o);</span>
+<span class="fc" id="L64">			int size=m.size();</span>
+<span class="fc" id="L65">			int pos=0;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">			for (Map.Entry&lt;String,Object&gt; me:m.entrySet()) {</span>
+<span class="fc" id="L67">				String k=me.getKey();</span>
+<span class="fc" id="L68">				sb=appendWhitespaceString(sb,entryIndent);</span>
+<span class="fc" id="L69">				sb.append(toString(k));</span>
+<span class="fc" id="L70">				sb.append(&quot;: &quot;);</span>
+<span class="fc" id="L71">				int vIndent=entryIndent+k.length()+4; // indent for value</span>
+<span class="fc" id="L72">				Object v=me.getValue();</span>
+<span class="fc" id="L73">				appendPrettyString(sb,v,vIndent);</span>
+<span class="fc" id="L74">				pos++;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">				if (pos==size) {</span>
+<span class="fc" id="L76">					sb.append('\n'); // final entry</span>
+				} else {
+<span class="fc" id="L78">					sb.append(&quot;,\n&quot;); // comma for next entry</span>
+				}
+<span class="fc" id="L80">			}</span>
+<span class="fc" id="L81">			sb=appendWhitespaceString(sb,indent);</span>
+<span class="fc" id="L82">			sb.append(&quot;}&quot;);</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		} else if (o instanceof List) {</span>
+<span class="nc" id="L84">			List&lt;Object&gt; list=(List&lt;Object&gt;)o;</span>
+<span class="nc" id="L85">			int size=list.size();</span>
+<span class="nc" id="L86">			int entryIndent=indent+1;</span>
+<span class="nc" id="L87">			sb.append(&quot;[&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">			for (int i=0; i&lt;size; i++) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">				if (i&gt;0) {</span>
+<span class="nc" id="L90">					sb.append(&quot;,\n&quot;);</span>
+<span class="nc" id="L91">					sb=appendWhitespaceString(sb,entryIndent);</span>
+				}
+<span class="nc" id="L93">				Object v=list.get(i);</span>
+<span class="nc" id="L94">				sb=appendPrettyString(sb,v,entryIndent);</span>
+			}
+<span class="nc" id="L96">			sb.append(&quot;]&quot;);</span>
+<span class="nc" id="L97">		} else {</span>
+<span class="fc" id="L98">			sb.append(toString(o));</span>
+		}
+<span class="fc" id="L100">		return sb;</span>
+	}
+
+	/**
+	 * Appends a whitespace string of the specified length.
+	 *
+	 * @param sb StringBuilder to append the whitespace characters
+	 * @param count Number of whitespace characters
+	 * @return Updated StringBuilder
+	 */
+	private static StringBuilder appendWhitespaceString(StringBuilder sb, int count) {
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		while (count&gt;WHITESPACE_LENGTH) {</span>
+<span class="nc" id="L112">			sb.append(WHITESPACE);</span>
+<span class="nc" id="L113">			count-=WHITESPACE_LENGTH;</span>
+		}
+<span class="fc" id="L115">		sb.append(WHITESPACE.substring(0,count));</span>
+<span class="fc" id="L116">		return sb;</span>
+	}
+
+	/**
+	 * Converts a string assumed to contain a valid JSON object to a (possibly nested) Map.
+	 * Use in preference to parse(...) if you know the string should contain a map/object.
+	 *
+	 * @param jsonString A string containing a valid JSON object
+	 * @throws Error on JSON parsing error
+	 * @return A map representing the JSON object
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public static Map&lt;String, Object&gt; toMap(String jsonString) {
+<span class="fc" id="L129">		JSONParser parser=new JSONParser();</span>
+		try {
+<span class="fc" id="L131">			JSONObject result=(JSONObject) parser.parse(jsonString);</span>
+<span class="fc" id="L132">			return new JSONObject(result);</span>
+<span class="nc" id="L133">		} catch (ParseException e) {</span>
+<span class="nc" id="L134">			throw new Error(&quot;Error in JSON parsing: &quot;+e.getMessage(),e);</span>
+		}
+	}
+
+	/**
+	 * Converts a string assumed to contain valid JSON object to an Object
+	 * @param jsonString A string containing valid JSON
+	 * @throws Error on JSON parsing error
+	 * @param &lt;T&gt; A type parameter for the type of object returned.
+	 * @return T A java object representing the JSON provided
+	 */
+	@SuppressWarnings({&quot;unchecked&quot;})
+	public static &lt;T&gt; T parse(String jsonString) {
+<span class="fc" id="L147">		JSONParser parser=new JSONParser();</span>
+		try {
+<span class="fc" id="L149">			Object result=parser.parse(jsonString);</span>
+<span class="fc" id="L150">			return (T) result;</span>
+<span class="nc" id="L151">		} catch (ParseException e) {</span>
+<span class="nc" id="L152">			throw new Error(&quot;Error in JSON parsing: &quot;+e.getMessage(),e);</span>
+		}
+	}
+
+	/**
+	 * API to validate  string is json or not
+	 * @param jsonInString string that need to be validated
+	 */
+	public static void validateJson(String jsonInString ) {
+
+<span class="nc" id="L162">			 ObjectMapper mapper = new ObjectMapper();</span>
+		try {
+<span class="nc" id="L164">			mapper.readTree(jsonInString);</span>
+<span class="nc" id="L165">		} catch (IOException e) {</span>
+            try {
+<span class="nc" id="L167">                throw new IOException(&quot;Not a valid input, input must be  json&quot;,e);</span>
+<span class="nc" id="L168">            } catch (IOException e1) {</span>
+<span class="nc" id="L169">                e1.printStackTrace();</span>
+            }
+<span class="nc" id="L171">        }</span>
+
+<span class="nc" id="L173">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

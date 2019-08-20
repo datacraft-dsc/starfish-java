@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bundle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">Bundle.java</span></div><h1>Bundle.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
+
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.util.DID;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Interface representing an immutable asset bundle.
+ * The sub-asset belongs to the bundle are defined in the asset
+ * metadata contents.The contents of the bundle can be other named asset
+ *
+ * @author Mike
+ * @version 0.5
+ */
+public interface Bundle extends Asset {
+
+    /**
+     * Setting the asset type as bundle
+     *
+     * @return true for bundle asset
+     */
+    @Override
+    default boolean isBundle() {
+<span class="nc" id="L26">        return true;</span>
+    }
+
+    /**
+     * API to add a new sub-asset in existing bundle.
+     * It will add the sub-asset passed in the argument and
+     * return a new Bundle asset
+     *
+     * @param name Name of the sub-asset
+     * @param asset Asset the need to be added in existing bundle
+     * @return An new bundle including the sub asset passed
+     */
+    public Bundle add(String name, Asset asset);
+
+    /**
+     * API to create a new bundle adding all named sub-assets passed as parameters
+     *
+     * @param assetMap sub Asset map that need to be bundled
+     * @return An new bundle including the all thee given sub-assets passed as argument
+     */
+    public Bundle addAll(Map&lt;String, Asset&gt; assetMap);
+
+    /**
+     * API to get an specific asset from an asset Bundle by asset name
+     *
+     * @param name The name of the sub-asset
+     * @return The sub-asset referenced by the given name, or null if not present
+     */
+    public Asset get(String name);
+
+    /**
+     * API to get an immutable all named  sub Asset belong to asset Bundle
+     *
+     * @return A map of all sub-assets within this bundle
+     */
+    public Map&lt;String, Object&gt; getAll();
+
+    @Override
+    public default DID getAssetDID() {
+<span class="nc" id="L65">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot;+getClass());</span>
+    }
+
+    /**
+     *API to get the ParamValue
+     * @return map of did and AssetID
+     */
+    @Override
+    public default Map&lt;String,Object&gt; getParamValue() {
+<span class="nc" id="L74">        Map&lt;String,Object&gt; o=new HashMap&lt;&gt;();</span>
+<span class="nc" id="L75">        o.put(Constant.DID, getAssetID());</span>
+<span class="nc" id="L76">        return o;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

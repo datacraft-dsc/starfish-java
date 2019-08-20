@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProvUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">ProvUtil.java</span></div><h1>ProvUtil.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
+
+import sg.dex.starfish.Asset;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+<span class="nc" id="L10">public class ProvUtil {</span>
+
+<span class="nc" id="L12">    public static String OPF = &quot;opf&quot;;</span>
+
+    /**
+     * Create a default namespace which includes the prefix and path for Ocean protocol schema
+     *
+     * @return a Map with prefixes respective IRIs used in this document
+     */
+    public static Map&lt;String, Object&gt; defaultPrefix() {
+<span class="nc" id="L20">        Map&lt;String, Object&gt; prefix = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L21">        prefix.put(&quot;xsd&quot;, &quot;http://www.w3.org/2001/XMLSchema#&quot;);</span>
+<span class="nc" id="L22">        prefix.put(&quot;prov&quot;, &quot;http://www.w3.org/ns/prov#&quot;);</span>
+<span class="nc" id="L23">        prefix.put(OPF, &quot;http://oceanprotocol.com/schemas&quot;);</span>
+
+<span class="nc" id="L25">        Map&lt;String, Object&gt; pre = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L26">        pre.put(&quot;prefix&quot;, prefix);</span>
+<span class="nc" id="L27">        return pre;</span>
+    }
+
+    private static Map&lt;String, Object&gt; createAssetEntity(String id) {
+<span class="nc" id="L31">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L32">        type.put(&quot;$&quot;, OPF + &quot;:asset&quot;);</span>
+<span class="nc" id="L33">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+
+<span class="nc" id="L35">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L36">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="nc" id="L37">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L38">        thisContainer.put(OPF + &quot;:&quot; + id, typeContainer);</span>
+<span class="nc" id="L39">        return thisContainer;</span>
+    }
+
+    /**
+     * Returns a Entity referring to &quot;this&quot;, the asset being registered
+     * @return  Map
+     */
+    public static Map&lt;String, Object&gt; createThisInput() {
+<span class="nc" id="L47">        return createAssetEntity(&quot;this&quot;);</span>
+    }
+
+    /**
+     * Returns a Entity referring to asset in the argument
+     *
+     * @param ast dependent asset
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createAssetDependency(Asset ast) {
+<span class="nc" id="L57">        return createAssetEntity(ast.getAssetID());</span>
+    }
+
+    private static Map&lt;String, Object&gt; jsonMapEntry(String key, Map&lt;String, Object&gt;[] ent) {
+<span class="nc" id="L61">        Map&lt;String, Object&gt; eContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (Map&lt;String, Object&gt; m : ent) {</span>
+<span class="nc" id="L63">            eContainer.putAll(m);</span>
+        }
+<span class="nc" id="L65">        Map&lt;String, Object&gt; res = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L66">        res.put(key, eContainer);</span>
+<span class="nc" id="L67">        return res;</span>
+    }
+
+    /**
+     * Returns a Map representing a list of entities
+     * @param ent an array of entities to be added to the entity
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createEntities(Map&lt;String, Object&gt;... ent) {
+<span class="nc" id="L76">        return jsonMapEntry(&quot;entity&quot;, ent);</span>
+    }
+
+    /**
+     * Returns a Map representing an entity, given the id and type
+     *
+     * @param agentId     the agent Id
+     * @param agentType the type of account (e.g. ethereum account)
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createAgent(String agentId, AgentIdType agentType) {
+<span class="nc" id="L87">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L88">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + agentType.toString());</span>
+<span class="nc" id="L89">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+
+<span class="nc" id="L91">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L92">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="nc" id="L93">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L94">        thisContainer.put(OPF + &quot;:&quot; + agentId, typeContainer);</span>
+<span class="nc" id="L95">        return thisContainer;</span>
+    }
+
+    /**
+     * Returns a Map representing a list of agents
+     * @param age age
+     * @return Map
+     *
+     */
+    public static Map&lt;String, Object&gt; createAgents(Map&lt;String, Object&gt;... age) {
+<span class="nc" id="L105">        return jsonMapEntry(&quot;agent&quot;, age);</span>
+    }
+
+    /**
+     * Returns a Map representing an associatedWith Relationship, which
+     * connects the agentID with the activityId
+     *
+     * @param agentId    the agent Id
+     * @param activityId the activity Id
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; associatedWith(String agentId, String activityId) {
+<span class="nc" id="L117">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L118">        type.put(&quot;prov:agent&quot;, agentId);</span>
+<span class="nc" id="L119">        type.put(&quot;prov:activity&quot;, activityId);</span>
+
+<span class="nc" id="L121">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L122">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+
+<span class="nc" id="L124">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L125">        ret.put(&quot;wasAssociatedWith&quot;, asid);</span>
+<span class="nc" id="L126">        return ret;</span>
+    }
+
+    /**
+     * Returns a Map representing an generatedBy Relationship, which
+     * connects the entityid with the activityId
+     *
+     * @param activityId the activity Id
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; generatedBy(String activityId) {
+<span class="nc" id="L137">        String entityId=OPF+&quot;:this&quot;;</span>
+<span class="nc" id="L138">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L139">        type.put(&quot;prov:entity&quot;, entityId);</span>
+<span class="nc" id="L140">        type.put(&quot;prov:activity&quot;, activityId);</span>
+
+<span class="nc" id="L142">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L143">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+
+<span class="nc" id="L145">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L146">        ret.put(&quot;wasGeneratedBy&quot;, asid);</span>
+<span class="nc" id="L147">        return ret;</span>
+    }
+
+    /**
+     * Returns a Map representing an derived by Relationship, which
+     * connects the dependent entities
+     *
+     * @param entities list of entities that the generated entity is derived from
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; derivedFrom(Collection&lt;Asset&gt; entities) {
+<span class="nc" id="L158">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        for (Asset ast : entities) {</span>
+<span class="nc" id="L160">            Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L161">            type.put(&quot;prov:usedEntity&quot;, ast.getAssetID());</span>
+<span class="nc" id="L162">            type.put(&quot;prov:generatedEntity&quot;, OPF + &quot;this&quot;);</span>
+<span class="nc" id="L163">            asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+<span class="nc" id="L164">        }</span>
+<span class="nc" id="L165">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L166">        ret.put(&quot;wasDerivedFrom&quot;, asid);</span>
+<span class="nc" id="L167">        return ret;</span>
+    }
+
+    /**
+     * Returns an Activity identified by activity id and type
+     *
+     * @param actId        the activity Id
+     * @param activityType The type of activity (e.g. publish or operation)
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType) {
+<span class="nc" id="L178">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L179">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
+<span class="nc" id="L180">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+
+<span class="nc" id="L182">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L183">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="nc" id="L184">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L185">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
+<span class="nc" id="L186">        return thisContainer;</span>
+    }
+
+    /**
+     * Returns an Activity identified by activity id and type
+     *
+     * @param actId        the activity Id
+     * @param activityType The type of activity (e.g. publish or operation)
+     * @param actEntries   an array of activities
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType,
+                                                     Map&lt;String, Object&gt; actEntries) {
+<span class="nc" id="L199">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L200">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
+<span class="nc" id="L201">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+
+<span class="nc" id="L203">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L204">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="nc" id="L205">        typeContainer.putAll(actEntries);</span>
+<span class="nc" id="L206">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L207">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
+<span class="nc" id="L208">        return thisContainer;</span>
+    }
+
+    /**
+     * Returns a list of Activities
+     * @param acts array of activities
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createActivities(Map&lt;String, Object&gt;... acts) {
+<span class="nc" id="L217">        return jsonMapEntry(&quot;activity&quot;, acts);</span>
+    }
+
+    /**
+     * Create default provenance metadata for publishing an asset. This create a random
+     * activity ID for tracking the provenance
+     *
+     * @param agentId the agent identifier
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createPublishProvenance(String agentId) {
+<span class="nc" id="L228">        String actId = UUID.randomUUID().toString();</span>
+<span class="nc" id="L229">        return createPublishProvenance(actId, agentId);</span>
+    }
+
+    /**
+     * Create default provenance metadata for publishing an asset
+     *
+     * @param actId   the activity Id
+     * @param agentId the agent identifier
+     * @return the prov metadata encoded in a Map
+     */
+    public static Map&lt;String, Object&gt; createPublishProvenance(String actId,
+                                                              String agentId) {
+<span class="nc" id="L241">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
+<span class="nc" id="L242">        Map&lt;String, Object&gt; e = createEntities(createThisInput());</span>
+<span class="nc" id="L243">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.PUBLISH);</span>
+<span class="nc" id="L244">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
+
+<span class="nc" id="L246">        a.putAll(createActivities(act));</span>
+<span class="nc" id="L247">        a.putAll(e);</span>
+<span class="nc" id="L248">        a.putAll(createAgents(agent));</span>
+<span class="nc" id="L249">        a.putAll(associatedWith(agentId, actId));</span>
+<span class="nc" id="L250">        a.putAll(generatedBy(actId));</span>
+<span class="nc" id="L251">        return a;</span>
+    }
+
+    /**
+     * Create dependencies. There are 2 sets of dependencies: one that
+     * are assets, and the second which is JSON payloads.
+     *
+     * @param params          the param string sent to the invoke rest API
+     * @param resultParamName the param name of the generated asset
+     * @return the input and output encoded as a Map
+     */
+    public static Map&lt;String, Object&gt; createDependencies(String params,
+                                                         String resultParamName) {
+<span class="nc" id="L264">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L265">        Map&lt;String, Object&gt; p = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L266">        p.put(&quot;$&quot;, resultParamName);</span>
+<span class="nc" id="L267">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="nc" id="L268">        ret.put(OPF + &quot;:resultParamName&quot;, p);</span>
+
+<span class="nc" id="L270">        p = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L271">        p.put(&quot;$&quot;, params);</span>
+<span class="nc" id="L272">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="nc" id="L273">        ret.put(OPF + &quot;:params&quot;, p);</span>
+
+<span class="nc" id="L275">        return ret;</span>
+    }
+
+    /**
+     * Create default provenance metadata for publishing an asset created using invoke.
+     *
+     * @param actId             the activity Id
+     * @param agentId           the agent identifier
+     * @param assetDependencies the list of assets that consumed by the operation
+     * @param params            the argument string passed to the operation
+     * @param resultParamName   the name of the result argument for the generated asset
+     * @return Map
+     */
+    public static Map&lt;String, Object&gt; createInvokeProvenance(String actId, String agentId,
+                                                             Collection&lt;Asset&gt; assetDependencies,
+                                                             String params,
+                                                             String resultParamName) {
+<span class="nc" id="L292">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
+<span class="nc" id="L293">        Map&lt;String, Object&gt; e = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L294">        e.putAll(createThisInput());</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        for (Asset k : assetDependencies) {</span>
+<span class="nc" id="L296">            e.putAll(createAssetDependency(k));</span>
+<span class="nc" id="L297">        }</span>
+<span class="nc" id="L298">        Map&lt;String, Object&gt; deps = createDependencies(params, resultParamName);</span>
+
+<span class="nc" id="L300">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.OPERATION, deps);</span>
+<span class="nc" id="L301">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
+
+<span class="nc" id="L303">        a.putAll(createEntities(e));</span>
+<span class="nc" id="L304">        a.putAll(createActivities(act));</span>
+<span class="nc" id="L305">        a.putAll(createAgents(agent));</span>
+<span class="nc" id="L306">        a.putAll(associatedWith(agentId, actId));</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        if (assetDependencies.size() &gt;  0){</span>
+<span class="nc" id="L308">            a.putAll(derivedFrom(assetDependencies));</span>
+        }
+<span class="nc" id="L310">        a.putAll(generatedBy(actId));</span>
+<span class="nc" id="L311">        return a;</span>
+    }
+
+<span class="nc" id="L314">    public enum AgentIdType {ACCOUNT, ETHEREUMACCOUNT}</span>
+
+<span class="nc" id="L316">    public enum ActivityType {PUBLISH, IMPORT, OPERATION}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
