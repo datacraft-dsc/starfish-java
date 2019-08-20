@@ -58,7 +58,7 @@ If you are using [Surfer](https://github.com/DEX-Company/surfer/) for playing wi
 All the API documentation is hosted of javadoc.io:
 
 - **[https://dex-company.github.io/starfish-java/docs](https://dex-company.github.io/starfish-java/apidocs/)**
-Code Coverage is hosted of javadoc.io :
+- Code Coverage is hosted of javadoc.io :
 - **[https://dex-company.github.io/starfish-java/coverage](https://dex-company.github.io/starfish-java/jacoco/)**
 
 ## Testing
