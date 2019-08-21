@@ -102,7 +102,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
-    private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
+    private static <T> Job<T> createSuccessJob(RemoteAgent agent, HttpResponse response) {
         HttpEntity entity = response.getEntity();
         if (entity == null) throw new RuntimeException("Invoke failed: no response body");
         try {
@@ -620,7 +620,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @throws RemoteException          if there is a failure in a remote operation
      * @throws RuntimeException         for protocol errors
      */
-    public Object pollJob(String jobID) {
+	public Object pollJob(String jobID) {
         URI uri = getJobURI(jobID);
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(uri);

@@ -7,18 +7,18 @@ import sg.dex.starfish.exception.JobFailedException;
  * This class is for creating the job and also can be used
  * to know the status of each job
  */
-public class RemoteJob implements Job {
+public class RemoteJob<T> implements Job<T> {
     private RemoteAgent agent;
     private String jobID;
-    private Object response;
+    private T response;
 
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
     }
 
-    public static Job create(RemoteAgent agent2, String jobID) {
-        return new RemoteJob(agent2, jobID);
+    public static <T> Job<T> create(RemoteAgent agent2, String jobID) {
+        return new RemoteJob<T>(agent2, jobID);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class RemoteJob implements Job {
     }
 
     @Override
-    public Object getResult() {
+    public T getResult() {
         return pollResult();
     }
 
@@ -39,18 +39,19 @@ public class RemoteJob implements Job {
      * @return The resulting asset, or null if not yet available
      * @throws JobFailedException If the job has failed
      */
-    private synchronized Object pollResult() {
+    @SuppressWarnings("unchecked")
+	private synchronized T pollResult() {
         if (response != null) return response;
-        response = agent.pollJob(jobID);
+        response = (T)agent.pollJob(jobID);
         return response;
     }
 
     @Override
-    public Object awaitResult(long timeoutMillis) {
+    public T awaitResult(long timeoutMillis) {
         long start = System.currentTimeMillis();
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
-            Object a = pollResult();
+            T a = pollResult();
             if (a != null) return a;
             try {
                 Thread.sleep(initialSleep);

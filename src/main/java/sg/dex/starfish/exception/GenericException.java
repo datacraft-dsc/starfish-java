@@ -1,5 +1,6 @@
 package sg.dex.starfish.exception;
 
+@SuppressWarnings("serial")
 public class GenericException extends RuntimeException {
 
     /**
