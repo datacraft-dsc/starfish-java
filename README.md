@@ -1,6 +1,7 @@
 # Starfish-java
 
->Starfish is an open-sourced developer toolkit for the data economy.
+>Starfish is an open-sourced developer toolkit for the data economy. The toolkit allows developers, data scientists and enterprises to create, integrate and manage data supply lines through standardised and simple-to-use APIs. 
+
 >[Developer site](https://developer.dex.sg/)
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
@@ -24,9 +25,19 @@
 
 ## Features
 
-This is developer toolkit for the data economy.Based on an underlying data ecosystem standard, Starfish provides high-level APIs for common tasks within the data economy, for example, registering/publishing an asset, for subsequent use in a data supply line. In this case, an asset can be any data set, model or data service.
+This is developer toolkit for the data economy. Based on an underlying data ecosystem standard, Starfish provides high-level APIs for common tasks within the data economy, for example, registering/publishing an asset, for subsequent use in a data supply line. In this case, an asset can be any data set, model or data service.
 
 Starfish works with blockchain networks, such as Ocean Protocol, and common web services through agents, allowing unprecedented flexibility in asset discovery and data supply line management.
+
+### Easiest Way to Build and Manage Data Supply Lines
+Starfish provides a common abstraction to enable decentralised data infrastructure to interoperate effectively, allowing data supply lines to be easily created and managed using standardised interface. 
+
+### Data Sharing Made Simple for Everyone
+Any existing data resources can be "packaged" into a Data Asset, allowing data exchange possible with any data ecosystem participants. 
+
+### Empowers Innovative Application in the Space of Data
+There is no practical limit to the types of operations that can be created, and potentially recombined in interesting ways to create novel data solutions. Orchestration of such operations with Starfish is a perfect way to facilitate rapid innovation in data and AI solutions, especially where these solutions must orchestrate data and services.
+
 
 ---
 ## Installation
