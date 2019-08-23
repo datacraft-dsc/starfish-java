@@ -1,11 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
-import sg.dex.starfish.Job;
+import java.util.Map;
+
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
-
-import java.util.Map;
 
 /**
  * Basic implementation of an operation which always fails
@@ -16,20 +15,8 @@ import java.util.Map;
  */
 
 public class EpicFailOperation extends AMemoryOperation implements Operation {
-
 	protected EpicFailOperation(String meta,MemoryAgent memoryAgent) {
-
 		super(meta,memoryAgent);
-	}
-
-	/**
-	 * Returns the AssetID for this EpicFailOperation
-	 *
-	 * @return AssetID for this EpicFailOperation
-	 */
-	@Override
-	public String getAssetID() {
-		return "epic-fail";
 	}
 
 	/**
@@ -44,19 +31,8 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 	}
 
 	@Override
-	public Job invokeAsync(Map<String, Object> params) {
-		return memoryAgent.invokeAsync(this,params);
+	public Map<String, Object> compute(Map<String, Object> params) {
+		throw new Error ("Always failing operation");
 	}
-
-	@Override
-	public Map<String, Object> invokeResult(Map<String, Object> params) {
-		return null;
-	}
-
-	@Override
-	public Job invoke(Map<String, Object> params) {
-		return memoryAgent.invoke(this,params);
-	}
-
 
 }

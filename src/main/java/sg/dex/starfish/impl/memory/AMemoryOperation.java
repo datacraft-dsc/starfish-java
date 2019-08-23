@@ -1,5 +1,9 @@
 package sg.dex.starfish.impl.memory;
 
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
+import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 
 /**
@@ -15,4 +19,41 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         super(metaString,memoryAgent);
     }
 
+	@Override
+	public Job<Map<String, Object>> invokeAsync(Map<String, Object> params) {
+		// default implementation for an asynchronous invoke job in memory, using a
+		// Future<Asset>.
+		// Implementations may override this for custom behaviour (e.g. a custom thread
+		// pool)
+		// But this should be sufficient for most cases.
+		final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
+
+		MemoryAgent.THREAD_POOL.submit(() -> {
+			try {
+				Map<String, Object> result = compute(params);
+				future.complete(result); // success
+			}
+			catch (Throwable t) {
+				future.completeExceptionally(t); // failure
+			}
+			assert (future.isDone());
+		});
+
+		MemoryJob<Map<String, Object>> memoryJob = MemoryJob.create(future);
+		return memoryJob;
+	}
+	
+	@Override
+	public final Map<String, Object> invokeResult(Map<String, Object> params) {
+		return compute(params);
+	}
+
+	@Override
+	public Job<Map<String, Object>> invoke(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected abstract Map<String, Object> compute(Map<String, Object> params);
+    
 }

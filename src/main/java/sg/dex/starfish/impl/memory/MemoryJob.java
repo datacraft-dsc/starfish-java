@@ -1,15 +1,15 @@
 package sg.dex.starfish.impl.memory;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import sg.dex.starfish.Job;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Class representing a job being conducted asynchronously in the local JVM.
