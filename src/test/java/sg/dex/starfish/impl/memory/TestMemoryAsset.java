@@ -105,7 +105,6 @@ public class TestMemoryAsset {
     @Test
     public void testgetContent() {
         MemoryAsset memoryAsset = MemoryAsset.create("Test get Content".getBytes());
-        assertNotNull(memoryAsset.getContent());
         assertArrayEquals("Test get Content".getBytes(), memoryAsset.getContent());
     }
 
@@ -116,9 +115,8 @@ public class TestMemoryAsset {
     public void testgetContentSize() {
 
         MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
-        assertNotNull(memoryAsset.getContent());
-        assertNotNull(memoryAsset.getContentSize());
-        assertEquals(memoryAsset.getContentSize(), "Test Content Size".length());
+        assertNotNull(memoryAsset.getContent()); // test properly
+        assertEquals("Test Content Size".getBytes().length,memoryAsset.getContentSize());
     }
 
     /**
