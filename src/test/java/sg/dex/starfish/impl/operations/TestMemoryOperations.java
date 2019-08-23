@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
+import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
@@ -28,7 +29,7 @@ public class TestMemoryOperations {
     public void testReverseBytesAsync() {
         byte[] data = new byte[]{1, 2, 3};
         // String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
@@ -48,7 +49,7 @@ public class TestMemoryOperations {
     @Test
     public void testReverseBytesSync() {
         byte[] data = new byte[]{1, 2, 3};
-        ReverseByte_AssetI_AssetO memoryOperation =
+        Operation memoryOperation =
                 ReverseByte_AssetI_AssetO.
                         create(getMetaDataForAssetI_AssetO(), memoryAgent);
 

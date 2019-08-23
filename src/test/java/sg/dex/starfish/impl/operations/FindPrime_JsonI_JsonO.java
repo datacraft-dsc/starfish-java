@@ -56,15 +56,15 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
 
 
     @Override
-    public Job invoke(Map<String, Object> params) {
+    public Job<Map<String, Object>> invoke(Map<String, Object> params) {
         // default implementation for an asynchronous invoke job in memory, using a Future<Asset>.
         // Implementations may override this for custom behaviour (e.g. a custom thread pool)
         // But this should be sufficient for most cases.
-        final CompletableFuture<Object> future = new CompletableFuture<>();
+        final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
 
         MemoryAgent.THREAD_POOL.submit(() -> {
             try {
-                Object result = compute(params);
+            	Map<String, Object> result = compute(params);
                 future.complete(result); // success
             } catch (Throwable t) {
                 future.completeExceptionally(t); // failure
