@@ -7,17 +7,19 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 
 /**
- *Class representing a local in-memory operation asset.
+ * Class representing a local in-memory operation asset.
  *
- * Intended for use in testing or local development situations.
- * Abstract class that have common code required for different memory operation implementation
+ * Intended for use in testing or local development situations. 
+ * 
+ * This is a abstract base class that implements common functionality required for 
+ * different memory operations. Subclasses only need to override the `compute` method
+ * to provide an alternative operation implementation.
  */
 public abstract class AMemoryOperation extends AMemoryAsset implements Operation {
 
-
-    protected AMemoryOperation(String metaString,MemoryAgent memoryAgent) {
-        super(metaString,memoryAgent);
-    }
+	protected AMemoryOperation(String metaString, MemoryAgent memoryAgent) {
+		super(metaString, memoryAgent);
+	}
 
 	@Override
 	public Job<Map<String, Object>> invokeAsync(Map<String, Object> params) {
@@ -42,7 +44,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 		MemoryJob<Map<String, Object>> memoryJob = MemoryJob.create(future);
 		return memoryJob;
 	}
-	
+
 	@Override
 	public final Map<String, Object> invokeResult(Map<String, Object> params) {
 		return compute(params);
@@ -50,10 +52,18 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
 	@Override
 	public Job<Map<String, Object>> invoke(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return null;
+		return invokeAsync(params);
 	}
 
+	/**
+	 * Method for computation of the memory operation.
+	 * 
+	 * Subclass implemenations should override this method to provide their own
+	 * compute functionality.
+	 * 
+	 * @param params
+	 * @return
+	 */
 	protected abstract Map<String, Object> compute(Map<String, Object> params);
-    
+
 }
