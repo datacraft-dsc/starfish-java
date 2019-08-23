@@ -73,7 +73,7 @@ public class TestMemoryOperations {
     @Test
     public void testPrimeAsync() {
 
-        FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create(getMetaDataJsonIAndJsonO(), memoryAgent);
+        Operation memoryOperation = FindPrime_JsonI_JsonO.create(getMetaDataJsonIAndJsonO(), memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
