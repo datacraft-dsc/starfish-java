@@ -21,7 +21,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Invokable,3,0,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.url,RemoteHttpAsset,93,75,5,3,20,22,10,5,6,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.url,ResourceAsset,30,81,1,5,6,19,3,9,2,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteListing,95,0,4,0,23,0,15,0,13,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,1869,0,138,0,436,0,126,0,57,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,1838,0,138,0,427,0,126,0,57,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAsset,98,0,4,0,23,0,9,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,231,0,14,0,46,0,18,0,11,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,7,0,0,0,3,0,1,0,1,0
