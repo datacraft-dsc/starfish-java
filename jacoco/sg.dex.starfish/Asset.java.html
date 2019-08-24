@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Asset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for the Ocean ecosystem</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">Asset.java</span></div><h1>Asset.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
 
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.constant.Constant;
+import java.util.Map;
+
 import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Hex;
-
-import java.util.Map;
 
 /**
  * Interface representing an Asset. An Asset in Starfish is an entity in the Ocean Ecosystem
@@ -57,7 +53,7 @@ public interface Asset {
 	 * @return true if the asset is a data asset, false otherwise
 	 */
 	public default boolean isDataAsset(){
-<span class="nc" id="L60">		return false;</span>
+<span class="nc" id="L56">		return false;</span>
 	}
 
 	/**
@@ -67,7 +63,7 @@ public interface Asset {
 	 * @return This asset cast to a DataAsset
 	 */
 	public default DataAsset asDataAsset() {
-<span class="nc" id="L70">		return (DataAsset)this;</span>
+<span class="nc" id="L66">		return (DataAsset)this;</span>
 	}
 
 	/**
@@ -77,7 +73,7 @@ public interface Asset {
 	 * @return true if this asset is an operation, false otherwise
 	 */
 	public default boolean isOperation(){
-<span class="nc" id="L80">		return false;</span>
+<span class="nc" id="L76">		return false;</span>
 	}
 
 	/**
@@ -100,7 +96,7 @@ public interface Asset {
 	 * @return The byte contents of this asset.
 	 */
 	public default byte[] getContent() {
-<span class="nc" id="L103">		throw new UnsupportedOperationException(&quot;Cannot get byte content for asset of class: &quot;+this.getClass().getCanonicalName());</span>
+<span class="nc" id="L99">		throw new UnsupportedOperationException(&quot;Cannot get byte content for asset of class: &quot;+this.getClass().getCanonicalName());</span>
 	}
 
 	/**
@@ -116,7 +112,7 @@ public interface Asset {
 	 * @return true if this asset is an bundle, false otherwise
 	 */
 	public default boolean isBundle(){
-<span class="nc" id="L119">		return false;</span>
+<span class="nc" id="L115">		return false;</span>
 	}
 
 

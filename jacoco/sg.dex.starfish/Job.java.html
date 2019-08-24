@@ -10,7 +10,10 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
 
 /**
- * Interface representing a asynchronous job execution.
+ * Interface representing an asynchronous job execution.
+ * 
+ * Job extends the Future interface, but adds additional functionality relevant to invokable services
+ * in the data ecosystem.
  * 
  * Jobs are typically executed via the Invoke API
  *
@@ -22,7 +25,7 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 
 	/**
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
-	 * responsible for completing the job.
+	 * responsible for completing the job, and may be used to refer to the Job via other mechanisms.
 	 *
 	 * @return jobID
 	 */
@@ -38,7 +41,8 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	public boolean isDone();
 
 	/**
-	 * Gets the result of the Job if available, or null if not yet available.
+	 * Gets the result of the Job if available, or null if not yet available. If null is a possible result 
+	 * of the operation, it is recommended to check isDone() first.
 	 *
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
@@ -58,9 +62,9 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	@Override
 	public default T get() throws InterruptedException, ExecutionException {
 		try {
-<span class="nc" id="L61">			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L62">		} catch (TimeoutException t) {</span>
-<span class="nc" id="L63">			throw new Error(&quot;Unexpected timeout!&quot;);</span>
+<span class="nc" id="L65">			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L66">		} catch (TimeoutException t) {</span>
+<span class="nc" id="L67">			throw new Error(&quot;Unexpected timeout!&quot;);</span>
 		}
 	}
 	
@@ -79,7 +83,7 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 * @throws InterruptedException 
 	 */
 	public default T get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
-<span class="nc" id="L82">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L86">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 	}
 	
 	/**
@@ -90,31 +94,32 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 */
 	public default T getResult(long timeoutMillis) {
 		try {
-<span class="fc" id="L93">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L97">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 		}
-<span class="nc" id="L95">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
-<span class="nc" id="L96">			throw new Error(e);</span>
+<span class="nc" id="L99">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
+<span class="nc" id="L100">			throw new Error(e);</span>
 		}
 	}
 
 	
 	/**
-	 * Convenience method to get the result without checked exceptions.
-	 * @return
+	 * Convenience method to get the Job result without checked exceptions.
+	 * 
+	 * @return The result of the Job
 	 */
 	public default T getResult() {
 		try {
-<span class="nc" id="L107">			return get();</span>
+<span class="nc" id="L112">			return get();</span>
 		}
-<span class="nc" id="L109">		catch (InterruptedException | ExecutionException e) {</span>
-<span class="nc" id="L110">			throw new Error(e);</span>
+<span class="nc" id="L114">		catch (InterruptedException | ExecutionException e) {</span>
+<span class="nc" id="L115">			throw new Error(e);</span>
 		}
 	}
 		
 	@Override
 	public default boolean cancel(boolean mayInterruptIfRunning) {
 		// note: classes implementing Job should override this if they support Job cancellation
-<span class="nc" id="L117">		return false;</span>
+<span class="nc" id="L122">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot;+getClass());</span>
 	}
 
 }
