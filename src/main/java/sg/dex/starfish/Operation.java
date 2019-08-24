@@ -76,7 +76,7 @@ public interface Operation extends Asset {
 	public default Map<String, Object> getOperationSpec() {
 		return  (Map<String, Object>) getMetadata().get("operation");
 	}
-	
+
 	/**
 	 * Returns the parameter specification for this operation. Operations must
 	 * override this method to define what parameters they accept.

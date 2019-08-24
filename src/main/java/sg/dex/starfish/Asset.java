@@ -100,7 +100,7 @@ public interface Asset {
 	 * @return The byte contents of this asset.
 	 */
 	public default byte[] getContent() {
-		throw new UnsupportedOperationException("Cannot get bytes for asset of class: "+this.getClass().getCanonicalName());
+		throw new UnsupportedOperationException("Cannot get byte content for asset of class: "+this.getClass().getCanonicalName());
 	}
 
 	/**

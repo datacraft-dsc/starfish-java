@@ -130,7 +130,7 @@ public class OperationTest_23 {
         Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Object remoteAsset = job.awaitResult(10000);
+        Object remoteAsset = job.getResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
@@ -175,7 +175,7 @@ public class OperationTest_23 {
         Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Object remoteAsset = job.awaitResult(10000);
+        Object remoteAsset = job.getResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
@@ -292,7 +292,7 @@ public class OperationTest_23 {
         Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Object remoteAsset = job.awaitResult(10000);
+        Object remoteAsset = job.getResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 

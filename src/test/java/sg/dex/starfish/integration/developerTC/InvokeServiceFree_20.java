@@ -141,7 +141,7 @@ public class InvokeServiceFree_20 {
         Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.awaitResult(10000);
+        Map<String, Object> remoteAsset = job.getResult();
 
         // Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
@@ -192,7 +192,7 @@ public class InvokeServiceFree_20 {
         Job invalidJob =RemoteJob.create(agentI,JSON.toPrettyString(jobData));
 
         // waiting for job to get completed
-        Object remoteAsset = invalidJob.awaitResult(10000);
+        Object remoteAsset = invalidJob.getResult(10000);
         assertNotNull(remoteAsset);
 
 
@@ -224,7 +224,7 @@ public class InvokeServiceFree_20 {
         Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.awaitResult(10000);
+        Map<String, Object> remoteAsset = job.getResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
@@ -345,7 +345,7 @@ public class InvokeServiceFree_20 {
         Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.awaitResult(10000);
+        Map<String, Object> remoteAsset = job.getResult(10000);
 
         Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
@@ -402,7 +402,7 @@ public class InvokeServiceFree_20 {
         Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.awaitResult(10000);
+        Map<String, Object> remoteAsset = job.getResult(10000);
 
         // Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 

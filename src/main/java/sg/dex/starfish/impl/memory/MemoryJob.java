@@ -6,20 +6,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import sg.dex.starfish.Job;
-import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 
 /**
- * Class representing a job being conducted asynchronously in the local JVM.
+ * Class representing a job being conducted asynchronously in the local JVM, which wraps
+ * an arbitrary Future.
  *
- * A memory job will either:
- * - Be in progress (getResult return null)
- * - Complete normally (getResult returns an Asset)
- * - Fail with some exception (getResult throws an exception)
- * @param <T> This describes my type parameter
- * It is possible that a memory job will never complete.
+ * @param <T> The type of the Job result
  *
  * @author Mike
  *
@@ -44,20 +38,17 @@ public class MemoryJob<T> implements Job<T> {
 	}
 
 	@Override
-	public boolean isComplete() {
+	public boolean isDone() {
 		return future.isDone();
 	}
-
-	/**
-	 * Gets the result of the job as an Ocean asset
-	 *
-	 * @throws AuthorizationException if requestor does not have load permission
-	 * @throws StorageException if unable to load the Asset
-	 * @throws JobFailedException if Job fails
-	 * @return The Asset resulting from the job, or null if not available
-	 */
+	
 	@Override
-	public  T getResult() {
+	public boolean isCancelled() {
+		return future.isCancelled();
+	}
+
+	@Override
+	public  T pollResult() {
 		try {
 			return future.isDone()?future.get():null;
 		}
@@ -71,30 +62,6 @@ public class MemoryJob<T> implements Job<T> {
 
 	/**
 	 * Waits for the result of the Operation and returns the result Asset
-	 * WARNING: may never return if the job does not complete
-	 *
-	 * @throws AuthorizationException if requestor does not have load permission
-	 * @throws StorageException if unable to load the Asset
-	 * @throws JobFailedException if Job fails
-	 * @throws Error if Job interrupted
-	 * @return The Asset resulting from the job
-	 */
-	@Override
-	public T awaitResult() {
-		try {
-			return future.get();
-		}
-		catch (InterruptedException e) {
-			throw new Error("Job interrupted",e);
-		}
-		catch (ExecutionException e) {
-			Throwable cause=e.getCause();
-			throw new JobFailedException("Job failed with exception: "+cause,e);
-		}
-	}
-
-	/**
-	 * Waits for the result of the Operation and returns the result Asset
 	 * or returns null if the timeout in milliseconds expires before the
 	 * asset is available.
 	 *
@@ -102,9 +69,9 @@ public class MemoryJob<T> implements Job<T> {
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	@Override
-	public T awaitResult(long timeoutMillis) {
+	public T get(long timeoutMillis, TimeUnit timeUnit) {
 		try {
-			return future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+			return future.get(timeoutMillis, timeUnit);
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException e) {
 			Throwable cause=e.getCause();
@@ -116,5 +83,6 @@ public class MemoryJob<T> implements Job<T> {
 	public String getJobID() {
 		return "MemoryJob:"+Hex.toString(System.identityHashCode(this));
 	}
+
 
 }
