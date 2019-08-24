@@ -1,6 +1,44 @@
 package sg.dex.starfish.impl.remote;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static sg.dex.starfish.constant.Constant.ACCEPTED;
+import static sg.dex.starfish.constant.Constant.ASYNC;
+import static sg.dex.starfish.constant.Constant.BUNDLE;
+import static sg.dex.starfish.constant.Constant.COMPLETED;
+import static sg.dex.starfish.constant.Constant.DATA;
+import static sg.dex.starfish.constant.Constant.DATA_SET;
+import static sg.dex.starfish.constant.Constant.FILE;
+import static sg.dex.starfish.constant.Constant.ID;
+import static sg.dex.starfish.constant.Constant.INVOKE_ASYNC;
+import static sg.dex.starfish.constant.Constant.INVOKE_SYNC;
+import static sg.dex.starfish.constant.Constant.IN_PROGRESS;
+import static sg.dex.starfish.constant.Constant.JOBS;
+import static sg.dex.starfish.constant.Constant.JOB_ID;
+import static sg.dex.starfish.constant.Constant.LISTING_ID;
+import static sg.dex.starfish.constant.Constant.LISTING_URL;
+import static sg.dex.starfish.constant.Constant.MODE;
+import static sg.dex.starfish.constant.Constant.OPERATION;
+import static sg.dex.starfish.constant.Constant.PARAMS;
+import static sg.dex.starfish.constant.Constant.PASSWORD;
+import static sg.dex.starfish.constant.Constant.PURCHASE_URL;
+import static sg.dex.starfish.constant.Constant.SCHEDULED;
+import static sg.dex.starfish.constant.Constant.STARTED;
+import static sg.dex.starfish.constant.Constant.STATUS;
+import static sg.dex.starfish.constant.Constant.SUCCEEDED;
+import static sg.dex.starfish.constant.Constant.SYNC;
+import static sg.dex.starfish.constant.Constant.TOKEN;
+import static sg.dex.starfish.constant.Constant.TYPE;
+import static sg.dex.starfish.constant.Constant.USER;
+import static sg.dex.starfish.constant.Constant.USER_NAME;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -19,23 +57,27 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
-import sg.dex.starfish.*;
-import sg.dex.starfish.exception.*;
+
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Invokable;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.Listing;
+import sg.dex.starfish.MarketAgent;
+import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Operation;
+import sg.dex.starfish.Purchase;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.GenericException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static sg.dex.starfish.constant.Constant.*;
+import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Params;
+import sg.dex.starfish.util.Utils;
 
 /**
  * This class represent the Remote Agent.
@@ -122,7 +164,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException for a bad invoke request
 	 * @throws RuntimeException for protocol errors
 	 */
-	public static Job createJob(RemoteAgent agent, HttpResponse response) {
+	public static Job<Map<String,Object>> createJob(RemoteAgent agent, HttpResponse response) {
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
 		if (statusCode == 201) {
@@ -635,7 +677,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		Map<String, Object> request = new HashMap<>(2);
 		request.put(OPERATION, operation.getAssetID());
 		request.put(PARAMS, Params.formatParams(operation, params));
-		return invoke(request, operation.getAssetID());
+		return invoke(operation,request);
 	}
 
 	/**
@@ -692,11 +734,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job invoke(Operation operation, Map<String, Object> params) {
-		Map<String, Object> request = new HashMap<>(2);
-		request.put(OPERATION, operation.getAssetID());
-		request.put(PARAMS, Params.formatParams(operation, params));
-		return invoke(request, operation.getAssetID());
+	public Job<Map<String,Object>> invoke(Operation operation, Map<String, Object> params) {
+		return invokeImpl(operation, Params.formatParams(operation, params));
 	}
 
 	/**
@@ -707,13 +746,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private Job<Map<String,Object>> invoke(Map<String, Object> request, String assetID) {
-		Map<String, Object> req = (Map<String, Object>) request.get("params");
+	private Job<Map<String,Object>> invokeImpl(Operation operation,Map<String, Object> params) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
+		String assetID=operation.getAssetID();
 		HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
 		addAuthHeaders(httppost);
-		StringEntity entity = new StringEntity(JSON.toPrettyString(req), ContentType.APPLICATION_JSON);
+		String paramJSON=JSON.toPrettyString(params);
+		StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);
 		httppost.setEntity(entity);
 		CloseableHttpResponse response;
 		try {
@@ -728,17 +768,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 		catch (ClientProtocolException e) {
 			throw new JobFailedException(
-					" Client Protocol Exception for asset ID: " + assetID + "request :" + JSON.toPrettyString(request),
+					" Client Protocol Exception for asset ID: " + assetID + "params :" + paramJSON,
 					e);
 		}
 		catch (IOException e) {
 			throw new JobFailedException(
-					" IOException occurred  for asset ID: " + assetID + "request :" + JSON.toPrettyString(request), e);
+					" IOException occurred  for asset ID: " + assetID + "params :" + paramJSON, e);
 		}
 	}
 
 	@Override
-	public Job invokeAsync(Operation operation, Map<String, Object> params) {
+	public Job<Map<String,Object>> invokeAsync(Operation operation, Map<String, Object> params) {
 
 		Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 
@@ -851,15 +891,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					throw new RemoteException("Listing ID not found for at: " + statusCode);
 				} else if (statusCode == 200) {
 					String body = Utils.stringFromStream(HTTP.getContent(response));
-					try {
-						result = new ObjectMapper().readValue(body, List.class);
+					result = JSON.parse(body);
 
-						return result;
-
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
+					return result;
 				} else {
 					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
 				}
@@ -871,7 +905,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		catch (IOException e) {
 			throw new RemoteException(" Getting market data failed  :", e);
 		}
-		return Collections.emptyList();
 	}
 
 	/**

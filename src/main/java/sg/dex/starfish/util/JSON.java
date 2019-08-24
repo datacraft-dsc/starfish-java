@@ -136,7 +136,7 @@ public class JSON {
 	}
 
 	/**
-	 * Converts a string assumed to contain valid JSON object to an Object
+	 * Converts a string assumed to contain valid JSON value to an Object
 	 * @param jsonString A string containing valid JSON
 	 * @throws Error on JSON parsing error
 	 * @param <T> A type parameter for the type of object returned.
