@@ -7,7 +7,8 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 
 /**
- * Class representing a local in-memory operation asset.
+ * Class representing a local in-memory operation asset. Operations are executed in 
+ * a thread pool managed by a MemoryAgent.
  *
  * Intended for use in testing or local development situations. 
  * 
@@ -58,7 +59,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 	/**
 	 * Method for computation of the memory operation.
 	 * 
-	 * Subclass implemenations should override this method to provide their own
+	 * Subclass implementations should override this method to provide their own
 	 * compute functionality.
 	 * 
 	 * @param params
