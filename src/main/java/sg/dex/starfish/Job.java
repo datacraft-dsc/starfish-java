@@ -10,7 +10,10 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
 
 /**
- * Interface representing a asynchronous job execution.
+ * Interface representing an asynchronous job execution.
+ * 
+ * Job extends the Future interface, but adds additional functionality relevant to invokable services
+ * in the data ecosystem.
  * 
  * Jobs are typically executed via the Invoke API
  *
@@ -22,7 +25,7 @@ public interface Job<T> extends Future<T>{
 
 	/**
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
-	 * responsible for completing the job.
+	 * responsible for completing the job, and may be used to refer to the Job via other mechanisms.
 	 *
 	 * @return jobID
 	 */
@@ -38,7 +41,8 @@ public interface Job<T> extends Future<T>{
 	public boolean isDone();
 
 	/**
-	 * Gets the result of the Job if available, or null if not yet available.
+	 * Gets the result of the Job if available, or null if not yet available. If null is a possible result 
+	 * of the operation, it is recommended to check isDone() first.
 	 *
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
@@ -99,8 +103,9 @@ public interface Job<T> extends Future<T>{
 
 	
 	/**
-	 * Convenience method to get the result without checked exceptions.
-	 * @return
+	 * Convenience method to get the Job result without checked exceptions.
+	 * 
+	 * @return The result of the Job
 	 */
 	public default T getResult() {
 		try {
@@ -114,7 +119,7 @@ public interface Job<T> extends Future<T>{
 	@Override
 	public default boolean cancel(boolean mayInterruptIfRunning) {
 		// note: classes implementing Job should override this if they support Job cancellation
-		return false;
+		throw new UnsupportedOperationException("Cancellation not supported on Job of type "+getClass());
 	}
 
 }
