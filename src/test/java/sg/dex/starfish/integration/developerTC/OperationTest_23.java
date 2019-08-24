@@ -9,7 +9,7 @@ import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
@@ -141,7 +141,7 @@ public class OperationTest_23 {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
-                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
+                RemoteDataAsset a = (RemoteDataAsset) response.get(me.getKey());
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
@@ -222,7 +222,7 @@ public class OperationTest_23 {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
-                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
+                RemoteDataAsset a = (RemoteDataAsset) response.get(me.getKey());
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
@@ -247,7 +247,7 @@ public class OperationTest_23 {
         // asset must be uploaded as invoke will work only on RemoteAsset
         Asset a = MemoryAsset.create("this is a asset to test Async data operation");
         // uploading the asset, it will do the registration and upload both
-        RemoteAsset remoteAsset1 = (RemoteAsset) agentI.uploadAsset(a);
+        RemoteDataAsset remoteAsset1 = (RemoteDataAsset) agentI.uploadAsset(a);
 
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset1);
@@ -280,7 +280,7 @@ public class OperationTest_23 {
         // asset must be uploaded as invoke will work only on RemoteAsset
         Asset a1 = MemoryAsset.create("this is a asset to test Async data operation");
         // uploading the asset, it will do the registration and upload both
-        RemoteAsset remoteAsset1 = (RemoteAsset) agentI.uploadAsset(a1);
+        RemoteDataAsset remoteAsset1 = (RemoteDataAsset) agentI.uploadAsset(a1);
 
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("to-hash", remoteAsset1);
@@ -303,7 +303,7 @@ public class OperationTest_23 {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
-                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
+                RemoteDataAsset a = (RemoteDataAsset) response.get(me.getKey());
                 assertNotNull(a);
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());

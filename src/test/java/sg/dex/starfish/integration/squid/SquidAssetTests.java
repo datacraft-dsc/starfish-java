@@ -14,7 +14,7 @@ import sg.dex.starfish.Ocean;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
@@ -162,7 +162,7 @@ public class SquidAssetTests {
 
 
         // verifying registration
-        RemoteAsset aRemoteAsset =(RemoteAsset)surfer.getAsset(memory_asset.getAssetID());
+        RemoteDataAsset aRemoteAsset =(RemoteDataAsset)surfer.getAsset(memory_asset.getAssetID());
 
 
        // validating name

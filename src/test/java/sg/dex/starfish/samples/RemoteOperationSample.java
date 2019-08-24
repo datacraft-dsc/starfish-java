@@ -7,7 +7,7 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.remote.RemoteOperation;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.util.DID;
@@ -100,7 +100,7 @@ public class RemoteOperationSample {
 				"}";
 
 		String tesstAsset = "i am testing invoke";
-		RemoteAsset remoteAsset = (RemoteAsset)surfer.registerAsset(MemoryAsset.create(tesstAsset));
+		RemoteDataAsset remoteAsset = (RemoteDataAsset)surfer.registerAsset(MemoryAsset.create(tesstAsset));
 		RemoteOperation remoteOperation = (RemoteOperation) RemoteOperation.create(surfer, meta);
 		Job job = surfer.invoke(remoteOperation, remoteAsset);
 

@@ -7,7 +7,7 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -34,7 +34,7 @@ public class UploadAsset_10 {
         Asset asset = MemoryAsset.create("test upload of asset");
 
         // upload will do the registration and upload the content
-        RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
+        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
         // getting the content form Remote Agent (Downloading the content)
 
         String downloadData = RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());

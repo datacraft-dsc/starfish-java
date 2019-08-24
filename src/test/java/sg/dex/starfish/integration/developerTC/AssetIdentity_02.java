@@ -9,7 +9,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
@@ -46,7 +46,7 @@ public class AssetIdentity_02 {
         Asset asset1 = MemoryAsset.create(data);
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset1);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset1);
 
         // register to the remote agent
         // get the Remote asset ID which has been register using remote Agent
@@ -73,7 +73,7 @@ public class AssetIdentity_02 {
 
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset2);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
@@ -114,7 +114,7 @@ public class AssetIdentity_02 {
         metaDataAsset.put("provenance",provmetadata);
         // creating asset with MetaData
         Asset asset2 = MemoryAsset.create( data,metaDataAsset);
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset2);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
@@ -135,7 +135,7 @@ public class AssetIdentity_02 {
         Asset asset3 = MemoryAsset.create("Testing using String");
 
         //Registering the Asset
-        RemoteAsset remoteAsset3 = (RemoteAsset)remoteAgent.registerAsset(asset3);
+        RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
         // uploading the Asset, it will upload the content of an asset
         remoteAgent.uploadAsset(asset3);
 
@@ -150,10 +150,10 @@ public class AssetIdentity_02 {
         if (remoteAgent == null) return;
 
         Asset asset3 = MemoryAsset.create("Testing using String");
-        RemoteAsset remoteAsset3 = (RemoteAsset)remoteAgent.registerAsset(asset3);
+        RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
 
         Asset asset4 = MemoryAsset.create("Testing using String");
-        RemoteAsset remoteAsset4 = (RemoteAsset)remoteAgent.registerAsset(asset4);
+        RemoteDataAsset remoteAsset4 = (RemoteDataAsset)remoteAgent.registerAsset(asset4);
 
         // uploading both the Asset
         remoteAgent.uploadAsset(asset3);

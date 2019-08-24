@@ -9,7 +9,7 @@ import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class SearchAssetListing_13 {
 
         // create memory Asset
         Asset asset = MemoryAsset.create("Test Searching of listing");
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
@@ -55,7 +55,7 @@ public class SearchAssetListing_13 {
     public void testSearchListingByInvalidId() {
 
         Asset asset = MemoryAsset.create("Test Searching of listing");
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
         // adding some invalid asset-id in the map and try to create the listing

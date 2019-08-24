@@ -8,7 +8,7 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class ViewAssetListing_14 {
         // creating a memory asset
         Asset asset = MemoryAsset.create("Test listing searching by listing id");
 
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset);
+        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 
         // creating metadata of listing
         Map<String, Object> data2 = new HashMap<>();

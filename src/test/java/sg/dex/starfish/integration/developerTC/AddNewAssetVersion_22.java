@@ -5,7 +5,7 @@ import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -32,7 +32,7 @@ public class AddNewAssetVersion_22 {
 
         String data ="test upload of asset";
         Asset asset = MemoryAsset.create(data);
-        RemoteAsset ra = (RemoteAsset)remoteAgent.uploadAsset(asset);
+        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
 
         String assetData =RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
 

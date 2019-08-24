@@ -12,7 +12,7 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
@@ -104,7 +104,7 @@ public class AssetRegistration_08 {
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
 
-        RemoteAsset remoteAsset =(RemoteAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
+        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
 
         resourceAsset =(ResourceAsset) resourceAsset.includeContentHash();
         assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
@@ -124,9 +124,9 @@ public class AssetRegistration_08 {
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
 
-        RemoteAsset remoteAsset =(RemoteAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
+        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
 
-        remoteAsset =(RemoteAsset) remoteAsset.includeContentHash();
+        remoteAsset =(RemoteDataAsset) remoteAsset.includeContentHash();
         assertNotNull(remoteAsset.getMetadata().get(Constant.CONTENT_HASH));
 
 

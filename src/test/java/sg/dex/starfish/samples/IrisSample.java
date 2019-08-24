@@ -1,7 +1,7 @@
 package sg.dex.starfish.samples;
 
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.url.ResourceAsset;
@@ -24,7 +24,7 @@ public class IrisSample {
 		RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
 
 		ResourceAsset iris=ResourceAsset.create("assets/iris.csv");
-		RemoteAsset remoteAsset =(RemoteAsset)surfer.registerAsset(iris);
+		RemoteDataAsset remoteAsset =(RemoteDataAsset)surfer.registerAsset(iris);
 		iris =(ResourceAsset)iris.includeContentHash();
 		iris.validateContentHash();
 		assertNotNull(iris.getMetadata().get(Constant.CONTENT_HASH));

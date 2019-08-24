@@ -19,16 +19,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class representing an asset managed via a remote agent.
- *
- * This asset will be present in Ocean ecosystem and be referred by using the asset ID.
- *
+ * Class representing a data asset managed via a remote agent.
+ * *
  * @author Mike
  * @version 0.5
  */
-public class RemoteAsset extends ARemoteAsset implements DataAsset {
+public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
 
-	protected RemoteAsset(String meta, RemoteAgent remoteAgent) {
+	protected RemoteDataAsset(String meta, RemoteAgent remoteAgent) {
 		super(meta,remoteAgent);
 	}
 
@@ -39,8 +37,8 @@ public class RemoteAsset extends ARemoteAsset implements DataAsset {
 	 * @param meta Asset metadata which must be a valid JSON string
 	 * @return RemoteAsset
 	 */
-	public static RemoteAsset create(RemoteAgent agent, String meta) {
-		return new RemoteAsset(meta,agent);
+	public static RemoteDataAsset create(RemoteAgent agent, String meta) {
+		return new RemoteDataAsset(meta,agent);
 	}
 
 	@Override

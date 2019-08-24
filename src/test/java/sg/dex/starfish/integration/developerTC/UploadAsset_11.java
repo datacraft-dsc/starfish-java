@@ -9,7 +9,7 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,7 +51,7 @@ public class UploadAsset_11 {
     public void testUploadAsset() {
 
         Asset a = MemoryAsset.create("Testing to upload of asset");
-        RemoteAsset remoteAssetUpload = (RemoteAsset)remoteAgent.uploadAsset(a);
+        RemoteDataAsset remoteAssetUpload = (RemoteDataAsset)remoteAgent.uploadAsset(a);
         String actual = RemoteAgentConfig.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
 
         assertEquals(actual, "Testing to upload of asset");
@@ -65,7 +65,7 @@ public class UploadAsset_11 {
 
         byte [] data ={2,3,4,5,6,7,8,9,0};
         Asset a = MemoryAsset.create(data,getMetaData());
-        RemoteAsset remoteAssetUpload = (RemoteAsset)remoteAgent.uploadAsset(a);
+        RemoteDataAsset remoteAssetUpload = (RemoteDataAsset)remoteAgent.uploadAsset(a);
 
         assertEquals(remoteAssetUpload.getContent().length, data.length);
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
