@@ -87,7 +87,7 @@ public class RemotePurchase implements Purchase {
         return getMetaData().get(LISTING_ID).toString();
     }
 
-    private String getAgreemnt() {
+    private String getAgreement() {
         return getMetaData().get(AGREEMENT).toString();
     }
 

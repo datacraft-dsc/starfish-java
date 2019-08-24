@@ -6,8 +6,7 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.exception.JobFailedException;
 
 /**
- * This class is for creating the job and also can be used
- * to know the status of each job
+ * This class represents a remote Job executed via the Invoke API on a remote agent.
  */
 public class RemoteJob<T> implements Job<T> {
     private RemoteAgent agent;
