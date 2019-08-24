@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import sg.dex.starfish.Job;
@@ -8,31 +9,24 @@ import sg.dex.starfish.exception.JobFailedException;
 /**
  * This class represents a remote Job executed via the Invoke API on a remote agent.
  */
-public class RemoteJob<T> implements Job<T> {
+public class RemoteJob implements Job<Map<String,Object>> {
     private RemoteAgent agent;
     private String jobID;
-    private T response;
+    private Map<String,Object> response;
 
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
     }
 
-    public static <T> Job<T> create(RemoteAgent agent2, String jobID) {
-        return new RemoteJob<T>(agent2, jobID);
+    public static RemoteJob create(RemoteAgent agent2, String jobID) {
+        return new RemoteJob(agent2, jobID);
     }
 
     @Override
     public boolean isDone() {
         return response != null;
     }
-
-    @Override
-    public T get() {
-        return pollResult();
-    }
-
-
 
     /**
      * Polls the invokable service job for a complete asset.
@@ -42,19 +36,19 @@ public class RemoteJob<T> implements Job<T> {
      */
     @Override
 	@SuppressWarnings("unchecked")
-	public synchronized T pollResult() {
+	public synchronized Map<String,Object> pollResult() {
         if (response != null) return response;
-        response = (T)agent.pollJob(jobID);
+        response = (Map<String,Object>)agent.pollJob(jobID);
         return response;
     }
 
     @Override
-    public T get(long timeout, TimeUnit timeUnit) {
+    public Map<String,Object> get(long timeout, TimeUnit timeUnit) {
     	long timeoutMillis=TimeUnit.MILLISECONDS.convert(timeout,timeUnit);
         long start = System.currentTimeMillis();
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
-            T a = pollResult();
+        	Map<String,Object> a = pollResult();
             if (a != null) return a;
             try {
                 Thread.sleep(initialSleep);

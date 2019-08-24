@@ -101,7 +101,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private static <T> Job<T> createSuccessJob(RemoteAgent agent, HttpResponse response) {
+	private static Job<Map<String,Object>> createSuccessJob(RemoteAgent agent, HttpResponse response) {
 		HttpEntity entity = response.getEntity();
 		if (entity == null) throw new RuntimeException("Invoke failed: no response body");
 		try {
@@ -631,7 +631,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job invoke(Operation operation, Object... params) {
+	public Job<Map<String,Object>> invoke(Operation operation, Object... params) {
 		Map<String, Object> request = new HashMap<>(2);
 		request.put(OPERATION, operation.getAssetID());
 		request.put(PARAMS, Params.formatParams(operation, params));
@@ -707,7 +707,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private Job invoke(Map<String, Object> request, String assetID) {
+	private Job<Map<String,Object>> invoke(Map<String, Object> request, String assetID) {
 		Map<String, Object> req = (Map<String, Object>) request.get("params");
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
