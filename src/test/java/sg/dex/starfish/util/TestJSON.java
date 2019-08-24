@@ -2,7 +2,9 @@ package sg.dex.starfish.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -33,6 +35,13 @@ public class TestJSON {
 		String s="\"\\/foo\\/bar\"";
 		assertEquals("/foo/bar",JSON.parse(s));
 		assertEquals (s,JSON.toString("/foo/bar"));
+	}
+	
+	@Test public void testarrayType() {
+		List<Long> list=JSON.parse("[1 2]");
+		assertEquals(2,list.size());
+		assertEquals(Long.valueOf(1),list.get(0));
+		assertEquals(Long.valueOf(2),list.get(1));
 	}
 	
 	@Test public void testNull() {
