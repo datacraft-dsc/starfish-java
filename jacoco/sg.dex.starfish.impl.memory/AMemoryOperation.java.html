@@ -23,7 +23,7 @@ import sg.dex.starfish.Operation;
 <span class="fc" id="L23">	}</span>
 
 	@Override
-	public Job&lt;Map&lt;String, Object&gt;&gt; invokeAsync(Map&lt;String, Object&gt; params) {
+	public Job invokeAsync(Map&lt;String, Object&gt; params) {
 		// default implementation for an asynchronous invoke job in memory, using a
 		// Future&lt;Asset&gt;.
 		// Implementations may override this for custom behaviour (e.g. a custom thread
@@ -42,7 +42,7 @@ import sg.dex.starfish.Operation;
 <span class="pc bpc" id="L42" title="2 of 4 branches missed.">			assert (future.isDone());</span>
 <span class="fc" id="L43">		});</span>
 
-<span class="fc" id="L45">		MemoryJob&lt;Map&lt;String, Object&gt;&gt; memoryJob = MemoryJob.create(future);</span>
+<span class="fc" id="L45">		MemoryJob memoryJob = MemoryJob.create(future);</span>
 <span class="fc" id="L46">		return memoryJob;</span>
 	}
 
@@ -52,7 +52,7 @@ import sg.dex.starfish.Operation;
 	}
 
 	@Override
-	public Job&lt;Map&lt;String, Object&gt;&gt; invoke(Map&lt;String, Object&gt; params) {
+	public Job invoke(Map&lt;String, Object&gt; params) {
 <span class="nc" id="L56">		return invokeAsync(params);</span>
 	}
 

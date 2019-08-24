@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Job.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">Job.java</span></div><h1>Job.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,7 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
 
 /**
- * Interface representing an asynchronous job execution.
+ * Interface representing an asynchronous Job execution.
  * 
  * Job extends the Future interface, but adds additional functionality relevant to invokable services
  * in the data ecosystem.
@@ -19,9 +20,8 @@ import sg.dex.starfish.exception.StorageException;
  *
  * @author Mike
  * @version 0.5
- * @param &lt;T&gt; The type of result returned by the Job
  */
-public interface Job&lt;T&gt; extends Future&lt;T&gt;{
+public interface Job extends Future&lt;Map&lt;String,Object&gt;&gt; {
 
 	/**
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
@@ -41,12 +41,11 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	public boolean isDone();
 
 	/**
-	 * Gets the result of the Job if available, or null if not yet available. If null is a possible result 
-	 * of the operation, it is recommended to check isDone() first.
+	 * Gets the result of the Job if available, or null if not yet available.
 	 *
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
-	public T pollResult();
+	public Map&lt;String,Object&gt; pollResult();
 
 	/**
 	 * Waits for the result of the operation and returns the result
@@ -60,16 +59,16 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 * @throws InterruptedException 
 	 */
 	@Override
-	public default T get() throws InterruptedException, ExecutionException {
+	public default Map&lt;String,Object&gt; get() throws InterruptedException, ExecutionException {
 		try {
-<span class="nc" id="L65">			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L66">		} catch (TimeoutException t) {</span>
-<span class="nc" id="L67">			throw new Error(&quot;Unexpected timeout!&quot;);</span>
+<span class="nc" id="L64">			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L65">		} catch (TimeoutException t) {</span>
+<span class="nc" id="L66">			throw new Error(&quot;Unexpected timeout!&quot;);</span>
 		}
 	}
 	
 	@Override
-	public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
+	public Map&lt;String,Object&gt; get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
 
 	/**
 	 * Waits for the result of the Operation and returns the result 
@@ -82,8 +81,8 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 * @throws TimeoutException 
 	 * @throws InterruptedException 
 	 */
-	public default T get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
-<span class="nc" id="L86">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+	public default Map&lt;String,Object&gt; get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
+<span class="nc" id="L85">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 	}
 	
 	/**
@@ -92,12 +91,12 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 * @param timeoutMillis Timeout to wait for the Jo result in milliseconds
 	 * @return The result of the Job
 	 */
-	public default T getResult(long timeoutMillis) {
+	public default Map&lt;String,Object&gt; getResult(long timeoutMillis) {
 		try {
-<span class="fc" id="L97">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L96">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 		}
-<span class="nc" id="L99">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
-<span class="nc" id="L100">			throw new Error(e);</span>
+<span class="nc" id="L98">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
+<span class="nc" id="L99">			throw new Error(e);</span>
 		}
 	}
 
@@ -107,19 +106,19 @@ public interface Job&lt;T&gt; extends Future&lt;T&gt;{
 	 * 
 	 * @return The result of the Job
 	 */
-	public default T getResult() {
+	public default Map&lt;String,Object&gt; getResult() {
 		try {
-<span class="nc" id="L112">			return get();</span>
+<span class="nc" id="L111">			return get();</span>
 		}
-<span class="nc" id="L114">		catch (InterruptedException | ExecutionException e) {</span>
-<span class="nc" id="L115">			throw new Error(e);</span>
+<span class="nc" id="L113">		catch (InterruptedException | ExecutionException e) {</span>
+<span class="nc" id="L114">			throw new Error(e);</span>
 		}
 	}
 		
 	@Override
 	public default boolean cancel(boolean mayInterruptIfRunning) {
 		// note: classes implementing Job should override this if they support Job cancellation
-<span class="nc" id="L122">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot;+getClass());</span>
+<span class="nc" id="L121">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot;+getClass());</span>
 	}
 
 }

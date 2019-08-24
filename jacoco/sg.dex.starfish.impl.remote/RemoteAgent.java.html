@@ -143,7 +143,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private static Job&lt;Map&lt;String,Object&gt;&gt; createSuccessJob(RemoteAgent agent, HttpResponse response) {
+	private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
 <span class="nc" id="L147">		HttpEntity entity = response.getEntity();</span>
 <span class="nc bnc" id="L148" title="All 2 branches missed.">		if (entity == null) throw new RuntimeException(&quot;Invoke failed: no response body&quot;);</span>
 		try {
@@ -164,7 +164,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException for a bad invoke request
 	 * @throws RuntimeException for protocol errors
 	 */
-	public static Job&lt;Map&lt;String,Object&gt;&gt; createJob(RemoteAgent agent, HttpResponse response) {
+	public static Job createJob(RemoteAgent agent, HttpResponse response) {
 <span class="nc" id="L168">		StatusLine statusLine = response.getStatusLine();</span>
 <span class="nc" id="L169">		int statusCode = statusLine.getStatusCode();</span>
 <span class="nc bnc" id="L170" title="All 2 branches missed.">		if (statusCode == 201) {</span>
@@ -673,7 +673,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job&lt;Map&lt;String,Object&gt;&gt; invoke(Operation operation, Object... params) {
+	public Job invoke(Operation operation, Object... params) {
 <span class="nc" id="L677">		Map&lt;String, Object&gt; request = new HashMap&lt;&gt;(2);</span>
 <span class="nc" id="L678">		request.put(OPERATION, operation.getAssetID());</span>
 <span class="nc" id="L679">		request.put(PARAMS, Params.formatParams(operation, params));</span>
@@ -734,7 +734,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job&lt;Map&lt;String,Object&gt;&gt; invoke(Operation operation, Map&lt;String, Object&gt; params) {
+	public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
 <span class="nc" id="L738">		return invokeImpl(operation, Params.formatParams(operation, params));</span>
 	}
 
@@ -746,7 +746,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
-	private Job&lt;Map&lt;String,Object&gt;&gt; invokeImpl(Operation operation,Map&lt;String, Object&gt; params) {
+	private Job invokeImpl(Operation operation,Map&lt;String, Object&gt; params) {
 <span class="nc" id="L750">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
 
 <span class="nc" id="L752">		String assetID=operation.getAssetID();</span>
@@ -778,7 +778,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	@Override
-	public Job&lt;Map&lt;String,Object&gt;&gt; invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
+	public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
 <span class="nc" id="L783">		Map&lt;String, Object&gt; paramValueMap = Params.formatParams(operation, params);</span>
 
