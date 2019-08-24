@@ -1,15 +1,21 @@
 package sg.dex.starfish.impl.squid;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
-import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
 import com.oceanprotocol.squid.models.aquarius.SearchResult;
 import com.oceanprotocol.squid.models.asset.AssetMetadata;
 import com.oceanprotocol.squid.models.service.ProviderConfig;
+
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.constant.Constant;
@@ -19,12 +25,6 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class implementing a Squid Agent

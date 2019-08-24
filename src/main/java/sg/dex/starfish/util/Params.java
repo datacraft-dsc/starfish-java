@@ -106,7 +106,7 @@ public class Params {
 					JSON.validateJson(JSON.toPrettyString(response));
 					result.put(paramName, response.get(paramName));
 				} else {
-					throw new StarfishValidationException("Invalid type of Input .Accepted Input: " +
+					throw new StarfishValidationException("Invalid type of Input. Accepted Input: " +
 							"Asset or Json. Input given: " + type);
 				}
 

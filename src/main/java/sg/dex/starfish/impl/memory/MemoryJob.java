@@ -11,10 +11,9 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.util.Hex;
 
 /**
- * Class representing a job being conducted asynchronously in the local JVM, which wraps
+ * Class representing a Job being conducted asynchronously in the local JVM, which wraps
  * an arbitrary Future.
  *
- * @param <T> The type of the Job result
  *
  * @author Mike
  *
@@ -31,7 +30,6 @@ public class MemoryJob implements Job {
 	 * Create a MemoryJob instance using the provided Future.
 	 *
 	 * @param future A Future to be used to complete this job
-	 * @param <T> This describes my type parameter
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
 	public static MemoryJob create(Future<Map<String,Object>> future) {
