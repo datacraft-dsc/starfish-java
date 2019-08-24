@@ -360,7 +360,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * This method is used for getting the remote asset instance based on metaString
+	 * This method is used for getting the remote Asset instance based on metadata
 	 * passed
 	 *
 	 * @param metaString meta data of the asset
@@ -371,7 +371,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 <span class="nc bnc" id="L371" title="All 2 branches missed.">		if (metaMap.get(TYPE).equals(OPERATION)) {</span>
 <span class="nc" id="L372">			return RemoteOperation.create(this, metaString);</span>
 <span class="nc bnc" id="L373" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(DATA_SET)) {</span>
-<span class="nc" id="L374">			return RemoteAsset.create(this, metaString);</span>
+<span class="nc" id="L374">			return RemoteDataAsset.create(this, metaString);</span>
 <span class="nc bnc" id="L375" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(BUNDLE)) {</span>
 <span class="nc" id="L376">			return RemoteBundle.createBundle(this, metaMap);</span>
 		} else {
