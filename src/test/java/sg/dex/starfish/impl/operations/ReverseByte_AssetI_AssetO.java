@@ -39,10 +39,8 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 	 * @param input
 	 * @return
 	 */
-	private Map<String, Object> doCompute(Object input) {
-		// Object a=(JSON.toMap(input.toString())).get(ID);
-		Asset asset = (Asset) input;
-		//
+	private Map<String, Object> doCompute(Asset asset) {
+		
 		byte[] bytes = asset.getContent();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
@@ -56,17 +54,10 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 		return Utils.mapOf("output", result);
 	}
 
-	/**
-	 * API that implement the compute logic that will reverse the content of an
-	 * Asset.
-	 * 
-	 * @param params
-	 * @return
-	 */
 	@Override
 	protected Map<String, Object> compute(Map<String, Object> params) {
-		if (params == null || params.get("input") == null)
-			throw new IllegalArgumentException("Missing parameter 'input'");
-		return doCompute(params.get("input"));
+		Object o=params.get("input");
+		if (o == null) throw new IllegalArgumentException("Missing parameter 'input'");
+		return doCompute((Asset)o);
 	}
 }
