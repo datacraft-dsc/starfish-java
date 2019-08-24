@@ -11,10 +11,9 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.util.Hex;
 
 /**
- * Class representing a job being conducted asynchronously in the local JVM, which wraps
+ * Class representing a Job being conducted asynchronously in the local JVM, which wraps
  * an arbitrary Future.
  *
- * @param &lt;T&gt; The type of the Job result
  *
  * @author Mike
  *
@@ -23,41 +22,40 @@ public class MemoryJob implements Job {
 
 	private final Future&lt;Map&lt;String,Object&gt;&gt; future;
 
-<span class="fc" id="L26">	private MemoryJob(Future&lt;Map&lt;String,Object&gt;&gt; future) {</span>
-<span class="fc" id="L27">		this.future=future;</span>
-<span class="fc" id="L28">	}</span>
+<span class="fc" id="L25">	private MemoryJob(Future&lt;Map&lt;String,Object&gt;&gt; future) {</span>
+<span class="fc" id="L26">		this.future=future;</span>
+<span class="fc" id="L27">	}</span>
 
 	/**
 	 * Create a MemoryJob instance using the provided Future.
 	 *
 	 * @param future A Future to be used to complete this job
-	 * @param &lt;T&gt; This describes my type parameter
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
 	public static MemoryJob create(Future&lt;Map&lt;String,Object&gt;&gt; future) {
-<span class="fc" id="L38">		return new MemoryJob (future);</span>
+<span class="fc" id="L36">		return new MemoryJob (future);</span>
 	}
 
 	@Override
 	public boolean isDone() {
-<span class="nc" id="L43">		return future.isDone();</span>
+<span class="nc" id="L41">		return future.isDone();</span>
 	}
 	
 	@Override
 	public boolean isCancelled() {
-<span class="nc" id="L48">		return future.isCancelled();</span>
+<span class="nc" id="L46">		return future.isCancelled();</span>
 	}
 
 	@Override
 	public Map&lt;String,Object&gt; pollResult() {
 		try {
-<span class="nc bnc" id="L54" title="All 2 branches missed.">			return future.isDone()?future.get():null;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">			return future.isDone()?future.get():null;</span>
 		}
-<span class="nc" id="L56">		catch (InterruptedException e) {</span>
-<span class="nc" id="L57">			throw new Error(&quot;Job interrupted&quot;,e);</span>
+<span class="nc" id="L54">		catch (InterruptedException e) {</span>
+<span class="nc" id="L55">			throw new Error(&quot;Job interrupted&quot;,e);</span>
 		}
-<span class="nc" id="L59">		catch (ExecutionException e) {</span>
-<span class="nc" id="L60">			throw new Error(&quot;Job failed with exception: &quot;,e.getCause());</span>
+<span class="nc" id="L57">		catch (ExecutionException e) {</span>
+<span class="nc" id="L58">			throw new Error(&quot;Job failed with exception: &quot;,e.getCause());</span>
 		}
 	}
 
@@ -72,17 +70,17 @@ public class MemoryJob implements Job {
 	@Override
 	public Map&lt;String,Object&gt; get(long timeoutMillis, TimeUnit timeUnit) {
 		try {
-<span class="fc" id="L75">			return future.get(timeoutMillis, timeUnit);</span>
+<span class="fc" id="L73">			return future.get(timeoutMillis, timeUnit);</span>
 		}
-<span class="fc" id="L77">		catch (InterruptedException | ExecutionException | TimeoutException e) {</span>
-<span class="fc" id="L78">			Throwable cause=e.getCause();</span>
-<span class="fc" id="L79">			throw new JobFailedException(&quot;Job failed with exception: &quot;+cause,e);</span>
+<span class="fc" id="L75">		catch (InterruptedException | ExecutionException | TimeoutException e) {</span>
+<span class="fc" id="L76">			Throwable cause=e.getCause();</span>
+<span class="fc" id="L77">			throw new JobFailedException(&quot;Job failed with exception: &quot;+cause,e);</span>
 		}
 	}
 
 	@Override
 	public String getJobID() {
-<span class="nc" id="L85">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
+<span class="nc" id="L83">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
 	}
 
 
