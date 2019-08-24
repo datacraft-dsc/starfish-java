@@ -138,7 +138,7 @@ public class InvokeServiceFree_20 {
         // get asset form asset id
         Operation remoteOperation = (Operation) agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
         // invoking the prime operation and will get the job associated
-        Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
+        Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult();
@@ -221,7 +221,7 @@ public class InvokeServiceFree_20 {
         Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
         // invoking the prime operation and will get the job associated
-        Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
+        Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult(10000);
@@ -342,7 +342,7 @@ public class InvokeServiceFree_20 {
 
 
         // invoking the prime operation and will get the job associated
-        Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
+        Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult(10000);
@@ -399,7 +399,7 @@ public class InvokeServiceFree_20 {
 
 
         // invoking the prime operation and will get the job associated
-        Job<Map<String, Object>> job = remoteOperation.invokeAsync(metaMap);
+        Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult(10000);

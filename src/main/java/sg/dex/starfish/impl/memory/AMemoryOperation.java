@@ -23,7 +23,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 	}
 
 	@Override
-	public Job<Map<String, Object>> invokeAsync(Map<String, Object> params) {
+	public Job invokeAsync(Map<String, Object> params) {
 		// default implementation for an asynchronous invoke job in memory, using a
 		// Future<Asset>.
 		// Implementations may override this for custom behaviour (e.g. a custom thread
@@ -42,7 +42,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 			assert (future.isDone());
 		});
 
-		MemoryJob<Map<String, Object>> memoryJob = MemoryJob.create(future);
+		MemoryJob memoryJob = MemoryJob.create(future);
 		return memoryJob;
 	}
 
@@ -52,7 +52,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 	}
 
 	@Override
-	public Job<Map<String, Object>> invoke(Map<String, Object> params) {
+	public Job invoke(Map<String, Object> params) {
 		return invokeAsync(params);
 	}
 

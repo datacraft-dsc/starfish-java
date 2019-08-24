@@ -9,7 +9,7 @@ import sg.dex.starfish.exception.JobFailedException;
 /**
  * This class represents a remote Job executed via the Invoke API on a remote agent.
  */
-public class RemoteJob implements Job<Map<String,Object>> {
+public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
     private Map<String,Object> response;

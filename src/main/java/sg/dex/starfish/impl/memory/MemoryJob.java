@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.memory;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -18,11 +19,11 @@ import sg.dex.starfish.util.Hex;
  * @author Mike
  *
  */
-public class MemoryJob<T> implements Job<T> {
+public class MemoryJob implements Job {
 
-	private final Future<T> future;
+	private final Future<Map<String,Object>> future;
 
-	private MemoryJob(Future<T> future) {
+	private MemoryJob(Future<Map<String,Object>> future) {
 		this.future=future;
 	}
 
@@ -33,8 +34,8 @@ public class MemoryJob<T> implements Job<T> {
 	 * @param <T> This describes my type parameter
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
-	public static<T> MemoryJob<T> create(Future<T> future) {
-		return new MemoryJob<T>(future);
+	public static MemoryJob create(Future<Map<String,Object>> future) {
+		return new MemoryJob (future);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class MemoryJob<T> implements Job<T> {
 	}
 
 	@Override
-	public  T pollResult() {
+	public Map<String,Object> pollResult() {
 		try {
 			return future.isDone()?future.get():null;
 		}
@@ -69,7 +70,7 @@ public class MemoryJob<T> implements Job<T> {
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	@Override
-	public T get(long timeoutMillis, TimeUnit timeUnit) {
+	public Map<String,Object> get(long timeoutMillis, TimeUnit timeUnit) {
 		try {
 			return future.get(timeoutMillis, timeUnit);
 		}

@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,7 @@ import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
 
 /**
- * Interface representing an asynchronous job execution.
+ * Interface representing an asynchronous Job execution.
  * 
  * Job extends the Future interface, but adds additional functionality relevant to invokable services
  * in the data ecosystem.
@@ -19,9 +20,8 @@ import sg.dex.starfish.exception.StorageException;
  *
  * @author Mike
  * @version 0.5
- * @param <T> The type of result returned by the Job
  */
-public interface Job<T> extends Future<T>{
+public interface Job extends Future<Map<String,Object>> {
 
 	/**
 	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
@@ -41,12 +41,11 @@ public interface Job<T> extends Future<T>{
 	public boolean isDone();
 
 	/**
-	 * Gets the result of the Job if available, or null if not yet available. If null is a possible result 
-	 * of the operation, it is recommended to check isDone() first.
+	 * Gets the result of the Job if available, or null if not yet available.
 	 *
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
-	public T pollResult();
+	public Map<String,Object> pollResult();
 
 	/**
 	 * Waits for the result of the operation and returns the result
@@ -60,7 +59,7 @@ public interface Job<T> extends Future<T>{
 	 * @throws InterruptedException 
 	 */
 	@Override
-	public default T get() throws InterruptedException, ExecutionException {
+	public default Map<String,Object> get() throws InterruptedException, ExecutionException {
 		try {
 			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);
 		} catch (TimeoutException t) {
@@ -69,7 +68,7 @@ public interface Job<T> extends Future<T>{
 	}
 	
 	@Override
-	public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
+	public Map<String,Object> get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
 
 	/**
 	 * Waits for the result of the Operation and returns the result 
@@ -82,7 +81,7 @@ public interface Job<T> extends Future<T>{
 	 * @throws TimeoutException 
 	 * @throws InterruptedException 
 	 */
-	public default T get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
+	public default Map<String,Object> get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
 		return get(timeoutMillis, TimeUnit.MILLISECONDS);
 	}
 	
@@ -92,7 +91,7 @@ public interface Job<T> extends Future<T>{
 	 * @param timeoutMillis Timeout to wait for the Jo result in milliseconds
 	 * @return The result of the Job
 	 */
-	public default T getResult(long timeoutMillis) {
+	public default Map<String,Object> getResult(long timeoutMillis) {
 		try {
 			return get(timeoutMillis, TimeUnit.MILLISECONDS);
 		}
@@ -107,7 +106,7 @@ public interface Job<T> extends Future<T>{
 	 * 
 	 * @return The result of the Job
 	 */
-	public default T getResult() {
+	public default Map<String,Object> getResult() {
 		try {
 			return get();
 		}

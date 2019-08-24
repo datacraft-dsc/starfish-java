@@ -24,7 +24,7 @@ public interface Operation extends Asset {
 	 * @throws IllegalArgumentException if required parameters are not available.
 	 * @return The Job for this invoked operation
 	 */
-	public default Job<Map<String,Object>> invoke(Object... params) {
+	public default Job invoke(Object... params) {
 		return invoke(Params.namedParams(this, params));
 	}
 
@@ -38,7 +38,7 @@ public interface Operation extends Asset {
 	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job<Map<String,Object>> invokeAsync(Map<String, Object> params);
+	public Job invokeAsync(Map<String, Object> params);
 
 	/**
 	 * Invokes this operation with the given named parameters. Operations should
@@ -62,7 +62,7 @@ public interface Operation extends Asset {
 	 *             of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job<Map<String,Object>> invoke(Map<String, Object> params);
+	public Job invoke(Map<String, Object> params);
 
 	/**
 	 * Returns the operation specification for this operation. Operations must

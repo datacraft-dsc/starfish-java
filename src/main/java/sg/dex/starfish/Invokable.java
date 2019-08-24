@@ -19,7 +19,7 @@ public interface Invokable {
 	 * @param params Positional parameters for the invoke operation
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
-	public Job<Map<String,Object>> invoke(Operation operation, Object... params);
+	public Job invoke(Operation operation, Object... params);
 	
 	/**
 	 * Invokes the specified operation on this agent. If the invoke is successfully launched,
@@ -30,7 +30,7 @@ public interface Invokable {
 	 * @param params Named parameters for the invoke operation
 	 * @return A Job instance allowing access to the invoke job status and result
 	 */
-	public Job<Map<String,Object>> invoke(Operation operation, Map<String,Object> params);
+	public Job invoke(Operation operation, Map<String,Object> params);
 	
 	/**
 	 * Gets the parameter specification for this Invokable service given the specified operation
@@ -54,5 +54,5 @@ public interface Invokable {
 	 * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
 	 * @return The Job for this invoked operation
 	 */
-	public Job<Map<String,Object>> invokeAsync(Operation operation,Map<String,Object> params);
+	public Job invokeAsync(Operation operation,Map<String,Object> params);
 }
