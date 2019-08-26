@@ -5,6 +5,7 @@ import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,7 +36,7 @@ import static org.junit.Assert.assertEquals;
  * ./start_ocean.sh
  */
 @RunWith(JUnit4.class)
-//@Ignore
+@Ignore
 public class SquidAssetTests {
     private Ocean ocean;
     private SquidAgent squidAgent;
