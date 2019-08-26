@@ -1,6 +1,13 @@
 package sg.dex.starfish.impl.memory;
 
-import static junit.framework.TestCase.assertNotNull;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Listing;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,16 +15,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Listing;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
+import static junit.framework.TestCase.assertEquals;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -49,9 +47,7 @@ public class TestMemoryListing {
         }
         metaData.put("assetid", uploadedAsset.getAssetID());
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        Assert.assertNotNull(listing);
-        Assert.assertNotNull(listing.getAsset());
-        Assert.assertNotNull(listing.getMetaData());
+        assertEquals(listing.getAssetID(),uploadedAsset.getAssetID());
     }
 
     /**
@@ -72,9 +68,7 @@ public class TestMemoryListing {
 
 
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        Assert.assertNotNull(listing);
-        Assert.assertNotNull(listing.getAsset());
-        Assert.assertNotNull(listing.getMetaData());
+        assertEquals(listing.getAssetID(),uploadedAsset.getAssetID());
     }
 
     /**
@@ -103,11 +97,7 @@ public class TestMemoryListing {
         metaData.put("trust_level", 0);
 
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        Assert.assertNotNull(listing);
-        Assert.assertNotNull(listing.getAsset());
-        Assert.assertNotNull(listing.getMetaData());
-        assertNotNull(listing.getAgreement());
-
+        assertEquals(listing.getAssetID(),a.getAssetID());
 
     }
 
@@ -136,9 +126,7 @@ public class TestMemoryListing {
 
 
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        Assert.assertNotNull(listing);
-        Assert.assertNotNull(listing.getAsset());
-        Assert.assertNotNull(listing.getMetaData());
+
     }
 
     /**

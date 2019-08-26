@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
+import sg.dex.starfish.constant.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,14 +47,12 @@ public class TestMemoryBundle {
         // creating a memory Agent
         MemoryAgent memoryAgent = MemoryAgent.create();
 
-        // create asset bundle without any custom metadata // so passing null
+        // create asset bundle with default metadata
         Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
 
         // getting the created asset bundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
 
-        // checking default name
-//        assertEquals(metadata.get("name"), null);
 
         // getting the contents of asset bundle through metadata
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
@@ -207,7 +206,7 @@ public class TestMemoryBundle {
 
         // create asset bundle without any custom metadata // so passing null
         // if assetMap is passed as null it will create an empty map for that
-        Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
+        Bundle bundle = MemoryBundle.create(memoryAgent, assetBundle, null);
 
         byte[] data3 = {4, 16, 7};
         Asset a3 = MemoryAsset.create(data3);
@@ -217,13 +216,13 @@ public class TestMemoryBundle {
 
         assetBundle.put("three", a3);
         assetBundle.put("four", a4);
-        // adding add asset now after bundle gets created
-        memoryAssetBundle = (MemoryBundle) memoryAssetBundle.addAll(assetBundle);
+        // as bundle is immutable ,so it will create a new bundle with existing sub-asset and the new sub-asset
+        Bundle newBundle = bundle.addAll(assetBundle);
+
 
         // getting the created asset bundle metadata
-        Map<String, Object> metadata = memoryAssetBundle.getMetadata();
+        Map<String, Object> metadata = newBundle.getMetadata();
 
-        // checking default name
 
         // getting the contents of asset bundle from metadata
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
@@ -235,7 +234,7 @@ public class TestMemoryBundle {
         assertEquals(contents.get("three").get("assetID"), a3.getAssetID());
 
         // getting the contents of asset bundle through API
-        Map<String, Object> allAssetMap = memoryAssetBundle.getAll();
+        Map<String, Object> allAssetMap = newBundle.getAll();
 
 
         assertEquals((allAssetMap.get("two").toString()), a2.getAssetID());
@@ -244,52 +243,7 @@ public class TestMemoryBundle {
 
     }
 
-    /**
-     * Add sub-asset map in Existing bundle which has asset
-     */
-    @SuppressWarnings("unchecked")
-	@Test
-    public void testAddAssetInExistingBundle() {
 
-        // creating  assets
-
-        byte[] data1 = {2, 3, 4};
-        Asset a1 = MemoryAsset.create(data1);
-
-        byte[] data2 = {5, 6, 7};
-        Asset a2 = MemoryAsset.create(data2);
-
-        //assigning each asset with name and adding to map
-        Map<String, Asset> assetBundle = new HashMap<>();
-        assetBundle.put("one", a1);
-
-        // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
-
-        // create asset bundle without any custom metadata // so passing null
-        Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, null);
-
-        // getting the created asset bundle metadata
-        Map<String, Object> metadata = memoryAssetBundle.getMetadata();
-
-        // checking default name
-
-        // getting the contents of asset bundle through metadata
-        Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) metadata.get("contents");
-
-        //comparing id
-        assertEquals(contents.get("two"), null);
-        assertEquals(contents.get("one").get("assetID"), a1.getAssetID());
-
-        // adding two asset
-
-        memoryAssetBundle = (MemoryBundle) memoryAssetBundle.add("two", a2);
-
-        // getting the contents of asset bundle through metadata
-        contents = (Map<String, Map<String, String>>) memoryAssetBundle.getMetadata().get("contents");
-        assertEquals(contents.get("two").get("assetID"), a2.getAssetID());
-
-    }
 
     /**
      * APi to test get sub-asset bundle by name
@@ -303,9 +257,11 @@ public class TestMemoryBundle {
         MemoryAgent memoryAgent = MemoryAgent.create();
 
         Bundle bundle =MemoryBundle.create(memoryAgent,assetBundle);
-        assertNotNull(bundle.getAll());
-        assertNotNull(bundle.getMetadata());
-        assertNotNull(bundle.get("one"));
+        assertEquals(bundle.getAll().size(),assetBundle.size());
+        assertEquals(bundle.isBundle(),true);
+        assertEquals(bundle.getMetadata().get(Constant.TYPE),"bundle");
+        assertEquals(bundle.get("one").getAssetID(),subAsset.getAssetID());
+
 
     }
 
@@ -316,50 +272,13 @@ public class TestMemoryBundle {
 
         Bundle bundle =MemoryBundle.create(memoryAgent,null);
         assertTrue(bundle.getAll().isEmpty());
-        assertNotNull(bundle.getMetadata());
+        assertEquals(bundle.isBundle(),true);
+        assertEquals(bundle.getMetadata().get(Constant.TYPE),"bundle");
 
     }
 
-    @Test
-    public void testAddExistingBundle(){
-
-        Asset subAsset = MemoryAsset.create("Test bundle asset by sub asset name");
-        //assigning each asset with name and adding to map
-        Map<String, Asset> assetBundle = new HashMap<>();
-        assetBundle.put("one", subAsset);
-        MemoryAgent memoryAgent = MemoryAgent.create();
-
-        Bundle bundle =MemoryBundle.create(memoryAgent,assetBundle);
-        assertNotNull(bundle.getAll());
-        assertNotNull(bundle.getMetadata());
-        assertNotNull(bundle.get("one"));
-    }
-    @Test
-    public void testBundleImmutability(){
-
-        // create emptyBundle
-        MemoryAgent memoryAgent = MemoryAgent.create();
-
-        Bundle bundleOld =MemoryBundle.create(memoryAgent,null);
-        assertTrue(bundleOld.getAll().isEmpty());
-        assertNotNull(bundleOld.getMetadata());
 
 
-
-        Asset subAsset = MemoryAsset.create("Test bundle asset by sub asset name");
-        //assigning each asset with name and adding to map
-        Map<String, Asset> assetBundle = new HashMap<>();
-        assetBundle.put("one", subAsset);
-
-        Bundle bundle =bundleOld.add("one",subAsset);
-        assertNotNull(bundle.getAll());
-        assertNotNull(bundle.getMetadata());
-        assertNotNull(bundle.get("one"));
-
-        assertTrue(bundleOld.getAll().isEmpty());
-        assertNotNull(bundleOld.getMetadata());
-
-    }
     @Test
     public void testAddAllInExistingBundle(){
         Asset subAsset1 = MemoryAsset.create("Sub Asset 1");
@@ -372,12 +291,9 @@ public class TestMemoryBundle {
         assetBundle.put("3", subAsset3);
         MemoryAgent memoryAgent = MemoryAgent.create();
 
-        Bundle bundle =MemoryBundle.create(memoryAgent,assetBundle);
-        assertNotNull(bundle.getAll());
-        assertNotNull(bundle.getMetadata());
-        assertNotNull(bundle.get("1"));
-        assertNotNull(bundle.get("2"));
-        assertNotNull(bundle.get("3"));
+        Bundle bundle =MemoryBundle.create(memoryAgent,null);
+        bundle = bundle.addAll(assetBundle);
+        assertEquals(subAsset1.getAssetID(),bundle.get("1").getAssetID());
 
     }
     @SuppressWarnings("unchecked")
@@ -402,8 +318,7 @@ public class TestMemoryBundle {
         //System.out.println(JSON.toPrettyString(mainBundle.getMetadata()));
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) mainBundle.getMetadata().get("contents");
         assertEquals(contents.get("2").get("assetID"), nestedBundle.getAssetID());
-
-
+        assertEquals(mainBundle.get("2").isBundle(), true);
 
 
     }

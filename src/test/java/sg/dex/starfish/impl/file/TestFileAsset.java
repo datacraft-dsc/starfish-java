@@ -1,8 +1,10 @@
 package sg.dex.starfish.impl.file;
 
 import org.junit.Test;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
@@ -14,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static sg.dex.starfish.constant.Constant.OCTET_STREAM;
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {
@@ -37,21 +40,18 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(f);
 
         Map<String, Object> md = fa.getMetadata();
-        assertNotNull(fa.getMetadata());
         // hash content is optional so  default hash content is not included in metadata
         assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
 
         // verify the default metadata
-        assertNotNull(fa.getMetadata().get(Constant.DATE_CREATED));
-        assertNotNull(fa.getMetadata().get(Constant.TYPE));
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_TYPE));
+        assertEquals(fa.getMetadata().get(Constant.CONTENT_TYPE),OCTET_STREAM);
 
 
         // include hash content in metadata explicitly
         fa = (FileAsset) fa.includeContentHash();
 
         // now content hash will be included
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+        assertEquals(fa.getMetadata().get(Constant.CONTENT_HASH), Hex.toString(Hash.sha3_256(fa.getContent())));
 
         // validate the hash content
         assertEquals(fa.validateContentHash(), true);
@@ -67,24 +67,21 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(path.toFile(), JSON.toMap(asset_metaData));
 
         Map<String, Object> md = fa.getMetadata();
-        assertNotNull(fa.getMetadata());
         // hash content is optional so  default hash content is not included in metadata
         assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
 
         // verify the default metadata
-        assertNotNull(fa.getMetadata().get(Constant.DATE_CREATED));
-        assertNotNull(fa.getMetadata().get(Constant.TYPE));
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_TYPE));
+        assertEquals(fa.getMetadata().get(Constant.CONTENT_TYPE),OCTET_STREAM);
 
         // verify additional metadata
-        assertNotNull(fa.getMetadata().get("copyrightHolder"));
+        assertEquals(fa.getMetadata().get("copyrightHolder"),"Vehicle Owner ");
 
 
         // include hash content in metadata explicitly
         fa = (FileAsset) fa.includeContentHash();
 
         // now content hash will be included
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+        assertEquals(fa.getMetadata().get(Constant.CONTENT_HASH), Hex.toString(Hash.sha3_256(fa.getContent())));
 
         // validate the hash content
         assertEquals(fa.validateContentHash(), true);

@@ -62,7 +62,6 @@ public class TestMemoryAgent {
 		Asset a2=agent2.uploadAsset(a1);
 
 		// now asset must be present on agent 2
-		assertNotNull(agent2.getAsset(id));
 
 		// verify the meta data of both the asset it must be same
 		assertEquals(a1.getMetadataString(),a2.getMetadataString());
@@ -79,7 +78,7 @@ public class TestMemoryAgent {
 		MemoryAgent memoryAgent=MemoryAgent.create();
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		Asset uploadAsset=memoryAgent.uploadAsset(asset);
-		assertNotNull(memoryAgent.getAsset(asset.getAssetID()));
+
 		assertEquals(asset.getMetadataString(),uploadAsset.getMetadataString());
 	}
 
@@ -92,7 +91,6 @@ public class TestMemoryAgent {
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		String id  = asset.getAssetID();
 		Asset registeredAsset=agent1.registerAsset(asset);
-		assertNotNull(agent1.getAsset(id));
 		assertEquals(asset.getMetadataString(),registeredAsset.getMetadataString());
 
 	}

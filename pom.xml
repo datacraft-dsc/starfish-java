@@ -125,7 +125,7 @@
         <dependency>
             <groupId>com.oceanprotocol</groupId>
             <artifactId>squid</artifactId>
-            <version>0.6.2</version>
+            <version>0.6.3</version>
             <!--<scope>test</scope>-->
             <!--<optional>true</optional>-->
         </dependency>

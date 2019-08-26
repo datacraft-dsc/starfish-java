@@ -3,19 +3,20 @@ package sg.dex.starfish.impl.operations;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -28,7 +29,6 @@ public class TestMemoryOperations {
     @Test
     public void testReverseBytesAsync() {
         byte[] data = new byte[]{1, 2, 3};
-        // String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
 
         Asset a = MemoryAsset.create(data);
@@ -80,10 +80,15 @@ public class TestMemoryOperations {
         Job<Map<String,Object>> job = memoryOperation.invokeAsync(test);
 
         Map<String,Object> res = job.awaitResult(1000);
-        Map<String ,Object> response = (Map<String ,Object> )res;
-        Object r=response.get("output");
 
-        assertNotNull(r);
+        // prime between 1-10 is 2 3 5 7
+       assertTrue(res.get("output").toString().contains("2"));
+       assertTrue(res.get("output").toString().contains("3"));
+       assertTrue(res.get("output").toString().contains("5"));
+       assertTrue(res.get("output").toString().contains("7"));
+
+
+
     }
 
     /**
@@ -95,10 +100,14 @@ public class TestMemoryOperations {
         FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create(getMetaDataJsonIAndJsonO(), memoryAgent);
         Map<String, Object> test = new HashMap<>();
         test.put("input", "12");
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
-        Map<String,Object> result = memoryOperation.invokeResult(test);
-        assertNotNull(result.get("output"));
+        Map<String,Object> res = memoryOperation.invokeResult(test);
+        // prime between 1-10 is 2 3 5 7
+        assertTrue(res.get("output").toString().contains("2"));
+        assertTrue(res.get("output").toString().contains("3"));
+        assertTrue(res.get("output").toString().contains("5"));
+        assertTrue(res.get("output").toString().contains("7"));
+        assertTrue(res.get("output").toString().contains("11"));
 
 
     }
@@ -125,9 +134,9 @@ public class TestMemoryOperations {
 
         Map<String ,Object> response = job.awaitResult(1000);
         Object r=response.get("output");
+        String hash = Hex.toString(Hash.sha3_256(a.getContent()));
+        assertEquals(hash,r.toString());
 
-
-        assertNotNull(r);
     }
 
     /**
@@ -144,11 +153,11 @@ public class TestMemoryOperations {
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Map<String,Object> res = hashOperation.invokeResult(test);
 
-        assertNotNull(res.get("output"));
+        String hash = Hex.toString(Hash.sha3_256(a.getContent()));
+        assertEquals(hash,res.get("output").toString());
     }
     /**
      * API to get metadata

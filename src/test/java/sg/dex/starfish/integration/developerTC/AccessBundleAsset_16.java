@@ -7,12 +7,13 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteBundle;
-import sg.dex.starfish.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset
@@ -129,7 +130,6 @@ public class AccessBundleAsset_16 {
         RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent,null);
         // register the bundle
         RemoteBundle aRemoteAsset =(RemoteBundle)remoteAgent.registerAsset(remoteBundle);
-        assertNotNull(aRemoteAsset);
         assertTrue(aRemoteAsset.getAll().isEmpty());
     }
 
@@ -140,16 +140,13 @@ public class AccessBundleAsset_16 {
     public void testCreateEmptyBundleThenAddSubAsset(){
         RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent,null);
         RemoteBundle aRemoteAsset =(RemoteBundle)remoteAgent.registerAsset(remoteBundle);
-        assertNotNull(aRemoteAsset);
         assertTrue(aRemoteAsset.getAll().isEmpty());
 
         Bundle remoteBundleWithSubAsset= remoteBundle.addAll(getAssetMap());
         RemoteBundle aRemoteAsset1 =(RemoteBundle)remoteAgent.registerAsset(remoteBundleWithSubAsset);
 
-        assertNotNull(aRemoteAsset1);
         assertEquals(aRemoteAsset1.getAll().size(),2);
         // old bundle will remain same
-        assertNotNull(aRemoteAsset);
         assertTrue(aRemoteAsset.getAll().isEmpty());
     }
     /**
@@ -167,8 +164,6 @@ public class AccessBundleAsset_16 {
 
         RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle);
 
-        assertNotNull(remoteBundle);
-        assertNotNull(remoteBundle.get("nested"));
         RemoteBundle nestedB =(RemoteBundle)remoteBundle.get("nested");
         assertEquals(nestedB.getAll().size(),2);
 
@@ -177,7 +172,6 @@ public class AccessBundleAsset_16 {
     public void testNullAgent(){
 
         RemoteBundle remoteBundle = RemoteBundle.create(null, null);
-        assertNotNull(remoteBundle);
 
     }
 

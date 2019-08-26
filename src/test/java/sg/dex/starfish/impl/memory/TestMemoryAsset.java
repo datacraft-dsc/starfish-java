@@ -1,10 +1,8 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
@@ -19,14 +17,6 @@ import static sg.dex.starfish.constant.Constant.ID;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAsset {
 
-    MemoryAsset memoryAsset;
-
-    @Before
-    public void setup() {
-
-        memoryAsset = MemoryAsset.create(new byte[]{1, 2, 3});
-
-    }
 
     @Test
     public void testCreation() {
@@ -80,10 +70,9 @@ public class TestMemoryAsset {
      */
     @Test
     public void testCreateAsset() {
+        MemoryAsset memoryAsset =MemoryAsset.create(new byte[]{1, 2, 3});
         MemoryAsset.create(memoryAsset);
-        assertNotNull(memoryAsset.getAssetID());
-        assertNotNull(memoryAsset.getContentSize());
-        assertNotNull(memoryAsset.getContent());
+        assertEquals(memoryAsset.getContentSize(),new byte[]{1, 2, 3}.length);
         assertArrayEquals(memoryAsset.getContent(), new byte[]{1, 2, 3});
     }
 
@@ -93,9 +82,8 @@ public class TestMemoryAsset {
     @Test
     public void testGetInputStream() {
         MemoryAsset memoryAsset = MemoryAsset.create("Test Stream".getBytes());
-        assertNotNull(memoryAsset.getContentStream());
+        assertEquals(memoryAsset.getContent().length,"Test Stream".length());
         String expected = Utils.stringFromStream(memoryAsset.getContentStream());
-        //String actual =new String(byte[]{1,2,3}.);
         assertEquals(expected, "Test Stream");
     }
 
@@ -115,7 +103,6 @@ public class TestMemoryAsset {
     public void testgetContentSize() {
 
         MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
-        assertNotNull(memoryAsset.getContent()); // test properly
         assertEquals("Test Content Size".getBytes().length,memoryAsset.getContentSize());
     }
 

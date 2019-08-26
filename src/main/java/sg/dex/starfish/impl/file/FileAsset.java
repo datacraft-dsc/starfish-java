@@ -39,7 +39,9 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
-        validateFileExist(f);
+        if(f== null || !f.exists()){
+            throw new StarfishValidationException("Give file is null or may not exist");
+        }
         return new FileAsset(buildMetadata( null), f);
     }
 
@@ -53,21 +55,12 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f, Map <String,Object> metaData) {
-        validateFileExist(f);
-        return new FileAsset(buildMetadata( metaData), f);
-    }
-
-    /**
-     * Method to validate if the file exist.
-     * @param f file to be validated
-     */
-    private static void validateFileExist(File f){
-
         if(f== null || !f.exists()){
             throw new StarfishValidationException("Give file is null or may not exist");
         }
-
+        return new FileAsset(buildMetadata( metaData), f);
     }
+
 
     /**
      * Build default metadata for a file asset
