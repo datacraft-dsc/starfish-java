@@ -1,5 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * As a developer working with Ocean,
@@ -39,7 +39,7 @@ public class ConnectToOcean_01 {
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "1234");
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
-        assertNotNull(ocean);
+        Assume.assumeNotNull(ocean);
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "1234");
 
 
@@ -52,7 +52,7 @@ public class ConnectToOcean_01 {
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "test");
         ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
-        assertNotNull(ocean);
+        Assume.assumeNotNull((ocean));
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
 
         ddo.put("test", "testAgain");

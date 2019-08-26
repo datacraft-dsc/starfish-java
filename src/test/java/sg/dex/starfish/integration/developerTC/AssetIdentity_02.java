@@ -110,7 +110,7 @@ public class AssetIdentity_02 {
         String actId=UUID.randomUUID().toString();
         String agentId=UUID.randomUUID().toString();
         
-        Map<String, Object> provmetadata=ProvUtil.createPublishProvenance(actId,agentId);
+        Map<String, Object> provmetadata= ProvUtil.createPublishProvenance(actId,agentId);
         metaDataAsset.put("provenance",provmetadata);
         // creating asset with MetaData
         Asset asset2 = MemoryAsset.create( data,metaDataAsset);

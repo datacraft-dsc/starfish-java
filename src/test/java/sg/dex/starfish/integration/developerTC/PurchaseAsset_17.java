@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assume.assumeNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -56,8 +55,7 @@ public class PurchaseAsset_17 {
         purchaseData.put("listingid", listing.getMetaData().get("id"));
 
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
-        assertNotNull(purchase);
-        assertNotNull(purchase);
+        assertEquals(purchase.getListing().getId(),listing.getMetaData().get("id"));
 
     }
     @Test
@@ -79,7 +77,6 @@ public class PurchaseAsset_17 {
 
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
 
-        assertNotNull(purchase);
         assertEquals(purchase.getMetaData().get(STATUS),WISHLIST);
 ;
     }

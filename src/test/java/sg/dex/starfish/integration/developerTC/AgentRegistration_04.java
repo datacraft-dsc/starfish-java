@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * As a developer building or managing an Ocean Agent,
@@ -56,13 +55,11 @@ public class AgentRegistration_04 {
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
         Assume.assumeNotNull(remoteAgent);
-        assertNotNull(remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
-        assertNotNull(remoteAgent.getDID());
         // verify the DID format
         assertEquals(remoteAgent.getDID().getMethod(), "op");
         assertEquals(remoteAgent.getDID().getScheme(), "did");
-        assertNotNull(remoteAgent.getDDO());
+        Assume.assumeNotNull(remoteAgent.getDDO());
     }
 
     @Test

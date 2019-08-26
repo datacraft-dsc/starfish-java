@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
 
@@ -58,9 +57,9 @@ public class ConfirmPurchase_18 {
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
         purchaseData.put(STATUS, ORDERED);
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
-        assertNotNull(purchase);
         String status = purchase.status();
         assertEquals(ORDERED, status);
+        assertEquals(purchase.getListing().getId(), listing.getMetaData().get(ID));
 
     }
 
@@ -71,7 +70,7 @@ public class ConfirmPurchase_18 {
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
         purchaseData.put(STATUS, WISHLIST);
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
-        assertNotNull(purchase);
+        assertEquals(purchase.getListing().getId(), listing.getMetaData().get(ID));
         String status = purchase.status();
         assertEquals(WISHLIST, status);
 
@@ -84,7 +83,7 @@ public class ConfirmPurchase_18 {
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
         purchaseData.put(STATUS, DELIVERED);
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
-        assertNotNull(purchase);
+        assertEquals(purchase.getListing().getId(), listing.getMetaData().get(ID));
         String status = purchase.status();
         assertEquals(DELIVERED, status);
 
