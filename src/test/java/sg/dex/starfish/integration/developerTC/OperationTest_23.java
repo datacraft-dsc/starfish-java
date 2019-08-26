@@ -7,9 +7,9 @@
 //import sg.dex.starfish.Ocean;
 //import sg.dex.starfish.Operation;
 //import sg.dex.starfish.impl.memory.MemoryAsset;
+//import sg.dex.starfish.impl.remote.ARemoteAsset;
 //import sg.dex.starfish.impl.remote.RemoteAccount;
 //import sg.dex.starfish.impl.remote.RemoteAgent;
-//import sg.dex.starfish.impl.remote.RemoteAsset;
 //import sg.dex.starfish.util.DID;
 //import sg.dex.starfish.util.JSON;
 //import sg.dex.starfish.util.Params;
@@ -98,10 +98,8 @@
 //            String type = (String) spec.get("type");
 //            if (type.equals("asset")) {
 //                Asset a = (Asset) response.get(me.getKey());
-//                assertNotNull(a);
 //            } else if (type.equals("json")) {
 //                Object a = response.get(me.getKey());
-//                assertNotNull(a);
 //
 //            }
 //        }
@@ -129,7 +127,6 @@
 //        Job job = remoteOperation.invokeAsync(metaMap);
 //
 //        // waiting for job to get completed
-//        Object remoteAsset = job.awaitResult(10000);
 //
 //        Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 //
@@ -140,11 +137,9 @@
 //            Map<String, Object> spec = (Map<String, Object>) me.getValue();
 //            String type = (String) spec.get("type");
 //            if (type.equals("asset")) {
-//                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-//                assertNotNull(a);
+//                ARemoteAsset a = (ARemoteAsset) response.get(me.getKey());
 //            } else if (type.equals("json")) {
 //                Object a = response.get(me.getKey());
-//                assertNotNull(a);
 //
 //            }
 //        }
@@ -174,7 +169,6 @@
 //        Job job = remoteOperation.invokeAsync(metaMap);
 //
 //        // waiting for job to get completed
-//        Object remoteAsset = job.awaitResult(10000);
 //
 //        Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 //
@@ -186,10 +180,8 @@
 //            String type = (String) spec.get("type");
 //            if (type.equals("asset")) {
 //                Asset a = (Asset) response.get(me.getKey());
-//                assertNotNull(a);
 //            } else if (type.equals("json")) {
 //                Object a = response.get(me.getKey());
-//                assertNotNull(a);
 //
 //            }
 //        }
@@ -221,11 +213,9 @@
 //            Map<String, Object> spec = (Map<String, Object>) me.getValue();
 //            String type = (String) spec.get("type");
 //            if (type.equals("asset")) {
-//                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-//                assertNotNull(a);
+//                ARemoteAsset a = (ARemoteAsset) response.get(me.getKey());
 //            } else if (type.equals("json")) {
 //                Object a = response.get(me.getKey());
-//                assertNotNull(a);
 //
 //            }
 //        }
@@ -246,7 +236,7 @@
 //        // asset must be uploaded as invoke will work only on RemoteAsset
 //        Asset a = MemoryAsset.create("this is a asset to test Async data operation");
 //        // uploading the asset, it will do the registration and upload both
-//        RemoteAsset remoteAsset1 = (RemoteAsset) agentI.uploadAsset(a);
+//        ARemoteAsset remoteAsset1 = (ARemoteAsset) agentI.uploadAsset(a);
 //
 //        Map<String, Object> metaMap = new HashMap<>();
 //        metaMap.put("to-hash", remoteAsset1);
@@ -279,7 +269,7 @@
 //        // asset must be uploaded as invoke will work only on RemoteAsset
 //        Asset a1 = MemoryAsset.create("this is a asset to test Async data operation");
 //        // uploading the asset, it will do the registration and upload both
-//        RemoteAsset remoteAsset1 = (RemoteAsset) agentI.uploadAsset(a1);
+//        ARemoteAsset remoteAsset1 =  agentI.uploadAsset(a1);
 //
 //        Map<String, Object> metaMap = new HashMap<>();
 //        metaMap.put("to-hash", remoteAsset1);
@@ -291,7 +281,7 @@
 //        Job job = remoteOperation.invokeAsync(metaMap);
 //
 //        // waiting for job to get completed
-//        Object remoteAsset = job.awaitResult(10000);
+//        Object remoteAsset = job.getResult(10000);
 //
 //        Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 //
@@ -302,11 +292,9 @@
 //            Map<String, Object> spec = (Map<String, Object>) me.getValue();
 //            String type = (String) spec.get("type");
 //            if (type.equals("asset")) {
-//                RemoteAsset a = (RemoteAsset) response.get(me.getKey());
-//                assertNotNull(a);
+//                ARemoteAsset a =  (ARemoteAsset)response.get(me.getKey());
 //            } else if (type.equals("json")) {
 //                Object a = response.get(me.getKey());
-//                assertNotNull(a);
 //
 //            }
 //        }

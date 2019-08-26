@@ -7,7 +7,6 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
@@ -91,8 +90,6 @@ public class ProvUtil_23{
     public Asset uploadAsset() {
         byte[] data = new byte[]{1, 2, 3};
         Asset asset1 = MemoryAsset.create(data);
-
-        RemoteAsset remoteAsset = (RemoteAsset)remoteAgent.registerAsset(asset1);
 
         remoteAgent.uploadAsset(asset1);
         return asset1;

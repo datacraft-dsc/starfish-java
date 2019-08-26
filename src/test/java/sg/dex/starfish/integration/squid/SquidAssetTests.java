@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
@@ -145,7 +145,7 @@ public class SquidAssetTests {
 
 
         // verifying registration
-        RemoteAsset aRemoteAsset =(RemoteAsset)surfer.getAsset(memory_asset.getAssetID());
+        ARemoteAsset aRemoteAsset =surfer.getAsset(memory_asset.getAssetID());
 
 
        // validating name
