@@ -7,6 +7,9 @@ import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.util.Hex;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +20,9 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
         super(meta, memoryAgent);
     }
 
-    public static CalculateHash_AssetI_JsonO create(String meta, MemoryAgent memoryAgent) {
-        return new CalculateHash_AssetI_JsonO(meta, memoryAgent);
+    public static CalculateHash_AssetI_JsonO create( MemoryAgent memoryAgent) throws IOException {
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/hashing_metadata.json")));
+        return new CalculateHash_AssetI_JsonO(asset_metaData, memoryAgent);
     }
 
 
