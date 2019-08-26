@@ -7,7 +7,6 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteBundle;
-import sg.dex.starfish.util.JSON;
 
 import java.util.HashMap;
 import java.util.Map;

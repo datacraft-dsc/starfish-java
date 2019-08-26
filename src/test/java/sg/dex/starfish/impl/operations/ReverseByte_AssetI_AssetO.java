@@ -1,13 +1,13 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.Map;
-
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
+
+import java.util.Map;
 
 /**
  * Basic implementation of an operation which reverses the byte sequence of a

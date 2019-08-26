@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 @RunWith(JUnit4.class)
 @Ignore
@@ -33,10 +34,6 @@ public class SquidAgentTest {
         DID did = DID.createRandom();
         squidAgent = SquidAgent.create(configMap, ocean, did);
 
-        byte[] data = {1, 2, 3, 4};
-
-        MemoryAsset asset = MemoryAsset.create(data);
-        assertNotNull(asset);
     }
 
 
@@ -44,7 +41,8 @@ public class SquidAgentTest {
     public void testUploadAsset() {
         byte[] data = {1, 2, 3, 4};
         MemoryAsset asset = MemoryAsset.create(data);
-        squidAgent.uploadAsset(asset);
+        SquidAsset squidAsset = squidAgent.uploadAsset(asset);
+        assertEquals(asset.getAssetID(), squidAsset.getAssetID());
     }
 
     @Test
@@ -54,9 +52,8 @@ public class SquidAgentTest {
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
         // getting the registered from squid agent using asset DID
         SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetDID());
+        assertEquals(asset.getAssetID(), squidAsset_1.getAssetID());
 
-        // verifying the asset ddo , not it will not be null
-        assertNotNull(squidAsset_1.getSquidDDO());
     }
 
     @Test
@@ -65,7 +62,7 @@ public class SquidAgentTest {
         MemoryAsset asset = MemoryAsset.create(data);
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
         List<SquidAsset> allSquidAsset = squidAgent.searchAsset(squidAsset.getSquidDDO().metadata.base.name);
-        assertNotNull(allSquidAsset);
+        assertTrue(allSquidAsset.contains(squidAsset));
 
 
     }
@@ -81,7 +78,7 @@ public class SquidAgentTest {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("license", "Test_license");
         List<SquidAsset> allSquidAsset = squidAgent.queryAsset(queryMap);
-        assertNotNull(allSquidAsset);
+        assertTrue(allSquidAsset.contains(squidAsset));
 
 
     }
@@ -98,7 +95,7 @@ public class SquidAgentTest {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("license", "Test_license");
         SquidAsset squidAsset1 = squidAgent.resolveSquidDID(squidAsset.getAssetDID());
-        assertNotNull(squidAsset1);
+        assertEquals(squidAsset.getAssetID(), squidAsset1.getAssetID());
 
 
     }

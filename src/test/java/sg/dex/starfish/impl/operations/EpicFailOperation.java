@@ -1,10 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.Map;
-
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
+
+import java.util.Map;
 
 /**
  * Basic implementation of an operation which always fails
@@ -15,7 +15,7 @@ import sg.dex.starfish.impl.memory.MemoryAgent;
  */
 
 public class EpicFailOperation extends AMemoryOperation implements Operation {
-	protected EpicFailOperation(String meta,MemoryAgent memoryAgent) {
+	protected EpicFailOperation(String meta, MemoryAgent memoryAgent) {
 		super(meta,memoryAgent);
 	}
 
