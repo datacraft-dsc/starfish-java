@@ -135,9 +135,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     @Override
     public Bundle add(String name, Asset asset) {
-<span class="fc" id="L138">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
-<span class="fc" id="L139">        copyMap.put(name, asset);</span>
-<span class="fc" id="L140">        return create(memoryAgent, copyMap, null);</span>
+<span class="nc" id="L138">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
+<span class="nc" id="L139">        copyMap.put(name, asset);</span>
+<span class="nc" id="L140">        return create(memoryAgent, copyMap, null);</span>
     }
 
     @Override

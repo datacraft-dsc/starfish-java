@@ -42,13 +42,13 @@ public class MemoryListing implements Listing {
 
     @Override
     public Asset getAsset() {
-<span class="fc" id="L45">        return agent.getAsset(getAssetID());</span>
+<span class="nc" id="L45">        return agent.getAsset(getAssetID());</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
 	@Override
     public Map&lt;String,Object&gt; getAgreement() {
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">       return getMetaData().get(AGREEMENT)!= null ?(Map&lt;String, Object&gt;)getMetaData().get(AGREEMENT): null;</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">       return getMetaData().get(AGREEMENT)!= null ?(Map&lt;String, Object&gt;)getMetaData().get(AGREEMENT): null;</span>
     }
 
     @Override
