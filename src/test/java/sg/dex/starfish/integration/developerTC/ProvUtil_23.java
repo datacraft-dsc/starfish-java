@@ -7,7 +7,6 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
@@ -33,23 +32,23 @@ public class ProvUtil_23{
 
     @Test
     public void testProvA() {
-        Map<String,Object> a=ProvUtil.defaultPrefix();
+        Map<String,Object> a= ProvUtil.defaultPrefix();
         try{
             File temp = new File(System.getProperty("java.io.tmpdir")+
                                  System.getProperty("file.separator")+
                                  "publish1.json");
             Writer w= new FileWriter(temp);
             String actId=UUID.randomUUID().toString();
-            Map<String,Object> act=ProvUtil.createActivity(actId,ProvUtil.ActivityType.PUBLISH);
+            Map<String,Object> act= ProvUtil.createActivity(actId, ProvUtil.ActivityType.PUBLISH);
             String agentId=UUID.randomUUID().toString();
-            Map<String,Object> agent=ProvUtil.createAgent(agentId,ProvUtil.AgentIdType.ACCOUNT);
+            Map<String,Object> agent= ProvUtil.createAgent(agentId, ProvUtil.AgentIdType.ACCOUNT);
 
             a.putAll(ProvUtil.createActivities(act));
             a.putAll(ProvUtil.createAgents(agent));
             a.putAll(ProvUtil.associatedWith(agentId,actId));
             a.putAll(ProvUtil.generatedBy(actId));
 
-            String jsonstring=JSON.toPrettyString(a);
+            String jsonstring= JSON.toPrettyString(a);
             try{
                 JSON.validateJson(jsonstring);
             }catch (Exception e){
@@ -73,7 +72,7 @@ public class ProvUtil_23{
             Writer w= new FileWriter(temp);
             String actId=UUID.randomUUID().toString();
             String agentId=UUID.randomUUID().toString();
-            String jsonstring=JSON.toPrettyString(ProvUtil.createPublishProvenance(actId,agentId));
+            String jsonstring= JSON.toPrettyString(ProvUtil.createPublishProvenance(actId,agentId));
             try{
                 JSON.validateJson(jsonstring);
             }catch (Exception e){
@@ -91,8 +90,6 @@ public class ProvUtil_23{
     public Asset uploadAsset() {
         byte[] data = new byte[]{1, 2, 3};
         Asset asset1 = MemoryAsset.create(data);
-
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset1);
 
         remoteAgent.uploadAsset(asset1);
         return asset1;

@@ -1,21 +1,31 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * This class is a sample implementation of Invoke Service.
+ * This class can be refereed how to implement an Operation interface .
+ * It just do calculation of prime number based on argument passed
+ */
 public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation {
     protected FindPrime_JsonI_JsonO(String meta, MemoryAgent memoryAgent) {
         super(meta, memoryAgent);
     }
 
-    public static FindPrime_JsonI_JsonO create(String meta, MemoryAgent memoryAgent) {
-        return new FindPrime_JsonI_JsonO(meta, memoryAgent);
+    public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) throws IOException {
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
+        return new FindPrime_JsonI_JsonO(asset_metaData, memoryAgent);
     }
+
 
     private Map<String,Object> doCompute(Object input) {
         Integer num = (Integer.parseInt( input.toString()));

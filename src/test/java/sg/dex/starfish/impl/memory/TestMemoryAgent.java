@@ -21,8 +21,8 @@ public class TestMemoryAgent {
 	 */
 	@Test 
 	public void testAgentID() {
-		DID did=DID.parse(DID.createRandomString());
-		MemoryAgent ma=MemoryAgent.create(did);
+		DID did= DID.parse(DID.createRandomString());
+		MemoryAgent ma= MemoryAgent.create(did);
 		assertEquals(did,ma.getDID());
 	}
 
@@ -34,10 +34,10 @@ public class TestMemoryAgent {
 	public void testRegisterUpload() {
 		// it will create Memory agent instance.
 		//the instance will be associated with default Ocean and will have unique DID.
-		MemoryAgent agent1=MemoryAgent.create();
-		MemoryAgent agent2=MemoryAgent.create();
+		MemoryAgent agent1= MemoryAgent.create();
+		MemoryAgent agent2= MemoryAgent.create();
 
-		MemoryAsset a=MemoryAsset.create(BYTE_DATA);
+		MemoryAsset a= MemoryAsset.create(BYTE_DATA);
 		String id=a.getAssetID();
 		// agent getAsset will be null as the asset is not yet registered
 		// with memory agent
@@ -62,7 +62,6 @@ public class TestMemoryAgent {
 		Asset a2=agent2.uploadAsset(a1);
 
 		// now asset must be present on agent 2
-		assertNotNull(agent2.getAsset(id));
 
 		// verify the meta data of both the asset it must be same
 		assertEquals(a1.getMetadataString(),a2.getMetadataString());
@@ -76,10 +75,10 @@ public class TestMemoryAgent {
 	 */
 	@Test
 	public void testUpload(){
-		MemoryAgent memoryAgent=MemoryAgent.create();
+		MemoryAgent memoryAgent= MemoryAgent.create();
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		Asset uploadAsset=memoryAgent.uploadAsset(asset);
-		assertNotNull(memoryAgent.getAsset(asset.getAssetID()));
+
 		assertEquals(asset.getMetadataString(),uploadAsset.getMetadataString());
 	}
 
@@ -88,11 +87,10 @@ public class TestMemoryAgent {
 	 */
 	@Test
 	public void testRegister(){
-		MemoryAgent agent1=MemoryAgent.create();
+		MemoryAgent agent1= MemoryAgent.create();
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		String id  = asset.getAssetID();
 		Asset registeredAsset=agent1.registerAsset(asset);
-		assertNotNull(agent1.getAsset(id));
 		assertEquals(asset.getMetadataString(),registeredAsset.getMetadataString());
 
 	}
@@ -103,7 +101,7 @@ public class TestMemoryAgent {
 	 */
 	@Test
 	public  void testGetAsset(){
-		MemoryAgent agent1=MemoryAgent.create();
+		MemoryAgent agent1= MemoryAgent.create();
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		String id  = asset.getAssetID();
 		agent1.registerAsset(asset);
@@ -118,8 +116,8 @@ public class TestMemoryAgent {
 	 */
 	//@Test
 	public  void testGetAssetByDID(){
-		DID did =DID.createRandom();
-		MemoryAgent agent1=MemoryAgent.create(did.toString());
+		DID did = DID.createRandom();
+		MemoryAgent agent1= MemoryAgent.create(did.toString());
 		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
 		String id  = asset.getAssetID();
 		assertEquals(64,id.length());

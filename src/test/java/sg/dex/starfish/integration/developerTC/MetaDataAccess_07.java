@@ -1,6 +1,5 @@
 package sg.dex.starfish.integration.developerTC;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +12,9 @@ import sg.dex.starfish.util.JSON;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
@@ -44,7 +41,6 @@ public class MetaDataAccess_07 {
         MemoryAsset asset = MemoryAsset.create(data);
         Asset remoteAsset =remoteAgent.registerAsset(asset);
 
-        assertNotNull(remoteAsset.getMetadata());
         assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(),asset.getMetadata().get(DATE_CREATED).toString());
         assertEquals(remoteAsset.getMetadata().get(CONTENT_HASH).toString(),asset.getMetadata().get(CONTENT_HASH).toString());
         assertEquals(remoteAsset.getMetadata().get(TYPE).toString(),asset.getMetadata().get(TYPE));

@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -40,17 +39,14 @@ public class AgentEndpointQuery_06 {
 
         // since we created the only the storage and meta endpoint
         // so other endpoint will be null
-        assertNotNull(storage);
-        assertNotNull(meta);
+        assertTrue(storage.contains("/api/v1/meta"));
+        assertTrue(meta.contains("/api/v1/assets"));
 
-        // will be null
-        assertNull(market);
-        assertNull(invoke);
 
 
     }
 
-    private  RemoteAgent createRemoteAgent(String host) {
+    private RemoteAgent createRemoteAgent(String host) {
 
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();

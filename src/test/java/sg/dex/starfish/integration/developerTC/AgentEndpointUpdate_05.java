@@ -1,7 +1,6 @@
 package sg.dex.starfish.integration.developerTC;
 
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -43,7 +42,7 @@ public class AgentEndpointUpdate_05 {
         assertNull(remoteAgent.getAuthEndpoint());
     }
 
-    private  RemoteAgent createRemoteAgent(String host) {
+    private RemoteAgent createRemoteAgent(String host) {
 
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();

@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -12,6 +11,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryPurchase {
@@ -19,7 +20,7 @@ public class TestMemoryPurchase {
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
 
     /**
-     * Test create Purchse with Valid data
+     * Test create Purchase with Valid data
      */
     @Test
     public void testPurchaseValidData() {
@@ -43,10 +44,8 @@ public class TestMemoryPurchase {
 
         MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
 
+        assertEquals(memoryPurchase.getListingId(),listing.getMetaData().get("id"));
 
-        Assert.assertNotNull(memoryPurchase);
-        Assert.assertNotNull(memoryPurchase.getListingId());
-        Assert.assertNotNull(memoryPurchase.getId());
     }
 
     /**
@@ -67,10 +66,6 @@ public class TestMemoryPurchase {
 
         MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
 
-
-        Assert.assertNotNull(memoryPurchase);
-        Assert.assertNotNull(memoryPurchase.getListingId());
-        Assert.assertNotNull(memoryPurchase.getId());
     }
     /**
      * API to create a response similar to Remote Agents responses.

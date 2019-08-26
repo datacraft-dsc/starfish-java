@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * As a developer working with Ocean,
@@ -36,10 +36,8 @@ public class AgentIdentity_03 {
     public void testDidFormat() {
         // getting the did of the agent
         DID did = remoteAgent.getDID();
-        assertNotNull(did.getID());
         assertEquals(did.getMethod(), "op");
         assertEquals(did.getScheme(), "did");
-        assertNotNull(did);
 
     }
 
@@ -51,11 +49,10 @@ public class AgentIdentity_03 {
         List<Map<String, Object>> services = (List<Map<String, Object>>)ddo.get("service");
 
 
-        assertNotNull(services);
-        assertNotNull(remoteAgent.getInvokeEndpoint());
-        assertNotNull(remoteAgent.getAuthEndpoint());
-        assertNotNull(remoteAgent.getMarketEndpoint());
-        assertNotNull(remoteAgent.getStorageEndpoint());
+        Assume.assumeNotNull(services);
+        assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
+        assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
+        assertTrue(remoteAgent.getStorageEndpoint().contains("/api/v1/storage"));
 
     }
     @After
