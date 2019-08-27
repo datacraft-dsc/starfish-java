@@ -7,20 +7,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -28,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 
 /**
@@ -89,69 +85,27 @@ public class AssetRegistration_08 {
         // get registered Asset by ID
         assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
         assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
-        assertNotNull(asset.getMetadata().get("provenance"));
     }
 
-    @Test
-    public void testHashForResourceAsset() throws IOException {
-
-        // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
-
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
-
-        remoteAgent.uploadAsset(resourceAsset);
-        remoteAgent.getContentStream(resourceAsset.getAssetID());
-
-        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
-
-        resourceAsset =(ResourceAsset) resourceAsset.includeContentHash();
-        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-
-
-    }
-
-    @Test(expected = StarfishValidationException.class)
-    public void testHashForRemoteAsset() throws IOException {
-
-        // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
-
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
-
-        remoteAgent.uploadAsset(resourceAsset);
-        remoteAgent.getContentStream(resourceAsset.getAssetID());
-
-        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
-
-        remoteAsset =(RemoteDataAsset) remoteAsset.includeContentHash();
-        assertNotNull(remoteAsset.getMetadata().get(Constant.CONTENT_HASH));
-
-
-    }
 
     @Test
     public void testMetadataWithHash()  {
 
         // create asset using metadata and given content
         ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
-        assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-        resourceAsset.includeContentHash();
+        DataAsset dataAsset =resourceAsset.includeContentHash();
         // calculate content hash
        String expected= Hex.toString(Hash.sha3_256(resourceAsset.getContent()));
 
 //        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-        assertEquals(expected,resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString());
-        resourceAsset.validateContentHash();
+       assertEquals(dataAsset.validateContentHash(),true);
     }
     @Test
     public void testMetadataWithoutHash() {
 
         // create asset using metadata and given content
         ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
-        assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        Assume.assumeNotNull(resourceAsset);
     }
 
     @Test
@@ -171,6 +125,7 @@ public class AssetRegistration_08 {
         assertEquals(expected, actual);
     }
 
+    @Test
     public void testfileNotExist()  {
 
         // read metadata
@@ -182,9 +137,7 @@ public class AssetRegistration_08 {
 
 
 
-        assertNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
         fileAsset =(FileAsset)fileAsset.includeContentHash();
-        assertNotNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
         fileAsset.validateContentHash();
 
 

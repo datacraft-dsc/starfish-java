@@ -12,7 +12,9 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 
 /**
  * As a developer working with an Ocean marketplace,
@@ -119,7 +121,6 @@ public class UnPublishListing_12 {
 
         listingMetaData.put("status", "published");
         Listing updatedListing =remoteAgent.updateListing(metaDataToUpdate);
-        assertNotNull(updatedListing);
         // update should create a new instance listing
         assertFalse(updatedListing.equals(listing));
 

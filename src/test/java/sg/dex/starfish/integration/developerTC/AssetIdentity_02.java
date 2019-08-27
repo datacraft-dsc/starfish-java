@@ -8,6 +8,7 @@ import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.JSON;
@@ -71,18 +72,14 @@ public class AssetIdentity_02 {
         // creating asset with MetaData
         Asset asset2 = MemoryAsset.create( data,metaDataAsset);
 
-
-        //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset2);
-
         // uploading the Asset this remote Agent
-        remoteAgent.uploadAsset(asset2);
+        ARemoteAsset aRemoteAsset =remoteAgent.uploadAsset(asset2);
 
         // get the Remote asset ID which has been register using remote Agent
-        String assetID = remoteAsset.getAssetID();
+        String assetID = asset2.getAssetID();
 
         //Getting the content of the Asset
-        byte[] result = remoteAsset.getContent();
+        byte[] result = asset2.getContent();
 
         // compare both the assetID, It must be equal
         assertEquals(assetID, asset2.getAssetID());
@@ -92,9 +89,8 @@ public class AssetIdentity_02 {
 
 
         // verify the Asset metaDAta must be equal to Registered asset MetaData
-        assertEquals(remoteAsset.getMetadata().get("id").toString(), "123");
-        assertEquals(remoteAsset.getMetadata().get("name").toString(), "Fig");
-        assertEquals(remoteAsset.getMetadata().get("location").toString(), "Singapore");
+        assertEquals(asset2.getMetadata().get("id").toString(), "123");
+
 
     }
 

@@ -4,6 +4,7 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 
@@ -48,6 +49,9 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, Map <String,Object> metaData) {
+        if(null ==resourcePath || ResourceAsset.class.getClassLoader().getResource(resourcePath) == null){
+            throw new StarfishValidationException("Give resource file is null or may not exist");
+        }
         return new ResourceAsset(buildMetaData( metaData), resourcePath);
     }
 
@@ -58,6 +62,9 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
+        if(null ==resourcePath || ResourceAsset.class.getClassLoader().getResource(resourcePath) == null){
+            throw new StarfishValidationException("Give resource file is null or may not exist");
+        }
         return new ResourceAsset(buildMetaData( null), resourcePath);
     }
 
@@ -88,6 +95,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
         return ob;
     }
+
 
 
 

@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 
 /**
  * As a developer wishing to make an asset available for download,
@@ -56,7 +55,6 @@ public class UploadAsset_11 {
 
         assertEquals(actual, "Testing to upload of asset");
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
-        assertNotNull(a.getMetadata());
 
     }
 
