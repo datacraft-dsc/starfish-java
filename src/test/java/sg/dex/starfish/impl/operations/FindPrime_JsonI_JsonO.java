@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is a sample implementation of Invoke Service.
- * This class can be refereed how to implement an Operation interface .
- * It just do calculation of prime number based on argument passed
+ * This class is a memory implementation of Invoke Service.
+ * It calculate all prime number present before any given number.
+ * It reads metadata from a file which has basic detail of the input and output type.
  */
 public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation {
     protected FindPrime_JsonI_JsonO(String meta, MemoryAgent memoryAgent) {
@@ -21,14 +21,22 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
     }
 
     public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) throws IOException {
-        // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
+        // read metadata from a file
+        //this metadata for an operation that find all prime number  before a given input
+        String asset_metaData =
+                new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
         return new FindPrime_JsonI_JsonO(asset_metaData, memoryAgent);
     }
 
-
-    private Map<String,Object> doCompute(Object input) {
-        Integer num = (Integer.parseInt( input.toString()));
+    /**
+     * Method to compute the the prime
+     *
+     * @param input number before that all prime need to be calculated
+     * @return Map where will as mention in metadata and value will be the al primes less than the given
+     * input.
+     */
+    private Map<String, Object> doCompute(Object input) {
+        Integer num = (Integer.parseInt(input.toString()));
 
         StringBuilder res = new StringBuilder();
 
@@ -42,12 +50,18 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
     }
 
     @Override
-	protected Map<String,Object> compute(Map<String, Object> params) {
+    protected Map<String, Object> compute(Map<String, Object> params) {
         if (params == null || params.get("input") == null)
             throw new IllegalArgumentException("Missing parameter 'input'");
         return doCompute(params.get("input"));
     }
 
+    /**
+     * Method to check if the number is prime or not.
+     *
+     * @param n number to be check
+     * @return true if prime else false
+     */
     private boolean isPrime(int n) {
         if (n <= 1)
             return false;
