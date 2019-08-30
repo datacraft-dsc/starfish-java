@@ -65,7 +65,6 @@ public class UploadAsset_11 {
         Asset a = MemoryAsset.create(data,getMetaData());
         RemoteDataAsset remoteAssetUpload = (RemoteDataAsset)remoteAgent.uploadAsset(a);
 
-        assertEquals(remoteAssetUpload.getContent().length, data.length);
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
         assertEquals(a.getMetadata().get("title").toString(),"First listing");
 
@@ -80,7 +79,6 @@ public class UploadAsset_11 {
         MemoryAsset memoryAsset = MemoryAsset.create(data);
         ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(memoryAsset);
         ARemoteAsset aRemoteAsset1 =remoteAgent.uploadAsset(memoryAsset);
-        Assert.assertArrayEquals(aRemoteAsset.getContent(),data);
         assertEquals(aRemoteAsset.getAssetID(),memoryAsset.getAssetID());
         assertEquals(aRemoteAsset1.getAssetID(),memoryAsset.getAssetID());
         assertEquals(aRemoteAsset1.getAssetID(),aRemoteAsset.getAssetID());

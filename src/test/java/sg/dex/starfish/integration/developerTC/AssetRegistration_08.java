@@ -11,6 +11,7 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.url.ResourceAsset;
 import sg.dex.starfish.util.Hex;
@@ -52,8 +53,8 @@ public class AssetRegistration_08 {
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         // get registered Asset by ID
-        assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
-        assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
+        assertEquals(asset.isDataAsset(), remoteAsset.isDataAsset());
+        assertEquals(asset.getMetadataString(), remoteAsset.getMetadataString());
     }
 
     @Test
