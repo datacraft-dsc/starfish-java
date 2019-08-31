@@ -273,8 +273,14 @@ public class Utils {
         return mandatoryList;
     }
     
-    
-
+    /**
+     * Helper function to hide checked exceptions
+     */
+	@SuppressWarnings("unchecked")
+	public static <T extends Throwable> T sneakyThrow(Throwable t) throws T {
+		throw (T) t;
+	}
+	
     /**
      * Merges two metadata maps.
      *
