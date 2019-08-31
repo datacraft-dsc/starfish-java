@@ -145,7 +145,6 @@ public class TestMemoryOperations {
      */
     @Test
     public void testHashSync() throws IOException {
-
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
@@ -154,16 +153,12 @@ public class TestMemoryOperations {
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Map<String,Object> res = hashOperation.invokeResult(test);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(hash,res.get("output").toString());
     }
-    /**
-     * API to get metadata
-     * @return
-     */
+    
     private String getMetaDataForAssetI_AssetO() {
         String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
                 "\t\"size\":\"3\",\n" +
@@ -182,11 +177,6 @@ public class TestMemoryOperations {
                 "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
         return meta;
     }
-
-
-
-    //---Existing testcase----------
-
 
     /**
      * This test is to test the Async Operation but providing mode as Sync

@@ -64,10 +64,9 @@ public class TestMemoryBundle {
 
         // getting the contents of asset bundle through API
         Map<String, Asset> allAssetMap = b1.getAll();
-
-        assertEquals(allAssetMap.get("one").getAssetID(), a1.getAssetID());
-        assertEquals(allAssetMap.get("three").getAssetID(), a3.getAssetID());
-        assertEquals(allAssetMap.get("four").getAssetID(), a4.getAssetID());
+        assertEquals(1,allAssetMap.get("one").getContent()[0]);
+        assertEquals(3,allAssetMap.get("three").getContent()[0]);
+        assertEquals(4,allAssetMap.get("four").getContent()[0]);
     }
 
     /**
