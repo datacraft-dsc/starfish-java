@@ -69,7 +69,9 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map<String, Object> responseMap) {
 
         // get the contents
-        Map<String, Map<String, String>> allSubAsset=(Map<String, Map<String, String>>)responseMap.get("contents");
+        @SuppressWarnings("unchecked")
+		Map<String, Map<String, String>> allSubAsset=(Map<String, Map<String, String>>)responseMap.get("contents");
+        
         //build meta data
         Map<String,Asset> assetMap = new HashMap<>();
         for (String name : allSubAsset.keySet()) {
@@ -154,19 +156,17 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         return create(remoteAgent, copyMap, getMetadata());
     }
 
-    @Override
-    public Asset get(String name) {
-        return getAssetMap().get(name);
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R get(String name) {
+        return (R) getAssetMap().get(name);
     }
 
     @Override
     public Map<String, Asset> getAll() {
-
         return getAssetMap().entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         Map.Entry::getValue));
-
     }
-
 }

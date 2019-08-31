@@ -57,16 +57,6 @@ public interface Asset {
 	}
 
 	/**
-	 * Returns this asset as a DataAsset.
-	 *
-	 * @throws RuntimeException an exception if this asset is not a valid data asset
-	 * @return This asset cast to a DataAsset
-	 */
-	public default DataAsset asDataAsset() {
-		return (DataAsset)this;
-	}
-
-	/**
 	 * Returns true if this asset is an operation, i.e. can be invoked on an
 	 * appropriate agent
 	 *
@@ -114,8 +104,4 @@ public interface Asset {
 	public default boolean isBundle(){
 		return false;
 	}
-
-
-
-
 }

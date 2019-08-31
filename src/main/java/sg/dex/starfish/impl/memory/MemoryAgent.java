@@ -76,11 +76,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws AuthorizationException if requestor does not have register permission
      * @throws StorageException       if there is an error in storing the Asset
      */
-    @Override
-    public Asset registerAsset(Asset a) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R registerAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
         assetStore.put(ma.getAssetID(), ma);
-        return ma;
+        return (R)ma;
     }
 
     /**
@@ -91,11 +92,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws AuthorizationException if requestor does not have register permission
      * @throws StorageException       if there is an error in storing the Asset
      */
-    @Override
-    public Asset uploadAsset(Asset a) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R uploadAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
         registerAsset(ma);
-        return ma;
+        return (R)ma;
     }
 
     @SuppressWarnings("unchecked")
@@ -164,7 +166,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     @Override
-	public Asset getAsset(DID did) {
+	public <R extends Asset> R getAsset(DID did) {
 		return getAsset(did.getID());
 	}
 

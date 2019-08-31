@@ -59,6 +59,7 @@ import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
 
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.Invokable;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Listing;
@@ -329,7 +330,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws JobFailedException if there is a failure in a remote operation
 	 */
 	@Override
-	public ARemoteAsset getAsset(String id) {
+	public <R extends Asset> R getAsset(String id) {
 		URI uri = getMetaURI(id);
 		HttpGet httpget = new HttpGet(uri);
 		addAuthHeaders(httpget);
@@ -367,20 +368,21 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param metaMap map of the asset
 	 * @return the new remote asset created
 	 */
-	private ARemoteAsset getRemoteAsset(String metaString, Map<String, Object> metaMap) {
+	@SuppressWarnings("unchecked")
+	private <R extends Asset> R getRemoteAsset(String metaString, Map<String, Object> metaMap) {
 		if (metaMap.get(TYPE).equals(OPERATION)) {
-			return RemoteOperation.create(this, metaString);
+			return (R) RemoteOperation.create(this, metaString);
 		} else if (metaMap.get(TYPE).equals(DATA_SET)) {
-			return RemoteDataAsset.create(this, metaString);
+			return (R) RemoteDataAsset.create(this, metaString);
 		} else if (metaMap.get(TYPE).equals(BUNDLE)) {
-			return RemoteBundle.createBundle(this, metaMap);
+			return (R) RemoteBundle.createBundle(this, metaMap);
 		} else {
 			throw new StarfishValidationException("Invalid Asset Type :" + metaMap.get(TYPE));
 		}
 	}
 
 	@Override
-	public ARemoteAsset getAsset(DID did) {
+	public <R extends Asset> R getAsset(DID did) {
 		return getAsset(did.getID());
 	}
 
@@ -422,12 +424,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RemoteException if there is an problem executing the task on remote
 	 *             Server.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public ARemoteAsset uploadAsset(Asset a) {
+	public <R extends Asset> R uploadAsset(Asset a) {
 		if (null == a) {
 			throw new StarfishValidationException("Asset cannot be null");
 		}
-		ARemoteAsset remoteAsset;
+		Asset remoteAsset;
 
 		// asset already registered then only upload
 		if (isAssetRegistered(a.getAssetID())) {
@@ -440,7 +443,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			uploadAssetContent(a);
 		}
 
-		return remoteAsset;
+		return (R) remoteAsset;
 	}
 
 	/**
@@ -469,7 +472,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		addAuthHeaders(post);
 		post.addHeader("Accept", "application/json");
 
-		InputStream assetContentAsStream = asset.asDataAsset().getContentStream();
+		InputStream assetContentAsStream = ((DataAsset)asset).getContentStream();
 		HttpEntity entity = HTTP.createMultiPart(FILE,
 				new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
 

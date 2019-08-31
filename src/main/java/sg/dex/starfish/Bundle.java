@@ -51,7 +51,7 @@ public interface Bundle extends Asset {
      * @param name The name of the sub-asset
      * @return The sub-asset referenced by the given name, or null if not present
      */
-    public Asset get(String name);
+    public <R extends Asset> R get(String name);
 
     /**
      * API to get an immutable all named  sub Asset belong to asset Bundle

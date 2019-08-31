@@ -82,13 +82,11 @@ public class TestMemoryOperations {
         Job job = memoryOperation.invokeAsync(test);
 
         Map<String,Object> res = job.getResult(1000);
-        Map<String ,Object> response = (Map<String ,Object> )res;
-        Object r=response.get("output");
-
-        assertTrue(res.get("output").toString().contains("2"));
-        assertTrue(res.get("output").toString().contains("3"));
-        assertTrue(res.get("output").toString().contains("5"));
-        assertTrue(res.get("output").toString().contains("7"));
+        String s=res.get("output").toString();
+        assertTrue(s.contains("2"));
+        assertTrue(s.contains("3"));
+        assertTrue(s.contains("5"));
+        assertTrue(s.contains("7"));
     }
 
     /**

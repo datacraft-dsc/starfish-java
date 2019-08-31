@@ -147,9 +147,10 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
         return create(memoryAgent, copyMap, this.getMetadata());
     }
 
-    @Override
-    public Asset get(String name) {
-        return  getAssetMap().get(name);
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R get(String name) {
+        return  (R) getAssetMap().get(name);
     }
 
     @Override

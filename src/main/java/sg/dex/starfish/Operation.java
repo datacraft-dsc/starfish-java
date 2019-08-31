@@ -48,7 +48,7 @@ public interface Operation extends Asset {
 	 * @param params Positional parameters for this invoke job
 	 * @throws IllegalArgumentException if required parameters are not available, or
 	 *             of incorrect type
-	 * @return The Job for this invoked operation
+	 * @return The result for this invoked operation
 	 */
 	public Map<String, Object> invokeResult(Map<String, Object> params);
 

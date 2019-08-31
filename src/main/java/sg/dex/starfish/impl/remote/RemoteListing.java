@@ -89,10 +89,10 @@ public class RemoteListing extends AListing {
 
     @Override
     public Map<String, Object> getMetaData() {
-        Map<String, Object> metaData = metaDataCache.get(listing_id) == null ?
+        @SuppressWarnings("unchecked")
+		Map<String, Object> metaData = metaDataCache.get(listing_id) == null ?
                 remoteAgent.getListingMetaData(listing_id) : (Map<String, Object>) metaDataCache.get(listing_id);
         return metaData;
-
     }
 
     /**
