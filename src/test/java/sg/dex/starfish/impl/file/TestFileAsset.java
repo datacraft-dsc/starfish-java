@@ -1,20 +1,26 @@
 package sg.dex.starfish.impl.file;
 
-import org.junit.Test;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StarfishValidationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {
@@ -38,21 +44,19 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(f);
 
         Map<String, Object> md = fa.getMetadata();
-        assertNotNull(fa.getMetadata());
         // hash content is optional so  default hash content is not included in metadata
-        assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+        assertNull(md.get(Constant.CONTENT_HASH));
 
         // verify the default metadata
-        assertNotNull(fa.getMetadata().get(Constant.DATE_CREATED));
-        assertNotNull(fa.getMetadata().get(Constant.TYPE));
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_TYPE));
-
+        assertNotNull(md.get(Constant.DATE_CREATED));
+        assertEquals(Constant.DATA_SET,md.get(Constant.TYPE));
+        assertNotNull(md.get(Constant.CONTENT_TYPE));
 
         // include hash content in metadata explicitly
         fa = (FileAsset) fa.includeContentHash();
 
-        // now content hash will be included
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+        // now content hash will be included, should be hash of empty byte array since file is empty
+        assertTrue(Arrays.equals(Hash.EMPTY_BYTES_SHA3,Hex.toBytes((String)fa.getMetadata().get(Constant.CONTENT_HASH))));
 
         // validate the hash content
         assertEquals(fa.validateContentHash(), true);

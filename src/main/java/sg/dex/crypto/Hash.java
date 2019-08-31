@@ -14,6 +14,8 @@ import sg.dex.starfish.util.Hex;
  *
  */
 public class Hash {
+	public static final byte[] EMPTY_BYTES_SHA3 = sha3_256(new byte[0]);
+
 	/**
 	 * Compute the Keccak256 hash of byte array segment
 	 * 
