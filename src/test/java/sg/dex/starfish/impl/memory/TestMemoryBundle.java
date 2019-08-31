@@ -244,8 +244,6 @@ public class TestMemoryBundle {
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) mainBundle.getMetadata().get("contents");
         assertEquals(contents.get("2").get("assetID"), nestedBundle.getAssetID());
         assertEquals(mainBundle.get("2").isBundle(), true);
-
-
     }
 
 }

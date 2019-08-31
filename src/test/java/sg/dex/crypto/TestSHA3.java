@@ -1,6 +1,9 @@
 package sg.dex.crypto;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -14,6 +17,7 @@ public class TestSHA3 {
 		// Empty byte array
 		byte[] h1=Hash.sha3_256(new byte[] {});
 		assertEquals("a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a",Hex.toString(h1));
+		assertTrue(Arrays.equals(Hash.EMPTY_BYTES_SHA3,h1));
 	}
 
 	@Test public void testBasicSHA3() {

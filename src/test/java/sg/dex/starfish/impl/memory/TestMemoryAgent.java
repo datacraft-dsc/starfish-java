@@ -37,7 +37,7 @@ public class TestMemoryAgent {
 		MemoryAgent agent1= MemoryAgent.create();
 		MemoryAgent agent2= MemoryAgent.create();
 
-		MemoryAsset a= MemoryAsset.create(BYTE_DATA);
+		Asset a= MemoryAsset.create(BYTE_DATA);
 		String id=a.getAssetID();
 		// agent getAsset will be null as the asset is not yet registered
 		// with memory agent
@@ -76,7 +76,7 @@ public class TestMemoryAgent {
 	@Test
 	public void testUpload(){
 		MemoryAgent memoryAgent= MemoryAgent.create();
-		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		MemoryAsset asset = MemoryAsset.create(BYTE_DATA);
 		Asset uploadAsset=memoryAgent.uploadAsset(asset);
 
 		assertEquals(asset.getMetadataString(),uploadAsset.getMetadataString());
@@ -88,11 +88,11 @@ public class TestMemoryAgent {
 	@Test
 	public void testRegister(){
 		MemoryAgent agent1= MemoryAgent.create();
-		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		MemoryAsset asset = MemoryAsset.create(BYTE_DATA);
 		String id  = asset.getAssetID();
 		Asset registeredAsset=agent1.registerAsset(asset);
 		assertEquals(asset.getMetadataString(),registeredAsset.getMetadataString());
-
+		assertEquals(id,registeredAsset.getAssetID());
 	}
 
 	/**
@@ -102,30 +102,28 @@ public class TestMemoryAgent {
 	@Test
 	public  void testGetAsset(){
 		MemoryAgent agent1= MemoryAgent.create();
-		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		MemoryAsset asset = MemoryAsset.create(BYTE_DATA);
 		String id  = asset.getAssetID();
 		agent1.registerAsset(asset);
 		Asset assetFromAgent=agent1.getAsset(id);
 		assertEquals(assetFromAgent,asset);
-
-
 	}
+	
 	/**
 	 * Test GET Asset by asset DID
 	 *
 	 */
-	//@Test
+	@Test
 	public  void testGetAssetByDID(){
 		DID did = DID.createRandom();
 		MemoryAgent agent1= MemoryAgent.create(did.toString());
-		MemoryAsset asset = MemoryAsset.create(new byte[]{3,5,6,7,8,9});
+		Asset asset = MemoryAsset.create(BYTE_DATA);
 		String id  = asset.getAssetID();
 		assertEquals(64,id.length());
 	
+		assertNull(agent1.getAsset(id));
 		agent1.registerAsset(asset);
-		Asset assetFromAgent=agent1.getAsset(did.getID());
-		assertEquals(assetFromAgent,asset);
-
-
+		Asset assetFromAgent=agent1.getAsset(id);
+		assertEquals(asset.getMetadataString(),assetFromAgent.getMetadataString());
 	}
 }

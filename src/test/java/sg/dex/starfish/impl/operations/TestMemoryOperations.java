@@ -40,7 +40,7 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Asset response = (Asset) job.getResult(1000).get("output");
+        Asset response = job.get("output");
 
         assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
     }

@@ -40,12 +40,10 @@ public interface Agent {
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.
-	 * Returns null if the asset ID does not exist.
+	 * Returns null if the asset ID does not exist in the context of the agent
 	 *
 	 * @param id The ID of the asset to get from this agent
-	 * @throws AuthorizationException if requester does not have access permission
-	 * @throws StorageException if there is an error in requester the Asset
-	 * @return Asset The asset found
+	 * @return Asset The asset found, or null if the agent does not have the specified asset
 	 */
 	public <R extends Asset> R getAsset(String id);
 	

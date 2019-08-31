@@ -98,17 +98,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return ma;
     }
 
-    /**
-     * Get Asset
-     *
-     * @param id The Asset to get
-     * @return Asset The asset found
-     * @throws AuthorizationException if requestor does not have register permission
-     * @throws StorageException       if there is an error in loading the Asset
-     */
-    @Override
-    public Asset getAsset(String id) {
-        return assetStore.get(id);
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R getAsset(String id) {
+        return (R) assetStore.get(id);
     }
 
     /**
