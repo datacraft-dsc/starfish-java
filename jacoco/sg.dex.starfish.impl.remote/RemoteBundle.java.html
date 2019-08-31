@@ -69,16 +69,18 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map&lt;String, Object&gt; responseMap) {
 
         // get the contents
-<span class="nc" id="L72">        Map&lt;String, Map&lt;String, String&gt;&gt; allSubAsset=(Map&lt;String, Map&lt;String, String&gt;&gt;)responseMap.get(&quot;contents&quot;);</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L73">		Map&lt;String, Map&lt;String, String&gt;&gt; allSubAsset=(Map&lt;String, Map&lt;String, String&gt;&gt;)responseMap.get(&quot;contents&quot;);</span>
+        
         //build meta data
-<span class="nc" id="L74">        Map&lt;String,Asset&gt; assetMap = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (String name : allSubAsset.keySet()) {</span>
-<span class="nc" id="L76">            String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();</span>
-<span class="nc" id="L77">            ARemoteAsset aRemoteAsset =remoteAgent.getAsset(assetId);</span>
-<span class="nc" id="L78">            assetMap.put(name,aRemoteAsset);</span>
+<span class="nc" id="L76">        Map&lt;String,Asset&gt; assetMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (String name : allSubAsset.keySet()) {</span>
+<span class="nc" id="L78">            String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();</span>
+<span class="nc" id="L79">            ARemoteAsset aRemoteAsset =remoteAgent.getAsset(assetId);</span>
+<span class="nc" id="L80">            assetMap.put(name,aRemoteAsset);</span>
 
-<span class="nc" id="L80">        }</span>
-<span class="nc" id="L81">        return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);</span>
+<span class="nc" id="L82">        }</span>
+<span class="nc" id="L83">        return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);</span>
 
 
     }
@@ -90,27 +92,27 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return metadata as string
      */
     private static String buildMetaData(Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
-<span class="nc" id="L93">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L94">        ob.put(DATE_CREATED, Instant.now().toString());</span>
-<span class="nc" id="L95">        ob.put(TYPE, BUNDLE);</span>
+<span class="nc" id="L95">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L96">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="nc" id="L97">        ob.put(TYPE, BUNDLE);</span>
 
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (meta != null) {</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="nc" id="L99">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L100">            }</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (meta != null) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="nc" id="L101">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L102">            }</span>
         }
 
         //build meta data
-<span class="nc" id="L104">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
+<span class="nc" id="L106">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
         Asset asset;
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        for (String name : assetMap.keySet()) {</span>
-<span class="nc" id="L108">            asset = assetMap.get(name);</span>
-<span class="nc" id="L109">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
-<span class="nc" id="L110">        }</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        for (String name : assetMap.keySet()) {</span>
+<span class="nc" id="L110">            asset = assetMap.get(name);</span>
+<span class="nc" id="L111">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
+<span class="nc" id="L112">        }</span>
 
-<span class="nc" id="L112">        ob.put(CONTENTS, subAssetIdMap);</span>
-<span class="nc" id="L113">        return JSON.toPrettyString(ob);</span>
+<span class="nc" id="L114">        ob.put(CONTENTS, subAssetIdMap);</span>
+<span class="nc" id="L115">        return JSON.toPrettyString(ob);</span>
     }
 
     /**
@@ -120,9 +122,9 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return Map assetIdMap
      */
     private static Map&lt;String, String&gt; getAssetIdMap(String assetId) {
-<span class="nc" id="L123">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L124">        assetIDMap.put(ASSET_ID, assetId);</span>
-<span class="nc" id="L125">        return assetIDMap;</span>
+<span class="nc" id="L125">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L126">        assetIDMap.put(ASSET_ID, assetId);</span>
+<span class="nc" id="L127">        return assetIDMap;</span>
 
     }
 
@@ -132,42 +134,40 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     private Map&lt;String, Asset&gt; getAssetMap() {
 
-<span class="nc" id="L135">        return assetMap.entrySet()</span>
-<span class="nc" id="L136">                .stream()</span>
-<span class="nc" id="L137">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="nc" id="L137">        return assetMap.entrySet()</span>
+<span class="nc" id="L138">                .stream()</span>
+<span class="nc" id="L139">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
     }
 
     @Override
     public Bundle add(String name, Asset asset) {
-<span class="nc" id="L143">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
-<span class="nc" id="L144">        copyMap.put(name, asset);</span>
-<span class="nc" id="L145">        return create(remoteAgent, copyMap, getMetadata());</span>
+<span class="nc" id="L145">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
+<span class="nc" id="L146">        copyMap.put(name, asset);</span>
+<span class="nc" id="L147">        return create(remoteAgent, copyMap, getMetadata());</span>
     }
 
     @Override
     public Bundle addAll(Map&lt;String, Asset&gt; assetMapp) {
 
-<span class="nc" id="L151">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
-<span class="nc" id="L152">        copyMap.putAll(assetMapp);</span>
+<span class="nc" id="L153">        Map&lt;String,Asset&gt; copyMap =getAssetMap();</span>
+<span class="nc" id="L154">        copyMap.putAll(assetMapp);</span>
 
-<span class="nc" id="L154">        return create(remoteAgent, copyMap, getMetadata());</span>
+<span class="nc" id="L156">        return create(remoteAgent, copyMap, getMetadata());</span>
     }
 
-    @Override
-    public Asset get(String name) {
-<span class="nc" id="L159">        return getAssetMap().get(name);</span>
+    @SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+    public &lt;R extends Asset&gt; R get(String name) {
+<span class="nc" id="L162">        return (R) getAssetMap().get(name);</span>
     }
 
     @Override
     public Map&lt;String, Asset&gt; getAll() {
-
-<span class="nc" id="L165">        return getAssetMap().entrySet()</span>
-<span class="nc" id="L166">                .stream()</span>
-<span class="nc" id="L167">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="nc" id="L167">        return getAssetMap().entrySet()</span>
+<span class="nc" id="L168">                .stream()</span>
+<span class="nc" id="L169">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
-
     }
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -29,6 +29,8 @@ sg.dex.starfish.impl.remote
 sg.dex.starfish.impl.remote
 sg.dex.starfish.impl.remote
 sg.dex.starfish.impl
+sg.dex.starfish.impl.resource
+sg.dex.starfish.impl.resource
 sg.dex.starfish.impl
 sg.dex.starfish.impl.file
 sg.dex.starfish.impl.memory
@@ -45,8 +47,6 @@ sg.dex.starfish.impl.squid
 sg.dex.starfish.impl
 sg.dex.starfish.impl
 sg.dex.starfish.impl
-sg.dex.starfish.impl.url
-sg.dex.starfish.impl.url
 sg.dex.starfish
 sg.dex.starfish.constant
 sg.dex.starfish

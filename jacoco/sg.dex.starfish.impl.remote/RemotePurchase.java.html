@@ -78,25 +78,14 @@ public class RemotePurchase implements Purchase {
 
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
-<span class="nc" id="L82">                remoteAgent.getPurchaseMetaData(purchase_id) : (Map&lt;String, Object&gt;) metaDataCache.get(purchase_id);</span>
-<span class="nc" id="L83">        return metaData;</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
+<span class="nc" id="L83">                remoteAgent.getPurchaseMetaData(purchase_id) : (Map&lt;String, Object&gt;) metaDataCache.get(purchase_id);</span>
+<span class="nc" id="L84">        return metaData;</span>
     }
 
     private String getListingId() {
-<span class="nc" id="L87">        return getMetaData().get(LISTING_ID).toString();</span>
-    }
-
-    private String getAgreement() {
-<span class="nc" id="L91">        return getMetaData().get(AGREEMENT).toString();</span>
-    }
-
-    private String getUserId() {
-<span class="nc" id="L95">        return getMetaData().get(USER_ID).toString();</span>
-    }
-
-    private String getPurchaseId() {
-<span class="nc" id="L99">        return getMetaData().get(ID).toString();</span>
+<span class="nc" id="L88">        return getMetaData().get(LISTING_ID).toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

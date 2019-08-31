@@ -147,17 +147,18 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 <span class="fc" id="L147">        return create(memoryAgent, copyMap, this.getMetadata());</span>
     }
 
-    @Override
-    public Asset get(String name) {
-<span class="fc" id="L152">        return  getAssetMap().get(name);</span>
+    @SuppressWarnings(&quot;unchecked&quot;)
+	@Override
+    public &lt;R extends Asset&gt; R get(String name) {
+<span class="fc" id="L153">        return  (R) getAssetMap().get(name);</span>
     }
 
     @Override
     public Map&lt;String, Asset&gt; getAll() {
 
-<span class="fc" id="L158">        return assetMap.entrySet()</span>
-<span class="fc" id="L159">                .stream()</span>
-<span class="fc" id="L160">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="fc" id="L159">        return assetMap.entrySet()</span>
+<span class="fc" id="L160">                .stream()</span>
+<span class="fc" id="L161">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
 
     }

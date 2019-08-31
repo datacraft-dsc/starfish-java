@@ -66,7 +66,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
 	@Override
 	public default Map&lt;String, Object&gt; get() throws InterruptedException, ExecutionException {
 		try {
-<span class="nc" id="L69">			return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L69">			return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
 		}
 <span class="nc" id="L71">		catch (TimeoutException t) {</span>
 <span class="nc" id="L72">			throw Utils.sneakyThrow(t);</span>
@@ -83,7 +83,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public default &lt;R&gt; R get(String key) {
 		try {
-<span class="nc" id="L86">			return (R) (get().get(key));</span>
+<span class="fc" id="L86">			return (R) (get().get(key));</span>
 		}
 <span class="nc" id="L88">		catch (Throwable e) {</span>
 <span class="nc" id="L89">			throw Utils.sneakyThrow(e);</span>
