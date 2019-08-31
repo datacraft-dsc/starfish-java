@@ -29,7 +29,7 @@ public class AssetDownload_19 {
     @Test
     public void testDownloadAsset() {
 
-        Asset asset = MemoryAsset.create("test upload of asset");
+        Asset asset = MemoryAsset.createFromString("test upload of asset");
         // upload will register and upload the asset
         RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
 

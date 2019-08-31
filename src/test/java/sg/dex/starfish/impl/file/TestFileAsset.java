@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.file;
 import org.junit.Test;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
@@ -92,12 +93,12 @@ public class TestFileAsset {
 
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test(expected = StorageException.class)
     public void testFileAssetWithN0File() {
 
         FileAsset fa = FileAsset.create(new File("NoFile"));
         Map<String, Object> md = fa.getMetadata();
 
-
+        byte[] c=fa.getContent();
     }
 }

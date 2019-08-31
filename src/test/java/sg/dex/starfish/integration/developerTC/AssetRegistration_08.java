@@ -49,7 +49,7 @@ public class AssetRegistration_08 {
     @Test
     public void testRegister() {
         String data = "Simple memory Asset";
-        Asset asset = MemoryAsset.create(data);
+        Asset asset = MemoryAsset.createFromString(data);
 
         Asset remoteAsset = remoteAgent.registerAsset(asset);
 
@@ -62,10 +62,10 @@ public class AssetRegistration_08 {
 
     @Test
     public void testRegisterWithTwoAssetSameContent() {
-        String data = "Simple Test two  Asset with same content";
+        String stringData = "Simple Test two  Asset with same content";
 
-        Asset remoteAsset = remoteAgent.registerAsset(MemoryAsset.create(data));
-        Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.create(data));
+        Asset remoteAsset = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
+        Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
 
         assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
     }

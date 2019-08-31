@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNull;
 public class TestResources {
 
 	@Test public void testResourceAsset() {
-		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt",null);
+		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt");
 		byte[] bs=dataAsset.getContent();
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);
@@ -30,7 +30,7 @@ public class TestResources {
 	}
 
 	@Test public void testResourceAssetWithContentHash() {
-		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt",null);
+		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt");
 		byte[] bs=dataAsset.getContent();
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);
@@ -46,7 +46,7 @@ public class TestResources {
 	}
 
 	@Test public void testValidateHash() {
-		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt",null);
+		DataAsset dataAsset=ResourceAsset.create("assets/hello.txt");
 		byte[] bs=dataAsset.getContent();
 		String s=new String(bs,StandardCharsets.UTF_8);
 		assertEquals("Hello Starfish",s);

@@ -33,7 +33,7 @@ public class PurchaseAsset_17 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        Asset a = MemoryAsset.create("Test Asset purchase");
+        Asset a = MemoryAsset.createFromString("Test Asset purchase");
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
@@ -60,7 +60,7 @@ public class PurchaseAsset_17 {
     }
     @Test
     public void testPurchaseWithUnpublishedListing(){
-        Asset a = MemoryAsset.create("Test Asset purchase");
+        Asset a = MemoryAsset.createFromString("Test Asset purchase");
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);

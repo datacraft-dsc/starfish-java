@@ -50,7 +50,7 @@ public class UploadAsset_11 {
     @Test
     public void testUploadAsset() {
 
-        Asset a = MemoryAsset.create("Testing to upload of asset");
+        Asset a = MemoryAsset.createFromString("Testing to upload of asset");
         RemoteDataAsset remoteAssetUpload = (RemoteDataAsset)remoteAgent.uploadAsset(a);
         String actual = RemoteAgentConfig.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
 

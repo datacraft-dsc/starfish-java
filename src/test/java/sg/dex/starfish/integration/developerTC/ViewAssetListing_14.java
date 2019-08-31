@@ -33,7 +33,7 @@ public class ViewAssetListing_14 {
     @Test
     public void testSearchListingById() {
         // creating a memory asset
-        Asset asset = MemoryAsset.create("Test listing searching by listing id");
+        Asset asset = MemoryAsset.createFromString("Test listing searching by listing id");
 
         RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 

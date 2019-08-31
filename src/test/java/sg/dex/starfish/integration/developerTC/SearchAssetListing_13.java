@@ -36,7 +36,7 @@ public class SearchAssetListing_13 {
     public void testSearchListingById() {
 
         // create memory Asset
-        Asset asset = MemoryAsset.create("Test Searching of listing");
+        Asset asset = MemoryAsset.createFromString("Test Searching of listing");
         RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();
@@ -54,7 +54,7 @@ public class SearchAssetListing_13 {
     @Test(expected = RemoteException.class)
     public void testSearchListingByInvalidId() {
 
-        Asset asset = MemoryAsset.create("Test Searching of listing");
+        Asset asset = MemoryAsset.createFromString("Test Searching of listing");
         RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
 
         Map<String, Object> data2 = new HashMap<>();

@@ -132,7 +132,7 @@ public class AssetIdentity_02 {
     public void testWithStringContent() {
 
         // create Asset using String data
-        Asset asset3 = MemoryAsset.create("Testing using String");
+        Asset asset3 = MemoryAsset.createFromString("Testing using String");
 
         //Registering the Asset
         RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
@@ -149,10 +149,10 @@ public class AssetIdentity_02 {
     public void testSameAssetContent() {
         if (remoteAgent == null) return;
 
-        Asset asset3 = MemoryAsset.create("Testing using String");
+        Asset asset3 = MemoryAsset.createFromString("Testing using String");
         RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
 
-        Asset asset4 = MemoryAsset.create("Testing using String");
+        Asset asset4 = MemoryAsset.createFromString("Testing using String");
         RemoteDataAsset remoteAsset4 = (RemoteDataAsset)remoteAgent.registerAsset(asset4);
 
         // uploading both the Asset

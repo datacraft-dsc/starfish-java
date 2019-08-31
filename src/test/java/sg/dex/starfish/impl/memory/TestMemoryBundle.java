@@ -175,7 +175,7 @@ public class TestMemoryBundle {
      */
     @Test
     public void getSubAssetByName(){
-       Asset subAsset = MemoryAsset.create("Test bundle asset by sub asset name");
+       Asset subAsset = MemoryAsset.createFromString("Test bundle asset by sub asset name");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
@@ -206,9 +206,9 @@ public class TestMemoryBundle {
 
     @Test
     public void testAddAllInExistingBundle(){
-        Asset subAsset1 = MemoryAsset.create("Sub Asset 1");
-        Asset subAsset2 = MemoryAsset.create("Sub Asset 2");
-        Asset subAsset3 = MemoryAsset.create("Sub Asset 3");
+        Asset subAsset1 = MemoryAsset.createFromString("Sub Asset 1");
+        Asset subAsset2 = MemoryAsset.createFromString("Sub Asset 2");
+        Asset subAsset3 = MemoryAsset.createFromString("Sub Asset 3");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("1", subAsset1);
@@ -225,7 +225,7 @@ public class TestMemoryBundle {
 	@Test
     public void testNestedBundle(){
 
-        Asset subAsset = MemoryAsset.create("Test bundle asset by sub asset name");
+        Asset subAsset = MemoryAsset.createFromString("Test bundle asset by sub asset name");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
@@ -233,7 +233,7 @@ public class TestMemoryBundle {
 
         Bundle nestedBundle = MemoryBundle.create(memoryAgent,assetBundle);
 
-        Asset subAsset2 = MemoryAsset.create("Test bundle Main");
+        Asset subAsset2 = MemoryAsset.createFromString("Test bundle Main");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle2 = new HashMap<>();
         assetBundle2.put("1", subAsset2);

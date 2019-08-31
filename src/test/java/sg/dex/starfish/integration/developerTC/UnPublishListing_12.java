@@ -34,7 +34,7 @@ public class UnPublishListing_12 {
      */
     private Map<String,Object> getListingMetaDataMap(){
         // creating a memory Asset
-        Asset memoryAsset = MemoryAsset.create("Test Publish of an Asset");
+        Asset memoryAsset = MemoryAsset.createFromString("Test Publish of an Asset");
         // registering the Asset
         ARemoteAsset remoteAsset = remoteAgent.registerAsset(memoryAsset);
 

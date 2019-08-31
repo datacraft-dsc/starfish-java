@@ -8,6 +8,9 @@ import sg.dex.starfish.impl.url.RemoteHttpAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +26,7 @@ public class QueryProvenance_15 {
     private static RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
 
     @Test
-    public void testProvenance() {
+    public void testProvenance() throws URISyntaxException {
       // adding provenance
         String actId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();
@@ -32,7 +35,7 @@ public class QueryProvenance_15 {
         metaDataAsset.put("provenance", provmetadata);
 
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
-        Asset assetUrl = RemoteHttpAsset.create( url,metaDataAsset);
+        Asset assetUrl = RemoteHttpAsset.create(new URI(url),metaDataAsset);
         remoteAgent.registerAsset(assetUrl);
         Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
         Map<String,Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());

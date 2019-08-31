@@ -6,6 +6,7 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -44,9 +45,6 @@ public interface DataAsset extends Asset {
 	/**
 	 * Gets the data content of this data asset as a byte[] array.
 	 *
-	 * @throws UnsupportedOperationException If this asset does not support getting byte data
-	 * @throws AuthorizationException if requester does not have access permission
-	 * @throws StorageException if unable to load the Asset
 	 * @return The byte contents of this asset.
 	 */
 	@Override
@@ -62,7 +60,7 @@ public interface DataAsset extends Asset {
 				buffer.write(buf, 0, bytesRead);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new StorageException("Unable to get Asset content",e);
 		}
 
 		return buffer.toByteArray();
@@ -134,24 +132,22 @@ public interface DataAsset extends Asset {
 
 			// this operation is only valid for dataAsset
 			if (this instanceof DataAsset) {
-				return this.updateMeta(metaMap);
+				return this.updateMeta(JSON.toPrettyString(metaMap));
 			} else {
 				throw new UnsupportedOperationException("This method only applicable for Asset type DataAsset");
 			}
 		}
-
-
 	}
 
 	/**
-	 * Get the new Data Asset base on metaData passed as n argument.
+	 * Get the new Data Asset based on metaData passed as n argument.
 	 * This method will be implemented by the sub class
 	 *
 	 * @param newMetaData new meta data that will be used to create a Data Asset.
 	 * @return the respective dataAsset based on sub-class
 	 * @throws UnsupportedOperationException if this operation  is not supported by sub-class
 	 */
-	public default DataAsset updateMeta(Map<String, Object> newMetaData) {
+	public default DataAsset updateMeta(String newMetaData) {
 		throw new UnsupportedOperationException("This Operation is not supported");
 	}
 

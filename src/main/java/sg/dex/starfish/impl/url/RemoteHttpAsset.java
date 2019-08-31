@@ -1,9 +1,18 @@
 package sg.dex.starfish.impl.url;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -13,14 +22,7 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+import sg.dex.starfish.util.JSON;
 
 /**
  * A specialised asset class that references data at a given URI.
@@ -35,31 +37,25 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
         super(meta);
         this.uri = uri;
     }
-    protected RemoteHttpAsset(Map<String,Object> meta, URI uri) {
-        super(meta);
-        this.uri = uri;
-    }
-
-    private static URI getUri(String urlString) {
-        URI uri;
-        try {
-            uri = new URI(urlString);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
-        return uri;
-    }
-
-
 
     /**
-     * Creates a HTTP asset using the given URI string.
+     * Creates a HTTP asset using the given URI and metadata
      *
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static RemoteHttpAsset create(String uri) {
-        return new RemoteHttpAsset(buildMetaData( null), getUri(uri));
+    public static RemoteHttpAsset create(URI uri,String metaString) {
+        return new RemoteHttpAsset(metaString,uri);
+    }
+
+    /**
+     * Creates a HTTP asset using the given URI.
+     *
+     * @param uri of the resource
+     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     */
+    public static RemoteHttpAsset create(URI uri) {
+        return create(uri,(Map<String,Object>)null);
     }
 
     /**
@@ -71,8 +67,8 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
-    public static RemoteHttpAsset create(String uri, Map<String,Object> metaData) {
-        return new RemoteHttpAsset(buildMetaData( metaData), getUri(uri));
+    public static RemoteHttpAsset create(URI uri, Map<String,Object> metaData) {
+        return create(uri,JSON.toPrettyString(buildMetaData(metaData,uri)));
     }
 
     /**
@@ -83,7 +79,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      *                                default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map<String,Object> buildMetaData( Map<String,Object> metaData) {
+    private static Map<String,Object> buildMetaData( Map<String,Object> metaData, URI uri) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
@@ -155,9 +151,10 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
     public URI getSource(){
         return uri;
     }
+    
     @Override
-    public DataAsset updateMeta(Map<String, Object> newMeta) {
-        return create(uri.toString(),newMeta);
+    public DataAsset updateMeta(String newMeta) {
+        return create(uri,newMeta);
     }
 
 }

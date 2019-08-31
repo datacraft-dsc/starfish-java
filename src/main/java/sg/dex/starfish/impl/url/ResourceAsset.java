@@ -6,6 +6,7 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,21 +25,29 @@ import java.util.Map;
 
 public class ResourceAsset extends AAsset implements DataAsset {
 
-
     private final String resourcePath;
 
     protected ResourceAsset(String metaData, String resourcePath) {
         super(metaData);
         this.resourcePath = resourcePath;
     }
+    
+    /**
+     * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
+     *
+     * @param resourcePath path of the resource
+     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
+     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                     default value will be overridden.
+     * @return ResourceAsset instance created using given resource path and metadata
+     */
 
-    protected ResourceAsset(Map<String, Object> metaData, String resourcePath) {
-        super(metaData);
-        this.resourcePath = resourcePath;
+    public static ResourceAsset create(String resourcePath, String metaString) {
+        return new ResourceAsset(metaString, resourcePath);
     }
 
     /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
+     * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
      * @param resourcePath path of the resource
      * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
@@ -48,7 +57,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, Map <String,Object> metaData) {
-        return new ResourceAsset(buildMetaData( metaData), resourcePath);
+        return create(resourcePath,JSON.toPrettyString(buildMetaData( metaData)));
     }
 
     /**
@@ -58,7 +67,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
-        return new ResourceAsset(buildMetaData( null), resourcePath);
+        return create(resourcePath,(Map<String,Object>)null);
     }
 
     /**
@@ -118,7 +127,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     @Override
-    public DataAsset updateMeta(Map<String, Object> newMeta) {
+    public DataAsset updateMeta(String newMeta) {
         return create(this.getSource(),newMeta);
     }
 

@@ -26,6 +26,7 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 
 /**
  * Class representing a local in-memory data asset.
@@ -41,16 +42,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
 
     private MemoryAsset(byte[] data,String metaData) {
         super(metaData);
-
         this.data = data;
-
     }
-    private MemoryAsset(byte[] data,Map<String,Object> metaData) {
-        super(metaData);
 
-        this.data = data;
-
-    }
 
     private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> meta) {
 
@@ -79,7 +73,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
             return (MemoryAsset) asset;
         } else if (asset.isDataAsset()) {
             byte[] data = asset.getContent();
-            return new MemoryAsset(data,buildMetaData(data,null));
+            return create(data,buildMetaData(data,null));
         } else {
             throw new IllegalArgumentException("Asset must be a data asset");
         }
@@ -96,7 +90,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return new MemoryAsset(data,buildMetaData(data,null));
+        return create(data,buildMetaData(data,null));
     }
 
     /**
@@ -106,9 +100,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @param string String containing the data for this asset
      * @return The newly created in-memory asset
      */
-    public static Asset create(String string) {
+    public static Asset createFromString(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        return new MemoryAsset(data,buildMetaData(data,null));
+        return create(data,buildMetaData(data,null));
     }
 
     /**
@@ -119,7 +113,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
-        return new MemoryAsset(data,buildMetaData(data,meta));
+        return new MemoryAsset(data,JSON.toPrettyString(buildMetaData(data,meta)));
     }
 
 
@@ -169,7 +163,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
     }
 
     @Override
-    public DataAsset updateMeta(Map<String, Object> newMeta) {
-        return create(this.getSource(),newMeta);
+    public DataAsset updateMeta(String newMeta) {
+        return new MemoryAsset(this.getSource(),newMeta);
     }
 }

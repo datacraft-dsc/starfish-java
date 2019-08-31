@@ -35,7 +35,7 @@ public class ConfirmPurchase_18 {
     public void setUp() {
         // create remote Agent
         remoteAgent = RemoteAgentConfig.getRemoteAgent();
-        Asset a = MemoryAsset.create("test Purchase");
+        Asset a = MemoryAsset.createFromString("test Purchase");
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
