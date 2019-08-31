@@ -103,7 +103,6 @@ public class Params {
 					Asset a = (remoteAgent.getAsset(didMap.get("did").toString()));
 					result.put(paramName, a);
 				} else if (type.equals("json")) {
-					JSON.validateJson(JSON.toPrettyString(response));
 					result.put(paramName, response.get(paramName));
 				} else {
 					throw new StarfishValidationException("Invalid type of Input. Accepted Input: " +
