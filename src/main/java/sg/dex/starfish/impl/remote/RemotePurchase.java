@@ -78,24 +78,13 @@ public class RemotePurchase implements Purchase {
 
     @Override
     public Map<String, Object> getMetaData() {
-        Map<String, Object> metaData = metaDataCache.get(purchase_id) == null ?
+        @SuppressWarnings("unchecked")
+		Map<String, Object> metaData = metaDataCache.get(purchase_id) == null ?
                 remoteAgent.getPurchaseMetaData(purchase_id) : (Map<String, Object>) metaDataCache.get(purchase_id);
         return metaData;
     }
 
     private String getListingId() {
         return getMetaData().get(LISTING_ID).toString();
-    }
-
-    private String getAgreement() {
-        return getMetaData().get(AGREEMENT).toString();
-    }
-
-    private String getUserId() {
-        return getMetaData().get(USER_ID).toString();
-    }
-
-    private String getPurchaseId() {
-        return getMetaData().get(ID).toString();
     }
 }

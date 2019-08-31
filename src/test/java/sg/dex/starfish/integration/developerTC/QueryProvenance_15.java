@@ -4,7 +4,7 @@ import org.junit.Assume;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.url.RemoteHttpAsset;
+import sg.dex.starfish.impl.resource.URIAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
 
@@ -35,7 +35,7 @@ public class QueryProvenance_15 {
         metaDataAsset.put("provenance", provmetadata);
 
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
-        Asset assetUrl = RemoteHttpAsset.create(new URI(url),metaDataAsset);
+        Asset assetUrl = URIAsset.create(new URI(url),metaDataAsset);
         remoteAgent.registerAsset(assetUrl);
         Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
         Map<String,Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());

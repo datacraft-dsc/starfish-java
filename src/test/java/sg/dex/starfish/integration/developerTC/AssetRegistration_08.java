@@ -13,7 +13,7 @@ import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
-import sg.dex.starfish.impl.url.ResourceAsset;
+import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;

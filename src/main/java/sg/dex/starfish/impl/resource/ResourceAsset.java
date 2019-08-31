@@ -1,4 +1,4 @@
-package sg.dex.starfish.impl.url;
+package sg.dex.starfish.impl.resource;
 
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;

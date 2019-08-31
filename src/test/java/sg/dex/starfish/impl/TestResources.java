@@ -3,7 +3,7 @@ package sg.dex.starfish.impl;
 import org.junit.Test;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.impl.url.ResourceAsset;
+import sg.dex.starfish.impl.resource.ResourceAsset;
 
 import java.nio.charset.StandardCharsets;
 

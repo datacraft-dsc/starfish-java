@@ -71,7 +71,7 @@ public class RemoteListing extends AListing {
 
     @Override
     public Object getAgreement() {
-        return getAggrement();
+        return getMetaData().get("agreement");
     }
 
     @Override
@@ -102,22 +102,6 @@ public class RemoteListing extends AListing {
     @Override
     public String getAssetID() {
         return getMetaData().get("assetid").toString();
-    }
-
-    /**
-     * This method is to get the USer ID
-     * @return String userId
-     */
-    private String getUserID() {
-        return getMetaData().get(USER_ID).toString();
-    }
-
-    /**
-     * This method is to get the Aggrement
-     * @return String agreement
-     */
-    private String getAggrement() {
-        return getMetaData().get(AGREEMENT).toString();
     }
 
     /**

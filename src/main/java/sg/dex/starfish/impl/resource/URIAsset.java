@@ -1,9 +1,8 @@
-package sg.dex.starfish.impl.url;
+package sg.dex.starfish.impl.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +28,11 @@ import sg.dex.starfish.util.JSON;
  * <p>
  * It is assumed that asset content can be accessed with a HTTP GET to the given URI.
  */
-public class RemoteHttpAsset extends AAsset implements DataAsset {
+public class URIAsset extends AAsset implements DataAsset {
 
     private final URI uri;
 
-    protected RemoteHttpAsset(String meta, URI uri) {
+    protected URIAsset(String meta, URI uri) {
         super(meta);
         this.uri = uri;
     }
@@ -44,8 +43,8 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static RemoteHttpAsset create(URI uri,String metaString) {
-        return new RemoteHttpAsset(metaString,uri);
+    public static URIAsset create(URI uri,String metaString) {
+        return new URIAsset(metaString,uri);
     }
 
     /**
@@ -54,7 +53,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static RemoteHttpAsset create(URI uri) {
+    public static URIAsset create(URI uri) {
         return create(uri,(Map<String,Object>)null);
     }
 
@@ -67,7 +66,7 @@ public class RemoteHttpAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
-    public static RemoteHttpAsset create(URI uri, Map<String,Object> metaData) {
+    public static URIAsset create(URI uri, Map<String,Object> metaData) {
         return create(uri,JSON.toPrettyString(buildMetaData(metaData,uri)));
     }
 
