@@ -153,7 +153,7 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     @Override
-    public Map<String, Object> getAll() {
+    public Map<String, Asset> getAll() {
 
         return assetMap.entrySet()
                 .stream()

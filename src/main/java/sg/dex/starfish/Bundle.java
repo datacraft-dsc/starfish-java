@@ -58,7 +58,7 @@ public interface Bundle extends Asset {
      *
      * @return A map of all sub-assets within this bundle
      */
-    public Map<String, Object> getAll();
+    public Map<String, Asset> getAll();
 
     @Override
     public default DID getAssetDID() {

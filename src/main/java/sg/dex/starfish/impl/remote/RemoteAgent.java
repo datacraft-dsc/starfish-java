@@ -195,7 +195,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 		Map<String, Asset> resultAsset = new HashMap<>();
 		// getting all sub asset
-		Map<String, Object> allSubAsset = remoteBundle.getAll();
+		Map<String, Asset> allSubAsset = remoteBundle.getAll();
 		for (String name : allSubAsset.keySet()) {
 			Asset subAsset = (Asset) allSubAsset.get(name);
 			if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {
@@ -209,16 +209,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ARemoteAsset registerAsset(Asset a) {
+	public <R extends Asset> R registerAsset(Asset a) {
 		if (null == a) {
 			throw new StarfishValidationException("Asset cannot be null");
 		}
 		if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
-			return registerBundle(a);
+			return (R) registerBundle(a);
 		}
-		return registerRemoteAsset(a);
-
+		return (R) registerRemoteAsset(a);
 	}
 
 	private ARemoteAsset registerRemoteAsset(Asset a) {

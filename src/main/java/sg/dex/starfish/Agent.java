@@ -36,7 +36,7 @@ public interface Agent {
 	 * @throws UnsupportedOperationException if the agent does not support metadata storage
 	 * @return Asset
 	 */
-	public Asset registerAsset(Asset asset);
+	public <R extends Asset> R registerAsset(Asset asset);
 
 	/**
 	 * Gets an asset for the given asset ID from this agent.

@@ -160,7 +160,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     }
 
     @Override
-    public Map<String, Object> getAll() {
+    public Map<String, Asset> getAll() {
 
         return getAssetMap().entrySet()
                 .stream()
