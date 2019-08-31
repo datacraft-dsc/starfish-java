@@ -68,18 +68,13 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(path.toFile(), JSON.toMap(asset_metaData));
 
         Map<String, Object> md = fa.getMetadata();
-        assertNotNull(fa.getMetadata());
         // hash content is optional so  default hash content is not included in metadata
-        assertNull(fa.getMetadata().get(Constant.CONTENT_HASH));
+        assertNull(md.get(Constant.CONTENT_HASH));
 
         // verify the default metadata
-        assertNotNull(fa.getMetadata().get(Constant.DATE_CREATED));
-        assertNotNull(fa.getMetadata().get(Constant.TYPE));
-        assertNotNull(fa.getMetadata().get(Constant.CONTENT_TYPE));
-
-        // verify additional metadata
-        assertNotNull(fa.getMetadata().get("copyrightHolder"));
-
+        assertNotNull(md.get(Constant.DATE_CREATED));
+        assertEquals(Constant.DATA_SET,md.get(Constant.TYPE));
+        assertNotNull(md.get(Constant.CONTENT_TYPE));
 
         // include hash content in metadata explicitly
         fa = (FileAsset) fa.includeContentHash();
@@ -89,16 +84,16 @@ public class TestFileAsset {
 
         // validate the hash content
         assertEquals(fa.validateContentHash(), true);
-
-
     }
 
     @Test(expected = StorageException.class)
-    public void testFileAssetWithN0File() {
-
+    public void testMissingFileAsset() {
         FileAsset fa = FileAsset.create(new File("NoFile"));
-        Map<String, Object> md = fa.getMetadata();
-
-        byte[] c=fa.getContent();
+        fa.includeContentHash(); // should fail since unable to read asset content
+    }
+    
+    public void testFileAssetWithNoFile() {
+        FileAsset fa = FileAsset.create(new File("NoFile"));
+        assertNotNull(fa.getAssetID());
     }
 }
