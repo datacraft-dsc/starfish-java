@@ -47,7 +47,7 @@ public interface Agent {
 	 * @throws StorageException if there is an error in requester the Asset
 	 * @return Asset The asset found
 	 */
-	public Asset getAsset(String id);
+	public <R extends Asset> R getAsset(String id);
 	
 	/**
 	 * Gets an asset for the given asset DID from this agent.
@@ -58,7 +58,7 @@ public interface Agent {
 	 * @throws StorageException if there is an error in retrieving the Asset
 	 * @return Asset The asset found, or null if not found
 	 */	
-	public Asset getAsset(DID did);
+	public <R extends Asset> R getAsset(DID did);
 
 	/**
 	 * Uploads an asset to this agent. Registers the asset with the agent if required.
@@ -72,7 +72,7 @@ public interface Agent {
 	 * @throws StorageException if there is an error in uploading the Asset
 	 * @return Asset An asset stored on the agent if the upload is successful
 	 */
-	public Asset uploadAsset(Asset a);
+	public <R extends Asset> R uploadAsset(Asset a);
 
 
 }
