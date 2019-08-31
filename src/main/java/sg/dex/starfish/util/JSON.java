@@ -39,7 +39,7 @@ public class JSON {
 			JSONValue.writeJSONString(value,sw);
 		}
 		catch (IOException e) {
-			throw new RuntimeException("Can't create JSON string from object",e);
+			throw new Error("Can't create JSON string from object",e);
 		}
 		return sw.toString();
 	}
