@@ -195,7 +195,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 <span class="nc" id="L196">		Map&lt;String, Asset&gt; resultAsset = new HashMap&lt;&gt;();</span>
 		// getting all sub asset
-<span class="nc" id="L198">		Map&lt;String, Object&gt; allSubAsset = remoteBundle.getAll();</span>
+<span class="nc" id="L198">		Map&lt;String, Asset&gt; allSubAsset = remoteBundle.getAll();</span>
 <span class="nc bnc" id="L199" title="All 2 branches missed.">		for (String name : allSubAsset.keySet()) {</span>
 <span class="nc" id="L200">			Asset subAsset = (Asset) allSubAsset.get(name);</span>
 <span class="nc bnc" id="L201" title="All 2 branches missed.">			if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
@@ -209,16 +209,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 <span class="nc" id="L209">		return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));</span>
 	}
 
+	@SuppressWarnings(&quot;unchecked&quot;)
 	@Override
-	public ARemoteAsset registerAsset(Asset a) {
-<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (null == a) {</span>
-<span class="nc" id="L215">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
+	public &lt;R extends Asset&gt; R registerAsset(Asset a) {
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (null == a) {</span>
+<span class="nc" id="L216">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
 		}
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (a.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
-<span class="nc" id="L218">			return registerBundle(a);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (a.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
+<span class="nc" id="L219">			return (R) registerBundle(a);</span>
 		}
-<span class="nc" id="L220">		return registerRemoteAsset(a);</span>
-
+<span class="nc" id="L221">		return (R) registerRemoteAsset(a);</span>
 	}
 
 	private ARemoteAsset registerRemoteAsset(Asset a) {

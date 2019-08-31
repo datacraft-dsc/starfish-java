@@ -5,6 +5,7 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.File;
@@ -24,50 +25,39 @@ public class FileAsset extends AAsset implements DataAsset {
     private final File file;
 
     protected FileAsset(String meta, File file) {
-<span class="nc" id="L27">        super(meta);</span>
-<span class="nc" id="L28">        this.file = file;</span>
-<span class="nc" id="L29">    }</span>
-
-    protected FileAsset(Map&lt;String,Object&gt; meta, File file) {
-<span class="fc" id="L32">        super(meta);</span>
-<span class="fc" id="L33">        this.file = file;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L28">        super(meta);</span>
+<span class="fc" id="L29">        this.file = file;</span>
+<span class="fc" id="L30">    }</span>
+    
     /**
-     * This method is to crete File Asset with specific given path.
+     * Create File Asset with specific metadata and given path.
+     *
+     * @param f path of the file
+     * @return FileAsset instance created using given params
+     */
+    public static FileAsset create(File f,String metaString) {
+<span class="fc" id="L39">        return new FileAsset(metaString, f);</span>
+    }
+    
+    /**
+     * This method is to create File Asset with specific given path.
      *
      * @param f path of the file
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
-<span class="fc" id="L42">        validateFileExist(f);</span>
-<span class="fc" id="L43">        return new FileAsset(buildMetadata( null), f);</span>
+<span class="fc" id="L49">        return create(f,(Map&lt;String,Object&gt;)null);</span>
     }
-
+    
     /**
-     * This method is to crete Resource Asset with specific given path, metadata
+     * This method is to create File Asset with specific given path.
      *
-     * @param f        path of the file
-     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
-     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                 default value will be overridden.
+     * @param f path of the file
      * @return FileAsset instance created using given params
      */
-    public static FileAsset create(File f, Map &lt;String,Object&gt; metaData) {
-<span class="fc" id="L56">        validateFileExist(f);</span>
-<span class="fc" id="L57">        return new FileAsset(buildMetadata( metaData), f);</span>
+    public static FileAsset create(File f,Map&lt;String,Object&gt; meta) {
+<span class="fc" id="L59">        return create(f,JSON.toPrettyString(buildMetadata( meta)));</span>
     }
-
-    /**
-     * Method to validate if the file exist.
-     * @param f file to be validated
-     */
-    private static void validateFileExist(File f){
-
-<span class="pc bpc" id="L66" title="1 of 4 branches missed.">        if(f== null || !f.exists()){</span>
-<span class="fc" id="L67">            throw new StarfishValidationException(&quot;Give file is null or may not exist&quot;);</span>
-        }
-
-<span class="fc" id="L70">    }</span>
 
     /**
      * Build default metadata for a file asset
@@ -78,19 +68,17 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return The default metadata as a String
      */
     protected static Map&lt;String,Object&gt; buildMetadata(Map&lt;String,Object&gt; metaMap) {
+<span class="fc" id="L71">        Map&lt;String, Object&gt; ob = Utils.createDefaultMetadata();</span>
+<span class="fc" id="L72">        ob.put(TYPE, DATA_SET);</span>
+<span class="fc" id="L73">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
+        // TODO: maybe include file name?
 
-<span class="fc" id="L82">        Map&lt;String, Object&gt; ob = Utils.createDefaultMetadata();</span>
-<span class="fc" id="L83">        ob.put(TYPE, DATA_SET);</span>
-<span class="fc" id="L84">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
-
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (metaMap != null) {</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
-<span class="fc" id="L88">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L89">            }</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (metaMap != null) {</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
+<span class="fc" id="L78">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L79">            }</span>
         }
-
-<span class="fc" id="L92">        return ob;</span>
-
+<span class="fc" id="L81">        return ob;</span>
     }
 
     /**
@@ -106,23 +94,23 @@ public class FileAsset extends AAsset implements DataAsset {
     @Override
     public InputStream getContentStream() {
         try {
-<span class="fc" id="L109">            return new FileInputStream(file);</span>
-<span class="nc" id="L110">        } catch (FileNotFoundException e) {</span>
-<span class="nc" id="L111">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
+<span class="fc" id="L97">            return new FileInputStream(file);</span>
+<span class="fc" id="L98">        } catch (FileNotFoundException e) {</span>
+<span class="fc" id="L99">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
         }
     }
 
     @Override
     public long getContentSize() {
-<span class="nc bnc" id="L117" title="All 2 branches missed.">        return null != file ? file.length() : -1;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        return null != file ? file.length() : -1;</span>
     }
     public File getSource() {
-<span class="fc" id="L120">        return file;</span>
+<span class="fc" id="L108">        return file;</span>
     }
 
     @Override
-    public DataAsset updateMeta(Map&lt;String, Object&gt; newMeta) {
-<span class="fc" id="L125">        return create(this.getSource(),newMeta);</span>
+    public DataAsset updateMeta(String newMeta) {
+<span class="fc" id="L113">        return create(this.getSource(),newMeta);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

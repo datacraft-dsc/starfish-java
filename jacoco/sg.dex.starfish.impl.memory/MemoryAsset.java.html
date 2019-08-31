@@ -26,6 +26,7 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 
 /**
  * Class representing a local in-memory data asset.
@@ -40,33 +41,26 @@ public class MemoryAsset extends AAsset implements DataAsset {
     private byte[] data;
 
     private MemoryAsset(byte[] data,String metaData) {
-<span class="nc" id="L43">        super(metaData);</span>
+<span class="fc" id="L44">        super(metaData);</span>
+<span class="fc" id="L45">        this.data = data;</span>
+<span class="fc" id="L46">    }</span>
 
-<span class="nc" id="L45">        this.data = data;</span>
-
-<span class="nc" id="L47">    }</span>
-    private MemoryAsset(byte[] data,Map&lt;String,Object&gt; metaData) {
-<span class="fc" id="L49">        super(metaData);</span>
-
-<span class="fc" id="L51">        this.data = data;</span>
-
-<span class="fc" id="L53">    }</span>
 
     private static Map&lt;String, Object&gt; buildMetaData(byte[] data, Map&lt;String, Object&gt; meta) {
 
-<span class="fc" id="L57">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L58">        ob.put(DATE_CREATED, Instant.now().toString());</span>
-<span class="fc" id="L59">        ob.put(TYPE, DATA_SET);</span>
-<span class="fc" id="L60">        ob.put(SIZE, Integer.toString(data.length));</span>
-<span class="fc" id="L61">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
+<span class="fc" id="L51">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L52">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L53">        ob.put(TYPE, DATA_SET);</span>
+<span class="fc" id="L54">        ob.put(SIZE, Integer.toString(data.length));</span>
+<span class="fc" id="L55">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
 
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (meta != null) {</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="fc" id="L65">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L66">            }</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (meta != null) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="fc" id="L59">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L60">            }</span>
         }
 
-<span class="fc" id="L69">        return ob;</span>
+<span class="fc" id="L63">        return ob;</span>
     }
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
@@ -75,13 +69,13 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @return A new MemoryAsset containing the data from the passed asset argument
      */
     public static MemoryAsset create(Asset asset) {
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
-<span class="fc" id="L79">            return (MemoryAsset) asset;</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
-<span class="nc" id="L81">            byte[] data = asset.getContent();</span>
-<span class="nc" id="L82">            return new MemoryAsset(data,buildMetaData(data,null));</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
+<span class="fc" id="L73">            return (MemoryAsset) asset;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
+<span class="nc" id="L75">            byte[] data = asset.getContent();</span>
+<span class="nc" id="L76">            return create(data,buildMetaData(data,null));</span>
         } else {
-<span class="nc" id="L84">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
+<span class="nc" id="L78">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
         }
     }
 
@@ -93,10 +87,10 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data) {
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (data == null) {</span>
-<span class="fc" id="L97">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L91">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
         }
-<span class="fc" id="L99">        return new MemoryAsset(data,buildMetaData(data,null));</span>
+<span class="fc" id="L93">        return create(data,buildMetaData(data,null));</span>
     }
 
     /**
@@ -106,9 +100,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @param string String containing the data for this asset
      * @return The newly created in-memory asset
      */
-    public static Asset create(String string) {
-<span class="fc" id="L110">        byte[] data = string.getBytes(StandardCharsets.UTF_8);</span>
-<span class="fc" id="L111">        return new MemoryAsset(data,buildMetaData(data,null));</span>
+    public static Asset createFromString(String string) {
+<span class="fc" id="L104">        byte[] data = string.getBytes(StandardCharsets.UTF_8);</span>
+<span class="fc" id="L105">        return create(data,buildMetaData(data,null));</span>
     }
 
     /**
@@ -119,7 +113,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map&lt;String, Object&gt; meta) {
-<span class="fc" id="L122">        return new MemoryAsset(data,buildMetaData(data,meta));</span>
+<span class="fc" id="L116">        return new MemoryAsset(data,JSON.toPrettyString(buildMetaData(data,meta)));</span>
     }
 
 
@@ -132,8 +126,8 @@ public class MemoryAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
-<span class="fc" id="L136">        return new ByteArrayInputStream(data);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
+<span class="fc" id="L130">        return new ByteArrayInputStream(data);</span>
     }
 
     /**
@@ -146,31 +140,31 @@ public class MemoryAsset extends AAsset implements DataAsset {
     @Override
     public byte[] getContent() {
         // we take a copy of data to protected immutability of MemoryAsset instance
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
     }
 
 
     @Override
     public Map&lt;String, Object&gt; getParamValue() {
-<span class="fc" id="L155">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L149">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
         // pass the asset ID, i.e. hash of content
-<span class="fc" id="L157">        o.put(ID, getAssetID());</span>
-<span class="fc" id="L158">        return o;</span>
+<span class="fc" id="L151">        o.put(ID, getAssetID());</span>
+<span class="fc" id="L152">        return o;</span>
     }
 
     @Override
     public long getContentSize() {
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
     }
 
 
     public byte[] getSource(){
-<span class="nc" id="L168">        return data;</span>
+<span class="nc" id="L162">        return data;</span>
     }
 
     @Override
-    public DataAsset updateMeta(Map&lt;String, Object&gt; newMeta) {
-<span class="nc" id="L173">        return create(this.getSource(),newMeta);</span>
+    public DataAsset updateMeta(String newMeta) {
+<span class="nc" id="L167">        return new MemoryAsset(this.getSource(),newMeta);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

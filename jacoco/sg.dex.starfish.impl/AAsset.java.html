@@ -29,14 +29,14 @@ public abstract class AAsset implements Asset {
 <span class="fc" id="L29">		this.metadataString = meta;</span>
 <span class="fc" id="L30">		this.id = Hex.toString(Hash.sha3_256(meta));</span>
 <span class="fc" id="L31">	}</span>
-<span class="fc" id="L32">	protected AAsset(Map&lt;String,Object&gt; meta) {</span>
+<span class="nc" id="L32">	protected AAsset(Map&lt;String,Object&gt; meta) {</span>
 		//Utils.validateAssetMetaData(meta);
-<span class="fc" id="L34">		this.metadataString = JSON.toString(meta);</span>
-<span class="fc" id="L35">		this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));</span>
-<span class="fc" id="L36">	}</span>
+<span class="nc" id="L34">		this.metadataString = JSON.toString(meta);</span>
+<span class="nc" id="L35">		this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));</span>
+<span class="nc" id="L36">	}</span>
 	@Override
 	public String toString() {
-<span class="fc" id="L39">		return getAssetID();</span>
+<span class="nc" id="L39">		return getAssetID();</span>
 	}
 
 	@Override
