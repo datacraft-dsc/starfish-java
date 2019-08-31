@@ -9,31 +9,36 @@ import java.util.concurrent.TimeoutException;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Interface representing an asynchronous Job execution.
  * 
- * Job extends the Future interface, but adds additional functionality relevant to invokable services
- * in the data ecosystem.
+ * Job extends the Future interface, but adds additional functionality relevant
+ * to invokable services in the data ecosystem.
  * 
  * Jobs are typically executed via the Invoke API
  *
  * @author Mike
  * @version 0.5
  */
-public interface Job extends Future&lt;Map&lt;String,Object&gt;&gt; {
+public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
+
+	// maximum timeout kept sufficiently below Long.MAXVALUE to avoid risk of overflow
+	long MAX_TIMEOUT_MILLIS = Long.MAX_VALUE/4;
 
 	/**
-	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent implementation
-	 * responsible for completing the job, and may be used to refer to the Job via other mechanisms.
+	 * Gets the Job ID associated with this Job. Job IDs are allocated by the agent
+	 * implementation responsible for completing the job, and may be used to refer
+	 * to the Job via other mechanisms.
 	 *
 	 * @return jobID
 	 */
 	public String getJobID();
 
 	/**
-	 * Returns true if the Job has been completed. If the job is complete, the result
-	 * may be obtained via get() or getResult()
+	 * Returns true if the Job has been completed. If the job is complete, the
+	 * result may be obtained via get() or getResult()
 	 *
 	 * @return boolean true if the job is complete, false otherwise.
 	 */
@@ -45,80 +50,130 @@ public interface Job extends Future&lt;Map&lt;String,Object&gt;&gt; {
 	 *
 	 * @return The Asset resulting from the job, or null if not yet available
 	 */
-	public Map&lt;String,Object&gt; pollResult();
+	public Map&lt;String, Object&gt; pollResult();
 
 	/**
-	 * Waits for the result of the operation and returns the result
-	 * WARNING: may never return if the Job does not complete
+	 * Waits for the result of the operation and returns the result WARNING: may
+	 * never return if the Job does not complete
 	 *
 	 * @throws AuthorizationException if requestor does not have load permission
 	 * @throws StorageException if unable to load the Asset
 	 * @throws JobFailedException if Job fails
 	 * @return The Asset resulting from the job
-	 * @throws ExecutionException 
-	 * @throws InterruptedException 
+	 * @throws ExecutionException
+	 * @throws InterruptedException
 	 */
 	@Override
-	public default Map&lt;String,Object&gt; get() throws InterruptedException, ExecutionException {
+	public default Map&lt;String, Object&gt; get() throws InterruptedException, ExecutionException {
 		try {
-<span class="nc" id="L64">			return get(Long.MAX_VALUE,TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L65">		} catch (TimeoutException t) {</span>
-<span class="nc" id="L66">			throw new Error(&quot;Unexpected timeout!&quot;);</span>
+<span class="nc" id="L69">			return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
+		}
+<span class="nc" id="L71">		catch (TimeoutException t) {</span>
+<span class="nc" id="L72">			throw Utils.sneakyThrow(t);</span>
 		}
 	}
 	
+	/**
+	 * Convenience function to get a value from the Job result map
+	 * 
+	 * @param &lt;R&gt; The expected return type from the Job result
+	 * @param key The key to look up in the Job map
+	 * @return The value from the Job result map, or null if not present.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public default &lt;R&gt; R get(String key) {
+		try {
+<span class="nc" id="L86">			return (R) (get().get(key));</span>
+		}
+<span class="nc" id="L88">		catch (Throwable e) {</span>
+<span class="nc" id="L89">			throw Utils.sneakyThrow(e);</span>
+		}
+	}
+
 	@Override
-	public Map&lt;String,Object&gt; get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException;
+	public Map&lt;String, Object&gt; get(long timeout, TimeUnit unit)
+			throws InterruptedException, ExecutionException, TimeoutException;
 
 	/**
-	 * Waits for the result of the Operation and returns the result 
-	 * or returns null if the timeout in milliseconds expires before the
-	 * asset is available.
+	 * Waits for the result of the Operation and returns the result or returns null
+	 * if the timeout in milliseconds expires before the asset is available.
 	 *
-	 * @param timeoutMillis The number of milliseconds to wait for a result before returning null
+	 * @param timeoutMillis The number of milliseconds to wait for a result before
+	 *            returning null
 	 * @return The result from the Job
-	 * @throws ExecutionException 
-	 * @throws TimeoutException 
-	 * @throws InterruptedException 
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 * @throws InterruptedException
 	 */
-	public default Map&lt;String,Object&gt; get(long timeoutMillis) throws InterruptedException, TimeoutException, ExecutionException {
-<span class="nc" id="L85">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+	public default Map&lt;String, Object&gt; get(long timeoutMillis)
+			throws InterruptedException, TimeoutException, ExecutionException {
+<span class="nc" id="L110">		return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 	}
-	
+
 	/**
 	 * Convenience method to get the result of the Job without checked exceptions.
 	 * 
 	 * @param timeoutMillis Timeout to wait for the Jo result in milliseconds
 	 * @return The result of the Job
 	 */
-	public default Map&lt;String,Object&gt; getResult(long timeoutMillis) {
+	public default Map&lt;String, Object&gt; getResult(long timeoutMillis) {
 		try {
-<span class="fc" id="L96">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L121">			return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
 		}
-<span class="nc" id="L98">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
-<span class="nc" id="L99">			throw new Error(e);</span>
+<span class="nc" id="L123">		catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
+<span class="nc" id="L124">			throw new Error(e);</span>
 		}
 	}
 
-	
 	/**
 	 * Convenience method to get the Job result without checked exceptions.
 	 * 
 	 * @return The result of the Job
 	 */
-	public default Map&lt;String,Object&gt; getResult() {
+	public default Map&lt;String, Object&gt; getResult() {
 		try {
-<span class="nc" id="L111">			return get();</span>
+<span class="nc" id="L135">			return get();</span>
 		}
-<span class="nc" id="L113">		catch (InterruptedException | ExecutionException e) {</span>
-<span class="nc" id="L114">			throw new Error(e);</span>
+<span class="nc" id="L137">		catch (InterruptedException | ExecutionException e) {</span>
+<span class="nc" id="L138">			throw Utils.sneakyThrow(e);</span>
 		}
 	}
-		
+
+	/**
+	 * Attempts to cancel execution of this Job. This attempt will fail if the Job
+	 * has already completed, has already been cancelled, or could not be cancelled
+	 * for some other reason. If successful, and this task has not started when
+	 * {@code cancel} is called, this Job should never run.
+	 * 
+	 * @return {@code false} if the Job could not be cancelled, typically because it
+	 *         has already completed normally; {@code true} otherwise
+	 */
+	public default boolean cancel() {
+<span class="nc" id="L152">		return cancel(true);</span>
+	}
+
+	/**
+	 * Attempts to cancel execution of this Job. This attempt will fail if the Job
+	 * has already completed, has already been cancelled, or could not be cancelled
+	 * for some other reason. If successful, and this task has not started when
+	 * {@code cancel} is called, this Job should never run.
+	 * 
+	 * If the Job has already started, then the {@code mayInterruptIfRunning}
+	 * parameter determines whether the an attempt should be made to stop the Job
+	 * (e.g. via interrupting a running thread, or by sending a message to cancel to
+	 * a remote agent)
+	 * 
+	 * @param mayInterruptIfRunning {@code true} if an attempt should be made to
+	 *            interrupt and already-running Job; otherwise, in-progress tasks
+	 *            are allowed to complete
+	 * @return {@code false} if the Job could not be cancelled, typically because it
+	 *         has already completed normally; {@code true} otherwise
+	 */
 	@Override
 	public default boolean cancel(boolean mayInterruptIfRunning) {
-		// note: classes implementing Job should override this if they support Job cancellation
-<span class="nc" id="L121">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot;+getClass());</span>
+		// note: classes implementing Job should override this if they support Job
+		// cancellation
+<span class="nc" id="L176">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot; + getClass());</span>
 	}
 
 }

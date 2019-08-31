@@ -273,8 +273,14 @@ import static sg.dex.starfish.constant.Constant.*;
 <span class="nc" id="L273">        return mandatoryList;</span>
     }
     
-    
-
+    /**
+     * Helper function to hide checked exceptions
+     */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public static &lt;T extends Throwable&gt; T sneakyThrow(Throwable t) throws T {
+<span class="nc" id="L281">		throw (T) t;</span>
+	}
+	
     /**
      * Merges two metadata maps.
      *
@@ -283,13 +289,13 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A new map containing the merged metadata
      */
     public Map&lt;String, Object&gt; mergeMeta(Map&lt;String, Object&gt; a, Map&lt;String, Object&gt; b) {
-<span class="nc" id="L286">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
-<span class="nc bnc" id="L287" title="All 2 branches missed.">        if (b != null) {</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
-<span class="nc" id="L289">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L290">            }</span>
+<span class="nc" id="L292">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        if (b != null) {</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
+<span class="nc" id="L295">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L296">            }</span>
         }
-<span class="nc" id="L292">        return ob;</span>
+<span class="nc" id="L298">        return ob;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
