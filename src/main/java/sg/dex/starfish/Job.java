@@ -69,7 +69,7 @@ public interface Job extends Future<Map<String, Object>> {
 			return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 		}
 		catch (TimeoutException t) {
-			throw new Error("Unexpected timeout!");
+			throw Utils.sneakyThrow(t);
 		}
 	}
 	
@@ -135,7 +135,7 @@ public interface Job extends Future<Map<String, Object>> {
 			return get();
 		}
 		catch (InterruptedException | ExecutionException e) {
-			throw new Error(e);
+			throw Utils.sneakyThrow(e);
 		}
 	}
 
