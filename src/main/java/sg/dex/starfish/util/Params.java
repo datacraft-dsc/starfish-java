@@ -94,6 +94,7 @@ public class Params {
 
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
 			String paramName=me.getKey();
+			@SuppressWarnings("unchecked")
 			Map<String, Object> spec = (Map<String, Object>) me.getValue();
 			String type=(String) spec.get("type");
 			if (response.containsKey(paramName)) {
