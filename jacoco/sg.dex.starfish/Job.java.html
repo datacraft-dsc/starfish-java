@@ -173,7 +173,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
 	public default boolean cancel(boolean mayInterruptIfRunning) {
 		// note: classes implementing Job should override this if they support Job
 		// cancellation
-<span class="nc" id="L176">		throw new UnsupportedOperationException(&quot;Cancellation not supported on Job of type &quot; + getClass());</span>
+<span class="nc" id="L176">		return false;</span>
 	}
 
 }

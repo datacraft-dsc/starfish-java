@@ -39,7 +39,7 @@ import java.util.Map;
 <span class="fc" id="L39">			JSONValue.writeJSONString(value,sw);</span>
 		}
 <span class="nc" id="L41">		catch (IOException e) {</span>
-<span class="nc" id="L42">			throw new RuntimeException(&quot;Can't create JSON string from object&quot;,e);</span>
+<span class="nc" id="L42">			throw new Error(&quot;Can't create JSON string from object&quot;,e);</span>
 <span class="fc" id="L43">		}</span>
 <span class="fc" id="L44">		return sw.toString();</span>
 	}
