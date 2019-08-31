@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class for handling invokable operation parameters
+ * Utility class for marshalling invokable operation parameters and return values
  *
  */
 public class Params {
@@ -90,6 +90,7 @@ public class Params {
 
 		Map<String,Object> response = JSON.toMap(res.get("results").toString());
 		HashMap<String,Object> result=new HashMap<>(response.size());
+		@SuppressWarnings("unchecked")
 		Map<String,Object> paramSpec= (Map<String,Object>)operation.getOperationSpec().get("results");
 
 		for (Map.Entry<String,Object> me:paramSpec.entrySet()) {
@@ -100,6 +101,7 @@ public class Params {
 			if (response.containsKey(paramName)) {
 				if (type.equals("asset")) {
 					// get the did of the asset
+					@SuppressWarnings("unchecked")
 					Map<String,Object> didMap= (Map<String,Object>)response.get(paramName);
 					Asset a = (remoteAgent.getAsset(didMap.get("did").toString()));
 					result.put(paramName, a);

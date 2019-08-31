@@ -71,12 +71,13 @@ public abstract class AAgent implements Agent {
 	 * @param type The type of the service to find
 	 * @return The service endpoint, or null if not found
 	 */
-	@SuppressWarnings("unchecked")
 	public String getEndpoint(String type) {
 		Map<String,Object> ddo=getDDO();
+		@SuppressWarnings("unchecked")
 		List<Object> services = (List<Object>) ddo.get("service");
 		if (services==null) return null;
 		for (Object o: services) {
+			@SuppressWarnings("unchecked")
 			Map<String,Object> service=(Map<String,Object>)o;
 			if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
 		}
