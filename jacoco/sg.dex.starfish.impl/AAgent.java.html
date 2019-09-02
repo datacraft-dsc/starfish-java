@@ -71,16 +71,17 @@ public abstract class AAgent implements Agent {
 	 * @param type The type of the service to find
 	 * @return The service endpoint, or null if not found
 	 */
-	@SuppressWarnings(&quot;unchecked&quot;)
 	public String getEndpoint(String type) {
-<span class="nc" id="L76">		Map&lt;String,Object&gt; ddo=getDDO();</span>
+<span class="nc" id="L75">		Map&lt;String,Object&gt; ddo=getDDO();</span>
+		@SuppressWarnings(&quot;unchecked&quot;)
 <span class="nc" id="L77">		List&lt;Object&gt; services = (List&lt;Object&gt;) ddo.get(&quot;service&quot;);</span>
 <span class="nc bnc" id="L78" title="All 2 branches missed.">		if (services==null) return null;</span>
 <span class="nc bnc" id="L79" title="All 2 branches missed.">		for (Object o: services) {</span>
-<span class="nc" id="L80">			Map&lt;String,Object&gt; service=(Map&lt;String,Object&gt;)o;</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">			if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(&quot;serviceEndpoint&quot;);</span>
-<span class="nc" id="L82">		}</span>
-<span class="nc" id="L83">		return null;</span>
+			@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L81">			Map&lt;String,Object&gt; service=(Map&lt;String,Object&gt;)o;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">			if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(&quot;serviceEndpoint&quot;);</span>
+<span class="nc" id="L83">		}</span>
+<span class="nc" id="L84">		return null;</span>
 	}
 
 

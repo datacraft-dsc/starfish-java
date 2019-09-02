@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class for handling invokable operation parameters
+ * Utility class for marshalling invokable operation parameters and return values
  *
  */
 <span class="nc" id="L15">public class Params {</span>
@@ -90,30 +90,32 @@ import java.util.Map;
 
 <span class="nc" id="L91">		Map&lt;String,Object&gt; response = JSON.toMap(res.get(&quot;results&quot;).toString());</span>
 <span class="nc" id="L92">		HashMap&lt;String,Object&gt; result=new HashMap&lt;&gt;(response.size());</span>
-<span class="nc" id="L93">		Map&lt;String,Object&gt; paramSpec= (Map&lt;String,Object&gt;)operation.getOperationSpec().get(&quot;results&quot;);</span>
+		@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L94">		Map&lt;String,Object&gt; paramSpec= (Map&lt;String,Object&gt;)operation.getOperationSpec().get(&quot;results&quot;);</span>
 
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
-<span class="nc" id="L96">			String paramName=me.getKey();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
+<span class="nc" id="L97">			String paramName=me.getKey();</span>
 			@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L98">			Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
-<span class="nc" id="L99">			String type=(String) spec.get(&quot;type&quot;);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">			if (response.containsKey(paramName)) {</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">				if (type.equals(&quot;asset&quot;)) {</span>
+<span class="nc" id="L99">			Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
+<span class="nc" id="L100">			String type=(String) spec.get(&quot;type&quot;);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			if (response.containsKey(paramName)) {</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">				if (type.equals(&quot;asset&quot;)) {</span>
 					// get the did of the asset
-<span class="nc" id="L103">					Map&lt;String,Object&gt; didMap= (Map&lt;String,Object&gt;)response.get(paramName);</span>
-<span class="nc" id="L104">					Asset a = (remoteAgent.getAsset(didMap.get(&quot;did&quot;).toString()));</span>
-<span class="nc" id="L105">					result.put(paramName, a);</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">				} else if (type.equals(&quot;json&quot;)) {</span>
-<span class="nc" id="L107">					result.put(paramName, response.get(paramName));</span>
+					@SuppressWarnings(&quot;unchecked&quot;)
+<span class="nc" id="L105">					Map&lt;String,Object&gt; didMap= (Map&lt;String,Object&gt;)response.get(paramName);</span>
+<span class="nc" id="L106">					Asset a = (remoteAgent.getAsset(didMap.get(&quot;did&quot;).toString()));</span>
+<span class="nc" id="L107">					result.put(paramName, a);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">				} else if (type.equals(&quot;json&quot;)) {</span>
+<span class="nc" id="L109">					result.put(paramName, response.get(paramName));</span>
 				} else {
-<span class="nc" id="L109">					throw new StarfishValidationException(&quot;Invalid type of Input. Accepted Input: &quot; +</span>
+<span class="nc" id="L111">					throw new StarfishValidationException(&quot;Invalid type of Input. Accepted Input: &quot; +</span>
 							&quot;Asset or Json. Input given: &quot; + type);
 				}
 
 			}
 
-<span class="nc" id="L115">		}</span>
-<span class="nc" id="L116">		return result;</span>
+<span class="nc" id="L117">		}</span>
+<span class="nc" id="L118">		return result;</span>
 
 	}
 	/**
@@ -127,26 +129,26 @@ import java.util.Map;
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public
 	static Map&lt;String,Object&gt; formatParams(Operation operation, Object... params) {
-<span class="nc" id="L130">		HashMap&lt;String,Object&gt; result=new HashMap&lt;&gt;(params.length);</span>
-<span class="nc" id="L131">		Map&lt;String,Object&gt; paramSpec=operation.getParamsSpec();</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
-<span class="nc" id="L133">			String paramName=me.getKey();</span>
-<span class="nc" id="L134">			Map&lt;String,Object&gt; spec=(Map&lt;String,Object&gt;)me.getValue();</span>
+<span class="nc" id="L132">		HashMap&lt;String,Object&gt; result=new HashMap&lt;&gt;(params.length);</span>
+<span class="nc" id="L133">		Map&lt;String,Object&gt; paramSpec=operation.getParamsSpec();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
+<span class="nc" id="L135">			String paramName=me.getKey();</span>
+<span class="nc" id="L136">			Map&lt;String,Object&gt; spec=(Map&lt;String,Object&gt;)me.getValue();</span>
 			// String type=(String) spec.get(&quot;type&quot;);
-<span class="nc" id="L136">			Object positionObj=spec.get(&quot;position&quot;);</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;</span>
-<span class="nc" id="L138">			boolean required=Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
-<span class="nc bnc" id="L139" title="All 4 branches missed.">			if ((pos&gt;=0)&amp;&amp;(pos&lt;params.length)) {</span>
+<span class="nc" id="L138">			Object positionObj=spec.get(&quot;position&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;</span>
+<span class="nc" id="L140">			boolean required=Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">			if ((pos&gt;=0)&amp;&amp;(pos&lt;params.length)) {</span>
 				// TODO: Handle non-asset parameters?
-<span class="nc" id="L141">				Asset a=(Asset) params[pos];</span>
-<span class="nc" id="L142">				Map&lt;String,Object&gt; value=a.getParamValue();</span>
-<span class="nc" id="L143">				result.put(paramName,value);</span>
+<span class="nc" id="L143">				Asset a=(Asset) params[pos];</span>
+<span class="nc" id="L144">				Map&lt;String,Object&gt; value=a.getParamValue();</span>
+<span class="nc" id="L145">				result.put(paramName,value);</span>
 			}
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (required) {</span>
-<span class="nc" id="L146">				throw new IllegalArgumentException(&quot;Parameter &quot;+paramName+&quot; is required but not supplied&quot;);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">			if (required) {</span>
+<span class="nc" id="L148">				throw new IllegalArgumentException(&quot;Parameter &quot;+paramName+&quot; is required but not supplied&quot;);</span>
 			}
-<span class="nc" id="L148">		}</span>
-<span class="nc" id="L149">		return result;</span>
+<span class="nc" id="L150">		}</span>
+<span class="nc" id="L151">		return result;</span>
 	}
 	
 	/**
@@ -161,23 +163,23 @@ import java.util.Map;
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public
 	static Map&lt;String,Object&gt; namedParams(Operation operation, Object... params) {
-<span class="nc" id="L164">		HashMap&lt;String,Object&gt; result=new HashMap&lt;&gt;(params.length);</span>
-<span class="nc" id="L165">		Map&lt;String,Object&gt; paramSpec=operation.getParamsSpec();</span>
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
-<span class="nc" id="L167">			String paramName=me.getKey();</span>
-<span class="nc" id="L168">			Map&lt;String,Object&gt; spec=(Map&lt;String,Object&gt;)me.getValue();</span>
-<span class="nc" id="L169">			Object positionObj=spec.get(&quot;position&quot;);</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;</span>
-<span class="nc" id="L171">			boolean required=Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
-<span class="nc bnc" id="L172" title="All 4 branches missed.">			if ((pos&gt;=0)&amp;&amp;(pos&lt;params.length)) {</span>
+<span class="nc" id="L166">		HashMap&lt;String,Object&gt; result=new HashMap&lt;&gt;(params.length);</span>
+<span class="nc" id="L167">		Map&lt;String,Object&gt; paramSpec=operation.getParamsSpec();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (Map.Entry&lt;String,Object&gt; me:paramSpec.entrySet()) {</span>
+<span class="nc" id="L169">			String paramName=me.getKey();</span>
+<span class="nc" id="L170">			Map&lt;String,Object&gt; spec=(Map&lt;String,Object&gt;)me.getValue();</span>
+<span class="nc" id="L171">			Object positionObj=spec.get(&quot;position&quot;);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			int pos=(positionObj!=null)?Utils.coerceInt(positionObj):-1;</span>
+<span class="nc" id="L173">			boolean required=Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">			if ((pos&gt;=0)&amp;&amp;(pos&lt;params.length)) {</span>
 				// TODO: handle non-asset parameters&gt;
-<span class="nc" id="L174">				Asset a=(Asset) params[pos];</span>
-<span class="nc" id="L175">				result.put(paramName,a);</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			} else if (required) {</span>
-<span class="nc" id="L177">				throw new IllegalArgumentException(&quot;Parameter &quot;+paramName+&quot; is required but not supplied&quot;);</span>
+<span class="nc" id="L176">				Asset a=(Asset) params[pos];</span>
+<span class="nc" id="L177">				result.put(paramName,a);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			} else if (required) {</span>
+<span class="nc" id="L179">				throw new IllegalArgumentException(&quot;Parameter &quot;+paramName+&quot; is required but not supplied&quot;);</span>
 			}
-<span class="nc" id="L179">		}</span>
-<span class="nc" id="L180">		return result;</span>
+<span class="nc" id="L181">		}</span>
+<span class="nc" id="L182">		return result;</span>
 	}
 	
 
