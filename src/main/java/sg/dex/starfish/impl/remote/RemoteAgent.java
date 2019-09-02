@@ -320,8 +320,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * Gets an asset for the given asset ID from this agent. Returns Runtime
-	 * Exception if the asset ID does not exist.
+	 * Gets an asset for the given asset ID from this agent. Throws an exeception if the asset ID does not exist,
+	 * or if the returned metadata is not valid.
 	 *
 	 * @param id The ID of the asset to get from this agent
 	 * @return Asset The asset found
@@ -345,7 +345,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				} else if (statusCode == 200) {
 					String body = Utils.stringFromStream(HTTP.getContent(response));
 					Map<String, Object> metaMap = JSON.toMap(body);
-					return getRemoteAsset(body, metaMap);
+					R a= getRemoteAsset(body, metaMap);
+					String rid=a.getAssetID();
+					if (rid!=id) {
+						throw new StarfishValidationException("Expected asset ID: "+id+ " but got metadata with hash: "+rid);
+					}
+					return a;
 				} else {
 
 					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
