@@ -38,7 +38,7 @@ import sg.dex.starfish.util.JSON;
  */
 public class MemoryAsset extends AAsset implements DataAsset {
 
-    private byte[] data;
+    private final byte[] data;
 
     private MemoryAsset(byte[] data,String metaData) {
         super(metaData);

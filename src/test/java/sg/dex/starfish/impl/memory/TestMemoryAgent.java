@@ -58,7 +58,7 @@ public class TestMemoryAgent {
 		// the asset data should nnot be present in Agent 2
 		assertNull(agent2.getAsset(id));
 
-		// uploading asset on agent 2
+		// uploading asset from agent 1 to agent 2
 		Asset a2=agent2.uploadAsset(a1);
 
 		// now asset must be present on agent 2
