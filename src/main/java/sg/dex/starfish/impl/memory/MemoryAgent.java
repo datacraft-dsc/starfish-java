@@ -103,7 +103,13 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings("unchecked")
 	@Override
     public <R extends Asset> R getAsset(String id) {
-        return (R) assetStore.get(id);
+    	R asset=(R) assetStore.get(id);
+    	if (asset==null) return null;
+		String rid=asset.getAssetID();
+		if (rid!=id) {
+			throw new StarfishValidationException("Expected asset ID: "+id+ " but got metadata with hash: "+rid);
+		}
+		return asset;
     }
 
     /**
