@@ -84,5 +84,8 @@ public abstract class AAgent implements Agent {
 		return null;
 	}
 
-
+	@Override
+	public String toString() {
+		return "#starfish/agent \""+getDID().toString()+"\"";
+	}
 }
