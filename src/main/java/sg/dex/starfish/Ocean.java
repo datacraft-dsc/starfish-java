@@ -82,10 +82,22 @@ public class Ocean {
      * This registration is intended for testing purposes.
      *
      * @param did A did to register
-     * @param ddo A string containing a valid Ocean DDO
+     * @param ddo A string containing a valid Ocean DDO in JSON Format
      */
     public void registerLocalDID(DID did, String ddo) {
         ddoCache.put(did, ddo);
+    }
+    
+    /**
+     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * <p>
+     * This registration is intended for testing purposes.
+     *
+     * @param did A did to register
+     * @param ddo A Map containing a valid Ocean DDO
+     */
+    public void registerLocalDID(DID did, Map<String,Object> ddo) {
+        ddoCache.put(did, JSON.toPrettyString(ddo));
     }
 
 
