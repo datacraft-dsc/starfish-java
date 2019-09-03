@@ -36,7 +36,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
      * @param resourcePath path of the resource
-     * @param metaString   metadata associated with the asset.This metadata will be be added in addition to default
+     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
      *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
      *                     default value will be overridden.
      * @return ResourceAsset instance created using given resource path and metadata
