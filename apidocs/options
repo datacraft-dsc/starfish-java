@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'Starfish - Developer Toolkit for data ecosystems 0.6.1-SNAPSHOT API'
+'Starfish - Developer Toolkit for data ecosystems 0.6.2-SNAPSHOT API'
 -linkoffline
 'https://docs.oracle.com/en/java/javase/11/docs/api' '/home/travis/build/DEX-Company/starfish-java/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'Starfish - Developer Toolkit for data ecosystems 0.6.1-SNAPSHOT API'
+'Starfish - Developer Toolkit for data ecosystems 0.6.2-SNAPSHOT API'
