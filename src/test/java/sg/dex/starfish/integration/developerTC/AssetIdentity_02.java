@@ -46,14 +46,11 @@ public class AssetIdentity_02 {
         Asset asset1 = MemoryAsset.create(data);
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset1);
+        RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset1);
 
-        // register to the remote agent
-        // get the Remote asset ID which has been register using remote Agent
-
-        String assetID = remoteAsset.getAssetID();
         // compare both the assetID, It must be equal
-        assertEquals(assetID, asset1.getAssetID());
+        assertEquals( asset1.getAssetID(),remoteAsset.getAssetID());
+        assertEquals( asset1.getContent(),remoteAsset.getContent());
     }
 
 
