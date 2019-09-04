@@ -42,8 +42,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given resource path and metadata
      */
 
-    public static ResourceAsset create(String resourcePath, String metaString) {
-        return new ResourceAsset(metaString, resourcePath);
+    public static ResourceAsset create(String resourcePath, String metaData) {
+        return new ResourceAsset(metaData, resourcePath);
     }
 
     /**
@@ -109,9 +109,9 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if (istream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
-        return istream;
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        if (inputStream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
+        return inputStream;
     }
 
     @Override
