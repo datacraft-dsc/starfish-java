@@ -2,10 +2,7 @@ package sg.dex.starfish.integration.developerTC;//package sg.dex.starfish.integr
 
 import org.junit.Before;
 import org.junit.Test;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Job;
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Operation;
+import sg.dex.starfish.*;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.*;
@@ -20,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -97,7 +95,7 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id of remote operation asset
-        Operation remoteOperation = (Operation) agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
+        Operation remoteOperation =  agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
 
 //        // response will have asset id as value which has the result of the operation
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
@@ -110,7 +108,9 @@ public class InvokeServiceFree_20 {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
-                Asset a = (Asset) response.get(me.getKey());
+                DataAsset dataAsset = (DataAsset) response.get(me.getKey());
+                assertArrayEquals(new byte[]{2,3,5,7,11},dataAsset.getContent());
+
             } else if (type.equals("json")) {
                 Object a = response.get(me.getKey());
 
@@ -151,7 +151,7 @@ public class InvokeServiceFree_20 {
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
             if (type.equals("asset")) {
-                Asset asset = (RemoteDataAsset) remoteAsset.get(me.getKey());
+                DataAsset asset = (DataAsset) remoteAsset.get(me.getKey());
                 assertArrayEquals(asset.getContent(),new byte[]{2, 3, 5, 7, 11, 13, 17, 19});
 
             } else if (type.equals("json")) {
@@ -215,7 +215,6 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        //Operation remoteOperation =(Operation)agentI.getAsset("8ade9c7505bcadaab8dacf6848e88ddb4aa6a295612eb01759e35aeb65daeac2");
         Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
         // invoking the prime operation and will get the job associated
@@ -258,7 +257,7 @@ public class InvokeServiceFree_20 {
         RemoteAgent agentI =RemoteAgent.create(ocean,did,remoteAccount);
 
         // get asset form asset id
-        Operation remoteOperation = (Operation) agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
+        Operation remoteOperation =  agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
 
         // invoking the prime operation and will get the job associated
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
