@@ -42,8 +42,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given resource path and metadata
      */
 
-    public static ResourceAsset create(String resourcePath, String metaString) {
-<span class="fc" id="L46">        return new ResourceAsset(metaString, resourcePath);</span>
+    public static ResourceAsset create(String resourcePath, String metaData) {
+<span class="fc" id="L46">        return new ResourceAsset(metaData, resourcePath);</span>
     }
 
     /**
@@ -109,9 +109,9 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-<span class="fc" id="L112">        InputStream istream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (istream == null) throw new IllegalStateException(&quot;Resource does not exist on classpath: &quot; + resourcePath);</span>
-<span class="fc" id="L114">        return istream;</span>
+<span class="fc" id="L112">        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (inputStream == null) throw new IllegalStateException(&quot;Resource does not exist on classpath: &quot; + resourcePath);</span>
+<span class="fc" id="L114">        return inputStream;</span>
     }
 
     @Override
