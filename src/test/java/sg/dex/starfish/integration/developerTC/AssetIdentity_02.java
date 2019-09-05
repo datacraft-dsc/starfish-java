@@ -5,9 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.JSON;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertArrayEquals;
 
 
 /**
@@ -46,18 +49,17 @@ public class AssetIdentity_02 {
         Asset asset1 = MemoryAsset.create(data);
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset1);
+        ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(asset1);
+        RemoteDataAsset remoteAsset = remoteAgent.getAsset(aRemoteAsset.getAssetID());
 
         // compare both the assetID, It must be equal
         assertEquals( asset1.getAssetID(),remoteAsset.getAssetID());
-        assertEquals( asset1.getContent(),remoteAsset.getContent());
     }
 
 
     // try to register again with same content and check the Hash
     @Test
     public void createAssetWithMetaData() {
-
         byte[] data = new byte[]{1, 2, 3};
         // update the metadata
         Map<String, Object> metaDataAsset = new HashMap<>();
@@ -70,7 +72,7 @@ public class AssetIdentity_02 {
 
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset2);
+        RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
