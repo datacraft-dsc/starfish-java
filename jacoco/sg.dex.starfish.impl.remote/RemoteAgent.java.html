@@ -347,7 +347,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 <span class="nc" id="L347">					Map&lt;String, Object&gt; metaMap = JSON.toMap(body);</span>
 <span class="nc" id="L348">					R a= getRemoteAsset(body, metaMap);</span>
 <span class="nc" id="L349">					String rid=a.getAssetID();</span>
-<span class="nc bnc" id="L350" title="All 2 branches missed.">					if (rid!=id) {</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">					if (!rid.equals(id)) {</span>
 <span class="nc" id="L351">						throw new StarfishValidationException(&quot;Expected asset ID: &quot;+id+ &quot; but got metadata with hash: &quot;+rid);</span>
 					}
 <span class="nc" id="L353">					return a;</span>
