@@ -52,7 +52,6 @@ public class AgentIdentity_03 {
         Assume.assumeNotNull(services);
         assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
         assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
-        assertTrue(remoteAgent.getStorageEndpoint().contains("/api/v1/storage"));
 
     }
     @After

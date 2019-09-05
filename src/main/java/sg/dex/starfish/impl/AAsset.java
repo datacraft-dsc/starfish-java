@@ -27,7 +27,7 @@ public abstract class AAsset implements Asset {
 	protected AAsset(String meta) {
 		//Utils.validateAssetMetaData(meta);
 		this.metadataString = meta;
-		this.id = Hex.toString(Hash.sha3_256(meta));
+		this.id = Hash.sha3_256String(metadataString);
 	}
 	protected AAsset(Map<String,Object> meta) {
 		//Utils.validateAssetMetaData(meta);

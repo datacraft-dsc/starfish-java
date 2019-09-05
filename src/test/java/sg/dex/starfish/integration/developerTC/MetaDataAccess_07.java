@@ -42,7 +42,6 @@ public class MetaDataAccess_07 {
         Asset remoteAsset =remoteAgent.registerAsset(asset);
 
         assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(),asset.getMetadata().get(DATE_CREATED).toString());
-        assertEquals(remoteAsset.getMetadata().get(CONTENT_HASH).toString(),asset.getMetadata().get(CONTENT_HASH).toString());
         assertEquals(remoteAsset.getMetadata().get(TYPE).toString(),asset.getMetadata().get(TYPE));
         assertEquals(remoteAsset.getMetadata().get(SIZE).toString(),asset.getMetadata().get(SIZE));
         assertEquals(remoteAsset.getMetadata().get(CONTENT_TYPE),asset.getMetadata().get(CONTENT_TYPE));

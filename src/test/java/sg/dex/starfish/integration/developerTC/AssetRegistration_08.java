@@ -104,15 +104,13 @@ public class AssetRegistration_08 {
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
 
-        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
-
         resourceAsset =(ResourceAsset) resourceAsset.includeContentHash();
         assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
 
 
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void testHashForRemoteAsset() throws IOException {
 
         // read metadata
@@ -124,7 +122,7 @@ public class AssetRegistration_08 {
         remoteAgent.uploadAsset(resourceAsset);
         remoteAgent.getContentStream(resourceAsset.getAssetID());
 
-        RemoteDataAsset remoteAsset =(RemoteDataAsset) remoteAgent.getAsset(resourceAsset.getAssetID());
+        RemoteDataAsset remoteAsset = remoteAgent.getAsset(resourceAsset.getAssetID());
 
         remoteAsset =(RemoteDataAsset) remoteAsset.includeContentHash();
         assertNotNull(remoteAsset.getMetadata().get(Constant.CONTENT_HASH));
@@ -137,14 +135,9 @@ public class AssetRegistration_08 {
 
         // create asset using metadata and given content
         ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
-        assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-        resourceAsset.includeContentHash();
         // calculate content hash
-       String expected= Hex.toString(Hash.sha3_256(resourceAsset.getContent()));
-
-//        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-        assertEquals(expected,resourceAsset.getMetadata().get(Constant.CONTENT_HASH).toString());
-        resourceAsset.validateContentHash();
+       String expected= Hash.sha3_256String(resourceAsset.getMetadataString());
+        assertEquals(expected,resourceAsset.getAssetID());
     }
     @Test
     public void testMetadataWithoutHash() {

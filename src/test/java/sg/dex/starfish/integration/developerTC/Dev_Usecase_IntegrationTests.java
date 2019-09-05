@@ -28,8 +28,8 @@ import sg.dex.starfish.integration.connection_check.ConnectionChecker;
         ConfirmPurchase_18.class,
         AssetDownload_19.class,
 //        InvokeServiceFree_20.class,
-        InvokeServicePaid_21.class,
-        AddNewAssetVersion_22.class
+        InvokeServicePaid_21.class
+//        AddNewAssetVersion_22.class
 
 
 })
