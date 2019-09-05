@@ -39,8 +39,8 @@ public class AgentEndpointQuery_06 {
 
         // since we created the only the storage and meta endpoint
         // so other endpoint will be null
-        assertTrue(storage.contains("/api/v1/meta"));
-        assertTrue(meta.contains("/api/v1/assets"));
+        assertTrue(storage.contains("/api/v1/asset"));
+        assertTrue(meta.contains("/api/v1/meta"));
 
 
 
