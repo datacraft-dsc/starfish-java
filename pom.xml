@@ -126,8 +126,6 @@
 			<groupId>com.oceanprotocol</groupId>
 			<artifactId>squid</artifactId>
 			<version>0.6.2</version>
-			<!--<scope>test</scope> -->
-			<!--<optional>true</optional> -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
