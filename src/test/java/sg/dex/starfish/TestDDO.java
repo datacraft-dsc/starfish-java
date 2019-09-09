@@ -2,6 +2,7 @@ package sg.dex.starfish;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Map;
 
@@ -19,6 +20,15 @@ public class TestDDO {
 		
 		Map<String,Object> ddo=ocean.getDDO(did);
 		assertEquals(0,ddo.size());
+		
+		String ddos=ocean.getDDOString(did);
+		assertEquals("{}",ddos);
+	}
+	
+	@Test public void testMissingDDO() {
+		Ocean ocean=Ocean.connect();
+		String ddo=ocean.getDDOString("did:op:missing");
+		assertNull(ddo);
 	}
 	
 	@Test public void testDIDwithoutPath() {

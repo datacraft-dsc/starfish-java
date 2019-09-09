@@ -101,6 +101,16 @@ public class Ocean {
     public Map<String, Object> getDDO(String did) {
         return getDDO(DID.parse(did));
     }
+    
+    /**
+     * Gets a DDO for a specified DID via the Universal resolver
+     *
+     * @param did DID to resolve as a String
+     * @return The DDO as a JSON map
+     */
+    public String getDDOString(String did) {
+        return getDDOString(DID.parse(did));
+    }
 
     /**
      * Gets a DDO for a specified DID via the Universal Resolver.
@@ -111,16 +121,26 @@ public class Ocean {
      * @throws UnsupportedOperationException not yet implemented
      */
     public Map<String, Object> getDDO(DID did) {
-        did=did.withoutPath();
-        String localDDO = ddoCache.get(did);
-        if (localDDO != null) {
-            return JSONObjectCache.parse(localDDO);
+        String ddo = getDDOString(did);
+        if (ddo != null) {
+            return JSONObjectCache.parse(ddo);
         }
         // it is squid did
         else {
             DID didSquid = DID.parse(did.toString());
             return getAsset(didSquid).getMetadata();
         }
+//		// TODO universal resolver
+//		throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
+    public String getDDOString(DID did) {
+        did=did.withoutPath();
+        String localDDO = ddoCache.get(did);
+        if (localDDO != null) {
+            return localDDO;
+        }
+        return null;
 //		// TODO universal resolver
 //		throw new UnsupportedOperationException("Not yet implemented");
     }
