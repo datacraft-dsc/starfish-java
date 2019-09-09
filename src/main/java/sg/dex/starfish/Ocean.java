@@ -85,7 +85,7 @@ public class Ocean {
      * @param ddo A string containing a valid DDO in JSON Format
      */
     public void installLocalDDO(DID did, String ddo) {
-        if (did==null) throw new IllegalArgumentException("DID method cannot be null");
+        if (did==null) throw new IllegalArgumentException("DID cannot be null");
         did=did.withoutPath();
     	ddoCache.put(did, ddo);
     }
