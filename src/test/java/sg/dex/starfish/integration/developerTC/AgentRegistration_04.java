@@ -62,7 +62,7 @@ public class AgentRegistration_04 {
         Assume.assumeNotNull(remoteAgent.getDDO());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testRegistrationForException() {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
