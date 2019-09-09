@@ -215,7 +215,7 @@ public class DID {
 	}
 
 	/**
-	 * Removes the path and fragment from a DID, creating a simple DID that unqiuely identifies the DID Subject.
+	 * Removes the path and fragment from a DID, creating a simple DID that uniquely identifies the DID Subject.
 	 * @return A DID without path and fragment portions.
 	 */
 	public DID withoutPath() {
