@@ -67,16 +67,6 @@ public class Ocean {
     }
 
     /**
-     * Gets a DDO for a specified DID via the Universal resolver
-     *
-     * @param did DID to resolve
-     * @return The DDO as a JSON map
-     */
-    public Map<String, Object> getDDO(String did) {
-        return getDDO(DID.parse(did));
-    }
-
-    /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
      * <p>
      * This registration is intended for testing purposes.
@@ -102,6 +92,15 @@ public class Ocean {
         installLocalDDO(did, JSON.toPrettyString(ddo));
     }
 
+    /**
+     * Gets a DDO for a specified DID via the Universal resolver
+     *
+     * @param did DID to resolve as a String
+     * @return The DDO as a JSON map
+     */
+    public Map<String, Object> getDDO(String did) {
+        return getDDO(DID.parse(did));
+    }
 
     /**
      * Gets a DDO for a specified DID via the Universal Resolver.
@@ -112,6 +111,7 @@ public class Ocean {
      * @throws UnsupportedOperationException not yet implemented
      */
     public Map<String, Object> getDDO(DID did) {
+        did=did.withoutPath();
         String localDDO = ddoCache.get(did);
         if (localDDO != null) {
             return JSONObjectCache.parse(localDDO);

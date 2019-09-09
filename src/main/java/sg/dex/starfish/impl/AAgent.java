@@ -51,22 +51,14 @@ public abstract class AAgent implements Agent {
 	@Override
 	public Map<String,Object> getDDO() {
 		if (ddo==null) {
-			ddo=refreshDDO();
+			ddo=ocean.getDDO(did);
 		}
 		return ddo;
-	}
-
-	/**
-	 * Fetches the latest DDO from Universal Resolver if not cached
-	 * @return JSONObject
-	 */
-	public Map<String,Object> refreshDDO() {
-		return ocean.getDDO(did);
 	}
 	
 	/**
 	 * Returns the serviceEndpoint for the specified service type.
-	 * Searched the agent's DDO for the appropriate service.
+	 * Searches the agent's DDO for the appropriate service.
 	 * 
 	 * @param type The type of the service to find
 	 * @return The service endpoint, or null if not found
