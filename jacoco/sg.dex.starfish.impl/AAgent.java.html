@@ -51,42 +51,34 @@ public abstract class AAgent implements Agent {
 	@Override
 	public Map&lt;String,Object&gt; getDDO() {
 <span class="nc bnc" id="L53" title="All 2 branches missed.">		if (ddo==null) {</span>
-<span class="nc" id="L54">			ddo=refreshDDO();</span>
+<span class="nc" id="L54">			ddo=ocean.getDDO(did);</span>
 		}
 <span class="nc" id="L56">		return ddo;</span>
-	}
-
-	/**
-	 * Fetches the latest DDO from Universal Resolver if not cached
-	 * @return JSONObject
-	 */
-	public Map&lt;String,Object&gt; refreshDDO() {
-<span class="nc" id="L64">		return ocean.getDDO(did);</span>
 	}
 	
 	/**
 	 * Returns the serviceEndpoint for the specified service type.
-	 * Searched the agent's DDO for the appropriate service.
+	 * Searches the agent's DDO for the appropriate service.
 	 * 
 	 * @param type The type of the service to find
 	 * @return The service endpoint, or null if not found
 	 */
 	public String getEndpoint(String type) {
-<span class="nc" id="L75">		Map&lt;String,Object&gt; ddo=getDDO();</span>
+<span class="nc" id="L67">		Map&lt;String,Object&gt; ddo=getDDO();</span>
 		@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L77">		List&lt;Object&gt; services = (List&lt;Object&gt;) ddo.get(&quot;service&quot;);</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (services==null) return null;</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">		for (Object o: services) {</span>
+<span class="nc" id="L69">		List&lt;Object&gt; services = (List&lt;Object&gt;) ddo.get(&quot;service&quot;);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (services==null) return null;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		for (Object o: services) {</span>
 			@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L81">			Map&lt;String,Object&gt; service=(Map&lt;String,Object&gt;)o;</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">			if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(&quot;serviceEndpoint&quot;);</span>
-<span class="nc" id="L83">		}</span>
-<span class="nc" id="L84">		return null;</span>
+<span class="nc" id="L73">			Map&lt;String,Object&gt; service=(Map&lt;String,Object&gt;)o;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">			if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(&quot;serviceEndpoint&quot;);</span>
+<span class="nc" id="L75">		}</span>
+<span class="nc" id="L76">		return null;</span>
 	}
 
 	@Override
 	public String toString() {
-<span class="nc" id="L89">		return &quot;#starfish/agent \&quot;&quot;+getDID().toString()+&quot;\&quot;&quot;;</span>
+<span class="nc" id="L81">		return &quot;#starfish/agent \&quot;&quot;+getDID().toString()+&quot;\&quot;&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
