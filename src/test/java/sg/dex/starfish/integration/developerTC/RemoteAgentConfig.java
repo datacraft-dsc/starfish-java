@@ -85,7 +85,7 @@ public class RemoteAgentConfig {
         // creating unique DID
         DID surferDID = DID.createRandom();
         // registering the DID and DDO
-        ocean.registerLocalDID(surferDID, ddoString);
+        ocean.installLocalDDO(surferDID, ddoString);
 
 
 
@@ -153,7 +153,7 @@ public class RemoteAgentConfig {
         // creating unique DID
         DID invokeDID = DID.createRandom();
         // registering the DID and DDO
-        ocean.registerLocalDID(invokeDID, ddoString);
+        ocean.installLocalDDO(invokeDID, ddoString);
 
 
 

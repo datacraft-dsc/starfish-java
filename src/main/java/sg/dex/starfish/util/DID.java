@@ -214,5 +214,14 @@ public class DID {
 		return parse(DID.createRandomString());
 	}
 
+	/**
+	 * Removes the path and fragment from a DID, creating a simple DID that unqiuely identifies the DID Subject.
+	 * @return A DID without path and fragment portions.
+	 */
+	public DID withoutPath() {
+		if ((path==null)&&(fragment==null)) return this;
+		return new DID(method,id,null,null);
+	}
+
 
 }

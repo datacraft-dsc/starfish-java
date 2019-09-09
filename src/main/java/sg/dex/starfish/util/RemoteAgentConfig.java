@@ -22,7 +22,7 @@ public final class RemoteAgentConfig {
         did = (did== null) ? DID.createRandom():did;
 
         // registering the DID and DDO
-        ocean.registerLocalDID(did, ddoString);
+        ocean.installLocalDDO(did, ddoString);
 
         //Creating remote Account
         Map<String,Object> credentialMap = new HashMap<>();

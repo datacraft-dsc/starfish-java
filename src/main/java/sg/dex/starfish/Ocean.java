@@ -82,10 +82,11 @@ public class Ocean {
      * This registration is intended for testing purposes.
      *
      * @param did A did to register
-     * @param ddo A string containing a valid Ocean DDO in JSON Format
+     * @param ddo A string containing a valid DDO in JSON Format
      */
-    public void registerLocalDID(DID did, String ddo) {
-        ddoCache.put(did, ddo);
+    public void installLocalDDO(DID did, String ddo) {
+        did=did.withoutPath();
+    	ddoCache.put(did, ddo);
     }
     
     /**
@@ -94,10 +95,10 @@ public class Ocean {
      * This registration is intended for testing purposes.
      *
      * @param did A did to register
-     * @param ddo A Map containing a valid Ocean DDO
+     * @param ddo A Map containing a valid DDO
      */
-    public void registerLocalDID(DID did, Map<String,Object> ddo) {
-        ddoCache.put(did, JSON.toPrettyString(ddo));
+    public void installLocalDDO(DID did, Map<String,Object> ddo) {
+        installLocalDDO(did, JSON.toPrettyString(ddo));
     }
 
 

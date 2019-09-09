@@ -38,7 +38,7 @@ public class InvokeServiceFree_20 {
         // surfer should be running
         did=getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin","OpenSesame");
-        ocean.registerLocalDID(did,getDdo());
+        ocean.installLocalDDO(did,getDdo());
 
 
     }

@@ -50,7 +50,7 @@ public class AgentRegistration_04 {
         // creating unique DID
         DID surferDID = DID.createRandom();
         //registering the  DID and DDO
-        ocean.registerLocalDID(surferDID, ddoString);
+        ocean.installLocalDDO(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
@@ -75,7 +75,7 @@ public class AgentRegistration_04 {
         RemoteAgent remoteAgent = RemoteAgent.create(ocean, null);
         //registering the  DID and DDO
 
-        ocean.registerLocalDID(null, ddoString);
+        ocean.installLocalDDO(null, ddoString);
 
         assertEquals(remoteAgent.getDID(), null);
 

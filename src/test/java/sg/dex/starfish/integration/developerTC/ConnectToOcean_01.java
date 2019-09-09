@@ -38,7 +38,7 @@ public class ConnectToOcean_01 {
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "1234");
-        ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
+        ocean.installLocalDDO(surferDID, JSON.toPrettyString(ddo));
         Assume.assumeNotNull(ocean);
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "1234");
 
@@ -51,12 +51,12 @@ public class ConnectToOcean_01 {
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();
         ddo.put("test", "test");
-        ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
+        ocean.installLocalDDO(surferDID, JSON.toPrettyString(ddo));
         Assume.assumeNotNull((ocean));
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
 
         ddo.put("test", "testAgain");
-        ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
+        ocean.installLocalDDO(surferDID, JSON.toPrettyString(ddo));
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "testAgain");
 
 
@@ -67,7 +67,7 @@ public class ConnectToOcean_01 {
         Map<String, Object> ddo = new HashMap<>();
         DID surferDID = null;
         ddo.put("test", "test");
-        ocean.registerLocalDID(surferDID, JSON.toPrettyString(ddo));
+        ocean.installLocalDDO(surferDID, JSON.toPrettyString(ddo));
         assertEquals(ocean.getDDO(surferDID).get("test").toString(), "test");
 
     }

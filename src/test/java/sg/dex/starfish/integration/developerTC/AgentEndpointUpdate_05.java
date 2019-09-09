@@ -65,7 +65,7 @@ public class AgentEndpointUpdate_05 {
         DID surferDID = DID.createRandom();
 
         // registering the DID and DDO
-        ocean.registerLocalDID(surferDID, ddoString);
+        ocean.installLocalDDO(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
         return  RemoteAgent.create(ocean, surferDID);
