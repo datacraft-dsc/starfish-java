@@ -22,7 +22,7 @@ import java.util.Map;
 <span class="nc bnc" id="L22" title="All 2 branches missed.">        did = (did== null) ? DID.createRandom():did;</span>
 
         // registering the DID and DDO
-<span class="nc" id="L25">        ocean.registerLocalDID(did, ddoString);</span>
+<span class="nc" id="L25">        ocean.installLocalDDO(did, ddoString);</span>
 
         //Creating remote Account
 <span class="nc" id="L28">        Map&lt;String,Object&gt; credentialMap = new HashMap&lt;&gt;();</span>

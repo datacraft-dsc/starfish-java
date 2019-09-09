@@ -53,7 +53,7 @@ public class DID {
 	 * @return DID The newly created DID
 	 */
 	public static DID create(String method, String id, String path, String fragment) {
-<span class="nc" id="L56">		return new DID(method,id,path,fragment);</span>
+<span class="fc" id="L56">		return new DID(method,id,path,fragment);</span>
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class DID {
 	public boolean equals(DID d) {
 <span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!method.equals(d.method)) return false;</span>
 <span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!id.equals(d.id)) return false;</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (!Utils.equals(path,d.path)) return false;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (!Utils.equals(path,d.path)) return false;</span>
 <span class="pc bpc" id="L172" title="1 of 2 branches missed.">		if (!Utils.equals(fragment,d.fragment)) return false;</span>
 <span class="fc" id="L173">		return true;</span>
 	}
@@ -189,7 +189,7 @@ public class DID {
 	 * @return DID The updated DID with the specified path argument
 	 */
 	public DID withPath(String path) {
-<span class="nc" id="L192">		return DID.create(method,id,path,fragment);</span>
+<span class="fc" id="L192">		return DID.create(method,id,path,fragment);</span>
 	}
 
 	/**
@@ -212,6 +212,15 @@ public class DID {
 	 */
 	public static DID createRandom() {
 <span class="fc" id="L214">		return parse(DID.createRandomString());</span>
+	}
+
+	/**
+	 * Removes the path and fragment from a DID, creating a simple DID that uniquely identifies the DID Subject.
+	 * @return A DID without path and fragment portions.
+	 */
+	public DID withoutPath() {
+<span class="pc bpc" id="L222" title="1 of 4 branches missed.">		if ((path==null)&amp;&amp;(fragment==null)) return this;</span>
+<span class="fc" id="L223">		return new DID(method,id,null,null);</span>
 	}
 
 
