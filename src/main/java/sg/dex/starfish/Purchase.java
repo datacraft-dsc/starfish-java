@@ -29,7 +29,7 @@ public interface Purchase {
     /**
      * API to ge the status of Purchase.
      * Possible status can be :
-     * FIXME: what are the states?
+     * "wishlist", "ordered", "delivered"
      * 
      * @return The status of the purchase
      *
