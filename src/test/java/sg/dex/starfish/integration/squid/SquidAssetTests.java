@@ -1,6 +1,6 @@
 package sg.dex.starfish.integration.squid;
 
-import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.exceptions.*;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import org.junit.Assume;
@@ -9,10 +9,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.resolver.SquidResolverImpl;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
@@ -28,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * To run the testcase you need to take latest pull of
@@ -69,6 +73,7 @@ public class SquidAssetTests {
 
     }
 
+
     @Test
     public void testQueryDDOSquidAsset() {
         byte[] data = {1, 2, 3, 4};
@@ -83,7 +88,8 @@ public class SquidAssetTests {
         SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetDID());
 
 
-        assertEquals(squidAsset.getAssetID(), squidAsset_1.getAssetID());
+        assertEquals(asset.getAssetID(), squidAsset.getAssetID());
+        assertEquals(squidAsset_1.getSquidDDO().id, squidAsset.getSquidDDO().id);
 
     }
 
@@ -122,7 +128,7 @@ public class SquidAssetTests {
 
     }
     @Test
-    public void testRegisterOnSurferAndChain() throws IOException, EthereumException {
+    public void testRegisterOnSurferAndChain() throws IOException {
 
         // read metadata
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
@@ -219,6 +225,52 @@ public class SquidAssetTests {
 
         assertEquals("OK",actual);
 
+
+    }
+
+
+    //     Test Resolver............
+
+    @Test
+    public void testResolverGetDDO() throws IOException, DDOException, InitializationException, InvalidConfiguration, EthereumException, CipherException {
+
+        byte[] data = {1, 2, 3, 4};
+
+        MemoryAsset asset = MemoryAsset.create(data);
+        // register asset to squid
+        SquidAsset squidAsset_1 = squidAgent.registerAsset(asset);
+
+        Resolver resolver = new SquidResolverImpl();
+        // getting DDO id as String  based on DID
+        String ddoString =resolver.getDDO(squidAsset_1.getSquidDDO().getDid());
+
+        String ddoS = squidAsset_1.getSquidDDO().id;
+
+        assertEquals(ddoS,ddoString);
+
+    }
+
+    @Test(expected = DDOException.class)
+    public void testResolverGetDDOInvalidDID() throws DIDFormatException, IOException, DDOException, InitializationException, InvalidConfiguration, EthereumException, CipherException {
+
+        Resolver resolver = new SquidResolverImpl();
+        // getting DDO id as String  based on DID
+        com.oceanprotocol.squid.models.DID randomDID = com.oceanprotocol.squid.models.DID.builder();
+        resolver.getDDO(randomDID);
+
+    }
+
+
+    @Test
+    public void testResolverRegisterDID() throws DIDFormatException, DIDRegisterException, InvalidConfiguration, InitializationException, CipherException, IOException, EthereumException, DDOException {
+
+        com.oceanprotocol.squid.models.DID randomDID = com.oceanprotocol.squid.models.DID.builder();
+        Resolver resolver = new SquidResolverImpl();
+        String checksum = "0x"+"d190bc85ee50643baffe7afe84ec6a9dd5212b67223523cd8e4d88f9069255fb";
+        boolean actual=resolver.registerDID(randomDID,checksum);
+        assertEquals(actual,true);
+        String  ddoId =resolver.getDDO(randomDID);
+        assertTrue(ddoId.startsWith("did:op:"));
 
     }
 
