@@ -43,7 +43,7 @@
 		<javadoc.opts>-Xdoclint:none</javadoc.opts>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
 
 	<scm>
@@ -77,6 +77,10 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
@@ -119,6 +123,7 @@
 			<groupId>com.oceanprotocol</groupId>
 			<artifactId>squid</artifactId>
 			<version>0.6.2</version>
+			<!--<scope>runtime</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -220,7 +225,20 @@
 					<testSource>8</testSource>
 					<testTarget>8</testTarget>
 					<compilerArgument>-Xlint:deprecation</compilerArgument>
+					<annotationProcessorPaths>
+						<annotationProcessorPath>
+							<groupId>com.github.bsideup.jabel</groupId>
+							<artifactId>jabel-javac-plugin</artifactId>
+							<version>0.2.0</version>
+						</annotationProcessorPath>
+					</annotationProcessorPaths>
+					<annotationProcessors>
+						<annotationProcessor>
+							com.github.bsideup.jabel.JabelJavacProcessor
+						</annotationProcessor>
+					</annotationProcessors>
 				</configuration>
+
 			</plugin>
 
 			<plugin>
@@ -251,7 +269,7 @@
 				<configuration>
 					<source>8</source>
 					<doclint>none</doclint>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					<!--<additionalparam>-Xdoclint:none</additionalparam>-->
 				</configuration>
 			</plugin>
 
@@ -344,6 +362,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
