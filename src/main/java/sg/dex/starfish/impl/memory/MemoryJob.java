@@ -22,6 +22,10 @@ public class MemoryJob implements Job {
 
 	private final Future<Map<String,Object>> future;
 
+
+
+	private Job.Status status ;
+
 	private MemoryJob(Future<Map<String,Object>> future) {
 		this.future=future;
 	}
@@ -70,14 +74,23 @@ public class MemoryJob implements Job {
 	@Override
 	public Map<String,Object> get(long timeoutMillis, TimeUnit timeUnit) {
 		try {
+			this.setStatus(Status.succeeded);
 			return future.get(timeoutMillis, timeUnit);
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException e) {
 			Throwable cause=e.getCause();
+			this.setStatus(Status.failed);
 			throw new JobFailedException("Job failed with exception: "+cause,e);
 		}
 	}
 
+	@Override
+	public Job.Status getStatus() {
+		return this.status;
+	}
+	public void setStatus( Job.Status status) {
+		this.status = status;
+	}
 	@Override
 	public String getJobID() {
 		return "MemoryJob:"+Hex.toString(System.identityHashCode(this));

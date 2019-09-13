@@ -13,7 +13,7 @@ public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
     private Map<String,Object> response;
-
+    private Job.Status status = Status.scheduled;
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
@@ -37,7 +37,11 @@ public class RemoteJob implements Job {
     @Override
 	@SuppressWarnings("unchecked")
 	public synchronized Map<String,Object> pollResult() {
-        if (response != null) return response;
+        if (response != null) {
+            this.status= Status.succeeded;
+            return response;
+        }
+        this.status= Status.running;
         response = (Map<String,Object>)agent.pollJob(jobID);
         return response;
     }
@@ -53,12 +57,17 @@ public class RemoteJob implements Job {
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                this.status= Status.failed;
+                throw  new RuntimeException(e);
             }
             initialSleep *= 2;
         }
         return pollResult();
+    }
+
+    @Override
+    public Job.Status getStatus() {
+        return   status;
     }
 
     @Override

@@ -30,13 +30,11 @@ public class TestMemoryOperations {
     @Test
     public void testReverseBytesAsync() {
         byte[] data = new byte[]{1, 2, 3};
-        // String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Job job = memoryOperation.invokeAsync(test);
 
@@ -61,9 +59,6 @@ public class TestMemoryOperations {
 
         Map<String,Object> result = memoryOperation.invokeResult(test);
         Asset response= (Asset)result.get("output");
-
-
-
         assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
     }
 
@@ -79,9 +74,12 @@ public class TestMemoryOperations {
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
+
         Job job = memoryOperation.invokeAsync(test);
+        assertEquals(Job.Status.running,job.getStatus());
 
         Map<String,Object> res = job.getResult(1000);
+        assertEquals(Job.Status.succeeded,job.getStatus());
         String s=res.get("output").toString();
         assertTrue(s.contains("2"));
         assertTrue(s.contains("3"));
@@ -98,24 +96,16 @@ public class TestMemoryOperations {
         FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create( memoryAgent);
         Map<String, Object> test = new HashMap<>();
         test.put("input", "12");
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Map<String,Object> result = memoryOperation.invokeResult(test);
+
         assertTrue(result.get("output").toString().contains("2"));
         assertTrue(result.get("output").toString().contains("3"));
         assertTrue(result.get("output").toString().contains("5"));
         assertTrue(result.get("output").toString().contains("7"));
         assertTrue(result.get("output").toString().contains("11"));
 
-
-
     }
-
-    //-----------JSON Input and Asset output---------------------
-
-    // Todo
-
-    // ------------Asset Input and JSON output--------------------
 
     @Test
     public void testHashAsync() throws IOException {
@@ -130,12 +120,12 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
-
+        assertEquals(Job.Status.running,job.getStatus());
         Map<String ,Object> response = job.getResult(1000);
-        Object r=response.get("output");
-
-
-        assertNotNull(r);
+        String result=(String)response.get("output");
+        assertEquals(Job.Status.succeeded,job.getStatus());
+        String hash = Hex.toString(Hash.sha3_256(a.getContent()));
+        assertEquals(result,hash);
     }
 
     /**
@@ -235,26 +225,19 @@ public class TestMemoryOperations {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
-        try {
             Object result2 = badJob.getResult(1000);
             fail("Should not succeed! Got: " + Utils.getClass(result2));
-        } catch (Exception ex) {
-            /* OK */
-        }
     }
 
     @Test(expected = Exception.class)
     public void testInsufficientParams() {
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
-        try {
         	Map<String,Object> emptyParams=new HashMap<>();
             Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
             Object result2 = badJob.getResult(10);
             fail("Should not succeed! Got: " + Utils.getClass(result2));
-        } catch (IllegalArgumentException ex) {
             /* OK */
-        }
     }
 
 }

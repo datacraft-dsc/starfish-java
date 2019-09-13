@@ -749,11 +749,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * Invokes request on this RemoteAgent
 	 *
-	 * @param request Invoke request
-	 * @param assetID assetID
+	 * @param operation operation
+	 * @param params params
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
+
 	private Job invokeImpl(Operation operation,Map<String, Object> params) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 

@@ -1,15 +1,15 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Utils;
+
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.Utils;
 
 /**
  * Interface representing an asynchronous Job execution.
@@ -176,4 +176,37 @@ public interface Job extends Future<Map<String, Object>> {
 		return false;
 	}
 
+
+	/**
+	 * Gets the status of the Job associated with this Operation.
+	 *
+	 * @return The the status of the Job
+	 */
+	Status getStatus();
+
+	/**
+	 * This enum is for different job status
+	 */
+	enum Status {
+		/*
+		when the job is created for the operation
+		 */
+		scheduled,
+		/*
+		 * Waits for the result of the Operation
+		 */
+		running,
+		/*
+		Job has completed
+		 */
+		succeeded,
+		/*
+		Job has failed
+		 */
+		failed,
+		/*
+		if any Error/Exception occured
+		 */
+		unknown
+	}
 }
