@@ -14,8 +14,8 @@
 		</license>
 	</licenses>
 	<description>Starfish supports developing interoperable decentralised data exchange solutions,
-        including use of the Ocean Protocol
-    </description>
+		including use of the Ocean Protocol
+	</description>
 
 	<developers>
 		<developer>
@@ -43,7 +43,7 @@
 		<javadoc.opts>-Xdoclint:none</javadoc.opts>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<scm>
@@ -77,10 +77,6 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
@@ -123,7 +119,6 @@
 			<groupId>com.oceanprotocol</groupId>
 			<artifactId>squid</artifactId>
 			<version>0.6.2</version>
-			<!--<scope>runtime</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -225,20 +220,7 @@
 					<testSource>8</testSource>
 					<testTarget>8</testTarget>
 					<compilerArgument>-Xlint:deprecation</compilerArgument>
-					<annotationProcessorPaths>
-						<annotationProcessorPath>
-							<groupId>com.github.bsideup.jabel</groupId>
-							<artifactId>jabel-javac-plugin</artifactId>
-							<version>0.2.0</version>
-						</annotationProcessorPath>
-					</annotationProcessorPaths>
-					<annotationProcessors>
-						<annotationProcessor>
-							com.github.bsideup.jabel.JabelJavacProcessor
-						</annotationProcessor>
-					</annotationProcessors>
 				</configuration>
-
 			</plugin>
 
 			<plugin>
@@ -269,7 +251,7 @@
 				<configuration>
 					<source>8</source>
 					<doclint>none</doclint>
-					<!--<additionalparam>-Xdoclint:none</additionalparam>-->
+					<additionalparam>-Xdoclint:none</additionalparam>
 				</configuration>
 			</plugin>
 
@@ -278,7 +260,7 @@
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.0.0</version>
 				<executions>
-					<!-- States that the plugin's add-test-source goal is executed at generate-test-sources 
+					<!-- States that the plugin's add-test-source goal is executed at generate-test-sources
 						phase. -->
 					<execution>
 						<id>add-integration-test-sources</id>
@@ -311,7 +293,7 @@
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.0.0-M3</version>
 				<executions>
-					<!-- Ensures that both integration-test and verify goals of the Failsafe 
+					<!-- Ensures that both integration-test and verify goals of the Failsafe
 						Maven plugin are executed. -->
 					<execution>
 						<id>integration-tests</id>
@@ -362,7 +344,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
