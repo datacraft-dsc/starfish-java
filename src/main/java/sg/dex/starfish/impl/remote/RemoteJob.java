@@ -58,7 +58,7 @@ public class RemoteJob implements Job {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
                 this.status= Status.failed;
-                throw  new RuntimeException(e);
+                throw new JobFailedException("Job failed with exception: "+e.getCause(),e);
             }
             initialSleep *= 2;
         }
