@@ -7,6 +7,7 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
@@ -218,7 +219,7 @@ public class TestMemoryOperations {
         assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
     }
 
-	@Test
+	@Test(expected = JobFailedException.class)
     public void testBadNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
