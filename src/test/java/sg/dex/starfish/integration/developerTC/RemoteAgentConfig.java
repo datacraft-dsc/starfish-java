@@ -118,7 +118,7 @@ public class RemoteAgentConfig {
         Properties properties = new Properties();
         try {
             try (InputStream is = RemoteAgentConfig.class.getClassLoader()
-                    .getResourceAsStream("application_test.properties")) {
+                    .getResourceAsStream("application.properties")) {
                 properties.load(is);
             }
         } catch (IOException e) {
