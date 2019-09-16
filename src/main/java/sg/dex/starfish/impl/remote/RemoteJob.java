@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import sg.dex.starfish.Job;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 
 /**
@@ -13,13 +14,15 @@ public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
     private Map<String,Object> response;
-    private Job.Status status = Status.scheduled;
+    private String status;
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
+        status= Constant.RUNNING;
     }
 
     public static RemoteJob create(RemoteAgent agent2, String jobID) {
+
         return new RemoteJob(agent2, jobID);
     }
 
@@ -38,10 +41,8 @@ public class RemoteJob implements Job {
 	@SuppressWarnings("unchecked")
 	public synchronized Map<String,Object> pollResult() {
         if (response != null) {
-            this.status= Status.succeeded;
             return response;
         }
-        this.status= Status.running;
         response = (Map<String,Object>)agent.pollJob(jobID);
         return response;
     }
@@ -53,11 +54,12 @@ public class RemoteJob implements Job {
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
         	Map<String,Object> a = pollResult();
-            if (a != null) return a;
+            if (a != null){
+                return a;
+            }
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-                this.status= Status.failed;
                 throw new JobFailedException("Job failed with exception: "+e.getCause(),e);
             }
             initialSleep *= 2;
@@ -66,8 +68,8 @@ public class RemoteJob implements Job {
     }
 
     @Override
-    public Job.Status getStatus() {
-        return   status;
+    public String getStatus() {
+        return status;
     }
 
     @Override

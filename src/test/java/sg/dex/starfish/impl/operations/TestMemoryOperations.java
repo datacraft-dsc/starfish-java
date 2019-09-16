@@ -7,6 +7,7 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -14,8 +15,7 @@ import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.*;
@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
     private MemoryAgent memoryAgent = MemoryAgent.create();
+    private List<String> jobStatus = Arrays.asList("scheduled","running","succeeded","failed","unknown");
 
     /**
      * This test is to test the Asset input Asset output Async
@@ -38,10 +39,12 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = memoryOperation.invokeAsync(test);
+        assertTrue(jobStatus.contains(job.getStatus()));
 
         Asset response = job.get("output");
 
         assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
+        assertEquals(Constant.SUCCEEDED,job.getStatus());
     }
 
     /**
@@ -77,15 +80,14 @@ public class TestMemoryOperations {
         test.put("input", "10");
 
         Job job = memoryOperation.invokeAsync(test);
-        assertEquals(Job.Status.running,job.getStatus());
-
+        assertTrue(jobStatus.contains(job.getStatus()));
         Map<String,Object> res = job.getResult(1000);
-        assertEquals(Job.Status.succeeded,job.getStatus());
         String s=res.get("output").toString();
         assertTrue(s.contains("2"));
         assertTrue(s.contains("3"));
         assertTrue(s.contains("5"));
         assertTrue(s.contains("7"));
+        assertEquals(Constant.SUCCEEDED,job.getStatus());
     }
 
     /**
@@ -121,12 +123,11 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
-        assertEquals(Job.Status.running,job.getStatus());
         Map<String ,Object> response = job.getResult(1000);
         String result=(String)response.get("output");
-        assertEquals(Job.Status.succeeded,job.getStatus());
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(result,hash);
+        assertEquals(Constant.SUCCEEDED,job.getStatus());
     }
 
     /**
@@ -225,8 +226,10 @@ public class TestMemoryOperations {
         String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
-        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
+        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
+        System.out.println(badJob.getStatus());
             Object result2 = badJob.getResult(1000);
+            System.out.println(badJob.getStatus());
             fail("Should not succeed! Got: " + Utils.getClass(result2));
     }
 

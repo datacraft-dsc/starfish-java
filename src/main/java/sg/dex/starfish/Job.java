@@ -182,31 +182,7 @@ public interface Job extends Future<Map<String, Object>> {
 	 *
 	 * @return The the status of the Job
 	 */
-	Status getStatus();
+	public String getStatus();
 
-	/**
-	 * This enum is for different job status
-	 */
-	enum Status {
-		/*
-		when the job is created for the operation
-		 */
-		scheduled,
-		/*
-		 * Waits for the result of the Operation
-		 */
-		running,
-		/*
-		Job has completed
-		 */
-		succeeded,
-		/*
-		Job has failed
-		 */
-		failed,
-		/*
-		if any Error/Exception occured
-		 */
-		unknown
-	}
+
 }

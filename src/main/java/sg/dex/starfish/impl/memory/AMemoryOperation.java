@@ -31,21 +31,17 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 		// But this should be sufficient for most cases.
 		final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
 		MemoryJob memoryJob = MemoryJob.create(future);
-        memoryJob.setStatus(Job.Status.scheduled);
 		MemoryAgent.THREAD_POOL.submit(() -> {
 			try {
 				Map<String, Object> result = compute(params);
 				if(future.complete(result)){
-                    memoryJob.setStatus(Job.Status.succeeded);
                 }
 			}
 			catch (Throwable t) {
 				future.completeExceptionally(t);
-				memoryJob.setStatus(Job.Status.failed);// failure
 			}
 		});
 
-		memoryJob.setStatus(Job.Status.running);
 		return memoryJob;
 	}
 

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import sg.dex.starfish.Job;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.util.Hex;
 
@@ -21,12 +22,10 @@ import sg.dex.starfish.util.Hex;
 public class MemoryJob implements Job {
 
 	private final Future<Map<String,Object>> future;
-
-
-
-	private Job.Status status ;
+	private String status ;
 
 	private MemoryJob(Future<Map<String,Object>> future) {
+		status=Constant.RUNNING;
 		this.future=future;
 	}
 
@@ -53,12 +52,15 @@ public class MemoryJob implements Job {
 	@Override
 	public Map<String,Object> pollResult() {
 		try {
-			return future.isDone()?future.get():null;
+			status = isDone()?Constant.SUCCEEDED:Constant.RUNNING;
+			return isDone()?future.get():null;
 		}
 		catch (InterruptedException e) {
+			status=Constant.FAILED;
 			throw new Error("Job interrupted",e);
 		}
 		catch (ExecutionException e) {
+			status=Constant.FAILED;
 			throw new Error("Job failed with exception: ",e.getCause());
 		}
 	}
@@ -74,22 +76,18 @@ public class MemoryJob implements Job {
 	@Override
 	public Map<String,Object> get(long timeoutMillis, TimeUnit timeUnit) {
 		try {
-			this.setStatus(Status.succeeded);
 			return future.get(timeoutMillis, timeUnit);
 		}
 		catch (InterruptedException | ExecutionException | TimeoutException e) {
 			Throwable cause=e.getCause();
-			this.setStatus(Status.failed);
+			status=Constant.FAILED;
 			throw new JobFailedException("Job failed with exception: "+cause,e);
 		}
 	}
 
 	@Override
-	public Job.Status getStatus() {
+	public String getStatus() {
 		return this.status;
-	}
-	public void setStatus( Job.Status status) {
-		this.status = status;
 	}
 	@Override
 	public String getJobID() {
