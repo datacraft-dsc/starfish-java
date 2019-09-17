@@ -32,7 +32,7 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
 
         byte[] result = new byte[4];
 
-        int count=0;
+        int count = 0;
         for (int i = 2; i < num; i++) {
             if (isPrime(i)) {
                 result[count] = (byte) i;
@@ -43,11 +43,11 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", Constant.SUCCEEDED);
-        Asset res =MemoryAsset.create(result);
+        Asset res = MemoryAsset.create(result);
         memoryAgent.registerAsset(res);
         resultMap.put("did", res.getAssetID());
         Map<String, Object> returnMap = new HashMap<>();
-        returnMap.put("result",resultMap);
+        returnMap.put("result", resultMap);
         return returnMap;
     }
 

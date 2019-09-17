@@ -22,21 +22,21 @@ public class SquidResolverImpl implements Resolver {
     @Override
     public String getDDO(DID did) throws InvalidConfiguration, InitializationException, CipherException, IOException, EthereumException, DDOException {
 
-        OceanManager oceanManager = squidService.getResolverManager();
-            DDO ddo =oceanManager.resolveDID(did);
-            if(null !=ddo){
-                return  ddo.id;
-            }
+        OceanManager oceanManager = SquidService.getResolverManager();
+        DDO ddo = oceanManager.resolveDID(did);
+        if (null != ddo) {
+            return ddo.id;
+        }
         return null;
 
     }
 
     @Override
-    public boolean registerDID(DID did,String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration {
-            OceanManager oceanManager = squidService.getResolverManager();
-            String url = SquidService.getAquariusService().getDdoEndpoint();
-            String providerAddress = SquidService.getProvider();
-            return oceanManager.registerDID(did, url, checksum, Arrays.asList(providerAddress));
+    public boolean registerDID(DID did, String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration {
+        OceanManager oceanManager = SquidService.getResolverManager();
+        String url = SquidService.getAquariusService().getDdoEndpoint();
+        String providerAddress = SquidService.getProvider();
+        return oceanManager.registerDID(did, url, checksum, Arrays.asList(providerAddress));
 
     }
 

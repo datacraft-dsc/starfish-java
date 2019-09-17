@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNull;
 public class AgentEndpointUpdate_05 {
 
 
-
     @Test
     public void testServiceEndPoint() {
         // creating an instance of Remote Agent
@@ -34,7 +33,7 @@ public class AgentEndpointUpdate_05 {
         RemoteAgent remoteAgent = createRemoteAgent(surferURL);
         Assume.assumeNotNull(remoteAgent);
 
-        assertTrue(remoteAgent.getStorageEndpoint().contains( "/api/v1/assets"));
+        assertTrue(remoteAgent.getStorageEndpoint().contains("/api/v1/assets"));
         assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
 
         // below endpoint wll be null and it was not initialize while creating services for Remote Agent
@@ -68,7 +67,7 @@ public class AgentEndpointUpdate_05 {
         ocean.installLocalDDO(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        return  RemoteAgent.create(ocean, surferDID);
+        return RemoteAgent.create(ocean, surferDID);
 
     }
 }

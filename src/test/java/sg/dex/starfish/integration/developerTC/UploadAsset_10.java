@@ -19,7 +19,7 @@ import static junit.framework.TestCase.assertEquals;
 public class UploadAsset_10 {
 
 
-    private  RemoteAgent remoteAgent;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {

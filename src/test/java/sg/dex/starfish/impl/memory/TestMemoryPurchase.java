@@ -44,7 +44,7 @@ public class TestMemoryPurchase {
 
         MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
 
-        assertEquals(memoryPurchase.getListingId(),listing.getMetaData().get("id"));
+        assertEquals(memoryPurchase.getListingId(), listing.getMetaData().get("id"));
 
     }
 
@@ -67,6 +67,7 @@ public class TestMemoryPurchase {
         MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
 
     }
+
     /**
      * API to create a response similar to Remote Agents responses.
      *
@@ -82,7 +83,7 @@ public class TestMemoryPurchase {
         responseMetadata.put("id", DID.createRandomString());
 
         responseMetadata.put("userid", purchaseData.get("userid") == null ? 1234 : purchaseData.get("userid"));
-        responseMetadata.put("info", purchaseData.get("info") == null ? null : purchaseData.get("info"));
+        responseMetadata.put("info", purchaseData.get("info"));
         responseMetadata.put("agreement", purchaseData.get("agreement") == null ? Instant.now() : purchaseData.get("agreement"));
         responseMetadata.put("ctime", purchaseData.get("ctime") == null ? Instant.now() : purchaseData.get("agreement"));
         responseMetadata.put("utime", purchaseData.get("utime") == null ? Instant.now() : purchaseData.get("agreement"));

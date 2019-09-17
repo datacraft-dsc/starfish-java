@@ -45,14 +45,14 @@ public class TestFileAsset {
 
         // verify the default metadata
         assertNotNull(md.get(Constant.DATE_CREATED));
-        assertEquals(Constant.DATA_SET,md.get(Constant.TYPE));
+        assertEquals(Constant.DATA_SET, md.get(Constant.TYPE));
         assertNotNull(md.get(Constant.CONTENT_TYPE));
 
         // include hash content in metadata explicitly
         fa = (FileAsset) fa.includeContentHash();
 
         // now content hash will be included, should be hash of empty byte array since file is empty
-        assertTrue(Arrays.equals(Hash.EMPTY_BYTES_SHA3,Hex.toBytes((String)fa.getMetadata().get(Constant.CONTENT_HASH))));
+        assertTrue(Arrays.equals(Hash.EMPTY_BYTES_SHA3, Hex.toBytes((String) fa.getMetadata().get(Constant.CONTENT_HASH))));
 
         // validate the hash content
         assertEquals(fa.validateContentHash(), true);
@@ -73,7 +73,7 @@ public class TestFileAsset {
 
         // verify the default metadata
         assertNotNull(md.get(Constant.DATE_CREATED));
-        assertEquals(Constant.DATA_SET,md.get(Constant.TYPE));
+        assertEquals(Constant.DATA_SET, md.get(Constant.TYPE));
         assertNotNull(md.get(Constant.CONTENT_TYPE));
 
         // include hash content in metadata explicitly
@@ -91,7 +91,7 @@ public class TestFileAsset {
         FileAsset fa = FileAsset.create(new File("NoFile"));
         fa.includeContentHash(); // should fail since unable to read asset content
     }
-    
+
     public void testFileAssetWithNoFile() {
         FileAsset fa = FileAsset.create(new File("NoFile"));
         assertNotNull(fa.getAssetID());

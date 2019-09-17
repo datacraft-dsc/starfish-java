@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Class representing a purchase order for an asset
- * 
+ *
  * @author Mike
  * @version 0.5
  */
@@ -30,9 +30,8 @@ public interface Purchase {
      * API to ge the status of Purchase.
      * Possible status can be :
      * "wishlist", "ordered", "delivered"
-     * 
-     * @return The status of the purchase
      *
+     * @return The status of the purchase
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if there is an error in retrieving the Asset
      */

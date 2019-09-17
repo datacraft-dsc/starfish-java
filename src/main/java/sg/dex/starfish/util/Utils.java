@@ -15,7 +15,6 @@ import java.util.*;
 import static sg.dex.starfish.constant.Constant.*;
 
 
-
 /**
  * Utility class for StarFish
  * This class has methods for creating random hex string,coerces argument to respective type,
@@ -27,6 +26,7 @@ import static sg.dex.starfish.constant.Constant.*;
 public class Utils {
 
     private static List<String> assetType = new ArrayList<>();
+
     static {
         assetType.add(BUNDLE);
         assetType.add(OPERATION);
@@ -160,7 +160,7 @@ public class Utils {
      * @return A map containing the key keys and values
      * @throws IllegalArgumentException if mapOf has odd number of arguments
      */
-	@SuppressWarnings({"unchecked"})
+    @SuppressWarnings({"unchecked"})
     public static <K, V> Map<K, V> mapOf(Object... params) {
         int len = params.length;
         if ((len & 1) != 0)
@@ -219,6 +219,7 @@ public class Utils {
     /**
      * API to validate the meta data mandatory attribute.
      * If any mandatory attribute is missing it will throw StarfishValidationException
+     *
      * @param metaData need to be validated
      * @return true if valid metadata
      * @throws StarfishValidationException for exception
@@ -261,6 +262,7 @@ public class Utils {
 
     /**
      * API to get the mandatory attribute list
+     *
      * @return list of String
      */
     private static List<String> getMadatoryAttribute() {
@@ -272,15 +274,15 @@ public class Utils {
         // mandatoryList.add("author");
         return mandatoryList;
     }
-    
+
     /**
      * Helper function to hide checked exceptions
      */
-	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> T sneakyThrow(Throwable t) throws T {
-		throw (T) t;
-	}
-	
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T sneakyThrow(Throwable t) throws T {
+        throw (T) t;
+    }
+
     /**
      * Merges two metadata maps.
      *

@@ -135,7 +135,7 @@ public class ConfirmPurchase_18 {
     @Test
     public void testMetaDataWithProv() {
         // create Asset
-        byte data[] = {3, 4, 5, 6};
+        byte[] data = {3, 4, 5, 6};
         // adding metadata
         String actId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();

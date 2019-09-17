@@ -44,9 +44,9 @@ public class AgentIdentity_03 {
     @Test
     public void testDDOFormat() {
         // getting the DDo of the Agent
-        Map<String,Object> ddo =remoteAgent.getDDO();
+        Map<String, Object> ddo = remoteAgent.getDDO();
 
-        List<Map<String, Object>> services = (List<Map<String, Object>>)ddo.get("service");
+        List<Map<String, Object>> services = (List<Map<String, Object>>) ddo.get("service");
 
 
         Assume.assumeNotNull(services);
@@ -54,8 +54,9 @@ public class AgentIdentity_03 {
         assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
 
     }
+
     @After
-    public void clear(){
-        remoteAgent =null;
+    public void clear() {
+        remoteAgent = null;
     }
 }

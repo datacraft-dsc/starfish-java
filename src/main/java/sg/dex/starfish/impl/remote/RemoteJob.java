@@ -17,6 +17,7 @@ public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
     private String status;
+
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
@@ -30,7 +31,7 @@ public class RemoteJob implements Job {
 
     @Override
     public boolean isDone() {
-        return pollResult()== null? false:true;
+        return pollResult() != null;
     }
 
     /**
@@ -40,13 +41,13 @@ public class RemoteJob implements Job {
      * @throws JobFailedException If the job has failed
      */
     @Override
-	@SuppressWarnings("unchecked")
-	public synchronized Map<String,Object> pollResult() {
+    @SuppressWarnings("unchecked")
+    public synchronized Map<String, Object> pollResult() {
 
-        Map<String,Object> result = (Map<String,Object>)agent.pollJob(jobID);
+        Map<String, Object> result = (Map<String, Object>) agent.pollJob(jobID);
 
         String status = (String) result.get(STATUS);
-        this.status=status;
+        this.status = status;
 
         if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + result);
         if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
@@ -64,19 +65,19 @@ public class RemoteJob implements Job {
     }
 
     @Override
-    public Map<String,Object> get(long timeout, TimeUnit timeUnit) {
-    	long timeoutMillis=TimeUnit.MILLISECONDS.convert(timeout,timeUnit);
+    public Map<String, Object> get(long timeout, TimeUnit timeUnit) {
+        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);
         long start = System.currentTimeMillis();
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
-        	Map<String,Object> a = pollResult();
-            if (a != null){
-                return (Map<String,Object>)a.get("result");
+            Map<String, Object> a = pollResult();
+            if (a != null) {
+                return (Map<String, Object>) a.get("result");
             }
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-                throw new JobFailedException("Job failed with exception: "+e.getCause(),e);
+                throw new JobFailedException("Job failed with exception: " + e.getCause(), e);
             }
             initialSleep *= 2;
         }
@@ -93,11 +94,11 @@ public class RemoteJob implements Job {
         return jobID;
     }
 
-	@Override
-	public boolean isCancelled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean isCancelled() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 
 }

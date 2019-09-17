@@ -13,9 +13,9 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory bundle asset.
- *
+ * <p>
  * Intended for use in testing or local development situations.
- *
+ * <p>
  * This class is to create a memory bundle asset
  * Intended for use in testing or local development situations.
  *
@@ -29,8 +29,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     /**
      * Constructor to create the instance of memory bundle
      *
-     * @param metaData metaDAta
-     * @param assetMap asset map
+     * @param metaData    metaDAta
+     * @param assetMap    asset map
      * @param memoryAgent memory Agent
      */
     private MemoryBundle(String metaData, Map<String, Asset> assetMap, MemoryAgent memoryAgent) {
@@ -47,8 +47,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      *
      * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
-     * @param meta    additional meta data need for creating bundle asset
-     * @return   the newly created instance of Memory Bundle
+     * @param meta        additional meta data need for creating bundle asset
+     * @return the newly created instance of Memory Bundle
      */
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
 
@@ -62,17 +62,17 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      *
      * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
-     * @return   the newly created instance of Memory Bundle
+     * @return the newly created instance of Memory Bundle
      */
     public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
 
-        return create(memoryAgent,assetMap,null);
+        return create(memoryAgent, assetMap, null);
     }
 
     /**
      * API to build the metadata for bundle Asset
      *
-     * @param meta metaData
+     * @param meta     metaData
      * @param assetMap assetMap
      * @return String
      */
@@ -148,9 +148,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R get(String name) {
-        return  (R) getAssetMap().get(name);
+        return (R) getAssetMap().get(name);
     }
 
     @Override

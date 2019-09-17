@@ -30,7 +30,7 @@ public class ConnectionChecker {
     public boolean isServerReachable() {
 
         try {
-            int timeOut= RemoteAgentConfig.getSocketTimeout();
+            int timeOut = RemoteAgentConfig.getSocketTimeout();
             URL url = new URL(uri);
             Socket socket = new Socket();
             socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);
@@ -41,10 +41,11 @@ public class ConnectionChecker {
             return false;
         }
     }
+
     @Override
     public String toString() {
         return
-                "uri='" + uri ;
+                "uri='" + uri;
     }
 
 }

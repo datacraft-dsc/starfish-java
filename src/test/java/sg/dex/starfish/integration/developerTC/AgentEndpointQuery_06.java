@@ -23,25 +23,24 @@ public class AgentEndpointQuery_06 {
 
 
     @Test
-    public  void testServiceEndPoint(){
-        RemoteAgent remoteAgent =createRemoteAgent(RemoteAgentConfig.getSurferUrl());
+    public void testServiceEndPoint() {
+        RemoteAgent remoteAgent = createRemoteAgent(RemoteAgentConfig.getSurferUrl());
         // getting the URL for storage service
-        String storage =remoteAgent.getStorageEndpoint();
+        String storage = remoteAgent.getStorageEndpoint();
 
         // getting the URL for invoke service
-        String invoke =remoteAgent.getInvokeEndpoint();
+        String invoke = remoteAgent.getInvokeEndpoint();
 
         // getting the URL for metaData service
-        String meta =remoteAgent.getMetaEndpoint();
+        String meta = remoteAgent.getMetaEndpoint();
 
         // getting the URL for market service
-        String market =remoteAgent.getMarketEndpoint();
+        String market = remoteAgent.getMarketEndpoint();
 
         // since we created the only the storage and meta endpoint
         // so other endpoint will be null
         assertTrue(storage.contains("/api/v1/asset"));
         assertTrue(meta.contains("/api/v1/meta"));
-
 
 
     }
@@ -72,7 +71,7 @@ public class AgentEndpointQuery_06 {
         ocean.installLocalDDO(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        return  RemoteAgent.create(ocean, surferDID);
+        return RemoteAgent.create(ocean, surferDID);
 
     }
 }

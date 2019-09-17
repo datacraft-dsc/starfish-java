@@ -26,7 +26,6 @@ public class RemoteAgentConfig {
     private static String bargeUrl;
 
 
-
     private static String invokeUrl;
     private static String socketTimeout;
     private static String username;
@@ -49,9 +48,9 @@ public class RemoteAgentConfig {
         String ip_invoke = properties.getProperty("koi.host");
         String port_invoke = properties.getProperty("koi.port");
 
-        invokeUrl=ip_invoke+":"+port_invoke;
-        invokeAgent =getInvokeAgent(invokeUrl);
-        
+        invokeUrl = ip_invoke + ":" + port_invoke;
+        invokeAgent = getInvokeAgent(invokeUrl);
+
         // setting barge URL
         String barge_ip = properties.getProperty("barge.host");
         String barge_port = properties.getProperty("barge.port");
@@ -70,7 +69,7 @@ public class RemoteAgentConfig {
                 "serviceEndpoint", host + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host ));
+                "serviceEndpoint", host));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", host + "/api/v1/auth"));
@@ -88,23 +87,24 @@ public class RemoteAgentConfig {
         ocean.installLocalDDO(surferDID, ddoString);
 
 
-
         //Creating remote Account
-        Map<String,Object> credentialMap = new HashMap<>();
-        credentialMap.put("username",username);
-        credentialMap.put("password",password);
+        Map<String, Object> credentialMap = new HashMap<>();
+        credentialMap.put("username", username);
+        credentialMap.put("password", password);
 
         RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, surferDID,account);
+        return RemoteAgent.create(ocean, surferDID, account);
     }
 
     public static String getSurferUrl() {
         return surferUrl;
     }
+
     public static String getInvokeUrl() {
         return invokeUrl;
     }
+
     public static String getBargeUrl() {
         return bargeUrl;
     }
@@ -128,14 +128,13 @@ public class RemoteAgentConfig {
     }
 
 
-
     private static RemoteAgent getInvokeAgent(String host) {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host ));
+                "serviceEndpoint", host));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
                 "serviceEndpoint", host + "/api/v1/meta"));
@@ -156,15 +155,14 @@ public class RemoteAgentConfig {
         ocean.installLocalDDO(invokeDID, ddoString);
 
 
-
         //Creating remote Account
-        Map<String,Object> credentialMap = new HashMap<>();
-        credentialMap.put("username",username);
-        credentialMap.put("password",password);
+        Map<String, Object> credentialMap = new HashMap<>();
+        credentialMap.put("username", username);
+        credentialMap.put("password", password);
 
         RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, invokeDID,account);
+        return RemoteAgent.create(ocean, invokeDID, account);
     }
 
     /**
@@ -206,7 +204,7 @@ public class RemoteAgentConfig {
             }
 
         } catch (IOException ioe) {
-                throw  new RuntimeException(ioe);
+            throw new RuntimeException(ioe);
         } finally {
             // close the streams using close method
             try {

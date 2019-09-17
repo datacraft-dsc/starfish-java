@@ -5,11 +5,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	ParamTestJSON.class,
-	TestDID.class,
-  	TestHex.class,
-	TestJSON.class,
-	TestUtils.class
+        ParamTestJSON.class,
+        TestDID.class,
+        TestHex.class,
+        TestJSON.class,
+        TestUtils.class
 })
 public class UtilsSuite {
 

@@ -71,11 +71,11 @@ public class Ocean {
      * @param ddo A string containing a valid DDO in JSON Format
      */
     public void installLocalDDO(DID did, String ddo) {
-        if (did==null) throw new IllegalArgumentException("DID cannot be null");
-        did=did.withoutPath();
-    	ddoCache.put(did, ddo);
+        if (did == null) throw new IllegalArgumentException("DID cannot be null");
+        did = did.withoutPath();
+        ddoCache.put(did, ddo);
     }
-    
+
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
      * <p>
@@ -84,7 +84,7 @@ public class Ocean {
      * @param did A did to register
      * @param ddo A Map containing a valid DDO
      */
-    public void installLocalDDO(DID did, Map<String,Object> ddo) {
+    public void installLocalDDO(DID did, Map<String, Object> ddo) {
         installLocalDDO(did, JSON.toPrettyString(ddo));
     }
 
@@ -97,7 +97,7 @@ public class Ocean {
     public Map<String, Object> getDDO(String did) {
         return getDDO(DID.parse(did));
     }
-    
+
     /**
      * Gets a DDO for a specified DID via the Universal resolver
      *
@@ -129,9 +129,9 @@ public class Ocean {
 //		// TODO universal resolver
 //		throw new UnsupportedOperationException("Not yet implemented");
     }
-    
+
     public String getDDOString(DID did) {
-        did=did.withoutPath();
+        did = did.withoutPath();
         String localDDO = ddoCache.get(did);
         if (localDDO != null) {
             return localDDO;
@@ -249,16 +249,16 @@ public class Ocean {
      * API to get the Transaction details from Submarine based on account and the submarine url
      *
      * @param account account number
-     * @param url url
+     * @param url     url
      * @return Map of all transaction
      * @throws URISyntaxException URI Syntax Exception will be thrown
      */
 
-    public Map<String,Object> getTransaction(String url,String account) throws URISyntaxException {
+    public Map<String, Object> getTransaction(String url, String account) throws URISyntaxException {
 
         URI uri = new URI(url);
 
-         uri = new URIBuilder(uri).addParameter("module",
+        uri = new URIBuilder(uri).addParameter("module",
                 "account").addParameter("action", "txlist").addParameter("address", account).build();
 
         HttpGet httpGet = new HttpGet(uri);
@@ -270,12 +270,12 @@ public class Ocean {
             if (statusCode == 404) {
             } else if (statusCode == 200) {
                 String body = Utils.stringFromStream(HTTP.getContent(closeableHttpResponse));
-                Map<String,Object> transactionDetailsMap = JSON.parse(body);
+                Map<String, Object> transactionDetailsMap = JSON.parse(body);
                 return transactionDetailsMap;
 
             }
         } catch (Exception e) {
-           throw new RemoteException("Error in parsing response for "+ uri);
+            throw new RemoteException("Error in parsing response for " + uri);
 
         }
         return Collections.emptyMap();

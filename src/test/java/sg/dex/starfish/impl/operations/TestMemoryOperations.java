@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
     private MemoryAgent memoryAgent = MemoryAgent.create();
-    private List<String> jobStatus = Arrays.asList("scheduled","running","succeeded","failed","unknown");
+    private List<String> jobStatus = Arrays.asList("scheduled", "running", "succeeded", "failed", "unknown");
 
     /**
      * This test is to test the Asset input Asset output Async
@@ -42,8 +42,8 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String,Object> res = job.getResult(1000);
-        String id =res.get("did").toString();
+        Map<String, Object> res = job.getResult(1000);
+        String id = res.get("did").toString();
         Asset resultAsset = memoryAgent.getAsset(id);
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
@@ -62,36 +62,37 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Map<String,Object> result = memoryOperation.invokeResult(test);
-        String id =result.get("did").toString();
+        Map<String, Object> result = memoryOperation.invokeResult(test);
+        String id = result.get("did").toString();
         Asset resultAsset = memoryAgent.getAsset(id);
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
 
     // ------JSON input and JSON output----------------
+
     /**
      * This test is to test the Async Operation
      */
     @Test
     public void testPrimeAsync() throws IOException {
 
-        Operation memoryOperation = FindPrime_JsonI_JsonO.create( memoryAgent);
+        Operation memoryOperation = FindPrime_JsonI_JsonO.create(memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
 
         Job job = memoryOperation.invokeAsync(test);
         assertTrue(jobStatus.contains(job.getStatus()));
-        Map<String,Object> res = job.getResult(1000);
-        String did = (String)res.get("did");
-        Asset a=memoryAgent.getAsset(did);
-        byte[] expected = new byte[]{2, 3, 5,7};
+        Map<String, Object> res = job.getResult(1000);
+        String did = (String) res.get("did");
+        Asset a = memoryAgent.getAsset(did);
+        byte[] expected = new byte[]{2, 3, 5, 7};
         Arrays.toString(a.getContent());
         Assert.assertEquals(
                 Arrays.toString(a.getContent()),
-                Arrays.toString(new byte[] { 2, 3, 5,7 }));
-        assertEquals(Constant.SUCCEEDED,job.getStatus());
+                Arrays.toString(new byte[]{2, 3, 5, 7}));
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
 
     /**
@@ -100,11 +101,11 @@ public class TestMemoryOperations {
     @Test
     public void testPrimeSync() throws IOException {
 
-        FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create( memoryAgent);
+        FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create(memoryAgent);
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
 
-        Map<String,Object> result = memoryOperation.invokeResult(test);
+        Map<String, Object> result = memoryOperation.invokeResult(test);
 
         assertTrue(result.toString().contains("2"));
         assertTrue(result.toString().contains("3"));
@@ -118,51 +119,53 @@ public class TestMemoryOperations {
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
-                        create( memoryAgent);
+                        create(memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
-        Map<String ,Object> response = job.getResult(1000);
+        Map<String, Object> response = job.getResult(1000);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
-        assertEquals(response.get("hashed_value").toString(),hash);
-        assertEquals(Constant.SUCCEEDED,job.getStatus());
+        assertEquals(response.get("hashed_value").toString(), hash);
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
+
     @Test
-    public void  testHashAsyncFailed() throws IOException {
+    public void testHashAsyncFailed() throws IOException {
 
         byte[] data = new byte[]{1, 2, 3};
         EpicFailOperation epicFailOperation =
                 EpicFailOperation.
-                        create( "Fail operation");
+                        create("Fail operation");
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
         Job job = epicFailOperation.invokeAsync(test);
-        Map<String ,Object> response = job.getResult(1);
-        assertEquals(Constant.FAILED,job.getStatus());
+        Map<String, Object> response = job.getResult(1);
+        assertEquals(Constant.FAILED, job.getStatus());
     }
+
     @Test
     public void testHashAsyncRunning() throws IOException {
 
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
-                        create( memoryAgent);
+                        create(memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
-        Map<String ,Object> response = job.getResult(1000);
+        Map<String, Object> response = job.getResult(1000);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
-        assertEquals(response.get("hashed_value").toString(),hash);
-        assertEquals(Constant.SUCCEEDED,job.getStatus());
+        assertEquals(response.get("hashed_value").toString(), hash);
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
 
 
@@ -174,17 +177,17 @@ public class TestMemoryOperations {
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
-                        create( memoryAgent);
+                        create(memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Map<String,Object> response = hashOperation.invokeResult(test);
+        Map<String, Object> response = hashOperation.invokeResult(test);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
-        assertEquals(response.get("hashed_value").toString(),hash);
+        assertEquals(response.get("hashed_value").toString(), hash);
     }
-    
+
     private String getMetaDataForAssetI_AssetO() {
         String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
                 "\t\"size\":\"3\",\n" +
@@ -239,8 +242,8 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String,Object> res = job.getResult(1000);
-        String id =res.get("did").toString();
+        Map<String, Object> res = job.getResult(1000);
+        String id = res.get("did").toString();
         Asset resultAsset = memoryAgent.getAsset(id);
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
@@ -253,9 +256,9 @@ public class TestMemoryOperations {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Map<String,Object> res = job.getResult(1000);
-        String id =res.get("did").toString();
-       Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String, Object> res = job.getResult(1000);
+        String id = res.get("did").toString();
+        Asset resultAsset = memoryAgent.getAsset(id);
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 

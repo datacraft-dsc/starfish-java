@@ -1,18 +1,36 @@
-{"dateCreated":"2019-05-07T08:17:31.521445Z",
-	"size":"3",
-	"contentType":"application/octet-stream",
-	"contentHash":"4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45",
-	"tags":["hashing"],
-	"license":"CC-BY",
-	"author":"Hashing Inc",
-	"name":"Compute hash operation",
-	"description":"Computes hash of input asset. Support hash algorithms are keccak256 and keccak512 ",
-	"inLanguage":"en",
-	"type":"operation",
- "operation":{
-     "modes":["sync","async"],
-		 "params":{"to-hash":{"type":"asset",
-                          "position":0,
-                          "required":true}},
-		 "results":{"keccak256":{"type":"json"},
-                "keccak512":{"type":"json"}}}}
+{
+  "dateCreated": "2019-05-07T08:17:31.521445Z",
+  "size": "3",
+  "contentType": "application/octet-stream",
+  "contentHash": "4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45",
+  "tags": [
+    "hashing"
+  ],
+  "license": "CC-BY",
+  "author": "Hashing Inc",
+  "name": "Compute hash operation",
+  "description": "Computes hash of input asset. Support hash algorithms are keccak256 and keccak512 ",
+  "inLanguage": "en",
+  "type": "operation",
+  "operation": {
+    "modes": [
+      "sync",
+      "async"
+    ],
+    "params": {
+      "to-hash": {
+        "type": "asset",
+        "position": 0,
+        "required": true
+      }
+    },
+    "results": {
+      "keccak256": {
+        "type": "json"
+      },
+      "keccak512": {
+        "type": "json"
+      }
+    }
+  }
+}

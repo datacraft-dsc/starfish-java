@@ -35,7 +35,7 @@ package sg.dex.starfish.samples.squid;
  * Use:
  * java InstallCert hostname
  * Example:
- *% java InstallCert ecc.fedora.redhat.com
+ * % java InstallCert ecc.fedora.redhat.com
  */
 
 import javax.net.ssl.*;
@@ -75,7 +75,7 @@ public class InstallCert {
             char SEP = File.separatorChar;
             File dir = new File(System.getProperty("java.home") + SEP
                     + "lib" + SEP + "security");
-            System.out.println("Loading KeyStore from directory: "+dir);
+            System.out.println("Loading KeyStore from directory: " + dir);
             file = new File(dir, "jssecacerts");
             if (file.isFile() == false) {
                 file = new File(dir, "cacerts");

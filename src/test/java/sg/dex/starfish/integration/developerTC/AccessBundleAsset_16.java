@@ -19,138 +19,138 @@ import static org.junit.Assert.assertEquals;
  */
 public class AccessBundleAsset_16 {
 
-	private RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    private RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
 
-	private Map<String, Asset> getAssetMap() {
-		// creating assets
+    private Map<String, Asset> getAssetMap() {
+        // creating assets
 
-		byte[] data1 = { 2, 3, 4 };
-		Asset a1 = MemoryAsset.create(data1);
+        byte[] data1 = {2, 3, 4};
+        Asset a1 = MemoryAsset.create(data1);
 
-		byte[] data2 = { 5, 6, 7 };
-		Asset a2 = MemoryAsset.create(data2);
+        byte[] data2 = {5, 6, 7};
+        Asset a2 = MemoryAsset.create(data2);
 
-		// assigning each asset with name and adding to map
-		Map<String, Asset> assetBundle = new HashMap<>();
-		assetBundle.put("one", a1);
-		assetBundle.put("two", a2);
-		return assetBundle;
-	}
+        // assigning each asset with name and adding to map
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("one", a1);
+        assetBundle.put("two", a2);
+        return assetBundle;
+    }
 
-	/**
-	 * Create Remote bundle of 2 sub-asset
-	 */
-	@Test
-	public void testBundleCreation() {
+    /**
+     * Create Remote bundle of 2 sub-asset
+     */
+    @Test
+    public void testBundleCreation() {
 
-		Map<String, Asset> assetBundle = getAssetMap();
+        Map<String, Asset> assetBundle = getAssetMap();
 
-		// create asset bundle without any custom metadata // so passing null
-		RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, null);
+        // create asset bundle without any custom metadata // so passing null
+        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, null);
 
-		// register the bundle
-		RemoteBundle aRemoteAsset = (RemoteBundle) remoteAgent.registerAsset(remoteBundle);
+        // register the bundle
+        RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
 
-		// getting the created asset bundle metadata
-		Map<String, Object> metadata = aRemoteAsset.getMetadata();
+        // getting the created asset bundle metadata
+        Map<String, Object> metadata = aRemoteAsset.getMetadata();
 
-		// checking default name
-		assertEquals(metadata.get("name"), null);
+        // checking default name
+        assertEquals(metadata.get("name"), null);
 
-		// getting the contents of asset bundle through API
-		Map<String, Asset> allAssetMap = aRemoteAsset.getAll();
+        // getting the contents of asset bundle through API
+        Map<String, Asset> allAssetMap = aRemoteAsset.getAll();
 
-		assertEquals(allAssetMap.get("two").getAssetID(), assetBundle.get("two").getAssetID());
-		assertEquals(allAssetMap.get("one").getAssetID(), assetBundle.get("one").getAssetID());
+        assertEquals(allAssetMap.get("two").getAssetID(), assetBundle.get("two").getAssetID());
+        assertEquals(allAssetMap.get("one").getAssetID(), assetBundle.get("one").getAssetID());
 
-	}
+    }
 
-	/**
-	 * Create Remote bundle of 2 sub-asset
-	 */
-	@Test
-	public void testBundleCreationWithAdditionalMetadata() {
+    /**
+     * Create Remote bundle of 2 sub-asset
+     */
+    @Test
+    public void testBundleCreationWithAdditionalMetadata() {
 
-		Map<String, Asset> assetBundle = getAssetMap();
+        Map<String, Asset> assetBundle = getAssetMap();
 
-		Map<String, Object> metaMap = new HashMap<>();
-		metaMap.put("name", "testBundle");
-		metaMap.put("author", "dex-starfish");
+        Map<String, Object> metaMap = new HashMap<>();
+        metaMap.put("name", "testBundle");
+        metaMap.put("author", "dex-starfish");
 
-		// create asset bundle without any custom metadata // so passing null
-		Bundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, metaMap);
+        // create asset bundle without any custom metadata // so passing null
+        Bundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, metaMap);
 
-		// register the bundle
-		Bundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
+        // register the bundle
+        Bundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
 
-		// getting the created asset bundle metadata
-		Map<String, Object> metadata = aRemoteAsset.getMetadata();
+        // getting the created asset bundle metadata
+        Map<String, Object> metadata = aRemoteAsset.getMetadata();
 
-		// checking default name
-		assertEquals(metadata.get("name"), "testBundle");
-		assertEquals(metadata.get("author"), "dex-starfish");
+        // checking default name
+        assertEquals(metadata.get("name"), "testBundle");
+        assertEquals(metadata.get("author"), "dex-starfish");
 
-		// getting the contents of asset bundle through API
-		Map<String, Asset> allAssetMap = aRemoteAsset.getAll();
+        // getting the contents of asset bundle through API
+        Map<String, Asset> allAssetMap = aRemoteAsset.getAll();
 
-		assertEquals((allAssetMap.get("two").toString()), assetBundle.get("two").getAssetID());
-		assertEquals((allAssetMap.get("one").toString()), assetBundle.get("one").getAssetID());
+        assertEquals((allAssetMap.get("two").toString()), assetBundle.get("two").getAssetID());
+        assertEquals((allAssetMap.get("one").toString()), assetBundle.get("one").getAssetID());
 
-	}
+    }
 
-	/**
-	 * Create Empty bundle
-	 */
-	@Test
-	public void testCreateEmptyBundle() {
-		RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
-		// register the bundle
-		RemoteBundle aRemoteAsset = (RemoteBundle) remoteAgent.registerAsset(remoteBundle);
-		assertTrue(aRemoteAsset.getAll().isEmpty());
-	}
+    /**
+     * Create Empty bundle
+     */
+    @Test
+    public void testCreateEmptyBundle() {
+        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
+        // register the bundle
+        RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
+        assertTrue(aRemoteAsset.getAll().isEmpty());
+    }
 
-	/**
-	 * Create Empty bundle and then add sub-asset
-	 */
-	@Test
-	public void testCreateEmptyBundleThenAddSubAsset() {
-		RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
-		RemoteBundle aRemoteAsset = (RemoteBundle) remoteAgent.registerAsset(remoteBundle);
-		assertTrue(aRemoteAsset.getAll().isEmpty());
+    /**
+     * Create Empty bundle and then add sub-asset
+     */
+    @Test
+    public void testCreateEmptyBundleThenAddSubAsset() {
+        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
+        RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
+        assertTrue(aRemoteAsset.getAll().isEmpty());
 
-		Bundle remoteBundleWithSubAsset = remoteBundle.addAll(getAssetMap());
-		RemoteBundle aRemoteAsset1 = (RemoteBundle) remoteAgent.registerAsset(remoteBundleWithSubAsset);
+        Bundle remoteBundleWithSubAsset = remoteBundle.addAll(getAssetMap());
+        RemoteBundle aRemoteAsset1 = remoteAgent.registerAsset(remoteBundleWithSubAsset);
 
-		assertEquals(aRemoteAsset1.getAll().size(), 2);
-		// old bundle will remain same
-		assertTrue(aRemoteAsset.getAll().isEmpty());
-	}
+        assertEquals(aRemoteAsset1.getAll().size(), 2);
+        // old bundle will remain same
+        assertTrue(aRemoteAsset.getAll().isEmpty());
+    }
 
-	/**
-	 * Test Nested Bundle
-	 */
-	@Test
-	public void testNestedBundle() {
-		Map<String, Asset> nestedAsset = getAssetMap();
+    /**
+     * Test Nested Bundle
+     */
+    @Test
+    public void testNestedBundle() {
+        Map<String, Asset> nestedAsset = getAssetMap();
 
-		// create asset bundle without any custom metadata // so passing null
-		RemoteBundle nestedBundle = RemoteBundle.create(remoteAgent, nestedAsset);
+        // create asset bundle without any custom metadata // so passing null
+        RemoteBundle nestedBundle = RemoteBundle.create(remoteAgent, nestedAsset);
 
-		Map<String, Asset> assetBundle = new HashMap<>();
-		assetBundle.put("nested", nestedBundle);
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("nested", nestedBundle);
 
-		RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle);
+        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle);
 
-		RemoteBundle nestedB = (RemoteBundle) remoteBundle.get("nested");
-		assertEquals(nestedB.getAll().size(), 2);
+        RemoteBundle nestedB = remoteBundle.get("nested");
+        assertEquals(nestedB.getAll().size(), 2);
 
-	}
+    }
 
-	@Test(expected = StarfishValidationException.class)
-	public void testNullAgent() {
+    @Test(expected = StarfishValidationException.class)
+    public void testNullAgent() {
 
-		RemoteBundle remoteBundle = RemoteBundle.create(null, null);
+        RemoteBundle remoteBundle = RemoteBundle.create(null, null);
 
-	}
+    }
 
 }

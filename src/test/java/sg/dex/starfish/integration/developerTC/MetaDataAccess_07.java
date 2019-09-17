@@ -37,31 +37,30 @@ public class MetaDataAccess_07 {
 
     @Test
     public void testMEmoryAgentMetaData() {
-        byte data[] = {2, 5, 7};
+        byte[] data = {2, 5, 7};
         MemoryAsset asset = MemoryAsset.create(data);
-        Asset remoteAsset =remoteAgent.registerAsset(asset);
+        Asset remoteAsset = remoteAgent.registerAsset(asset);
 
-        assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(),asset.getMetadata().get(DATE_CREATED).toString());
-        assertEquals(remoteAsset.getMetadata().get(TYPE).toString(),asset.getMetadata().get(TYPE));
-        assertEquals(remoteAsset.getMetadata().get(SIZE).toString(),asset.getMetadata().get(SIZE));
-        assertEquals(remoteAsset.getMetadata().get(CONTENT_TYPE),asset.getMetadata().get(CONTENT_TYPE));
+        assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(), asset.getMetadata().get(DATE_CREATED).toString());
+        assertEquals(remoteAsset.getMetadata().get(TYPE).toString(), asset.getMetadata().get(TYPE));
+        assertEquals(remoteAsset.getMetadata().get(SIZE).toString(), asset.getMetadata().get(SIZE));
+        assertEquals(remoteAsset.getMetadata().get(CONTENT_TYPE), asset.getMetadata().get(CONTENT_TYPE));
 
     }
 
     @Test
     public void testRemoteAssetMetaDataAsset() {
-        byte data[] = {2, 5, 7};
-        MemoryAsset asset = MemoryAsset.create(data,getMetaData());
+        byte[] data = {2, 5, 7};
+        MemoryAsset asset = MemoryAsset.create(data, getMetaData());
 
         Asset remoteAsset = remoteAgent.registerAsset(asset);
-        assertEquals(remoteAsset.getMetadata().get("title"),"First listing");
-        assertEquals(remoteAsset.getMetadata().get("description"),"this is the Memory listing");
+        assertEquals(remoteAsset.getMetadata().get("title"), "First listing");
+        assertEquals(remoteAsset.getMetadata().get("description"), "this is the Memory listing");
 
     }
 
 
-
-    private Map<String,Object> getMetaData(){
+    private Map<String, Object> getMetaData() {
         try {
             String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
             return JSON.toMap(METADATA_JSON_CONTENT);
