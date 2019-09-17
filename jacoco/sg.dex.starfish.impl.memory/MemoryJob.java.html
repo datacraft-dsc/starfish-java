@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemoryJob.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.memory</a> &gt; <span class="el_source">MemoryJob.java</span></div><h1>MemoryJob.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.memory;
 
+import sg.dex.starfish.Job;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.util.Hex;
+
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-import sg.dex.starfish.Job;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.util.Hex;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a Job being conducted asynchronously in the local JVM, which wraps
@@ -21,10 +24,12 @@ import sg.dex.starfish.util.Hex;
 public class MemoryJob implements Job {
 
 	private final Future&lt;Map&lt;String,Object&gt;&gt; future;
+	private String status ;
 
-<span class="fc" id="L25">	private MemoryJob(Future&lt;Map&lt;String,Object&gt;&gt; future) {</span>
-<span class="fc" id="L26">		this.future=future;</span>
-<span class="fc" id="L27">	}</span>
+<span class="fc" id="L29">	private MemoryJob(Future&lt;Map&lt;String,Object&gt;&gt; future) {</span>
+<span class="fc" id="L30">		status=Constant.RUNNING;</span>
+<span class="fc" id="L31">		this.future=future;</span>
+<span class="fc" id="L32">	}</span>
 
 	/**
 	 * Create a MemoryJob instance using the provided Future.
@@ -33,31 +38,48 @@ public class MemoryJob implements Job {
 	 * @return A MemoryJob instance encapsulation the provided future
 	 */
 	public static MemoryJob create(Future&lt;Map&lt;String,Object&gt;&gt; future) {
-<span class="fc" id="L36">		return new MemoryJob (future);</span>
+<span class="fc" id="L41">		return new MemoryJob (future);</span>
 	}
 
 	@Override
 	public boolean isDone() {
-<span class="nc" id="L41">		return future.isDone();</span>
+<span class="nc" id="L46">		return future.isDone();</span>
 	}
 	
 	@Override
 	public boolean isCancelled() {
-<span class="nc" id="L46">		return future.isCancelled();</span>
+<span class="nc" id="L51">		return future.isCancelled();</span>
 	}
 
-	@Override
-	public Map&lt;String,Object&gt; pollResult() {
+    @Override
+    public Map&lt;String, Object&gt; pollResult() {
+<span class="fc" id="L56">        Map&lt;String, Object&gt; res = null;</span>
 		try {
-<span class="nc bnc" id="L52" title="All 2 branches missed.">			return future.isDone()?future.get():null;</span>
-		}
-<span class="nc" id="L54">		catch (InterruptedException e) {</span>
-<span class="nc" id="L55">			throw new Error(&quot;Job interrupted&quot;,e);</span>
-		}
-<span class="nc" id="L57">		catch (ExecutionException e) {</span>
-<span class="nc" id="L58">			throw new Error(&quot;Job failed with exception: &quot;,e.getCause());</span>
-		}
-	}
+<span class="fc" id="L58">			res = future.get();</span>
+<span class="nc" id="L59">		} catch (ExecutionException e) {</span>
+<span class="nc" id="L60">			e.printStackTrace();</span>
+<span class="nc" id="L61">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L62">			e.printStackTrace();</span>
+<span class="pc" id="L63">		}</span>
+<span class="fc" id="L64">		Map&lt;String, Object&gt; result = (Map&lt;String, Object&gt; )res.get(&quot;result&quot;);</span>
+<span class="fc" id="L65">		String status = (String) result.get(STATUS);</span>
+<span class="fc" id="L66">            this.status = status;</span>
+
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            if (status == null) throw new RemoteException(&quot;No status result: &quot; + result);</span>
+<span class="pc bpc" id="L69" title="3 of 6 branches missed.">            if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                    || status.equals(SCHEDULED)) {</span>
+
+<span class="nc" id="L72">                return null;</span>
+            }
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">            if (status.equals(FAILED) || status.equals(SUCCEEDED)) {</span>
+<span class="fc" id="L75">                return res;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            } else if (status.equals(Constant.UNKNOWN)) {</span>
+<span class="nc" id="L77">                throw new JobFailedException(&quot;Error code: &quot; + result.get(&quot;errorcode&quot;) +</span>
+<span class="nc" id="L78">                        &quot;description is : &quot; + result.get(&quot;description&quot;));</span>
+            }
+<span class="nc" id="L80">        return result;</span>
+    }
+
 
 	/**
 	 * Waits for the result of the Operation and returns the result Asset
@@ -68,19 +90,32 @@ public class MemoryJob implements Job {
 	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
 	 */
 	@Override
-	public Map&lt;String,Object&gt; get(long timeoutMillis, TimeUnit timeUnit) {
-		try {
-<span class="fc" id="L73">			return future.get(timeoutMillis, timeUnit);</span>
-		}
-<span class="fc" id="L75">		catch (InterruptedException | ExecutionException | TimeoutException e) {</span>
-<span class="fc" id="L76">			Throwable cause=e.getCause();</span>
-<span class="fc" id="L77">			throw new JobFailedException(&quot;Job failed with exception: &quot;+cause,e);</span>
-		}
+	public Map&lt;String,Object&gt; get(long timeout, TimeUnit timeUnit) {
+<span class="fc" id="L94">        long timeoutMillis=TimeUnit.MILLISECONDS.convert(timeout,timeUnit);</span>
+<span class="fc" id="L95">        long start = System.currentTimeMillis();</span>
+<span class="fc" id="L96">        int initialSleep = 100;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
+<span class="fc" id="L98">            Map&lt;String,Object&gt; a = pollResult();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (a != null){</span>
+<span class="fc" id="L100">                return (Map&lt;String,Object&gt;)a.get(&quot;result&quot;);</span>
+            }
+            try {
+<span class="nc" id="L103">                Thread.sleep(initialSleep);</span>
+<span class="nc" id="L104">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L105">                throw new JobFailedException(&quot;Job failed with exception: &quot;+e.getCause(),e);</span>
+<span class="nc" id="L106">            }</span>
+<span class="nc" id="L107">            initialSleep *= 2;</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">        return pollResult();</span>
 	}
 
 	@Override
+	public String getStatus() {
+<span class="fc" id="L114">		return this.status;</span>
+	}
+	@Override
 	public String getJobID() {
-<span class="nc" id="L83">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
+<span class="nc" id="L118">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
 	}
 
 
