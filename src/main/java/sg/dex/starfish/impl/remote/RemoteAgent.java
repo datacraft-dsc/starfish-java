@@ -434,7 +434,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		addAuthHeaders(post);
 		post.addHeader("Accept", "application/json");
 
-		InputStream assetContentAsStream = new ByteArrayInputStream(asset.getContent());
+		InputStream assetContentAsStream = ((DataAsset)asset).getContentStream();
 		HttpEntity entity = HTTP.createMultiPart(FILE,
 				new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
 
