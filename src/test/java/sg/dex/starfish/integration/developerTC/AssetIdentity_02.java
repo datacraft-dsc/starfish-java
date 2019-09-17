@@ -81,7 +81,7 @@ public class AssetIdentity_02 {
         String assetID = remoteAsset.getAssetID();
 
         //Getting the content of the Asset
-        byte[] result = remoteAsset.getContent();
+        byte[] result = asset2.getContent();
 
         // compare both the assetID, It must be equal
         assertEquals(assetID, asset2.getAssetID());

@@ -36,7 +36,7 @@ public class RemoteJob implements Job {
     /**
      * Polls the invokable service job for a complete asset.
      *
-     * @return The Map of <String,Object> where key will be the result and value will be the payload  
+     * @return The Map of <String,Object> where key will be the result and value will be the payload
      * @throws JobFailedException If the job has failed
      */
     @Override

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
@@ -34,7 +35,11 @@ public class UploadAsset_10 {
         Asset asset = MemoryAsset.createFromString("test upload of asset");
 
         // upload will do the registration and upload the content
-        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
+        ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(asset);
+        System.out.println(aRemoteAsset.getAssetID());
+        System.out.println(asset.getAssetID());
+
+        RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
         // getting the content form Remote Agent (Downloading the content)
 
         String downloadData = RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
