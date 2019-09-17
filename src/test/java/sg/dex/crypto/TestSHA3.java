@@ -1,14 +1,12 @@
 package sg.dex.crypto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import sg.dex.starfish.util.Hex;
 
 import java.util.Arrays;
 
-import org.junit.Test;
-
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.util.Hex;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("javadoc")
 public class TestSHA3 {

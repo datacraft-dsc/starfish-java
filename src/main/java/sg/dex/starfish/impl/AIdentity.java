@@ -1,10 +1,10 @@
 package sg.dex.starfish.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Identity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class representing an Identity in the Ocean Ecosystem

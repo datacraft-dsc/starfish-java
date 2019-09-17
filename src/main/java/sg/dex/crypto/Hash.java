@@ -1,11 +1,10 @@
 package sg.dex.crypto;
 
-import java.nio.charset.StandardCharsets;
-
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
-
 import sg.dex.starfish.util.Hex;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utility class for hash functions

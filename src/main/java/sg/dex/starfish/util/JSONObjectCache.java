@@ -1,11 +1,11 @@
 package sg.dex.starfish.util;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Utility class maintaining a cache of parsed JSON objects

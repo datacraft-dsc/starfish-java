@@ -1,11 +1,9 @@
 package sg.dex.crypto;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.util.Hex;
+
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("javadoc")
 public class TestKeccak {

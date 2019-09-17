@@ -91,7 +91,6 @@ public class SquidAgentTest {
         MemoryAsset asset = MemoryAsset.create(data);
 
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
-        System.out.println("Asset ID" + squidAsset.getAssetID());
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("license", "Test_license");
         SquidAsset squidAsset1 = squidAgent.resolveSquidDID(squidAsset.getAssetDID());
