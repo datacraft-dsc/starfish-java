@@ -37,55 +37,54 @@ public final class SquidService {
 <span class="nc" id="L37">        return oceanManager;</span>
 
 
-
-
     }
 
     public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
 
-<span class="nc" id="L46">        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
-<span class="nc" id="L47">        KeeperService keeper = KeeperService.getInstance(</span>
-<span class="nc" id="L48">                oceanConfig.getKeeperUrl(),</span>
-<span class="nc" id="L49">                oceanConfig.getMainAccountAddress(),</span>
-<span class="nc" id="L50">                oceanConfig.getMainAccountPassword(),</span>
-<span class="nc" id="L51">                oceanConfig.getMainAccountCredentialsFile(),</span>
-<span class="nc" id="L52">                oceanConfig.getKeeperTxAttempts(),</span>
-<span class="nc" id="L53">                oceanConfig.getKeeperTxSleepDuration()</span>
+<span class="nc" id="L44">        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
+<span class="nc" id="L45">        KeeperService keeper = KeeperService.getInstance(</span>
+<span class="nc" id="L46">                oceanConfig.getKeeperUrl(),</span>
+<span class="nc" id="L47">                oceanConfig.getMainAccountAddress(),</span>
+<span class="nc" id="L48">                oceanConfig.getMainAccountPassword(),</span>
+<span class="nc" id="L49">                oceanConfig.getMainAccountCredentialsFile(),</span>
+<span class="nc" id="L50">                oceanConfig.getKeeperTxAttempts(),</span>
+<span class="nc" id="L51">                oceanConfig.getKeeperTxSleepDuration()</span>
         );
 
-<span class="nc" id="L56">        keeper.setGasLimit(oceanConfig.getKeeperGasLimit())</span>
-<span class="nc" id="L57">                .setGasPrice(oceanConfig.getKeeperGasPrice());</span>
-<span class="nc" id="L58">        return keeper;</span>
+<span class="nc" id="L54">        keeper.setGasLimit(oceanConfig.getKeeperGasLimit())</span>
+<span class="nc" id="L55">                .setGasPrice(oceanConfig.getKeeperGasPrice());</span>
+<span class="nc" id="L56">        return keeper;</span>
 
     }
 
     public static AquariusService getAquariusService() {
-<span class="nc" id="L63">        return oceanInitializationHelper.getAquarius();</span>
+<span class="nc" id="L61">        return oceanInitializationHelper.getAquarius();</span>
 
     }
 
     public static KeeperService getKeeperService() throws IOException, CipherException {
-<span class="nc" id="L68">        return oceanInitializationHelper.getKeeper();</span>
+<span class="nc" id="L66">        return oceanInitializationHelper.getKeeper();</span>
 
     }
 
     public static String getProvider() throws IOException, CipherException {
-<span class="nc" id="L73">        return oceanConfig.getMainAccountAddress();</span>
+<span class="nc" id="L71">        return oceanConfig.getMainAccountAddress();</span>
 
     }
-    private Properties getProperties() {
-<span class="nc" id="L77">        Properties prop = new Properties();</span>
-<span class="nc" id="L78">        try (InputStream input = getClass().getClassLoader().getResourceAsStream(&quot;application.properties&quot;)) {</span>
 
-<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (input == null) {</span>
-<span class="nc" id="L81">                throw new IOException(&quot;properties files is missing&quot;);</span>
+    private Properties getProperties() {
+<span class="nc" id="L76">        Properties prop = new Properties();</span>
+<span class="nc" id="L77">        try (InputStream input = getClass().getClassLoader().getResourceAsStream(&quot;application.properties&quot;)) {</span>
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (input == null) {</span>
+<span class="nc" id="L80">                throw new IOException(&quot;properties files is missing&quot;);</span>
             }
 
-<span class="nc" id="L84">            prop.load(input);</span>
-<span class="nc" id="L85">        } catch (IOException e) {</span>
-<span class="nc" id="L86">            e.printStackTrace();</span>
-<span class="nc" id="L87">        }</span>
-<span class="nc" id="L88">        return prop;</span>
+<span class="nc" id="L83">            prop.load(input);</span>
+<span class="nc" id="L84">        } catch (IOException e) {</span>
+<span class="nc" id="L85">            e.printStackTrace();</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">        return prop;</span>
 
     }
 

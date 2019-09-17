@@ -11,7 +11,7 @@ import static sg.dex.starfish.constant.Constant.STATUS;
 
 /**
  * This class representing an purchase managed via a remote agent.
- *
+ * &lt;p&gt;
  * This class included methods for create , get listing,
  * get status and metadata of the purchase
  * The instance of this class will be present in Ocean ecosystem and be referred by using the purchase ID.
@@ -35,7 +35,7 @@ public class RemotePurchase implements Purchase {
      * and the existing listing id.
      *
      * @param remoteAgent remote Agent
-     * @param id id
+     * @param id          id
      */
 <span class="nc" id="L40">    private RemotePurchase(RemoteAgent remoteAgent, String id) {</span>
 <span class="nc" id="L41">        this.remoteAgent = remoteAgent;</span>
@@ -47,7 +47,7 @@ public class RemotePurchase implements Purchase {
      * To get the Reference of Existing Listing
      *
      * @param agent agent on which the purchase instance need to be created
-     * @param id id
+     * @param id    id
      * @return RemotePurchase instance
      */
     public static RemotePurchase create(RemoteAgent agent, String id) {
@@ -69,7 +69,7 @@ public class RemotePurchase implements Purchase {
     @Override
     public Listing getListing() {
         // get the Listing from Listing id
-<span class="nc" id="L72">           return remoteAgent.getListing(this.getListingId());</span>
+<span class="nc" id="L72">        return remoteAgent.getListing(this.getListingId());</span>
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RemotePurchase implements Purchase {
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc bnc" id="L83" title="All 2 branches missed.">		Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
 <span class="nc" id="L84">                remoteAgent.getPurchaseMetaData(purchase_id) : (Map&lt;String, Object&gt;) metaDataCache.get(purchase_id);</span>
 <span class="nc" id="L85">        return metaData;</span>
     }

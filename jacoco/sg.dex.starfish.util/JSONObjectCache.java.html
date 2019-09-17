@@ -9,34 +9,34 @@ import java.util.WeakHashMap;
 
 /**
  * Utility class maintaining a cache of parsed JSON objects
- *
+ * &lt;p&gt;
  * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than fresh parsing
  *
  * @author Mike
- *
  */
-<span class="nc" id="L18">public class JSONObjectCache {</span>
+<span class="nc" id="L17">public class JSONObjectCache {</span>
 
-<span class="fc" id="L20">	private static final WeakHashMap&lt;String,JSONObject&gt; cache=new WeakHashMap&lt;String,JSONObject&gt;();</span>
+<span class="fc" id="L19">    private static final WeakHashMap&lt;String, JSONObject&gt; cache = new WeakHashMap&lt;String, JSONObject&gt;();</span>
 
-	/**
-	 * Converts a string assumed to contain valid JSON object to an Object
-	 * @param jsonString A string containing valid JSON
-	 * @throws Error on JSON parsing error
-	 * @return A JSONObject as parsed from jsonString
-	 */
-	@SuppressWarnings(&quot;unchecked&quot;)
-	public synchronized static Map&lt;String,Object&gt; parse(String jsonString) {
-<span class="fc" id="L30">		JSONObject cached=cache.get(jsonString);</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">		if (cached!=null) return new JSONObject(cached); // deep clone</span>
-<span class="fc" id="L32">		JSONParser parser=new JSONParser();</span>
-		try {
-<span class="fc" id="L34">			JSONObject result=(JSONObject) parser.parse(jsonString);</span>
-<span class="fc" id="L35">			cache.put(jsonString, result);</span>
-<span class="fc" id="L36">			return new JSONObject(result);</span>
-<span class="nc" id="L37">		} catch (ParseException e) {</span>
-<span class="nc" id="L38">			throw new Error(&quot;Error in JSON parsing: &quot;+e.getMessage(),e);</span>
-		}
-	}
+    /**
+     * Converts a string assumed to contain valid JSON object to an Object
+     *
+     * @param jsonString A string containing valid JSON
+     * @return A JSONObject as parsed from jsonString
+     * @throws Error on JSON parsing error
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public synchronized static Map&lt;String, Object&gt; parse(String jsonString) {
+<span class="fc" id="L30">        JSONObject cached = cache.get(jsonString);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (cached != null) return new JSONObject(cached); // deep clone</span>
+<span class="fc" id="L32">        JSONParser parser = new JSONParser();</span>
+        try {
+<span class="fc" id="L34">            JSONObject result = (JSONObject) parser.parse(jsonString);</span>
+<span class="fc" id="L35">            cache.put(jsonString, result);</span>
+<span class="fc" id="L36">            return new JSONObject(result);</span>
+<span class="nc" id="L37">        } catch (ParseException e) {</span>
+<span class="nc" id="L38">            throw new Error(&quot;Error in JSON parsing: &quot; + e.getMessage(), e);</span>
+        }
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

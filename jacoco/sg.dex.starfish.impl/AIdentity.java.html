@@ -10,51 +10,52 @@ import java.util.Map;
  * Class representing an Identity in the Ocean Ecosystem
  *
  * @author Tom
- *
  */
 public abstract class AIdentity implements Identity {
 
-	protected String id;
-	protected Map&lt;String,Account&gt; accounts;
+    protected String id;
+    protected Map&lt;String, Account&gt; accounts;
 
-	/**
-	 * Create an AIdentity with the provided ID
-	 *
-	 * @param id The identifier for this account
-	 */
-<span class="nc" id="L25">	protected AIdentity(String id) {</span>
-<span class="nc" id="L26">		this.id=id;</span>
-<span class="nc" id="L27">		this.accounts = new HashMap&lt;String,Account&gt;();;</span>
-<span class="nc" id="L28">	}</span>
+    /**
+     * Create an AIdentity with the provided ID
+     *
+     * @param id The identifier for this account
+     */
+<span class="nc" id="L24">    protected AIdentity(String id) {</span>
+<span class="nc" id="L25">        this.id = id;</span>
+<span class="nc" id="L26">        this.accounts = new HashMap&lt;String, Account&gt;();</span>
+<span class="nc" id="L27">	}</span>
 
-	/**
-	 * Gets the ID for an Identity
-	 *
-	 * @return Identity identifier
-	 */
-	@Override
-	public String getID() {
-<span class="nc" id="L37">		return id;</span>
-	}
+    /**
+     * Gets the ID for an Identity
+     *
+     * @return Identity identifier
+     */
+    @Override
+    public String getID() {
+<span class="nc" id="L36">        return id;</span>
+    }
 
-	/**
-	 * Gets the Accounts associated with this Identity
-	 * where the key is the Account.getID();
-	 * @return accounts
-	 */
-	@Override
-	public Map&lt;String,Account&gt; getAccounts() {
-<span class="nc" id="L47">		return accounts;</span>
-	}
+    /**
+     * Gets the Accounts associated with this Identity
+     * where the key is the Account.getID();
+     *
+     * @return accounts
+     */
+    @Override
+    public Map&lt;String, Account&gt; getAccounts() {
+<span class="nc" id="L47">        return accounts;</span>
+    }
 
-	/**
-	 * Adds an Account to be associated with this Identity
-	 * @param account the Account to add
-	 */
-	@Override
-	public void addAccount(Account account) {
-<span class="nc" id="L56">		accounts.put(account.getID(), account);</span>
-<span class="nc" id="L57">	}</span>
+    /**
+     * Adds an Account to be associated with this Identity
+     *
+     * @param account the Account to add
+     */
+    @Override
+    public void addAccount(Account account) {
+<span class="nc" id="L57">        accounts.put(account.getID(), account);</span>
+<span class="nc" id="L58">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

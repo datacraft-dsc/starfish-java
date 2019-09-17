@@ -12,7 +12,7 @@ import static sg.dex.starfish.constant.Constant.ID;
 
 /**
  * Class representing an Listing managed via a remote agent.
- *
+ * &lt;p&gt;
  * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
  *
  * @author Ayush
@@ -33,7 +33,7 @@ public class RemoteListing extends AListing {
      * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
      *
      * @param remoteAgent remote agent
-     * @param id id
+     * @param id          id
      */
 <span class="nc" id="L38">    private RemoteListing(RemoteAgent remoteAgent, String id) {</span>
 <span class="nc" id="L39">        this.remoteAgent = remoteAgent;</span>
@@ -44,7 +44,7 @@ public class RemoteListing extends AListing {
      * To get the Reference of Existing Listing
      *
      * @param agent agent on which this listing needs to be created
-     * @param id listing id
+     * @param id    listing id
      * @return RemoteListing
      */
     public static RemoteListing create(RemoteAgent agent, String id) {
@@ -90,27 +90,29 @@ public class RemoteListing extends AListing {
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		Map&lt;String, Object&gt; metaData = metaDataCache.get(listing_id) == null ?</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(listing_id) == null ?</span>
 <span class="nc" id="L94">                remoteAgent.getListingMetaData(listing_id) : (Map&lt;String, Object&gt;) metaDataCache.get(listing_id);</span>
 <span class="nc" id="L95">        return metaData;</span>
     }
 
     /**
      * This method is to get the AssetID
+     *
      * @return String assetId
      */
     @Override
     public String getAssetID() {
-<span class="nc" id="L104">        return getMetaData().get(&quot;assetid&quot;).toString();</span>
+<span class="nc" id="L105">        return getMetaData().get(&quot;assetid&quot;).toString();</span>
     }
 
     /**
      * This method is to get the Listing ID
+     *
      * @return String listingId
      */
     @Override
     public String getId() {
-<span class="nc" id="L113">        return getMetaData().get(ID).toString();</span>
+<span class="nc" id="L115">        return getMetaData().get(ID).toString();</span>
     }
 
 }

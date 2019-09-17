@@ -22,21 +22,21 @@ public class SquidResolverImpl implements Resolver {
     @Override
     public String getDDO(DID did) throws InvalidConfiguration, InitializationException, CipherException, IOException, EthereumException, DDOException {
 
-<span class="nc" id="L25">        OceanManager oceanManager = squidService.getResolverManager();</span>
-<span class="nc" id="L26">            DDO ddo =oceanManager.resolveDID(did);</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">            if(null !=ddo){</span>
-<span class="nc" id="L28">                return  ddo.id;</span>
-            }
+<span class="nc" id="L25">        OceanManager oceanManager = SquidService.getResolverManager();</span>
+<span class="nc" id="L26">        DDO ddo = oceanManager.resolveDID(did);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (null != ddo) {</span>
+<span class="nc" id="L28">            return ddo.id;</span>
+        }
 <span class="nc" id="L30">        return null;</span>
 
     }
 
     @Override
-    public boolean registerDID(DID did,String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration {
-<span class="nc" id="L36">            OceanManager oceanManager = squidService.getResolverManager();</span>
-<span class="nc" id="L37">            String url = SquidService.getAquariusService().getDdoEndpoint();</span>
-<span class="nc" id="L38">            String providerAddress = SquidService.getProvider();</span>
-<span class="nc" id="L39">            return oceanManager.registerDID(did, url, checksum, Arrays.asList(providerAddress));</span>
+    public boolean registerDID(DID did, String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration {
+<span class="nc" id="L36">        OceanManager oceanManager = SquidService.getResolverManager();</span>
+<span class="nc" id="L37">        String url = SquidService.getAquariusService().getDdoEndpoint();</span>
+<span class="nc" id="L38">        String providerAddress = SquidService.getProvider();</span>
+<span class="nc" id="L39">        return oceanManager.registerDID(did, url, checksum, Arrays.asList(providerAddress));</span>
 
     }
 

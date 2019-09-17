@@ -9,39 +9,38 @@ import java.util.HashMap;
  * Class representing an Ethereum Account in the Ocean Ecosystem
  *
  * @author Tom
- *
  */
 public abstract class AEVMAccount extends AAccount {
 
-	protected String password;
+    protected String password;
 
-	/**
-	 * Create an account with the provided ID and password
-	 *
-	 * @param id The identifier for this account
-	 * @param password The Account password
-	 */
-	protected AEVMAccount(String id, String password) {
-<span class="nc" id="L25">		super(id,new HashMap&lt;&gt;());</span>
-<span class="nc" id="L26">		this.password=password;</span>
-<span class="nc" id="L27">	}</span>
+    /**
+     * Create an account with the provided ID and password
+     *
+     * @param id       The identifier for this account
+     * @param password The Account password
+     */
+    protected AEVMAccount(String id, String password) {
+<span class="nc" id="L24">        super(id, new HashMap&lt;&gt;());</span>
+<span class="nc" id="L25">        this.password = password;</span>
+<span class="nc" id="L26">    }</span>
 
-	/**
-	 * Gets the address for this Ethereum Account
-	 *
-	 * @return Account identifier
-	 */
-	public String getAddress() {
-<span class="nc" id="L35">		return id;</span>
-	}
+    /**
+     * Gets the address for this Ethereum Account
+     *
+     * @return Account identifier
+     */
+    public String getAddress() {
+<span class="nc" id="L34">        return id;</span>
+    }
 
-	/**
-	 * Returns the Balance of an account
-	 *
-	 * @return the Balance of the account
-	 * @throws EthereumException EthereumException
-	 */
-	abstract public Balance balance() throws EthereumException;
+    /**
+     * Returns the Balance of an account
+     *
+     * @return the Balance of the account
+     * @throws EthereumException EthereumException
+     */
+    abstract public Balance balance() throws EthereumException;
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

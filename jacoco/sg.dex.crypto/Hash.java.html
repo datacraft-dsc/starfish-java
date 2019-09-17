@@ -8,111 +8,110 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Utility class for hash functions
- * 
- * @author Mike
  *
+ * @author Mike
  */
-<span class="nc" id="L15">public class Hash {</span>
-<span class="fc" id="L16">	public static final byte[] EMPTY_BYTES_SHA3 = sha3_256(new byte[0]);</span>
+<span class="nc" id="L14">public class Hash {</span>
+<span class="fc" id="L15">    public static final byte[] EMPTY_BYTES_SHA3 = sha3_256(new byte[0]);</span>
 
-	/**
-	 * Compute the Keccak256 hash of byte array segment
-	 * 
-	 * @param data Input data
-	 * @param offset Start offset in the array
-	 * @param length Length of bytes to compute
-	 * @return byte[]
-	 */
-	public static byte[] keccak256(byte[] data, int offset, int length) {
-<span class="fc" id="L27">		Keccak.DigestKeccak keccak = new Keccak.Digest256();</span>
-<span class="fc" id="L28">		keccak.update(data, offset, length);</span>
-<span class="fc" id="L29">		return keccak.digest();</span>
-	}
-	
-	/**
-	 * Compute the SHA3-256 hash of byte array segment
-	 * 
-	 * @param data Input data
-	 * @param offset Start offset in the array
-	 * @param length Length of bytes to compute
-	 * @return byte[]
-	 */
-	public static byte[] sha3_256(byte[] data, int offset, int length) {
-<span class="fc" id="L41">		SHA3.DigestSHA3 md = new SHA3.Digest256();</span>
-<span class="fc" id="L42">		md.update(data, offset, length);</span>
-<span class="fc" id="L43">		final byte[] result = md.digest();</span>
-<span class="fc" id="L44">		return result;</span>
-	}
+    /**
+     * Compute the Keccak256 hash of byte array segment
+     *
+     * @param data   Input data
+     * @param offset Start offset in the array
+     * @param length Length of bytes to compute
+     * @return byte[]
+     */
+    public static byte[] keccak256(byte[] data, int offset, int length) {
+<span class="fc" id="L26">        Keccak.DigestKeccak keccak = new Keccak.Digest256();</span>
+<span class="fc" id="L27">        keccak.update(data, offset, length);</span>
+<span class="fc" id="L28">        return keccak.digest();</span>
+    }
 
-	/**
-	 * Compute the Keccak256 hash of a byte array
-	 * 
-	 * @param data Input data
-	 * @return byte[]
-	 */
-	public static byte[] keccak256(byte[] data) {
-<span class="fc" id="L54">		return keccak256(data, 0, data.length);</span>
-	}
-	
-	/**
-	 * Compute the SHA3-256 hash of a byte array
-	 * 
-	 * @param data Input data
-	 * @return byte[]
-	 */
-	public static byte[] sha3_256(byte[] data) {
-<span class="fc" id="L64">		return sha3_256(data, 0, data.length);</span>
-	}
+    /**
+     * Compute the SHA3-256 hash of byte array segment
+     *
+     * @param data   Input data
+     * @param offset Start offset in the array
+     * @param length Length of bytes to compute
+     * @return byte[]
+     */
+    public static byte[] sha3_256(byte[] data, int offset, int length) {
+<span class="fc" id="L40">        SHA3.DigestSHA3 md = new SHA3.Digest256();</span>
+<span class="fc" id="L41">        md.update(data, offset, length);</span>
+<span class="fc" id="L42">        final byte[] result = md.digest();</span>
+<span class="fc" id="L43">        return result;</span>
+    }
 
-	/**
-	 * Compute the Keccak256 hash of string, with UTF-8 encoding
-	 * 
-	 * @param string Input string
-	 * @return byte[]
-	 */
-	public static byte[] keccak256(String string) {
-<span class="fc" id="L74">		return keccak256(string.getBytes(StandardCharsets.UTF_8));</span>
-	}
-	
-	/**
-	 * Compute the SHA3-256 hash of string, with UTF-8 encoding
-	 * 
-	 * @param string Input string
-	 * @return byte[]
-	 */
-	public static byte[] sha3_256(String string) {
-<span class="fc" id="L84">		return sha3_256(string.getBytes(StandardCharsets.UTF_8));</span>
-	}
+    /**
+     * Compute the Keccak256 hash of a byte array
+     *
+     * @param data Input data
+     * @return byte[]
+     */
+    public static byte[] keccak256(byte[] data) {
+<span class="fc" id="L53">        return keccak256(data, 0, data.length);</span>
+    }
 
-	/**
-	 * Compute the Keccak256 hash of string, with UTF-8 encoding
-	 * 
-	 * @param string Input string
-	 * @return Keccak256 hash as a hex string
-	 */
-	public static String keccak256String(String string) {
-<span class="nc" id="L94">		return Hex.toString(keccak256(string));</span>
-	}
+    /**
+     * Compute the SHA3-256 hash of a byte array
+     *
+     * @param data Input data
+     * @return byte[]
+     */
+    public static byte[] sha3_256(byte[] data) {
+<span class="fc" id="L63">        return sha3_256(data, 0, data.length);</span>
+    }
 
-	/**
-	 * Compute the Keccak256 hash of byte array
-	 * 
-	 * @param data Input data
-	 * @return Keccak256 hash as a hex string
-	 */
-	public static String keccak256String(byte[] data) {
-<span class="nc" id="L104">		return Hex.toString(keccak256(data));</span>
-	}
+    /**
+     * Compute the Keccak256 hash of string, with UTF-8 encoding
+     *
+     * @param string Input string
+     * @return byte[]
+     */
+    public static byte[] keccak256(String string) {
+<span class="fc" id="L73">        return keccak256(string.getBytes(StandardCharsets.UTF_8));</span>
+    }
 
-	/**
-	 * Compute the sha3_256 hash of byte array
-	 *
-	 * @param data Input data
-	 * @return sha3_256 hash as a hex string
-	 */
-	public static String sha3_256String(byte[] data) {
-<span class="nc" id="L114">		return Hex.toString(sha3_256(data));</span>
-	}
+    /**
+     * Compute the SHA3-256 hash of string, with UTF-8 encoding
+     *
+     * @param string Input string
+     * @return byte[]
+     */
+    public static byte[] sha3_256(String string) {
+<span class="fc" id="L83">        return sha3_256(string.getBytes(StandardCharsets.UTF_8));</span>
+    }
+
+    /**
+     * Compute the Keccak256 hash of string, with UTF-8 encoding
+     *
+     * @param string Input string
+     * @return Keccak256 hash as a hex string
+     */
+    public static String keccak256String(String string) {
+<span class="nc" id="L93">        return Hex.toString(keccak256(string));</span>
+    }
+
+    /**
+     * Compute the Keccak256 hash of byte array
+     *
+     * @param data Input data
+     * @return Keccak256 hash as a hex string
+     */
+    public static String keccak256String(byte[] data) {
+<span class="nc" id="L103">        return Hex.toString(keccak256(data));</span>
+    }
+
+    /**
+     * Compute the sha3_256 hash of byte array
+     *
+     * @param data Input data
+     * @return sha3_256 hash as a hex string
+     */
+    public static String sha3_256String(byte[] data) {
+<span class="nc" id="L113">        return Hex.toString(sha3_256(data));</span>
+    }
 
     /**
      * Compute the sha3_256 hash of string, with UTF-8 encoding
@@ -121,7 +120,7 @@ import java.nio.charset.StandardCharsets;
      * @return sha3_256 hash as a hex string
      */
     public static String sha3_256String(String string) {
-<span class="fc" id="L124">        return Hex.toString(sha3_256(string));</span>
+<span class="fc" id="L123">        return Hex.toString(sha3_256(string));</span>
     }
 
 }

@@ -13,61 +13,62 @@ import java.util.Map;
 
 /**
  * Abstract base class for immutable asset implementations
- *
+ * &lt;p&gt;
  * Includes default handing of metadata
  *
  * @author Mike
  * @version 0.5
- *
  */
 public abstract class AAsset implements Asset {
-	protected final String metadataString;
-	protected final String id;
+    protected final String metadataString;
+    protected final String id;
 
-<span class="fc" id="L27">	protected AAsset(String meta) {</span>
-		//Utils.validateAssetMetaData(meta);
-<span class="fc" id="L29">		this.metadataString = meta;</span>
-<span class="fc" id="L30">		this.id = Hash.sha3_256String(metadataString);</span>
-<span class="fc" id="L31">	}</span>
-<span class="nc" id="L32">	protected AAsset(Map&lt;String,Object&gt; meta) {</span>
-		//Utils.validateAssetMetaData(meta);
-<span class="nc" id="L34">		this.metadataString = JSON.toString(meta);</span>
-<span class="nc" id="L35">		this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));</span>
-<span class="nc" id="L36">	}</span>
-	@Override
-	public String toString() {
-<span class="nc" id="L39">		return getAssetID();</span>
-	}
+<span class="fc" id="L26">    protected AAsset(String meta) {</span>
+        //Utils.validateAssetMetaData(meta);
+<span class="fc" id="L28">        this.metadataString = meta;</span>
+<span class="fc" id="L29">        this.id = Hash.sha3_256String(metadataString);</span>
+<span class="fc" id="L30">    }</span>
 
-	@Override
-	public String getAssetID() {
-<span class="fc" id="L44">		return id;</span>
-	}
+<span class="nc" id="L32">    protected AAsset(Map&lt;String, Object&gt; meta) {</span>
+        //Utils.validateAssetMetaData(meta);
+<span class="nc" id="L34">        this.metadataString = JSON.toString(meta);</span>
+<span class="nc" id="L35">        this.id = Hex.toString(Hash.sha3_256(JSON.toString(meta)));</span>
+<span class="nc" id="L36">    }</span>
 
-	@Override
-	public Map&lt;String, Object&gt; getMetadata() {
-<span class="fc" id="L49">		return JSONObjectCache.parse(metadataString);</span>
-	}
+    @Override
+    public String toString() {
+<span class="nc" id="L40">        return getAssetID();</span>
+    }
 
-	@Override
-	public DID getAssetDID() {
-<span class="fc" id="L54">		throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
-	}
+    @Override
+    public String getAssetID() {
+<span class="fc" id="L45">        return id;</span>
+    }
 
-	@Override
-	public Map&lt;String, Object&gt; getParamValue() {
-<span class="nc" id="L59">		Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
-		// default is to pass the asset ID
-		// check if DID is present:
-<span class="nc bnc" id="L62" title="All 2 branches missed.">		Object did = getMetadata().get(Constant.DID) != null ? getMetadata().get(Constant.DID) : getAssetDID();</span>
-<span class="nc" id="L63">		o.put(Constant.DID, did);</span>
-<span class="nc" id="L64">		return o;</span>
-	}
+    @Override
+    public Map&lt;String, Object&gt; getMetadata() {
+<span class="fc" id="L50">        return JSONObjectCache.parse(metadataString);</span>
+    }
 
-	@Override
-	public String getMetadataString() {
-<span class="fc" id="L69">		return metadataString;</span>
-	}
+    @Override
+    public DID getAssetDID() {
+<span class="fc" id="L55">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
+    }
+
+    @Override
+    public Map&lt;String, Object&gt; getParamValue() {
+<span class="nc" id="L60">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+        // default is to pass the asset ID
+        // check if DID is present:
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        Object did = getMetadata().get(Constant.DID) != null ? getMetadata().get(Constant.DID) : getAssetDID();</span>
+<span class="nc" id="L64">        o.put(Constant.DID, did);</span>
+<span class="nc" id="L65">        return o;</span>
+    }
+
+    @Override
+    public String getMetadataString() {
+<span class="fc" id="L70">        return metadataString;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

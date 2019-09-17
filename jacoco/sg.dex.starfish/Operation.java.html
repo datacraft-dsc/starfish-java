@@ -6,89 +6,89 @@ import java.util.Map;
 
 /**
  * Interface representing an invokable operation
- * 
+ *
  * @author Mike
  * @version 0.5
  */
 public interface Operation extends Asset {
 
-	@Override
-	public default boolean isOperation() {
-<span class="nc" id="L17">		return true;</span>
-	}
+    @Override
+	default boolean isOperation() {
+<span class="nc" id="L17">        return true;</span>
+    }
 
-	/**
-	 * Invokes this operation with the given positional parameters.
-	 *
-	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available.
-	 * @return The Job for this invoked operation
-	 */
-	public default Job invoke(Object... params) {
-<span class="nc" id="L28">		return invoke(Params.namedParams(this, params));</span>
-	}
+    /**
+     * Invokes this operation with the given positional parameters.
+     *
+     * @param params Positional parameters for this invoke job
+     * @return The Job for this invoked operation
+     * @throws IllegalArgumentException if required parameters are not available.
+     */
+    default Job invoke(Object... params) {
+<span class="nc" id="L28">        return invoke(Params.namedParams(this, params));</span>
+    }
 
-	/**
-	 * Invokes this operation with the given named parameters. Operations should
-	 * override this method to provide an implementation of asynchronous invocation
-	 * via the Job interface
-	 * 
-	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or
-	 *             of incorrect type
-	 * @return The Job for this invoked operation
-	 */
-	public Job invokeAsync(Map&lt;String, Object&gt; params);
+    /**
+     * Invokes this operation with the given named parameters. Operations should
+     * override this method to provide an implementation of asynchronous invocation
+     * via the Job interface
+     *
+     * @param params Positional parameters for this invoke job
+     * @return The Job for this invoked operation
+     * @throws IllegalArgumentException if required parameters are not available, or
+     *                                  of incorrect type
+     */
+	Job invokeAsync(Map&lt;String, Object&gt; params);
 
-	/**
-	 * Invokes this operation with the given named parameters. Operations should
-	 * override this method to provide an implementation of asynchronous invocation
-	 * via the Job interface
-	 *
-	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or
-	 *             of incorrect type
-	 * @return The result for this invoked operation
-	 */
-	public Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params);
+    /**
+     * Invokes this operation with the given named parameters. Operations should
+     * override this method to provide an implementation of asynchronous invocation
+     * via the Job interface
+     *
+     * @param params Positional parameters for this invoke job
+     * @return The result for this invoked operation
+     * @throws IllegalArgumentException if required parameters are not available, or
+     *                                  of incorrect type
+     */
+	Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params);
 
-	/**
-	 * Invokes this operation with the given named parameters. Operations should
-	 * override this method to provide an implementation of asynchronous invocation
-	 * via the Job interface
-	 *
-	 * @param params Positional parameters for this invoke job
-	 * @throws IllegalArgumentException if required parameters are not available, or
-	 *             of incorrect type
-	 * @return The Job for this invoked operation
-	 */
-	public Job invoke(Map&lt;String, Object&gt; params);
+    /**
+     * Invokes this operation with the given named parameters. Operations should
+     * override this method to provide an implementation of asynchronous invocation
+     * via the Job interface
+     *
+     * @param params Positional parameters for this invoke job
+     * @return The Job for this invoked operation
+     * @throws IllegalArgumentException if required parameters are not available, or
+     *                                  of incorrect type
+     */
+	Job invoke(Map&lt;String, Object&gt; params);
 
-	/**
-	 * Returns the operation specification for this operation. Operations must
-	 * override this method to define what operation input and result  they accept.
-	 * 
-	 * TODO: add brief description of format and link to DEP6
-	 *
-	 * @return A map of parameter names to specifications
-	 */
-	@SuppressWarnings(&quot;unchecked&quot;)
-	public default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="nc" id="L77">		return  (Map&lt;String, Object&gt;) getMetadata().get(&quot;operation&quot;);</span>
-	}
+    /**
+     * Returns the operation specification for this operation. Operations must
+     * override this method to define what operation input and result  they accept.
+     * &lt;p&gt;
+     * TODO: add brief description of format and link to DEP6
+     *
+     * @return A map of parameter names to specifications
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+	default Map&lt;String, Object&gt; getOperationSpec() {
+<span class="nc" id="L77">        return (Map&lt;String, Object&gt;) getMetadata().get(&quot;operation&quot;);</span>
+    }
 
-	/**
-	 * Returns the parameter specification for this operation. Operations must
-	 * override this method to define what parameters they accept.
-	 *
-	 * TODO: add brief description of format and link to DEP6
-	 *
-	 * @return A map of parameter names to specifications
-	 */
-	@SuppressWarnings(&quot;unchecked&quot;)
-	public default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L90">		return (Map&lt;String, Object&gt; ) getOperationSpec().get(&quot;params&quot;);</span>
-	}
+    /**
+     * Returns the parameter specification for this operation. Operations must
+     * override this method to define what parameters they accept.
+     * &lt;p&gt;
+     * TODO: add brief description of format and link to DEP6
+     *
+     * @return A map of parameter names to specifications
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+	default Map&lt;String, Object&gt; getParamsSpec() {
+<span class="nc" id="L90">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -4,33 +4,33 @@ import sg.dex.starfish.impl.AAsset;
 
 /**
  * Abstract base class for in-memory assets
- *
+ * &lt;p&gt;
  * Contains common code required for
  * MemoryAsset/MemoryBundle/MemoryOperation classes.
- *
  */
 public abstract class AMemoryAsset extends AAsset {
 
-	protected MemoryAgent memoryAgent;
+    protected MemoryAgent memoryAgent;
 
-	/**
-	 * Constructor for Memory Asset
-	 * @param metaData metaData
-	 * @param aAgent memory Agent
-	 */
-	protected AMemoryAsset(String metaData, MemoryAgent aAgent) {
-<span class="fc" id="L22">		super(metaData);</span>
-<span class="fc" id="L23">		memoryAgent = aAgent;</span>
-<span class="fc" id="L24">	}</span>
+    /**
+     * Constructor for Memory Asset
+     *
+     * @param metaData metaData
+     * @param aAgent   memory Agent
+     */
+    protected AMemoryAsset(String metaData, MemoryAgent aAgent) {
+<span class="fc" id="L22">        super(metaData);</span>
+<span class="fc" id="L23">        memoryAgent = aAgent;</span>
+<span class="fc" id="L24">    }</span>
 
-	/**
-	 * Constructor for Memory Asset
-	 * @param metaData metadata
-	 */
-	protected AMemoryAsset(String metaData) {
-<span class="nc" id="L31">		super(metaData);</span>
-<span class="nc" id="L32">	}</span>
-
+    /**
+     * Constructor for Memory Asset
+     *
+     * @param metaData metadata
+     */
+    protected AMemoryAsset(String metaData) {
+<span class="nc" id="L32">        super(metaData);</span>
+<span class="nc" id="L33">    }</span>
 
 
 }

@@ -17,106 +17,105 @@ import static sg.dex.starfish.constant.Constant.*;
  * Class representing a Job being conducted asynchronously in the local JVM, which wraps
  * an arbitrary Future.
  *
- *
  * @author Mike
- *
  */
 public class MemoryJob implements Job {
 
-	private final Future&lt;Map&lt;String,Object&gt;&gt; future;
-	private String status ;
+    private final Future&lt;Map&lt;String, Object&gt;&gt; future;
+    private String status;
 
-<span class="fc" id="L29">	private MemoryJob(Future&lt;Map&lt;String,Object&gt;&gt; future) {</span>
-<span class="fc" id="L30">		status=Constant.RUNNING;</span>
-<span class="fc" id="L31">		this.future=future;</span>
-<span class="fc" id="L32">	}</span>
+<span class="fc" id="L27">    private MemoryJob(Future&lt;Map&lt;String, Object&gt;&gt; future) {</span>
+<span class="fc" id="L28">        status = Constant.RUNNING;</span>
+<span class="fc" id="L29">        this.future = future;</span>
+<span class="fc" id="L30">    }</span>
 
-	/**
-	 * Create a MemoryJob instance using the provided Future.
-	 *
-	 * @param future A Future to be used to complete this job
-	 * @return A MemoryJob instance encapsulation the provided future
-	 */
-	public static MemoryJob create(Future&lt;Map&lt;String,Object&gt;&gt; future) {
-<span class="fc" id="L41">		return new MemoryJob (future);</span>
-	}
+    /**
+     * Create a MemoryJob instance using the provided Future.
+     *
+     * @param future A Future to be used to complete this job
+     * @return A MemoryJob instance encapsulation the provided future
+     */
+    public static MemoryJob create(Future&lt;Map&lt;String, Object&gt;&gt; future) {
+<span class="fc" id="L39">        return new MemoryJob(future);</span>
+    }
 
-	@Override
-	public boolean isDone() {
-<span class="nc" id="L46">		return future.isDone();</span>
-	}
-	
-	@Override
-	public boolean isCancelled() {
-<span class="nc" id="L51">		return future.isCancelled();</span>
-	}
+    @Override
+    public boolean isDone() {
+<span class="nc" id="L44">        return future.isDone();</span>
+    }
+
+    @Override
+    public boolean isCancelled() {
+<span class="nc" id="L49">        return future.isCancelled();</span>
+    }
 
     @Override
     public Map&lt;String, Object&gt; pollResult() {
-<span class="fc" id="L56">        Map&lt;String, Object&gt; res = null;</span>
-		try {
-<span class="fc" id="L58">			res = future.get();</span>
-<span class="nc" id="L59">		} catch (ExecutionException e) {</span>
-<span class="nc" id="L60">			e.printStackTrace();</span>
-<span class="nc" id="L61">		} catch (InterruptedException e) {</span>
-<span class="nc" id="L62">			e.printStackTrace();</span>
-<span class="pc" id="L63">		}</span>
-<span class="fc" id="L64">		Map&lt;String, Object&gt; result = (Map&lt;String, Object&gt; )res.get(&quot;result&quot;);</span>
-<span class="fc" id="L65">		String status = (String) result.get(STATUS);</span>
-<span class="fc" id="L66">            this.status = status;</span>
+<span class="fc" id="L54">        Map&lt;String, Object&gt; res = null;</span>
+        try {
+<span class="fc" id="L56">            res = future.get();</span>
+<span class="nc" id="L57">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L58">            e.printStackTrace();</span>
+<span class="nc" id="L59">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L60">            e.printStackTrace();</span>
+<span class="pc" id="L61">        }</span>
+<span class="fc" id="L62">        Map&lt;String, Object&gt; result = (Map&lt;String, Object&gt;) res.get(&quot;result&quot;);</span>
+<span class="fc" id="L63">        String status = (String) result.get(STATUS);</span>
+<span class="fc" id="L64">        this.status = status;</span>
 
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            if (status == null) throw new RemoteException(&quot;No status result: &quot; + result);</span>
-<span class="pc bpc" id="L69" title="3 of 6 branches missed.">            if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                    || status.equals(SCHEDULED)) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (status == null) throw new RemoteException(&quot;No status result: &quot; + result);</span>
+<span class="pc bpc" id="L67" title="3 of 6 branches missed.">        if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                || status.equals(SCHEDULED)) {</span>
 
-<span class="nc" id="L72">                return null;</span>
-            }
-<span class="pc bpc" id="L74" title="1 of 4 branches missed.">            if (status.equals(FAILED) || status.equals(SUCCEEDED)) {</span>
-<span class="fc" id="L75">                return res;</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">            } else if (status.equals(Constant.UNKNOWN)) {</span>
-<span class="nc" id="L77">                throw new JobFailedException(&quot;Error code: &quot; + result.get(&quot;errorcode&quot;) +</span>
-<span class="nc" id="L78">                        &quot;description is : &quot; + result.get(&quot;description&quot;));</span>
-            }
-<span class="nc" id="L80">        return result;</span>
+<span class="nc" id="L70">            return null;</span>
+        }
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">        if (status.equals(FAILED) || status.equals(SUCCEEDED)) {</span>
+<span class="fc" id="L73">            return res;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (status.equals(Constant.UNKNOWN)) {</span>
+<span class="nc" id="L75">            throw new JobFailedException(&quot;Error code: &quot; + result.get(&quot;errorcode&quot;) +</span>
+<span class="nc" id="L76">                    &quot;description is : &quot; + result.get(&quot;description&quot;));</span>
+        }
+<span class="nc" id="L78">        return result;</span>
     }
 
 
-	/**
-	 * Waits for the result of the Operation and returns the result Asset
-	 * or returns null if the timeout in milliseconds expires before the
-	 * asset is available.
-	 *
-	 * @throws JobFailedException if Job fails
-	 * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
-	 */
-	@Override
-	public Map&lt;String,Object&gt; get(long timeout, TimeUnit timeUnit) {
-<span class="fc" id="L94">        long timeoutMillis=TimeUnit.MILLISECONDS.convert(timeout,timeUnit);</span>
-<span class="fc" id="L95">        long start = System.currentTimeMillis();</span>
-<span class="fc" id="L96">        int initialSleep = 100;</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
-<span class="fc" id="L98">            Map&lt;String,Object&gt; a = pollResult();</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (a != null){</span>
-<span class="fc" id="L100">                return (Map&lt;String,Object&gt;)a.get(&quot;result&quot;);</span>
+    /**
+     * Waits for the result of the Operation and returns the result Asset
+     * or returns null if the timeout in milliseconds expires before the
+     * asset is available.
+     *
+     * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
+     * @throws JobFailedException if Job fails
+     */
+    @Override
+    public Map&lt;String, Object&gt; get(long timeout, TimeUnit timeUnit) {
+<span class="fc" id="L92">        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);</span>
+<span class="fc" id="L93">        long start = System.currentTimeMillis();</span>
+<span class="fc" id="L94">        int initialSleep = 100;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
+<span class="fc" id="L96">            Map&lt;String, Object&gt; a = pollResult();</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (a != null) {</span>
+<span class="fc" id="L98">                return (Map&lt;String, Object&gt;) a.get(&quot;result&quot;);</span>
             }
             try {
-<span class="nc" id="L103">                Thread.sleep(initialSleep);</span>
-<span class="nc" id="L104">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L105">                throw new JobFailedException(&quot;Job failed with exception: &quot;+e.getCause(),e);</span>
-<span class="nc" id="L106">            }</span>
-<span class="nc" id="L107">            initialSleep *= 2;</span>
-<span class="nc" id="L108">        }</span>
-<span class="nc" id="L109">        return pollResult();</span>
-	}
+<span class="nc" id="L101">                Thread.sleep(initialSleep);</span>
+<span class="nc" id="L102">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L103">                throw new JobFailedException(&quot;Job failed with exception: &quot; + e.getCause(), e);</span>
+<span class="nc" id="L104">            }</span>
+<span class="nc" id="L105">            initialSleep *= 2;</span>
+<span class="nc" id="L106">        }</span>
+<span class="nc" id="L107">        return pollResult();</span>
+    }
 
-	@Override
-	public String getStatus() {
-<span class="fc" id="L114">		return this.status;</span>
-	}
-	@Override
-	public String getJobID() {
-<span class="nc" id="L118">		return &quot;MemoryJob:&quot;+Hex.toString(System.identityHashCode(this));</span>
-	}
+    @Override
+    public String getStatus() {
+<span class="fc" id="L112">        return this.status;</span>
+    }
+
+    @Override
+    public String getJobID() {
+<span class="nc" id="L117">        return &quot;MemoryJob:&quot; + Hex.toString(System.identityHashCode(this));</span>
+    }
 
 
 }

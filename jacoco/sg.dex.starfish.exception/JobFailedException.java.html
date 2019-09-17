@@ -2,23 +2,23 @@
 
 /**
  * Exception class representing a failure during invoke job execution.
- * 
+ * &lt;p&gt;
  * Intended for cases where the invoke was sucessfully launched, but terminated with
  * an error during the execution of the operation.
- * 
- * @author Mike
  *
+ * @author Mike
  */
 @SuppressWarnings(&quot;serial&quot;)
 public class JobFailedException extends RuntimeException {
 
 
-	public JobFailedException(String message, Exception e) {
-<span class="nc" id="L17">		super(message,e);</span>
-<span class="nc" id="L18">	}</span>
-	public JobFailedException(String message) {
-<span class="nc" id="L20">		super(message);</span>
-<span class="nc" id="L21">	}</span>
+    public JobFailedException(String message, Exception e) {
+<span class="nc" id="L16">        super(message, e);</span>
+<span class="nc" id="L17">    }</span>
+
+    public JobFailedException(String message) {
+<span class="nc" id="L20">        super(message);</span>
+<span class="nc" id="L21">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

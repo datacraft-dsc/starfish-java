@@ -3,17 +3,17 @@
 import sg.dex.starfish.impl.AAsset;
 
 /**
- * This is an abstract class which have common code required 
+ * This is an abstract class which have common code required
  * for RemoteAsset/RemoteBundle/RemoteOperation.
  * This class used to initialize the agent passed as an argument.
- *
  */
 public abstract class ARemoteAsset extends AAsset {
 
     protected RemoteAgent remoteAgent;
-    protected ARemoteAsset(String meta,RemoteAgent remoteAgent) {
+
+    protected ARemoteAsset(String meta, RemoteAgent remoteAgent) {
 <span class="nc" id="L15">        super(meta);</span>
-<span class="nc" id="L16">        this.remoteAgent=remoteAgent;</span>
+<span class="nc" id="L16">        this.remoteAgent = remoteAgent;</span>
 <span class="nc" id="L17">    }</span>
 
 }

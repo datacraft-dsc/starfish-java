@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  * @author Tom
  */
-public class SquidAsset extends AAsset implements  DataAsset{
+public class SquidAsset extends AAsset implements DataAsset {
 
 
     private final Ocean ocean;
@@ -53,7 +53,7 @@ public class SquidAsset extends AAsset implements  DataAsset{
 <span class="nc" id="L53">                    com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());</span>
 <span class="nc" id="L54">            DDO ddo = ocean.getAssetsAPI().resolve(squidDID);</span>
 
-<span class="nc" id="L56">           Map&lt;String,Object&gt; metaData =wrapDDOMeta(ddo);</span>
+<span class="nc" id="L56">            Map&lt;String, Object&gt; metaData = wrapDDOMeta(ddo);</span>
 
 <span class="nc" id="L58">            return create(JSON.toPrettyString(metaData), did, ddo, ocean);</span>
 <span class="nc" id="L59">        } catch (DIDFormatException e) {</span>
@@ -67,45 +67,48 @@ public class SquidAsset extends AAsset implements  DataAsset{
 
     /**
      * Method that wrap the squid DDO data  into starfish metadata as additional information
+     *
      * @param ddo squid ddo
      * @return map of metadata which have squid DDO information
      */
-    private static HashMap&lt;String, Object&gt;  wrapDDOMeta(DDO ddo) {
-<span class="nc" id="L74">        HashMap&lt;String, Object&gt; info = new HashMap&lt;&gt;();</span>
+    private static HashMap&lt;String, Object&gt; wrapDDOMeta(DDO ddo) {
+<span class="nc" id="L75">        HashMap&lt;String, Object&gt; info = new HashMap&lt;&gt;();</span>
         try {
-<span class="nc" id="L76">            info.put(&quot;ddoString&quot;, JSON.toMap(ddo.toJson()));</span>
-<span class="nc" id="L77">        } catch (JsonProcessingException e) {</span>
-<span class="nc" id="L78">            throw new IllegalArgumentException(e);</span>
-<span class="nc" id="L79">        }</span>
+<span class="nc" id="L77">            info.put(&quot;ddoString&quot;, JSON.toMap(ddo.toJson()));</span>
+<span class="nc" id="L78">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L79">            throw new IllegalArgumentException(e);</span>
+<span class="nc" id="L80">        }</span>
 
-<span class="nc" id="L81">        HashMap&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L82">        meta.put(&quot;type&quot;, &quot;dataset&quot;);</span>
-<span class="nc" id="L83">        meta.put(&quot;additionalInformation&quot;, info);</span>
+<span class="nc" id="L82">        HashMap&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L83">        meta.put(&quot;type&quot;, &quot;dataset&quot;);</span>
+<span class="nc" id="L84">        meta.put(&quot;additionalInformation&quot;, info);</span>
 
         // adding default provenance
-<span class="nc" id="L86">        String actId= UUID.randomUUID().toString();</span>
-<span class="nc" id="L87">        String agentId=UUID.randomUUID().toString();</span>
+<span class="nc" id="L87">        String actId = UUID.randomUUID().toString();</span>
+<span class="nc" id="L88">        String agentId = UUID.randomUUID().toString();</span>
 
-<span class="nc" id="L89">        Map&lt;String, Object&gt; provenanceData= ProvUtil.createPublishProvenance(actId,agentId);</span>
-<span class="nc" id="L90">        meta.put(&quot;provenance&quot;,provenanceData);</span>
+<span class="nc" id="L90">        Map&lt;String, Object&gt; provenanceData = ProvUtil.createPublishProvenance(actId, agentId);</span>
+<span class="nc" id="L91">        meta.put(&quot;provenance&quot;, provenanceData);</span>
 
-<span class="nc" id="L92">        return meta;</span>
+<span class="nc" id="L93">        return meta;</span>
     }
 
     /**
      * Method to get the Ocean reference
+     *
      * @return Ocean instance
      */
     public Ocean getOcean() {
-<span class="nc" id="L100">        return ocean;</span>
+<span class="nc" id="L102">        return ocean;</span>
     }
 
     /**
      * Method to get the Squid DDO
+     *
      * @return DDO ddo
      */
     public DDO getSquidDDO() {
-<span class="nc" id="L108">        return ddo;</span>
+<span class="nc" id="L111">        return ddo;</span>
     }
 
     /**
@@ -115,12 +118,12 @@ public class SquidAsset extends AAsset implements  DataAsset{
      */
     @Override
     public DID getAssetDID() {
-<span class="nc" id="L118">        return did;</span>
+<span class="nc" id="L121">        return did;</span>
     }
 
     @Override
     public boolean isDataAsset() {
-<span class="nc" id="L123">        return true;</span>
+<span class="nc" id="L126">        return true;</span>
     }
 
     /**
@@ -131,18 +134,19 @@ public class SquidAsset extends AAsset implements  DataAsset{
      */
     @Override
     public boolean isOperation() {
-<span class="nc" id="L134">        return false;</span>
+<span class="nc" id="L137">        return false;</span>
     }
+
     @Override
-    public InputStream getContentStream(){
+    public InputStream getContentStream() {
         // todo
-<span class="nc" id="L139">        throw new GenericException(&quot;Need to implement&quot;);</span>
+<span class="nc" id="L143">        throw new GenericException(&quot;Need to implement&quot;);</span>
     }
 
     @Override
     public long getContentSize() {
         // todo
-<span class="nc" id="L145">        throw new GenericException(&quot;Need to implement&quot;);</span>
+<span class="nc" id="L149">        throw new GenericException(&quot;Need to implement&quot;);</span>
     }
 
 

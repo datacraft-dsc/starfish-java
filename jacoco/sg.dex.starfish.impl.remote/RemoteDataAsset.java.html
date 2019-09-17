@@ -21,80 +21,81 @@ import java.util.Map;
 /**
  * Class representing a data asset managed via a remote agent.
  * *
+ *
  * @author Mike
  * @version 0.5
  */
 public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
 
-	protected RemoteDataAsset(String meta, RemoteAgent remoteAgent) {
-<span class="nc" id="L30">		super(meta,remoteAgent);</span>
-<span class="nc" id="L31">	}</span>
+    protected RemoteDataAsset(String meta, RemoteAgent remoteAgent) {
+<span class="nc" id="L31">        super(meta, remoteAgent);</span>
+<span class="nc" id="L32">    }</span>
 
-	/**
-	 * Creates a RemoteAsset with the given metadata on the specified remote agent
-	 * @param agent RemoteAgent on which to create the RemoteAsset
-	 *
-	 * @param meta Asset metadata which must be a valid JSON string
-	 * @return RemoteAsset
-	 */
-	public static RemoteDataAsset create(RemoteAgent agent, String meta) {
-<span class="nc" id="L41">		return new RemoteDataAsset(meta,agent);</span>
-	}
+    /**
+     * Creates a RemoteAsset with the given metadata on the specified remote agent
+     *
+     * @param agent RemoteAgent on which to create the RemoteAsset
+     * @param meta  Asset metadata which must be a valid JSON string
+     * @return RemoteAsset
+     */
+    public static RemoteDataAsset create(RemoteAgent agent, String meta) {
+<span class="nc" id="L42">        return new RemoteDataAsset(meta, agent);</span>
+    }
 
-	@Override
-	public boolean isDataAsset() {
-<span class="nc" id="L46">		return true;</span>
-	}
+    @Override
+    public boolean isDataAsset() {
+<span class="nc" id="L47">        return true;</span>
+    }
 
-	/**
-	 * Gets raw data corresponding to this Asset
-	 *
-	 * @throws AuthorizationException if requestor does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
-	 */
-	@Override
-	public InputStream getContentStream() {
-<span class="nc" id="L58">		URI uri = remoteAgent.getStorageURI(getAssetID());</span>
-<span class="nc" id="L59">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L60">		remoteAgent.addAuthHeaders(httpget);</span>
-<span class="nc" id="L61">		HttpResponse response = HTTP.execute(httpget);</span>
-<span class="nc" id="L62">		StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L63">		int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">		if (statusCode == 404) {</span>
-<span class="nc" id="L65">			throw new RemoteException(&quot;Asset with asset ID &quot;+this.getAssetID()+&quot;is not uploaded on  agent :DID &quot;+remoteAgent.getDID() +&quot;URL failed &quot; + uri);</span>
-		}
-<span class="nc bnc" id="L67" title="All 2 branches missed.">		if (statusCode == 200) {</span>
-<span class="nc" id="L68">			return HTTP.getContent(response);</span>
-		}
-<span class="nc" id="L70">		throw new RemoteException(&quot;Asset ID not found at for Asset : &quot; +getAssetID()+&quot; URI: &quot;+ uri);</span>
+    /**
+     * Gets raw data corresponding to this Asset
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    @Override
+    public InputStream getContentStream() {
+<span class="nc" id="L59">        URI uri = remoteAgent.getStorageURI(getAssetID());</span>
+<span class="nc" id="L60">        HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L61">        remoteAgent.addAuthHeaders(httpget);</span>
+<span class="nc" id="L62">        HttpResponse response = HTTP.execute(httpget);</span>
+<span class="nc" id="L63">        StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L64">        int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (statusCode == 404) {</span>
+<span class="nc" id="L66">            throw new RemoteException(&quot;Asset with asset ID &quot; + this.getAssetID() + &quot;is not uploaded on  agent :DID &quot; + remoteAgent.getDID() + &quot;URL failed &quot; + uri);</span>
+        }
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (statusCode == 200) {</span>
+<span class="nc" id="L69">            return HTTP.getContent(response);</span>
+        }
+<span class="nc" id="L71">        throw new RemoteException(&quot;Asset ID not found at for Asset : &quot; + getAssetID() + &quot; URI: &quot; + uri);</span>
 
-	}
+    }
 
 
-	@Override
-	public long getContentSize() {
-		try {
-<span class="nc" id="L78">			return remoteAgent.getContentStream(getAssetID()).available();</span>
-<span class="nc" id="L79">		} catch (IOException e) {</span>
-<span class="nc" id="L80">			throw  new GenericException(&quot;Exception occurred  for asset id :&quot;+getAssetID()+&quot; while finding getting the Content size :&quot;,e);</span>
-		}
-	}
+    @Override
+    public long getContentSize() {
+        try {
+<span class="nc" id="L79">            return remoteAgent.getContentStream(getAssetID()).available();</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            throw new GenericException(&quot;Exception occurred  for asset id :&quot; + getAssetID() + &quot; while finding getting the Content size :&quot;, e);</span>
+        }
+    }
 
-	@Override
-	public Map&lt;String,Object&gt; getParamValue() {
-<span class="nc" id="L86">		Map&lt;String,Object&gt; o=new HashMap&lt;&gt;();</span>
-		// pass the asset ID, i.e. hash of content
-<span class="nc" id="L88">		o.put(Constant.DID, getAssetID());</span>
-<span class="nc" id="L89">		return o;</span>
-	}
+    @Override
+    public Map&lt;String, Object&gt; getParamValue() {
+<span class="nc" id="L87">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+        // pass the asset ID, i.e. hash of content
+<span class="nc" id="L89">        o.put(Constant.DID, getAssetID());</span>
+<span class="nc" id="L90">        return o;</span>
+    }
 
-	@Override
-	public DID getAssetDID() {
-		// DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
-<span class="nc" id="L95">		DID agentDID=remoteAgent.getDID();</span>
-<span class="nc" id="L96">		return agentDID.withPath(getAssetID());</span>
-	}
+    @Override
+    public DID getAssetDID() {
+        // DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
+<span class="nc" id="L96">        DID agentDID = remoteAgent.getDID();</span>
+<span class="nc" id="L97">        return agentDID.withPath(getAssetID());</span>
+    }
 
 
 }

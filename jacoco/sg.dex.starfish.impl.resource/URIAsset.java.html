@@ -42,8 +42,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static URIAsset create(URI uri,String metaString) {
-<span class="fc" id="L46">        return new URIAsset(metaString,uri);</span>
+    public static URIAsset create(URI uri, String metaString) {
+<span class="fc" id="L46">        return new URIAsset(metaString, uri);</span>
     }
 
     /**
@@ -53,7 +53,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-<span class="fc" id="L56">        return create(uri,(Map&lt;String,Object&gt;)null);</span>
+<span class="fc" id="L56">        return create(uri, (Map&lt;String, Object&gt;) null);</span>
     }
 
     /**
@@ -65,19 +65,19 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
-    public static URIAsset create(URI uri, Map&lt;String,Object&gt; metaData) {
-<span class="fc" id="L69">        return create(uri,JSON.toPrettyString(buildMetaData(metaData,uri)));</span>
+    public static URIAsset create(URI uri, Map&lt;String, Object&gt; metaData) {
+<span class="fc" id="L69">        return create(uri, JSON.toPrettyString(buildMetaData(metaData, uri)));</span>
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
-     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                                default value will be overridden.
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map&lt;String,Object&gt; buildMetaData( Map&lt;String,Object&gt; metaData, URI uri) {
+    private static Map&lt;String, Object&gt; buildMetaData(Map&lt;String, Object&gt; metaData, URI uri) {
 
 <span class="fc" id="L82">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L83">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
@@ -146,13 +146,13 @@ public class URIAsset extends AAsset implements DataAsset {
 <span class="nc" id="L146">        throw new UnsupportedOperationException(&quot;Can't get DID for asset of type &quot; + this.getClass());</span>
     }
 
-    public URI getSource(){
+    public URI getSource() {
 <span class="nc" id="L150">        return uri;</span>
     }
-    
+
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="nc" id="L155">        return create(uri,newMeta);</span>
+<span class="nc" id="L155">        return create(uri, newMeta);</span>
     }
 
 }

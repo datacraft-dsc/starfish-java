@@ -40,41 +40,43 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * This method to get the listing id associated with the this purchase
-     *This method will return the listing id
+     * This method will return the listing id
+     *
      * @return Listing id
      */
     public String getListingId() {
-<span class="fc" id="L47">        return meta.get(LISTING_ID).toString();</span>
+<span class="fc" id="L48">        return meta.get(LISTING_ID).toString();</span>
     }
 
     /**
      * This method is  to get the Purchase ID
-     *This method will return the purchase id
+     * This method will return the purchase id
+     *
      * @return purchase id
      */
     public String getId() {
-<span class="nc" id="L56">        return id;</span>
+<span class="nc" id="L58">        return id;</span>
     }
 
 
     @Override
     public Listing getListing() {
-<span class="nc" id="L62">        return agent.getListing(meta.get(LISTING_ID).toString());</span>
+<span class="nc" id="L64">        return agent.getListing(meta.get(LISTING_ID).toString());</span>
     }
 
     @Override
     public String status() {
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
-<span class="nc" id="L72">        return meta;</span>
+<span class="nc" id="L74">        return meta;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L77">        return &quot;Purchase: &quot; + JSON.toString(meta);</span>
+<span class="nc" id="L79">        return &quot;Purchase: &quot; + JSON.toString(meta);</span>
     }
 
 }

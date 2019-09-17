@@ -11,35 +11,34 @@ import java.math.BigInteger;
  * Class implementing a Squid Account
  *
  * @author Tom
- *
  */
 public class SquidAccount extends AAccount {
 
-	protected final AccountsAPI accountAPI;
-	protected final Account account;
-	
-	public SquidAccount(AccountsAPI accountsAPI, Account account) {
-<span class="nc" id="L22">		super(account.getAddress());</span>
-<span class="nc" id="L23">		this.accountAPI=accountsAPI;</span>
-<span class="nc" id="L24">		this.account=account;</span>
-<span class="nc" id="L25">	}</span>
-	
-	public String getAddress() {
-<span class="nc" id="L28">		return account.getAddress();</span>
-	}
-	
-	public static SquidAccount create(Ocean ocean, Account account) {
-<span class="nc" id="L32">		AccountsAPI accountAPI=ocean.getAccountsAPI();</span>
-<span class="nc" id="L33">		return new SquidAccount(accountAPI,account);</span>
-	}
+    protected final AccountsAPI accountAPI;
+    protected final Account account;
 
-	public BigInteger getEthBalance() {
-<span class="nc" id="L37">		return account.getBalance().getEth();</span>
-	}
-	
-	public BigInteger getOceanBalance() {
-<span class="nc" id="L41">		return account.getBalance().getDrops();</span>
-	}
+    public SquidAccount(AccountsAPI accountsAPI, Account account) {
+<span class="nc" id="L21">        super(account.getAddress());</span>
+<span class="nc" id="L22">        this.accountAPI = accountsAPI;</span>
+<span class="nc" id="L23">        this.account = account;</span>
+<span class="nc" id="L24">    }</span>
+
+    public String getAddress() {
+<span class="nc" id="L27">        return account.getAddress();</span>
+    }
+
+    public static SquidAccount create(Ocean ocean, Account account) {
+<span class="nc" id="L31">        AccountsAPI accountAPI = ocean.getAccountsAPI();</span>
+<span class="nc" id="L32">        return new SquidAccount(accountAPI, account);</span>
+    }
+
+    public BigInteger getEthBalance() {
+<span class="nc" id="L36">        return account.getBalance().getEth();</span>
+    }
+
+    public BigInteger getOceanBalance() {
+<span class="nc" id="L40">        return account.getBalance().getDrops();</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -14,24 +14,24 @@ import java.util.Map;
  */
 <span class="nc" id="L15">public final class RemoteAgentConfig {</span>
 
-    public static RemoteAgent getRemoteAgent(String ddoString,DID did,String userName,String password){
+    public static RemoteAgent getRemoteAgent(String ddoString, DID did, String userName, String password) {
         // getting the default Ocean instance
 <span class="nc" id="L19">        Ocean ocean = Ocean.connect();</span>
         // creating unique DID
 
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        did = (did== null) ? DID.createRandom():did;</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
         // registering the DID and DDO
 <span class="nc" id="L25">        ocean.installLocalDDO(did, ddoString);</span>
 
         //Creating remote Account
-<span class="nc" id="L28">        Map&lt;String,Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L29">        credentialMap.put(&quot;username&quot;,userName);</span>
-<span class="nc" id="L30">        credentialMap.put(&quot;password&quot;,password);</span>
+<span class="nc" id="L28">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L29">        credentialMap.put(&quot;username&quot;, userName);</span>
+<span class="nc" id="L30">        credentialMap.put(&quot;password&quot;, password);</span>
 
 <span class="nc" id="L32">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
         // creating a Remote agent instance for given Ocean and DID
-<span class="nc" id="L34">        return RemoteAgent.create(ocean, did,account);</span>
+<span class="nc" id="L34">        return RemoteAgent.create(ocean, did, account);</span>
     }
 
 }

@@ -9,60 +9,60 @@ import java.util.stream.Collectors;
 /**
  * Class representing an Account in the Ocean Ecosystem
  * &lt;p&gt;
- *     This class include method to get the accoutn ID,
- *     get the credential.
+ * This class include method to get the accoutn ID,
+ * get the credential.
  * &lt;/p&gt;
  *
  * @author Tom
  */
 public abstract class AAccount implements Account {
 
-	protected String id;
-	private Map&lt;String, Object&gt; credentials;
+    protected String id;
+    private Map&lt;String, Object&gt; credentials;
 
-	/**
-	 * Create an AAccount with the provided ID
-	 *
-	 * @param id The identifier for this account
-	 */
-<span class="nc" id="L28">	protected AAccount(String id) {</span>
-<span class="nc" id="L29">		this.id=id;</span>
-<span class="nc" id="L30">		this.credentials = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L31">	}</span>
+    /**
+     * Create an AAccount with the provided ID
+     *
+     * @param id The identifier for this account
+     */
+<span class="nc" id="L28">    protected AAccount(String id) {</span>
+<span class="nc" id="L29">        this.id = id;</span>
+<span class="nc" id="L30">        this.credentials = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L31">    }</span>
 
-<span class="nc" id="L33">	protected AAccount(String id, Map&lt;String, Object&gt; credentials) {</span>
-<span class="nc" id="L34">		this.id=id;</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">		this.credentials = (credentials == null) ? new HashMap&lt;&gt;() : credentials;</span>
-<span class="nc" id="L36">	}</span>
+<span class="nc" id="L33">    protected AAccount(String id, Map&lt;String, Object&gt; credentials) {</span>
+<span class="nc" id="L34">        this.id = id;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        this.credentials = (credentials == null) ? new HashMap&lt;&gt;() : credentials;</span>
+<span class="nc" id="L36">    }</span>
 
-	@Override
-	public String getID() {
-<span class="nc" id="L40">		return id;</span>
-	}
+    @Override
+    public String getID() {
+<span class="nc" id="L40">        return id;</span>
+    }
 
-        @Override
-	public Map&lt;String,Object&gt; getCredentials() {
-		// deep cloning the map
-<span class="nc" id="L46">		return  credentials.entrySet().stream()</span>
-<span class="nc" id="L47">			.collect(Collectors.toMap(e -&gt; e.getKey(),</span>
-<span class="nc" id="L48">						  e -&gt; e.getValue()));</span>
-        }
+    @Override
+    public Map&lt;String, Object&gt; getCredentials() {
+        // deep cloning the map
+<span class="nc" id="L46">        return credentials.entrySet().stream()</span>
+<span class="nc" id="L47">                .collect(Collectors.toMap(e -&gt; e.getKey(),</span>
+<span class="nc" id="L48">                        e -&gt; e.getValue()));</span>
+    }
 
-	@Override
-	public String toString() {
-<span class="nc" id="L53">		final StringBuilder tmp = new StringBuilder();</span>
-<span class="nc" id="L54">		tmp.append(getClass().getName());</span>
-<span class="nc" id="L55">		tmp.append(&quot;:&quot;);</span>
-<span class="nc" id="L56">		tmp.append(id);</span>
-<span class="nc" id="L57">		tmp.append(&quot;{&quot;);</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">		for (Map.Entry&lt;String, Object&gt; entry : credentials.entrySet()) {</span>
-<span class="nc" id="L59">			tmp.append(entry.getKey());</span>
-<span class="nc" id="L60">			tmp.append(&quot;=&quot;);</span>
-<span class="nc" id="L61">			tmp.append(entry.getValue().toString());</span>
-<span class="nc" id="L62">			tmp.append(&quot;,&quot;);</span>
-<span class="nc" id="L63">		}</span>
-<span class="nc" id="L64">		tmp.append(&quot;}&quot;);</span>
-<span class="nc" id="L65">		return tmp.toString();</span>
-	}
+    @Override
+    public String toString() {
+<span class="nc" id="L53">        final StringBuilder tmp = new StringBuilder();</span>
+<span class="nc" id="L54">        tmp.append(getClass().getName());</span>
+<span class="nc" id="L55">        tmp.append(&quot;:&quot;);</span>
+<span class="nc" id="L56">        tmp.append(id);</span>
+<span class="nc" id="L57">        tmp.append(&quot;{&quot;);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; entry : credentials.entrySet()) {</span>
+<span class="nc" id="L59">            tmp.append(entry.getKey());</span>
+<span class="nc" id="L60">            tmp.append(&quot;=&quot;);</span>
+<span class="nc" id="L61">            tmp.append(entry.getValue().toString());</span>
+<span class="nc" id="L62">            tmp.append(&quot;,&quot;);</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">        tmp.append(&quot;}&quot;);</span>
+<span class="nc" id="L65">        return tmp.toString();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -4,26 +4,27 @@
  * Exception class representing invalid access permission
  *
  * @author Tom
- *
  */
 @SuppressWarnings(&quot;serial&quot;)
 public class AuthorizationException extends RuntimeException {
-	/**
-	 * API to create Authorization Exception instance
-	 * @param message message tht need to pass.
-	 * @param e Exception
-	 */
-	public AuthorizationException(String message, Exception e) {
-<span class="nc" id="L17">		super(message,e);</span>
-<span class="nc" id="L18">	}</span>
+    /**
+     * API to create Authorization Exception instance
+     *
+     * @param message message tht need to pass.
+     * @param e       Exception
+     */
+    public AuthorizationException(String message, Exception e) {
+<span class="nc" id="L17">        super(message, e);</span>
+<span class="nc" id="L18">    }</span>
 
-	/**
-	 * API to create Authorization Exception instance
-	 * @param message message need to pass for the exception
-	 */
-	public AuthorizationException(String message) {
-<span class="nc" id="L25">		super(message);</span>
-<span class="nc" id="L26">	}</span>
+    /**
+     * API to create Authorization Exception instance
+     *
+     * @param message message need to pass for the exception
+     */
+    public AuthorizationException(String message) {
+<span class="nc" id="L26">        super(message);</span>
+<span class="nc" id="L27">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

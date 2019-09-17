@@ -15,7 +15,6 @@ import java.util.*;
 import static sg.dex.starfish.constant.Constant.*;
 
 
-
 /**
  * Utility class for StarFish
  * This class has methods for creating random hex string,coerces argument to respective type,
@@ -24,9 +23,10 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Mike
  * @version 0.5
  */
-<span class="nc" id="L27">public class Utils {</span>
+<span class="nc" id="L26">public class Utils {</span>
 
-<span class="fc" id="L29">    private static List&lt;String&gt; assetType = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L28">    private static List&lt;String&gt; assetType = new ArrayList&lt;&gt;();</span>
+
     static {
 <span class="fc" id="L31">        assetType.add(BUNDLE);</span>
 <span class="fc" id="L32">        assetType.add(OPERATION);</span>
@@ -160,7 +160,7 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A map containing the key keys and values
      * @throws IllegalArgumentException if mapOf has odd number of arguments
      */
-	@SuppressWarnings({&quot;unchecked&quot;})
+    @SuppressWarnings({&quot;unchecked&quot;})
     public static &lt;K, V&gt; Map&lt;K, V&gt; mapOf(Object... params) {
 <span class="fc" id="L165">        int len = params.length;</span>
 <span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if ((len &amp; 1) != 0)</span>
@@ -219,68 +219,70 @@ import static sg.dex.starfish.constant.Constant.*;
     /**
      * API to validate the meta data mandatory attribute.
      * If any mandatory attribute is missing it will throw StarfishValidationException
+     *
      * @param metaData need to be validated
      * @return true if valid metadata
      * @throws StarfishValidationException for exception
      */
     public static boolean validateAssetMetaData(String metaData) {
-<span class="nc" id="L227">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
+<span class="nc" id="L228">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
 
-<span class="nc bnc" id="L229" title="All 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
 
-<span class="nc bnc" id="L231" title="All 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
-<span class="nc" id="L232">            throw new StarfishValidationException(&quot;Type is mandatory for creating Asset.It cannot be null or Empty&quot;);</span>
+<span class="nc bnc" id="L232" title="All 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
+<span class="nc" id="L233">            throw new StarfishValidationException(&quot;Type is mandatory for creating Asset.It cannot be null or Empty&quot;);</span>
         }
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (!assetType.contains(type)) {</span>
-<span class="nc" id="L235">            throw new StarfishValidationException(&quot;Type is not a valid assetType.It should be operation,bundle,dataset&quot;);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (!assetType.contains(type)) {</span>
+<span class="nc" id="L236">            throw new StarfishValidationException(&quot;Type is not a valid assetType.It should be operation,bundle,dataset&quot;);</span>
         }
 
 
-<span class="nc" id="L239">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
+<span class="nc" id="L240">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
 
-<span class="nc" id="L241">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
+<span class="nc" id="L242">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
-<span class="nc" id="L244">            throw new StarfishValidationException(&quot;Not a valid asset metadata, one or few mandatory is missing&quot;);</span>
-<span class="nc bnc" id="L245" title="All 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
-<span class="nc" id="L246">            throw new StarfishValidationException(&quot;Mandatory attribute missing : ,contents attribute is mandatory for bundle attribute&quot;);</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
+<span class="nc" id="L245">            throw new StarfishValidationException(&quot;Not a valid asset metadata, one or few mandatory is missing&quot;);</span>
+<span class="nc bnc" id="L246" title="All 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
+<span class="nc" id="L247">            throw new StarfishValidationException(&quot;Mandatory attribute missing : ,contents attribute is mandatory for bundle attribute&quot;);</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
             // for bundle attribute params and results is mandatory
-<span class="nc" id="L249">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
-<span class="nc bnc" id="L250" title="All 4 branches missed.">            if (operationMap.get(PARAMS) == null || operationMap.get(&quot;results&quot;) == null) {</span>
-<span class="nc" id="L251">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
+<span class="nc" id="L250">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
+<span class="nc bnc" id="L251" title="All 4 branches missed.">            if (operationMap.get(PARAMS) == null || operationMap.get(&quot;results&quot;) == null) {</span>
+<span class="nc" id="L252">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
             }
-<span class="nc bnc" id="L253" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
-<span class="nc" id="L254">            throw new StarfishValidationException(&quot;Mandatory attribute missing :,either contentType or size  attribute is missing in dataset asset&quot;);</span>
+<span class="nc bnc" id="L254" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
+<span class="nc" id="L255">            throw new StarfishValidationException(&quot;Mandatory attribute missing :,either contentType or size  attribute is missing in dataset asset&quot;);</span>
         }
 
-<span class="nc" id="L257">        return true;</span>
+<span class="nc" id="L258">        return true;</span>
 
     }
 
 
     /**
      * API to get the mandatory attribute list
+     *
      * @return list of String
      */
     private static List&lt;String&gt; getMadatoryAttribute() {
-<span class="nc" id="L267">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L268">        mandatoryList.add(&quot;type&quot;);</span>
+<span class="nc" id="L269">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L270">        mandatoryList.add(&quot;type&quot;);</span>
         //  mandatoryList.add(&quot;name&quot;);
         //mandatoryList.add(&quot;license&quot;);
-<span class="nc" id="L271">        mandatoryList.add(&quot;dateCreated&quot;);</span>
+<span class="nc" id="L273">        mandatoryList.add(&quot;dateCreated&quot;);</span>
         // mandatoryList.add(&quot;author&quot;);
-<span class="nc" id="L273">        return mandatoryList;</span>
+<span class="nc" id="L275">        return mandatoryList;</span>
     }
-    
+
     /**
      * Helper function to hide checked exceptions
      */
-	@SuppressWarnings(&quot;unchecked&quot;)
-	public static &lt;T extends Throwable&gt; T sneakyThrow(Throwable t) throws T {
-<span class="nc" id="L281">		throw (T) t;</span>
-	}
-	
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public static &lt;T extends Throwable&gt; T sneakyThrow(Throwable t) throws T {
+<span class="nc" id="L283">        throw (T) t;</span>
+    }
+
     /**
      * Merges two metadata maps.
      *
@@ -289,13 +291,13 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A new map containing the merged metadata
      */
     public Map&lt;String, Object&gt; mergeMeta(Map&lt;String, Object&gt; a, Map&lt;String, Object&gt; b) {
-<span class="nc" id="L292">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">        if (b != null) {</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
-<span class="nc" id="L295">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L296">            }</span>
+<span class="nc" id="L294">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (b != null) {</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
+<span class="nc" id="L297">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L298">            }</span>
         }
-<span class="nc" id="L298">        return ob;</span>
+<span class="nc" id="L300">        return ob;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
