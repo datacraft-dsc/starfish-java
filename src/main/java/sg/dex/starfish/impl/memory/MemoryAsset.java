@@ -6,13 +6,12 @@
  */
 package sg.dex.starfish.impl.memory;
 
-import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.DATE_CREATED;
-import static sg.dex.starfish.constant.Constant.ID;
-import static sg.dex.starfish.constant.Constant.OCTET_STREAM;
-import static sg.dex.starfish.constant.Constant.SIZE;
-import static sg.dex.starfish.constant.Constant.TYPE;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -21,12 +20,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.JSON;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory data asset.

@@ -1,14 +1,11 @@
 package sg.dex.starfish;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import sg.dex.starfish.util.DID;
 
 import java.util.Map;
 
-import org.junit.Test;
-
-import sg.dex.starfish.util.DID;
+import static org.junit.Assert.*;
 
 public class TestDDO {
 

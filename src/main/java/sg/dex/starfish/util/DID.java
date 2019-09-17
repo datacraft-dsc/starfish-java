@@ -1,10 +1,10 @@
 package sg.dex.starfish.util;
 
+import sg.dex.starfish.constant.Constant;
+
 import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import sg.dex.starfish.constant.Constant;
 
 /**
  * Class representing a valid W3C DID

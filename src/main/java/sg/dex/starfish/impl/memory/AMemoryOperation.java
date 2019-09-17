@@ -1,10 +1,10 @@
 package sg.dex.starfish.impl.memory;
 
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Class representing a local in-memory operation asset. Operations are executed in 

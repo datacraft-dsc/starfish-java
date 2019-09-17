@@ -1,9 +1,11 @@
 package sg.dex.starfish.impl.file;
 
-import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.OCTET_STREAM;
-import static sg.dex.starfish.constant.Constant.TYPE;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,12 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Map;
 
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class exposing a file on the local file system as an Ocean asset

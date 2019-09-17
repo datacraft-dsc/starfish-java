@@ -8,7 +8,6 @@ import org.junit.runners.JUnit4;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;

@@ -1,17 +1,9 @@
 package sg.dex.starfish.impl.resource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -22,6 +14,13 @@ import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
 import sg.dex.starfish.util.JSON;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A specialised asset class that references data at a given URI.

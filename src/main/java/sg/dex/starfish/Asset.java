@@ -1,10 +1,10 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
+
+import java.util.Map;
 
 /**
  * Interface representing an Asset. An Asset in Starfish is an entity in the Ocean Ecosystem

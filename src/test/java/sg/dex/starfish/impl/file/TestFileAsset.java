@@ -1,9 +1,12 @@
 package sg.dex.starfish.impl.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,14 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.junit.Test;
-
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {

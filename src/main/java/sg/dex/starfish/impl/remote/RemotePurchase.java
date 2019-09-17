@@ -6,7 +6,8 @@ import sg.dex.starfish.Purchase;
 import java.util.HashMap;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.LISTING_ID;
+import static sg.dex.starfish.constant.Constant.STATUS;
 
 /**
  * This class representing an purchase managed via a remote agent.

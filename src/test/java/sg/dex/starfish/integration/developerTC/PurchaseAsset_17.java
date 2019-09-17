@@ -71,7 +71,6 @@ public class PurchaseAsset_17 {
         data2.put("id", listing.getMetaData().get("id"));
         data2.put(STATUS, UNPUBLISHED);
         listing =remoteAgent.updateListing(data2);
-        //System.out.println(listing.getId());
        Map<String,Object> purchaseData = new HashMap<>();
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
 
