@@ -1,11 +1,15 @@
 package sg.dex.starfish.impl.operations;
 
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,24 +23,34 @@ public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation
         super(meta, memoryAgent);
     }
 
-    public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) throws IOException {
-        ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/test_metadata.json");
+    public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) {
+        ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/prime_asset_metadata.json");
         return new FindPrime_JsonI_JsonO(resourceAsset.getMetadataString(), memoryAgent);
     }
 
 
-    private Map<String, Object> doCompute(Object input) {
+    private Map<String, Object> doCompute(final Object input) {
         Integer num = (Integer.parseInt(input.toString()));
 
-        StringBuilder res = new StringBuilder();
+        byte[] result = new byte[4];
 
-        for (int i = 2; i <= num; i++) {
-            if (isPrime(i))
-                res.append(i + "  ");
+        int count=0;
+        for (int i = 2; i < num; i++) {
+            if (isPrime(i)) {
+                result[count] = (byte) i;
+                count++;
+            }
+
         }
-        Map<String, Object> response = new HashMap<>();
-        response.put("output", res);
-        return response;
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("status", Constant.SUCCEEDED);
+        Asset res =MemoryAsset.create(result);
+        memoryAgent.registerAsset(res);
+        resultMap.put("did", res.getAssetID());
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("result",resultMap);
+        return returnMap;
     }
 
     @Override

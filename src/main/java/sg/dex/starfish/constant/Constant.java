@@ -43,6 +43,9 @@ public class Constant {
     public static final String JOBS = "/jobs";
     public static final String JOB_ID = "jobid";
     public static final String STATUS = "status";
+    public static final String RUNNING="running";
+    public static final String FAILED="failed";
+    public static final String UNKNOWN="unknown";
 
 
     //-------AUTH -----------
@@ -82,5 +85,7 @@ public class Constant {
     public static final String DEFAULT_AUTHOR="Test_author";
     public static final String DEFAULT_DATE_CREATED="2012-10-10T17:00:000Z";
     public static final Object DEFAULT_PRICE=5;
+
+
 
 }

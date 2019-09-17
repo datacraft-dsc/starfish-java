@@ -11,7 +11,7 @@
 	"type":"operation",
  "operation":{
      "modes":["sync","async"],
-		 "params":{"to-hash":{"type":"json",
+		 "params":{"to-hash":{"type":"asset",
                           "position":0,
                           "required":true}},
 		 "results":{"keccak256":{"type":"json"},

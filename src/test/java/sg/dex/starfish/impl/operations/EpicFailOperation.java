@@ -1,9 +1,11 @@
 package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,14 +27,21 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 	 * @return new instance of EpicFailOperation
 	 */
 	public static EpicFailOperation create(String meta) {
-		//String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
 		MemoryAgent memoryAgent = MemoryAgent.create();
 		return new EpicFailOperation(meta,memoryAgent);
 	}
 
 	@Override
 	public Map<String, Object> compute(Map<String, Object> params) {
-		throw new Error ("Always failing operation");
+		Map<String,Object> res = new HashMap<>();
+		Map<String,Object> result = new HashMap<>();
+
+		res.put("description","Unable to access asset did:op:4d517500da0acb0d65a716f61330969334630363ce4a6a9d39691026ac7908fa");
+		res.put("status",Constant.FAILED);
+		res.put("errorcode","8004");
+		result.put("result",res);
+
+		return result;
 	}
 
 }

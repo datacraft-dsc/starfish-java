@@ -1,44 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import static sg.dex.starfish.constant.Constant.ACCEPTED;
-import static sg.dex.starfish.constant.Constant.ASYNC;
-import static sg.dex.starfish.constant.Constant.BUNDLE;
-import static sg.dex.starfish.constant.Constant.COMPLETED;
-import static sg.dex.starfish.constant.Constant.DATA;
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.FILE;
-import static sg.dex.starfish.constant.Constant.ID;
-import static sg.dex.starfish.constant.Constant.INVOKE_ASYNC;
-import static sg.dex.starfish.constant.Constant.INVOKE_SYNC;
-import static sg.dex.starfish.constant.Constant.IN_PROGRESS;
-import static sg.dex.starfish.constant.Constant.JOBS;
-import static sg.dex.starfish.constant.Constant.JOB_ID;
-import static sg.dex.starfish.constant.Constant.LISTING_ID;
-import static sg.dex.starfish.constant.Constant.LISTING_URL;
-import static sg.dex.starfish.constant.Constant.MODE;
-import static sg.dex.starfish.constant.Constant.OPERATION;
-import static sg.dex.starfish.constant.Constant.PARAMS;
-import static sg.dex.starfish.constant.Constant.PASSWORD;
-import static sg.dex.starfish.constant.Constant.PURCHASE_URL;
-import static sg.dex.starfish.constant.Constant.SCHEDULED;
-import static sg.dex.starfish.constant.Constant.STARTED;
-import static sg.dex.starfish.constant.Constant.STATUS;
-import static sg.dex.starfish.constant.Constant.SUCCEEDED;
-import static sg.dex.starfish.constant.Constant.SYNC;
-import static sg.dex.starfish.constant.Constant.TOKEN;
-import static sg.dex.starfish.constant.Constant.TYPE;
-import static sg.dex.starfish.constant.Constant.USER;
-import static sg.dex.starfish.constant.Constant.USER_NAME;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -57,28 +18,23 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
-
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.Invokable;
-import sg.dex.starfish.Job;
-import sg.dex.starfish.Listing;
-import sg.dex.starfish.MarketAgent;
-import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Operation;
-import sg.dex.starfish.Purchase;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.exception.StarfishValidationException;
-import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.*;
+import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Params;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * This class represent the Remote Agent.
@@ -439,6 +395,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 		// asset already registered then only upload
 		if (isAssetRegistered(a.getAssetID())) {
+
 			remoteAsset = getAsset(a.getAssetID());
 			uploadAssetContent(a);
 		}
@@ -712,22 +669,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					Map<String, Object> result = JSON.toMap(body);
-					String status = (String) result.get(STATUS);
-					if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + body);
-					if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
-							|| status.equals(SCHEDULED)) {
-						return null; // no result yet
-					}
-					if (status.equals(COMPLETED) || status.equals(SUCCEEDED)) {
+					return result;
 
-						return result;
-					} else if (status.equals("error")) {
-						throw new JobFailedException("Error code: " + result.get("errorcode") +
-								"description is : " + result.get("description"));
-					} else {
-
-						throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-					}
 				} else {
 					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
 				}
@@ -749,11 +692,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	/**
 	 * Invokes request on this RemoteAgent
 	 *
-	 * @param request Invoke request
-	 * @param assetID assetID
+	 * @param operation operation
+	 * @param params params
 	 * @return Job for this request
 	 * @throws RuntimeException for protocol errors
 	 */
+
 	private Job invokeImpl(Operation operation,Map<String, Object> params) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 

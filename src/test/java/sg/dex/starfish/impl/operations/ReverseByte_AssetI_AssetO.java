@@ -2,11 +2,13 @@ package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Utils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,7 +42,7 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 	 * @return
 	 */
 	private Map<String, Object> doCompute(Asset asset) {
-		
+
 		byte[] bytes = asset.getContent();
 		int length = bytes.length;
 		for (int i = 0; i < (length / 2); i++) {
@@ -48,9 +50,15 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
 			bytes[i] = bytes[length - i - 1];
 			bytes[length - i - 1] = temp;
 		}
-		Asset result = MemoryAsset.create(bytes);
+		Map<String, Object> result = new HashMap<>();
+		Asset res = MemoryAsset.create(bytes);
+		result.put("status", Constant.SUCCEEDED);
+		memoryAgent.registerAsset(res);
+		result.put("did", res.getAssetID());
 
-		return Utils.mapOf("output", result);
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("result",result);
+		return resultMap;
 	}
 
 	@Override

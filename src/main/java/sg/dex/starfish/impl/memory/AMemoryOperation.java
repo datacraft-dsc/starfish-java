@@ -30,25 +30,24 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 		// pool)
 		// But this should be sufficient for most cases.
 		final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
-
+		MemoryJob memoryJob = MemoryJob.create(future);
 		MemoryAgent.THREAD_POOL.submit(() -> {
 			try {
 				Map<String, Object> result = compute(params);
-				future.complete(result); // success
+				if(future.complete(result)){
+                }
 			}
 			catch (Throwable t) {
-				future.completeExceptionally(t); // failure
+				future.completeExceptionally(t);
 			}
-			assert (future.isDone());
 		});
 
-		MemoryJob memoryJob = MemoryJob.create(future);
 		return memoryJob;
 	}
 
 	@Override
 	public final Map<String, Object> invokeResult(Map<String, Object> params) {
-		return compute(params);
+		return (Map<String, Object> )compute(params).get("result");
 	}
 
 	@Override

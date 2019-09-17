@@ -62,7 +62,7 @@ public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
 		if (statusCode == 404) {
-			throw new RemoteException("Asset ID not found at: " + uri);
+			throw new RemoteException("Asset with asset ID "+this.getAssetID()+"is not uploaded on  agent :DID "+remoteAgent.getDID() +"URL failed " + uri);
 		}
 		if (statusCode == 200) {
 			return HTTP.getContent(response);

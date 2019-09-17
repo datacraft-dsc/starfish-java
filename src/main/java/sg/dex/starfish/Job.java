@@ -1,15 +1,15 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.util.Utils;
+
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.Utils;
 
 /**
  * Interface representing an asynchronous Job execution.
@@ -175,5 +175,15 @@ public interface Job extends Future<Map<String, Object>> {
 		// cancellation
 		return false;
 	}
+
+
+	/**
+	 * Gets the status of the Job associated with this Operation.
+	 * As mentioned in DEP6 ,the status of job can be:
+	 *      scheduled ,running,succeeded,failed,unknown
+	 * @return The the status of the Job
+	 */
+	public String getStatus();
+
 
 }
