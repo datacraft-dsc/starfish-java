@@ -8,7 +8,7 @@ import sg.dex.starfish.impl.AListing;
 import java.util.HashMap;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.ID;
 
 /**
  * Class representing an Listing managed via a remote agent.

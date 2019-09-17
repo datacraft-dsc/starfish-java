@@ -6,7 +6,8 @@ import sg.dex.starfish.Purchase;
 import java.util.HashMap;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.LISTING_ID;
+import static sg.dex.starfish.constant.Constant.STATUS;
 
 /**
  * This class representing an purchase managed via a remote agent.
@@ -22,7 +23,7 @@ public class RemotePurchase implements Purchase {
 
 
     // local map to cache the listing data
-<span class="nc" id="L25">    private static Map&lt;String, Object&gt; metaDataCache = null;</span>
+<span class="nc" id="L26">    private static Map&lt;String, Object&gt; metaDataCache = null;</span>
     // remote agent reference
     private RemoteAgent remoteAgent;
     // listing id
@@ -36,10 +37,10 @@ public class RemotePurchase implements Purchase {
      * @param remoteAgent remote Agent
      * @param id id
      */
-<span class="nc" id="L39">    private RemotePurchase(RemoteAgent remoteAgent, String id) {</span>
-<span class="nc" id="L40">        this.remoteAgent = remoteAgent;</span>
-<span class="nc" id="L41">        this.purchase_id = id;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L40">    private RemotePurchase(RemoteAgent remoteAgent, String id) {</span>
+<span class="nc" id="L41">        this.remoteAgent = remoteAgent;</span>
+<span class="nc" id="L42">        this.purchase_id = id;</span>
+<span class="nc" id="L43">    }</span>
 
 
     /**
@@ -50,42 +51,42 @@ public class RemotePurchase implements Purchase {
      * @return RemotePurchase instance
      */
     public static RemotePurchase create(RemoteAgent agent, String id) {
-<span class="nc" id="L53">        RemotePurchase remotePurchase = new RemotePurchase(agent, id);</span>
-<span class="nc" id="L54">        initializeCache();</span>
-<span class="nc" id="L55">        return remotePurchase;</span>
+<span class="nc" id="L54">        RemotePurchase remotePurchase = new RemotePurchase(agent, id);</span>
+<span class="nc" id="L55">        initializeCache();</span>
+<span class="nc" id="L56">        return remotePurchase;</span>
     }
 
     /**
      * This method to create the local cache when the Purchase instance is create
      */
     private static void initializeCache() {
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (null == metaDataCache) {</span>
-<span class="nc" id="L63">            metaDataCache = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (null == metaDataCache) {</span>
+<span class="nc" id="L64">            metaDataCache = new HashMap&lt;&gt;();</span>
         }
 
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L67">    }</span>
 
     @Override
     public Listing getListing() {
         // get the Listing from Listing id
-<span class="nc" id="L71">           return remoteAgent.getListing(this.getListingId());</span>
+<span class="nc" id="L72">           return remoteAgent.getListing(this.getListingId());</span>
     }
 
     @Override
     public String status() {
-<span class="nc" id="L76">        return getMetaData().get(STATUS).toString();</span>
+<span class="nc" id="L77">        return getMetaData().get(STATUS).toString();</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc bnc" id="L82" title="All 2 branches missed.">		Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
-<span class="nc" id="L83">                remoteAgent.getPurchaseMetaData(purchase_id) : (Map&lt;String, Object&gt;) metaDataCache.get(purchase_id);</span>
-<span class="nc" id="L84">        return metaData;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		Map&lt;String, Object&gt; metaData = metaDataCache.get(purchase_id) == null ?</span>
+<span class="nc" id="L84">                remoteAgent.getPurchaseMetaData(purchase_id) : (Map&lt;String, Object&gt;) metaDataCache.get(purchase_id);</span>
+<span class="nc" id="L85">        return metaData;</span>
     }
 
     private String getListingId() {
-<span class="nc" id="L88">        return getMetaData().get(LISTING_ID).toString();</span>
+<span class="nc" id="L89">        return getMetaData().get(LISTING_ID).toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

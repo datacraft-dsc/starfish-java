@@ -14,11 +14,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
-import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.HTTP;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.JSONObjectCache;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.*;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -37,15 +33,15 @@ import java.util.Map;
  * @author Mike
  */
 public class Ocean {
-<span class="fc" id="L40">    private static final Ocean DEFAULT_OCEAN = new Ocean(null);</span>
+<span class="fc" id="L36">    private static final Ocean DEFAULT_OCEAN = new Ocean(null);</span>
 
-<span class="fc" id="L42">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;DID, String&gt;();</span>
+<span class="fc" id="L38">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;DID, String&gt;();</span>
 
     private final OceanAPI oceanAPI;
 
-<span class="fc" id="L46">    private Ocean(OceanAPI oceanAPI) {</span>
-<span class="fc" id="L47">        this.oceanAPI = oceanAPI;</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L42">    private Ocean(OceanAPI oceanAPI) {</span>
+<span class="fc" id="L43">        this.oceanAPI = oceanAPI;</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Gets an instance of an Ocean object with the default configuration
@@ -53,7 +49,7 @@ public class Ocean {
      * @return An Ocean instance with default configuration
      */
     public static Ocean connect() {
-<span class="fc" id="L56">        return DEFAULT_OCEAN;</span>
+<span class="fc" id="L52">        return DEFAULT_OCEAN;</span>
     }
 
     /**
@@ -63,7 +59,7 @@ public class Ocean {
      * @return An Ocean instance with default configuration
      */
     public static Ocean connect(OceanAPI oceanAPI) {
-<span class="nc" id="L66">        return new Ocean(oceanAPI);</span>
+<span class="nc" id="L62">        return new Ocean(oceanAPI);</span>
     }
 
     /**
@@ -75,10 +71,10 @@ public class Ocean {
      * @param ddo A string containing a valid DDO in JSON Format
      */
     public void installLocalDDO(DID did, String ddo) {
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (did==null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
-<span class="fc" id="L79">        did=did.withoutPath();</span>
-<span class="fc" id="L80">    	ddoCache.put(did, ddo);</span>
-<span class="fc" id="L81">    }</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (did==null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="fc" id="L75">        did=did.withoutPath();</span>
+<span class="fc" id="L76">    	ddoCache.put(did, ddo);</span>
+<span class="fc" id="L77">    }</span>
     
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -89,8 +85,8 @@ public class Ocean {
      * @param ddo A Map containing a valid DDO
      */
     public void installLocalDDO(DID did, Map&lt;String,Object&gt; ddo) {
-<span class="nc" id="L92">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L88">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
+<span class="nc" id="L89">    }</span>
 
     /**
      * Gets a DDO for a specified DID via the Universal resolver
@@ -99,7 +95,7 @@ public class Ocean {
      * @return The DDO as a JSON map
      */
     public Map&lt;String, Object&gt; getDDO(String did) {
-<span class="nc" id="L102">        return getDDO(DID.parse(did));</span>
+<span class="nc" id="L98">        return getDDO(DID.parse(did));</span>
     }
     
     /**
@@ -109,7 +105,7 @@ public class Ocean {
      * @return The DDO as a JSON map
      */
     public String getDDOString(String did) {
-<span class="fc" id="L112">        return getDDOString(DID.parse(did));</span>
+<span class="fc" id="L108">        return getDDOString(DID.parse(did));</span>
     }
 
     /**
@@ -121,26 +117,26 @@ public class Ocean {
      * @throws UnsupportedOperationException not yet implemented
      */
     public Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L124">        String ddo = getDDOString(did);</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (ddo != null) {</span>
-<span class="fc" id="L126">            return JSONObjectCache.parse(ddo);</span>
+<span class="fc" id="L120">        String ddo = getDDOString(did);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if (ddo != null) {</span>
+<span class="fc" id="L122">            return JSONObjectCache.parse(ddo);</span>
         }
         // it is squid did
         else {
-<span class="nc" id="L130">            DID didSquid = DID.parse(did.toString());</span>
-<span class="nc" id="L131">            return getAsset(didSquid).getMetadata();</span>
+<span class="nc" id="L126">            DID didSquid = DID.parse(did.toString());</span>
+<span class="nc" id="L127">            return getAsset(didSquid).getMetadata();</span>
         }
 //		// TODO universal resolver
 //		throw new UnsupportedOperationException(&quot;Not yet implemented&quot;);
     }
     
     public String getDDOString(DID did) {
-<span class="fc" id="L138">        did=did.withoutPath();</span>
-<span class="fc" id="L139">        String localDDO = ddoCache.get(did);</span>
-<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (localDDO != null) {</span>
-<span class="fc" id="L141">            return localDDO;</span>
+<span class="fc" id="L134">        did=did.withoutPath();</span>
+<span class="fc" id="L135">        String localDDO = ddoCache.get(did);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (localDDO != null) {</span>
+<span class="fc" id="L137">            return localDDO;</span>
         }
-<span class="fc" id="L143">        return null;</span>
+<span class="fc" id="L139">        return null;</span>
 //		// TODO universal resolver
 //		throw new UnsupportedOperationException(&quot;Not yet implemented&quot;);
     }
@@ -152,7 +148,7 @@ public class Ocean {
      * @return OceanAPI instance
      */
     public OceanAPI getOceanAPI() {
-<span class="nc" id="L155">        return oceanAPI;</span>
+<span class="nc" id="L151">        return oceanAPI;</span>
     }
 
     /**
@@ -161,7 +157,7 @@ public class Ocean {
      * @return AssetsAPI instance
      */
     public AssetsAPI getAssetsAPI() {
-<span class="nc" id="L164">        return oceanAPI.getAssetsAPI();</span>
+<span class="nc" id="L160">        return oceanAPI.getAssetsAPI();</span>
     }
 
     /**
@@ -170,7 +166,7 @@ public class Ocean {
      * @return AccountsAPI instance
      */
     public AccountsAPI getAccountsAPI() {
-<span class="nc" id="L173">        return oceanAPI.getAccountsAPI();</span>
+<span class="nc" id="L169">        return oceanAPI.getAccountsAPI();</span>
     }
 
     /**
@@ -181,7 +177,7 @@ public class Ocean {
      */
     public Agent getAgent(DID did) {
         // TODO: resolve DDO for squid
-<span class="nc" id="L184">        return RemoteAgent.create(this, did);</span>
+<span class="nc" id="L180">        return RemoteAgent.create(this, did);</span>
     }
 
     /**
@@ -191,13 +187,13 @@ public class Ocean {
      * @return The Asset for the given DID, or null if not found
      */
     public Asset getAsset(DID did) {
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (did.getPath() == null) {</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (did.getPath() == null) {</span>
             // resolve using Squid
-<span class="nc" id="L196">            return SquidAsset.create(this, did);</span>
+<span class="nc" id="L192">            return SquidAsset.create(this, did);</span>
         } else {
             // resolve using DEP protocol
-<span class="nc" id="L199">            Agent ag = getAgent(did);</span>
-<span class="nc" id="L200">            return ag.getAsset(did);</span>
+<span class="nc" id="L195">            Agent ag = getAgent(did);</span>
+<span class="nc" id="L196">            return ag.getAsset(did);</span>
         }
     }
 
@@ -209,7 +205,7 @@ public class Ocean {
      * @throws EthereumException EthereumException
      */
     public Balance getBalance(Account account) throws EthereumException {
-<span class="nc" id="L212">        return oceanAPI.getAccountsAPI().balance(account);</span>
+<span class="nc" id="L208">        return oceanAPI.getAccountsAPI().balance(account);</span>
     }
 
     /**
@@ -219,7 +215,7 @@ public class Ocean {
      * @throws EthereumException EthereumException
      */
     public List&lt;Account&gt; list() throws EthereumException {
-<span class="nc" id="L222">        return oceanAPI.getAccountsAPI().list();</span>
+<span class="nc" id="L218">        return oceanAPI.getAccountsAPI().list();</span>
     }
 
     /**
@@ -230,11 +226,11 @@ public class Ocean {
      * @throws EthereumException on error
      */
     public BigInteger requestTokens(BigInteger amount) throws EthereumException {
-<span class="nc" id="L233">        TransactionReceipt receipt = oceanAPI.getAccountsAPI().requestTokens(amount);</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (!receipt.isStatusOK()) {</span>
-<span class="nc" id="L235">            amount = BigInteger.ZERO;</span>
+<span class="nc" id="L229">        TransactionReceipt receipt = oceanAPI.getAccountsAPI().requestTokens(amount);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (!receipt.isStatusOK()) {</span>
+<span class="nc" id="L231">            amount = BigInteger.ZERO;</span>
         }
-<span class="nc" id="L237">        return amount;</span>
+<span class="nc" id="L233">        return amount;</span>
     }
 
     /**
@@ -246,7 +242,7 @@ public class Ocean {
      * @throws EthereumException EVM error
      */
     public TransactionReceipt transfer(String receiverAddress, BigInteger amount) throws EthereumException {
-<span class="nc" id="L249">        return getOceanAPI().getTokensAPI().transfer(receiverAddress, amount);</span>
+<span class="nc" id="L245">        return getOceanAPI().getTokensAPI().transfer(receiverAddress, amount);</span>
     }
 
     /**
@@ -260,29 +256,29 @@ public class Ocean {
 
     public Map&lt;String,Object&gt; getTransaction(String url,String account) throws URISyntaxException {
 
-<span class="nc" id="L263">        URI uri = new URI(url);</span>
+<span class="nc" id="L259">        URI uri = new URI(url);</span>
 
-<span class="nc" id="L265">         uri = new URIBuilder(uri).addParameter(&quot;module&quot;,</span>
-<span class="nc" id="L266">                &quot;account&quot;).addParameter(&quot;action&quot;, &quot;txlist&quot;).addParameter(&quot;address&quot;, account).build();</span>
+<span class="nc" id="L261">         uri = new URIBuilder(uri).addParameter(&quot;module&quot;,</span>
+<span class="nc" id="L262">                &quot;account&quot;).addParameter(&quot;action&quot;, &quot;txlist&quot;).addParameter(&quot;address&quot;, account).build();</span>
 
-<span class="nc" id="L268">        HttpGet httpGet = new HttpGet(uri);</span>
-<span class="nc" id="L269">        CloseableHttpResponse closeableHttpResponse = HTTP.execute(httpGet);</span>
+<span class="nc" id="L264">        HttpGet httpGet = new HttpGet(uri);</span>
+<span class="nc" id="L265">        CloseableHttpResponse closeableHttpResponse = HTTP.execute(httpGet);</span>
 
         try {
-<span class="nc" id="L272">            StatusLine statusLine = closeableHttpResponse.getStatusLine();</span>
-<span class="nc" id="L273">            int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L274" title="All 2 branches missed.">            if (statusCode == 404) {</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">            } else if (statusCode == 200) {</span>
-<span class="nc" id="L276">                String body = Utils.stringFromStream(HTTP.getContent(closeableHttpResponse));</span>
-<span class="nc" id="L277">                Map&lt;String,Object&gt; transactionDetailsMap = JSON.parse(body);</span>
-<span class="nc" id="L278">                return transactionDetailsMap;</span>
+<span class="nc" id="L268">            StatusLine statusLine = closeableHttpResponse.getStatusLine();</span>
+<span class="nc" id="L269">            int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if (statusCode == 404) {</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            } else if (statusCode == 200) {</span>
+<span class="nc" id="L272">                String body = Utils.stringFromStream(HTTP.getContent(closeableHttpResponse));</span>
+<span class="nc" id="L273">                Map&lt;String,Object&gt; transactionDetailsMap = JSON.parse(body);</span>
+<span class="nc" id="L274">                return transactionDetailsMap;</span>
 
             }
-<span class="nc" id="L281">        } catch (Exception e) {</span>
-<span class="nc" id="L282">           throw new RemoteException(&quot;Error in parsing response for &quot;+ uri);</span>
+<span class="nc" id="L277">        } catch (Exception e) {</span>
+<span class="nc" id="L278">           throw new RemoteException(&quot;Error in parsing response for &quot;+ uri);</span>
 
-<span class="nc" id="L284">        }</span>
-<span class="nc" id="L285">        return Collections.emptyMap();</span>
+<span class="nc" id="L280">        }</span>
+<span class="nc" id="L281">        return Collections.emptyMap();</span>
 
     }
 

@@ -24,7 +24,6 @@ import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -60,9 +59,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param account account
 	 */
 	protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
-<span class="nc" id="L63">		super(ocean, did);</span>
-<span class="nc" id="L64">		this.account = account;</span>
-<span class="nc" id="L65">	}</span>
+<span class="nc" id="L62">		super(ocean, did);</span>
+<span class="nc" id="L63">		this.account = account;</span>
+<span class="nc" id="L64">	}</span>
 
 	/**
 	 * Creates a RemoteAgent with the specified Ocean connection, DID and
@@ -74,9 +73,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return RemoteAgent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did, RemoteAccount account) {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (ocean == null) throw new IllegalArgumentException(&quot;Ocean connection cannot be null for remote agent&quot;);</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null for remote agent&quot;);</span>
-<span class="nc" id="L79">		return new RemoteAgent(ocean, did, account);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (ocean == null) throw new IllegalArgumentException(&quot;Ocean connection cannot be null for remote agent&quot;);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null for remote agent&quot;);</span>
+<span class="nc" id="L78">		return new RemoteAgent(ocean, did, account);</span>
 	}
 
 	/**
@@ -89,7 +88,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return RemoteAgent new instance of remote Agent
 	 */
 	public static RemoteAgent create(Ocean ocean, DID did) {
-<span class="nc" id="L92">		return new RemoteAgent(ocean, did, null);</span>
+<span class="nc" id="L91">		return new RemoteAgent(ocean, did, null);</span>
 	}
 
 	/**
@@ -101,14 +100,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
-<span class="nc" id="L104">		HttpEntity entity = response.getEntity();</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		if (entity == null) throw new RuntimeException(&quot;Invoke failed: no response body&quot;);</span>
+<span class="nc" id="L103">		HttpEntity entity = response.getEntity();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (entity == null) throw new RuntimeException(&quot;Invoke failed: no response body&quot;);</span>
 		try {
-<span class="nc" id="L107">			String body = Utils.stringFromStream(entity.getContent());</span>
-<span class="nc" id="L108">			return RemoteJob.create(agent, body);</span>
+<span class="nc" id="L106">			String body = Utils.stringFromStream(entity.getContent());</span>
+<span class="nc" id="L107">			return RemoteJob.create(agent, body);</span>
 		}
-<span class="nc" id="L110">		catch (Exception e) {</span>
-<span class="nc" id="L111">			throw new GenericException(&quot;Internal Server Error&quot;);</span>
+<span class="nc" id="L109">		catch (Exception e) {</span>
+<span class="nc" id="L110">			throw new GenericException(&quot;Internal Server Error&quot;);</span>
 		}
 	}
 
@@ -122,16 +121,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	public static Job createJob(RemoteAgent agent, HttpResponse response) {
-<span class="nc" id="L125">		StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L126">		int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (statusCode == 201) {</span>
-<span class="nc" id="L128">			return RemoteAgent.createSuccessJob(agent, response);</span>
+<span class="nc" id="L124">		StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L125">		int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (statusCode == 201) {</span>
+<span class="nc" id="L127">			return RemoteAgent.createSuccessJob(agent, response);</span>
 		}
-<span class="nc" id="L130">		String reason = statusLine.getReasonPhrase();</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if ((statusCode) == 400) {</span>
-<span class="nc" id="L132">			throw new IllegalArgumentException(&quot;Bad invoke request: &quot; + reason);</span>
+<span class="nc" id="L129">		String reason = statusLine.getReasonPhrase();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if ((statusCode) == 400) {</span>
+<span class="nc" id="L131">			throw new IllegalArgumentException(&quot;Bad invoke request: &quot; + reason);</span>
 		}
-<span class="nc" id="L134">		throw new GenericException(&quot;Internal Server Error&quot;);</span>
+<span class="nc" id="L133">		throw new GenericException(&quot;Internal Server Error&quot;);</span>
 	}
 
 	/**
@@ -144,47 +143,47 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public RemoteAgent connect(RemoteAccount acc) {
 		// TODO: get user token and store this in account
-<span class="nc" id="L147">		return new RemoteAgent(ocean, did, acc);</span>
+<span class="nc" id="L146">		return new RemoteAgent(ocean, did, acc);</span>
 	}
 
 	private ARemoteAsset registerBundle(Asset a) {
-<span class="nc" id="L151">		RemoteBundle remoteBundle = (RemoteBundle) a;</span>
+<span class="nc" id="L150">		RemoteBundle remoteBundle = (RemoteBundle) a;</span>
 
-<span class="nc" id="L153">		Map&lt;String, Asset&gt; resultAsset = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L152">		Map&lt;String, Asset&gt; resultAsset = new HashMap&lt;&gt;();</span>
 		// getting all sub asset
-<span class="nc" id="L155">		Map&lt;String, Asset&gt; allSubAsset = remoteBundle.getAll();</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		for (String name : allSubAsset.keySet()) {</span>
-<span class="nc" id="L157">			Asset subAsset = (Asset) allSubAsset.get(name);</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">			if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
-<span class="nc" id="L159">				registerBundle(subAsset);</span>
+<span class="nc" id="L154">		Map&lt;String, Asset&gt; allSubAsset = remoteBundle.getAll();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (String name : allSubAsset.keySet()) {</span>
+<span class="nc" id="L156">			Asset subAsset = (Asset) allSubAsset.get(name);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">			if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
+<span class="nc" id="L158">				registerBundle(subAsset);</span>
 			}
 			// registering each sub asset
-<span class="nc" id="L162">			resultAsset.put(name, registerRemoteAsset(subAsset));</span>
-<span class="nc" id="L163">		}</span>
+<span class="nc" id="L161">			resultAsset.put(name, registerRemoteAsset(subAsset));</span>
+<span class="nc" id="L162">		}</span>
 		// registering bundle itself
 
-<span class="nc" id="L166">		return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));</span>
+<span class="nc" id="L165">		return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));</span>
 	}
 
 	@SuppressWarnings(&quot;unchecked&quot;)
 	@Override
 	public &lt;R extends Asset&gt; R registerAsset(Asset a) {
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == a) {</span>
-<span class="nc" id="L173">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (null == a) {</span>
+<span class="nc" id="L172">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
 		}
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (a.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
-<span class="nc" id="L176">			return (R) registerBundle(a);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		if (a.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
+<span class="nc" id="L175">			return (R) registerBundle(a);</span>
 		}
-<span class="nc" id="L178">		return (R) registerRemoteAsset(a);</span>
+<span class="nc" id="L177">		return (R) registerRemoteAsset(a);</span>
 	}
 
 	private ARemoteAsset registerRemoteAsset(Asset a) {
-<span class="nc" id="L182">		URI uri = getMetaURI();</span>
-<span class="nc" id="L183">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L184">		HttpPost httpPost = new HttpPost(uri);</span>
-<span class="nc" id="L185">		addAuthHeaders(httpPost);</span>
-<span class="nc" id="L186">		httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));</span>
-<span class="nc" id="L187">		return createRemoteAsset(uri, httpclient, httpPost);</span>
+<span class="nc" id="L181">		URI uri = getMetaURI();</span>
+<span class="nc" id="L182">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L183">		HttpPost httpPost = new HttpPost(uri);</span>
+<span class="nc" id="L184">		addAuthHeaders(httpPost);</span>
+<span class="nc" id="L185">		httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));</span>
+<span class="nc" id="L186">		return createRemoteAsset(uri, httpclient, httpPost);</span>
 	}
 
 	/**
@@ -198,26 +197,26 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	private ARemoteAsset createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L201">			response = httpclient.execute(httpPost);</span>
+<span class="nc" id="L200">			response = httpclient.execute(httpPost);</span>
 			try {
-<span class="nc" id="L203">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L204">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L206">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + uri);</span>
+<span class="nc" id="L202">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L203">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L205">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + uri);</span>
 				}
-<span class="nc bnc" id="L208" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L209">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
-<span class="nc" id="L210">					String id = JSON.parse(body);</span>
-<span class="nc" id="L211">					return getAsset(id);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L208">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
+<span class="nc" id="L209">					String id = JSON.parse(body);</span>
+<span class="nc" id="L210">					return getAsset(id);</span>
 				}
-<span class="nc" id="L213">				throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());</span>
+<span class="nc" id="L212">				throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());</span>
 			}
 			finally {
-<span class="nc" id="L216">				response.close();</span>
+<span class="nc" id="L215">				response.close();</span>
 			}
 		}
-<span class="nc" id="L219">		catch (IOException e) {</span>
-<span class="nc" id="L220">			throw new RemoteException(&quot;Getting remote asset failed :&quot;, e);</span>
+<span class="nc" id="L218">		catch (IOException e) {</span>
+<span class="nc" id="L219">			throw new RemoteException(&quot;Getting remote asset failed :&quot;, e);</span>
 		}
 	}
 
@@ -227,30 +226,30 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param request HttpRequest on which the header will be updated
 	 */
 	protected void addAuthHeaders(HttpRequest request) {
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		if (account == null) {</span>
-<span class="nc" id="L231">			throw new AuthorizationException(&quot;User don`t have account credentials&quot;);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (account == null) {</span>
+<span class="nc" id="L230">			throw new AuthorizationException(&quot;User don`t have account credentials&quot;);</span>
 		} else {
-<span class="nc" id="L233">			String token = null;</span>
-<span class="nc" id="L234">			String username = null;</span>
-<span class="nc" id="L235">			String password = null;</span>
+<span class="nc" id="L232">			String token = null;</span>
+<span class="nc" id="L233">			String username = null;</span>
+<span class="nc" id="L234">			String password = null;</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			if (account.getUserDataMap().get(&quot;token&quot;) != null) {</span>
-<span class="nc" id="L238">				token = account.getUserDataMap().get(&quot;token&quot;).toString();</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			if (account.getUserDataMap().get(&quot;token&quot;) != null) {</span>
+<span class="nc" id="L237">				token = account.getUserDataMap().get(&quot;token&quot;).toString();</span>
 			}
-<span class="nc bnc" id="L240" title="All 2 branches missed.">			if (account.getCredentials().get(&quot;username&quot;).toString() != null) {</span>
-<span class="nc" id="L241">				username = account.getCredentials().get(&quot;username&quot;).toString();</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (account.getCredentials().get(&quot;username&quot;).toString() != null) {</span>
+<span class="nc" id="L240">				username = account.getCredentials().get(&quot;username&quot;).toString();</span>
 			}
-<span class="nc bnc" id="L243" title="All 2 branches missed.">			if (account.getCredentials().get(&quot;password&quot;).toString() != null) {</span>
-<span class="nc" id="L244">				password = account.getCredentials().get(&quot;password&quot;).toString();</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">			if (account.getCredentials().get(&quot;password&quot;).toString() != null) {</span>
+<span class="nc" id="L243">				password = account.getCredentials().get(&quot;password&quot;).toString();</span>
 			}
-<span class="nc bnc" id="L246" title="All 6 branches missed.">			if ((token == null) &amp;&amp; (username == null) &amp;&amp; (password == null)) {</span>
-<span class="nc" id="L247">				throw new AuthorizationException(</span>
+<span class="nc bnc" id="L245" title="All 6 branches missed.">			if ((token == null) &amp;&amp; (username == null) &amp;&amp; (password == null)) {</span>
+<span class="nc" id="L246">				throw new AuthorizationException(</span>
 						&quot;Username or Token or Password is not available for given account :&quot; + account);
 			} else {
-<span class="nc" id="L250">				final CharArrayBuffer buffer = new CharArrayBuffer(32);</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">				if (token != null) {</span>
-<span class="nc" id="L252">					buffer.append(&quot;token &quot;);</span>
-<span class="nc" id="L253">					buffer.append(token);</span>
+<span class="nc" id="L249">				final CharArrayBuffer buffer = new CharArrayBuffer(32);</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">				if (token != null) {</span>
+<span class="nc" id="L251">					buffer.append(&quot;token &quot;);</span>
+<span class="nc" id="L252">					buffer.append(token);</span>
 				}
 				// will create toke for given account
 				else {
@@ -264,16 +263,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 					// Consts.UTF_8.name()));
 					// buffer.append(&quot;Basic &quot;);
 					// buffer.append(base64password, 0, base64password.length);
-<span class="nc" id="L267">					createToken(account);</span>
-<span class="nc" id="L268">					buffer.append(&quot;token &quot;);</span>
-<span class="nc" id="L269">					buffer.append(account.getUserDataMap().get(&quot;token&quot;).toString());</span>
+<span class="nc" id="L266">					createToken(account);</span>
+<span class="nc" id="L267">					buffer.append(&quot;token &quot;);</span>
+<span class="nc" id="L268">					buffer.append(account.getUserDataMap().get(&quot;token&quot;).toString());</span>
 				}
-<span class="nc" id="L271">				String header = AUTH.WWW_AUTH_RESP;</span>
-<span class="nc" id="L272">				String value = buffer.toString();</span>
-<span class="nc" id="L273">				request.setHeader(header, value);</span>
+<span class="nc" id="L270">				String header = AUTH.WWW_AUTH_RESP;</span>
+<span class="nc" id="L271">				String value = buffer.toString();</span>
+<span class="nc" id="L272">				request.setHeader(header, value);</span>
 			}
 		}
-<span class="nc" id="L276">	}</span>
+<span class="nc" id="L275">	}</span>
 
 	/**
 	 * Gets an asset for the given asset ID from this agent. Throws an exeception if the asset ID does not exist,
@@ -287,37 +286,37 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	@Override
 	public &lt;R extends Asset&gt; R getAsset(String id) {
-<span class="nc" id="L290">		URI uri = getMetaURI(id);</span>
-<span class="nc" id="L291">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L292">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L289">		URI uri = getMetaURI(id);</span>
+<span class="nc" id="L290">		HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L291">		addAuthHeaders(httpget);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L295">			response = HTTP.execute(httpget);</span>
+<span class="nc" id="L294">			response = HTTP.execute(httpget);</span>
 			try {
-<span class="nc" id="L297">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L298">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L299" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L300">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + uri);</span>
-<span class="nc bnc" id="L301" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
-<span class="nc" id="L302">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
-<span class="nc" id="L303">					Map&lt;String, Object&gt; metaMap = JSON.toMap(body);</span>
-<span class="nc" id="L304">					R a= getRemoteAsset(body, metaMap);</span>
-<span class="nc" id="L305">					String rid=a.getAssetID();</span>
-<span class="nc bnc" id="L306" title="All 2 branches missed.">					if (!rid.equals(id)) {</span>
-<span class="nc" id="L307">						throw new StarfishValidationException(&quot;Expected asset ID: &quot;+id+ &quot; but got metadata with hash: &quot;+rid);</span>
+<span class="nc" id="L296">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L297">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L299">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + uri);</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
+<span class="nc" id="L301">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L302">					Map&lt;String, Object&gt; metaMap = JSON.toMap(body);</span>
+<span class="nc" id="L303">					R a= getRemoteAsset(body, metaMap);</span>
+<span class="nc" id="L304">					String rid=a.getAssetID();</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">					if (!rid.equals(id)) {</span>
+<span class="nc" id="L306">						throw new StarfishValidationException(&quot;Expected asset ID: &quot;+id+ &quot; but got metadata with hash: &quot;+rid);</span>
 					}
-<span class="nc" id="L309">					return a;</span>
+<span class="nc" id="L308">					return a;</span>
 				} else {
 
-<span class="nc" id="L312">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L311">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L316">				response.close();</span>
+<span class="nc" id="L315">				response.close();</span>
 			}
 		}
-<span class="nc" id="L319">		catch (IOException e) {</span>
-<span class="nc" id="L320">			throw new JobFailedException(&quot; Getting asset by ID failed for asset ID :&quot; + id, e);</span>
+<span class="nc" id="L318">		catch (IOException e) {</span>
+<span class="nc" id="L319">			throw new JobFailedException(&quot; Getting asset by ID failed for asset ID :&quot; + id, e);</span>
 		}
 	}
 
@@ -331,20 +330,20 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	private &lt;R extends Asset&gt; R getRemoteAsset(String metaString, Map&lt;String, Object&gt; metaMap) {
-<span class="nc bnc" id="L334" title="All 2 branches missed.">		if (metaMap.get(TYPE).equals(OPERATION)) {</span>
-<span class="nc" id="L335">			return (R) RemoteOperation.create(this, metaString);</span>
-<span class="nc bnc" id="L336" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(DATA_SET)) {</span>
-<span class="nc" id="L337">			return (R) RemoteDataAsset.create(this, metaString);</span>
-<span class="nc bnc" id="L338" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(BUNDLE)) {</span>
-<span class="nc" id="L339">			return (R) RemoteBundle.createBundle(this, metaMap);</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		if (metaMap.get(TYPE).equals(OPERATION)) {</span>
+<span class="nc" id="L334">			return (R) RemoteOperation.create(this, metaString);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(DATA_SET)) {</span>
+<span class="nc" id="L336">			return (R) RemoteDataAsset.create(this, metaString);</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">		} else if (metaMap.get(TYPE).equals(BUNDLE)) {</span>
+<span class="nc" id="L338">			return (R) RemoteBundle.createBundle(this, metaMap);</span>
 		} else {
-<span class="nc" id="L341">			throw new StarfishValidationException(&quot;Invalid Asset Type :&quot; + metaMap.get(TYPE));</span>
+<span class="nc" id="L340">			throw new StarfishValidationException(&quot;Invalid Asset Type :&quot; + metaMap.get(TYPE));</span>
 		}
 	}
 
 	@Override
 	public &lt;R extends Asset&gt; R getAsset(DID did) {
-<span class="nc" id="L347">		return getAsset(did.getID());</span>
+<span class="nc" id="L346">		return getAsset(did.getID());</span>
 	}
 
 	/**
@@ -356,17 +355,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return boolean true if asset is registered else false
 	 */
 	private boolean isAssetRegistered(String assetId) {
-<span class="nc" id="L359">		URI uri = getMetaURI(assetId);</span>
-<span class="nc" id="L360">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L361">		addAuthHeaders(httpget);</span>
-<span class="nc" id="L362">		CloseableHttpResponse response = HTTP.execute(httpget);</span>
+<span class="nc" id="L358">		URI uri = getMetaURI(assetId);</span>
+<span class="nc" id="L359">		HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L360">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L361">		CloseableHttpResponse response = HTTP.execute(httpget);</span>
 		try {
-<span class="nc" id="L364">			StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L365">			int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L366" title="All 2 branches missed.">			return statusCode == 200;</span>
+<span class="nc" id="L363">			StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L364">			int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">			return statusCode == 200;</span>
 		}
 		finally {
-<span class="nc" id="L369">			HTTP.close(response);</span>
+<span class="nc" id="L368">			HTTP.close(response);</span>
 		}
 	}
 
@@ -388,24 +387,24 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	@SuppressWarnings(&quot;unchecked&quot;)
 	@Override
 	public &lt;R extends Asset&gt; R uploadAsset(Asset a) {
-<span class="nc bnc" id="L391" title="All 2 branches missed.">		if (null == a) {</span>
-<span class="nc" id="L392">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		if (null == a) {</span>
+<span class="nc" id="L391">			throw new StarfishValidationException(&quot;Asset cannot be null&quot;);</span>
 		}
 		Asset remoteAsset;
 
 		// asset already registered then only upload
-<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (isAssetRegistered(a.getAssetID())) {</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">		if (isAssetRegistered(a.getAssetID())) {</span>
 
-<span class="nc" id="L399">			remoteAsset = getAsset(a.getAssetID());</span>
-<span class="nc" id="L400">			uploadAssetContent(a);</span>
+<span class="nc" id="L398">			remoteAsset = getAsset(a.getAssetID());</span>
+<span class="nc" id="L399">			uploadAssetContent(a);</span>
 		}
 		// if asset is not registered then registered and upload
 		else {
-<span class="nc" id="L404">			remoteAsset = registerAsset(a);</span>
-<span class="nc" id="L405">			uploadAssetContent(a);</span>
+<span class="nc" id="L403">			remoteAsset = registerAsset(a);</span>
+<span class="nc" id="L404">			uploadAssetContent(a);</span>
 		}
 
-<span class="nc" id="L408">		return (R) remoteAsset;</span>
+<span class="nc" id="L407">		return (R) remoteAsset;</span>
 	}
 
 	/**
@@ -419,52 +418,52 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 		// check if the asset is operation or bundle it will not have content, so return
 		// without upload
-<span class="nc bnc" id="L422" title="All 2 branches missed.">		if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
-<span class="nc" id="L423">			throw new UnsupportedOperationException(</span>
-<span class="nc" id="L424">					&quot;Bundle don`t have content,so cannot be upload &quot; + asset.getMetadata());</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">		} else if (asset.getMetadata().get(TYPE).equals(OPERATION)) {</span>
-<span class="nc" id="L426">			return;</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">		if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {</span>
+<span class="nc" id="L422">			throw new UnsupportedOperationException(</span>
+<span class="nc" id="L423">					&quot;Bundle don`t have content,so cannot be upload &quot; + asset.getMetadata());</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">		} else if (asset.getMetadata().get(TYPE).equals(OPERATION)) {</span>
+<span class="nc" id="L425">			return;</span>
 		}
 
 		// get the storage API to upload the Asset content
-<span class="nc" id="L430">		URI uri = getStorageURI(asset.getAssetID());</span>
-<span class="nc" id="L431">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L429">		URI uri = getStorageURI(asset.getAssetID());</span>
+<span class="nc" id="L430">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
 
-<span class="nc" id="L433">		HttpPost post = new HttpPost(uri);</span>
-<span class="nc" id="L434">		addAuthHeaders(post);</span>
-<span class="nc" id="L435">		post.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
+<span class="nc" id="L432">		HttpPost post = new HttpPost(uri);</span>
+<span class="nc" id="L433">		addAuthHeaders(post);</span>
+<span class="nc" id="L434">		post.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
 
-<span class="nc" id="L437">		InputStream assetContentAsStream = ((DataAsset)asset).getContentStream();</span>
-<span class="nc" id="L438">		HttpEntity entity = HTTP.createMultiPart(FILE,</span>
-<span class="nc" id="L439">				new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + &quot;.tmp&quot;));</span>
+<span class="nc" id="L436">		InputStream assetContentAsStream = ((DataAsset)asset).getContentStream();</span>
+<span class="nc" id="L437">		HttpEntity entity = HTTP.createMultiPart(FILE,</span>
+<span class="nc" id="L438">				new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + &quot;.tmp&quot;));</span>
 
-<span class="nc" id="L441">		post.setEntity(entity);</span>
+<span class="nc" id="L440">		post.setEntity(entity);</span>
 
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L445">			response = httpclient.execute(post);</span>
+<span class="nc" id="L444">			response = httpclient.execute(post);</span>
 			try {
-<span class="nc" id="L447">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L448">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L449" title="All 2 branches missed.">				if (statusCode == 201) {</span>
-<span class="nc" id="L450">					return;</span>
+<span class="nc" id="L446">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L447">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">				if (statusCode == 201) {</span>
+<span class="nc" id="L449">					return;</span>
 				}
-<span class="nc bnc" id="L452" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L453">					throw new RemoteException(</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L452">					throw new RemoteException(</span>
 							&quot;server could not find what was requested or it was configured not to fulfill the request.&quot;
 									+ uri);
-<span class="nc bnc" id="L456" title="All 2 branches missed.">				} else if (statusCode == 500) {</span>
-<span class="nc" id="L457">					throw new GenericException(&quot;Internal Server Error : &quot; + statusLine);</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">				} else if (statusCode == 500) {</span>
+<span class="nc" id="L456">					throw new GenericException(&quot;Internal Server Error : &quot; + statusLine);</span>
 				} else {
-<span class="nc" id="L459">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L458">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L463">				response.close();</span>
+<span class="nc" id="L462">				response.close();</span>
 			}
 		}
-<span class="nc" id="L466">		catch (IOException e) {</span>
-<span class="nc" id="L467">			throw new RemoteException(&quot; Upload asset Content failed for asset id : &quot; + asset.getAssetID(), e);</span>
+<span class="nc" id="L465">		catch (IOException e) {</span>
+<span class="nc" id="L466">			throw new RemoteException(&quot; Upload asset Content failed for asset id : &quot; + asset.getAssetID(), e);</span>
 		}
 	}
 
@@ -477,14 +476,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	private URI getInvokeSyncURI(Object did) {
 		try {
-<span class="nc bnc" id="L480" title="All 2 branches missed.">			if (did == null) {</span>
-<span class="nc" id="L481">				return new URI(getInvokeEndpoint());</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">			if (did == null) {</span>
+<span class="nc" id="L480">				return new URI(getInvokeEndpoint());</span>
 			} else {
-<span class="nc" id="L483">				return new URI(getInvokeEndpoint() + INVOKE_SYNC + &quot;/&quot; + did.toString());</span>
+<span class="nc" id="L482">				return new URI(getInvokeEndpoint() + INVOKE_SYNC + &quot;/&quot; + did.toString());</span>
 			}
 		}
-<span class="nc" id="L486">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L487">			throw new RuntimeException(e);</span>
+<span class="nc" id="L485">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L486">			throw new RuntimeException(e);</span>
 		}
 	}
 
@@ -497,14 +496,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	private URI getInvokeAsyncURI(Object did) {
 		try {
-<span class="nc bnc" id="L500" title="All 2 branches missed.">			if (did == null) {</span>
-<span class="nc" id="L501">				return new URI(getInvokeEndpoint());</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">			if (did == null) {</span>
+<span class="nc" id="L500">				return new URI(getInvokeEndpoint());</span>
 			} else {
-<span class="nc" id="L503">				return new URI(getInvokeEndpoint() + INVOKE_ASYNC + &quot;/&quot; + did.toString());</span>
+<span class="nc" id="L502">				return new URI(getInvokeEndpoint() + INVOKE_ASYNC + &quot;/&quot; + did.toString());</span>
 			}
 		}
-<span class="nc" id="L506">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L507">			throw new RuntimeException(e);</span>
+<span class="nc" id="L505">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L506">			throw new RuntimeException(e);</span>
 		}
 	}
 
@@ -517,11 +516,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	private URI getJobURI(String response) {
 		try {
-<span class="nc" id="L520">			String jobId = JSON.toMap(response).get(JOB_ID).toString();</span>
-<span class="nc" id="L521">			return new URI(getInvokeEndpoint() + JOBS + &quot;/&quot; + jobId);</span>
+<span class="nc" id="L519">			String jobId = JSON.toMap(response).get(JOB_ID).toString();</span>
+<span class="nc" id="L520">			return new URI(getInvokeEndpoint() + JOBS + &quot;/&quot; + jobId);</span>
 		}
-<span class="nc" id="L523">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L524">			throw new IllegalArgumentException(&quot;Can't create valid URI for job: &quot; + response, e);</span>
+<span class="nc" id="L522">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L523">			throw new IllegalArgumentException(&quot;Can't create valid URI for job: &quot; + response, e);</span>
 		}
 	}
 
@@ -535,14 +534,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException on invalid URI for assetID
 	 */
 	private URI getMetaURI(String assetID) {
-<span class="nc" id="L538">		String metaEndpoint = getMetaEndpoint();</span>
-<span class="nc bnc" id="L539" title="All 2 branches missed.">		if (metaEndpoint == null)</span>
-<span class="nc" id="L540">			throw new UnsupportedOperationException(&quot;This agent does not support the Meta API (no endpoint defined)&quot;);</span>
+<span class="nc" id="L537">		String metaEndpoint = getMetaEndpoint();</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">		if (metaEndpoint == null)</span>
+<span class="nc" id="L539">			throw new UnsupportedOperationException(&quot;This agent does not support the Meta API (no endpoint defined)&quot;);</span>
 		try {
-<span class="nc" id="L542">			return new URI(metaEndpoint + DATA + &quot;/&quot; + assetID);</span>
+<span class="nc" id="L541">			return new URI(metaEndpoint + DATA + &quot;/&quot; + assetID);</span>
 		}
-<span class="nc" id="L544">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L545">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata with ID: &quot; + assetID, e);</span>
+<span class="nc" id="L543">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L544">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata with ID: &quot; + assetID, e);</span>
 		}
 	}
 
@@ -556,14 +555,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException on invalid URI for assetID
 	 */
 	protected URI getStorageURI(String assetID) {
-<span class="nc" id="L559">		String storageEndpoint = getStorageEndpoint();</span>
-<span class="nc bnc" id="L560" title="All 2 branches missed.">		if (storageEndpoint == null) throw new UnsupportedOperationException(</span>
+<span class="nc" id="L558">		String storageEndpoint = getStorageEndpoint();</span>
+<span class="nc bnc" id="L559" title="All 2 branches missed.">		if (storageEndpoint == null) throw new UnsupportedOperationException(</span>
 				&quot;This agent does not support the Storage API (no endpoint defined)&quot;);
 		try {
-<span class="nc" id="L563">			return new URI(storageEndpoint + &quot;/&quot; + assetID);</span>
+<span class="nc" id="L562">			return new URI(storageEndpoint + &quot;/&quot; + assetID);</span>
 		}
-<span class="nc" id="L565">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L566">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset storage with ID: &quot; + assetID, e);</span>
+<span class="nc" id="L564">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L565">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset storage with ID: &quot; + assetID, e);</span>
 		}
 	}
 
@@ -576,14 +575,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException on invalid URI for asset metadata
 	 */
 	private URI getMetaURI() {
-<span class="nc" id="L579">		String metaEndpoint = getMetaEndpoint();</span>
-<span class="nc bnc" id="L580" title="All 2 branches missed.">		if (metaEndpoint == null)</span>
-<span class="nc" id="L581">			throw new UnsupportedOperationException(&quot;This agent does not support the Meta API (no endpoint defined)&quot;);</span>
+<span class="nc" id="L578">		String metaEndpoint = getMetaEndpoint();</span>
+<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (metaEndpoint == null)</span>
+<span class="nc" id="L580">			throw new UnsupportedOperationException(&quot;This agent does not support the Meta API (no endpoint defined)&quot;);</span>
 		try {
-<span class="nc" id="L583">			return new URI(metaEndpoint + DATA);</span>
+<span class="nc" id="L582">			return new URI(metaEndpoint + DATA);</span>
 		}
-<span class="nc" id="L585">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L586">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
+<span class="nc" id="L584">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L585">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
 		}
 	}
 
@@ -594,7 +593,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 *         &quot;https://www.myagent.com/api/v1/storage&quot;
 	 */
 	public String getStorageEndpoint() {
-<span class="nc" id="L597">		return getEndpoint(&quot;Ocean.Storage.v1&quot;);</span>
+<span class="nc" id="L596">		return getEndpoint(&quot;Ocean.Storage.v1&quot;);</span>
 	}
 
 	/**
@@ -604,7 +603,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 *         &quot;https://www.myagent.com/api/v1/invoke&quot;
 	 */
 	public String getInvokeEndpoint() {
-<span class="nc" id="L607">		return getEndpoint(&quot;Ocean.Invoke.v1&quot;);</span>
+<span class="nc" id="L606">		return getEndpoint(&quot;Ocean.Invoke.v1&quot;);</span>
 	}
 
 	/**
@@ -614,7 +613,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 *         &quot;https://www.myagent.com/api/v1/meta&quot;
 	 */
 	public String getMetaEndpoint() {
-<span class="nc" id="L617">		return getEndpoint(&quot;Ocean.Meta.v1&quot;);</span>
+<span class="nc" id="L616">		return getEndpoint(&quot;Ocean.Meta.v1&quot;);</span>
 	}
 
 	/**
@@ -624,7 +623,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 *         &quot;https://www.myagent.com/api/v1/meta&quot;
 	 */
 	public String getMarketEndpoint() {
-<span class="nc" id="L627">		return getEndpoint(&quot;Ocean.Market.v1&quot;);</span>
+<span class="nc" id="L626">		return getEndpoint(&quot;Ocean.Market.v1&quot;);</span>
 	}
 
 	/**
@@ -634,15 +633,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 *         &quot;https://www.myagent.com/api/v1/meta&quot;
 	 */
 	public String getAuthEndpoint() {
-<span class="nc" id="L637">		return getEndpoint(&quot;Ocean.Auth.v1&quot;);</span>
+<span class="nc" id="L636">		return getEndpoint(&quot;Ocean.Auth.v1&quot;);</span>
 	}
 
 	@Override
 	public Job invoke(Operation operation, Object... params) {
-<span class="nc" id="L642">		Map&lt;String, Object&gt; request = new HashMap&lt;&gt;(2);</span>
-<span class="nc" id="L643">		request.put(OPERATION, operation.getAssetID());</span>
-<span class="nc" id="L644">		request.put(PARAMS, Params.formatParams(operation, params));</span>
-<span class="nc" id="L645">		return invoke(operation,request);</span>
+<span class="nc" id="L641">		Map&lt;String, Object&gt; request = new HashMap&lt;&gt;(2);</span>
+<span class="nc" id="L642">		request.put(OPERATION, operation.getAssetID());</span>
+<span class="nc" id="L643">		request.put(PARAMS, Params.formatParams(operation, params));</span>
+<span class="nc" id="L644">		return invoke(operation,request);</span>
 	}
 
 	/**
@@ -655,38 +654,38 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws RuntimeException for protocol errors
 	 */
 	public Object pollJob(String jobID) {
-<span class="nc" id="L658">		URI uri = getJobURI(jobID);</span>
-<span class="nc" id="L659">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L660">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L661">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L657">		URI uri = getJobURI(jobID);</span>
+<span class="nc" id="L658">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L659">		HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L660">		addAuthHeaders(httpget);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L664">			response = httpclient.execute(httpget);</span>
+<span class="nc" id="L663">			response = httpclient.execute(httpget);</span>
 			try {
-<span class="nc" id="L666">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L667">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc" id="L665">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L666">				int statusCode = statusLine.getStatusCode();</span>
 
-<span class="nc bnc" id="L669" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L670">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
-<span class="nc" id="L671">					Map&lt;String, Object&gt; result = JSON.toMap(body);</span>
-<span class="nc" id="L672">					return result;</span>
+<span class="nc bnc" id="L668" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L669">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
+<span class="nc" id="L670">					Map&lt;String, Object&gt; result = JSON.toMap(body);</span>
+<span class="nc" id="L671">					return result;</span>
 
 				} else {
-<span class="nc" id="L675">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L674">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L679">				response.close();</span>
+<span class="nc" id="L678">				response.close();</span>
 			}
 		}
-<span class="nc" id="L682">		catch (IOException e) {</span>
-<span class="nc" id="L683">			throw new JobFailedException(&quot; Job invocation failed for job id : &quot; + jobID, e);</span>
+<span class="nc" id="L681">		catch (IOException e) {</span>
+<span class="nc" id="L682">			throw new JobFailedException(&quot; Job invocation failed for job id : &quot; + jobID, e);</span>
 		}
 	}
 
 	@Override
 	public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="nc" id="L689">		return invokeImpl(operation, Params.formatParams(operation, params));</span>
+<span class="nc" id="L688">		return invokeImpl(operation, Params.formatParams(operation, params));</span>
 	}
 
 	/**
@@ -699,32 +698,32 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 
 	private Job invokeImpl(Operation operation,Map&lt;String, Object&gt; params) {
-<span class="nc" id="L702">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L701">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
 
-<span class="nc" id="L704">		String assetID=operation.getAssetID();</span>
-<span class="nc" id="L705">		HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));</span>
-<span class="nc" id="L706">		addAuthHeaders(httppost);</span>
-<span class="nc" id="L707">		String paramJSON=JSON.toPrettyString(params);</span>
-<span class="nc" id="L708">		StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);</span>
-<span class="nc" id="L709">		httppost.setEntity(entity);</span>
+<span class="nc" id="L703">		String assetID=operation.getAssetID();</span>
+<span class="nc" id="L704">		HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));</span>
+<span class="nc" id="L705">		addAuthHeaders(httppost);</span>
+<span class="nc" id="L706">		String paramJSON=JSON.toPrettyString(params);</span>
+<span class="nc" id="L707">		StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);</span>
+<span class="nc" id="L708">		httppost.setEntity(entity);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L712">			response = httpclient.execute(httppost);</span>
+<span class="nc" id="L711">			response = httpclient.execute(httppost);</span>
 
 			try {
-<span class="nc" id="L715">				return RemoteAgent.createJob(this, response);</span>
+<span class="nc" id="L714">				return RemoteAgent.createJob(this, response);</span>
 			}
 			finally {
-<span class="nc" id="L718">				response.close();</span>
+<span class="nc" id="L717">				response.close();</span>
 			}
 		}
-<span class="nc" id="L721">		catch (ClientProtocolException e) {</span>
-<span class="nc" id="L722">			throw new JobFailedException(</span>
+<span class="nc" id="L720">		catch (ClientProtocolException e) {</span>
+<span class="nc" id="L721">			throw new JobFailedException(</span>
 					&quot; Client Protocol Exception for asset ID: &quot; + assetID + &quot;params :&quot; + paramJSON,
 					e);
 		}
-<span class="nc" id="L726">		catch (IOException e) {</span>
-<span class="nc" id="L727">			throw new JobFailedException(</span>
+<span class="nc" id="L725">		catch (IOException e) {</span>
+<span class="nc" id="L726">			throw new JobFailedException(</span>
 					&quot; IOException occurred  for asset ID: &quot; + assetID + &quot;params :&quot; + paramJSON, e);
 		}
 	}
@@ -732,38 +731,38 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	@Override
 	public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
-<span class="nc" id="L735">		Map&lt;String, Object&gt; paramValueMap = Params.formatParams(operation, params);</span>
+<span class="nc" id="L734">		Map&lt;String, Object&gt; paramValueMap = Params.formatParams(operation, params);</span>
 
 		// check if the mode is sync else throw exception
-<span class="nc bnc" id="L738" title="All 2 branches missed.">		if (!isModeSupported(operation, ASYNC)) {</span>
-<span class="nc" id="L739">			throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
+<span class="nc bnc" id="L737" title="All 2 branches missed.">		if (!isModeSupported(operation, ASYNC)) {</span>
+<span class="nc" id="L738">			throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
 		}
 
-<span class="nc" id="L742">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L743">		URI uri = getInvokeAsyncURI(operation.getAssetID());</span>
-<span class="nc" id="L744">		HttpPost httppost = new HttpPost(uri);</span>
-<span class="nc" id="L745">		addAuthHeaders(httppost);</span>
-<span class="nc" id="L746">		StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);</span>
-<span class="nc" id="L747">		httppost.setEntity(entity);</span>
+<span class="nc" id="L741">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L742">		URI uri = getInvokeAsyncURI(operation.getAssetID());</span>
+<span class="nc" id="L743">		HttpPost httppost = new HttpPost(uri);</span>
+<span class="nc" id="L744">		addAuthHeaders(httppost);</span>
+<span class="nc" id="L745">		StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);</span>
+<span class="nc" id="L746">		httppost.setEntity(entity);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L750">			response = httpclient.execute(httppost);</span>
+<span class="nc" id="L749">			response = httpclient.execute(httppost);</span>
 
 			try {
-<span class="nc" id="L753">				return RemoteAgent.createJob(this, response);</span>
+<span class="nc" id="L752">				return RemoteAgent.createJob(this, response);</span>
 			}
 			finally {
-<span class="nc" id="L756">				response.close();</span>
+<span class="nc" id="L755">				response.close();</span>
 			}
 		}
-<span class="nc" id="L759">		catch (ClientProtocolException e) {</span>
-<span class="nc" id="L760">			throw new JobFailedException(</span>
-<span class="nc" id="L761">					&quot; Client Protocol operation : &quot; + operation.toString() + &quot;params :&quot; + JSON.toPrettyString(params),</span>
+<span class="nc" id="L758">		catch (ClientProtocolException e) {</span>
+<span class="nc" id="L759">			throw new JobFailedException(</span>
+<span class="nc" id="L760">					&quot; Client Protocol operation : &quot; + operation.toString() + &quot;params :&quot; + JSON.toPrettyString(params),</span>
 					e);
 		}
-<span class="nc" id="L764">		catch (IOException e) {</span>
-<span class="nc" id="L765">			throw new JobFailedException(&quot; IOException occurred  operation : &quot; + operation.toString() + &quot;params :&quot;</span>
-<span class="nc" id="L766">					+ JSON.toPrettyString(params), e);</span>
+<span class="nc" id="L763">		catch (IOException e) {</span>
+<span class="nc" id="L764">			throw new JobFailedException(&quot; IOException occurred  operation : &quot; + operation.toString() + &quot;params :&quot;</span>
+<span class="nc" id="L765">					+ JSON.toPrettyString(params), e);</span>
 		}
 	}
 
@@ -777,46 +776,46 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public Map&lt;String, Object&gt; invokeResult(Operation operation, Map&lt;String, Object&gt; params) {
 
 		// this will validate if the required input is provided or not
-<span class="nc" id="L780">		Map&lt;String, Object&gt; paramValueMap = Params.formatParams(operation, params);</span>
+<span class="nc" id="L779">		Map&lt;String, Object&gt; paramValueMap = Params.formatParams(operation, params);</span>
 
 		// check if the mode is sync else throw exception
-<span class="nc bnc" id="L783" title="All 2 branches missed.">		if (!isModeSupported(operation, SYNC)) {</span>
-<span class="nc" id="L784">			throw new StarfishValidationException(&quot;Mode must be sync for this operation&quot;);</span>
+<span class="nc bnc" id="L782" title="All 2 branches missed.">		if (!isModeSupported(operation, SYNC)) {</span>
+<span class="nc" id="L783">			throw new StarfishValidationException(&quot;Mode must be sync for this operation&quot;);</span>
 		}
 
-<span class="nc" id="L787">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L788">		URI uri = getInvokeSyncURI(operation.getAssetID());</span>
-<span class="nc" id="L789">		HttpPost httppost = new HttpPost(uri);</span>
-<span class="nc" id="L790">		addAuthHeaders(httppost);</span>
+<span class="nc" id="L786">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L787">		URI uri = getInvokeSyncURI(operation.getAssetID());</span>
+<span class="nc" id="L788">		HttpPost httppost = new HttpPost(uri);</span>
+<span class="nc" id="L789">		addAuthHeaders(httppost);</span>
 		// TODO if params is a map of asset then form proper entity
-<span class="nc" id="L792">		StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);</span>
-<span class="nc" id="L793">		httppost.setEntity(entity);</span>
+<span class="nc" id="L791">		StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);</span>
+<span class="nc" id="L792">		httppost.setEntity(entity);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L796">			response = httpclient.execute(httppost);</span>
+<span class="nc" id="L795">			response = httpclient.execute(httppost);</span>
 			try {
-<span class="nc" id="L798">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc bnc" id="L799" title="All 2 branches missed.">				if (statusLine.getStatusCode() == 200) {</span>
-<span class="nc" id="L800">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
-<span class="nc" id="L801">					return JSON.toMap(body);</span>
+<span class="nc" id="L797">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc bnc" id="L798" title="All 2 branches missed.">				if (statusLine.getStatusCode() == 200) {</span>
+<span class="nc" id="L799">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
+<span class="nc" id="L800">					return JSON.toMap(body);</span>
 				} else {
-<span class="nc" id="L803">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L802">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L807">				response.close();</span>
+<span class="nc" id="L806">				response.close();</span>
 			}
 		}
-<span class="nc" id="L810">		catch (IOException e) {</span>
-<span class="nc" id="L811">			throw new JobFailedException(&quot; Job invocation failed for operation : &quot; + operation.toString() + &quot;params :&quot;</span>
-<span class="nc" id="L812">					+ JSON.toPrettyString(params), e);</span>
+<span class="nc" id="L809">		catch (IOException e) {</span>
+<span class="nc" id="L810">			throw new JobFailedException(&quot; Job invocation failed for operation : &quot; + operation.toString() + &quot;params :&quot;</span>
+<span class="nc" id="L811">					+ JSON.toPrettyString(params), e);</span>
 		}
 	}
 
 	private boolean isModeSupported(Operation operation, String mode) {
-<span class="nc" id="L817">		Map&lt;String, Object&gt; metaData = operation.getOperationSpec();</span>
-<span class="nc" id="L818">		JSONArray modes = (JSONArray) metaData.get(MODE);</span>
-<span class="nc" id="L819">		return modes.contains(mode);</span>
+<span class="nc" id="L816">		Map&lt;String, Object&gt; metaData = operation.getOperationSpec();</span>
+<span class="nc" id="L817">		JSONArray modes = (JSONArray) metaData.get(MODE);</span>
+<span class="nc" id="L818">		return modes.contains(mode);</span>
 
 	}
 
@@ -827,35 +826,35 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return List marketMetaData
 	 */
 	private List&lt;Map&lt;String, Object&gt;&gt; getAllMarketMetaData(String marketAgentUrl) {
-<span class="nc" id="L830">		URI uri = getMarketLURI(marketAgentUrl);</span>
-<span class="nc" id="L831">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L832">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L829">		URI uri = getMarketLURI(marketAgentUrl);</span>
+<span class="nc" id="L830">		HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L831">		addAuthHeaders(httpget);</span>
 		CloseableHttpResponse response;
 		List&lt;Map&lt;String, Object&gt;&gt; result;
 
 		try {
-<span class="nc" id="L837">			response = HTTP.execute(httpget);</span>
+<span class="nc" id="L836">			response = HTTP.execute(httpget);</span>
 
 			try {
-<span class="nc" id="L840">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L841">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L842" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L843">					throw new RemoteException(&quot;Listing ID not found for at: &quot; + statusCode);</span>
-<span class="nc bnc" id="L844" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
-<span class="nc" id="L845">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
-<span class="nc" id="L846">					result = JSON.parse(body);</span>
+<span class="nc" id="L839">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L840">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L841" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L842">					throw new RemoteException(&quot;Listing ID not found for at: &quot; + statusCode);</span>
+<span class="nc bnc" id="L843" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
+<span class="nc" id="L844">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L845">					result = JSON.parse(body);</span>
 
-<span class="nc" id="L848">					return result;</span>
+<span class="nc" id="L847">					return result;</span>
 				} else {
-<span class="nc" id="L850">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L849">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L854">				response.close();</span>
+<span class="nc" id="L853">				response.close();</span>
 			}
 		}
-<span class="nc" id="L857">		catch (IOException e) {</span>
-<span class="nc" id="L858">			throw new RemoteException(&quot; Getting market data failed  :&quot;, e);</span>
+<span class="nc" id="L856">		catch (IOException e) {</span>
+<span class="nc" id="L857">			throw new RemoteException(&quot; Getting market data failed  :&quot;, e);</span>
 		}
 	}
 
@@ -867,34 +866,34 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return String
 	 */
 	private String createMarketAgentInstance(Map&lt;String, Object&gt; listingData, String marketAgentUrl) {
-<span class="nc" id="L870">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L871">		HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));</span>
+<span class="nc" id="L869">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L870">		HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));</span>
 
-<span class="nc" id="L873">		addAuthHeaders(httpPost);</span>
-<span class="nc" id="L874">		httpPost.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
+<span class="nc" id="L872">		addAuthHeaders(httpPost);</span>
+<span class="nc" id="L873">		httpPost.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
 
-<span class="nc" id="L876">		httpPost.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));</span>
+<span class="nc" id="L875">		httpPost.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));</span>
 
-<span class="nc" id="L878">		CloseableHttpResponse response = null;</span>
+<span class="nc" id="L877">		CloseableHttpResponse response = null;</span>
 		try {
-<span class="nc" id="L880">			response = httpclient.execute(httpPost);</span>
+<span class="nc" id="L879">			response = httpclient.execute(httpPost);</span>
 			try {
 
-<span class="nc" id="L883">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L884">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L885" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L886">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
-<span class="nc" id="L887">					return body;</span>
+<span class="nc" id="L882">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L883">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L884" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L885">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L886">					return body;</span>
 				} else {
-<span class="nc" id="L889">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L888">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L893">				response.close();</span>
+<span class="nc" id="L892">				response.close();</span>
 			}
 		}
-<span class="nc" id="L896">		catch (IOException e) {</span>
-<span class="nc" id="L897">			throw new RemoteException(&quot; Create Market Instance failed:  :&quot;, e);</span>
+<span class="nc" id="L895">		catch (IOException e) {</span>
+<span class="nc" id="L896">			throw new RemoteException(&quot; Create Market Instance failed:  :&quot;, e);</span>
 		}
 	}
 
@@ -906,59 +905,59 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return market metadata as String
 	 */
 	private String getMarketMetaData(String marketAgentUrl) {
-<span class="nc" id="L909">		HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));</span>
-<span class="nc" id="L910">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L908">		HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));</span>
+<span class="nc" id="L909">		addAuthHeaders(httpget);</span>
 		try {
-<span class="nc" id="L912">			CloseableHttpResponse response = HTTP.execute(httpget);</span>
+<span class="nc" id="L911">			CloseableHttpResponse response = HTTP.execute(httpget);</span>
 			try {
-<span class="nc" id="L914">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L915">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L916" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L917">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + statusCode);</span>
-<span class="nc bnc" id="L918" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
-<span class="nc" id="L919">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
-<span class="nc" id="L920">					return body;</span>
+<span class="nc" id="L913">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L914">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L915" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L916">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + statusCode);</span>
+<span class="nc bnc" id="L917" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
+<span class="nc" id="L918">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L919">					return body;</span>
 				} else {
-<span class="nc" id="L922">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L921">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L926">				response.close();</span>
+<span class="nc" id="L925">				response.close();</span>
 			}
 		}
-<span class="nc" id="L929">		catch (IOException e) {</span>
-<span class="nc" id="L930">			throw new RemoteException(&quot; Getting market Data failed:  :&quot;, e);</span>
+<span class="nc" id="L928">		catch (IOException e) {</span>
+<span class="nc" id="L929">			throw new RemoteException(&quot; Getting market Data failed:  :&quot;, e);</span>
 		}
 	}
 
 	private String updateMarketMetaData(Map&lt;String, Object&gt; listingData, String marketAgentUrl) {
-<span class="nc" id="L935">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
-<span class="nc" id="L936">		HttpPut put = new HttpPut(getMarketLURI(marketAgentUrl));</span>
+<span class="nc" id="L934">		CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L935">		HttpPut put = new HttpPut(getMarketLURI(marketAgentUrl));</span>
 
-<span class="nc" id="L938">		addAuthHeaders(put);</span>
-<span class="nc" id="L939">		put.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
+<span class="nc" id="L937">		addAuthHeaders(put);</span>
+<span class="nc" id="L938">		put.addHeader(&quot;Accept&quot;, &quot;application/json&quot;);</span>
 
-<span class="nc" id="L941">		put.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));</span>
+<span class="nc" id="L940">		put.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));</span>
 
-<span class="nc" id="L943">		CloseableHttpResponse response = null;</span>
+<span class="nc" id="L942">		CloseableHttpResponse response = null;</span>
 		try {
-<span class="nc" id="L945">			response = httpclient.execute(put);</span>
+<span class="nc" id="L944">			response = httpclient.execute(put);</span>
 			try {
-<span class="nc" id="L947">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L948">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L949" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L950">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
-<span class="nc" id="L951">					return body;</span>
+<span class="nc" id="L946">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L947">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L948" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L949">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L950">					return body;</span>
 				} else {
-<span class="nc" id="L953">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L952">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L957">				response.close();</span>
+<span class="nc" id="L956">				response.close();</span>
 			}
 		}
-<span class="nc" id="L960">		catch (IOException e) {</span>
-<span class="nc" id="L961">			throw new RemoteException(&quot; Updating market data failed:  :&quot;, e);</span>
+<span class="nc" id="L959">		catch (IOException e) {</span>
+<span class="nc" id="L960">			throw new RemoteException(&quot; Updating market data failed:  :&quot;, e);</span>
 		}
 	}
 
@@ -972,37 +971,37 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException on invalid URI for asset metadata
 	 */
 	private URI getMarketLURI(String marketAgentUrl) {
-<span class="nc" id="L975">		String marketEndpoint = getMarketEndpoint();</span>
-<span class="nc bnc" id="L976" title="All 2 branches missed.">		if (marketEndpoint == null)</span>
-<span class="nc" id="L977">			throw new UnsupportedOperationException(&quot;This agent does not support the Market API (no endpoint defined)&quot;);</span>
+<span class="nc" id="L974">		String marketEndpoint = getMarketEndpoint();</span>
+<span class="nc bnc" id="L975" title="All 2 branches missed.">		if (marketEndpoint == null)</span>
+<span class="nc" id="L976">			throw new UnsupportedOperationException(&quot;This agent does not support the Market API (no endpoint defined)&quot;);</span>
 		try {
-<span class="nc" id="L979">			return new URI(marketEndpoint + marketAgentUrl);</span>
+<span class="nc" id="L978">			return new URI(marketEndpoint + marketAgentUrl);</span>
 		}
-<span class="nc" id="L981">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L982">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
+<span class="nc" id="L980">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L981">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
 		}
 	}
 
 	@Override
 	public Listing getListing(String id) {
-<span class="nc" id="L988">		return RemoteListing.create(this, id);</span>
+<span class="nc" id="L987">		return RemoteListing.create(this, id);</span>
 	}
 
 	@Override
 	public Purchase getPurchase(String id) {
-<span class="nc" id="L993">		return RemotePurchase.create(this, id);</span>
+<span class="nc" id="L992">		return RemotePurchase.create(this, id);</span>
 	}
 
 	@Override
 	public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="nc" id="L998">		Object assetId = listingData.get(&quot;assetid&quot;);</span>
-<span class="nc bnc" id="L999" title="All 2 branches missed.">		if (assetId == null) {</span>
-<span class="nc" id="L1000">			throw new StarfishValidationException(&quot;Asset ID not found, asset id is mandatory for creating listing&quot;);</span>
+<span class="nc" id="L997">		Object assetId = listingData.get(&quot;assetid&quot;);</span>
+<span class="nc bnc" id="L998" title="All 2 branches missed.">		if (assetId == null) {</span>
+<span class="nc" id="L999">			throw new StarfishValidationException(&quot;Asset ID not found, asset id is mandatory for creating listing&quot;);</span>
 		}
 
-<span class="nc" id="L1003">		String response = createMarketAgentInstance(listingData, LISTING_URL);</span>
-<span class="nc" id="L1004">		String id = JSON.toMap(response).get(&quot;id&quot;).toString();</span>
-<span class="nc" id="L1005">		return RemoteListing.create(this, id);</span>
+<span class="nc" id="L1002">		String response = createMarketAgentInstance(listingData, LISTING_URL);</span>
+<span class="nc" id="L1003">		String id = JSON.toMap(response).get(&quot;id&quot;).toString();</span>
+<span class="nc" id="L1004">		return RemoteListing.create(this, id);</span>
 	}
 
 	/**
@@ -1014,13 +1013,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Listing updateListing(Map&lt;String, Object&gt; metaMap) {
 
-<span class="nc bnc" id="L1017" title="All 4 branches missed.">		if (null == metaMap || metaMap.get(ID) == null) {</span>
-<span class="nc" id="L1018">			throw new StarfishValidationException(&quot;Either the argument pass is null or Listing &quot; +</span>
+<span class="nc bnc" id="L1016" title="All 4 branches missed.">		if (null == metaMap || metaMap.get(ID) == null) {</span>
+<span class="nc" id="L1017">			throw new StarfishValidationException(&quot;Either the argument pass is null or Listing &quot; +</span>
 					&quot;ID not found in the meta map passed&quot;);
 		}
-<span class="nc" id="L1021">		String id = metaMap.get(ID).toString();</span>
-<span class="nc" id="L1022">		updateMarketMetaData(metaMap, LISTING_URL + &quot;/&quot; + id);</span>
-<span class="nc" id="L1023">		return RemoteListing.create(this, id);</span>
+<span class="nc" id="L1020">		String id = metaMap.get(ID).toString();</span>
+<span class="nc" id="L1021">		updateMarketMetaData(metaMap, LISTING_URL + &quot;/&quot; + id);</span>
+<span class="nc" id="L1022">		return RemoteListing.create(this, id);</span>
 
 	}
 
@@ -1031,8 +1030,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return metadata
 	 */
 	protected Map&lt;String, Object&gt; getListingMetaData(String id) {
-<span class="nc" id="L1034">		String response = getMarketMetaData(LISTING_URL + &quot;/&quot; + id);</span>
-<span class="nc" id="L1035">		return JSON.toMap(response);</span>
+<span class="nc" id="L1033">		String response = getMarketMetaData(LISTING_URL + &quot;/&quot; + id);</span>
+<span class="nc" id="L1034">		return JSON.toMap(response);</span>
 	}
 
 	/**
@@ -1042,11 +1041,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	protected List&lt;Listing&gt; getAllListing() {
 
-<span class="nc" id="L1045">		List&lt;Map&lt;String, Object&gt;&gt; result = getAllMarketMetaData(LISTING_URL);</span>
+<span class="nc" id="L1044">		List&lt;Map&lt;String, Object&gt;&gt; result = getAllMarketMetaData(LISTING_URL);</span>
 
-<span class="nc" id="L1047">		return result.stream()</span>
-<span class="nc" id="L1048">				.map(p -&gt; RemoteListing.create(this, p.get(ID).toString()))</span>
-<span class="nc" id="L1049">				.collect(Collectors.toList());</span>
+<span class="nc" id="L1046">		return result.stream()</span>
+<span class="nc" id="L1047">				.map(p -&gt; RemoteListing.create(this, p.get(ID).toString()))</span>
+<span class="nc" id="L1048">				.collect(Collectors.toList());</span>
 
 	}
 
@@ -1059,11 +1058,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public List&lt;RemoteListing&gt; getAllListing(String userID) {
 
-<span class="nc" id="L1062">		List&lt;Map&lt;String, Object&gt;&gt; result = getAllMarketMetaData(LISTING_URL);</span>
+<span class="nc" id="L1061">		List&lt;Map&lt;String, Object&gt;&gt; result = getAllMarketMetaData(LISTING_URL);</span>
 
-<span class="nc" id="L1064">		return result.stream()</span>
-<span class="nc" id="L1065">				.map(p -&gt; RemoteListing.create(this, p.get(&quot;id&quot;).toString()))</span>
-<span class="nc" id="L1066">				.collect(Collectors.toList());</span>
+<span class="nc" id="L1063">		return result.stream()</span>
+<span class="nc" id="L1064">				.map(p -&gt; RemoteListing.create(this, p.get(&quot;id&quot;).toString()))</span>
+<span class="nc" id="L1065">				.collect(Collectors.toList());</span>
 
 	}
 
@@ -1075,12 +1074,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Purchase createPurchase(Map&lt;String, Object&gt; data) {
 		// check if the data is not null and it must have listing id
-<span class="nc bnc" id="L1078" title="All 4 branches missed.">		if (null == data || data.get(LISTING_ID) == null) {</span>
-<span class="nc" id="L1079">			throw new StarfishValidationException(&quot;Either Purchase metadata is null or it doesn't have Listing ID.&quot;);</span>
+<span class="nc bnc" id="L1077" title="All 4 branches missed.">		if (null == data || data.get(LISTING_ID) == null) {</span>
+<span class="nc" id="L1078">			throw new StarfishValidationException(&quot;Either Purchase metadata is null or it doesn't have Listing ID.&quot;);</span>
 		}
-<span class="nc" id="L1081">		String response = createMarketAgentInstance(data, PURCHASE_URL);</span>
-<span class="nc" id="L1082">		String id = JSON.toMap(response).get(ID).toString();</span>
-<span class="nc" id="L1083">		return RemotePurchase.create(this, id);</span>
+<span class="nc" id="L1080">		String response = createMarketAgentInstance(data, PURCHASE_URL);</span>
+<span class="nc" id="L1081">		String id = JSON.toMap(response).get(ID).toString();</span>
+<span class="nc" id="L1082">		return RemotePurchase.create(this, id);</span>
 	}
 
 	/**
@@ -1090,8 +1089,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return purchaseMetadata
 	 */
 	public Map&lt;String, Object&gt; getPurchaseMetaData(String id) {
-<span class="nc" id="L1093">		String response = getMarketMetaData(PURCHASE_URL + &quot;/&quot; + id);</span>
-<span class="nc" id="L1094">		return JSON.toMap(response);</span>
+<span class="nc" id="L1092">		String response = getMarketMetaData(PURCHASE_URL + &quot;/&quot; + id);</span>
+<span class="nc" id="L1093">		return JSON.toMap(response);</span>
 	}
 
 	/**
@@ -1102,12 +1101,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Purchase updatePurchase(Map&lt;String, Object&gt; newValue) {
 
-<span class="nc" id="L1105">		String id = newValue.get(ID).toString();</span>
-<span class="nc bnc" id="L1106" title="All 2 branches missed.">		if (id == null) {</span>
-<span class="nc" id="L1107">			throw new GenericException(&quot;Listing ID not found&quot;);</span>
+<span class="nc" id="L1104">		String id = newValue.get(ID).toString();</span>
+<span class="nc bnc" id="L1105" title="All 2 branches missed.">		if (id == null) {</span>
+<span class="nc" id="L1106">			throw new GenericException(&quot;Listing ID not found&quot;);</span>
 		}
-<span class="nc" id="L1109">		updateMarketMetaData(newValue, PURCHASE_URL + &quot;/&quot; + id);</span>
-<span class="nc" id="L1110">		return RemotePurchase.create(this, id);</span>
+<span class="nc" id="L1108">		updateMarketMetaData(newValue, PURCHASE_URL + &quot;/&quot; + id);</span>
+<span class="nc" id="L1109">		return RemotePurchase.create(this, id);</span>
 
 	}
 
@@ -1121,14 +1120,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @throws IllegalArgumentException on invalid URI for asset metadata
 	 */
 	private URI getAuthURI(String path) {
-<span class="nc" id="L1124">		String authEndpoint = getAuthEndpoint();</span>
-<span class="nc bnc" id="L1125" title="All 2 branches missed.">		if (authEndpoint == null)</span>
-<span class="nc" id="L1126">			throw new UnsupportedOperationException(&quot;This agent does not support the Auth API (no endpoint defined)&quot;);</span>
+<span class="nc" id="L1123">		String authEndpoint = getAuthEndpoint();</span>
+<span class="nc bnc" id="L1124" title="All 2 branches missed.">		if (authEndpoint == null)</span>
+<span class="nc" id="L1125">			throw new UnsupportedOperationException(&quot;This agent does not support the Auth API (no endpoint defined)&quot;);</span>
 		try {
-<span class="nc" id="L1128">			return new URI(authEndpoint + &quot;/&quot; + path);</span>
+<span class="nc" id="L1127">			return new URI(authEndpoint + &quot;/&quot; + path);</span>
 		}
-<span class="nc" id="L1130">		catch (URISyntaxException e) {</span>
-<span class="nc" id="L1131">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
+<span class="nc" id="L1129">		catch (URISyntaxException e) {</span>
+<span class="nc" id="L1130">			throw new IllegalArgumentException(&quot;Can't create valid URI for asset metadata&quot;, e);</span>
 		}
 	}
 
@@ -1139,32 +1138,32 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Map&lt;String, Object&gt; getUserDetails() {
 
-<span class="nc" id="L1142">		HttpGet httpget = new HttpGet(getAuthURI(USER));</span>
-<span class="nc" id="L1143">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L1141">		HttpGet httpget = new HttpGet(getAuthURI(USER));</span>
+<span class="nc" id="L1142">		addAuthHeaders(httpget);</span>
 
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L1147">			response = HTTP.execute(httpget);</span>
+<span class="nc" id="L1146">			response = HTTP.execute(httpget);</span>
 			try {
-<span class="nc" id="L1149">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L1150">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L1151" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L1152">					throw new RemoteException(&quot;Auth not found for at: &quot; + statusCode);</span>
-<span class="nc bnc" id="L1153" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
-<span class="nc" id="L1154">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
+<span class="nc" id="L1148">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L1149">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L1150" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L1151">					throw new RemoteException(&quot;Auth not found for at: &quot; + statusCode);</span>
+<span class="nc bnc" id="L1152" title="All 2 branches missed.">				} else if (statusCode == 200) {</span>
+<span class="nc" id="L1153">					String body = Utils.stringFromStream(HTTP.getContent(response));</span>
 					// updating the user details in map
-<span class="nc" id="L1156">					account.getUserDataMap().putAll(JSON.toMap(body));</span>
-<span class="nc" id="L1157">					return JSON.toMap(body);</span>
+<span class="nc" id="L1155">					account.getUserDataMap().putAll(JSON.toMap(body));</span>
+<span class="nc" id="L1156">					return JSON.toMap(body);</span>
 				} else {
-<span class="nc" id="L1159">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L1158">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L1163">				response.close();</span>
+<span class="nc" id="L1162">				response.close();</span>
 			}
 		}
-<span class="nc" id="L1166">		catch (IOException e) {</span>
-<span class="nc" id="L1167">			throw new RemoteException(&quot; Getting user details failed:  :&quot;, e);</span>
+<span class="nc" id="L1165">		catch (IOException e) {</span>
+<span class="nc" id="L1166">			throw new RemoteException(&quot; Getting user details failed:  :&quot;, e);</span>
 		}
 
 	}
@@ -1177,36 +1176,36 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	private void createToken(RemoteAccount account) {
 
 		// TODO this probably needs refactoring
-<span class="nc" id="L1180">		HttpPost httpPost = new HttpPost(getAuthURI(TOKEN));</span>
+<span class="nc" id="L1179">		HttpPost httpPost = new HttpPost(getAuthURI(TOKEN));</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L1183">			String username = account.getCredentials().get(USER_NAME).toString();</span>
-<span class="nc" id="L1184">			String password = account.getCredentials().get(PASSWORD).toString();</span>
+<span class="nc" id="L1182">			String username = account.getCredentials().get(USER_NAME).toString();</span>
+<span class="nc" id="L1183">			String password = account.getCredentials().get(PASSWORD).toString();</span>
 
-<span class="nc" id="L1186">			response = HTTP.executeWithAuth(httpPost, username, password);</span>
+<span class="nc" id="L1185">			response = HTTP.executeWithAuth(httpPost, username, password);</span>
 			try {
-<span class="nc" id="L1188">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L1189">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L1190" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L1191">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + &quot;&quot;);</span>
+<span class="nc" id="L1187">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L1188">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L1189" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L1190">					throw new RemoteException(&quot;Asset ID not found for at: &quot; + &quot;&quot;);</span>
 				}
-<span class="nc bnc" id="L1193" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L1194">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
-<span class="nc" id="L1195">					String id = JSON.parse(body);</span>
-<span class="nc" id="L1196">					updateAccountData(id);</span>
-<span class="nc" id="L1197">				} else {</span>
-<span class="nc" id="L1198">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc bnc" id="L1192" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L1193">					String body = Utils.stringFromStream(response.getEntity().getContent());</span>
+<span class="nc" id="L1194">					String id = JSON.parse(body);</span>
+<span class="nc" id="L1195">					updateAccountData(id);</span>
+<span class="nc" id="L1196">				} else {</span>
+<span class="nc" id="L1197">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L1202">				response.close();</span>
+<span class="nc" id="L1201">				response.close();</span>
 			}
 		}
-<span class="nc" id="L1205">		catch (IOException e) {</span>
-<span class="nc" id="L1206">			throw new RemoteException(&quot; Create token failed for account  :&quot; + account, e);</span>
-<span class="nc" id="L1207">		}</span>
+<span class="nc" id="L1204">		catch (IOException e) {</span>
+<span class="nc" id="L1205">			throw new RemoteException(&quot; Create token failed for account  :&quot; + account, e);</span>
+<span class="nc" id="L1206">		}</span>
 
-<span class="nc" id="L1209">	}</span>
+<span class="nc" id="L1208">	}</span>
 
 	/**
 	 * This method is to get the content of an Asset based on Asset id passed as an
@@ -1216,31 +1215,31 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return Stream of asset content
 	 */
 	public InputStream getContentStream(String assetId) {
-<span class="nc" id="L1219">		URI uri = getStorageURI(assetId);</span>
-<span class="nc" id="L1220">		HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L1221">		addAuthHeaders(httpget);</span>
+<span class="nc" id="L1218">		URI uri = getStorageURI(assetId);</span>
+<span class="nc" id="L1219">		HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc" id="L1220">		addAuthHeaders(httpget);</span>
 		CloseableHttpResponse response;
 		try {
-<span class="nc" id="L1224">			response = HTTP.execute(httpget);</span>
+<span class="nc" id="L1223">			response = HTTP.execute(httpget);</span>
 			try {
-<span class="nc" id="L1226">				StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L1227">				int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L1228" title="All 2 branches missed.">				if (statusCode == 404) {</span>
-<span class="nc" id="L1229">					throw new RemoteException(&quot;Asset ID not found for assetID :&quot; + assetId + &quot;and uri is : &quot; + uri);</span>
+<span class="nc" id="L1225">				StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L1226">				int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L1227" title="All 2 branches missed.">				if (statusCode == 404) {</span>
+<span class="nc" id="L1228">					throw new RemoteException(&quot;Asset ID not found for assetID :&quot; + assetId + &quot;and uri is : &quot; + uri);</span>
 				}
-<span class="nc bnc" id="L1231" title="All 2 branches missed.">				if (statusCode == 200) {</span>
-<span class="nc" id="L1232">					InputStream inputStream = HTTP.getContent(response);</span>
-<span class="nc" id="L1233">					return inputStream;</span>
+<span class="nc bnc" id="L1230" title="All 2 branches missed.">				if (statusCode == 200) {</span>
+<span class="nc" id="L1231">					InputStream inputStream = HTTP.getContent(response);</span>
+<span class="nc" id="L1232">					return inputStream;</span>
 				} else {
-<span class="nc" id="L1235">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
+<span class="nc" id="L1234">					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
 				}
 			}
 			finally {
-<span class="nc" id="L1239">				response.close();</span>
+<span class="nc" id="L1238">				response.close();</span>
 			}
 		}
-<span class="nc" id="L1242">		catch (IOException e) {</span>
-<span class="nc" id="L1243">			throw new RemoteException(&quot; Getting Remote Asset content failed: &quot;, e);</span>
+<span class="nc" id="L1241">		catch (IOException e) {</span>
+<span class="nc" id="L1242">			throw new RemoteException(&quot; Getting Remote Asset content failed: &quot;, e);</span>
 		}
 
 	}
@@ -1251,8 +1250,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param token auth token
 	 */
 	private void updateAccountData(String token) {
-<span class="nc" id="L1254">		account.getUserDataMap().put(TOKEN, token);</span>
-<span class="nc" id="L1255">	}</span>
+<span class="nc" id="L1253">		account.getUserDataMap().put(TOKEN, token);</span>
+<span class="nc" id="L1254">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
