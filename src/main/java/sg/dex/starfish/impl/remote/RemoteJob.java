@@ -1,11 +1,14 @@
 package sg.dex.starfish.impl.remote;
 
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import sg.dex.starfish.Job;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * This class represents a remote Job executed via the Invoke API on a remote agent.
@@ -13,12 +16,11 @@ import sg.dex.starfish.exception.JobFailedException;
 public class RemoteJob implements Job {
     private RemoteAgent agent;
     private String jobID;
-    private Map<String,Object> response;
     private String status;
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
-        status= Constant.RUNNING;
+
     }
 
     public static RemoteJob create(RemoteAgent agent2, String jobID) {
@@ -28,23 +30,37 @@ public class RemoteJob implements Job {
 
     @Override
     public boolean isDone() {
-        return response != null;
+        return pollResult()== null? false:true;
     }
 
     /**
      * Polls the invokable service job for a complete asset.
      *
-     * @return The resulting asset, or null if not yet available
+     * @return The Map of <String,Object> where key will be the result and value will be the payload  
      * @throws JobFailedException If the job has failed
      */
     @Override
 	@SuppressWarnings("unchecked")
 	public synchronized Map<String,Object> pollResult() {
-        if (response != null) {
-            return response;
+
+        Map<String,Object> result = (Map<String,Object>)agent.pollJob(jobID);
+
+        String status = (String) result.get(STATUS);
+        this.status=status;
+
+        if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + result);
+        if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
+                || status.equals(SCHEDULED)) {
+
+            return null;
         }
-        response = (Map<String,Object>)agent.pollJob(jobID);
-        return response;
+        if (status.equals(COMPLETED) || status.equals(SUCCEEDED)) {
+            return result;
+        } else if (status.equals(Constant.UNKNOWN)) {
+            throw new JobFailedException("Error code: " + result.get("errorcode") +
+                    "description is : " + result.get("description"));
+        }
+        return result;
     }
 
     @Override
@@ -55,7 +71,7 @@ public class RemoteJob implements Job {
         while (System.currentTimeMillis() < start + timeoutMillis) {
         	Map<String,Object> a = pollResult();
             if (a != null){
-                return a;
+                return (Map<String,Object>)a.get("result");
             }
             try {
                 Thread.sleep(initialSleep);

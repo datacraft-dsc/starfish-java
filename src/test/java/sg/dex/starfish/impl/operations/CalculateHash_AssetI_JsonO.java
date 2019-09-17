@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.operations;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.util.Hex;
@@ -28,10 +29,14 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
     private Map<String,Object> doCompute(Object input) {
         Asset a= (Asset)input;
+
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
 
         Map<String,Object> result = new HashMap<>();
-        result.put("output", hash);
+        Map<String,Object> res = new HashMap<>();
+        res.put("hashed_value",hash);
+        res.put("status", Constant.SUCCEEDED);
+        result.put("result", res);
         return result;
     }
 

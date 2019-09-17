@@ -96,7 +96,6 @@ import sg.dex.starfish.util.Utils;
 public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	private final RemoteAccount account;
-	private String status;
 
 	/**
 	 * Creates a RemoteAgent with the specified Ocean connection and DID
@@ -714,24 +713,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					Map<String, Object> result = JSON.toMap(body);
-					String status = (String) result.get(STATUS);
-                    this.status=status;
-					if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + body);
-					if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
-							|| status.equals(SCHEDULED)) {
+					return result;
 
-						return null; // no result yet
-					}
-					if (status.equals(COMPLETED) || status.equals(SUCCEEDED)) {
-
-						return result;
-					} else if (status.equals(Constant.UNKNOWN)) {
-						throw new JobFailedException("Error code: " + result.get("errorcode") +
-								"description is : " + result.get("description"));
-					} else {
-
-						throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-					}
 				} else {
 					throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
 				}

@@ -179,7 +179,8 @@ public interface Job extends Future<Map<String, Object>> {
 
 	/**
 	 * Gets the status of the Job associated with this Operation.
-	 *
+	 * As mentioned in DEP6 ,the status of job can be:
+	 *      scheduled ,running,succeeded,failed,unknown
 	 * @return The the status of the Job
 	 */
 	public String getStatus();
