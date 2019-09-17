@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-
 /**
  * An in-memory agent implementation
  * This class methods include creation of memory agent,
@@ -77,11 +76,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R registerAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
         assetStore.put(ma.getAssetID(), ma);
-        return (R)ma;
+        return (R) ma;
     }
 
     /**
@@ -93,23 +92,23 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R uploadAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
         registerAsset(ma);
-        return (R)ma;
+        return (R) ma;
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R getAsset(String id) {
-    	R asset=(R) assetStore.get(id);
-    	if (asset==null) return null;
-		String rid=asset.getAssetID();
-		if (rid!=id) {
-			throw new StarfishValidationException("Expected asset ID: "+id+ " but got metadata with hash: "+rid);
-		}
-		return asset;
+        R asset = (R) assetStore.get(id);
+        if (asset == null) return null;
+        String rid = asset.getAssetID();
+        if (rid != id) {
+            throw new StarfishValidationException("Expected asset ID: " + id + " but got metadata with hash: " + rid);
+        }
+        return asset;
     }
 
     /**
@@ -148,6 +147,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         }
         return operation.invoke(params);
     }
+
     /**
      * Invokes the specified operation on this agent. If the invoke is successfully launched,
      * will return a Job instance that can be used to access the result, otherwise throws an
@@ -162,19 +162,19 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     public Job invokeAsync(Operation operation, Map<String, Object> params) {
 
         // check the mode if sync then throw exception
-        if(isSyncMode(operation)){
+        if (isSyncMode(operation)) {
             throw new StarfishValidationException("Mode must be Async for this operation");
         }
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-       return operation.invoke(params);
+        return operation.invoke(params);
     }
 
     @Override
-	public <R extends Asset> R getAsset(DID did) {
-		return getAsset(did.getID());
-	}
+    public <R extends Asset> R getAsset(DID did) {
+        return getAsset(did.getID());
+    }
 
     @Override
     public Listing getListing(String id) {
@@ -221,15 +221,13 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * API to check if the operation mode is sync or Async
+     *
      * @param operation operation of which mode need to be checked
      * @return true if mode is sync else false
      */
     private boolean isSyncMode(Operation operation) {
-        Map<String,Object> metaData = operation.getMetadata();
+        Map<String, Object> metaData = operation.getMetadata();
         Object mode = metaData.get("modes");
-        if(mode!=null && mode.toString().equals("sync")){
-            return true;
-        }
-        return false;
+        return mode != null && mode.toString().equals("sync");
     }
 }

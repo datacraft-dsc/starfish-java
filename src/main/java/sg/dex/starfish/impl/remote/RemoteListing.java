@@ -12,7 +12,7 @@ import static sg.dex.starfish.constant.Constant.ID;
 
 /**
  * Class representing an Listing managed via a remote agent.
- *
+ * <p>
  * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
  *
  * @author Ayush
@@ -33,7 +33,7 @@ public class RemoteListing extends AListing {
      * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
      *
      * @param remoteAgent remote agent
-     * @param id id
+     * @param id          id
      */
     private RemoteListing(RemoteAgent remoteAgent, String id) {
         this.remoteAgent = remoteAgent;
@@ -44,7 +44,7 @@ public class RemoteListing extends AListing {
      * To get the Reference of Existing Listing
      *
      * @param agent agent on which this listing needs to be created
-     * @param id listing id
+     * @param id    listing id
      * @return RemoteListing
      */
     public static RemoteListing create(RemoteAgent agent, String id) {
@@ -90,13 +90,14 @@ public class RemoteListing extends AListing {
     @Override
     public Map<String, Object> getMetaData() {
         @SuppressWarnings("unchecked")
-		Map<String, Object> metaData = metaDataCache.get(listing_id) == null ?
+        Map<String, Object> metaData = metaDataCache.get(listing_id) == null ?
                 remoteAgent.getListingMetaData(listing_id) : (Map<String, Object>) metaDataCache.get(listing_id);
         return metaData;
     }
 
     /**
      * This method is to get the AssetID
+     *
      * @return String assetId
      */
     @Override
@@ -106,6 +107,7 @@ public class RemoteListing extends AListing {
 
     /**
      * This method is to get the Listing ID
+     *
      * @return String listingId
      */
     @Override

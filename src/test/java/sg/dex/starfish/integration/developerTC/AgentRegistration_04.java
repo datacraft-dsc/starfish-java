@@ -39,7 +39,7 @@ public class AgentRegistration_04 {
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", "/api/v1/auth"));
-         services.add(Utils.mapOf(
+        services.add(Utils.mapOf(
                 "type", "Ocean.Market.v1",
                 "serviceEndpoint", "/api/v1/market"));
         ddo.put("service", services);

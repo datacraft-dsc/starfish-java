@@ -63,7 +63,7 @@ public class ConnectToOcean_01 {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testnullDID(){
+    public void testnullDID() {
         Map<String, Object> ddo = new HashMap<>();
         DID surferDID = null;
         ddo.put("test", "test");

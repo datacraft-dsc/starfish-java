@@ -26,7 +26,7 @@ public class QueryProvenance_15 {
 
     @Test
     public void testProvenance() throws URISyntaxException {
-      // adding provenance
+        // adding provenance
         String actId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();
         Map<String, Object> provmetadata = ProvUtil.createPublishProvenance(actId, agentId);
@@ -34,10 +34,10 @@ public class QueryProvenance_15 {
         metaDataAsset.put("provenance", provmetadata);
 
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
-        Asset assetUrl = URIAsset.create(new URI(url),metaDataAsset);
+        Asset assetUrl = URIAsset.create(new URI(url), metaDataAsset);
         remoteAgent.registerAsset(assetUrl);
         Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
-        Map<String,Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
+        Map<String, Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
 
         Assume.assumeNotNull(provData.get("activity"));
         Assume.assumeNotNull(provData.get("wasGeneratedBy"));

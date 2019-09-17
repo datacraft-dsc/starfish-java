@@ -37,8 +37,6 @@ public final class SquidService {
         return oceanManager;
 
 
-
-
     }
 
     public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
@@ -73,6 +71,7 @@ public final class SquidService {
         return oceanConfig.getMainAccountAddress();
 
     }
+
     private Properties getProperties() {
         Properties prop = new Properties();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {

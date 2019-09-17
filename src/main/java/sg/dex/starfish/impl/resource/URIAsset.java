@@ -42,8 +42,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static URIAsset create(URI uri,String metaString) {
-        return new URIAsset(metaString,uri);
+    public static URIAsset create(URI uri, String metaString) {
+        return new URIAsset(metaString, uri);
     }
 
     /**
@@ -53,7 +53,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-        return create(uri,(Map<String,Object>)null);
+        return create(uri, (Map<String, Object>) null);
     }
 
     /**
@@ -65,19 +65,19 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
-    public static URIAsset create(URI uri, Map<String,Object> metaData) {
-        return create(uri,JSON.toPrettyString(buildMetaData(metaData,uri)));
+    public static URIAsset create(URI uri, Map<String, Object> metaData) {
+        return create(uri, JSON.toPrettyString(buildMetaData(metaData, uri)));
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param metaData                metadata associated with the asset.This metadata will be be added in addition to default
-     *                                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                                default value will be overridden.
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map<String,Object> buildMetaData( Map<String,Object> metaData, URI uri) {
+    private static Map<String, Object> buildMetaData(Map<String, Object> metaData, URI uri) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
@@ -146,13 +146,13 @@ public class URIAsset extends AAsset implements DataAsset {
         throw new UnsupportedOperationException("Can't get DID for asset of type " + this.getClass());
     }
 
-    public URI getSource(){
+    public URI getSource() {
         return uri;
     }
-    
+
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return create(uri,newMeta);
+        return create(uri, newMeta);
     }
 
 }

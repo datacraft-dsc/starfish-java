@@ -40,7 +40,8 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * This method to get the listing id associated with the this purchase
-     *This method will return the listing id
+     * This method will return the listing id
+     *
      * @return Listing id
      */
     public String getListingId() {
@@ -49,7 +50,8 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * This method is  to get the Purchase ID
-     *This method will return the purchase id
+     * This method will return the purchase id
+     *
      * @return purchase id
      */
     public String getId() {

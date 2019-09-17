@@ -11,45 +11,47 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ParamTestJSON {
-	private String data;
+    private String data;
 
-	public ParamTestJSON(String label,String data) {
-		this.data = data;
-	}
+    public ParamTestJSON(String label, String data) {
+        this.data = data;
+    }
 
-	@Parameterized.Parameters(name = "{index}: {0}")
-	public static Collection<String[]> dataExamples() {
-		return Arrays.asList(new String[][] { 
-			{ "Number","1" }, 
-			{ "Number with decimal","1.0" }, 
-			{ "Null","null" }, 
-			{ "String","\"foobar\"" }, 
-			{ "String with special characters","\"foo\\nbaz\\tbar\"" }, 
-			{ "String with unicode characters","\"\u0026\uFFFF\"" }, 
-			{ "String with non-escaped forward slashes","\"foo/bar/baz\"" }, 
-			{ "String with escaped forward slashes","\"foo\\/bar\\/baz\"" }, 
-			{ "Array of numbers","[1,2,3]" }, 
-			{ "Array of stuff","[1,{},true,\"bar\"]" }, 
-			{ "Empty map","{}" }, 
-			{ "Nested maps", "{\"foo/bar\": {}}" } 
-		});
-	}
-	
-	@Test public void testJSONRoundTrip() {
-		Object o1=JSON.parse(data);
-		String s1=JSON.toString(o1);
-		Object o2=JSON.parse(s1);
-		String s2=JSON.toString(o2);
-		assertEquals(s1,s2);
-		assertEquals(o1,o2);
-	}
-	
-	@Test public void testJSONRoundTripPretty() {
-		Object o1=JSON.parse(data);
-		String ps1=JSON.toPrettyString(o1);
-		Object o2=JSON.parse(ps1);
-		String ps2=JSON.toPrettyString(o2);
-		assertEquals(ps1,ps2);
-		assertEquals(o1,o2);
-	}
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Collection<String[]> dataExamples() {
+        return Arrays.asList(new String[][]{
+                {"Number", "1"},
+                {"Number with decimal", "1.0"},
+                {"Null", "null"},
+                {"String", "\"foobar\""},
+                {"String with special characters", "\"foo\\nbaz\\tbar\""},
+                {"String with unicode characters", "\"\u0026\uFFFF\""},
+                {"String with non-escaped forward slashes", "\"foo/bar/baz\""},
+                {"String with escaped forward slashes", "\"foo\\/bar\\/baz\""},
+                {"Array of numbers", "[1,2,3]"},
+                {"Array of stuff", "[1,{},true,\"bar\"]"},
+                {"Empty map", "{}"},
+                {"Nested maps", "{\"foo/bar\": {}}"}
+        });
+    }
+
+    @Test
+    public void testJSONRoundTrip() {
+        Object o1 = JSON.parse(data);
+        String s1 = JSON.toString(o1);
+        Object o2 = JSON.parse(s1);
+        String s2 = JSON.toString(o2);
+        assertEquals(s1, s2);
+        assertEquals(o1, o2);
+    }
+
+    @Test
+    public void testJSONRoundTripPretty() {
+        Object o1 = JSON.parse(data);
+        String ps1 = JSON.toPrettyString(o1);
+        Object o2 = JSON.parse(ps1);
+        String ps2 = JSON.toPrettyString(o2);
+        assertEquals(ps1, ps2);
+        assertEquals(o1, o2);
+    }
 }

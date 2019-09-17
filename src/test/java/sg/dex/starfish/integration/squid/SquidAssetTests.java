@@ -59,7 +59,7 @@ public class SquidAssetTests {
 
 
     @Test
-    public void testCreateSquidAsset()  {
+    public void testCreateSquidAsset() {
 
         byte[] data = {1, 2, 3, 4};
 
@@ -67,8 +67,7 @@ public class SquidAssetTests {
         // register created asset
         // any sf asset
         SquidAsset squidAsset_1 = squidAgent.registerAsset(asset);
-        assertEquals(asset.getAssetID(),squidAsset_1.getAssetID());
-
+        assertEquals(asset.getAssetID(), squidAsset_1.getAssetID());
 
 
     }
@@ -127,6 +126,7 @@ public class SquidAssetTests {
 
 
     }
+
     @Test
     public void testRegisterOnSurferAndChain() throws IOException {
 
@@ -134,7 +134,7 @@ public class SquidAssetTests {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
 
         // create asset using metadata and given content
-        ResourceAsset memory_asset= ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
+        ResourceAsset memory_asset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
 
         // create surfer agent
         RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
@@ -151,20 +151,20 @@ public class SquidAssetTests {
 
 
         // verifying registration
-        ARemoteAsset aRemoteAsset =surfer.getAsset(memory_asset.getAssetID());
+        ARemoteAsset aRemoteAsset = surfer.getAsset(memory_asset.getAssetID());
 
 
-       // validating name
-        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,memory_asset.getMetadata().get("name"));
-        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name,aRemoteAsset.getMetadata().get("name"));
+        // validating name
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name, memory_asset.getMetadata().get("name"));
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.name, aRemoteAsset.getMetadata().get("name"));
 
         // validating author
-        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,memory_asset.getMetadata().get("author"));
-        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author,aRemoteAsset.getMetadata().get("author"));
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author, memory_asset.getMetadata().get("author"));
+        assertEquals(squidAsset_FromChain.getSquidDDO().metadata.base.author, aRemoteAsset.getMetadata().get("author"));
 
 
         // validating content
-        assertEquals(aRemoteAsset.getContent().length ,memory_asset.getContent().length);
+        assertEquals(aRemoteAsset.getContent().length, memory_asset.getContent().length);
 
 
         //*****Consume Asset ************
@@ -219,11 +219,11 @@ public class SquidAssetTests {
         String url = SquidHelperTest.getPropertiesMap().get("submarine.url");
         String account = SquidHelperTest.getPropertiesMap().get("test.account");
 
-        Map<String,Object> transactionMap =ocean.getTransaction(url,account);
+        Map<String, Object> transactionMap = ocean.getTransaction(url, account);
 
-        String actual=transactionMap.get("message").toString();
+        String actual = transactionMap.get("message").toString();
 
-        assertEquals("OK",actual);
+        assertEquals("OK", actual);
 
 
     }
@@ -242,11 +242,11 @@ public class SquidAssetTests {
 
         Resolver resolver = new SquidResolverImpl();
         // getting DDO id as String  based on DID
-        String ddoString =resolver.getDDO(squidAsset_1.getSquidDDO().getDid());
+        String ddoString = resolver.getDDO(squidAsset_1.getSquidDDO().getDid());
 
         String ddoS = squidAsset_1.getSquidDDO().id;
 
-        assertEquals(ddoS,ddoString);
+        assertEquals(ddoS, ddoString);
 
     }
 
@@ -266,10 +266,10 @@ public class SquidAssetTests {
 
         com.oceanprotocol.squid.models.DID randomDID = com.oceanprotocol.squid.models.DID.builder();
         Resolver resolver = new SquidResolverImpl();
-        String checksum = "0x"+"d190bc85ee50643baffe7afe84ec6a9dd5212b67223523cd8e4d88f9069255fb";
-        boolean actual=resolver.registerDID(randomDID,checksum);
-        assertEquals(actual,true);
-        String  ddoId =resolver.getDDO(randomDID);
+        String checksum = "0x" + "d190bc85ee50643baffe7afe84ec6a9dd5212b67223523cd8e4d88f9069255fb";
+        boolean actual = resolver.registerDID(randomDID, checksum);
+        assertEquals(actual, true);
+        String ddoId = resolver.getDDO(randomDID);
         assertTrue(ddoId.startsWith("did:op:"));
 
     }

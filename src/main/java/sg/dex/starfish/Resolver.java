@@ -21,7 +21,7 @@ public interface Resolver {
      * @throws CipherException
      * @throws IOException
      */
-    public String getDDO(DID did) throws EthereumException, DDOException, InvalidConfiguration, InitializationException, CipherException, IOException;
+    String getDDO(DID did) throws EthereumException, DDOException, InvalidConfiguration, InitializationException, CipherException, IOException;
 
     /**
      * Method to register a DDO for a DID given an ethereum account.
@@ -32,5 +32,5 @@ public interface Resolver {
      * @throws IOException
      * @throws CipherException
      */
-    public boolean registerDID(DID did, String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration;
+    boolean registerDID(DID did, String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration;
 }

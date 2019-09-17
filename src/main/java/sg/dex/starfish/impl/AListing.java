@@ -4,8 +4,8 @@ import sg.dex.starfish.Listing;
 
 /**
  * Abstract base class for a listing on a data marketplace
- * @author Mike
  *
+ * @author Mike
  */
 public abstract class AListing implements Listing {
 

@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @SuppressWarnings("javadoc")
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	  TestKeccak.class
+        TestKeccak.class
 })
 public class CryptoSuite {
 

@@ -31,7 +31,7 @@ public class AssetDownload_19 {
 
         Asset asset = MemoryAsset.createFromString("test upload of asset");
         // upload will register and upload the asset
-        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
+        RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
 
         //ra.getContentStream()
         assertEquals(asset.getAssetID(), ra.getAssetID());

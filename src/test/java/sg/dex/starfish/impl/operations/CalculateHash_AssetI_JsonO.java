@@ -27,21 +27,21 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
     }
 
 
-    private Map<String,Object> doCompute(Object input) {
-        Asset a= (Asset)input;
+    private Map<String, Object> doCompute(Object input) {
+        Asset a = (Asset) input;
 
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
 
-        Map<String,Object> result = new HashMap<>();
-        Map<String,Object> res = new HashMap<>();
-        res.put("hashed_value",hash);
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
+        res.put("hashed_value", hash);
         res.put("status", Constant.SUCCEEDED);
         result.put("result", res);
         return result;
     }
 
     @Override
-	protected Map<String,Object> compute(Map<String, Object> params) {
+    protected Map<String, Object> compute(Map<String, Object> params) {
         if (params == null || params.get("input") == null)
             throw new IllegalArgumentException("Missing parameter 'input'");
         return doCompute(params.get("input"));

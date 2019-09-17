@@ -11,32 +11,33 @@ import static sg.dex.starfish.constant.Constant.AGREEMENT;
 import static sg.dex.starfish.constant.Constant.ID;
 
 /**
- *Class representing a local in-memory Listing instance.
- *
+ * Class representing a local in-memory Listing instance.
+ * <p>
  * Intended for use in testing or local development situations.
  */
 public class MemoryListing implements Listing {
-	private MemoryAgent agent;
-	
-    private final Map<String,Object> meta;
-	private final String id;
+    private MemoryAgent agent;
 
-    private MemoryListing(MemoryAgent agent, String listingID, Map<String,Object> metaMap) {
-    	this.agent=agent;
-        this.meta=metaMap;
-        this.id=listingID;
+    private final Map<String, Object> meta;
+    private final String id;
+
+    private MemoryListing(MemoryAgent agent, String listingID, Map<String, Object> metaMap) {
+        this.agent = agent;
+        this.meta = metaMap;
+        this.id = listingID;
     }
 
     /**
      * API will create the listing instance based on the metaMap data passed.
-     * @param agent Agent on which the listing has to be created
+     *
+     * @param agent   Agent on which the listing has to be created
      * @param metaMap Map of metadata that need to create listing
      * @return The new Listing
      */
-    public static MemoryListing create(MemoryAgent agent, Map<String,Object> metaMap) {
-    	String listingID= metaMap.get(ID).toString();
+    public static MemoryListing create(MemoryAgent agent, Map<String, Object> metaMap) {
+        String listingID = metaMap.get(ID).toString();
 
-        return  new MemoryListing(agent,listingID,metaMap);
+        return new MemoryListing(agent, listingID, metaMap);
     }
 
 
@@ -46,9 +47,9 @@ public class MemoryListing implements Listing {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
-    public Map<String,Object> getAgreement() {
-       return getMetaData().get(AGREEMENT)!= null ?(Map<String, Object>)getMetaData().get(AGREEMENT): null;
+    @Override
+    public Map<String, Object> getAgreement() {
+        return getMetaData().get(AGREEMENT) != null ? (Map<String, Object>) getMetaData().get(AGREEMENT) : null;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class MemoryListing implements Listing {
 
     @Override
     public Listing refresh() {
-    	return this;
+        return this;
     }
 
     @Override

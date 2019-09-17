@@ -15,24 +15,24 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing an bundle asset managed via a remote agent.
- *
+ * <p>
  * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
- *
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     private Map<String, Asset> assetMap;
 
     private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
-        super(metaData,remoteAgent);
+        super(metaData, remoteAgent);
         this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
 
     /**
      * This method is to create a Remote bundle asset asset with given Bundle name
+     *
      * @param remoteAgent agent on which the  bundle need to create
-     * @param assetMap map of all asset with name and assetID
-     * @param meta additional meta data needs to be added while creating bundle
+     * @param assetMap    map of all asset with name and assetID
+     * @param meta        additional meta data needs to be added while creating bundle
      * @return RemoteBundle instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
@@ -42,16 +42,16 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     /**
      * API to create a Remote bundle asset asset with given Bundle name
      *
-     * @param assetMap map of all asset with name and assetID
+     * @param assetMap    map of all asset with name and assetID
      * @param remoteAgent agent on which this bundle need to be created
      * @return RemoteBundle new instance
      */
     public static RemoteBundle create(RemoteAgent remoteAgent, Map<String, Asset> assetMap) {
-        if(null ==remoteAgent){
+        if (null == remoteAgent) {
             throw new StarfishValidationException("Remote agent cannot be null for creating remote Bundle");
         }
         //build meta data
-        return create(remoteAgent,assetMap,null);
+        return create(remoteAgent, assetMap, null);
 
     }
 
@@ -70,14 +70,14 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
         // get the contents
         @SuppressWarnings("unchecked")
-		Map<String, Map<String, String>> allSubAsset=(Map<String, Map<String, String>>)responseMap.get("contents");
-        
+        Map<String, Map<String, String>> allSubAsset = (Map<String, Map<String, String>>) responseMap.get("contents");
+
         //build meta data
-        Map<String,Asset> assetMap = new HashMap<>();
+        Map<String, Asset> assetMap = new HashMap<>();
         for (String name : allSubAsset.keySet()) {
             String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();
-            ARemoteAsset aRemoteAsset =remoteAgent.getAsset(assetId);
-            assetMap.put(name,aRemoteAsset);
+            ARemoteAsset aRemoteAsset = remoteAgent.getAsset(assetId);
+            assetMap.put(name, aRemoteAsset);
 
         }
         return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);
@@ -87,7 +87,8 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     /**
      * This method is to build the metadata for the bundle
-     * @param meta additional metadata
+     *
+     * @param meta     additional metadata
      * @param assetMap assetMap
      * @return metadata as string
      */
@@ -130,6 +131,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     /**
      * This method is to get the AssetMap
+     *
      * @return assetMap that belong to bundle
      */
     private Map<String, Asset> getAssetMap() {
@@ -142,7 +144,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
     @Override
     public Bundle add(String name, Asset asset) {
-        Map<String,Asset> copyMap =getAssetMap();
+        Map<String, Asset> copyMap = getAssetMap();
         copyMap.put(name, asset);
         return create(remoteAgent, copyMap, getMetadata());
     }
@@ -150,14 +152,14 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
 
-        Map<String,Asset> copyMap =getAssetMap();
+        Map<String, Asset> copyMap = getAssetMap();
         copyMap.putAll(assetMapp);
 
         return create(remoteAgent, copyMap, getMetadata());
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R get(String name) {
         return (R) getAssetMap().get(name);
     }

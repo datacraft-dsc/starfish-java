@@ -24,17 +24,16 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory data asset.
- *
+ * <p>
  * Intended for use in testing or local development situations.
  *
  * @author Mike
- *
  */
 public class MemoryAsset extends AAsset implements DataAsset {
 
     private final byte[] data;
 
-    private MemoryAsset(byte[] data,String metaData) {
+    private MemoryAsset(byte[] data, String metaData) {
         super(metaData);
         this.data = data;
     }
@@ -56,6 +55,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
 
         return ob;
     }
+
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
@@ -67,7 +67,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
             return (MemoryAsset) asset;
         } else if (asset.isDataAsset()) {
             byte[] data = asset.getContent();
-            return create(data,buildMetaData(data,null));
+            return create(data, buildMetaData(data, null));
         } else {
             throw new IllegalArgumentException("Asset must be a data asset");
         }
@@ -84,7 +84,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return create(data,buildMetaData(data,null));
+        return create(data, buildMetaData(data, null));
     }
 
     /**
@@ -96,7 +96,7 @@ public class MemoryAsset extends AAsset implements DataAsset {
      */
     public static Asset createFromString(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        return create(data,buildMetaData(data,null));
+        return create(data, buildMetaData(data, null));
     }
 
     /**
@@ -107,16 +107,16 @@ public class MemoryAsset extends AAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
-        return new MemoryAsset(data,JSON.toPrettyString(buildMetaData(data,meta)));
+        return new MemoryAsset(data, JSON.toPrettyString(buildMetaData(data, meta)));
     }
 
 
     /**
      * Gets InputStream corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public InputStream getContentStream() {
@@ -127,9 +127,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
     /**
      * Gets raw data corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public byte[] getContent() {
@@ -152,12 +152,12 @@ public class MemoryAsset extends AAsset implements DataAsset {
     }
 
 
-    public byte[] getSource(){
+    public byte[] getSource() {
         return data;
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return new MemoryAsset(this.getSource(),newMeta);
+        return new MemoryAsset(this.getSource(), newMeta);
     }
 }

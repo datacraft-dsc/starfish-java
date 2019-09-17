@@ -18,7 +18,7 @@ public class AssumingConnection implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 if (!checker.connect()) {
-                    throw new AssertionError("Integration Test failed as "+ "Server ("+checker.toString() +") is not reachable.");
+                    throw new AssertionError("Integration Test failed as " + "Server (" + checker.toString() + ") is not reachable.");
                 } else {
                     base.evaluate();
                 }
