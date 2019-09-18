@@ -28,7 +28,7 @@ before_install:
   - sleep 60
   - ./scripts/wait_for_migration_and_extract_keeper_artifacts.sh
 install:
-  - mvn clean install
+  - mvn clean install -Dgpg.skip
   - mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]'
   - export project_version=$(mvn help:evaluate -Dexpression=project.version | grep -e '^[^\[]')
 
