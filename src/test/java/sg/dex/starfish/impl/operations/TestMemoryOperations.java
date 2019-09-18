@@ -106,7 +106,9 @@ public class TestMemoryOperations {
         test.put("input", "10");
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
-
+        String rString=result.toString();
+        // FIXME: doesn't seem to be getting asset result
+        System.out.println(rString);
         assertTrue(result.toString().contains("2"));
         assertTrue(result.toString().contains("3"));
         assertTrue(result.toString().contains("5"));
