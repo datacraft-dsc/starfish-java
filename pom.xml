@@ -197,7 +197,7 @@
 							<execution>
 								<id>sign-artifacts</id>
 								<!-- need to change to verify while giving maven release -->
-								<phase>deploy</phase>
+								<phase>verify</phase>
 								<goals>
 									<goal>sign</goal>
 								</goals>
