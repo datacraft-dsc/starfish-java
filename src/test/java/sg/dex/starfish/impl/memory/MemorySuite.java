@@ -16,7 +16,8 @@ import sg.dex.starfish.impl.operations.TestMemoryOperations;
         TestMemoryOperations.class,
         TestMemoryBundle.class,
         TestMemoryListing.class,
-        TestMemoryPurchase.class
+        TestMemoryPurchase.class,
+        TestMemoryOperations.class
 })
 public class MemorySuite {
 

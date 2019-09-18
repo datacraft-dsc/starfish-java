@@ -24,11 +24,12 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     @Override
     public Job invokeAsync(Map<String, Object> params) {
-        // default implementation for an asynchronous invoke job in memory, using a
-        // Future<Asset>.
-        // Implementations may override this for custom behaviour (e.g. a custom thread
-        // pool)
-        // But this should be sufficient for most cases.
+         /*default implementation for an asynchronous invoke job in memory, using a
+        Future<Asset>.
+        Implementations may override this for custom behaviour (e.g. a custom thread
+         pool)
+         But this should be sufficient for most cases. */
+
         final CompletableFuture<Map<String, Object>> future = new CompletableFuture<>();
         MemoryJob memoryJob = MemoryJob.create(future);
         MemoryAgent.THREAD_POOL.submit(() -> {
@@ -46,7 +47,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     @Override
     public final Map<String, Object> invokeResult(Map<String, Object> params) {
-        return (Map<String, Object>) compute(params);
+        return (Map<String, Object>)compute(params).get("results");
     }
 
     @Override

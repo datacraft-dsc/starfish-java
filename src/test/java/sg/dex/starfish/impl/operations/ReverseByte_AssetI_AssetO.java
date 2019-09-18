@@ -2,7 +2,6 @@ package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -49,15 +48,13 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
             bytes[i] = bytes[length - i - 1];
             bytes[length - i - 1] = temp;
         }
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         Asset res = MemoryAsset.create(bytes);
-        result.put("status", Constant.SUCCEEDED);
-        memoryAgent.registerAsset(res);
-        result.put("did", res.getAssetID());
+        response.put("reverse_result", res);
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", result);
-        return resultMap;
+        Map<String, Object> result = new HashMap<>();
+        result.put("results", response);
+        return result;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Job;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.RemoteException;
 
@@ -52,22 +51,18 @@ public class RemoteJob implements Job {
         this.status = status;
 
         if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + response);
-        
+
         // needs to match statuses in DEP6
-        if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
+        if (status.equals(IN_PROGRESS)
                 || status.equals(SCHEDULED)) {
 
             return null;
         }
         
-        // FIXME: should be exactly one
-        if (status.equals(COMPLETED) || status.equals(SUCCEEDED)) {
+        if (status.equals(FAILED) || status.equals(SUCCEEDED)||status.equals(CANCELLED)) {
         	Map<String, Object> result=(Map<String, Object>) response.get("result");
         	if (result == null) throw new RemoteException("No result map in job id " + jobID + " result: " + response);
             return result;
-        } else if (status.equals(Constant.UNKNOWN)) {
-            throw new JobFailedException("Error code: " + response.get("errorcode") +
-                    "description is : " + response.get("description"));
         }
         return response;
     }

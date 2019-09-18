@@ -3,17 +3,13 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a Job being conducted asynchronously in the local JVM, which wraps
@@ -24,10 +20,10 @@ import static sg.dex.starfish.constant.Constant.*;
 public class MemoryJob implements Job {
 
     private final Future<Map<String, Object>> future;
-    private String status;
+    private String status ;
 
     private MemoryJob(Future<Map<String, Object>> future) {
-        status = Constant.RUNNING;
+        status = Constant.SCHEDULED;
         this.future = future;
     }
 
@@ -55,9 +51,17 @@ public class MemoryJob implements Job {
     public Map<String, Object> pollResult() {
         if (!future.isDone()) return null;
         try {
-			return future.get();
+			 Map<String, Object>  response =future.get();
+
+            Map<String, Object> result=(Map<String, Object>) response.get("results");
+            if (result == null) {
+                throw new RuntimeException("No result map in job response , result: " + response);
+            }
+            status = (String)result.get("status");
+            return result;
 		}
 		catch (Throwable t) {
+            status = Constant.FAILED;
 			throw Utils.sneakyThrow(t);
 		}
     }
