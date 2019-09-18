@@ -197,7 +197,7 @@
 							<execution>
 								<id>sign-artifacts</id>
 								<!-- need to change to verify while giving maven release -->
-								<phase>deploy</phase>
+								<phase>verify</phase>
 								<goals>
 									<goal>sign</goal>
 								</goals>
@@ -251,7 +251,7 @@
 				<configuration>
 					<source>8</source>
 					<doclint>none</doclint>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					<!--<additionalparam>-Xdoclint:none</additionalparam>-->
 				</configuration>
 			</plugin>
 
