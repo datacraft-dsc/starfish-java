@@ -75,9 +75,9 @@ public class TestMemoryOperations {
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeAsync() throws IOException {
+    public void testPrimeAsync()  {
 
-        Operation memoryOperation = FindPrime_JsonI_JsonO.create(memoryAgent);
+        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
@@ -85,32 +85,31 @@ public class TestMemoryOperations {
         Job job = memoryOperation.invokeAsync(test);
         assertTrue(jobStatus.contains(job.getStatus()));
         Map<String, Object> res = job.getResult(1000);
-        String did = (String) res.get("did");
-        Asset a = memoryAgent.getAsset(did);
-        byte[] expected = new byte[]{2, 3, 5, 7};
-        Arrays.toString(a.getContent());
-        Assert.assertEquals(
-                Arrays.toString(a.getContent()),
-                Arrays.toString(new byte[]{2, 3, 5, 7}));
+        int acutal = (Integer)res.get("sumOfPrime");
+
+        int expected = 2+ 3+ 5+ 7;
+
         assertEquals(Constant.SUCCEEDED, job.getStatus());
+        assertEquals(expected, acutal);
     }
 
     /**
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeSync() throws IOException {
+    public void testPrimeSync()  {
 
-        FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create(memoryAgent);
+        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
         Map<String, Object> test = new HashMap<>();
-        test.put("input", "10");
+        test.put("input", "15");
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
 
-        assertTrue(result.toString().contains("2"));
-        assertTrue(result.toString().contains("3"));
-        assertTrue(result.toString().contains("5"));
-        assertTrue(result.toString().contains("7"));
+        int acutal = (Integer)result.get("sumOfPrime");
+
+        int expected = 2+ 3+ 5+ 7+11+13;
+
+        assertEquals(expected, acutal);
     }
 
     @Test

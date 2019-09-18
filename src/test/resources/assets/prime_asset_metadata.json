@@ -23,8 +23,8 @@
       }
     },
     "results": {
-      "primes": {
-        "type": "asset"
+      "sumOfPrime": {
+        "type": "json"
       }
     }
   }
