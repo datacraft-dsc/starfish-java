@@ -16,36 +16,31 @@ import java.util.Map;
  * It calculate all prime number present before any given number.
  * It reads metadata from a file which has basic detail of the input and output type.
  */
-public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation {
-    protected FindPrime_JsonI_JsonO(String meta, MemoryAgent memoryAgent) {
+public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation implements Operation {
+    protected FindSumOfPrime_JsonInput_AssetOutput(String meta, MemoryAgent memoryAgent) {
         super(meta, memoryAgent);
     }
 
-    public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) {
+    public static FindSumOfPrime_JsonInput_AssetOutput create(MemoryAgent memoryAgent) {
         ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/prime_asset_metadata.json");
-        return new FindPrime_JsonI_JsonO(resourceAsset.getMetadataString(), memoryAgent);
+        return new FindSumOfPrime_JsonInput_AssetOutput(resourceAsset.getMetadataString(), memoryAgent);
     }
 
 
     private Map<String, Object> doCompute(final Object input) {
         Integer num = (Integer.parseInt(input.toString()));
-
-        byte[] result = new byte[4];
-
+        int result =0;
         int count = 0;
         for (int i = 2; i < num; i++) {
             if (isPrime(i)) {
-                result[count] = (byte) i;
-                count++;
+               result =result+i;
             }
 
         }
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", Constant.SUCCEEDED);
-        Asset res = MemoryAsset.create(result);
-        memoryAgent.registerAsset(res);
-        resultMap.put("did", res.getAssetID());
+        resultMap.put("sumOfPrime", result);
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("result", resultMap);
         return returnMap;

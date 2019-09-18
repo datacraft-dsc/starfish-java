@@ -615,7 +615,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * Gets the Auth API endpoint for this agent, or null if this does not exist
      *
-     * @return The Meta API endpoint for this agent e.g.
+     * @return The Auth API endpoint for this agent e.g.
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getAuthEndpoint() {
