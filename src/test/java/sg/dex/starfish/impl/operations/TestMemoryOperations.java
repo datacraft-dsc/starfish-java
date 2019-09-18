@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.operations;
 
-import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -12,7 +11,6 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
@@ -44,9 +41,8 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -65,8 +61,7 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
-        String id = result.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Asset resultAsset =(Asset)result.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -135,7 +130,7 @@ public class TestMemoryOperations {
     }
 
     @Test
-    public void testHashAsyncFailed() throws IOException {
+    public void testHashAsyncFailed()  {
 
         byte[] data = new byte[]{1, 2, 3};
         EpicFailOperation epicFailOperation =
@@ -172,13 +167,13 @@ public class TestMemoryOperations {
         synchronized (hashOperation) {
         	// run synchronised to prevent completion until end of this code block
         	 job = hashOperation.invokeAsync(test);
-        	 assertEquals(Constant.RUNNING,job.getStatus());
+        	 assertEquals(Constant.SCHEDULED,job.getStatus());
         	 assertNull(job.pollResult());
         }
         Map<String, Object> response = job.getResult();
         assertEquals(Constant.SUCCEEDED, job.getStatus());
         
-        System.out.println(JSON.toPrettyString(response));
+//        System.out.println(JSON.toPrettyString(response));
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
         
@@ -258,9 +253,9 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
+
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
@@ -272,9 +267,9 @@ public class TestMemoryOperations {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
+
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
