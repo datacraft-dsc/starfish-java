@@ -93,6 +93,7 @@ public class MemoryJob implements Job {
             }
             initialSleep *= 2;
         }
+        status=Constant.FAILED;
         throw Utils.sneakyThrow(new TimeoutException("Timeout in MemoryJob.get(...)"));
     }
 
