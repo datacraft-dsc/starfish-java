@@ -634,7 +634,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Polls this agent for the Asset resulting from the given job ID
      *
      * @param jobID ID for the Job to poll
-     * @return The asset resulting from this job ID if available, null otherwise.
+     * @return The JSON map representing the response from the server as per DEP6.
      * @throws IllegalArgumentException If the job ID is invalid
      * @throws RemoteException          if there is a failure in a remote operation
      * @throws RuntimeException         for protocol errors

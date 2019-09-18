@@ -7,6 +7,7 @@ import sg.dex.starfish.impl.memory.MemoryAgent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Basic implementation of an operation which always fails
@@ -33,15 +34,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
 
     @Override
     public Map<String, Object> compute(Map<String, Object> params) {
-        Map<String, Object> res = new HashMap<>();
-        Map<String, Object> result = new HashMap<>();
-
-        res.put("description", "Unable to access asset did:op:4d517500da0acb0d65a716f61330969334630363ce4a6a9d39691026ac7908fa");
-        res.put("status", Constant.FAILED);
-        res.put("errorcode", "8004");
-        result.put("result", res);
-
-        return result;
+        throw new Error("EPIC FAIL");
     }
 
 }

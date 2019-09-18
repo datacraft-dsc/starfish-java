@@ -50,7 +50,10 @@ public interface Job extends Future<Map<String, Object>> {
      *
      * @return The Asset resulting from the job, or null if not yet available
      */
-    Map<String, Object> pollResult();
+    default Map<String, Object> pollResult() {
+    	if (!isDone()) return null;
+    	return getResult();
+    }
 
     /**
      * Waits for the result of the operation and returns the result WARNING: may
@@ -131,6 +134,7 @@ public interface Job extends Future<Map<String, Object>> {
         try {
             return get();
         } catch (InterruptedException | ExecutionException e) {
+        	// re-throw exceptions sneakily to avoid sharing
             throw Utils.sneakyThrow(e);
         }
     }

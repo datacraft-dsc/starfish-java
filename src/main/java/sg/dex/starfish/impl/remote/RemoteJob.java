@@ -7,6 +7,7 @@ import sg.dex.starfish.exception.RemoteException;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -44,35 +45,42 @@ public class RemoteJob implements Job {
     @SuppressWarnings("unchecked")
     public synchronized Map<String, Object> pollResult() {
 
-        Map<String, Object> result = (Map<String, Object>) agent.pollJob(jobID);
+    	// Get JSON response map
+        Map<String, Object> response = (Map<String, Object>) agent.pollJob(jobID);
 
-        String status = (String) result.get(STATUS);
+        String status = (String) response.get(STATUS);
         this.status = status;
 
-        if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + result);
+        if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + response);
+        
+        // needs to match statuses in DEP6
         if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
                 || status.equals(SCHEDULED)) {
 
             return null;
         }
+        
+        // FIXME: should be exactly one
         if (status.equals(COMPLETED) || status.equals(SUCCEEDED)) {
+        	Map<String, Object> result=(Map<String, Object>) response.get("result");
+        	if (result == null) throw new RemoteException("No result map in job id " + jobID + " result: " + response);
             return result;
         } else if (status.equals(Constant.UNKNOWN)) {
-            throw new JobFailedException("Error code: " + result.get("errorcode") +
-                    "description is : " + result.get("description"));
+            throw new JobFailedException("Error code: " + response.get("errorcode") +
+                    "description is : " + response.get("description"));
         }
-        return result;
+        return response;
     }
 
     @Override
-    public Map<String, Object> get(long timeout, TimeUnit timeUnit) {
+    public Map<String, Object> get(long timeout, TimeUnit timeUnit) throws TimeoutException {
         long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);
         long start = System.currentTimeMillis();
         int initialSleep = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
-                return (Map<String, Object>) a.get("result");
+                return a ;
             }
             try {
                 Thread.sleep(initialSleep);
@@ -81,7 +89,7 @@ public class RemoteJob implements Job {
             }
             initialSleep *= 2;
         }
-        return pollResult();
+        throw new TimeoutException("Timeout in remote Job get");
     }
 
     @Override

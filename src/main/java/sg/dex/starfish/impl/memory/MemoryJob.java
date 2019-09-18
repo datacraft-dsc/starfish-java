@@ -5,11 +5,13 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.Utils;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -51,37 +53,18 @@ public class MemoryJob implements Job {
 
     @Override
     public Map<String, Object> pollResult() {
-        Map<String, Object> res = null;
+        if (!future.isDone()) return null;
         try {
-            res = future.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Map<String, Object> result = (Map<String, Object>) res.get("result");
-        String status = (String) result.get(STATUS);
-        this.status = status;
-
-        if (status == null) throw new RemoteException("No status result: " + result);
-        if (status.equals(STARTED) || status.equals(IN_PROGRESS) || status.equals(ACCEPTED)
-                || status.equals(SCHEDULED)) {
-
-            return null;
-        }
-        if (status.equals(FAILED) || status.equals(SUCCEEDED)) {
-            return res;
-        } else if (status.equals(Constant.UNKNOWN)) {
-            throw new JobFailedException("Error code: " + result.get("errorcode") +
-                    "description is : " + result.get("description"));
-        }
-        return result;
+			return future.get();
+		}
+		catch (Throwable t) {
+			throw Utils.sneakyThrow(t);
+		}
     }
-
 
     /**
      * Waits for the result of the Operation and returns the result Asset
-     * or returns null if the timeout in milliseconds expires before the
+     * or throws an exception if the timeout in milliseconds expires before the
      * asset is available.
      *
      * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
@@ -95,16 +78,18 @@ public class MemoryJob implements Job {
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
-                return (Map<String, Object>) a.get("result");
+            	status=Constant.SUCCEEDED;
+                return a;
             }
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-                throw new JobFailedException("Job failed with exception: " + e.getCause(), e);
+            	status=Constant.FAILED;
+                throw new JobFailedException("Job interrupted with exception: " + e.getCause(), e);
             }
             initialSleep *= 2;
         }
-        return pollResult();
+        throw Utils.sneakyThrow(new TimeoutException("Timeout in MemoryJob.get(...)"));
     }
 
     @Override

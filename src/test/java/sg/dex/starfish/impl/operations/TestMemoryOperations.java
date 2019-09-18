@@ -12,6 +12,7 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
@@ -145,7 +147,12 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = epicFailOperation.invokeAsync(test);
-        Map<String, Object> response = job.getResult(1);
+        try {
+        	job.get();
+        	fail("should not succeed!!");
+        } catch (Exception e) {
+        	/* OK, Expected */
+        }
         assertEquals(Constant.FAILED, job.getStatus());
     }
 
@@ -161,8 +168,15 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = hashOperation.invokeAsync(test);
+        Job job;
+        synchronized (hashOperation) {
+        	// run synchronised to prevent completion until end of this code block
+        	 job = hashOperation.invokeAsync(test);
+        	 assertEquals(Constant.RUNNING,job.getStatus());
+        	 assertNull(job.pollResult());
+        }
         Map<String, Object> response = job.getResult(1000);
+        System.out.println(JSON.toPrettyString(response));
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
         assertEquals(Constant.SUCCEEDED, job.getStatus());
