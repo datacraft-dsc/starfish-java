@@ -175,11 +175,13 @@ public class TestMemoryOperations {
         	 assertEquals(Constant.RUNNING,job.getStatus());
         	 assertNull(job.pollResult());
         }
-        Map<String, Object> response = job.getResult(1000);
+        Map<String, Object> response = job.getResult();
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
+        
         System.out.println(JSON.toPrettyString(response));
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
-        assertEquals(Constant.SUCCEEDED, job.getStatus());
+        
     }
 
 

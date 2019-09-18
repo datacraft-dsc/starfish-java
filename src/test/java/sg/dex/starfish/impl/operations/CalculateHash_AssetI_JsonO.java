@@ -34,7 +34,6 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
         Map<String, Object> res = new HashMap<>();
         res.put("hashed_value", hash);
-        res.put("status", Constant.SUCCEEDED);
         return res;
     }
 
