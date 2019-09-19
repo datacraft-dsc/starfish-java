@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
@@ -206,5 +207,12 @@ public interface Job extends Future<Map<String, Object>> {
      */
     String getStatus();
 
-
+    /**
+     * Returns true if the Job is known to be cancelled.
+     * 
+     */
+    @Override
+    default boolean isCancelled() {
+    	return getStatus().equals(Constant.CANCELLED);
+    }
 }

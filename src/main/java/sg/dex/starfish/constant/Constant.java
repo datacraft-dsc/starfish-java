@@ -46,6 +46,7 @@ public class Constant {
     public static final String RUNNING = "running";
     public static final String FAILED = "failed";
     public static final String UNKNOWN = "unknown";
+	public static final Object CANCELLED = "cancelled";
 
 
     //-------AUTH -----------
@@ -85,6 +86,7 @@ public class Constant {
     public static final String DEFAULT_AUTHOR = "Test_author";
     public static final String DEFAULT_DATE_CREATED = "2012-10-10T17:00:000Z";
     public static final Object DEFAULT_PRICE = 5;
+
 
 
 }
