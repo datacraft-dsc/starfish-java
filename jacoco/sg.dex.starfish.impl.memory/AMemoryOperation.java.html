@@ -46,7 +46,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     @Override
     public final Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params) {
-<span class="fc" id="L49">        return (Map&lt;String, Object&gt;) compute(params);</span>
+<span class="fc" id="L49">        return (Map&lt;String, Object&gt;)compute(params).get(&quot;results&quot;);</span>
     }
 
     @Override

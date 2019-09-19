@@ -1,8 +1,8 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,48,66,1,5,8,22,4,7,3,5
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,63,81,2,6,10,26,5,7,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,14,164,0,10,3,35,1,15,1,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,4,7,0,0,2,3,1,1,1,1
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,43,1,1,1,13,2,4,1,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,120,137,13,7,18,28,14,13,7,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,34,136,6,10,6,28,7,13,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
@@ -13,7 +13,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,Rem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,232,0,14,0,46,0,18,0,11,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,7,0,0,0,3,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteOperation,41,0,0,0,8,0,6,0,6,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteJob,198,0,26,0,40,0,20,0,7,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteJob,170,0,22,0,36,0,18,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemotePurchase,66,0,4,0,17,0,10,0,8,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAccount,76,0,2,0,17,0,5,0,4,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.cli,CLIMain,37,0,4,0,9,0,4,0,2,0
