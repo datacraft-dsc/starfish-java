@@ -35,7 +35,7 @@ public class AssetIdentity_02 {
     @Before
     public void setup() {
         // Initialize Remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
     }
 
@@ -138,7 +138,7 @@ public class AssetIdentity_02 {
 
         assertEquals(remoteAsset3.getAssetID(), asset3.getAssetID());
         // verify the content
-        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+        assertEquals(HelperTestService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
                 "Testing using String");
     }
 
@@ -156,8 +156,8 @@ public class AssetIdentity_02 {
         remoteAgent.uploadAsset(asset3);
         remoteAgent.uploadAsset(asset4);
 
-        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
-                RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
+        assertEquals(HelperTestService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+                HelperTestService.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
     }
 
     @Test(expected = StarfishValidationException.class)

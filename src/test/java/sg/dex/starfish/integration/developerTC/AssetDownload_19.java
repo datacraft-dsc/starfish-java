@@ -21,7 +21,7 @@ public class AssetDownload_19 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
         // create remote Asset
     }

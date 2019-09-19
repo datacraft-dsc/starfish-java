@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 public class QueryProvenance_15 {
 
-    private static RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    private static RemoteAgent remoteAgent = HelperTestService.getRemoteAgent();
 
     @Test
     public void testProvenance() throws URISyntaxException {

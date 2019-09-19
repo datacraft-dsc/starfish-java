@@ -24,7 +24,7 @@ public class AgentEndpointQuery_06 {
 
     @Test
     public void testServiceEndPoint() {
-        RemoteAgent remoteAgent = createRemoteAgent(RemoteAgentConfig.getSurferUrl());
+        RemoteAgent remoteAgent = createRemoteAgent(HelperTestService.getSurferUrl());
         // getting the URL for storage service
         String storage = remoteAgent.getStorageEndpoint();
 

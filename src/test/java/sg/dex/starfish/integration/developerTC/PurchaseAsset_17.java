@@ -32,7 +32,7 @@ public class PurchaseAsset_17 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
         Asset a = MemoryAsset.createFromString("Test Asset purchase");
 
         // create remote Asset

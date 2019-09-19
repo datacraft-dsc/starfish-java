@@ -4,7 +4,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.InitializationException;
 import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
 import sg.dex.starfish.Ocean;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.HelperTestService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +58,7 @@ public class SquidHelperTest {
 
         Properties properties = new Properties();
         try {
-            try (InputStream is = RemoteAgentConfig.class.getClassLoader()
+            try (InputStream is = HelperTestService.class.getClassLoader()
                     .getResourceAsStream(propFileName)) {
                 properties.load(is);
             }

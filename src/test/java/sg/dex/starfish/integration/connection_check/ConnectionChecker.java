@@ -1,7 +1,7 @@
 package sg.dex.starfish.integration.connection_check;
 
 
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.HelperTestService;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -30,7 +30,7 @@ public class ConnectionChecker {
     public boolean isServerReachable() {
 
         try {
-            int timeOut = RemoteAgentConfig.getSocketTimeout();
+            int timeOut = HelperTestService.getSocketTimeout();
             URL url = new URL(uri);
             Socket socket = new Socket();
             socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);

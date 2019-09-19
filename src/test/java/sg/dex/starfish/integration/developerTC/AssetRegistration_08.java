@@ -40,7 +40,7 @@ public class AssetRegistration_08 {
 
     @Before
     public void setup() {
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
 
     }

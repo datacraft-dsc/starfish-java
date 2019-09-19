@@ -19,7 +19,7 @@ import sg.dex.starfish.impl.resolver.SquidResolverImpl;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
-import sg.dex.starfish.integration.developerTC.RemoteAgentConfig;
+import sg.dex.starfish.integration.developerTC.HelperTestService;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -137,7 +137,7 @@ public class SquidAssetTests {
         ResourceAsset memory_asset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
 
         // create surfer agent
-        RemoteAgent surfer = RemoteAgentConfig.getRemoteAgent();
+        RemoteAgent surfer = HelperTestService.getRemoteAgent();
 
         //register and upload the asset to surfer
         surfer.uploadAsset(memory_asset);

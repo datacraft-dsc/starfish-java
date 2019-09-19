@@ -31,7 +31,7 @@ public class MetaDataAccess_07 {
     @Before
     public void setup() {
 
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
 
     }
 

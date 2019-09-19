@@ -5,6 +5,7 @@ import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.RemoteAgentConfig;
 import sg.dex.starfish.util.Utils;
 
 import java.io.BufferedReader;
@@ -18,7 +19,7 @@ import java.util.*;
  * Currently it is written to connect with Surfer
  * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
-public class RemoteAgentConfig {
+public class HelperTestService {
 
     private static RemoteAgent surfer;
     private static RemoteAgent invokeAgent;
@@ -43,7 +44,7 @@ public class RemoteAgentConfig {
         username = properties.getProperty("surfer.username");
         password = properties.getProperty("surfer.password");
 
-        surfer = getSurfer(surferUrl);
+        surfer = RemoteAgentConfig.getRemoteAgent(getDDOAsString(surferUrl),DID.createRandom(),username,password);
 
         String ip_invoke = properties.getProperty("koi.host");
         String port_invoke = properties.getProperty("koi.port");
@@ -58,45 +59,29 @@ public class RemoteAgentConfig {
 
     }
 
-    private static RemoteAgent getSurfer(String host) {
-        Map<String, Object> ddo = new HashMap<>();
-        List<Map<String, Object>> services = new ArrayList<>();
-        services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
-                "serviceEndpoint", host + "/api/v1/meta"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
-                "serviceEndpoint", host + "/api/v1/assets"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Auth.v1",
-                "serviceEndpoint", host + "/api/v1/auth"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Market.v1",
-                "serviceEndpoint", host + "/api/v1/market"));
-        ddo.put("service", services);
-        String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
-        // creating unique DID
-        DID surferDID = DID.createRandom();
-        // registering the DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
-
-
-        //Creating remote Account
-        Map<String, Object> credentialMap = new HashMap<>();
-        credentialMap.put("username", username);
-        credentialMap.put("password", password);
-
-        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
-        // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, surferDID, account);
-    }
-
+private static String getDDOAsString(String host){
+    Map<String, Object> ddo = new HashMap<>();
+    List<Map<String, Object>> services = new ArrayList<>();
+    services.add(Utils.mapOf(
+            "type", "Ocean.Meta.v1",
+            "serviceEndpoint", host + "/api/v1/meta"));
+    services.add(Utils.mapOf(
+            "type", "Ocean.Storage.v1",
+            "serviceEndpoint", host + "/api/v1/assets"));
+    services.add(Utils.mapOf(
+            "type", "Ocean.Invoke.v1",
+            "serviceEndpoint", host));
+    services.add(Utils.mapOf(
+            "type", "Ocean.Auth.v1",
+            "serviceEndpoint", host + "/api/v1/auth"));
+    services.add(Utils.mapOf(
+            "type", "Ocean.Market.v1",
+            "serviceEndpoint", host + "/api/v1/market"));
+    ddo.put("service", services);
+    String ddoString = JSON.toPrettyString(ddo);
+    return ddoString;
+}
     public static String getSurferUrl() {
         return surferUrl;
     }
@@ -117,7 +102,7 @@ public class RemoteAgentConfig {
     private static Properties getProperties() {
         Properties properties = new Properties();
         try {
-            try (InputStream is = RemoteAgentConfig.class.getClassLoader()
+            try (InputStream is = HelperTestService.class.getClassLoader()
                     .getResourceAsStream("application_test.properties")) {
                 properties.load(is);
             }

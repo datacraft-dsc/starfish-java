@@ -26,7 +26,7 @@ public class ProvUtil_23 {
 
     @Before
     public void setup() {
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = HelperTestService.getRemoteAgent();
     }
 
     @Test

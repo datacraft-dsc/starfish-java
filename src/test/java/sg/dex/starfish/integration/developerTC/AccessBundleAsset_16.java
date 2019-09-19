@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class AccessBundleAsset_16 {
 
-    private RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    private RemoteAgent remoteAgent = HelperTestService.getRemoteAgent();
 
     private Map<String, Asset> getAssetMap() {
         // creating assets
