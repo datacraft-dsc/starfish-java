@@ -1,13 +1,10 @@
 package sg.dex.starfish.impl.operations;
 
+import java.util.Map;
+
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Basic implementation of an operation which always fails

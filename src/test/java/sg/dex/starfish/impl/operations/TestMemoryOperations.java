@@ -1,9 +1,21 @@
 package sg.dex.starfish.impl.operations;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
@@ -12,17 +24,7 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -178,7 +180,6 @@ public class TestMemoryOperations {
         Map<String, Object> response = job.getResult();
         assertEquals(Constant.SUCCEEDED, job.getStatus());
         
-        System.out.println(JSON.toPrettyString(response));
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
         

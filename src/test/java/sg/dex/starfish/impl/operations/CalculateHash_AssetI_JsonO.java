@@ -1,18 +1,17 @@
 package sg.dex.starfish.impl.operations;
 
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.Asset;
-import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.impl.memory.AMemoryOperation;
-import sg.dex.starfish.impl.memory.MemoryAgent;
-import sg.dex.starfish.util.Hex;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.Operation;
+import sg.dex.starfish.impl.memory.AMemoryOperation;
+import sg.dex.starfish.impl.memory.MemoryAgent;
+import sg.dex.starfish.util.Hex;
 
 
 public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Operation {

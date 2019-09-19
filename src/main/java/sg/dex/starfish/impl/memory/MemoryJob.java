@@ -1,19 +1,15 @@
 package sg.dex.starfish.impl.memory;
 
-import sg.dex.starfish.Job;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.Utils;
-
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static sg.dex.starfish.constant.Constant.*;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a Job being conducted asynchronously in the local JVM, which wraps
@@ -63,14 +59,6 @@ public class MemoryJob implements Job {
 		}
     }
 
-    /**
-     * Waits for the result of the Operation and returns the result Asset
-     * or throws an exception if the timeout in milliseconds expires before the
-     * asset is available.
-     *
-     * @return The Asset resulting from the job, or null if the timeout expires before the  job completes
-     * @throws JobFailedException if Job fails
-     */
     @Override
     public Map<String, Object> get(long timeout, TimeUnit timeUnit) {
         long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);
