@@ -25,7 +25,7 @@ public class UnPublishListing_12 {
 
     @Before
     public void setUp() {
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
     }
 
     /**

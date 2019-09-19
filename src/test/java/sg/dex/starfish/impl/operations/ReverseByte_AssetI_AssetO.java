@@ -49,12 +49,12 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
             bytes[i] = bytes[length - i - 1];
             bytes[length - i - 1] = temp;
         }
+        Map<String, Object> response = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
-        Asset res = MemoryAsset.create(bytes);
-        result.put("status", Constant.SUCCEEDED);
-        memoryAgent.registerAsset(res);
-        result.put("did", res.getAssetID());
-
+        Asset resultAsset = MemoryAsset.create(bytes);
+        response.put("status", Constant.SUCCEEDED);
+        response.put("reverse_result", resultAsset);
+        result.put("results",response);
         return result;
     }
 

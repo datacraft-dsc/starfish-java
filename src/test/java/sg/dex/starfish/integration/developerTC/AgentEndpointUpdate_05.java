@@ -29,7 +29,7 @@ public class AgentEndpointUpdate_05 {
     @Test
     public void testServiceEndPoint() {
         // creating an instance of Remote Agent
-        String surferURL = RemoteAgentConfig.getSurferUrl();
+        String surferURL = AgentService.getSurferUrl();
         RemoteAgent remoteAgent = createRemoteAgent(surferURL);
         Assume.assumeNotNull(remoteAgent);
 

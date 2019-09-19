@@ -1,21 +1,8 @@
 package sg.dex.starfish.impl.operations;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
@@ -25,6 +12,14 @@ import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -46,9 +41,8 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -67,8 +61,7 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
-        String id = result.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Asset resultAsset =(Asset)result.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -137,7 +130,7 @@ public class TestMemoryOperations {
     }
 
     @Test
-    public void testHashAsyncFailed() throws IOException {
+    public void testHashAsyncFailed()  {
 
         byte[] data = new byte[]{1, 2, 3};
         EpicFailOperation epicFailOperation =
@@ -150,10 +143,10 @@ public class TestMemoryOperations {
 
         Job job = epicFailOperation.invokeAsync(test);
         try {
-        	job.get();
-        	fail("should not succeed!!");
+            job.get();
+            fail("should not succeed!!");
         } catch (Exception e) {
-        	/* OK, Expected */
+            /* OK, Expected */
         }
         assertEquals(Constant.FAILED, job.getStatus());
     }
@@ -172,17 +165,17 @@ public class TestMemoryOperations {
 
         Job job;
         synchronized (hashOperation) {
-        	// run synchronised to prevent completion until end of this code block
-        	 job = hashOperation.invokeAsync(test);
-        	 assertEquals(Constant.RUNNING,job.getStatus());
-        	 assertNull(job.pollResult());
+            // run synchronised to prevent completion until end of this code block
+            job = hashOperation.invokeAsync(test);
+            assertEquals(Constant.SCHEDULED,job.getStatus());
+            assertNull(job.pollResult());
         }
         Map<String, Object> response = job.getResult();
         assertEquals(Constant.SUCCEEDED, job.getStatus());
-        
+
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
-        
+
     }
 
 
@@ -259,9 +252,9 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
+
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
@@ -273,9 +266,9 @@ public class TestMemoryOperations {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Map<String, Object> res = job.getResult(1000);
-        String id = res.get("did").toString();
-        Asset resultAsset = memoryAgent.getAsset(id);
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
+
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 

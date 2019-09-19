@@ -32,7 +32,7 @@ public class UploadAsset_11 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
     }
 
     private Map<String, Object> getMetaData() {
@@ -52,7 +52,7 @@ public class UploadAsset_11 {
 
         Asset a = MemoryAsset.createFromString("Testing to upload of asset");
         RemoteDataAsset remoteAssetUpload = remoteAgent.uploadAsset(a);
-        String actual = RemoteAgentConfig.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
+        String actual = AgentService.getDataAsStringFromInputStream(remoteAssetUpload.getContentStream());
 
         assertEquals(actual, "Testing to upload of asset");
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());

@@ -1,17 +1,17 @@
 package sg.dex.starfish.impl.operations;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.util.Hex;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Operation {
@@ -31,9 +31,11 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
 
-        Map<String, Object> res = new HashMap<>();
-        res.put("hashed_value", hash);
-        return res;
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+        response.put("hashed_value", hash);
+        result.put("results",response);
+        return result;
     }
 
     @Override

@@ -37,10 +37,10 @@ public class Dev_Usecase_IntegrationTests {
 
     @ClassRule
     public static AssumingConnection assumingConnectionSurfer =
-            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getSurferUrl()));
+            new AssumingConnection(new ConnectionChecker(AgentService.getSurferUrl()));
 //    @ClassRule
 //    public static AssumingConnection assumingConnectionInvoke =
-//            new AssumingConnection(new ConnectionChecker(RemoteAgentConfig.getInvokeUrl()));
+//            new AssumingConnection(new ConnectionChecker(AgentService.getInvokeUrl()));
 
 
 }
