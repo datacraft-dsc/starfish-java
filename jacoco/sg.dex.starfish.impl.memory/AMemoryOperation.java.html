@@ -24,35 +24,34 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     @Override
     public Job invokeAsync(Map&lt;String, Object&gt; params) {
-         /*default implementation for an asynchronous invoke job in memory, using a
-        Future&lt;Asset&gt;.
-        Implementations may override this for custom behaviour (e.g. a custom thread
-         pool)
-         But this should be sufficient for most cases. */
-
-<span class="fc" id="L33">        final CompletableFuture&lt;Map&lt;String, Object&gt;&gt; future = new CompletableFuture&lt;&gt;();</span>
-<span class="fc" id="L34">        MemoryJob memoryJob = MemoryJob.create(future);</span>
-<span class="fc" id="L35">        MemoryAgent.THREAD_POOL.submit(() -&gt; {</span>
+        // default implementation for an asynchronous invoke job in memory, using a
+        // Future&lt;Asset&gt;.
+        // Implementations may override this for custom behaviour (e.g. a custom thread
+        // pool)
+        // But this should be sufficient for most cases.
+<span class="fc" id="L32">        final CompletableFuture&lt;Map&lt;String, Object&gt;&gt; future = new CompletableFuture&lt;&gt;();</span>
+<span class="fc" id="L33">        MemoryJob memoryJob = MemoryJob.create(future);</span>
+<span class="fc" id="L34">        MemoryAgent.THREAD_POOL.submit(() -&gt; {</span>
             try {
-<span class="fc" id="L37">                Map&lt;String, Object&gt; result = compute(params);</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                if (future.complete(result)) {</span>
+<span class="fc" id="L36">                Map&lt;String, Object&gt; result = compute(params);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">                if (future.complete(result)) {</span>
                 }
-<span class="fc" id="L40">            } catch (Throwable t) {</span>
-<span class="fc" id="L41">                future.completeExceptionally(t);</span>
-<span class="fc" id="L42">            }</span>
-<span class="fc" id="L43">        });</span>
+<span class="fc" id="L39">            } catch (Throwable t) {</span>
+<span class="fc" id="L40">                future.completeExceptionally(t);</span>
+<span class="fc" id="L41">            }</span>
+<span class="fc" id="L42">        });</span>
 
-<span class="fc" id="L45">        return memoryJob;</span>
+<span class="fc" id="L44">        return memoryJob;</span>
     }
 
     @Override
     public final Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params) {
-<span class="fc" id="L50">        return (Map&lt;String, Object&gt;)compute(params).get(&quot;results&quot;);</span>
+<span class="fc" id="L49">        return (Map&lt;String, Object&gt;) compute(params);</span>
     }
 
     @Override
     public Job invoke(Map&lt;String, Object&gt; params) {
-<span class="nc" id="L55">        return invokeAsync(params);</span>
+<span class="nc" id="L54">        return invokeAsync(params);</span>
     }
 
     /**
@@ -61,8 +60,8 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
      * Subclass implementations should override this method to provide their own
      * compute functionality.
      *
-     * @param params
-     * @return
+     * @param params The input map of strings to input values
+     * @return The result map of Strings to output values
      */
     protected abstract Map&lt;String, Object&gt; compute(Map&lt;String, Object&gt; params);
 
