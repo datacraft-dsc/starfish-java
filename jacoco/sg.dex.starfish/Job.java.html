@@ -91,24 +91,32 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
         }
     }
 
+    /**
+     * Waits for the result of the Operation and returns the result map
+     * or throws an exception if the timeout in milliseconds expires before the
+     * asset is available.
+     *
+     * @return The result map from the job
+     * @throws ExecutionException if Job fails with an error
+     * @throws TimeoutException if the result is not returned by the given timeout
+     */
     @Override
     Map&lt;String, Object&gt; get(long timeout, TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException;
+            throws ExecutionException, TimeoutException;
 
     /**
      * Waits for the result of the Operation and returns the result or returns null
      * if the timeout in milliseconds expires before the asset is available.
      *
      * @param timeoutMillis The number of milliseconds to wait for a result before
-     *                      returning null
+     *                      throwing a TimeoutException
      * @return The result from the Job
-     * @throws ExecutionException
-     * @throws TimeoutException
-     * @throws InterruptedException
+     * @throws ExecutionException if Job fails with an error
+     * @throws TimeoutException if the result is not returned by the given timeout
      */
-    default Map&lt;String, Object&gt; get(long timeoutMillis)
-            throws InterruptedException, TimeoutException, ExecutionException {
-<span class="nc" id="L111">        return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+    public default Map&lt;String, Object&gt; get(long timeoutMillis)
+            throws TimeoutException, ExecutionException {
+<span class="nc" id="L119">        return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
     }
 
     /**
@@ -118,10 +126,22 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * @return The result of the Job
      */
     default Map&lt;String, Object&gt; getResult(long timeoutMillis) {
-        try {
-<span class="fc" id="L122">            return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L123">        } catch (InterruptedException | TimeoutException | ExecutionException e) {</span>
-<span class="nc" id="L124">            throw new Error(e);</span>
+<span class="fc" id="L129">        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+    }
+    
+    /**
+     * Convenience method to get the result of the Job without checked exceptions.
+     *
+     * @param timeout Timeout to wait for the Job result
+     * @param unit Time unit for timeout value, e.g. TimeUnit.MILLISECONDS
+     * @return The result of the Job
+     */
+    default Map&lt;String, Object&gt; getResult(long timeout, TimeUnit unit) {
+    	try {
+<span class="fc" id="L141">            return get(timeout, unit);</span>
+<span class="nc" id="L142">        } catch (TimeoutException | ExecutionException e) {</span>
+        	// re-throw exceptions sneakily to avoid checked exceptions
+<span class="nc" id="L144">            throw Utils.sneakyThrow(e);</span>
         }
     }
 
@@ -132,10 +152,10 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     default Map&lt;String, Object&gt; getResult() {
         try {
-<span class="fc" id="L135">            return get();</span>
-<span class="nc" id="L136">        } catch (InterruptedException | ExecutionException e) {</span>
-        	// re-throw exceptions sneakily to avoid sharing
-<span class="nc" id="L138">            throw Utils.sneakyThrow(e);</span>
+<span class="fc" id="L155">            return get();</span>
+<span class="nc" id="L156">        } catch (InterruptedException | ExecutionException e) {</span>
+        	// re-throw exceptions sneakily to avoid checked exceptions
+<span class="nc" id="L158">            throw Utils.sneakyThrow(e);</span>
         }
     }
 
@@ -149,7 +169,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * has already completed normally; {@code true} otherwise
      */
     default boolean cancel() {
-<span class="nc" id="L152">        return cancel(true);</span>
+<span class="nc" id="L172">        return cancel(true);</span>
     }
 
     /**
@@ -173,7 +193,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     default boolean cancel(boolean mayInterruptIfRunning) {
         // note: classes implementing Job should override this if they support Job
         // cancellation
-<span class="nc" id="L176">        return false;</span>
+<span class="nc" id="L196">        return false;</span>
     }
 
 
