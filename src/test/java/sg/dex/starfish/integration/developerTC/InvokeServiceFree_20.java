@@ -52,8 +52,8 @@ public class InvokeServiceFree_20 {
     }
 
     private String getDdo() {
-        String surferURL = RemoteAgentConfig.getSurferUrl();
-        String invokeURL = RemoteAgentConfig.getInvokeUrl();
+        String surferURL = AgentService.getSurferUrl();
+        String invokeURL = AgentService.getInvokeUrl();
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 

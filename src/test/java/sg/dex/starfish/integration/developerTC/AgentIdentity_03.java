@@ -28,7 +28,7 @@ public class AgentIdentity_03 {
     @Before
     public void setup() {
 
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
     }
 

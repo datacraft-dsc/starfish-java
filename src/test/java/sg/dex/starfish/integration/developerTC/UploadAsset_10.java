@@ -24,7 +24,7 @@ public class UploadAsset_10 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
 
     }
 
@@ -36,7 +36,7 @@ public class UploadAsset_10 {
         RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
         // getting the content form Remote Agent (Downloading the content)
 
-        String downloadData = RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
+        String downloadData = AgentService.getDataAsStringFromInputStream(ra.getContentStream());
 
 
         assertEquals(asset.getAssetID(), ra.getAssetID());

@@ -26,7 +26,7 @@ public class ViewAssetListing_14 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
 
     }
 

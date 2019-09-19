@@ -1,13 +1,13 @@
 package sg.dex.starfish.impl.operations;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.resource.ResourceAsset;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is a memory implementation of Invoke Service.
@@ -27,18 +27,20 @@ public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation imple
 
     private Map<String, Object> doCompute(final Object input) {
         Integer num = (Integer.parseInt(input.toString()));
-        int result =0;
+        int primeSum =0;
         for (int i = 2; i < num; i++) {
             if (isPrime(i)) {
-               result =result+i;
+                primeSum =primeSum+i;
             }
 
         }
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("status", Constant.SUCCEEDED);
-        resultMap.put("sumOfPrime", result);
-        return resultMap;
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+        response.put("status", Constant.SUCCEEDED);
+        response.put("sumOfPrime", primeSum);
+        result.put("results",response);
+        return result;
     }
 
     @Override

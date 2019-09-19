@@ -23,7 +23,7 @@ public class MemoryJob implements Job {
     private String status;
 
     private MemoryJob(Future<Map<String, Object>> future) {
-        status = Constant.RUNNING;
+        status = Constant.SCHEDULED;
         this.future = future;
     }
 
@@ -51,8 +51,15 @@ public class MemoryJob implements Job {
     public Map<String, Object> pollResult() {
         if (!future.isDone()) return null;
         try {
-			return future.get();
-		}
+            Map<String, Object> response = future.get();
+
+            Map<String, Object> result = (Map<String, Object>) response.get("results");
+            if (result == null) {
+                throw new RuntimeException("No result map in job response , result: " + response);
+            }
+            status = (String) result.get("status");
+            return result;
+        }
 		catch (Throwable t) {
 			status=Constant.FAILED;
 			throw Utils.sneakyThrow(t);
@@ -78,6 +85,8 @@ public class MemoryJob implements Job {
             }
             initialSleep *= 2;
         }
+        status=Constant.FAILED;
+
         throw Utils.sneakyThrow(new TimeoutException("Timeout in MemoryJob.get(...)"));
     }
 

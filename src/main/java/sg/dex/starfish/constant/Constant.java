@@ -45,7 +45,6 @@ public class Constant {
     public static final String STATUS = "status";
     public static final String RUNNING = "running";
     public static final String FAILED = "failed";
-    public static final String UNKNOWN = "unknown";
 	public static final Object CANCELLED = "cancelled";
 
 
