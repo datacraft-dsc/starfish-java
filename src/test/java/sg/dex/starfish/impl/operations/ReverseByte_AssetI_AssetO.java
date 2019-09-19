@@ -55,9 +55,7 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
         memoryAgent.registerAsset(res);
         result.put("did", res.getAssetID());
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", result);
-        return resultMap;
+        return result;
     }
 
     @Override

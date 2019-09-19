@@ -58,6 +58,7 @@ public class MemoryJob implements Job {
 			return future.get();
 		}
 		catch (Throwable t) {
+			status=Constant.FAILED;
 			throw Utils.sneakyThrow(t);
 		}
     }

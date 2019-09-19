@@ -41,9 +41,7 @@ public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation imple
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", Constant.SUCCEEDED);
         resultMap.put("sumOfPrime", result);
-        Map<String, Object> returnMap = new HashMap<>();
-        returnMap.put("result", resultMap);
-        return returnMap;
+        return resultMap;
     }
 
     @Override
