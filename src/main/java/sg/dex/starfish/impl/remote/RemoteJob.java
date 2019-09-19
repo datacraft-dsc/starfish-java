@@ -21,11 +21,9 @@ public class RemoteJob implements Job {
     private RemoteJob(RemoteAgent agent, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
-
     }
 
     public static RemoteJob create(RemoteAgent agent2, String jobID) {
-
         return new RemoteJob(agent2, jobID);
     }
 
@@ -48,13 +46,9 @@ public class RemoteJob implements Job {
         Map<String, Object> response = (Map<String, Object>) agent.pollJob(jobID);
 
         String status = (String) response.get(STATUS);
-        this.status = status;
-
         if (status == null) throw new RemoteException("No status in job id " + jobID + " result: " + response);
 
-        // needs to match statuses in DEP6
-        if (status.equals(IN_PROGRESS)
-                || status.equals(SCHEDULED)) {
+               if (status.equals(RUNNING)  || status.equals(SCHEDULED)) {
 
             return null;
         }
@@ -71,18 +65,22 @@ public class RemoteJob implements Job {
     public Map<String, Object> get(long timeout, TimeUnit timeUnit) throws TimeoutException {
         long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);
         long start = System.currentTimeMillis();
-        int initialSleep = 100;
+        int sleepTime = 100;
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
                 return a ;
             }
             try {
-                Thread.sleep(initialSleep);
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 throw new JobFailedException("Job failed with exception: " + e.getCause(), e);
             }
-            initialSleep *= 2;
+            sleepTime *= 2;
+        }
+        Map<String, Object> a = pollResult();
+        if (a != null) {
+            return a ;
         }
         throw new TimeoutException("Timeout in remote Job get");
     }
@@ -96,12 +94,4 @@ public class RemoteJob implements Job {
     public String getJobID() {
         return jobID;
     }
-
-    @Override
-    public boolean isCancelled() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-
 }

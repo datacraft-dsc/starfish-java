@@ -1,8 +1,21 @@
 package sg.dex.starfish.impl.operations;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
@@ -173,7 +186,6 @@ public class TestMemoryOperations {
         Map<String, Object> response = job.getResult();
         assertEquals(Constant.SUCCEEDED, job.getStatus());
         
-//        System.out.println(JSON.toPrettyString(response));
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
         

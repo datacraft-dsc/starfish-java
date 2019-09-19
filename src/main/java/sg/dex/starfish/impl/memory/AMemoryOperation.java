@@ -61,8 +61,8 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
      * Subclass implementations should override this method to provide their own
      * compute functionality.
      *
-     * @param params
-     * @return
+     * @param params The input map of strings to input values
+     * @return The result map of Strings to output values
      */
     protected abstract Map<String, Object> compute(Map<String, Object> params);
 

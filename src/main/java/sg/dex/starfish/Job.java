@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.StorageException;
@@ -91,23 +92,31 @@ public interface Job extends Future<Map<String, Object>> {
         }
     }
 
+    /**
+     * Waits for the result of the Operation and returns the result map
+     * or throws an exception if the timeout in milliseconds expires before the
+     * asset is available.
+     *
+     * @return The result map from the job
+     * @throws ExecutionException if Job fails with an error
+     * @throws TimeoutException if the result is not returned by the given timeout
+     */
     @Override
     Map<String, Object> get(long timeout, TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException;
+            throws ExecutionException, TimeoutException;
 
     /**
      * Waits for the result of the Operation and returns the result or returns null
      * if the timeout in milliseconds expires before the asset is available.
      *
      * @param timeoutMillis The number of milliseconds to wait for a result before
-     *                      returning null
+     *                      throwing a TimeoutException
      * @return The result from the Job
-     * @throws ExecutionException
-     * @throws TimeoutException
-     * @throws InterruptedException
+     * @throws ExecutionException if Job fails with an error
+     * @throws TimeoutException if the result is not returned by the given timeout
      */
-    default Map<String, Object> get(long timeoutMillis)
-            throws InterruptedException, TimeoutException, ExecutionException {
+    public default Map<String, Object> get(long timeoutMillis)
+            throws TimeoutException, ExecutionException {
         return get(timeoutMillis, TimeUnit.MILLISECONDS);
     }
 
@@ -118,10 +127,22 @@ public interface Job extends Future<Map<String, Object>> {
      * @return The result of the Job
      */
     default Map<String, Object> getResult(long timeoutMillis) {
-        try {
-            return get(timeoutMillis, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | TimeoutException | ExecutionException e) {
-            throw new Error(e);
+        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);
+    }
+    
+    /**
+     * Convenience method to get the result of the Job without checked exceptions.
+     *
+     * @param timeout Timeout to wait for the Job result
+     * @param unit Time unit for timeout value, e.g. TimeUnit.MILLISECONDS
+     * @return The result of the Job
+     */
+    default Map<String, Object> getResult(long timeout, TimeUnit unit) {
+    	try {
+            return get(timeout, unit);
+        } catch (TimeoutException | ExecutionException e) {
+        	// re-throw exceptions sneakily to avoid checked exceptions
+            throw Utils.sneakyThrow(e);
         }
     }
 
@@ -134,7 +155,7 @@ public interface Job extends Future<Map<String, Object>> {
         try {
             return get();
         } catch (InterruptedException | ExecutionException e) {
-        	// re-throw exceptions sneakily to avoid sharing
+        	// re-throw exceptions sneakily to avoid checked exceptions
             throw Utils.sneakyThrow(e);
         }
     }
@@ -186,5 +207,12 @@ public interface Job extends Future<Map<String, Object>> {
      */
     String getStatus();
 
-
+    /**
+     * Returns true if the Job is known to be cancelled.
+     * 
+     */
+    @Override
+    default boolean isCancelled() {
+    	return getStatus().equals(Constant.CANCELLED);
+    }
 }
