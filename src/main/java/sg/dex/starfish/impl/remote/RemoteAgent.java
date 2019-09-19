@@ -655,9 +655,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     Map<String, Object> result = JSON.toMap(body);
                     return result;
-
                 } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
+                	// return null if request failed for any reason (e.g. network down)
+                    return null;
                 }
             } finally {
                 response.close();
