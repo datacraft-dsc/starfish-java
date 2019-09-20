@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -51,16 +52,15 @@ public class MemoryJob implements Job {
     public Map<String, Object> pollResult() {
         if (!future.isDone()) return null;
         try {
-            Map<String, Object> response = future.get();
-
-            Map<String, Object> result = (Map<String, Object>) response.get("results");
-            if (result == null) {
-                throw new RuntimeException("No result map in job response , result: " + response);
-            }
-            status = (String) result.get("status");
+        	// get result from future. Must be done at this point.
+            Map<String, Object> result = future.get();
+            status=Constant.COMPLETED;
             return result;
         }
-		catch (Throwable t) {
+        catch (CancellationException t) {
+        	status=Constant.CANCELLED;
+        	throw Utils.sneakyThrow(t);
+        } catch (Throwable t) {
 			status=Constant.FAILED;
 			throw Utils.sneakyThrow(t);
 		}
