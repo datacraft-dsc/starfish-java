@@ -32,6 +32,8 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * Gets the Job ID associated with this Job. Job IDs are allocated by the agent
      * implementation responsible for completing the job, and may be used to refer
      * to the Job via other mechanisms.
+     * 
+     * The definition of a Job ID is Agent-specific
      *
      * @return jobID
      */
@@ -52,8 +54,8 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * @return The Asset resulting from the job, or null if not yet available
      */
     default Map&lt;String, Object&gt; pollResult() {
-<span class="nc bnc" id="L55" title="All 2 branches missed.">    	if (!isDone()) return null;</span>
-<span class="nc" id="L56">    	return getResult();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">    	if (!isDone()) return null;</span>
+<span class="nc" id="L58">    	return getResult();</span>
     }
 
     /**
@@ -70,9 +72,9 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     @Override
     default Map&lt;String, Object&gt; get() throws InterruptedException, ExecutionException {
         try {
-<span class="fc" id="L73">            return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L74">        } catch (TimeoutException t) {</span>
-<span class="nc" id="L75">            throw Utils.sneakyThrow(t);</span>
+<span class="fc" id="L75">            return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L76">        } catch (TimeoutException t) {</span>
+<span class="nc" id="L77">            throw Utils.sneakyThrow(t);</span>
         }
     }
 
@@ -86,9 +88,9 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     @SuppressWarnings(&quot;unchecked&quot;)
     default &lt;R&gt; R get(String key) {
         try {
-<span class="nc" id="L89">            return (R) (get().get(key));</span>
-<span class="nc" id="L90">        } catch (Throwable e) {</span>
-<span class="nc" id="L91">            throw Utils.sneakyThrow(e);</span>
+<span class="nc" id="L91">            return (R) (get().get(key));</span>
+<span class="nc" id="L92">        } catch (Throwable e) {</span>
+<span class="nc" id="L93">            throw Utils.sneakyThrow(e);</span>
         }
     }
 
@@ -117,7 +119,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     public default Map&lt;String, Object&gt; get(long timeoutMillis)
             throws TimeoutException, ExecutionException {
-<span class="nc" id="L120">        return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L122">        return get(timeoutMillis, TimeUnit.MILLISECONDS);</span>
     }
 
     /**
@@ -127,7 +129,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * @return The result of the Job
      */
     default Map&lt;String, Object&gt; getResult(long timeoutMillis) {
-<span class="fc" id="L130">        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L132">        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);</span>
     }
     
     /**
@@ -139,10 +141,10 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     default Map&lt;String, Object&gt; getResult(long timeout, TimeUnit unit) {
     	try {
-<span class="fc" id="L142">            return get(timeout, unit);</span>
-<span class="nc" id="L143">        } catch (TimeoutException | ExecutionException e) {</span>
+<span class="fc" id="L144">            return get(timeout, unit);</span>
+<span class="nc" id="L145">        } catch (TimeoutException | ExecutionException e) {</span>
         	// re-throw exceptions sneakily to avoid checked exceptions
-<span class="nc" id="L145">            throw Utils.sneakyThrow(e);</span>
+<span class="nc" id="L147">            throw Utils.sneakyThrow(e);</span>
         }
     }
 
@@ -153,10 +155,10 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     default Map&lt;String, Object&gt; getResult() {
         try {
-<span class="fc" id="L156">            return get();</span>
-<span class="nc" id="L157">        } catch (InterruptedException | ExecutionException e) {</span>
+<span class="fc" id="L158">            return get();</span>
+<span class="nc" id="L159">        } catch (InterruptedException | ExecutionException e) {</span>
         	// re-throw exceptions sneakily to avoid checked exceptions
-<span class="nc" id="L159">            throw Utils.sneakyThrow(e);</span>
+<span class="nc" id="L161">            throw Utils.sneakyThrow(e);</span>
         }
     }
 
@@ -170,7 +172,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * has already completed normally; {@code true} otherwise
      */
     default boolean cancel() {
-<span class="nc" id="L173">        return cancel(true);</span>
+<span class="nc" id="L175">        return cancel(true);</span>
     }
 
     /**
@@ -194,9 +196,8 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     default boolean cancel(boolean mayInterruptIfRunning) {
         // note: classes implementing Job should override this if they support Job
         // cancellation
-<span class="nc" id="L197">        return false;</span>
+<span class="nc" id="L199">        return false;</span>
     }
-
 
     /**
      * Gets the status of the Job associated with this Operation.
@@ -213,7 +214,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     @Override
     default boolean isCancelled() {
-<span class="nc" id="L216">    	return getStatus().equals(Constant.CANCELLED);</span>
+<span class="nc" id="L217">    	return getStatus().equals(Constant.CANCELLED);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
