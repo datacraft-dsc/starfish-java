@@ -1,8 +1,8 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,63,81,2,6,10,26,5,7,3,5
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,59,71,1,5,12,24,4,7,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,14,164,0,10,3,35,1,15,1,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,4,7,0,0,2,3,1,1,1,1
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,43,1,1,1,13,2,4,1,4
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,120,137,13,7,18,28,14,13,7,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,34,136,6,10,6,28,7,13,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
@@ -38,7 +38,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AEVMAccoun
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAsset,40,34,2,0,9,8,4,5,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.file,FileAsset,10,89,2,4,1,19,2,10,1,8
 Starfish - Developer Toolkit for data ecosystems,sg.dex.crypto,Hash,15,57,0,0,4,13,4,8,4,8
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.constant,Constant,9,0,0,0,3,0,2,0,2,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.constant,Constant,7,0,0,0,2,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.resource,URIAsset,91,77,5,3,14,21,8,6,4,6
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.resource,ResourceAsset,50,71,4,2,6,18,3,9,0,9
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,RemoteException,9,0,0,0,4,0,2,0,2,0
