@@ -34,12 +34,6 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
         return new ReverseByte_AssetI_AssetO(meta, memoryAgent);
     }
 
-    /**
-     * API to reverse the byte array
-     *
-     * @param asset
-     * @return
-     */
     private Map<String, Object> doCompute(Asset asset) {
 
         byte[] bytes = asset.getContent();
@@ -49,12 +43,9 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
             bytes[i] = bytes[length - i - 1];
             bytes[length - i - 1] = temp;
         }
-        Map<String, Object> response = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
         Asset resultAsset = MemoryAsset.create(bytes);
-        response.put("status", Constant.SUCCEEDED);
-        response.put("reverse_result", resultAsset);
-        result.put("results",response);
+        result.put("reverse_result", resultAsset);
         return result;
     }
 

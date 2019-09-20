@@ -31,10 +31,8 @@ public class CalculateHash_AssetI_JsonO extends AMemoryOperation implements Oper
 
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
 
-        Map<String, Object> response = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
-        response.put("hashed_value", hash);
-        result.put("results",response);
+        result.put("hashed_value", hash);
         return result;
     }
 
