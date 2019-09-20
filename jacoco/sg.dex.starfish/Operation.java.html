@@ -42,7 +42,7 @@ public interface Operation extends Asset {
 
     /**
      * Invokes this operation with the given named parameters. Operations should
-     * override this method to provide an implementation of asynchronous invocation
+     * override this method to provide an implementation of synchronous invocation
      * via the Job interface
      *
      * @param params Positional parameters for this invoke job

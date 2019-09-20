@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,59,71,1,5,12,24,4,7,3,5
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,64,71,3,5,13,24,5,7,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,14,164,0,10,3,35,1,15,1,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,4,7,0,0,2,3,1,1,1,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
@@ -57,4 +57,4 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,HTTP,142,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.AgentIdType,24,0,0,0,2,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,JSON,94,159,6,8,21,42,5,10,1,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.ActivityType,34,0,0,0,2,0,1,0,1,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Utils,284,150,50,14,55,38,37,13,9,9
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Utils,280,154,49,15,54,39,36,14,9,9
