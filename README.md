@@ -2,7 +2,7 @@
 
 [![Travis (.com)](https://img.shields.io/travis/com/DEX-Company/starfish-java.svg)](https://travis-ci.com/DEX-Company/starfish-java)
 [![GitHub contributors](https://img.shields.io/github/contributors/DEX-Company/starfish-java.svg)](https://github.com/DEX-Company/starfish-java/graphs/contributors)
-[![Maven Central](https://img.shields.io/maven-central/v/sg.dex/starfish-java)](https://mvnrepository.com/artifact/sg.dex/starfish-java)
+[![Maven Central](https://img.shields.io/maven-central/v/sg.dex/starfish-java)](https://search.maven.org/artifact/sg.dex/starfish-java/)
 
 >Starfish is an open-sourced developer toolkit for the data economy. The toolkit allows developers, data scientists and enterprises to create, integrate and manage data supply lines through standardised and simple-to-use APIs. 
 
