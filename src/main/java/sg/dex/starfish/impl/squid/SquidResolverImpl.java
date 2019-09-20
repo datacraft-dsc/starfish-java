@@ -1,4 +1,4 @@
-package sg.dex.starfish.impl.resolver;
+package sg.dex.starfish.impl.squid;
 
 import com.oceanprotocol.squid.exceptions.*;
 import com.oceanprotocol.squid.manager.OceanManager;
@@ -6,7 +6,6 @@ import com.oceanprotocol.squid.models.DDO;
 import com.oceanprotocol.squid.models.DID;
 import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.squid.SquidService;
 
 import java.io.IOException;
 import java.util.Arrays;
