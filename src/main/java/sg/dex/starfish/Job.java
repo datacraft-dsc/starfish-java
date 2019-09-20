@@ -32,6 +32,8 @@ public interface Job extends Future<Map<String, Object>> {
      * Gets the Job ID associated with this Job. Job IDs are allocated by the agent
      * implementation responsible for completing the job, and may be used to refer
      * to the Job via other mechanisms.
+     * 
+     * The definition of a Job ID is Agent-specific
      *
      * @return jobID
      */
@@ -196,7 +198,6 @@ public interface Job extends Future<Map<String, Object>> {
         // cancellation
         return false;
     }
-
 
     /**
      * Gets the status of the Job associated with this Operation.
