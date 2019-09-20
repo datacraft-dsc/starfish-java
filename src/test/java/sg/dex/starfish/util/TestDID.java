@@ -12,7 +12,7 @@ public class TestDID {
 	
 	@Test 
 	public void testRoundTrips() {
-		testRoundTrip("did:ocn:foo");
+		testRoundTrip("did:bar:foo");
 		testRoundTrip("did:op:1234/5678#foo");
 		testRoundTrip("did:op:1234#foo");
 	}
