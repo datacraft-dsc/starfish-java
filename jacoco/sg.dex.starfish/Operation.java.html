@@ -65,8 +65,10 @@ public interface Operation extends Asset {
 	Job invoke(Map&lt;String, Object&gt; params);
 
     /**
-     * Returns the operation specification for this operation. Operations must
-     * override this method to define what operation input and result  they accept.
+     * Returns the operation specification for this operation. Operations may
+     * override this method to define:&lt;/br&gt;
+     *  - what operation inputs the accept&lt;/br&gt;
+     *  - what operation results are created&lt;/br&gt;
      * &lt;p&gt;
      * TODO: add brief description of format and link to DEP6
      *
@@ -74,11 +76,11 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="nc" id="L77">        return (Map&lt;String, Object&gt;) getMetadata().get(&quot;operation&quot;);</span>
+<span class="nc" id="L79">        return (Map&lt;String, Object&gt;) getMetadata().get(&quot;operation&quot;);</span>
     }
 
     /**
-     * Returns the parameter specification for this operation. Operations must
+     * Returns the parameter specification for this operation. Operations may
      * override this method to define what parameters they accept.
      * &lt;p&gt;
      * TODO: add brief description of format and link to DEP6
@@ -87,7 +89,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L90">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
+<span class="nc" id="L92">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
     }
 
 }
