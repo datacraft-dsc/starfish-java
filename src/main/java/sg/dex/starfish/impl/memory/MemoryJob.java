@@ -45,7 +45,10 @@ public class MemoryJob implements Job {
 
     @Override
     public boolean isCancelled() {
-        return future.isCancelled();
+    	if (future.isCancelled()) {
+    		status=Constant.CANCELLED;
+    	}
+    	return status.equals(Constant.CANCELLED);
     }
 
     @Override
@@ -80,13 +83,11 @@ public class MemoryJob implements Job {
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-            	status=Constant.FAILED;
+            	status=Constant.CANCELLED;
                 throw new JobFailedException("Job interrupted with exception: " + e.getCause(), e);
             }
             initialSleep *= 2;
         }
-        status=Constant.FAILED;
-
         throw Utils.sneakyThrow(new TimeoutException("Timeout in MemoryJob.get(...)"));
     }
 
@@ -97,6 +98,7 @@ public class MemoryJob implements Job {
 
     @Override
     public String getJobID() {
+    	// ID is local only, identity of object in JVM
         return "MemoryJob:" + Hex.toString(System.identityHashCode(this));
     }
 

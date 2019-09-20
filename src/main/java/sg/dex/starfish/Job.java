@@ -98,6 +98,8 @@ public interface Job extends Future<Map<String, Object>> {
      * Waits for the result of the Operation and returns the result map
      * or throws an exception if the timeout in milliseconds expires before the
      * asset is available.
+     * 
+     * A timeout will not prevent the Job from completing at a later time.
      *
      * @return The result map from the job
      * @throws ExecutionException if Job fails with an error
