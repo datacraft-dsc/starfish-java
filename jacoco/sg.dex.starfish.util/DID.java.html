@@ -146,7 +146,7 @@ public class DID {
 <span class="nc" id="L146">            sb.append(path);</span>
         }
 <span class="nc bnc" id="L148" title="All 2 branches missed.">        if (fragment != null) {</span>
-<span class="nc" id="L149">            sb.append('/');</span>
+<span class="nc" id="L149">            sb.append('#');</span>
 <span class="nc" id="L150">            sb.append(fragment);</span>
         }
 
@@ -184,7 +184,7 @@ public class DID {
 <span class="fc" id="L184">        h += method.hashCode();</span>
 <span class="fc" id="L185">        h += 13 * id.hashCode();</span>
 <span class="fc" id="L186">        h += 53 * Utils.hashCode(path);</span>
-<span class="fc" id="L187">        h += 101 * Utils.hashCode(path);</span>
+<span class="fc" id="L187">        h += 101 * Utils.hashCode(fragment);</span>
 <span class="fc" id="L188">        return h;</span>
     }
 
