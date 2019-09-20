@@ -65,8 +65,10 @@ public interface Operation extends Asset {
 	Job invoke(Map<String, Object> params);
 
     /**
-     * Returns the operation specification for this operation. Operations must
-     * override this method to define what operation input and result  they accept.
+     * Returns the operation specification for this operation. Operations may
+     * override this method to define:</br>
+     *  - what operation inputs the accept</br>
+     *  - what operation results are created</br>
      * <p>
      * TODO: add brief description of format and link to DEP6
      *
@@ -78,7 +80,7 @@ public interface Operation extends Asset {
     }
 
     /**
-     * Returns the parameter specification for this operation. Operations must
+     * Returns the parameter specification for this operation. Operations may
      * override this method to define what parameters they accept.
      * <p>
      * TODO: add brief description of format and link to DEP6
