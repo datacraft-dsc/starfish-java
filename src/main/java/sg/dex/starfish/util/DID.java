@@ -146,7 +146,7 @@ public class DID {
             sb.append(path);
         }
         if (fragment != null) {
-            sb.append('/');
+            sb.append('#');
             sb.append(fragment);
         }
 
