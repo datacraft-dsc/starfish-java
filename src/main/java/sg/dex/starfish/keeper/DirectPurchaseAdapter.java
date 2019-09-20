@@ -33,12 +33,25 @@ public final class DirectPurchaseAdapter {
         tokenManager.setTokenContract(oceanToken);
     }
 
-    public String getDirectPurchaseAddress() {
-        return this.directPurchaseAddress;
-    }
+    public boolean sendTokenAndLog(String to, BigInteger amount, byte[] reference1, byte[] reference2) {
+        boolean tokenApproved = false;
+        try {
+            tokenApproved = tokenApprove(this.directPurchaseAddress, amount.toString());
+        } catch (TokenApproveException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-    public TransactionReceipt sendTokenAndLog(String to, BigInteger amount, byte[] reference1, byte[] reference2) throws Exception {
-        return directPurchase.sendTokenAndLog(to, amount, reference1, reference2).send();
+        if(tokenApproved) {
+            try {
+                TransactionReceipt receipt = directPurchase.sendTokenAndLog(to, amount, reference1, reference2).send();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean tokenApprove(String spenderAddress, String price) throws TokenApproveException {
