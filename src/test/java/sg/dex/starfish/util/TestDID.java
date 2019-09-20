@@ -7,7 +7,10 @@ import static org.junit.Assert.*;
 public class TestDID {
 	
 	private void testRoundTrip(String s) {
-		assertEquals(s, DID.parse(s).toString());
+		DID did=DID.parse(s);
+		String ds=did.toString();
+		assertEquals(s, ds);
+		assertEquals(did,DID.parse(ds));
 	}
 	
 	@Test 
