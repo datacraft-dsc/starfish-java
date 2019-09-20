@@ -184,7 +184,7 @@ public class DID {
         h += method.hashCode();
         h += 13 * id.hashCode();
         h += 53 * Utils.hashCode(path);
-        h += 101 * Utils.hashCode(path);
+        h += 101 * Utils.hashCode(fragment);
         return h;
     }
 

@@ -5,6 +5,18 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestDID {
+	
+	private void testRoundTrip(String s) {
+		assertEquals(s, DID.parse(s).toString());
+	}
+	
+	@Test 
+	public void testRoundTrips() {
+		testRoundTrip("did:ocn:foo");
+		testRoundTrip("did:op:1234/5678#foo");
+		testRoundTrip("did:op:1234#foo");
+	}
+	
     @Test
     public void testParse() {
         DID d1 = DID.parse("did:ocn:1234");
