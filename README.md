@@ -51,7 +51,7 @@ Typically in Maven you can add squid-java as a dependency:
 <dependency>
     <groupId>sg.dex</groupId>
     <artifactId>starfish-java</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.3</version>
 </dependency>
 
 ```
