@@ -146,8 +146,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 <span class="nc" id="L146">        return new RemoteAgent(ocean, did, acc);</span>
     }
 
-    private ARemoteAsset registerBundle(Asset a) {
-<span class="nc" id="L150">        RemoteBundle remoteBundle = (RemoteBundle) a;</span>
+    private &lt;R extends Asset&gt; R registerBundle(Asset a) {
+<span class="nc" id="L150">        Bundle remoteBundle = (Bundle) a;</span>
 
 <span class="nc" id="L152">        Map&lt;String, Asset&gt; resultAsset = new HashMap&lt;&gt;();</span>
         // getting all sub asset
