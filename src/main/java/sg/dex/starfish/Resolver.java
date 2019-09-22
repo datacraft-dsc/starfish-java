@@ -1,15 +1,9 @@
 package sg.dex.starfish;
 
-import com.oceanprotocol.squid.exceptions.*;
+import java.util.Map;
 
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.JSONObjectCache;
-
-import org.web3j.crypto.CipherException;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * This class implement the resolver functionality.
