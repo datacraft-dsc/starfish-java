@@ -104,10 +104,26 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpEntity entity = response.getEntity();
         if (entity == null) throw new RuntimeException("Invoke failed: no response body");
         try {
-            String body = Utils.stringFromStream(entity.getContent());
-            return RemoteJob.create(agent, body);
+            String body = Utils.stringFromStream(entity.getContent()).trim();
+            String jobID;
+            
+            // TODO: Fix according to DEP once reference implementations are stable
+            if (body.startsWith("\"")) {
+            	// interpret as a JOB ID JSON String
+            	jobID=JSON.parse(body);
+            } else {
+            	if (body.startsWith("{")) {
+            		// interpret as a JSON map, should contain jobid
+            		Map<String,Object> json=JSON.parse(body);
+            		jobID=(String) json.get("jobid");
+            	} else {
+            		// interpret as a raw job ID
+            		jobID=body;
+            	}
+            }
+            return RemoteJob.create(agent, jobID);
         } catch (Exception e) {
-            throw new GenericException("Internal Server Error");
+            throw Utils.sneakyThrow(e);
         }
     }
 
@@ -123,14 +139,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     public static Job createJob(RemoteAgent agent, HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
-        if (statusCode == 201) {
+        if ((statusCode == 201)||(statusCode==200)) {
             return RemoteAgent.createSuccessJob(agent, response);
         }
         String reason = statusLine.getReasonPhrase();
         if ((statusCode) == 400) {
             throw new IllegalArgumentException("Bad invoke request: " + reason);
         }
-        throw new GenericException("Internal Server Error");
+        throw new Error("Unexpected server respose: "+statusCode);
     }
 
     /**
@@ -679,18 +695,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Invokes request on this RemoteAgent
      *
      * @param operation operation
-     * @param params    params
+     * @param requestMap    params
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
 
-    private Job invokeImpl(Operation operation, Map<String, Object> params) {
+    private Job invokeImpl(Operation operation, Map<String, Object> requestMap) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         String assetID = operation.getAssetID();
         HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
         addAuthHeaders(httppost);
-        String paramJSON = JSON.toPrettyString(params);
+        String paramJSON = JSON.toPrettyString(requestMap);
         StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
         CloseableHttpResponse response;
