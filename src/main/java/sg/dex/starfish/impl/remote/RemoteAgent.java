@@ -19,6 +19,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
 import sg.dex.starfish.*;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
@@ -579,7 +580,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/storage"
      */
     public String getStorageEndpoint() {
-        return getEndpoint("Ocean.Storage.v1");
+        return getEndpoint(Constant.ENDPOINT_STORAGE);
     }
 
     /**
@@ -589,7 +590,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/invoke"
      */
     public String getInvokeEndpoint() {
-        return getEndpoint("Ocean.Invoke.v1");
+        return getEndpoint(Constant.ENDPOINT_INVOKE);
     }
 
     /**
@@ -599,7 +600,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getMetaEndpoint() {
-        return getEndpoint("Ocean.Meta.v1");
+        return getEndpoint(Constant.ENDPOINT_META);
     }
 
     /**
@@ -609,7 +610,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getMarketEndpoint() {
-        return getEndpoint("Ocean.Market.v1");
+        return getEndpoint(Constant.ENDPOINT_MARKET);
     }
 
     /**
