@@ -249,8 +249,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     buffer.append("token ");
                     buffer.append(token);
                 }
-                // will create toke for given account
+                // will create token for given account
                 else {
+                	// TODO: fall back to basic auth if token doesn't work?
+                	
                     // final StringBuilder tmp = new StringBuilder();
                     // tmp.append(username);
                     // tmp.append(":");
