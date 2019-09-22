@@ -163,7 +163,7 @@ public class AssetIdentity_02 {
     @Test(expected = StarfishValidationException.class)
     public void testForNullAsset() {
         // Null check should be there ?
-        remoteAgent.registerAsset(null);
+        remoteAgent.registerAsset((Asset)null);
     }
 
 }

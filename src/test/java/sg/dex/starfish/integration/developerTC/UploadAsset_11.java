@@ -93,8 +93,7 @@ public class UploadAsset_11 {
 
     @Test(expected = StarfishValidationException.class)
     public void testNullRegister() {
-        remoteAgent.registerAsset(null);
-
+        remoteAgent.registerAsset((Asset)null);
     }
 
 

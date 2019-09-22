@@ -154,35 +154,34 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         Map<String, Asset> allSubAsset = remoteBundle.getAll();
         for (String name : allSubAsset.keySet()) {
             Asset subAsset = allSubAsset.get(name);
-            if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {
-                registerBundle(subAsset);
-            }
             // registering each sub asset
-            resultAsset.put(name, registerRemoteAsset(subAsset));
+            resultAsset.put(name, registerAsset(subAsset));
         }
         // registering bundle itself
 
-        return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));
+        return registerAsset(a.getMetadataString());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <R extends Asset> R registerAsset(Asset a) {
         if (null == a) {
+        	// TODO: should be IllegalArgumentException?
             throw new StarfishValidationException("Asset cannot be null");
         }
         if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
             return (R) registerBundle(a);
         }
-        return (R) registerRemoteAsset(a);
+        return registerAsset(a.getMetadataString());
     }
 
-    private ARemoteAsset registerRemoteAsset(Asset a) {
+    @Override
+    public <R extends Asset> R registerAsset(String metaString) {
         URI uri = getMetaURI();
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
         addAuthHeaders(httpPost);
-        httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+        httpPost.setEntity(HTTP.textEntity(metaString));
         return createRemoteAsset(uri, httpclient, httpPost);
     }
 
@@ -194,7 +193,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param httpPost   httpPost
      * @return instance of remote Asset
      */
-    private ARemoteAsset createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
+    private <R extends Asset> R createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
         CloseableHttpResponse response;
         try {
             response = httpclient.execute(httpPost);

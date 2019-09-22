@@ -38,6 +38,17 @@ public interface Agent {
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
 	<R extends Asset> R registerAsset(Asset asset);
+	
+    /**
+     * Registers asset metadata with this agent.
+     * The agent must support metadata storage.
+     *
+     * @param asset The asset to register
+     * @return Asset
+     * @throws AuthorizationException        if requester does not have register permission
+     * @throws UnsupportedOperationException if the agent does not support metadata storage
+     */
+	<R extends Asset> R registerAsset(String metaString);
 
     /**
      * Gets an asset for the given asset ID from this agent.

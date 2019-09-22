@@ -92,6 +92,11 @@ public class SquidAgent extends AAgent {
         //Todo FIX IT, may throw exception
         throw new GenericException("Exception while registering Asset into OCN");
     }
+    
+	@Override
+	public <R extends Asset> R registerAsset(String metaString) {
+		throw new UnsupportedOperationException("SquidAgent does not support registering assets without content");
+	}
 
     /**
      * Methods to get the Squid Asset after registering to Ocean Network

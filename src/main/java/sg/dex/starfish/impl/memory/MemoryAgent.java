@@ -82,6 +82,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         assetStore.put(ma.getAssetID(), ma);
         return (R) ma;
     }
+    
+	@Override
+	public <R extends Asset> R registerAsset(String metaString) {
+		throw new UnsupportedOperationException("MemoryAgent does not support registering assets without content");
+	}
 
     /**
      * Registers an Asset with this Agent
@@ -230,4 +235,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         Object mode = metaData.get("modes");
         return mode != null && mode.toString().equals("sync");
     }
+
+
 }
