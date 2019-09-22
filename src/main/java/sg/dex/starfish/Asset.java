@@ -4,6 +4,9 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -86,7 +89,32 @@ public interface Asset {
      * @throws StorageException              if unable to load the Asset
      */
     default byte[] getContent() {
-        throw new UnsupportedOperationException("Cannot get byte content for asset of class: " + this.getClass().getCanonicalName());
+        InputStream is = getContentStream();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        byte[] buf = new byte[16384];
+
+        int bytesRead;
+        try {
+            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {
+                buffer.write(buf, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            throw new StorageException("Unable to get Asset content", e);
+        }
+        return buffer.toByteArray();
+    }
+    
+    /**
+     * Gets the contents of this data asset as a input stream.
+     *
+     * @return The byte contents of this asset.
+     * @throws UnsupportedOperationException If this asset does not support getting byte data
+     * @throws AuthorizationException        if requester does not have access permission
+     * @throws StorageException              if unable to load the Asset
+     */
+    default InputStream getContentStream() {
+        throw new UnsupportedOperationException("Cannot get InputStream for asset of class: " + this.getClass().getCanonicalName());
     }
 
     /**
