@@ -35,8 +35,10 @@ public interface Resolver {
      * @throws UnsupportedOperationException not yet implemented
      */
     public default Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L38">        String ddoString = getDDOString(did);</span>
-<span class="fc" id="L39">        return JSON.parse(ddoString);</span>
+<span class="fc" id="L38">    	did=did.withoutPath();</span>
+<span class="fc" id="L39">        String ddoString = getDDOString(did);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
+<span class="fc" id="L41">        return JSON.parse(ddoString);</span>
     }
     
     /**

@@ -59,9 +59,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param account account
      */
     protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
-<span class="nc" id="L62">        super(ocean, did);</span>
-<span class="nc" id="L63">        this.account = account;</span>
-<span class="nc" id="L64">    }</span>
+<span class="fc" id="L62">        super(ocean, did);</span>
+<span class="fc" id="L63">        this.account = account;</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Creates a RemoteAgent with the specified Ocean connection, DID and
@@ -88,7 +88,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return RemoteAgent new instance of remote Agent
      */
     public static RemoteAgent create(Ocean ocean, DID did) {
-<span class="nc" id="L91">        return new RemoteAgent(ocean, did, null);</span>
+<span class="fc" id="L91">        return new RemoteAgent(ocean, did, null);</span>
     }
 
     /**
@@ -599,7 +599,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * &quot;https://www.myagent.com/api/v1/meta&quot;
      */
     public String getMetaEndpoint() {
-<span class="nc" id="L602">        return getEndpoint(&quot;Ocean.Meta.v1&quot;);</span>
+<span class="fc" id="L602">        return getEndpoint(&quot;Ocean.Meta.v1&quot;);</span>
     }
 
     /**
