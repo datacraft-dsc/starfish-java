@@ -85,6 +85,10 @@ public class Constant {
     public static final String DEFAULT_AUTHOR = "Test_author";
     public static final String DEFAULT_DATE_CREATED = "2012-10-10T17:00:000Z";
     public static final Object DEFAULT_PRICE = 5;
+    
+    //----------DDO Endpoints---------------------------------
+	public static final String SERVICE = "service";
+	public static final String SERVICE_ENDPOINT = "serviceEndpoint";
 
 
 

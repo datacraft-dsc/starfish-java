@@ -73,12 +73,12 @@ public class Ocean implements Resolver {
      * This registration is intended for testing purposes.
      *
      * @param did A did to register
-     * @param ddo A string containing a valid DDO in JSON Format
+     * @param ddoString A string containing a valid DDO in JSON Format
      */
-    public void installLocalDDO(DID did, String ddo) {
+    public void installLocalDDO(DID did, String ddoString) {
         if (did == null) throw new IllegalArgumentException("DID cannot be null");
         did = did.withoutPath();
-        ddoCache.put(did, ddo);
+        ddoCache.put(did, ddoString);
     }
 
     /**
@@ -121,7 +121,7 @@ public class Ocean implements Resolver {
 
     @Override
     public String getDDOString(DID did) {
-        did = did.withoutPath();
+        did = did.withoutPath(); // remove path to get DDO for basic did
         String localDDO = ddoCache.get(did);
         if (localDDO != null) {
             return localDDO;
@@ -168,9 +168,10 @@ public class Ocean implements Resolver {
      * @param did The DID for the agent to resolve
      * @return Agent instance, or null if not able to resolve the DID
      */
-    public Agent getAgent(DID did) {
+    @SuppressWarnings("unchecked")
+	public <A extends Agent> A getAgent(DID did) {
         // TODO: resolve DDO for squid
-        return RemoteAgent.create(this, did);
+        return (A) RemoteAgent.create(this, did);
     }
 
     /**

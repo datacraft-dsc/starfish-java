@@ -35,7 +35,9 @@ public interface Resolver {
      * @throws UnsupportedOperationException not yet implemented
      */
     public default Map<String, Object> getDDO(DID did) {
+    	did=did.withoutPath();
         String ddoString = getDDOString(did);
+        if (ddoString==null) return null;
         return JSON.parse(ddoString);
     }
     
