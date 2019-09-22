@@ -2,6 +2,7 @@ package sg.dex.starfish;
 
 import org.junit.Test;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 
@@ -14,7 +15,8 @@ public class TestDDO {
     @Test
     public void testLocalDDO() {
         Ocean ocean = Ocean.connect();
-        String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \"http://localhost:8080/api/v1/meta\"}]}";
+        String endpoint="http://localhost:8080/api/v1/meta";
+        String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \""+endpoint+"\"}]}";
         DID did = DID.createRandom();
         ocean.installLocalDDO(did, ddoString);
 
@@ -25,7 +27,8 @@ public class TestDDO {
         assertEquals(1, ddo.size());
         
         RemoteAgent agent=ocean.getAgent(did);
-        assertEquals("http://localhost:8080/api/v1/meta",agent.getMetaEndpoint());
+        assertEquals(endpoint,agent.getMetaEndpoint());
+        assertEquals(endpoint,agent.getEndpoint(Constant.ENDPOINT_META));
     }
 
     @Test
