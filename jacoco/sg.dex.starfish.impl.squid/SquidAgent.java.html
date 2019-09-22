@@ -92,6 +92,11 @@ public class SquidAgent extends AAgent {
         //Todo FIX IT, may throw exception
 <span class="nc" id="L93">        throw new GenericException(&quot;Exception while registering Asset into OCN&quot;);</span>
     }
+    
+	@Override
+	public &lt;R extends Asset&gt; R registerAsset(String metaString) {
+<span class="nc" id="L98">		throw new UnsupportedOperationException(&quot;SquidAgent does not support registering assets without content&quot;);</span>
+	}
 
     /**
      * Methods to get the Squid Asset after registering to Ocean Network
@@ -104,47 +109,47 @@ public class SquidAgent extends AAgent {
      */
     private SquidAsset createSquidAssetInNetwork(Asset asset) throws IOException, DDOException, DIDFormatException {
 
-<span class="nc" id="L107">        AssetMetadata metadataBase = createSquidDDO(asset);</span>
+<span class="nc" id="L112">        AssetMetadata metadataBase = createSquidDDO(asset);</span>
 
-<span class="nc" id="L109">        DDO squidDDO = ocean.getAssetsAPI().create(metadataBase, getProvideConfig(configMap));</span>
+<span class="nc" id="L114">        DDO squidDDO = ocean.getAssetsAPI().create(metadataBase, getProvideConfig(configMap));</span>
 
-<span class="nc" id="L111">        DID did = DID.parse(squidDDO.getDid().toString());</span>
-<span class="nc" id="L112">        return SquidAsset.create(asset.getMetadataString(), did, squidDDO, ocean);</span>
+<span class="nc" id="L116">        DID did = DID.parse(squidDDO.getDid().toString());</span>
+<span class="nc" id="L117">        return SquidAsset.create(asset.getMetadataString(), did, squidDDO, ocean);</span>
 
     }
 
     private AssetMetadata createSquidDDO(Asset asset) throws IOException {
 
         // todo map mandatory attribute
-<span class="nc" id="L119">        Map&lt;String, Object&gt; squidMetaDAta = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L124">        Map&lt;String, Object&gt; squidMetaDAta = new HashMap&lt;&gt;();</span>
         // modify get metadata to squid..metadata
-<span class="nc" id="L121">        squidMetaDAta.put(&quot;base&quot;, getMetaData(asset));</span>
+<span class="nc" id="L126">        squidMetaDAta.put(&quot;base&quot;, getMetaData(asset));</span>
 
-<span class="nc" id="L123">        return DDO.fromJSON(new TypeReference&lt;AssetMetadata&gt;() {</span>
-<span class="nc" id="L124">        }, JSON.toString(squidMetaDAta));</span>
+<span class="nc" id="L128">        return DDO.fromJSON(new TypeReference&lt;AssetMetadata&gt;() {</span>
+<span class="nc" id="L129">        }, JSON.toString(squidMetaDAta));</span>
     }
 
     private Map&lt;String, Object&gt; getMetaData(Asset asset) {
-<span class="nc" id="L128">        Map&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L133">        Map&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
         // getting asset meta data
-<span class="nc" id="L130">        Map&lt;String, Object&gt; assetMetadata = JSON.toMap(asset.getMetadataString());//.getMetadata();</span>
+<span class="nc" id="L135">        Map&lt;String, Object&gt; assetMetadata = JSON.toMap(asset.getMetadataString());//.getMetadata();</span>
         // initialize with default value
 
-<span class="nc" id="L133">        meta.put(Constant.TYPE, Constant.DATA_SET);</span>
-<span class="nc" id="L134">        meta.put(Constant.NAME, Constant.DEFAULT_NAME);</span>
-<span class="nc" id="L135">        meta.put(&quot;license&quot;, Constant.DEFAULT_LICENSE);</span>
-<span class="nc" id="L136">        meta.put(&quot;author&quot;, Constant.DEFAULT_AUTHOR);</span>
-<span class="nc" id="L137">        meta.put(&quot;price&quot;, Constant.DEFAULT_PRICE);</span>
+<span class="nc" id="L138">        meta.put(Constant.TYPE, Constant.DATA_SET);</span>
+<span class="nc" id="L139">        meta.put(Constant.NAME, Constant.DEFAULT_NAME);</span>
+<span class="nc" id="L140">        meta.put(&quot;license&quot;, Constant.DEFAULT_LICENSE);</span>
+<span class="nc" id="L141">        meta.put(&quot;author&quot;, Constant.DEFAULT_AUTHOR);</span>
+<span class="nc" id="L142">        meta.put(&quot;price&quot;, Constant.DEFAULT_PRICE);</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (assetMetadata != null) {</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">                if (assetMetadata.get(me.getKey()) != null) {</span>
-<span class="nc" id="L142">                    meta.put(me.getKey(), assetMetadata.get(me.getKey()));</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (assetMetadata != null) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                if (assetMetadata.get(me.getKey()) != null) {</span>
+<span class="nc" id="L147">                    meta.put(me.getKey(), assetMetadata.get(me.getKey()));</span>
                 }
-<span class="nc" id="L144">            }</span>
+<span class="nc" id="L149">            }</span>
         }
-<span class="nc" id="L146">        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);</span>
-<span class="nc" id="L147">        return meta;</span>
+<span class="nc" id="L151">        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);</span>
+<span class="nc" id="L152">        return meta;</span>
     }
 
     /**
@@ -158,13 +163,13 @@ public class SquidAgent extends AAgent {
      */
     @Override
     public SquidAsset getAsset(String id) {
-<span class="nc" id="L161">        DID did = DID.create(&quot;op&quot;, id, null, null);</span>
-<span class="nc" id="L162">        return getAsset(did);</span>
+<span class="nc" id="L166">        DID did = DID.create(&quot;op&quot;, id, null, null);</span>
+<span class="nc" id="L167">        return getAsset(did);</span>
     }
 
     @Override
     public SquidAsset getAsset(DID did) {
-<span class="nc" id="L167">        return (SquidAsset) ocean.getAsset(did);</span>
+<span class="nc" id="L172">        return (SquidAsset) ocean.getAsset(did);</span>
     }
 
     /**
@@ -181,7 +186,7 @@ public class SquidAgent extends AAgent {
      */
     @Override
     public SquidAsset uploadAsset(Asset a) {
-<span class="nc" id="L184">        throw new UnsupportedOperationException(&quot;Upload not supported by squid agent&quot;);</span>
+<span class="nc" id="L189">        throw new UnsupportedOperationException(&quot;Upload not supported by squid agent&quot;);</span>
     }
 
     /**
@@ -193,27 +198,27 @@ public class SquidAgent extends AAgent {
      */
 
     public List&lt;SquidAsset&gt; searchAsset(String text) throws DDOException {
-<span class="nc" id="L196">        SearchResult searchResult = ocean.getOceanAPI().getAssetsAPI().search(text);</span>
-<span class="nc" id="L197">        List&lt;DDO&gt; listDDO = searchResult.results;</span>
-<span class="nc" id="L198">        List&lt;SquidAsset&gt; squidAssetLst = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        for (DDO ddo : listDDO) {</span>
-<span class="nc" id="L200">            DID did = DID.parse(ddo.getDid().toString());</span>
-<span class="nc" id="L201">            SquidAsset asset = getAsset(did);</span>
-<span class="nc" id="L202">            squidAssetLst.add(asset);</span>
-<span class="nc" id="L203">        }</span>
-<span class="nc" id="L204">        return squidAssetLst;</span>
+<span class="nc" id="L201">        SearchResult searchResult = ocean.getOceanAPI().getAssetsAPI().search(text);</span>
+<span class="nc" id="L202">        List&lt;DDO&gt; listDDO = searchResult.results;</span>
+<span class="nc" id="L203">        List&lt;SquidAsset&gt; squidAssetLst = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        for (DDO ddo : listDDO) {</span>
+<span class="nc" id="L205">            DID did = DID.parse(ddo.getDid().toString());</span>
+<span class="nc" id="L206">            SquidAsset asset = getAsset(did);</span>
+<span class="nc" id="L207">            squidAssetLst.add(asset);</span>
+<span class="nc" id="L208">        }</span>
+<span class="nc" id="L209">        return squidAssetLst;</span>
 
     }
 
     private static ProviderConfig getProvideConfig(Map&lt;String, String&gt; configMap) {
 
-<span class="nc" id="L210">        String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + &quot;/api/v1/aquarius/assets/ddo/{did}&quot;;</span>
-<span class="nc" id="L211">        String consumeUrl = configMap.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/consume&quot;;</span>
-<span class="nc" id="L212">        String purchaseEndpoint = configMap.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/access/initialize&quot;;</span>
-<span class="nc" id="L213">        String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);</span>
-<span class="nc" id="L214">        String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);</span>
+<span class="nc" id="L215">        String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + &quot;/api/v1/aquarius/assets/ddo/{did}&quot;;</span>
+<span class="nc" id="L216">        String consumeUrl = configMap.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/consume&quot;;</span>
+<span class="nc" id="L217">        String purchaseEndpoint = configMap.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/access/initialize&quot;;</span>
+<span class="nc" id="L218">        String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);</span>
+<span class="nc" id="L219">        String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);</span>
 
-<span class="nc" id="L216">        return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);</span>
+<span class="nc" id="L221">        return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);</span>
     }
 
     /**
@@ -225,11 +230,11 @@ public class SquidAgent extends AAgent {
      */
     public SquidAsset resolveSquidDID(DID assetId) {
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (null == assetId) {</span>
-<span class="nc" id="L229">            throw new UnsupportedOperationException(&quot;Asset Id cannot be null&quot;);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (null == assetId) {</span>
+<span class="nc" id="L234">            throw new UnsupportedOperationException(&quot;Asset Id cannot be null&quot;);</span>
         }
-<span class="nc" id="L231">        SquidAsset squidAsset = getAsset(assetId);</span>
-<span class="nc" id="L232">        return squidAsset;</span>
+<span class="nc" id="L236">        SquidAsset squidAsset = getAsset(assetId);</span>
+<span class="nc" id="L237">        return squidAsset;</span>
 
     }
 
@@ -242,14 +247,14 @@ public class SquidAgent extends AAgent {
      */
     public List&lt;SquidAsset&gt; queryAsset(Map&lt;String, Object&gt; queryMapData) throws Exception {
 
-<span class="nc" id="L245">        List&lt;DDO&gt; listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();</span>
-<span class="nc" id="L246">        List&lt;SquidAsset&gt; squidAssetLst = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">        for (DDO ddo : listDDO) {</span>
-<span class="nc" id="L248">            DID did = DID.parse(ddo.getDid().toString());</span>
-<span class="nc" id="L249">            SquidAsset asset = getAsset(did);</span>
-<span class="nc" id="L250">            squidAssetLst.add(asset);</span>
-<span class="nc" id="L251">        }</span>
-<span class="nc" id="L252">        return squidAssetLst;</span>
+<span class="nc" id="L250">        List&lt;DDO&gt; listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();</span>
+<span class="nc" id="L251">        List&lt;SquidAsset&gt; squidAssetLst = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        for (DDO ddo : listDDO) {</span>
+<span class="nc" id="L253">            DID did = DID.parse(ddo.getDid().toString());</span>
+<span class="nc" id="L254">            SquidAsset asset = getAsset(did);</span>
+<span class="nc" id="L255">            squidAssetLst.add(asset);</span>
+<span class="nc" id="L256">        }</span>
+<span class="nc" id="L257">        return squidAssetLst;</span>
     }
 
 }

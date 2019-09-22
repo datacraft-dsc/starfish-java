@@ -82,6 +82,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 <span class="fc" id="L82">        assetStore.put(ma.getAssetID(), ma);</span>
 <span class="fc" id="L83">        return (R) ma;</span>
     }
+    
+	@Override
+	public &lt;R extends Asset&gt; R registerAsset(String metaString) {
+<span class="nc" id="L88">		throw new UnsupportedOperationException(&quot;MemoryAgent does not support registering assets without content&quot;);</span>
+	}
 
     /**
      * Registers an Asset with this Agent
@@ -94,21 +99,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R uploadAsset(Asset a) {
-<span class="fc" id="L97">        MemoryAsset ma = MemoryAsset.create(a);</span>
-<span class="fc" id="L98">        registerAsset(ma);</span>
-<span class="fc" id="L99">        return (R) ma;</span>
+<span class="fc" id="L102">        MemoryAsset ma = MemoryAsset.create(a);</span>
+<span class="fc" id="L103">        registerAsset(ma);</span>
+<span class="fc" id="L104">        return (R) ma;</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R getAsset(String id) {
-<span class="fc" id="L105">        R asset = (R) assetStore.get(id);</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (asset == null) return null;</span>
-<span class="fc" id="L107">        String rid = asset.getAssetID();</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (rid != id) {</span>
-<span class="nc" id="L109">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
+<span class="fc" id="L110">        R asset = (R) assetStore.get(id);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (asset == null) return null;</span>
+<span class="fc" id="L112">        String rid = asset.getAssetID();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (rid != id) {</span>
+<span class="nc" id="L114">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
         }
-<span class="fc" id="L111">        return asset;</span>
+<span class="fc" id="L116">        return asset;</span>
     }
 
     /**
@@ -123,10 +128,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Object... params) {
-<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L127">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L132">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L129">        return operation.invoke(params);</span>
+<span class="nc" id="L134">        return operation.invoke(params);</span>
     }
 
 
@@ -142,10 +147,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L146">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L151">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L148">        return operation.invoke(params);</span>
+<span class="nc" id="L153">        return operation.invoke(params);</span>
     }
 
     /**
@@ -162,28 +167,28 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
         // check the mode if sync then throw exception
-<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (isSyncMode(operation)) {</span>
-<span class="nc" id="L166">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (isSyncMode(operation)) {</span>
+<span class="nc" id="L171">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
         }
-<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L169">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L174">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L171">        return operation.invoke(params);</span>
+<span class="nc" id="L176">        return operation.invoke(params);</span>
     }
 
     @Override
     public &lt;R extends Asset&gt; R getAsset(DID did) {
-<span class="nc" id="L176">        return getAsset(did.getID());</span>
+<span class="nc" id="L181">        return getAsset(did.getID());</span>
     }
 
     @Override
     public Listing getListing(String id) {
-<span class="nc" id="L181">        return listingStore.get(id);</span>
+<span class="nc" id="L186">        return listingStore.get(id);</span>
     }
 
     @Override
     public Purchase getPurchase(String id) {
-<span class="nc" id="L186">        return purchaseStore.get(id);</span>
+<span class="nc" id="L191">        return purchaseStore.get(id);</span>
     }
 
 
@@ -195,12 +200,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
-<span class="fc" id="L199">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="fc" id="L204">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L202">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
-<span class="fc" id="L203">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L207">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
+<span class="fc" id="L208">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
     }
 
     /**
@@ -210,12 +215,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map&lt;String, Object&gt; purchaseData) {
-<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
-<span class="fc" id="L214">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
+<span class="fc" id="L219">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L217">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
-<span class="fc" id="L218">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L222">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
+<span class="fc" id="L223">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
     }
 
 
@@ -226,9 +231,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return true if mode is sync else false
      */
     private boolean isSyncMode(Operation operation) {
-<span class="nc" id="L229">        Map&lt;String, Object&gt; metaData = operation.getMetadata();</span>
-<span class="nc" id="L230">        Object mode = metaData.get(&quot;modes&quot;);</span>
-<span class="nc bnc" id="L231" title="All 4 branches missed.">        return mode != null &amp;&amp; mode.toString().equals(&quot;sync&quot;);</span>
+<span class="nc" id="L234">        Map&lt;String, Object&gt; metaData = operation.getMetadata();</span>
+<span class="nc" id="L235">        Object mode = metaData.get(&quot;modes&quot;);</span>
+<span class="nc bnc" id="L236" title="All 4 branches missed.">        return mode != null &amp;&amp; mode.toString().equals(&quot;sync&quot;);</span>
     }
+
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

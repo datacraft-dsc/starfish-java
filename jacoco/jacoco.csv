@@ -3,7 +3,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,Mem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,14,164,0,10,3,35,1,15,1,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,4,7,0,0,2,3,1,1,1,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,120,137,13,7,18,28,14,13,7,10
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,125,137,13,7,19,28,15,13,8,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,34,136,6,10,6,28,7,13,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
@@ -11,7 +11,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,Squi
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAccount,34,0,0,0,9,0,5,0,5,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidService,97,0,2,0,33,0,10,0,9,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidResolverImpl,32,0,2,0,13,0,4,0,3,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent,324,0,12,0,68,0,19,0,13,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent,329,0,12,0,69,0,20,0,14,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent.new TypeReference() {...},6,0,0,0,1,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Resolver,2,13,1,1,0,4,1,1,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,DataAsset,34,82,7,7,8,18,8,5,2,4
@@ -22,7 +22,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Job,49,18,2,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Ocean,150,55,9,3,36,17,18,8,13,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Invokable,3,0,0,0,1,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteListing,85,0,4,0,21,0,13,0,11,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,2029,19,124,0,416,5,116,3,54,3
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,2015,19,122,0,414,5,115,3,54,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteDataAsset,132,0,4,0,23,0,9,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,232,0,14,0,46,0,18,0,11,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,7,0,0,0,3,0,1,0,1,0
