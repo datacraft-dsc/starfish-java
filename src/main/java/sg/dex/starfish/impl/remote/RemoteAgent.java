@@ -206,6 +206,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 if (statusCode == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     String id = JSON.parse(body);
+                    // TODO: Why are we hitting the agent again? Create RemoteAsset directly?
                     return getAsset(id);
                 }
                 throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());
