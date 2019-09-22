@@ -1,15 +1,19 @@
 package sg.dex.starfish.impl.remote;
 
-import sg.dex.starfish.Job;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.JobFailedException;
-import sg.dex.starfish.exception.RemoteException;
+import static sg.dex.starfish.constant.Constant.CANCELLED;
+import static sg.dex.starfish.constant.Constant.FAILED;
+import static sg.dex.starfish.constant.Constant.RUNNING;
+import static sg.dex.starfish.constant.Constant.SCHEDULED;
+import static sg.dex.starfish.constant.Constant.STATUS;
+import static sg.dex.starfish.constant.Constant.SUCCEEDED;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static sg.dex.starfish.constant.Constant.*;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
 
 /**
  * This class represents a remote Job executed via the Invoke API on a remote agent.
@@ -54,7 +58,6 @@ public class RemoteJob implements Job {
 
         // FIXME: needs to match statuses in DEP6
         if (status.equals(RUNNING)  || status.equals(SCHEDULED)) {
-
             return null;
         }
 

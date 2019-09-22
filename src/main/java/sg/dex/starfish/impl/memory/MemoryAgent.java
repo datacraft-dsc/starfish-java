@@ -236,5 +236,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return mode != null && mode.toString().equals("sync");
     }
 
+	@Override
+	public Job getJob(String jobID) {
+		// TODO Consider caching Jobs? Or just return null
+		return null;
+	}
+
 
 }

@@ -1232,4 +1232,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         account.getUserDataMap().put(TOKEN, token);
     }
 
+	@Override
+	public Job getJob(String jobID) {
+		return RemoteJob.create(this, jobID);
+	}
+
 }
