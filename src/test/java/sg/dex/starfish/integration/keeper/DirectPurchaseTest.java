@@ -20,21 +20,22 @@ public class DirectPurchaseTest {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private byte[] reference;
     private BigInteger tokenAmount;
+    String receiverAddress;
+    String senderAddress;
 
     public DirectPurchaseTest() throws IOException, CipherException {
         directPurchaseAdapter = new DirectPurchaseAdapter();
         reference = new byte[32];
         reference[0] = 10;
         tokenAmount = BigInteger.valueOf(10);
+        receiverAddress = "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0";
+        senderAddress = "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
     }
 
     @Test
     public void Purchase() throws EthereumException {
-
-        String receiverAddress = "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0";
         String receiverPasswd = "secret";
 
-        String senderAddress = "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
         String senderPasswd = "node0";
 
         Account senderAccount = new Account(senderAddress, senderPasswd);
