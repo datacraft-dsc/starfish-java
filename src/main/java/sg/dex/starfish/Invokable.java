@@ -54,4 +54,11 @@ public interface Invokable {
      * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
      */
     Job invokeAsync(Operation operation, Map<String, Object> params);
+    
+    /**
+     * Gets a Job from this invokable agent with the given jobID
+     * @param jobID ID for the Job in the context for this agent
+     * @return A Job instance, or null if the Job cannot be found
+     */
+    Job getJob(String jobID);
 }

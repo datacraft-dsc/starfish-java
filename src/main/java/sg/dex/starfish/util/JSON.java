@@ -152,7 +152,7 @@ public class JSON {
             Object result = parser.parse(jsonString);
             return (T) result;
         } catch (ParseException e) {
-            throw new Error("Error in JSON parsing: " + e.getMessage(), e);
+            throw Utils.sneakyThrow(e);
         }
     }
 }

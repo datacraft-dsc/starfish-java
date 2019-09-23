@@ -2,6 +2,7 @@ package sg.dex.starfish.impl;
 
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.Ocean;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 
 import java.util.List;
@@ -67,12 +68,10 @@ public abstract class AAgent implements Agent {
     public String getEndpoint(String type) {
         Map<String, Object> ddo = getDDO();
         @SuppressWarnings("unchecked")
-        List<Object> services = (List<Object>) ddo.get("service");
+        List<Map<String,Object>> services = (List<Map<String,Object>>) ddo.get(Constant.SERVICE);
         if (services == null) return null;
-        for (Object o : services) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> service = (Map<String, Object>) o;
-            if (type.equals(service.get("type"))) return (String) service.get("serviceEndpoint");
+        for (Map<String,Object> service : services) {
+            if (type.equals(service.get("type"))) return (String) service.get(Constant.SERVICE_ENDPOINT);
         }
         return null;
     }

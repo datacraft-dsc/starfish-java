@@ -1,21 +1,5 @@
 package sg.dex.starfish;
 
-import com.oceanprotocol.squid.api.AccountsAPI;
-import com.oceanprotocol.squid.api.AssetsAPI;
-import com.oceanprotocol.squid.api.OceanAPI;
-import com.oceanprotocol.squid.exceptions.EthereumException;
-import com.oceanprotocol.squid.models.Account;
-import com.oceanprotocol.squid.models.Balance;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import sg.dex.starfish.exception.RemoteException;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.squid.SquidAsset;
-import sg.dex.starfish.util.*;
-
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +7,27 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+
+import com.oceanprotocol.squid.api.AccountsAPI;
+import com.oceanprotocol.squid.api.AssetsAPI;
+import com.oceanprotocol.squid.api.OceanAPI;
+import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.models.Account;
+import com.oceanprotocol.squid.models.Balance;
+
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.squid.SquidAsset;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.HTTP;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Main entry point for Ocean ecosystem capabilities.
@@ -32,7 +37,7 @@ import java.util.Map;
  *
  * @author Mike
  */
-public class Ocean {
+public class Ocean implements Resolver {
     private static final Ocean DEFAULT_OCEAN = new Ocean(null);
 
     private final Map<DID, String> ddoCache = new HashMap<DID, String>();
@@ -68,12 +73,12 @@ public class Ocean {
      * This registration is intended for testing purposes.
      *
      * @param did A did to register
-     * @param ddo A string containing a valid DDO in JSON Format
+     * @param ddoString A string containing a valid DDO in JSON Format
      */
-    public void installLocalDDO(DID did, String ddo) {
+    public void installLocalDDO(DID did, String ddoString) {
         if (did == null) throw new IllegalArgumentException("DID cannot be null");
         did = did.withoutPath();
-        ddoCache.put(did, ddo);
+        ddoCache.put(did, ddoString);
     }
 
     /**
@@ -97,6 +102,12 @@ public class Ocean {
     public Map<String, Object> getDDO(String did) {
         return getDDO(DID.parse(did));
     }
+    
+	@Override
+	public void registerDID(DID did, String ddoString) {
+		// TODO: Ocean DDO registration;
+		installLocalDDO(did,ddoString);
+	}
 
     /**
      * Gets a DDO for a specified DID via the Universal resolver
@@ -108,37 +119,19 @@ public class Ocean {
         return getDDOString(DID.parse(did));
     }
 
-    /**
-     * Gets a DDO for a specified DID via the Universal Resolver.
-     * Returns null if the DDO cannot be found.
-     *
-     * @param did DID to resolve
-     * @return The DDO as a JSON map
-     * @throws UnsupportedOperationException not yet implemented
-     */
-    public Map<String, Object> getDDO(DID did) {
-        String ddo = getDDOString(did);
-        if (ddo != null) {
-            return JSONObjectCache.parse(ddo);
-        }
-        // it is squid did
-        else {
-            DID didSquid = DID.parse(did.toString());
-            return getAsset(didSquid).getMetadata();
-        }
-//		// TODO universal resolver
-//		throw new UnsupportedOperationException("Not yet implemented");
-    }
-
+    @Override
     public String getDDOString(DID did) {
-        did = did.withoutPath();
+        did = did.withoutPath(); // remove path to get DDO for basic did
         String localDDO = ddoCache.get(did);
         if (localDDO != null) {
             return localDDO;
         }
+        try {
+        	// TODO: Ocean resolver
+        } catch (Throwable t) {
+        	// TODO: logging	
+        }
         return null;
-//		// TODO universal resolver
-//		throw new UnsupportedOperationException("Not yet implemented");
     }
 
 
@@ -175,9 +168,10 @@ public class Ocean {
      * @param did The DID for the agent to resolve
      * @return Agent instance, or null if not able to resolve the DID
      */
-    public Agent getAgent(DID did) {
+    @SuppressWarnings("unchecked")
+	public <A extends Agent> A getAgent(DID did) {
         // TODO: resolve DDO for squid
-        return RemoteAgent.create(this, did);
+        return (A) RemoteAgent.create(this, did);
     }
 
     /**
@@ -281,6 +275,7 @@ public class Ocean {
         return Collections.emptyMap();
 
     }
+
 
 
 }

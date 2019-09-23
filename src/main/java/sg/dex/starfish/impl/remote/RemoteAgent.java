@@ -19,6 +19,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.simple.JSONArray;
 import sg.dex.starfish.*;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.util.DID;
@@ -103,10 +104,26 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpEntity entity = response.getEntity();
         if (entity == null) throw new RuntimeException("Invoke failed: no response body");
         try {
-            String body = Utils.stringFromStream(entity.getContent());
-            return RemoteJob.create(agent, body);
+            String body = Utils.stringFromStream(entity.getContent()).trim();
+            String jobID;
+            
+            // TODO: Fix according to DEP once reference implementations are stable
+            if (body.startsWith("\"")) {
+            	// interpret as a JOB ID JSON String
+            	jobID=JSON.parse(body);
+            } else {
+            	if (body.startsWith("{")) {
+            		// interpret as a JSON map, should contain jobid
+            		Map<String,Object> json=JSON.parse(body);
+            		jobID=(String) json.get("jobid");
+            	} else {
+            		// interpret as a raw job ID
+            		jobID=body;
+            	}
+            }
+            return RemoteJob.create(agent, jobID);
         } catch (Exception e) {
-            throw new GenericException("Internal Server Error");
+            throw Utils.sneakyThrow(e);
         }
     }
 
@@ -122,14 +139,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     public static Job createJob(RemoteAgent agent, HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
-        if (statusCode == 201) {
+        if ((statusCode == 201)||(statusCode==200)) {
             return RemoteAgent.createSuccessJob(agent, response);
         }
         String reason = statusLine.getReasonPhrase();
         if ((statusCode) == 400) {
             throw new IllegalArgumentException("Bad invoke request: " + reason);
         }
-        throw new GenericException("Internal Server Error");
+        throw new Error("Unexpected server respose: "+statusCode);
     }
 
     /**
@@ -145,43 +162,42 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return new RemoteAgent(ocean, did, acc);
     }
 
-    private ARemoteAsset registerBundle(Asset a) {
-        RemoteBundle remoteBundle = (RemoteBundle) a;
+    private <R extends Asset> R registerBundle(Asset a) {
+        Bundle remoteBundle = (Bundle) a;
 
         Map<String, Asset> resultAsset = new HashMap<>();
         // getting all sub asset
         Map<String, Asset> allSubAsset = remoteBundle.getAll();
         for (String name : allSubAsset.keySet()) {
             Asset subAsset = allSubAsset.get(name);
-            if (subAsset.getMetadata().get(TYPE).equals(BUNDLE)) {
-                registerBundle(subAsset);
-            }
             // registering each sub asset
-            resultAsset.put(name, registerRemoteAsset(subAsset));
+            resultAsset.put(name, registerAsset(subAsset));
         }
         // registering bundle itself
 
-        return registerRemoteAsset(RemoteBundle.create(this, resultAsset, a.getMetadata()));
+        return registerAsset(a.getMetadataString());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <R extends Asset> R registerAsset(Asset a) {
         if (null == a) {
+        	// TODO: should be IllegalArgumentException?
             throw new StarfishValidationException("Asset cannot be null");
         }
         if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
             return (R) registerBundle(a);
         }
-        return (R) registerRemoteAsset(a);
+        return registerAsset(a.getMetadataString());
     }
 
-    private ARemoteAsset registerRemoteAsset(Asset a) {
+    @Override
+    public <R extends Asset> R registerAsset(String metaString) {
         URI uri = getMetaURI();
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
         addAuthHeaders(httpPost);
-        httpPost.setEntity(HTTP.textEntity(a.getMetadataString()));
+        httpPost.setEntity(HTTP.textEntity(metaString));
         return createRemoteAsset(uri, httpclient, httpPost);
     }
 
@@ -193,7 +209,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param httpPost   httpPost
      * @return instance of remote Asset
      */
-    private ARemoteAsset createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
+    private <R extends Asset> R createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
         CloseableHttpResponse response;
         try {
             response = httpclient.execute(httpPost);
@@ -206,6 +222,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 if (statusCode == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     String id = JSON.parse(body);
+                    // TODO: Why are we hitting the agent again? Create RemoteAsset directly?
                     return getAsset(id);
                 }
                 throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());
@@ -248,8 +265,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     buffer.append("token ");
                     buffer.append(token);
                 }
-                // will create toke for given account
+                // will create token for given account
                 else {
+                	// TODO: fall back to basic auth if token doesn't work?
+                	
                     // final StringBuilder tmp = new StringBuilder();
                     // tmp.append(username);
                     // tmp.append(":");
@@ -579,7 +598,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/storage"
      */
     public String getStorageEndpoint() {
-        return getEndpoint("Ocean.Storage.v1");
+        return getEndpoint(Constant.ENDPOINT_STORAGE);
     }
 
     /**
@@ -589,7 +608,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/invoke"
      */
     public String getInvokeEndpoint() {
-        return getEndpoint("Ocean.Invoke.v1");
+        return getEndpoint(Constant.ENDPOINT_INVOKE);
     }
 
     /**
@@ -599,7 +618,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getMetaEndpoint() {
-        return getEndpoint("Ocean.Meta.v1");
+        return getEndpoint(Constant.ENDPOINT_META);
     }
 
     /**
@@ -609,7 +628,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getMarketEndpoint() {
-        return getEndpoint("Ocean.Market.v1");
+        return getEndpoint(Constant.ENDPOINT_MARKET);
     }
 
     /**
@@ -676,18 +695,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Invokes request on this RemoteAgent
      *
      * @param operation operation
-     * @param params    params
+     * @param requestMap    params
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
 
-    private Job invokeImpl(Operation operation, Map<String, Object> params) {
+    private Job invokeImpl(Operation operation, Map<String, Object> requestMap) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         String assetID = operation.getAssetID();
         HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
         addAuthHeaders(httppost);
-        String paramJSON = JSON.toPrettyString(params);
+        String paramJSON = JSON.toPrettyString(requestMap);
         StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
         CloseableHttpResponse response;
@@ -1212,5 +1231,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private void updateAccountData(String token) {
         account.getUserDataMap().put(TOKEN, token);
     }
+
+	@Override
+	public Job getJob(String jobID) {
+		return RemoteJob.create(this, jobID);
+	}
 
 }

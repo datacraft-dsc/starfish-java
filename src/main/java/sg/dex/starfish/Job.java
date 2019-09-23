@@ -40,8 +40,9 @@ public interface Job extends Future<Map<String, Object>> {
     String getJobID();
 
     /**
-     * Returns true if the Job has been completed. If the job is complete, the
-     * result may be obtained via get() or getResult()
+     * Returns true if the Job has been completed, either due to success, failure or cancellation.
+     * 
+     * If the job has succeeded, the result may be obtained via get() or getResult()
      *
      * @return boolean true if the job is complete, false otherwise.
      */
@@ -95,19 +96,20 @@ public interface Job extends Future<Map<String, Object>> {
     }
 
     /**
-     * Waits for the result of the Operation and returns the result map
-     * or throws an exception if the timeout in milliseconds expires before the
-     * asset is available.
+     * Waits for the result of the Operation and returns the result map.
+     * 
+     * Throws an exception if:
+     * - the timeout in milliseconds expires before the asset is available.
+     * - The Job fails or is cancelled
      * 
      * A timeout will not prevent the Job from completing at a later time.
      *
      * @return The result map from the job
-     * @throws ExecutionException if Job fails with an error
      * @throws TimeoutException if the result is not returned by the given timeout
      */
     @Override
     Map<String, Object> get(long timeout, TimeUnit unit)
-            throws ExecutionException, TimeoutException;
+            throws TimeoutException;
 
     /**
      * Waits for the result of the Operation and returns the result or returns null
@@ -144,7 +146,7 @@ public interface Job extends Future<Map<String, Object>> {
     default Map<String, Object> getResult(long timeout, TimeUnit unit) {
     	try {
             return get(timeout, unit);
-        } catch (TimeoutException | ExecutionException e) {
+        } catch (TimeoutException e) {
         	// re-throw exceptions sneakily to avoid checked exceptions
             throw Utils.sneakyThrow(e);
         }

@@ -1,14 +1,20 @@
 package sg.dex.starfish.impl.squid;
 
-import com.oceanprotocol.squid.exceptions.*;
+import java.io.IOException;
+
+import org.web3j.crypto.CipherException;
+
+import com.oceanprotocol.squid.exceptions.DDOException;
+import com.oceanprotocol.squid.exceptions.DIDFormatException;
+import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.exceptions.InitializationException;
+import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
 import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
-import com.oceanprotocol.squid.models.DID;
-import org.web3j.crypto.CipherException;
-import sg.dex.starfish.Resolver;
 
-import java.io.IOException;
-import java.util.Arrays;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Utils;
 
 public class SquidResolverImpl implements Resolver {
     private SquidService squidService;
@@ -19,23 +25,30 @@ public class SquidResolverImpl implements Resolver {
 
 
     @Override
-    public String getDDO(DID did) throws InvalidConfiguration, InitializationException, CipherException, IOException, EthereumException, DDOException {
-
-        OceanManager oceanManager = SquidService.getResolverManager();
-        DDO ddo = oceanManager.resolveDID(did);
-        if (null != ddo) {
-            return ddo.id;
-        }
+    public String getDDOString(DID did) {
+ 		try {
+ 		   	com.oceanprotocol.squid.models.DID squidDID=new com.oceanprotocol.squid.models.DID(did.toString());
+	        OceanManager oceanManager = SquidService.getResolverManager();
+	        DDO ddo = oceanManager.resolveDID(squidDID);
+	        if (ddo != null) {
+	            return ddo.toJson();
+	        }
+		}
+		catch (EthereumException | DDOException | DIDFormatException | InvalidConfiguration | InitializationException | IOException | CipherException e) {
+			throw Utils.sneakyThrow(e);
+		}
         return null;
 
     }
 
     @Override
-    public boolean registerDID(DID did, String checksum) throws DIDRegisterException, IOException, CipherException, InitializationException, InvalidConfiguration {
-        OceanManager oceanManager = SquidService.getResolverManager();
-        String url = SquidService.getAquariusService().getDdoEndpoint();
-        String providerAddress = SquidService.getProvider();
-        return oceanManager.registerDID(did, url, checksum, Arrays.asList(providerAddress));
+    public void registerDID(DID did, String ddo) {
+// TODO: fix this
+//		com.oceanprotocol.squid.models.DID squidDID=new com.oceanprotocol.squid.models.DID(did.toString());
+//        OceanManager oceanManager = SquidService.getResolverManager();
+//        String url = SquidService.getAquariusService().getDdoEndpoint();
+//        String providerAddress = SquidService.getProvider();
+//        return oceanManager.registerDID(squidDID, url, checksum, Arrays.asList(providerAddress));
 
     }
 

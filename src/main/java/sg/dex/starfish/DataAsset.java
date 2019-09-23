@@ -1,5 +1,8 @@
 package sg.dex.starfish;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -8,11 +11,6 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Interface representing a data asset.
@@ -41,31 +39,8 @@ public interface DataAsset extends Asset {
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if unable to load the Asset
      */
-    InputStream getContentStream();
-
-    /**
-     * Gets the data content of this data asset as a byte[] array.
-     *
-     * @return The byte contents of this asset.
-     */
     @Override
-    default byte[] getContent() {
-        InputStream is = getContentStream();
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-        byte[] buf = new byte[16384];
-
-        int bytesRead;
-        try {
-            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {
-                buffer.write(buf, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            throw new StorageException("Unable to get Asset content", e);
-        }
-
-        return buffer.toByteArray();
-    }
+    InputStream getContentStream();
 
     /**
      * Gets the size of this data asset's content
