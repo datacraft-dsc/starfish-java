@@ -102,10 +102,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
         HttpEntity entity = response.getEntity();
-        if (entity == null) throw new RuntimeException("Invoke failed: no response body");
+        if (entity == null) throw new RemoteException("Invoke failed: no response body");
         try {
             String body = Utils.stringFromStream(entity.getContent()).trim();
             String jobID;
+            
+            if (body.isEmpty()) {
+            	throw new RemoteException("Invoke failed: empty body returned");
+            }
             
             // TODO: Fix according to DEP once reference implementations are stable
             if (body.startsWith("\"")) {
@@ -116,6 +120,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             		// interpret as a JSON map, should contain jobid
             		Map<String,Object> json=JSON.parse(body);
             		jobID=(String) json.get("jobid");
+            		if (jobID==null) throw new RemoteException("Invoke failed: no jobid in body: "+body);
             	} else {
             		// interpret as a raw job ID
             		jobID=body;
