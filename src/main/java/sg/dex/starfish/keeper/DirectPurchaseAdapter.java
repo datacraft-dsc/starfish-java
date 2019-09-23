@@ -7,11 +7,19 @@ import com.oceanprotocol.squid.exceptions.TokenApproveException;
 import java.io.IOException;
 import org.web3j.crypto.CipherException;
 
+import org.web3j.utils.Numeric;
+import java.util.ArrayList;
 import java.math.BigInteger;
 import java.util.Properties;
 import java.io.InputStream;
 import com.oceanprotocol.keeper.contracts.OceanToken;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+
+import org.web3j.protocol.core.methods.request.EthFilter;
+import io.reactivex.Flowable;
+import org.web3j.abi.EventEncoder;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 
 public final class DirectPurchaseAdapter {
     private DirectPurchase directPurchase;
@@ -56,6 +64,26 @@ public final class DirectPurchaseAdapter {
 
     public boolean tokenApprove(String spenderAddress, String price) throws TokenApproveException {
         return tokenManager.tokenApprove(spenderAddress, price);
+    }
+
+    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, byte[] reference)
+    {
+        String purchaser_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(purchaser_address), 64);
+        String publisher_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(publisher_address), 64);
+        String reference_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference), 64);
+        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(directPurchase.TOKENSENT_EVENT));
+        filter.addOptionalTopics(purchaser_padded, publisher_padded, reference_padded);
+        Flowable<DirectPurchase.TokenSentEventResponse> floable = directPurchase.tokenSentEventFlowable(filter);
+        ArrayList<DirectPurchase.TokenSentEventResponse> outcome = new ArrayList<>();
+        floable.subscribe(log -> {
+            outcome.add(log);
+        });
+        for (DirectPurchase.TokenSentEventResponse obj:outcome) {
+            if (obj._amount.equals(amount))
+                return true;
+        }
+        return false;
     }
 
     private Properties getProperties() {

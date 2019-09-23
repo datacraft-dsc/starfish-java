@@ -57,5 +57,11 @@ public class DirectPurchaseTest {
         assertEquals(balanceSenderBefore.getDrops().subtract(balanceSenderAfter.getDrops()), tokenAmount);
         assertEquals(balanceReceiverAfter.getDrops().subtract(balanceReceiverBefore.getDrops()), tokenAmount);
     }
+
+    @Test
+    public void check_is_paid() {
+        boolean paid = directPurchaseAdapter.checkIsPaid(senderAddress, receiverAddress, tokenAmount, reference);
+        assertTrue(paid);
+    }
 }
 
