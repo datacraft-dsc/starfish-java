@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataAsset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">DataAsset.java</span></div><h1>DataAsset.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -8,11 +11,6 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Interface representing a data asset.
@@ -29,7 +27,7 @@ public interface DataAsset extends Asset {
 
     @Override
     default boolean isDataAsset() {
-<span class="nc" id="L32">        return true;</span>
+<span class="nc" id="L30">        return true;</span>
     }
 
     /**
@@ -41,31 +39,8 @@ public interface DataAsset extends Asset {
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if unable to load the Asset
      */
-    InputStream getContentStream();
-
-    /**
-     * Gets the data content of this data asset as a byte[] array.
-     *
-     * @return The byte contents of this asset.
-     */
     @Override
-    default byte[] getContent() {
-<span class="fc" id="L53">        InputStream is = getContentStream();</span>
-<span class="fc" id="L54">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
-
-<span class="fc" id="L56">        byte[] buf = new byte[16384];</span>
-
-        int bytesRead;
-        try {
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {</span>
-<span class="fc" id="L61">                buffer.write(buf, 0, bytesRead);</span>
-            }
-<span class="nc" id="L63">        } catch (IOException e) {</span>
-<span class="nc" id="L64">            throw new StorageException(&quot;Unable to get Asset content&quot;, e);</span>
-<span class="fc" id="L65">        }</span>
-
-<span class="fc" id="L67">        return buffer.toByteArray();</span>
-    }
+    InputStream getContentStream();
 
     /**
      * Gets the size of this data asset's content
@@ -86,16 +61,16 @@ public interface DataAsset extends Asset {
      */
     default boolean validateContentHash() {
 
-<span class="fc" id="L89">        Object contentHashFromMetadata = this.getMetadata().get(Constant.CONTENT_HASH);</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (null == contentHashFromMetadata) {</span>
-<span class="nc" id="L91">            throw new StarfishValidationException(&quot;Content hash is not included in the metadata&quot;);</span>
+<span class="fc" id="L64">        Object contentHashFromMetadata = this.getMetadata().get(Constant.CONTENT_HASH);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (null == contentHashFromMetadata) {</span>
+<span class="nc" id="L66">            throw new StarfishValidationException(&quot;Content hash is not included in the metadata&quot;);</span>
         }
 
-<span class="fc" id="L94">        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">        if (null != contentHashFromMetadata &amp;&amp; !contentHashFromMetadata.toString().equals(contentHash)) {</span>
-<span class="nc" id="L96">            throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
+<span class="fc" id="L69">        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        if (null != contentHashFromMetadata &amp;&amp; !contentHashFromMetadata.toString().equals(contentHash)) {</span>
+<span class="nc" id="L71">            throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
         }
-<span class="fc" id="L98">        return true;</span>
+<span class="fc" id="L73">        return true;</span>
     }
 
     /**
@@ -106,7 +81,7 @@ public interface DataAsset extends Asset {
 
     default String getContentHash() {
 
-<span class="fc" id="L109">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
+<span class="fc" id="L84">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
     }
 
     /**
@@ -124,18 +99,18 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L127" title="3 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L102" title="3 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="nc" id="L129">            return this;</span>
+<span class="nc" id="L104">            return this;</span>
         } else {
-<span class="fc" id="L131">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
-<span class="fc" id="L132">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
+<span class="fc" id="L106">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
+<span class="fc" id="L107">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
 
             // this operation is only valid for dataAsset
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">            if (this instanceof DataAsset) {</span>
-<span class="fc" id="L136">                return this.updateMeta(JSON.toPrettyString(metaMap));</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            if (this instanceof DataAsset) {</span>
+<span class="fc" id="L111">                return this.updateMeta(JSON.toPrettyString(metaMap));</span>
             } else {
-<span class="nc" id="L138">                throw new UnsupportedOperationException(&quot;This method only applicable for Asset type DataAsset&quot;);</span>
+<span class="nc" id="L113">                throw new UnsupportedOperationException(&quot;This method only applicable for Asset type DataAsset&quot;);</span>
             }
         }
     }
@@ -149,7 +124,7 @@ public interface DataAsset extends Asset {
      * @throws UnsupportedOperationException if this operation  is not supported by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="nc" id="L152">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }

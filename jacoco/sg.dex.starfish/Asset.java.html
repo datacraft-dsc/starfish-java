@@ -4,6 +4,9 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -53,7 +56,7 @@ public interface Asset {
      * @return true if the asset is a data asset, false otherwise
      */
     default boolean isDataAsset() {
-<span class="nc" id="L56">        return false;</span>
+<span class="nc" id="L59">        return false;</span>
     }
 
     /**
@@ -63,7 +66,7 @@ public interface Asset {
      * @return true if this asset is an operation, false otherwise
      */
     default boolean isOperation() {
-<span class="nc" id="L66">        return false;</span>
+<span class="nc" id="L69">        return false;</span>
     }
 
     /**
@@ -86,7 +89,32 @@ public interface Asset {
      * @throws StorageException              if unable to load the Asset
      */
     default byte[] getContent() {
-<span class="nc" id="L89">        throw new UnsupportedOperationException(&quot;Cannot get byte content for asset of class: &quot; + this.getClass().getCanonicalName());</span>
+<span class="fc" id="L92">        InputStream is = getContentStream();</span>
+<span class="fc" id="L93">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
+
+<span class="fc" id="L95">        byte[] buf = new byte[16384];</span>
+
+        int bytesRead;
+        try {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {</span>
+<span class="fc" id="L100">                buffer.write(buf, 0, bytesRead);</span>
+            }
+<span class="nc" id="L102">        } catch (IOException e) {</span>
+<span class="nc" id="L103">            throw new StorageException(&quot;Unable to get Asset content&quot;, e);</span>
+<span class="fc" id="L104">        }</span>
+<span class="fc" id="L105">        return buffer.toByteArray();</span>
+    }
+    
+    /**
+     * Gets the contents of this data asset as a input stream.
+     *
+     * @return The byte contents of this asset.
+     * @throws UnsupportedOperationException If this asset does not support getting byte data
+     * @throws AuthorizationException        if requester does not have access permission
+     * @throws StorageException              if unable to load the Asset
+     */
+    default InputStream getContentStream() {
+<span class="nc" id="L117">        throw new UnsupportedOperationException(&quot;Cannot get InputStream for asset of class: &quot; + this.getClass().getCanonicalName());</span>
     }
 
     /**
@@ -103,7 +131,7 @@ public interface Asset {
      * @return true if this asset is an bundle, false otherwise
      */
     default boolean isBundle() {
-<span class="nc" id="L106">        return false;</span>
+<span class="nc" id="L134">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

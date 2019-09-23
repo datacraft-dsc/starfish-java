@@ -40,7 +40,7 @@ public class MemoryJob implements Job {
 
     @Override
     public boolean isDone() {
-<span class="nc" id="L43">        return future.isDone();</span>
+<span class="fc" id="L43">        return future.isDone();</span>
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MemoryJob implements Job {
         try {
         	// get result from future. Must be done at this point.
 <span class="fc" id="L59">            Map&lt;String, Object&gt; result = future.get();</span>
-<span class="fc" id="L60">            status=Constant.COMPLETED;</span>
+<span class="fc" id="L60">            status=Constant.SUCCEEDED;</span>
 <span class="fc" id="L61">            return result;</span>
         }
 <span class="nc" id="L63">        catch (CancellationException t) {</span>

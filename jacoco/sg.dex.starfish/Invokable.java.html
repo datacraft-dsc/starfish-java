@@ -54,5 +54,12 @@ public interface Invokable {
      * @throws IllegalArgumentException if required parameters are not available, or of incorrect type
      */
     Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params);
+    
+    /**
+     * Gets a Job from this invokable agent with the given jobID
+     * @param jobID ID for the Job in the context for this agent
+     * @return A Job instance, or null if the Job cannot be found
+     */
+    Job getJob(String jobID);
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
