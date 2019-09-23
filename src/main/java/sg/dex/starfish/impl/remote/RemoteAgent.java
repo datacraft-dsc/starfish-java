@@ -674,7 +674,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 if (statusCode == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     if (body.isEmpty()) {
-                    	throw new RemoteException("Expected JSON job status but got no body.");
+                    	throw new RemoteException("Expected JSON job status but got no body for Job ID:" + jobID);
                     }
                     Map<String, Object> result = JSON.toMap(body);
                     return result;
