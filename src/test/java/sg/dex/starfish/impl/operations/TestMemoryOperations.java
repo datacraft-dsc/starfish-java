@@ -141,13 +141,19 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = epicFailOperation.invokeAsync(test);
+        Job job;
+        synchronized (epicFailOperation) {
+        	job = epicFailOperation.invokeAsync(test);
+        	assertFalse(job.isDone()); // can't complete until out of synchronised block
+        }
+        
         try {
             job.get();
             fail("should not succeed!!");
         } catch (Exception e) {
             /* OK, Expected */
         }
+        assertTrue(job.isDone());
         assertEquals(Constant.FAILED, job.getStatus());
     }
 

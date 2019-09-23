@@ -30,7 +30,7 @@ public class EpicFailOperation extends AMemoryOperation implements Operation {
     }
 
     @Override
-    public Map<String, Object> compute(Map<String, Object> params) {
+    public synchronized Map<String, Object> compute(Map<String, Object> params) {
         throw new Error("EPIC FAIL");
     }
 
