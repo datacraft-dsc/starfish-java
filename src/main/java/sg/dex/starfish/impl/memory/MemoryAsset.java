@@ -109,6 +109,17 @@ public class MemoryAsset extends AAsset implements DataAsset {
     public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
         return new MemoryAsset(data, JSON.toPrettyString(buildMetaData(data, meta)));
     }
+    
+    /**
+     * Creates a MemoryAsset with the provided metadata and content
+     *
+     * @param metaString The metadata to use for this asset
+     * @param data Byte array containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data, String metaString) {
+        return new MemoryAsset(data, metaString);
+    }
 
 
     /**
