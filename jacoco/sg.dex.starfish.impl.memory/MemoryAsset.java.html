@@ -109,6 +109,17 @@ public class MemoryAsset extends AAsset implements DataAsset {
     public static MemoryAsset create(byte[] data, Map&lt;String, Object&gt; meta) {
 <span class="fc" id="L110">        return new MemoryAsset(data, JSON.toPrettyString(buildMetaData(data, meta)));</span>
     }
+    
+    /**
+     * Creates a MemoryAsset with the provided metadata and content
+     *
+     * @param metaString The metadata to use for this asset
+     * @param data Byte array containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data, String metaString) {
+<span class="nc" id="L121">        return new MemoryAsset(data, metaString);</span>
+    }
 
 
     /**
@@ -120,8 +131,8 @@ public class MemoryAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
-<span class="fc" id="L124">        return new ByteArrayInputStream(data);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
+<span class="fc" id="L135">        return new ByteArrayInputStream(data);</span>
     }
 
     /**
@@ -134,31 +145,31 @@ public class MemoryAsset extends AAsset implements DataAsset {
     @Override
     public byte[] getContent() {
         // we take a copy of data to protected immutability of MemoryAsset instance
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
     }
 
 
     @Override
     public Map&lt;String, Object&gt; getParamValue() {
-<span class="fc" id="L143">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L154">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
         // pass the asset ID, i.e. hash of content
-<span class="fc" id="L145">        o.put(ID, getAssetID());</span>
-<span class="fc" id="L146">        return o;</span>
+<span class="fc" id="L156">        o.put(ID, getAssetID());</span>
+<span class="fc" id="L157">        return o;</span>
     }
 
     @Override
     public long getContentSize() {
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
     }
 
 
     public byte[] getSource() {
-<span class="nc" id="L156">        return data;</span>
+<span class="nc" id="L167">        return data;</span>
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="nc" id="L161">        return new MemoryAsset(this.getSource(), newMeta);</span>
+<span class="nc" id="L172">        return new MemoryAsset(this.getSource(), newMeta);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
