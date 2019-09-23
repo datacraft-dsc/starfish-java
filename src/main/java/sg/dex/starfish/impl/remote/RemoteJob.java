@@ -41,7 +41,7 @@ public class RemoteJob implements Job {
     /**
      * Polls the invokable service job for a complete result.
      * 
-     * Returns null if the Job has not completed
+     * Returns null if the Job has not completed, or if the remote service cannot be accessed
      *
      * @return The Map of <String,Object> where key will be the result and value will be the payload
      * @throws JobFailedException If the job has failed
@@ -52,12 +52,12 @@ public class RemoteJob implements Job {
     	// quick check to see if we already have a terminal result - avoids extra requests
     	if (isDone()) {
     		if (status.equals(SUCCEEDED)) return result;
-    	} else {
     		throw new JobFailedException("Job failed with status: " + status);
     	}
    
     	// Get JSON response map
         Map<String, Object> response = (Map<String, Object>) agent.pollJob(jobID);
+        if (response==null) return null; // unable to read from server?
 
         String newStatus = (String) response.get(STATUS);
         if (newStatus == null) throw new RemoteException("No status in job id " + jobID + " result: " + response);
