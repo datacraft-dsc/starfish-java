@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
@@ -94,11 +96,7 @@
 	</distributionManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.63</version>
-		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -111,14 +109,10 @@
 			<version>1.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.10</version>
-		</dependency>
-		<dependency>
 			<groupId>com.oceanprotocol</groupId>
 			<artifactId>squid</artifactId>
 			<version>0.6.2</version>
+
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -151,7 +145,7 @@
 				<skip.unit.tests>false</skip.unit.tests>
 			</properties>
 		</profile>
-		
+
 		<!-- Activate using the release property: mvn clean install -Prelease -->
 		<profile>
 			<id>release</id>
@@ -256,7 +250,7 @@
 				<configuration>
 					<source>8</source>
 					<doclint>none</doclint>
-					<!--<additionalparam>-Xdoclint:none</additionalparam>-->
+					<!--<additionalparam>-Xdoclint:none</additionalparam> -->
 				</configuration>
 			</plugin>
 

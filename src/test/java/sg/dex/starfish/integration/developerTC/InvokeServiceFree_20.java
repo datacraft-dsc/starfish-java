@@ -5,6 +5,7 @@ import org.junit.Test;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.impl.remote.*;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -371,7 +372,7 @@ public class InvokeServiceFree_20 {
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", a1);
 
-        RemoteBundle remoteBundle = RemoteBundle.create(agentI, assetBundle);
+        Bundle remoteBundle = MemoryBundle.create( assetBundle);
         // uploading the asset, it will do the registration and upload both
         RemoteBundle remoteAsset1 = agentI.registerAsset(remoteBundle);
 

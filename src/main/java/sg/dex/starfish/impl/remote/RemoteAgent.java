@@ -203,18 +203,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpPost httpPost = new HttpPost(uri);
         addAuthHeaders(httpPost);
         httpPost.setEntity(HTTP.textEntity(metaString));
-        return createRemoteAsset(uri, httpclient, httpPost);
+        return createRemoteAsset(metaString, httpclient, httpPost);
     }
 
     /**
      * This method to get the Remote Asset
      *
-     * @param uri        URI
+     * @param metaString   metaString
      * @param httpclient httpclient
      * @param httpPost   httpPost
      * @return instance of remote Asset
      */
-    private <R extends Asset> R createRemoteAsset(URI uri, CloseableHttpClient httpclient, HttpPost httpPost) {
+    private <R extends Asset> R createRemoteAsset(String metaString, CloseableHttpClient httpclient, HttpPost httpPost) {
         CloseableHttpResponse response;
         try {
             response = httpclient.execute(httpPost);
@@ -222,13 +222,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
                 if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + uri);
+                    throw new RemoteException("Asset ID not found for at: " + httpPost.getURI());
                 }
                 if (statusCode == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
-                    String id = JSON.parse(body);
+
                     // TODO: Why are we hitting the agent again? Create RemoteAsset directly?
-                    return getAsset(id);
+
+                   return createAsset(metaString);
                 }
                 throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());
             } finally {
@@ -237,6 +238,22 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         } catch (IOException e) {
             throw new RemoteException("Getting remote asset failed :", e);
         }
+    }
+
+    private <R extends Asset> R createAsset(String metaString){
+        String type=(String)JSON.toMap(metaString).get(TYPE);
+        switch (type){
+            case DATA_SET:
+                return (R) RemoteDataAsset.create(this, metaString);
+            case  BUNDLE:
+                return (R) RemoteBundle.create(this, metaString);
+            case OPERATION:
+                return (R) RemoteOperation.create(this, metaString);
+                default:
+                    throw new RemoteException("Remote Asset type is invalid");
+        }
+
+
     }
 
     /**
@@ -354,7 +371,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         } else if (metaMap.get(TYPE).equals(DATA_SET)) {
             return (R) RemoteDataAsset.create(this, metaString);
         } else if (metaMap.get(TYPE).equals(BUNDLE)) {
-            return (R) RemoteBundle.createBundle(this, metaMap);
+            return (R) RemoteBundle.create(this, metaString);
         } else {
             throw new StarfishValidationException("Invalid Asset Type :" + metaMap.get(TYPE));
         }

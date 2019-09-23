@@ -3,8 +3,8 @@ package sg.dex.starfish.integration.developerTC;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteBundle;
 
@@ -45,11 +45,10 @@ public class AccessBundleAsset_16 {
 
         Map<String, Asset> assetBundle = getAssetMap();
 
-        // create asset bundle without any custom metadata // so passing null
-        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, null);
+        Bundle bundle = MemoryBundle.create(assetBundle);
 
         // register the bundle
-        RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
+        RemoteBundle aRemoteAsset = remoteAgent.registerAsset(bundle);
 
         // getting the created asset bundle metadata
         Map<String, Object> metadata = aRemoteAsset.getMetadata();
@@ -78,7 +77,7 @@ public class AccessBundleAsset_16 {
         metaMap.put("author", "dex-starfish");
 
         // create asset bundle without any custom metadata // so passing null
-        Bundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle, metaMap);
+        Bundle remoteBundle = MemoryBundle.create(assetBundle, metaMap);
 
         // register the bundle
         Bundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
@@ -103,7 +102,7 @@ public class AccessBundleAsset_16 {
      */
     @Test
     public void testCreateEmptyBundle() {
-        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
+        Bundle remoteBundle = MemoryBundle.create(null);
         // register the bundle
         RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
         assertTrue(aRemoteAsset.getAll().isEmpty());
@@ -114,7 +113,7 @@ public class AccessBundleAsset_16 {
      */
     @Test
     public void testCreateEmptyBundleThenAddSubAsset() {
-        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, null);
+        Bundle remoteBundle = MemoryBundle.create(null);
         RemoteBundle aRemoteAsset = remoteAgent.registerAsset(remoteBundle);
         assertTrue(aRemoteAsset.getAll().isEmpty());
 
@@ -134,23 +133,18 @@ public class AccessBundleAsset_16 {
         Map<String, Asset> nestedAsset = getAssetMap();
 
         // create asset bundle without any custom metadata // so passing null
-        RemoteBundle nestedBundle = RemoteBundle.create(remoteAgent, nestedAsset);
+        Bundle nestedBundle = MemoryBundle.create(nestedAsset);
 
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("nested", nestedBundle);
 
-        RemoteBundle remoteBundle = RemoteBundle.create(remoteAgent, assetBundle);
+        Bundle bundle = MemoryBundle.create(assetBundle);
 
-        RemoteBundle nestedB = remoteBundle.get("nested");
+        RemoteBundle remoteBundle1 = remoteAgent.registerAsset(bundle);
+        RemoteBundle nestedB = remoteBundle1.get("nested");
         assertEquals(nestedB.getAll().size(), 2);
 
     }
 
-    @Test(expected = StarfishValidationException.class)
-    public void testNullAgent() {
-
-        RemoteBundle remoteBundle = RemoteBundle.create(null, null);
-
-    }
 
 }
