@@ -189,7 +189,7 @@ public class DID {
     }
 
     /**
-     * Creates a new DID from this DID with an updated path
+     * Creates a new DID from this DID with an updated path.
      *
      * @param path The new path to add to this DID (may be null)
      * @return DID The updated DID with the specified path argument

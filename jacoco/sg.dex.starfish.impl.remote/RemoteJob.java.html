@@ -41,7 +41,7 @@ public class RemoteJob implements Job {
     /**
      * Polls the invokable service job for a complete result.
      * 
-     * Returns null if the Job has not completed
+     * Returns null if the Job has not completed, or if the remote service cannot be accessed
      *
      * @return The Map of &lt;String,Object&gt; where key will be the result and value will be the payload
      * @throws JobFailedException If the job has failed
@@ -52,12 +52,12 @@ public class RemoteJob implements Job {
     	// quick check to see if we already have a terminal result - avoids extra requests
 <span class="nc bnc" id="L53" title="All 2 branches missed.">    	if (isDone()) {</span>
 <span class="nc bnc" id="L54" title="All 2 branches missed.">    		if (status.equals(SUCCEEDED)) return result;</span>
-    	} else {
-<span class="nc" id="L56">    		throw new JobFailedException(&quot;Job failed with status: &quot; + status);</span>
+<span class="nc" id="L55">    		throw new JobFailedException(&quot;Job failed with status: &quot; + status);</span>
     	}
    
     	// Get JSON response map
-<span class="nc" id="L60">        Map&lt;String, Object&gt; response = (Map&lt;String, Object&gt;) agent.pollJob(jobID);</span>
+<span class="nc" id="L59">        Map&lt;String, Object&gt; response = (Map&lt;String, Object&gt;) agent.pollJob(jobID);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (response==null) return null; // unable to read from server?</span>
 
 <span class="nc" id="L62">        String newStatus = (String) response.get(STATUS);</span>
 <span class="nc bnc" id="L63" title="All 2 branches missed.">        if (newStatus == null) throw new RemoteException(&quot;No status in job id &quot; + jobID + &quot; result: &quot; + response);</span>
