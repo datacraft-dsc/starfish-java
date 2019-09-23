@@ -57,7 +57,7 @@ public class MemoryJob implements Job {
         try {
         	// get result from future. Must be done at this point.
             Map<String, Object> result = future.get();
-            status=Constant.COMPLETED;
+            status=Constant.SUCCEEDED;
             return result;
         }
         catch (CancellationException t) {

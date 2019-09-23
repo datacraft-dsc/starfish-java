@@ -31,21 +31,18 @@ public class Constant {
 
     //-----JOB  -------
 
-
-    public static final String STARTED = "started";
-    public static final String IN_PROGRESS = "inprogress";
-    public static final String ACCEPTED = "accepted";
+    // FIXME: confirm what are the actual job statuses in DEP6?
     public static final String SCHEDULED = "scheduled";
-    public static final String COMPLETED = "completed";
     public static final String SUCCEEDED = "succeeded";
+    public static final String RUNNING = "running";
+    public static final String FAILED = "failed";
+	public static final String CANCELLED = "cancelled";
+    
     public static final String OPERATION = "operation";
     public static final String PARAMS = "params";
     public static final String JOBS = "/jobs";
     public static final String JOB_ID = "jobid";
     public static final String STATUS = "status";
-    public static final String RUNNING = "running";
-    public static final String FAILED = "failed";
-	public static final String CANCELLED = "cancelled";
 
 
     //-------AUTH -----------
