@@ -2,6 +2,7 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -22,7 +23,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Ayush
  * @version 0.5
  */
-public class MemoryBundle extends AMemoryAsset implements Bundle {
+public class MemoryBundle extends AAsset implements Bundle {
 
     private Map<String, Asset> assetMap;
 
@@ -31,10 +32,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      *
      * @param metaData    metaDAta
      * @param assetMap    asset map
-     * @param memoryAgent memory Agent
      */
-    private MemoryBundle(String metaData, Map<String, Asset> assetMap, MemoryAgent memoryAgent) {
-        super(metaData, memoryAgent);
+    private MemoryBundle(String metaData, Map<String, Asset> assetMap) {
+        super(metaData);
         this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
@@ -45,14 +45,13 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap  passed in the argument.
      *
-     * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
      * @param meta        additional meta data need for creating bundle asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap, Map<String, Object> meta) {
+    public static Bundle create( Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap);
     }
 
     /**
@@ -60,13 +59,12 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap map passed in the argument.
      *
-     * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create(MemoryAgent memoryAgent, Map<String, Asset> assetMap) {
+    public static Bundle create( Map<String, Asset> assetMap) {
 
-        return create(memoryAgent, assetMap, null);
+        return create( assetMap, null);
     }
 
     /**
@@ -137,14 +135,14 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     public Bundle add(String name, Asset asset) {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.put(name, asset);
-        return create(memoryAgent, copyMap, null);
+        return create( copyMap, null);
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.putAll(assetMapp);
-        return create(memoryAgent, copyMap, this.getMetadata());
+        return create( copyMap, this.getMetadata());
     }
 
     @SuppressWarnings("unchecked")
