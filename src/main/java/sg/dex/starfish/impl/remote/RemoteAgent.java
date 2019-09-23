@@ -523,12 +523,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return The URI for this agent's invoke endpoint
      * @throws IllegalArgumentException on invalid URI for jobID
      */
-    private URI getJobURI(String response) {
+    private URI getJobURI(String jobID) {
         try {
-            String jobId = JSON.toMap(response).get(JOB_ID).toString();
-            return new URI(getInvokeEndpoint() + JOBS + "/" + jobId);
+        	String endPoint=getInvokeEndpoint();
+        	if (endPoint==null) throw new IllegalArgumentException("Agent has no Invoke endpoint defined");
+            return new URI(endPoint + JOBS + "/" + jobID);
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Can't create valid URI for job: " + response, e);
+            throw new IllegalArgumentException("Can't create valid URI for job: " + jobID, e);
         }
     }
 
@@ -672,6 +673,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
                 if (statusCode == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
+                    if (body.isEmpty()) {
+                    	throw new RemoteException("Expected JSON job status but got no body.");
+                    }
                     Map<String, Object> result = JSON.toMap(body);
                     return result;
                 } else {
