@@ -2,6 +2,7 @@
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -22,7 +23,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Ayush
  * @version 0.5
  */
-public class MemoryBundle extends AMemoryAsset implements Bundle {
+public class MemoryBundle extends AAsset implements Bundle {
 
     private Map&lt;String, Asset&gt; assetMap;
 
@@ -31,10 +32,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      *
      * @param metaData    metaDAta
      * @param assetMap    asset map
-     * @param memoryAgent memory Agent
      */
-    private MemoryBundle(String metaData, Map&lt;String, Asset&gt; assetMap, MemoryAgent memoryAgent) {
-<span class="fc" id="L37">        super(metaData, memoryAgent);</span>
+    private MemoryBundle(String metaData, Map&lt;String, Asset&gt; assetMap) {
+<span class="fc" id="L37">        super(metaData);</span>
 <span class="fc bfc" id="L38" title="All 2 branches covered.">        this.assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
 
 <span class="fc" id="L40">    }</span>
@@ -45,14 +45,13 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap  passed in the argument.
      *
-     * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
      * @param meta        additional meta data need for creating bundle asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create(MemoryAgent memoryAgent, Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
+    public static Bundle create( Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
 
-<span class="fc" id="L55">        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);</span>
+<span class="fc" id="L54">        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap);</span>
     }
 
     /**
@@ -60,13 +59,12 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap map passed in the argument.
      *
-     * @param memoryAgent MemoryAgent to associate with this asset
      * @param assetMap    map of all asset with name and Asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create(MemoryAgent memoryAgent, Map&lt;String, Asset&gt; assetMap) {
+    public static Bundle create( Map&lt;String, Asset&gt; assetMap) {
 
-<span class="fc" id="L69">        return create(memoryAgent, assetMap, null);</span>
+<span class="fc" id="L67">        return create( assetMap, null);</span>
     }
 
     /**
@@ -78,33 +76,33 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      */
     private static String buildMetaData(Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
 
-<span class="fc" id="L81">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L82">        ob.put(DATE_CREATED, Instant.now().toString());</span>
-<span class="fc" id="L83">        ob.put(TYPE, BUNDLE);</span>
+<span class="fc" id="L79">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L80">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L81">        ob.put(TYPE, BUNDLE);</span>
         // adding the meta data provide
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (meta != null) {</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="fc" id="L87">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L88">            }</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (meta != null) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="fc" id="L85">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L86">            }</span>
         }
-<span class="fc" id="L90">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = buildContent(assetMap);</span>
+<span class="fc" id="L88">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = buildContent(assetMap);</span>
 
-<span class="fc" id="L92">        ob.put(CONTENTS, subAssetIdMap);</span>
-<span class="fc" id="L93">        return JSON.toPrettyString(ob);</span>
+<span class="fc" id="L90">        ob.put(CONTENTS, subAssetIdMap);</span>
+<span class="fc" id="L91">        return JSON.toPrettyString(ob);</span>
     }
 
     private static Map&lt;String, Map&lt;String, String&gt;&gt; buildContent(Map&lt;String, Asset&gt; assetMap) {
         //build meta data
-<span class="fc" id="L98">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
+<span class="fc" id="L96">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
         Asset asset;
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (String name : assetMap.keySet()) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        for (String name : assetMap.keySet()) {</span>
 
-<span class="fc" id="L103">            asset = assetMap.get(name);</span>
-<span class="fc" id="L104">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
+<span class="fc" id="L101">            asset = assetMap.get(name);</span>
+<span class="fc" id="L102">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
 
-<span class="fc" id="L106">        }</span>
-<span class="fc" id="L107">        return subAssetIdMap;</span>
+<span class="fc" id="L104">        }</span>
+<span class="fc" id="L105">        return subAssetIdMap;</span>
     }
 
     /**
@@ -114,9 +112,9 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @return Map
      */
     private static Map&lt;String, String&gt; getAssetIdMap(String assetId) {
-<span class="fc" id="L117">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L118">        assetIDMap.put(ASSET_ID, assetId);</span>
-<span class="fc" id="L119">        return assetIDMap;</span>
+<span class="fc" id="L115">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L116">        assetIDMap.put(ASSET_ID, assetId);</span>
+<span class="fc" id="L117">        return assetIDMap;</span>
 
     }
 
@@ -126,39 +124,39 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @return Map
      */
     private Map&lt;String, Asset&gt; getAssetMap() {
-<span class="fc" id="L129">        return assetMap.entrySet()</span>
-<span class="fc" id="L130">                .stream()</span>
-<span class="fc" id="L131">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="fc" id="L127">        return assetMap.entrySet()</span>
+<span class="fc" id="L128">                .stream()</span>
+<span class="fc" id="L129">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
 
     }
 
     @Override
     public Bundle add(String name, Asset asset) {
-<span class="nc" id="L138">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
-<span class="nc" id="L139">        copyMap.put(name, asset);</span>
-<span class="nc" id="L140">        return create(memoryAgent, copyMap, null);</span>
+<span class="nc" id="L136">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
+<span class="nc" id="L137">        copyMap.put(name, asset);</span>
+<span class="nc" id="L138">        return create( copyMap, null);</span>
     }
 
     @Override
     public Bundle addAll(Map&lt;String, Asset&gt; assetMapp) {
-<span class="fc" id="L145">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
-<span class="fc" id="L146">        copyMap.putAll(assetMapp);</span>
-<span class="fc" id="L147">        return create(memoryAgent, copyMap, this.getMetadata());</span>
+<span class="fc" id="L143">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
+<span class="fc" id="L144">        copyMap.putAll(assetMapp);</span>
+<span class="fc" id="L145">        return create( copyMap, this.getMetadata());</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R get(String name) {
-<span class="fc" id="L153">        return (R) getAssetMap().get(name);</span>
+<span class="fc" id="L151">        return (R) getAssetMap().get(name);</span>
     }
 
     @Override
     public Map&lt;String, Asset&gt; getAll() {
 
-<span class="fc" id="L159">        return assetMap.entrySet()</span>
-<span class="fc" id="L160">                .stream()</span>
-<span class="fc" id="L161">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="fc" id="L157">        return assetMap.entrySet()</span>
+<span class="fc" id="L158">                .stream()</span>
+<span class="fc" id="L159">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
 
     }

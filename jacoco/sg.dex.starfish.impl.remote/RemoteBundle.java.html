@@ -2,15 +2,15 @@
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
-import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.util.JSON;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.ASSET_ID;
+import static sg.dex.starfish.constant.Constant.CONTENTS;
 
 
 /**
@@ -19,114 +19,20 @@ import static sg.dex.starfish.constant.Constant.*;
  * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
-    private Map&lt;String, Asset&gt; assetMap;
+    protected RemoteBundle(String meta, RemoteAgent remoteAgent) {
+<span class="nc" id="L23">        super(meta, remoteAgent);</span>
+<span class="nc" id="L24">    }</span>
 
-    private RemoteBundle(String metaData, RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap) {
-<span class="nc" id="L25">        super(metaData, remoteAgent);</span>
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        this.assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
-
-<span class="nc" id="L28">    }</span>
 
     /**
-     * This method is to create a Remote bundle asset asset with given Bundle name
+     * Creates a RemoteAsset with the given metadata on the specified remote agent
      *
-     * @param remoteAgent agent on which the  bundle need to create
-     * @param assetMap    map of all asset with name and assetID
-     * @param meta        additional meta data needs to be added while creating bundle
-     * @return RemoteBundle instance
+     * @param agent RemoteAgent on which to create the RemoteAsset
+     * @param meta  Asset metadata which must be a valid JSON string
+     * @return RemoteAsset
      */
-    public static RemoteBundle create(RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
-<span class="nc" id="L39">        return new RemoteBundle(buildMetaData(assetMap, meta), remoteAgent, assetMap);</span>
-    }
-
-    /**
-     * API to create a Remote bundle asset asset with given Bundle name
-     *
-     * @param assetMap    map of all asset with name and assetID
-     * @param remoteAgent agent on which this bundle need to be created
-     * @return RemoteBundle new instance
-     */
-    public static RemoteBundle create(RemoteAgent remoteAgent, Map&lt;String, Asset&gt; assetMap) {
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (null == remoteAgent) {</span>
-<span class="nc" id="L51">            throw new StarfishValidationException(&quot;Remote agent cannot be null for creating remote Bundle&quot;);</span>
-        }
-        //build meta data
-<span class="nc" id="L54">        return create(remoteAgent, assetMap, null);</span>
-
-    }
-
-    /**
-     * This method is to create a Remote bundle asset  with given Asset Map and agent
-     * This method  will be called from agent .
-     * it will create bundle asset based on the Asset passed as map.
-     * For each asset data passed in map it will first get the asset id then will create
-     * a Remote Asset respectively.
-     *
-     * @param remoteAgent agent on which this bundle need to be created
-     * @param responseMap response map
-     * @return RemoteBundle new instance
-     */
-    public static RemoteBundle createBundle(RemoteAgent remoteAgent, Map&lt;String, Object&gt; responseMap) {
-
-        // get the contents
-        @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L73">        Map&lt;String, Map&lt;String, String&gt;&gt; allSubAsset = (Map&lt;String, Map&lt;String, String&gt;&gt;) responseMap.get(&quot;contents&quot;);</span>
-
-        //build meta data
-<span class="nc" id="L76">        Map&lt;String, Asset&gt; assetMap = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (String name : allSubAsset.keySet()) {</span>
-<span class="nc" id="L78">            String assetId = JSON.toMap(allSubAsset.get(name).toString()).get(ASSET_ID).toString();</span>
-<span class="nc" id="L79">            ARemoteAsset aRemoteAsset = remoteAgent.getAsset(assetId);</span>
-<span class="nc" id="L80">            assetMap.put(name, aRemoteAsset);</span>
-
-<span class="nc" id="L82">        }</span>
-<span class="nc" id="L83">        return new RemoteBundle(buildMetaData(assetMap, responseMap), remoteAgent, assetMap);</span>
-
-
-    }
-
-    /**
-     * This method is to build the metadata for the bundle
-     *
-     * @param meta     additional metadata
-     * @param assetMap assetMap
-     * @return metadata as string
-     */
-    private static String buildMetaData(Map&lt;String, Asset&gt; assetMap, Map&lt;String, Object&gt; meta) {
-<span class="nc" id="L96">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L97">        ob.put(DATE_CREATED, Instant.now().toString());</span>
-<span class="nc" id="L98">        ob.put(TYPE, BUNDLE);</span>
-
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (meta != null) {</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="nc" id="L102">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L103">            }</span>
-        }
-
-        //build meta data
-<span class="nc" id="L107">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        assetMap = assetMap == null ? new HashMap&lt;&gt;() : assetMap;</span>
-        Asset asset;
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (String name : assetMap.keySet()) {</span>
-<span class="nc" id="L111">            asset = assetMap.get(name);</span>
-<span class="nc" id="L112">            subAssetIdMap.put(name, getAssetIdMap(asset.getAssetID()));</span>
-<span class="nc" id="L113">        }</span>
-
-<span class="nc" id="L115">        ob.put(CONTENTS, subAssetIdMap);</span>
-<span class="nc" id="L116">        return JSON.toPrettyString(ob);</span>
-    }
-
-    /**
-     * This method is to get the map of AssetID based on AssetId
-     *
-     * @param assetId asset id
-     * @return Map assetIdMap
-     */
-    private static Map&lt;String, String&gt; getAssetIdMap(String assetId) {
-<span class="nc" id="L126">        Map&lt;String, String&gt; assetIDMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L127">        assetIDMap.put(ASSET_ID, assetId);</span>
-<span class="nc" id="L128">        return assetIDMap;</span>
-
+    public static RemoteBundle create(RemoteAgent agent, String meta) {
+<span class="nc" id="L35">        return new RemoteBundle(meta, agent);</span>
     }
 
     /**
@@ -135,40 +41,44 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return assetMap that belong to bundle
      */
     private Map&lt;String, Asset&gt; getAssetMap() {
+<span class="nc" id="L44">        Map&lt;String, Asset&gt; subAssetMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L45">        Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap =</span>
+<span class="nc" id="L46">                (Map&lt;String, Map&lt;String, String&gt;&gt;) JSON.toMap(metadataString).get(CONTENTS);</span>
 
-<span class="nc" id="L139">        return assetMap.entrySet()</span>
-<span class="nc" id="L140">                .stream()</span>
-<span class="nc" id="L141">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
-                        Map.Entry::getValue));
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        for (String name : subAssetIdMap.keySet()) {</span>
+<span class="nc" id="L49">            Asset asset = remoteAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));</span>
+<span class="nc" id="L50">            subAssetMap.put(name, asset);</span>
+<span class="nc" id="L51">        }</span>
+<span class="nc" id="L52">        return subAssetMap;</span>
     }
 
     @Override
     public Bundle add(String name, Asset asset) {
-<span class="nc" id="L147">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
-<span class="nc" id="L148">        copyMap.put(name, asset);</span>
-<span class="nc" id="L149">        return create(remoteAgent, copyMap, getMetadata());</span>
+<span class="nc" id="L57">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
+<span class="nc" id="L58">        copyMap.put(name, asset);</span>
+<span class="nc" id="L59">        Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());</span>
+<span class="nc" id="L60">        return remoteAgent.registerAsset(newBundle);</span>
     }
 
     @Override
     public Bundle addAll(Map&lt;String, Asset&gt; assetMapp) {
-
-<span class="nc" id="L155">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
-<span class="nc" id="L156">        copyMap.putAll(assetMapp);</span>
-
-<span class="nc" id="L158">        return create(remoteAgent, copyMap, getMetadata());</span>
+<span class="nc" id="L65">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
+<span class="nc" id="L66">        copyMap.putAll(assetMapp);</span>
+<span class="nc" id="L67">        Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());</span>
+<span class="nc" id="L68">        return remoteAgent.registerAsset(newBundle);</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R get(String name) {
-<span class="nc" id="L164">        return (R) getAssetMap().get(name);</span>
+<span class="nc" id="L74">        return (R) getAssetMap().get(name);</span>
     }
 
     @Override
     public Map&lt;String, Asset&gt; getAll() {
-<span class="nc" id="L169">        return getAssetMap().entrySet()</span>
-<span class="nc" id="L170">                .stream()</span>
-<span class="nc" id="L171">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="nc" id="L79">        return getAssetMap().entrySet()</span>
+<span class="nc" id="L80">                .stream()</span>
+<span class="nc" id="L81">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
     }
 }
