@@ -13,10 +13,7 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.ProvUtil;
-import sg.dex.starfish.util.Utils;
+import sg.dex.starfish.util.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,9 +46,9 @@ public class AssetRegistration_08 {
     public void testRegister() {
         String data = "Simple memory Asset";
         Asset asset = MemoryAsset.createFromString(data);
-
         Asset remoteAsset = remoteAgent.registerAsset(asset);
 
+        DID did1 =remoteAsset.getDID();
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         // get registered Asset by ID

@@ -2,7 +2,6 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
-import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
 
 import java.time.Instant;
@@ -23,7 +22,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * @author Ayush
  * @version 0.5
  */
-public class MemoryBundle extends AAsset implements Bundle {
+public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     private Map<String, Asset> assetMap;
 
@@ -31,10 +30,11 @@ public class MemoryBundle extends AAsset implements Bundle {
      * Constructor to create the instance of memory bundle
      *
      * @param metaData    metaDAta
+     * @param memoryAgent    memoryAgent
      * @param assetMap    asset map
      */
-    private MemoryBundle(String metaData, Map<String, Asset> assetMap) {
-        super(metaData);
+    private MemoryBundle(String metaData, Map<String, Asset> assetMap,MemoryAgent memoryAgent) {
+        super(metaData,memoryAgent);
         this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
@@ -44,6 +44,7 @@ public class MemoryBundle extends AAsset implements Bundle {
      * Create a memory bundle asset.
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap  passed in the argument.
+     * Default memory Agent will be passed to create bundle
      *
      * @param assetMap    map of all asset with name and Asset
      * @param meta        additional meta data need for creating bundle asset
@@ -51,7 +52,21 @@ public class MemoryBundle extends AAsset implements Bundle {
      */
     public static Bundle create( Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap);
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap,MemoryAgent.create());
+    }
+    /**
+     * Create a memory bundle asset.
+     * This method will create a bundle asset which may contain zero or more sub-asset
+     * based on assetMap  passed in the argument.
+     *
+     * @param assetMap    map of all asset with name and Asset
+     * @param memoryAgent  memoryAgent instance
+     * @param meta        additional meta data need for creating bundle asset
+     * @return the newly created instance of Memory Bundle
+     */
+    public static Bundle create( Map<String, Asset> assetMap, Map<String, Object> meta,MemoryAgent memoryAgent) {
+
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap,memoryAgent);
     }
 
     /**

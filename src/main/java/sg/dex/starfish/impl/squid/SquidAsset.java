@@ -117,7 +117,7 @@ public class SquidAsset extends AAsset implements DataAsset {
      * @return DID
      */
     @Override
-    public DID getAssetDID() {
+    public DID getDID() {
         return did;
     }
 

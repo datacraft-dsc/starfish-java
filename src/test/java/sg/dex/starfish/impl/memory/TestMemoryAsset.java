@@ -33,13 +33,9 @@ public class TestMemoryAsset {
     public void testDID() {
         byte[] data = new byte[]{1, 2, 3};
         Asset a = MemoryAsset.create(data);
-        try {
-            DID did = a.getAssetDID(); // in-memory assets don't have a DID, so this should fail
-            fail("Should not succeed! Got: " + did);
-        } catch (UnsupportedOperationException ex) {
-            /* OK */
-        }
-        
+            DID did = a.getDID(); // in-memory assets don't have a DID, so this should fail
+           assertTrue(did.toString().contains(a.getAssetID()));
+
     }
 
     /**
@@ -111,5 +107,30 @@ public class TestMemoryAsset {
         String actual = memoryAsset.getParamValue().get(ID).toString();
         String expected = memoryAsset.getAssetID();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testRegisterAsset() {
+        byte data[] ={3,4,5,6,7};
+
+        DID did = DID.createRandom();
+        MemoryAgent memoryAgent = MemoryAgent.create(did);
+        MemoryAsset memoryAsset = MemoryAsset.create(data,memoryAgent);
+
+        DID assetDID =memoryAsset.getDID();
+        assertTrue(assetDID.toString().contains(did.toString()));
+        assertTrue(assetDID.toString().contains(memoryAsset.getAssetID()));
+        assertArrayEquals(data,memoryAsset.getContent() );
+    }
+    @Test
+    public void testRegisterAssetWithDefaultAgent() {
+
+        byte data[] ={3,4,5,6,7};
+
+        MemoryAsset memoryAsset = MemoryAsset.create(data);
+
+        DID assetDID =memoryAsset.getDID();
+        assertTrue(assetDID.toString().contains(memoryAsset.getAssetID()));
+        assertArrayEquals(data,memoryAsset.getContent() );
     }
 }
