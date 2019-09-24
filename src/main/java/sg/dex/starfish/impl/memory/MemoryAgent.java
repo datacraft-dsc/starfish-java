@@ -177,11 +177,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     @Override
-    public <R extends Asset> R getAsset(DID did) {
-        return getAsset(did.getID());
-    }
-
-    @Override
     public Listing getListing(String id) {
         return listingStore.get(id);
     }

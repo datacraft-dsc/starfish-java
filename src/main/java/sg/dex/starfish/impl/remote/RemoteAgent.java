@@ -360,11 +360,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
     }
 
-    @Override
-    public <R extends Asset> R getAsset(DID did) {
-        return getAsset(did.getID());
-    }
-
     /**
      * This method is to check if the Asset is already registered based on asset ID
      * passed as parameter. if the asset is already registered it will return true

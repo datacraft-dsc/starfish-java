@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl;
 
 import sg.dex.starfish.Agent;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Ocean;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
@@ -56,6 +57,13 @@ public abstract class AAgent implements Agent {
             ddo = ocean.getDDO(did);
         }
         return ddo;
+    }
+    
+    @Override
+    public <R extends Asset> R getAsset(DID did) {
+    	String assetID=did.getPath();
+    	if (assetID==null) throw new IllegalArgumentException("Expected Asset ID in DID path");
+        return getAsset(assetID);
     }
 
     /**
