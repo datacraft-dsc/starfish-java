@@ -39,13 +39,22 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Creates a new MemoryAgent with the given DID
+     * Creates a new MemoryAgent using the given DID
      *
      * @param did DID for this agent
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(DID did) {
+    	did=did.withoutPath();
         return new MemoryAgent(Ocean.connect(), did);
+    }
+    
+    /**
+     * Create a random DID suitable for use by an in-memory Agent
+     * @return
+     */
+    private static DID createRandomMemoryDID() {
+    	return DID.parse(DID.createRandomString());
     }
 
     /**
@@ -54,7 +63,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create() {
-        return new MemoryAgent(Ocean.connect(), DID.parse(DID.createRandomString()));
+        return new MemoryAgent(Ocean.connect(), createRandomMemoryDID());
     }
 
     /**
