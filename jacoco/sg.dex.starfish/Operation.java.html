@@ -5,7 +5,7 @@ import sg.dex.starfish.util.Params;
 import java.util.Map;
 
 /**
- * Interface representing an invokable operation
+ * Interface representing an invokable Operation
  *
  * @author Mike
  * @version 0.5
