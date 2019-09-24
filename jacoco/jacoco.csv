@@ -3,7 +3,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,Mem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,12,159,0,10,3,35,1,15,1,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,4,7,0,0,2,3,1,1,1,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,127,137,13,7,20,28,16,13,9,10
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,122,137,13,7,19,28,15,13,8,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,40,136,6,10,7,28,8,13,3,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
@@ -22,7 +22,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Job,49,18,2,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Ocean,150,55,9,3,36,17,18,8,13,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Invokable,3,0,0,0,1,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteListing,85,0,4,0,21,0,13,0,11,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,2121,19,140,0,433,5,127,3,56,3
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,2116,19,140,0,432,5,126,3,55,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteDataAsset,132,0,4,0,23,0,9,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,104,0,2,0,23,0,8,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,7,0,0,0,3,0,1,0,1,0
@@ -31,7 +31,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,Rem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemotePurchase,66,0,4,0,17,0,10,0,8,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAccount,76,0,2,0,17,0,5,0,4,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.cli,CLIMain,37,0,4,0,9,0,4,0,2,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAgent,27,56,3,5,7,13,5,5,2,4
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAgent,41,56,5,5,10,13,7,5,3,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AListing,3,0,0,0,1,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAccount,109,0,4,0,25,0,9,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AIdentity,25,0,0,0,8,0,4,0,4,0
