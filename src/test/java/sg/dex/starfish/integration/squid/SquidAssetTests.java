@@ -1,6 +1,6 @@
 package sg.dex.starfish.integration.squid;
 
-import com.oceanprotocol.squid.exceptions.*;
+import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import org.junit.Assume;
@@ -9,16 +9,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Ocean;
-import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
-import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.integration.developerTC.AgentService;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -31,7 +28,6 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * To run the testcase you need to take latest pull of
@@ -84,7 +80,7 @@ public class SquidAssetTests {
         squidAsset = squidAgent.registerAsset(asset);
 
         // getting the registered from squid agent using asset DID
-        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetDID());
+        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getDID());
 
 
         assertEquals(asset.getAssetID(), squidAsset.getAssetID());
@@ -147,7 +143,7 @@ public class SquidAssetTests {
 
 
         // getting the registered from squid agent using asset DID
-        SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getAssetDID());
+        SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getDID());
 
 
         // verifying registration
