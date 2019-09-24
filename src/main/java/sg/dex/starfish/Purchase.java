@@ -27,7 +27,7 @@ public interface Purchase {
 
 
     /**
-     * API to ge the status of Purchase.
+     * API to get the status of Purchase.
      * Possible status can be :
      * "wishlist", "ordered", "delivered"
      *
@@ -38,7 +38,7 @@ public interface Purchase {
     String status();
 
     /**
-     * API to get the metadata for this Purchase
+     * Get the metadata for this Purchase as a nested Map
      *
      * @return The metadata for this purchase
      */
