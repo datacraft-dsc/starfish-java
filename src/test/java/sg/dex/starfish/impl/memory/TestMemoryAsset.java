@@ -39,6 +39,7 @@ public class TestMemoryAsset {
         } catch (UnsupportedOperationException ex) {
             /* OK */
         }
+        
     }
 
     /**
