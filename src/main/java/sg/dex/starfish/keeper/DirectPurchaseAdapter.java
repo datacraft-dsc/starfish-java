@@ -41,7 +41,7 @@ public final class DirectPurchaseAdapter {
         tokenManager.setTokenContract(oceanToken);
     }
 
-    public boolean sendTokenAndLog(String to, BigInteger amount, byte[] reference1, byte[] reference2) {
+    public boolean sendTokenAndLog(String to, BigInteger amount, String reference1, String reference2) {
         boolean tokenApproved = false;
         try {
             tokenApproved = tokenApprove(this.directPurchaseAddress, amount.toString());
@@ -52,7 +52,9 @@ public final class DirectPurchaseAdapter {
 
         if(tokenApproved) {
             try {
-                TransactionReceipt receipt = directPurchase.sendTokenAndLog(to, amount, reference1, reference2).send();
+                byte[] ref1 = Numeric.hexStringToByteArray(Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference1), 64));
+                byte[] ref2 = Numeric.hexStringToByteArray(Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference2), 64));
+                TransactionReceipt receipt = directPurchase.sendTokenAndLog(to, amount, ref1, ref2).send();
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -66,7 +68,7 @@ public final class DirectPurchaseAdapter {
         return tokenManager.tokenApprove(spenderAddress, price);
     }
 
-    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, byte[] reference)
+    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference)
     {
         String purchaser_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(purchaser_address), 64);
         String publisher_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(publisher_address), 64);

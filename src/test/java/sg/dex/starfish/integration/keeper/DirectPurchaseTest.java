@@ -18,15 +18,14 @@ import static org.junit.Assert.assertTrue;
 
 public class DirectPurchaseTest {
     private DirectPurchaseAdapter directPurchaseAdapter;
-    private byte[] reference;
+    private String reference;
     private BigInteger tokenAmount;
     String receiverAddress;
     String senderAddress;
 
     public DirectPurchaseTest() throws IOException, CipherException {
         directPurchaseAdapter = new DirectPurchaseAdapter();
-        reference = new byte[32];
-        reference[0] = 10;
+        reference = "0x000000000000a46daef00000000000";
         tokenAmount = BigInteger.valueOf(10);
         receiverAddress = "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0";
         senderAddress = "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
