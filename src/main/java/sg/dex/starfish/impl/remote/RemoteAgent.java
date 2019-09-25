@@ -225,10 +225,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     throw new RemoteException("Asset ID not found for at: " + httpPost.getURI());
                 }
                 if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-
-                    // TODO: Why are we hitting the agent again? Create RemoteAsset directly?
-
                    return createAsset(metaString);
                 }
                 throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());
@@ -240,7 +236,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
     }
 
-    private <R extends Asset> R createAsset(String metaString){
+    @SuppressWarnings("unchecked")
+	private <R extends Asset> R createAsset(String metaString){
         String type=(String)JSON.toMap(metaString).get(TYPE);
         switch (type){
             case DATA_SET:
