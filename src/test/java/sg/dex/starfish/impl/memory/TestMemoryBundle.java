@@ -148,7 +148,7 @@ public class TestMemoryBundle {
         assetBundle.put("two", a2);
 
         // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Agent memoryAgent = MemoryAgent.create();
 
         // create asset bundle without any custom metadata // so passing null
         // if assetMap is passed as null it will create an empty map for that
@@ -196,7 +196,7 @@ public class TestMemoryBundle {
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Agent memoryAgent = MemoryAgent.create();
 
         Bundle bundle = MemoryBundle.create(assetBundle);
         assertEquals(bundle.getAll().size(), assetBundle.size());
@@ -204,7 +204,9 @@ public class TestMemoryBundle {
         assertEquals(bundle.getMetadata().get(Constant.TYPE), "bundle");
         assertEquals(bundle.get("one").getAssetID(), subAsset.getAssetID());
 
-
+        // TODO: Figure out correct behaviour when registering a bundle
+        // memoryAgent.registerAsset(bundle);
+        // assertEquals(subAsset,memoryAgent.getAsset(subAsset.getAssetID()));
     }
 
     @Test

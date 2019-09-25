@@ -30,7 +30,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
-    private HashMap<String, MemoryAsset> assetStore = new HashMap<>();
+    private HashMap<String, AMemoryAsset> assetStore = new HashMap<>();
     private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
     private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
     private static MemoryAgent defaultMemoryAgent = new MemoryAgent(Ocean.connect(), createRandomMemoryDID());
@@ -88,7 +88,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings("unchecked")
     @Override
     public <R extends Asset> R registerAsset(Asset a) {
-        MemoryAsset ma = MemoryAsset.create(a);
+        if (!(a instanceof AMemoryAsset)) {
+        	throw new UnsupportedOperationException("Not yet supported!");
+        };
+        AMemoryAsset ma=(AMemoryAsset)a;
         assetStore.put(ma.getAssetID(), ma);
         return (R) ma;
     }

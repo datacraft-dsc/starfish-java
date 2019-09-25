@@ -65,7 +65,7 @@ public class TestMemoryPurchase {
 
 
         MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
-
+        assertEquals(a,memoryPurchase.getListing().getAsset());
     }
 
     /**
