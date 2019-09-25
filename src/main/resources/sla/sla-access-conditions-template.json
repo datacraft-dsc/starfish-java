@@ -1,169 +1,113 @@
 [
   {
-    "name": "lockPayment",
-    "dependencies": [],
-    "isTerminalCondition": 0,
-    "canBeFulfilledBeforeTimeout": true,
-    "contractName": "PaymentConditions",
-    "functionName": "lockPayment",
-    "conditionKey": "{function.lockPayment.conditionKey}",
-    "index": 0,
-    "parameters": [
-      {
-        "name": "assetId",
-        "type": "bytes32",
-        "value": "{parameter.assetId}"
-      },
-      {
-        "name": "price",
-        "type": "uint256",
-        "value": {
-          parameter.price
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "PaymentLocked",
-        "actorType": "publisher",
-        "handler": {
-          "moduleName": "accessControl",
-          "functionName": "grantAccess",
-          "version": "0.1"
-        }
-      }
-    ]
-  },
-  {
-    "name": "grantAccess",
-    "dependencies": [
-      {
-        "name": "lockPayment",
-        "timeout": 0
-      }
-    ],
-    "timeout": 3,
-    "isTerminalCondition": 0,
-    "conditionKey": "{function.grantAccess.conditionKey}",
-    "contractName": "AccessConditions",
-    "functionName": "grantAccess",
-    "index": 1,
-    "parameters": [
-      {
-        "name": "documentKeyId",
-        "type": "bytes32",
-        "value": "{parameter.assetId}"
-      }
-    ],
-    "events": [
-      {
-        "name": "AccessGranted",
-        "actorType": "publisher",
-        "handler": {
-          "moduleName": "payment",
-          "functionName": "releasePayment",
-          "version": "0.1"
-        }
-      },
-      {
-        "name": "AccessGranted",
-        "actorType": "consumer",
-        "handler": {
-          "moduleName": "accessControl",
-          "functionName": "consumeAsset",
-          "version": "0.1"
-        }
-      },
-      {
-        "name": "AccessTimeout",
-        "actorType": "consumer",
-        "handler": {
-          "moduleName": "payment",
-          "functionName": "refundPayment",
-          "version": "0.1"
-        }
-      }
-    ]
-  },
-  {
-    "name": "releasePayment",
-    "dependencies": [
-      {
-        "name": "grantAccess",
-        "timeout": 0
-      }
-    ],
+    "name": "lockReward",
+    "timelock": 0,
     "timeout": 0,
-    "isTerminalCondition": 1,
-    "conditionKey": "{function.releasePayment.conditionKey}",
-    "contractName": "PaymentConditions",
-    "functionName": "releasePayment",
-    "index": 2,
+    "contractName": "LockRewardCondition",
+    "functionName": "fulfill",
     "parameters": [
       {
-        "name": "assetId",
-        "type": "bytes32",
-        "value": "{parameter.assetId}"
+        "name": "_rewardAddress",
+        "type": "address",
+        "value": "{contract.EscrowReward.address}"
       },
       {
-        "name": "price",
+        "name": "_amount",
         "type": "uint256",
-        "value": {
-          parameter.price
-        }
+        "value": "{parameter.price}"
       }
     ],
     "events": [
       {
-        "name": "PaymentReleased",
-        "actorType": "consumer",
+        "name": "Fulfilled",
+        "actorType": "publisher",
         "handler": {
-          "moduleName": "serviceAgreement",
-          "functionName": "fulfillAgreement",
+          "moduleName": "lockRewardCondition",
+          "functionName": "fulfillAccessSecretStoreCondition",
           "version": "0.1"
         }
       }
     ]
   },
   {
-    "name": "refundPayment",
-    "dependencies": [
-      {
-        "name": "lockPayment",
-        "timeout": 0
-      },
-      {
-        "name": "grantAccess",
-        "timeout": 1
-      }
-    ],
-    "timeout": 3,
-    "isTerminalCondition": 1,
-    "conditionKey": "{function.refundPayment.conditionKey}",
-    "contractName": "PaymentConditions",
-    "functionName": "refundPayment",
-    "index": 3,
+    "name": "accessSecretStore",
+    "timelock": 0,
+    "timeout": 0,
+    "contractName": "AccessSecretStoreCondition",
+    "functionName": "fulfill",
     "parameters": [
       {
-        "name": "assetId",
+        "name": "_documentId",
         "type": "bytes32",
         "value": "{parameter.assetId}"
       },
       {
-        "name": "price",
-        "type": "uint256",
-        "value": {
-          parameter.price
-        }
+        "name": "_grantee",
+        "type": "address",
+        "value": ""
       }
     ],
     "events": [
       {
-        "name": "PaymentRefund",
+        "name": "Fulfilled",
+        "actorType": "publisher",
+        "handler": {
+          "moduleName": "accessSecretStore",
+          "functionName": "fulfillEscrowRewardCondition",
+          "version": "0.1"
+        }
+      },
+      {
+        "name": "TimedOut",
         "actorType": "consumer",
         "handler": {
-          "moduleName": "serviceAgreement",
-          "functionName": "terminateAgreement",
+          "moduleName": "accessSecretStore",
+          "functionName": "fulfillEscrowRewardCondition",
+          "version": "0.1"
+        }
+      }
+    ]
+  },
+  {
+    "name": "escrowReward",
+    "timelock": 0,
+    "timeout": 0,
+    "contractName": "EscrowReward",
+    "functionName": "fulfill",
+    "parameters": [
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "value": "{parameter.price}"
+      },
+      {
+        "name": "_receiver",
+        "type": "address",
+        "value": ""
+      },
+      {
+        "name": "_sender",
+        "type": "address",
+        "value": ""
+      },
+      {
+        "name": "_lockCondition",
+        "type": "bytes32",
+        "value": "{contract.LockRewardCondition.address}"
+      },
+      {
+        "name": "_releaseCondition",
+        "type": "bytes32",
+        "value": "{contract.AccessSecretStoreCondition.address}"
+      }
+    ],
+    "events": [
+      {
+        "name": "Fulfilled",
+        "actorType": "publisher",
+        "handler": {
+          "moduleName": "escrowRewardCondition",
+          "functionName": "verifyRewardTokens",
           "version": "0.1"
         }
       }

@@ -533,7 +533,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * Gets URI for this agent's endpoint for jobID
      *
-     * @param response of the URI to create
      * @return The URI for this agent's invoke endpoint
      * @throws IllegalArgumentException on invalid URI for jobID
      */
