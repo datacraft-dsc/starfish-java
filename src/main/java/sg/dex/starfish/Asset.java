@@ -31,14 +31,14 @@ public interface Asset {
 	String getAssetID();
 
     /**
-     * Gets the Ocean DID for this asset. The DID may include a DID path to specify
+     * Gets the  DID for this asset. The DID may include a DID path to specify
      * the precise asset if the DID refers to an agent managing the asset.
      * Throws an exception if a DID is not available or cannot be constructed.
      *
      * @return The global DID for this asset.
      * @see <a href="https://w3c-ccg.github.io/did-spec">W3C DID spec</a>
      */
-	DID getAssetDID();
+	DID getDID();
 
     /**
      * Gets a copy of the JSON metadata for this asset, as a map of strings to values.

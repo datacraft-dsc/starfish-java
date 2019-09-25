@@ -33,6 +33,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     private HashMap<String, MemoryAsset> assetStore = new HashMap<>();
     private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
     private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
+    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(Ocean.connect(), createRandomMemoryDID());
 
     private MemoryAgent(Ocean ocean, DID did) {
         super(ocean, did);
@@ -63,7 +64,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create() {
-        return new MemoryAgent(Ocean.connect(), createRandomMemoryDID());
+        return defaultMemoryAgent;
     }
 
     /**

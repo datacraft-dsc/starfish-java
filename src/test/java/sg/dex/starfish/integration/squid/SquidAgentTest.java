@@ -51,7 +51,7 @@ public class SquidAgentTest {
         MemoryAsset asset = MemoryAsset.create(data);
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
         // getting the registered from squid agent using asset DID
-        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getAssetDID());
+        SquidAsset squidAsset_1 = squidAgent.getAsset(squidAsset.getDID());
         assertEquals(asset.getAssetID(), squidAsset_1.getAssetID());
 
     }
@@ -93,7 +93,7 @@ public class SquidAgentTest {
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("license", "Test_license");
-        SquidAsset squidAsset1 = squidAgent.resolveSquidDID(squidAsset.getAssetDID());
+        SquidAsset squidAsset1 = squidAgent.resolveSquidDID(squidAsset.getDID());
         assertEquals(squidAsset.getAssetID(), squidAsset1.getAssetID());
 
 

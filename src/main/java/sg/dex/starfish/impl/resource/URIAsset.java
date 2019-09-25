@@ -142,7 +142,7 @@ public class URIAsset extends AAsset implements DataAsset {
     }
 
     @Override
-    public DID getAssetDID() {
+    public DID getDID() {
         throw new UnsupportedOperationException("Can't get DID for asset of type " + this.getClass());
     }
 

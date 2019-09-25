@@ -35,13 +35,17 @@ public class TestMemoryAgent {
         // it will create Memory agent instance.
         //the instance will be associated with default Ocean and will have unique DID.
         MemoryAgent agent1 = MemoryAgent.create();
-        MemoryAgent agent2 = MemoryAgent.create();
 
         Asset a = MemoryAsset.create(BYTE_DATA);
         String id = a.getAssetID();
         // agent getAsset will be null as the asset is not yet registered
         // with memory agent
         assertNull(agent1.getAsset(id));
+
+        // register
+        Asset aReg =agent1.registerAsset(a);
+
+        assertTrue(aReg.getDID().toString().contains(id));
 
         // upload api will crete a MemoryAsset or DataAsset and then register it with agent and return the Uploaded asset ref.
         Asset a1 = agent1.uploadAsset(a);
@@ -55,19 +59,7 @@ public class TestMemoryAgent {
         // both asset much be equal
         assertEquals(a1, agent1.getAsset(id));
 
-        // the asset data should nnot be present in Agent 2
-        assertNull(agent2.getAsset(id));
 
-        // uploading asset from agent 1 to agent 2
-        Asset a2 = agent2.uploadAsset(a1);
-
-        // now asset must be present on agent 2
-
-        // verify the meta data of both the asset it must be same
-        assertEquals(a1.getMetadataString(), a2.getMetadataString());
-
-        // verify the content of both the asset it must be same
-        assertTrue(Arrays.equals(BYTE_DATA, a2.getContent()));
     }
 
     /**
@@ -123,5 +115,22 @@ public class TestMemoryAgent {
         agent1.registerAsset(asset);
         Asset assetFromAgent = agent1.getAsset(id);
         assertEquals(asset.getMetadataString(), assetFromAgent.getMetadataString());
+    }
+    /**
+     * Test GET Asset by asset DID
+     */
+    @Test
+    public void tesWithDefaultAgent() {
+
+        // create default memory Agent
+        MemoryAgent agent1 = MemoryAgent.create();
+
+        Asset asset = MemoryAsset.create(BYTE_DATA);
+
+        Asset registeredAsset =agent1.registerAsset(asset);
+        Asset assetFromAgent = agent1.getAsset(asset.getAssetID());
+        assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
+        assertEquals(registeredAsset.getDID(), assetFromAgent.getDID());
+
     }
 }
