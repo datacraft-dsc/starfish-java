@@ -24,12 +24,11 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 public final class DirectPurchaseAdapter {
     private DirectPurchase directPurchase;
     private TokenManager tokenManager;
-    private String directPurchaseAddress;
 
     public DirectPurchaseAdapter() throws IOException, CipherException {
         // getting properties
         Properties properties = getProperties();
-        directPurchaseAddress = (String)properties.getOrDefault("contract.DirectPurchase.address", "");
+        String directPurchaseAddress = (String)properties.getOrDefault("contract.DirectPurchase.address", "");
         String oceanTokenAddress = (String)properties.getOrDefault("contract.OceanToken.address", "");
         // getting keeper
         KeeperService keeper = SquidService.getKeeperService(properties);
@@ -44,7 +43,7 @@ public final class DirectPurchaseAdapter {
     public boolean sendTokenAndLog(String to, BigInteger amount, String reference1, String reference2) {
         boolean tokenApproved = false;
         try {
-            tokenApproved = tokenApprove(this.directPurchaseAddress, amount.toString());
+            tokenApproved = tokenApprove(directPurchase.getContractAddress(), amount.toString());
         } catch (TokenApproveException e) {
             e.printStackTrace();
             return false;
