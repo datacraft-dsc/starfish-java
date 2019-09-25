@@ -66,6 +66,7 @@ public class TestMemoryAsset {
 		Asset a=MemoryAsset.createFromString(s);
 		assertEquals(s,Utils.stringFromStream(a.getContentStream()));
 		assertEquals("text/plain",a.getMetadata().get(Constant.CONTENT_TYPE));
+		assertTrue(a.isDataAsset());
 	}
 
 	/**

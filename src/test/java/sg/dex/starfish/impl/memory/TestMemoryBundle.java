@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.constant.Constant;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -53,6 +56,13 @@ public class TestMemoryBundle {
         assertTrue(bundleDid.toString().contains(memoryAssetBundle.getAssetID()));
         assertTrue(bundleDid.toString().contains(MemoryAgent.create().getDID().toString()));
         return memoryAssetBundle;
+    }
+    
+    @Test
+    public void testAttrributes() {
+    	assertTrue(b1.isBundle());
+    	assertFalse(b1.isDataAsset());
+    	assertFalse(b1.isOperation());
     }
 
     /**
@@ -103,14 +113,11 @@ public class TestMemoryBundle {
 
 
         //Custom metadata
-        Map<String, Object> customeData = new HashMap<>();
-        customeData.put("name", "My First Bundle");
-
-        // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Map<String, Object> customData = new HashMap<>();
+        customData.put("name", "My First Bundle");
 
         // create asset bundle without any custom metadata // so passing null
-        Bundle memoryAssetBundle = MemoryBundle.create(assetBundle, customeData);
+        Bundle memoryAssetBundle = MemoryBundle.create(assetBundle, customData);
 
         // getting the ceated asset bundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();

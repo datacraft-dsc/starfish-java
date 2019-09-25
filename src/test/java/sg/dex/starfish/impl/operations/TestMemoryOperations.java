@@ -34,6 +34,7 @@ public class TestMemoryOperations {
     public void testReverseBytesAsync() {
         byte[] data = new byte[]{1, 2, 3};
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        assertTrue(memoryOperation.isOperation());
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
