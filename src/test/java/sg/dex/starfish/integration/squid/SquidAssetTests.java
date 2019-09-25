@@ -224,5 +224,32 @@ public class SquidAssetTests {
 
     }
 
+    /**
+     * This testcase if for register the meta data to Ocean Network
+     * this can be verified by login to the testnet and check for the
+     * registered asset
+     * testnet url: https://commons.nile.dev-ocean.com/
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testRegisterMetadataOnNetwork() throws IOException {
 
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
+
+        // create asset using metadata and given content
+        // ResourceAsset memory_asset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
+        ResourceAsset memory_asset = ResourceAsset.create(null, asset_metaData);
+
+        // register the asset on Ocean Network
+        SquidAsset squidAsset = squidAgent.registerAsset(memory_asset);
+
+
+        // getting the registered from squid agent using asset DID
+        SquidAsset squidAsset_FromChain = squidAgent.getAsset(squidAsset.getDID());
+
+        assertEquals(squidAsset.getDID(), squidAsset_FromChain.getDID());
+
+    }
 }
