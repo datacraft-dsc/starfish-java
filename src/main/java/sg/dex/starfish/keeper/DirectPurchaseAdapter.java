@@ -72,13 +72,19 @@ public final class DirectPurchaseAdapter {
         String publisher_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(publisher_address), 64);
         String reference_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference), 64);
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());
+
         filter.addSingleTopic(EventEncoder.encode(directPurchase.TOKENSENT_EVENT));
-        filter.addOptionalTopics(purchaser_padded, publisher_padded, reference_padded);
+        // addOtionalTopic does not work for some reason.
+        filter.addSingleTopic(purchaser_padded);
+        filter.addSingleTopic(publisher_padded);
+        filter.addSingleTopic(reference_padded);
+
         Flowable<DirectPurchase.TokenSentEventResponse> floable = directPurchase.tokenSentEventFlowable(filter);
         ArrayList<DirectPurchase.TokenSentEventResponse> outcome = new ArrayList<>();
         floable.subscribe(log -> {
             outcome.add(log);
         });
+
         for (DirectPurchase.TokenSentEventResponse obj:outcome) {
             if (obj._amount.equals(amount))
                 return true;
