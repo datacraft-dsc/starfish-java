@@ -27,7 +27,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,Rem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,104,0,2,0,23,0,8,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,7,0,0,0,3,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteOperation,41,0,0,0,8,0,6,0,6,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteJob,251,0,32,0,47,0,23,0,7,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteJob,241,0,32,0,47,0,23,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemotePurchase,66,0,4,0,17,0,10,0,8,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAccount,76,0,2,0,17,0,5,0,4,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.cli,CLIMain,37,0,4,0,9,0,4,0,2,0
