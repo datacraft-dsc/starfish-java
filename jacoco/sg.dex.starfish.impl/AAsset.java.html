@@ -51,8 +51,8 @@ public abstract class AAsset implements Asset {
     }
 
     @Override
-    public DID getAssetDID() {
-<span class="fc" id="L55">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
+    public DID getDID() {
+<span class="nc" id="L55">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class AAsset implements Asset {
 <span class="nc" id="L60">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
         // default is to pass the asset ID
         // check if DID is present:
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        Object did = getMetadata().get(Constant.DID) != null ? getMetadata().get(Constant.DID) : getAssetDID();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        Object did = getMetadata().get(Constant.DID) != null ? getMetadata().get(Constant.DID) : getDID();</span>
 <span class="nc" id="L64">        o.put(Constant.DID, did);</span>
 <span class="nc" id="L65">        return o;</span>
     }

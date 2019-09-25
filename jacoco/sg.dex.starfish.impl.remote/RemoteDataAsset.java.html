@@ -91,7 +91,7 @@ public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
     }
 
     @Override
-    public DID getAssetDID() {
+    public DID getDID() {
         // DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
 <span class="nc" id="L96">        DID agentDID = remoteAgent.getDID();</span>
 <span class="nc" id="L97">        return agentDID.withPath(getAssetID());</span>

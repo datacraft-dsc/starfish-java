@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AMemoryAsset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.memory</a> &gt; <span class="el_source">AMemoryAsset.java</span></div><h1>AMemoryAsset.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.DID;
 
 /**
  * Abstract base class for in-memory assets
@@ -19,19 +20,25 @@ public abstract class AMemoryAsset extends AAsset {
      * @param aAgent   memory Agent
      */
     protected AMemoryAsset(String metaData, MemoryAgent aAgent) {
-<span class="fc" id="L22">        super(metaData);</span>
-<span class="fc" id="L23">        memoryAgent = aAgent;</span>
-<span class="fc" id="L24">    }</span>
+<span class="fc" id="L23">        super(metaData);</span>
+<span class="fc" id="L24">        memoryAgent = aAgent;</span>
+<span class="fc" id="L25">    }</span>
+
+
+    @Override
+    public DID getDID() {
+        // DID of a memory asset is the DID of the appropriate agent with the asset ID as a resource path
+<span class="fc" id="L31">        DID agentDID = memoryAgent.getDID();</span>
+<span class="fc" id="L32">        return agentDID.withPath(getAssetID());</span>
+    }
 
     /**
-     * Constructor for Memory Asset
-     *
-     * @param metaData metadata
+     * Method to get the Memory Agent reference
+     * @return memory agent reference
      */
-    protected AMemoryAsset(String metaData) {
-<span class="nc" id="L32">        super(metaData);</span>
-<span class="nc" id="L33">    }</span>
-
+    public MemoryAgent getMemoryAgent() {
+<span class="nc" id="L40">        return memoryAgent;</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

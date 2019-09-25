@@ -61,7 +61,7 @@ public interface Bundle extends Asset {
     Map&lt;String, Asset&gt; getAll();
 
     @Override
-    default DID getAssetDID() {
+    default DID getDID() {
 <span class="nc" id="L65">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
     }
 
