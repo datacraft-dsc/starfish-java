@@ -4,6 +4,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
@@ -57,6 +58,14 @@ public class TestMemoryAsset {
 		metaMap.put("test1", "success");
 		Asset a = MemoryAsset.create(data, metaMap);
 		assertEquals(a.getMetadata().get("test1"), "success");
+	}
+	
+	@Test
+	public void testCreateFromString() {
+		String s="SomeString";
+		Asset a=MemoryAsset.createFromString(s);
+		assertEquals(s,Utils.stringFromStream(a.getContentStream()));
+		assertEquals("text/plain",a.getMetadata().get(Constant.CONTENT_TYPE));
 	}
 
 	/**

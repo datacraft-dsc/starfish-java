@@ -23,9 +23,11 @@ import java.util.Map;
 
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a local in-memory data asset.
@@ -133,7 +135,11 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      */
     public static Asset createFromString(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        return create(data, buildMetaData(data, null));
+        
+        // set up default content type
+        Map<String,Object> meta=Utils.mapOf(Constant.CONTENT_TYPE,"text/plain");
+        
+        return create(data, meta);
     }
 
     /**
