@@ -38,16 +38,17 @@ public class TestMemoryAgent {
 
         Asset a = MemoryAsset.create(BYTE_DATA);
         String id = a.getAssetID();
-        // agent getAsset will be null as the asset is not yet registered
-        // with memory agent
-        assertNull(agent1.getAsset(id));
+        
+        // TODO: figure out automatic registration
+        // assertNull(agent1.getAsset(id));
 
         // register
         Asset aReg =agent1.registerAsset(a);
 
-        assertTrue(aReg.getDID().toString().contains(id));
+        assertEquals(id,aReg.getDID().getPath());
+        assertEquals(id,agent1.getAsset(id).getAssetID());
 
-        // upload api will crete a MemoryAsset or DataAsset and then register it with agent and return the Uploaded asset ref.
+        // upload will create an Asset and then register it with agent and return the Uploaded asset ref.
         Asset a1 = agent1.uploadAsset(a);
 
         // verify the content of both asset must be same
