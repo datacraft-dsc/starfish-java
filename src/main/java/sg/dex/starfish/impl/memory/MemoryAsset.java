@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
@@ -46,21 +47,26 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
         this.data = data;
     }
 
-    private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> meta) {
+    /**
+     * Builds default metadata for a MemoryAsset.
+     * @param data
+     * @param additionalMeta
+     * @return
+     */
+    private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> additionalMeta) {
+        Map<String, Object> meta = new HashMap<>();
+        meta.put(DATE_CREATED, Instant.now().toString());
+        meta.put(TYPE, DATA_SET);
+        meta.put(SIZE, Integer.toString(data.length));
+        meta.put(CONTENT_TYPE, OCTET_STREAM);
 
-        Map<String, Object> ob = new HashMap<>();
-        ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(TYPE, DATA_SET);
-        ob.put(SIZE, Integer.toString(data.length));
-        ob.put(CONTENT_TYPE, OCTET_STREAM);
-
-        if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
-                ob.put(me.getKey(), me.getValue());
+        if (additionalMeta != null) {
+            for (Map.Entry<String, Object> me : additionalMeta.entrySet()) {
+                meta.put(me.getKey(), me.getValue());
             }
         }
 
-        return ob;
+        return meta;
     }
 
     /**
@@ -143,25 +149,34 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     }
 
     /**
-     * Creates a MemoryAsset with the provided metadata and content
+     * Creates a MemoryAsset with given byte[] content.
+     * 
+     * Creates default metadata, and merges in and additional metadata provided
      *
-     * @param meta A map containing the metadata for this asset
+     * @param additionalMeta A map containing additional metadata for this asset
      * @param data Byte array containing the data for this asset
      * @return The newly created in-memory asset
      */
-    public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
-        return new MemoryAsset(data, JSON.toPrettyString(buildMetaData(data, meta)),MemoryAgent.create());
+    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta) {
+        return create(data, additionalMeta,MemoryAgent.create());
     }
     /**
-     * Creates a MemoryAsset with the provided metadata and content
+     * Creates a MemoryAsset with given byte[] content, using the specified MemoryAgent
+     * 
+     * Creates default metadata, and merges in and additional metadata provided
      *
-     * @param meta A map containing the metadata for this asset
+     * @param additionalMeta A map containing the metadata for this asset
      * @param data Byte array containing the data for this asset
      * @param memoryAgent memoryAgent
      * @return The newly created in-memory asset
      */
-    public static MemoryAsset create(byte[] data, Map<String, Object> meta,MemoryAgent memoryAgent) {
-        return new MemoryAsset(data, JSON.toPrettyString(buildMetaData(data, meta)),memoryAgent);
+    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta,MemoryAgent memoryAgent) {
+    	Map<String,Object> meta=buildMetaData(data, additionalMeta);
+    	if (!meta.containsKey(Constant.CONTENT_HASH)) {
+    		String hash=Hash.sha3_256String(data);
+    		meta.put(Constant.CONTENT_HASH, hash);
+    	};
+        return new MemoryAsset(data, JSON.toPrettyString(meta),memoryAgent);
     }
     
     /**

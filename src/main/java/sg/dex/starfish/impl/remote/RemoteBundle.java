@@ -42,7 +42,9 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      */
     private Map<String, Asset> getAssetMap() {
         Map<String, Asset> subAssetMap = new HashMap<>();
-        Map<String, Map<String, String>> subAssetIdMap =
+        
+        @SuppressWarnings("unchecked")
+		Map<String, Map<String, String>> subAssetIdMap =
                 (Map<String, Map<String, String>>) JSON.toMap(metadataString).get(CONTENTS);
 
         for (String name : subAssetIdMap.keySet()) {
