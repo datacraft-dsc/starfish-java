@@ -141,7 +141,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @throws IllegalArgumentException for a bad invoke request
      * @throws RuntimeException         for protocol errors
      */
-    public static Job createJob(RemoteAgent agent, HttpResponse response) {
+    private static Job createJob(RemoteAgent agent, HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
         if ((statusCode == 201)||(statusCode==200)) {
@@ -1255,6 +1255,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	@Override
 	public Job getJob(String jobID) {
+		// TODO: should poll for job status / existence?
 		return RemoteJob.create(this, jobID);
 	}
 

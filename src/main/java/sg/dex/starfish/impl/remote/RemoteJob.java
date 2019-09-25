@@ -29,6 +29,15 @@ public class RemoteJob implements Job {
         this.jobID = jobID;
     }
 
+    /**
+     * Creates a RemoteJob representing a Job on a given RemoteAgent.
+     * 
+     * Does not perform any validation on the existence of the Job
+     * 
+     * @param agent2
+     * @param jobID
+     * @return
+     */
     public static RemoteJob create(RemoteAgent agent2, String jobID) {
         return new RemoteJob(agent2, jobID);
     }
@@ -51,8 +60,8 @@ public class RemoteJob implements Job {
     public synchronized Map<String, Object> pollResult() {
     	// quick check to see if we already have a terminal result - avoids extra requests
     	if (isDone()) {
-    		if (status.equals(SUCCEEDED)) return result;
-    		throw new JobFailedException("Job failed with status: " + status);
+    		if (status.equals(SUCCEEDED)) return result; // we should have a valid result
+    		return getResult(); // should throw an error
     	}
    
     	// Get JSON response map

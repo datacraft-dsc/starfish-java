@@ -72,8 +72,8 @@ public class Constant {
 
     //--------INVOKE -----------
 
-    public static final String INVOKE_SYNC = "/invoke";
-    public static final String INVOKE_ASYNC = "/invokeasync";
+    public static final String INVOKE_SYNC = "/sync";
+    public static final String INVOKE_ASYNC = "/async";
 
     //----------SQUID CONSTANT----------------------
 
