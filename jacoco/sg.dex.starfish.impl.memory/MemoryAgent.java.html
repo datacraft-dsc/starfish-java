@@ -120,7 +120,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 <span class="fc" id="L120">        R asset = (R) assetStore.get(id);</span>
 <span class="fc bfc" id="L121" title="All 2 branches covered.">        if (asset == null) return null;</span>
 <span class="fc" id="L122">        String rid = asset.getAssetID();</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (rid != id) {</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (!id.equals(rid)) {</span>
 <span class="nc" id="L124">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
         }
 <span class="fc" id="L126">        return asset;</span>
