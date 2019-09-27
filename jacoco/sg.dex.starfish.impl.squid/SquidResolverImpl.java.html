@@ -1,56 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SquidResolverImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.squid</a> &gt; <span class="el_source">SquidResolverImpl.java</span></div><h1>SquidResolverImpl.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.squid;
 
-import java.io.IOException;
-
-import org.web3j.crypto.CipherException;
-
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
+import com.oceanprotocol.squid.exceptions.DIDRegisterException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
-import com.oceanprotocol.squid.exceptions.InitializationException;
-import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
 import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
-
+import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
-public class SquidResolverImpl implements Resolver {
-    private SquidService squidService;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-<span class="nc" id="L22">    public SquidResolverImpl() {</span>
-<span class="nc" id="L23">        squidService = SquidService.getSquidService();</span>
-<span class="nc" id="L24">    }</span>
-
+<span class="nc" id="L19">public class SquidResolverImpl implements Resolver {</span>
+<span class="nc" id="L20">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;&gt;();</span>
 
     @Override
     public String getDDOString(DID did) {
- 		try {
-<span class="nc" id="L30"> 		   	com.oceanprotocol.squid.models.DID squidDID=new com.oceanprotocol.squid.models.DID(did.toString());</span>
-<span class="nc" id="L31">	        OceanManager oceanManager = SquidService.getResolverManager();</span>
-<span class="nc" id="L32">	        DDO ddo = oceanManager.resolveDID(squidDID);</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">	        if (ddo != null) {</span>
-<span class="nc" id="L34">	            return ddo.toJson();</span>
-	        }
-		}
-<span class="nc" id="L37">		catch (EthereumException | DDOException | DIDFormatException | InvalidConfiguration | InitializationException | IOException | CipherException e) {</span>
-<span class="nc" id="L38">			throw Utils.sneakyThrow(e);</span>
-<span class="nc" id="L39">		}</span>
-<span class="nc" id="L40">        return null;</span>
+        try {
+<span class="nc" id="L25">            com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());</span>
+<span class="nc" id="L26">            OceanManager oceanManager = SquidService.getResolverManager();</span>
+<span class="nc" id="L27">            DDO ddo = oceanManager.resolveDID(squidDID);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            if (ddo != null) {</span>
+<span class="nc" id="L29">                return ddo.toJson();</span>
+            }
+<span class="nc" id="L31">        } catch (EthereumException | DDOException | DIDFormatException | IOException | CipherException e) {</span>
+<span class="nc" id="L32">            throw Utils.sneakyThrow(e);</span>
+<span class="nc" id="L33">        }</span>
+<span class="nc" id="L34">        return null;</span>
+
+    }
+
+    public DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
+
+<span class="nc" id="L40">        com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());</span>
+<span class="nc" id="L41">        OceanManager oceanManager = SquidService.getResolverManager();</span>
+<span class="nc" id="L42">        DDO ddo = oceanManager.resolveDID(squidDID);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (ddo != null) {</span>
+<span class="nc" id="L44">            return ddo;</span>
+        }
+
+<span class="nc" id="L47">        return null;</span>
 
     }
 
     @Override
     public void registerDID(DID did, String ddo) {
-// TODO: fix this
-//		com.oceanprotocol.squid.models.DID squidDID=new com.oceanprotocol.squid.models.DID(did.toString());
-//        OceanManager oceanManager = SquidService.getResolverManager();
-//        String url = SquidService.getAquariusService().getDdoEndpoint();
-//        String providerAddress = SquidService.getProvider();
-//        return oceanManager.registerDID(squidDID, url, checksum, Arrays.asList(providerAddress));
+        //TODO  need to register in the network
+<span class="nc" id="L54">        installLocalDDO(did, ddo);</span>
 
-<span class="nc" id="L53">    }</span>
+
+        try {
+<span class="nc" id="L58">            com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());</span>
+<span class="nc" id="L59">            SquidService.getResolverManager().</span>
+<span class="nc" id="L60">                    registerDID(didSquid, &quot;oldUrl&quot;, &quot;checksum&quot;, Arrays.asList(SquidService.getProvider()));</span>
+
+
+<span class="nc" id="L63">        } catch (DIDRegisterException e) {</span>
+<span class="nc" id="L64">            e.printStackTrace();</span>
+<span class="nc" id="L65">        } catch (IOException e) {</span>
+<span class="nc" id="L66">            e.printStackTrace();</span>
+<span class="nc" id="L67">        } catch (CipherException e) {</span>
+<span class="nc" id="L68">            e.printStackTrace();</span>
+<span class="nc" id="L69">        } catch (DIDFormatException e) {</span>
+<span class="nc" id="L70">            e.printStackTrace();</span>
+<span class="nc" id="L71">        }</span>
+
+
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * &lt;p&gt;
+     * This registration is intended for testing purposes.
+     *
+     * @param did       A did to register
+     * @param ddoString A string containing a valid DDO in JSON Format
+     */
+    private void installLocalDDO(DID did, String ddoString) {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="nc" id="L86">        did = did.withoutPath();</span>
+<span class="nc" id="L87">        ddoCache.put(did, ddoString);</span>
+<span class="nc" id="L88">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

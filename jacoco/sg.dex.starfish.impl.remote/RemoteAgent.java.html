@@ -53,30 +53,30 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private final RemoteAccount account;
 
     /**
-     * Creates a RemoteAgent with the specified Ocean connection and DID
+     * Creates a RemoteAgent with the specified Resolver  and DID
      *
-     * @param ocean   Ocean connection to use
+     * @param resolver   Resolver
      * @param did     DID for this agent
      * @param account account
      */
-    protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
-<span class="fc" id="L63">        super(ocean, did);</span>
-<span class="fc" id="L64">        this.account = account;</span>
-<span class="fc" id="L65">    }</span>
+    protected RemoteAgent(Resolver resolver, DID did, RemoteAccount account) {
+<span class="nc" id="L63">        super(resolver, did);</span>
+<span class="nc" id="L64">        this.account = account;</span>
+<span class="nc" id="L65">    }</span>
 
     /**
-     * Creates a RemoteAgent with the specified Ocean connection, DID and
+     * Creates a RemoteAgent with the specified Resolver , DID and
      * RemoteAccount
      *
-     * @param ocean   Ocean connection to use
+     * @param resolver   Resolver connection to use
      * @param did     DID for this agent
      * @param account RemoteAccount for this agent
      * @return RemoteAgent
      */
-    public static RemoteAgent create(Ocean ocean, DID did, RemoteAccount account) {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (ocean == null) throw new IllegalArgumentException(&quot;Ocean connection cannot be null for remote agent&quot;);</span>
+    public static RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (resolver == null) throw new IllegalArgumentException(&quot;Resolver  cannot be null for remote agent&quot;);</span>
 <span class="nc bnc" id="L78" title="All 2 branches missed.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null for remote agent&quot;);</span>
-<span class="nc" id="L79">        return new RemoteAgent(ocean, did, account);</span>
+<span class="nc" id="L79">        return new RemoteAgent(resolver, did, account);</span>
     }
 
     /**
@@ -84,12 +84,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * will create a new instance of Remote agent based on Ocean and DID reference
      * passed as an argument
      *
-     * @param ocean Ocean connection to use
+     * @param resolver Resolver
      * @param did   DID for this agent
      * @return RemoteAgent new instance of remote Agent
      */
-    public static RemoteAgent create(Ocean ocean, DID did) {
-<span class="fc" id="L92">        return new RemoteAgent(ocean, did, null);</span>
+    public static RemoteAgent create(Resolver resolver, DID did) {
+<span class="nc" id="L92">        return new RemoteAgent(resolver, did, null);</span>
     }
 
     /**
@@ -164,7 +164,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public RemoteAgent connect(RemoteAccount acc) {
         // TODO: get user token and store this in account
-<span class="nc" id="L167">        return new RemoteAgent(ocean, did, acc);</span>
+<span class="nc" id="L167">        return new RemoteAgent(resolver, did, acc);</span>
     }
 
     private &lt;R extends Asset&gt; R registerBundle(Asset a) {
@@ -632,7 +632,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * &quot;https://www.myagent.com/api/v1/meta&quot;
      */
     public String getMetaEndpoint() {
-<span class="fc" id="L635">        return getEndpoint(Constant.ENDPOINT_META);</span>
+<span class="nc" id="L635">        return getEndpoint(Constant.ENDPOINT_META);</span>
     }
 
     /**

@@ -31,12 +31,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 <span class="fc" id="L31">    public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();</span>
 
 <span class="fc" id="L33">    private HashMap&lt;String, AMemoryAsset&gt; assetStore = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L34">    private HashMap&lt;String, MemoryListing&gt; listingStore = new HashMap&lt;String, MemoryListing&gt;();</span>
-<span class="fc" id="L35">    private HashMap&lt;String, MemoryPurchase&gt; purchaseStore = new HashMap&lt;String, MemoryPurchase&gt;();</span>
-<span class="fc" id="L36">    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(Ocean.connect(), createRandomMemoryDID());</span>
+<span class="fc" id="L34">    private HashMap&lt;String, MemoryListing&gt; listingStore = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L35">    private HashMap&lt;String, MemoryPurchase&gt; purchaseStore = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L36">    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());</span>
 
-    private MemoryAgent(Ocean ocean, DID did) {
-<span class="fc" id="L39">        super(ocean, did);</span>
+    private MemoryAgent(Resolver resolver, DID did) {
+<span class="fc" id="L39">        super(resolver, did);</span>
 <span class="fc" id="L40">    }</span>
 
     /**
@@ -47,7 +47,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static MemoryAgent create(DID did) {
 <span class="fc" id="L49">    	did=did.withoutPath();</span>
-<span class="fc" id="L50">        return new MemoryAgent(Ocean.connect(), did);</span>
+<span class="fc" id="L50">        return new MemoryAgent(new LocalResolverImpl(), did);</span>
     }
     
     /**

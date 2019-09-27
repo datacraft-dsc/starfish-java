@@ -15,10 +15,12 @@ import java.util.Map;
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
+    private RemoteAgent remoteAgent;
     protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
 
-<span class="nc" id="L20">        super(meta, remoteAgent);</span>
-<span class="nc" id="L21">    }</span>
+<span class="nc" id="L21">        super(meta, remoteAgent);</span>
+<span class="nc" id="L22">         this.remoteAgent=remoteAgent;</span>
+<span class="nc" id="L23">    }</span>
 
     /**
      * This method is to create the remote operation instance by passing the remote agent and the metadata
@@ -29,30 +31,30 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
      */
     public static RemoteOperation create(RemoteAgent a, String meta) {
 
-<span class="nc" id="L32">        return new RemoteOperation(a, meta);</span>
+<span class="nc" id="L34">        return new RemoteOperation(a, meta);</span>
     }
 
 
     @Override
     public Job invoke(Object... params) {
-<span class="nc" id="L38">        return remoteAgent.invoke(this, params);</span>
+<span class="nc" id="L40">        return remoteAgent.invoke(this, params);</span>
     }
 
     @Override
     public Job invokeAsync(Map&lt;String, Object&gt; params) {
-<span class="nc" id="L43">        return remoteAgent.invokeAsync(this, params);</span>
+<span class="nc" id="L45">        return remoteAgent.invokeAsync(this, params);</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params) {
-<span class="nc" id="L48">        Map&lt;String, Object&gt; response = remoteAgent.invokeResult(this, params);</span>
-<span class="nc" id="L49">        return Params.formatResponse(this, response, remoteAgent);</span>
+<span class="nc" id="L50">        Map&lt;String, Object&gt; response = remoteAgent.invokeResult(this, params);</span>
+<span class="nc" id="L51">        return Params.formatResponse(this, response, remoteAgent);</span>
 
     }
 
     @Override
     public Job invoke(Map&lt;String, Object&gt; params) {
-<span class="nc" id="L55">        return remoteAgent.invoke(this, params);</span>
+<span class="nc" id="L57">        return remoteAgent.invoke(this, params);</span>
     }
 
 }

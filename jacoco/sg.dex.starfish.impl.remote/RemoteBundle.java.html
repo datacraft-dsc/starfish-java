@@ -48,7 +48,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 <span class="nc" id="L48">                (Map&lt;String, Map&lt;String, String&gt;&gt;) JSON.toMap(metadataString).get(CONTENTS);</span>
 
 <span class="nc bnc" id="L50" title="All 2 branches missed.">        for (String name : subAssetIdMap.keySet()) {</span>
-<span class="nc" id="L51">            Asset asset = remoteAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));</span>
+<span class="nc" id="L51">            Asset asset = aAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));</span>
 <span class="nc" id="L52">            subAssetMap.put(name, asset);</span>
 <span class="nc" id="L53">        }</span>
 <span class="nc" id="L54">        return subAssetMap;</span>
@@ -59,7 +59,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 <span class="nc" id="L59">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
 <span class="nc" id="L60">        copyMap.put(name, asset);</span>
 <span class="nc" id="L61">        Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());</span>
-<span class="nc" id="L62">        return remoteAgent.registerAsset(newBundle);</span>
+<span class="nc" id="L62">        return aAgent.registerAsset(newBundle);</span>
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 <span class="nc" id="L67">        Map&lt;String, Asset&gt; copyMap = getAssetMap();</span>
 <span class="nc" id="L68">        copyMap.putAll(assetMapp);</span>
 <span class="nc" id="L69">        Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());</span>
-<span class="nc" id="L70">        return remoteAgent.registerAsset(newBundle);</span>
+<span class="nc" id="L70">        return aAgent.registerAsset(newBundle);</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)

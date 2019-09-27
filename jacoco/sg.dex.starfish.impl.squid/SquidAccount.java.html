@@ -2,7 +2,6 @@
 
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.models.Account;
-import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.AAccount;
 
 import java.math.BigInteger;
@@ -18,26 +17,26 @@ public class SquidAccount extends AAccount {
     protected final Account account;
 
     public SquidAccount(AccountsAPI accountsAPI, Account account) {
-<span class="nc" id="L21">        super(account.getAddress());</span>
-<span class="nc" id="L22">        this.accountAPI = accountsAPI;</span>
-<span class="nc" id="L23">        this.account = account;</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L20">        super(account.getAddress());</span>
+<span class="nc" id="L21">        this.accountAPI = accountsAPI;</span>
+<span class="nc" id="L22">        this.account = account;</span>
+<span class="nc" id="L23">    }</span>
 
-    public String getAddress() {
-<span class="nc" id="L27">        return account.getAddress();</span>
+    public static SquidAccount create(Account account) {
+<span class="nc" id="L26">        AccountsAPI accountAPI = SquidService.getOceanAPI().getAccountsAPI();</span>
+<span class="nc" id="L27">        return new SquidAccount(accountAPI, account);</span>
     }
 
-    public static SquidAccount create(Ocean ocean, Account account) {
-<span class="nc" id="L31">        AccountsAPI accountAPI = ocean.getAccountsAPI();</span>
-<span class="nc" id="L32">        return new SquidAccount(accountAPI, account);</span>
+    public String getAddress() {
+<span class="nc" id="L31">        return account.getAddress();</span>
     }
 
     public BigInteger getEthBalance() {
-<span class="nc" id="L36">        return account.getBalance().getEth();</span>
+<span class="nc" id="L35">        return account.getBalance().getEth();</span>
     }
 
     public BigInteger getOceanBalance() {
-<span class="nc" id="L40">        return account.getBalance().getDrops();</span>
+<span class="nc" id="L39">        return account.getBalance().getDrops();</span>
     }
 
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SquidService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.squid</a> &gt; <span class="el_source">SquidService.java</span></div><h1>SquidService.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.squid;
 
 import com.oceanprotocol.common.web3.KeeperService;
+import com.oceanprotocol.squid.api.AssetsAPI;
+import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.api.config.OceanConfigFactory;
 import com.oceanprotocol.squid.api.helper.OceanInitializationHelper;
@@ -8,85 +10,108 @@ import com.oceanprotocol.squid.exceptions.InitializationException;
 import com.oceanprotocol.squid.exceptions.InvalidConfiguration;
 import com.oceanprotocol.squid.external.AquariusService;
 import com.oceanprotocol.squid.manager.OceanManager;
+import com.oceanprotocol.squid.models.service.ProviderConfig;
 import org.web3j.crypto.CipherException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public final class SquidService {
+<span class="nc" id="L20">public final class SquidService {</span>
     private static Properties properties;
     private static OceanConfig oceanConfig;
     private static OceanInitializationHelper oceanInitializationHelper;
-<span class="nc" id="L21">    private static SquidService squidService = new SquidService();</span>
 
-<span class="nc" id="L23">    private SquidService() {</span>
-<span class="nc" id="L24">        properties = getProperties();</span>
-<span class="nc" id="L25">        oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
-<span class="nc" id="L26">        oceanInitializationHelper = new OceanInitializationHelper(oceanConfig);</span>
-<span class="nc" id="L27">    }</span>
+    static {
+<span class="nc" id="L26">        properties = getProperties();</span>
+<span class="nc" id="L27">        oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
+<span class="nc" id="L28">        oceanInitializationHelper = new OceanInitializationHelper(oceanConfig);</span>
+<span class="nc" id="L29">    }</span>
 
-    public static SquidService getSquidService() {
-<span class="nc" id="L30">        return squidService;</span>
-    }
 
-    public static OceanManager getResolverManager() throws IOException, CipherException, InvalidConfiguration, InitializationException {
+    public static OceanManager getResolverManager() throws IOException, CipherException {
 
-<span class="nc" id="L35">        OceanManager oceanManager = OceanManager.getInstance(getKeeperService(properties), getAquariusService());</span>
-<span class="nc" id="L36">        oceanManager.setDidRegistryContract(oceanInitializationHelper.loadDIDRegistryContract(getKeeperService(properties)));</span>
-<span class="nc" id="L37">        return oceanManager;</span>
+<span class="nc" id="L34">        OceanManager oceanManager = OceanManager.getInstance(getKeeperService(properties), getAquariusService());</span>
+<span class="nc" id="L35">        oceanManager.setDidRegistryContract(oceanInitializationHelper.loadDIDRegistryContract(getKeeperService(properties)));</span>
+<span class="nc" id="L36">        return oceanManager;</span>
 
 
     }
 
     public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
 
-<span class="nc" id="L44">        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
-<span class="nc" id="L45">        KeeperService keeper = KeeperService.getInstance(</span>
-<span class="nc" id="L46">                oceanConfig.getKeeperUrl(),</span>
-<span class="nc" id="L47">                oceanConfig.getMainAccountAddress(),</span>
-<span class="nc" id="L48">                oceanConfig.getMainAccountPassword(),</span>
-<span class="nc" id="L49">                oceanConfig.getMainAccountCredentialsFile(),</span>
-<span class="nc" id="L50">                oceanConfig.getKeeperTxAttempts(),</span>
-<span class="nc" id="L51">                oceanConfig.getKeeperTxSleepDuration()</span>
+<span class="nc" id="L43">        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);</span>
+<span class="nc" id="L44">        KeeperService keeper = KeeperService.getInstance(</span>
+<span class="nc" id="L45">                oceanConfig.getKeeperUrl(),</span>
+<span class="nc" id="L46">                oceanConfig.getMainAccountAddress(),</span>
+<span class="nc" id="L47">                oceanConfig.getMainAccountPassword(),</span>
+<span class="nc" id="L48">                oceanConfig.getMainAccountCredentialsFile(),</span>
+<span class="nc" id="L49">                oceanConfig.getKeeperTxAttempts(),</span>
+<span class="nc" id="L50">                oceanConfig.getKeeperTxSleepDuration()</span>
         );
 
-<span class="nc" id="L54">        keeper.setGasLimit(oceanConfig.getKeeperGasLimit())</span>
-<span class="nc" id="L55">                .setGasPrice(oceanConfig.getKeeperGasPrice());</span>
-<span class="nc" id="L56">        return keeper;</span>
+<span class="nc" id="L53">        keeper.setGasLimit(oceanConfig.getKeeperGasLimit())</span>
+<span class="nc" id="L54">                .setGasPrice(oceanConfig.getKeeperGasPrice());</span>
+<span class="nc" id="L55">        return keeper;</span>
 
     }
 
     public static AquariusService getAquariusService() {
-<span class="nc" id="L61">        return oceanInitializationHelper.getAquarius();</span>
+<span class="nc" id="L60">        return oceanInitializationHelper.getAquarius();</span>
 
     }
 
-    public static KeeperService getKeeperService() throws IOException, CipherException {
-<span class="nc" id="L66">        return oceanInitializationHelper.getKeeper();</span>
+    private static KeeperService getKeeperService() throws IOException, CipherException {
+<span class="nc" id="L65">        return oceanInitializationHelper.getKeeper();</span>
 
     }
 
-    public static String getProvider() throws IOException, CipherException {
-<span class="nc" id="L71">        return oceanConfig.getMainAccountAddress();</span>
+    public static String getProvider() {
+<span class="nc" id="L70">        return oceanConfig.getMainAccountAddress();</span>
 
     }
 
-    private Properties getProperties() {
-<span class="nc" id="L76">        Properties prop = new Properties();</span>
-<span class="nc" id="L77">        try (InputStream input = getClass().getClassLoader().getResourceAsStream(&quot;application.properties&quot;)) {</span>
+    public static Properties getProperties() {
+<span class="nc" id="L75">        Properties prop = new Properties();</span>
+<span class="nc" id="L76">        try (InputStream input = SquidService.class.getClassLoader().getResourceAsStream(&quot;application.properties&quot;)) {</span>
 
-<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (input == null) {</span>
-<span class="nc" id="L80">                throw new IOException(&quot;properties files is missing&quot;);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (input == null) {</span>
+<span class="nc" id="L79">                throw new IOException(&quot;properties files is missing&quot;);</span>
             }
 
-<span class="nc" id="L83">            prop.load(input);</span>
-<span class="nc" id="L84">        } catch (IOException e) {</span>
-<span class="nc" id="L85">            e.printStackTrace();</span>
-<span class="nc" id="L86">        }</span>
-<span class="nc" id="L87">        return prop;</span>
+<span class="nc" id="L82">            prop.load(input);</span>
+<span class="nc" id="L83">        } catch (IOException e) {</span>
+<span class="nc" id="L84">            e.printStackTrace();</span>
+<span class="nc" id="L85">        }</span>
+<span class="nc" id="L86">        return prop;</span>
 
     }
 
+    public static OceanAPI getOceanAPI() {
+<span class="nc" id="L91">        OceanAPI oceanAPI = null;</span>
+        try {
+<span class="nc" id="L93">            oceanAPI = OceanAPI.getInstance(properties);</span>
+<span class="nc" id="L94">        } catch (InitializationException e) {</span>
+<span class="nc" id="L95">            e.printStackTrace();</span>
+<span class="nc" id="L96">        } catch (InvalidConfiguration invalidConfiguration) {</span>
+<span class="nc" id="L97">            invalidConfiguration.printStackTrace();</span>
+<span class="nc" id="L98">        }</span>
+<span class="nc" id="L99">        return oceanAPI;</span>
+        // ocean = Ocean.connect(oceanAPI);
+    }
+
+    public static ProviderConfig getProvideConfig() {
+
+<span class="nc" id="L105">        String metadataUrl = properties.get(OceanConfig.AQUARIUS_URL) + &quot;/api/v1/aquarius/assets/ddo/{did}&quot;;</span>
+<span class="nc" id="L106">        String consumeUrl = properties.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/consume&quot;;</span>
+<span class="nc" id="L107">        String purchaseEndpoint = properties.get(&quot;brizo.url&quot;) + &quot;/api/v1/brizo/services/access/initialize&quot;;</span>
+<span class="nc" id="L108">        String secretStoreEndpoint = properties.get(OceanConfig.SECRETSTORE_URL).toString();</span>
+<span class="nc" id="L109">        String providerAddress = properties.get(OceanConfig.PROVIDER_ADDRESS).toString();</span>
+
+<span class="nc" id="L111">        return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);</span>
+    }
+    public static AssetsAPI getAssetAPI() {
+<span class="nc" id="L114">        return getOceanAPI().getAssetsAPI();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

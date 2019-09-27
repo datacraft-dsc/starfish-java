@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RemoteAgentConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">RemoteAgentConfig.java</span></div><h1>RemoteAgentConfig.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
 
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
@@ -12,17 +13,16 @@ import java.util.Map;
  * Currently it is written to connect with Surfer
  * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
-<span class="nc" id="L15">public final class RemoteAgentConfig {</span>
+<span class="nc" id="L16">public final class RemoteAgentConfig {</span>
 
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, String userName, String password) {
-        // getting the default Ocean instance
-<span class="nc" id="L19">        Ocean ocean = Ocean.connect();</span>
         // creating unique DID
 
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
+<span class="nc" id="L23">        Resolver resolver=new LocalResolverImpl();</span>
         // registering the DID and DDO
-<span class="nc" id="L25">        ocean.installLocalDDO(did, ddoString);</span>
+<span class="nc" id="L25">        resolver.registerDID(did, ddoString);</span>
 
         //Creating remote Account
 <span class="nc" id="L28">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
@@ -31,7 +31,7 @@ import java.util.Map;
 
 <span class="nc" id="L32">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
         // creating a Remote agent instance for given Ocean and DID
-<span class="nc" id="L34">        return RemoteAgent.create(ocean, did, account);</span>
+<span class="nc" id="L34">        return RemoteAgent.create(resolver, did, account);</span>
     }
 
 }
