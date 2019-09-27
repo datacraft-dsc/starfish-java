@@ -66,11 +66,12 @@ public class SquidAgent extends AAgent {
      * @throws StorageException              if unable to register the SquidAsset
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
-    @Override
-    public SquidAsset registerAsset(Asset asset) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public <R extends Asset> R registerAsset(Asset asset) {
 
         try {
-            return createSquidAssetInNetwork(asset);
+            return (R) createSquidAssetInNetwork(asset);
 
         } catch (IOException e) {
             e.printStackTrace();
