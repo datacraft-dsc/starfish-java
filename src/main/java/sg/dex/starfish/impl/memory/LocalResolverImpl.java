@@ -18,11 +18,6 @@ public class LocalResolverImpl implements Resolver {
         if (localDDO != null) {
             return localDDO;
         }
-        try {
-            // TODO: Ocean resolver
-        } catch (Throwable t) {
-            // TODO: logging
-        }
         return null;
     }
 
