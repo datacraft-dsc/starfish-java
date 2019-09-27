@@ -6,9 +6,7 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
 /**
- * This class implement the resolver functionality.
- * This class has method to  get a DDO (as a String) for any given DID registered on-chain.
- * Also it has method to register a DDO for a DID given an ethereum account.
+ * This interface represents a Resolver instance used to resolve / register DIDs and DDOd.
  */
 public interface Resolver {
 

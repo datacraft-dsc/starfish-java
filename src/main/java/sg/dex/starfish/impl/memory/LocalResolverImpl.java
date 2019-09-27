@@ -9,7 +9,16 @@ import java.util.Map;
 
 public class LocalResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
+    private final Resolver nextInChain;
 
+    public LocalResolverImpl() {
+    	nextInChain=null;
+    }
+    
+    public LocalResolverImpl(Resolver next) {
+    	nextInChain=next;
+    }
+    
     @Override
     public String getDDOString(DID did) {
         // remove path to get DDO for basic did
@@ -18,7 +27,9 @@ public class LocalResolverImpl implements Resolver {
         if (localDDO != null) {
             return localDDO;
         }
-        return null;
+        if (nextInChain==null) return null;
+        
+        return nextInChain.getDDOString(did);
     }
 
     @Override
