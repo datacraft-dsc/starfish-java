@@ -6,9 +6,7 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
 /**
- * This class implement the resolver functionality.
- * This class has method to  get a DDO (as a String) for any given DID registered on-chain.
- * Also it has method to register a DDO for a DID given an ethereum account.
+ * This interface represents a Resolver instance used to resolve / register DIDs and DDOd.
  */
 public interface Resolver {
 
@@ -29,10 +27,10 @@ public interface Resolver {
      * @throws UnsupportedOperationException not yet implemented
      */
     public default Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L32">    	did=did.withoutPath();</span>
-<span class="fc" id="L33">        String ddoString = getDDOString(did);</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
-<span class="fc" id="L35">        return JSON.parse(ddoString);</span>
+<span class="fc" id="L30">    	did=did.withoutPath();</span>
+<span class="fc" id="L31">        String ddoString = getDDOString(did);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
+<span class="fc" id="L33">        return JSON.parse(ddoString);</span>
     }
     
     /**
