@@ -4,7 +4,8 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -58,16 +59,15 @@ public class AgentEndpointUpdate_05 {
         // converting ddo to string
         String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+        Resolver resolver = new LocalResolverImpl();
         // creating unique DID
         DID surferDID = DID.createRandom();
 
         // registering the DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
+        resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, surferDID);
+        return RemoteAgent.create(resolver, surferDID);
 
     }
 }

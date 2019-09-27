@@ -48,7 +48,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
                 (Map<String, Map<String, String>>) JSON.toMap(metadataString).get(CONTENTS);
 
         for (String name : subAssetIdMap.keySet()) {
-            Asset asset = remoteAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));
+            Asset asset = aAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));
             subAssetMap.put(name, asset);
         }
         return subAssetMap;
@@ -59,7 +59,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.put(name, asset);
         Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());
-        return remoteAgent.registerAsset(newBundle);
+        return aAgent.registerAsset(newBundle);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.putAll(assetMapp);
         Bundle newBundle = MemoryBundle.create(copyMap, this.getMetadata());
-        return remoteAgent.registerAsset(newBundle);
+        return aAgent.registerAsset(newBundle);
     }
 
     @SuppressWarnings("unchecked")

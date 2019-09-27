@@ -15,9 +15,11 @@ import java.util.Map;
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
+    private RemoteAgent remoteAgent;
     protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
 
         super(meta, remoteAgent);
+         this.remoteAgent=remoteAgent;
     }
 
     /**

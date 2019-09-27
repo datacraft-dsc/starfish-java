@@ -1,16 +1,15 @@
 package sg.dex.starfish.impl.squid;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.oceanprotocol.squid.api.OceanAPI;
-import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
+import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
 import com.oceanprotocol.squid.models.aquarius.SearchResult;
 import com.oceanprotocol.squid.models.asset.AssetMetadata;
-import com.oceanprotocol.squid.models.service.ProviderConfig;
+import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
@@ -32,37 +31,28 @@ import java.util.Map;
  */
 public class SquidAgent extends AAgent {
 
-    private final Ocean ocean;
-    private final OceanAPI oceanAPI;
-    private final Map<String, String> configMap;
-
 
     /**
      * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
      *
-     * @param ocean     Ocean connection to use
-     * @param configMap config map
-     * @param did       DID for this agent
+     * @param resolver Ocean connection to use
+     * @param did      DID for this agent
      */
-    protected SquidAgent(Map<String, String> configMap,
-                         Ocean ocean, DID did) {
-        super(ocean, did);
-        this.configMap = configMap;
-        this.ocean = ocean;
-        this.oceanAPI = ocean.getOceanAPI();
+    protected SquidAgent(
+            Resolver resolver, DID did) {
+        super(resolver, did);
     }
 
 
     /**
      * Creates a RemoteAgent with the specified OceanAPI, Ocean connection and DID
      *
-     * @param ocean  Ocean connection to use
-     * @param did    DID for this agent
-     * @param config config configuration
+     * @param resolver Resolver
+     * @param did      DID for this agent
      * @return RemoteAgent
      */
-    public static SquidAgent create(Map<String, String> config, Ocean ocean, DID did) {
-        return new SquidAgent(config, ocean, did);
+    public static SquidAgent create(Resolver resolver, DID did) {
+        return new SquidAgent(resolver, did);
     }
 
 
@@ -82,8 +72,6 @@ public class SquidAgent extends AAgent {
         try {
             return createSquidAssetInNetwork(asset);
 
-        } catch (DIDFormatException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DDOException e) {
@@ -92,11 +80,11 @@ public class SquidAgent extends AAgent {
         //Todo FIX IT, may throw exception
         throw new GenericException("Exception while registering Asset into OCN");
     }
-    
-	@Override
-	public <R extends Asset> R registerAsset(String metaString) {
-		throw new UnsupportedOperationException("SquidAgent does not support registering assets without content");
-	}
+
+    @Override
+    public <R extends Asset> R registerAsset(String metaString) {
+        throw new UnsupportedOperationException("SquidAgent does not support registering assets without content");
+    }
 
     /**
      * Methods to get the Squid Asset after registering to Ocean Network
@@ -107,18 +95,18 @@ public class SquidAgent extends AAgent {
      * @throws DDOException       DDOException will be thrown
      * @throws DIDFormatException DIDFormatException will be thrown
      */
-    private SquidAsset createSquidAssetInNetwork(Asset asset) throws IOException, DDOException, DIDFormatException {
+    private SquidAsset createSquidAssetInNetwork(Asset asset) throws IOException, DDOException {
 
-        AssetMetadata metadataBase = createSquidDDO(asset);
+        // get metadata required registration on OCN
+        AssetMetadata metadataBase = getMetadataForSquidFromAsset(asset);
 
-        DDO squidDDO = ocean.getAssetsAPI().create(metadataBase, getProvideConfig(configMap));
 
-        DID did = DID.parse(squidDDO.getDid().toString());
-        return SquidAsset.create(asset.getMetadataString(), did, squidDDO, ocean);
+        DDO squidDDO = SquidService.getAssetAPI().create(metadataBase, SquidService.getProvideConfig());
+        return SquidAsset.create(squidDDO.metadata.toString(), this, squidDDO.getDid());
 
     }
 
-    private AssetMetadata createSquidDDO(Asset asset) throws IOException {
+    private AssetMetadata getMetadataForSquidFromAsset(Asset asset) throws IOException {
 
         // todo map mandatory attribute
         Map<String, Object> squidMetaDAta = new HashMap<>();
@@ -169,7 +157,26 @@ public class SquidAgent extends AAgent {
 
     @Override
     public SquidAsset getAsset(DID did) {
-        return (SquidAsset) ocean.getAsset(did);
+
+        SquidResolverImpl squidResolver = (SquidResolverImpl) resolver;
+
+        try {
+            DDO squidDDO = squidResolver.getSquidDDO(did);
+            SquidAsset.create(squidDDO.metadata.toString(), this, squidDDO.getDid());
+        } catch (EthereumException e) {
+            e.printStackTrace();
+        } catch (DDOException e) {
+            e.printStackTrace();
+        } catch (DIDFormatException e) {
+            e.printStackTrace();
+        } catch (CipherException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return SquidAsset.create(did, this);
+
     }
 
     /**
@@ -198,7 +205,7 @@ public class SquidAgent extends AAgent {
      */
 
     public List<SquidAsset> searchAsset(String text) throws DDOException {
-        SearchResult searchResult = ocean.getOceanAPI().getAssetsAPI().search(text);
+        SearchResult searchResult = SquidService.getOceanAPI().getAssetsAPI().search(text);
         List<DDO> listDDO = searchResult.results;
         List<SquidAsset> squidAssetLst = new ArrayList<>();
         for (DDO ddo : listDDO) {
@@ -210,30 +217,19 @@ public class SquidAgent extends AAgent {
 
     }
 
-    private static ProviderConfig getProvideConfig(Map<String, String> configMap) {
-
-        String metadataUrl = configMap.get(OceanConfig.AQUARIUS_URL) + "/api/v1/aquarius/assets/ddo/{did}";
-        String consumeUrl = configMap.get("brizo.url") + "/api/v1/brizo/services/consume";
-        String purchaseEndpoint = configMap.get("brizo.url") + "/api/v1/brizo/services/access/initialize";
-        String secretStoreEndpoint = configMap.get(OceanConfig.SECRETSTORE_URL);
-        String providerAddress = configMap.get(OceanConfig.PROVIDER_ADDRESS);
-
-        return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);
-    }
-
     /**
      * API to return Squid DDO based on Squid DID
      *
-     * @param assetId assetID
+     * @param did DID
      * @return DDO ddo
      * @throws UnsupportedOperationException exception
      */
-    public SquidAsset resolveSquidDID(DID assetId) {
+    public SquidAsset resolveSquidDID(DID did) {
 
-        if (null == assetId) {
-            throw new UnsupportedOperationException("Asset Id cannot be null");
+        if (null == did) {
+            throw new UnsupportedOperationException("DID cannot be null");
         }
-        SquidAsset squidAsset = getAsset(assetId);
+        SquidAsset squidAsset = getAsset(did);
         return squidAsset;
 
     }
@@ -247,7 +243,7 @@ public class SquidAgent extends AAgent {
      */
     public List<SquidAsset> queryAsset(Map<String, Object> queryMapData) throws Exception {
 
-        List<DDO> listDDO = ocean.getAssetsAPI().query(queryMapData).getResults();
+        List<DDO> listDDO = SquidService.getAssetAPI().query(queryMapData).getResults();
         List<SquidAsset> squidAssetLst = new ArrayList<>();
         for (DDO ddo : listDDO) {
             DID did = DID.parse(ddo.getDid().toString());
@@ -256,5 +252,6 @@ public class SquidAgent extends AAgent {
         }
         return squidAssetLst;
     }
+
 
 }

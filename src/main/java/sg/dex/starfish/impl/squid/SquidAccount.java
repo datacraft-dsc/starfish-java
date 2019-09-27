@@ -2,7 +2,6 @@ package sg.dex.starfish.impl.squid;
 
 import com.oceanprotocol.squid.api.AccountsAPI;
 import com.oceanprotocol.squid.models.Account;
-import sg.dex.starfish.Ocean;
 import sg.dex.starfish.impl.AAccount;
 
 import java.math.BigInteger;
@@ -23,13 +22,13 @@ public class SquidAccount extends AAccount {
         this.account = account;
     }
 
-    public String getAddress() {
-        return account.getAddress();
+    public static SquidAccount create(Account account) {
+        AccountsAPI accountAPI = SquidService.getOceanAPI().getAccountsAPI();
+        return new SquidAccount(accountAPI, account);
     }
 
-    public static SquidAccount create(Ocean ocean, Account account) {
-        AccountsAPI accountAPI = ocean.getAccountsAPI();
-        return new SquidAccount(accountAPI, account);
+    public String getAddress() {
+        return account.getAddress();
     }
 
     public BigInteger getEthBalance() {

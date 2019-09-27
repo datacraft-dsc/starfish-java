@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.impl.remote.*;
@@ -29,7 +30,7 @@ public class InvokeServiceFree_20 {
 
 
     private DID did;
-    private Ocean ocean = Ocean.connect();
+    private Resolver resolver = new LocalResolverImpl();
     private RemoteAccount remoteAccount;
 
 
@@ -38,7 +39,7 @@ public class InvokeServiceFree_20 {
         // surfer should be running
         did = getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin", "OpenSesame");
-        ocean.installLocalDDO(did, getDdo());
+        resolver.registerDID(did, getDdo());
 
 
     }
@@ -93,7 +94,7 @@ public class InvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation remoteOperation = agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
@@ -132,7 +133,7 @@ public class InvokeServiceFree_20 {
         metaMap.put("first-n", "20");
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
         // get asset form asset id
         Operation remoteOperation = agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
@@ -180,7 +181,7 @@ public class InvokeServiceFree_20 {
         metaMap.put("first-n", "20");
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
         // get asset form asset id
         Operation remoteOperation = agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
@@ -209,7 +210,7 @@ public class InvokeServiceFree_20 {
         metaMap.put("to-hash", "test_Async");
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
         // get asset form asset id
         Operation remoteOperation = agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
@@ -251,7 +252,7 @@ public class InvokeServiceFree_20 {
         metaMap.put("to-hash", "test");
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
         // get asset form asset id
         Operation remoteOperation = agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
@@ -282,7 +283,7 @@ public class InvokeServiceFree_20 {
     public void testAssetHashingSync_1() {
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
         // asset must be uploaded as invoke will work only on RemoteAsset
         Asset a = MemoryAsset.create(new byte[]{3, 4, 5, 6});
         // uploading the asset, it will do the registration and upload both
@@ -313,7 +314,7 @@ public class InvokeServiceFree_20 {
 
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
 
         // asset must be uploaded as invoke will work only on RemoteAsset
@@ -360,7 +361,7 @@ public class InvokeServiceFree_20 {
 
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(ocean, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
 
 
         // creating  assets
