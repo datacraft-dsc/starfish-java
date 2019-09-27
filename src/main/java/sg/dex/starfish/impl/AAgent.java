@@ -2,7 +2,7 @@ package sg.dex.starfish.impl;
 
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 
@@ -23,28 +23,19 @@ public abstract class AAgent implements Agent {
 
     private Map<String, Object> ddo;
 
-    protected final Ocean ocean;
+    protected final Resolver resolver;
 
     /**
      * Create an agent with the provided Ocean connection and DID
      *
-     * @param ocean The ocean connection to use for this agent
+     * @param resolver The ocean connection to use for this agent
      * @param did   The DID for this agent
      */
-    protected AAgent(Ocean ocean, DID did) {
-        this.ocean = ocean;
+    protected AAgent(Resolver resolver, DID did) {
+        this.resolver = resolver;
         this.did = did;
     }
 
-    /**
-     * Create an agent with the provided Ocean connection and DID
-     *
-     * @param did The DID for this agent
-     */
-    protected AAgent(DID did) {
-        this.ocean = Ocean.connect();
-        this.did = did;
-    }
 
     @Override
     public DID getDID() {
@@ -54,7 +45,7 @@ public abstract class AAgent implements Agent {
     @Override
     public Map<String, Object> getDDO() {
         if (ddo == null) {
-            ddo = ocean.getDDO(did);
+            ddo = resolver.getDDO(did);
         }
         return ddo;
     }

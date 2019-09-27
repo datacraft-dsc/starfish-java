@@ -1,40 +1,39 @@
 package sg.dex.starfish;
 
 import org.junit.Test;
-
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class TestDDO {
 
     @Test
     public void testLocalDDO() {
-        Ocean ocean = Ocean.connect();
+
+        Resolver resolver = new LocalResolverImpl();
         String endpoint="http://localhost:8080/api/v1/meta";
         String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \""+endpoint+"\"}]}";
         DID did = DID.createRandom();
-        ocean.installLocalDDO(did, ddoString);
+        resolver.registerDID(did, ddoString);
 
-        String ddos = ocean.getDDOString(did);
+        String ddos = resolver.getDDOString(did);
         assertEquals(ddoString, ddos);
 
-        Map<String, Object> ddo = ocean.getDDO(did);
+        Map<String, Object> ddo = resolver.getDDO(did);
         assertEquals(1, ddo.size());
-        
-        RemoteAgent agent=ocean.getAgent(did);
-        assertEquals(endpoint,agent.getMetaEndpoint());
-        assertEquals(endpoint,agent.getEndpoint(Constant.ENDPOINT_META));
+
     }
 
     @Test
     public void testMissingDDO() {
-        Ocean ocean = Ocean.connect();
-        String ddo = ocean.getDDOString("did:op:missing");
+        Resolver resolver = new LocalResolverImpl();
+        DID did = DID.createRandom();
+        String ddo = resolver.getDDOString(did);
         assertNull(ddo);
     }
 

@@ -1,6 +1,7 @@
 package sg.dex.starfish.util;
 
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
@@ -15,14 +16,13 @@ import java.util.Map;
 public final class RemoteAgentConfig {
 
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, String userName, String password) {
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
         // creating unique DID
 
         did = (did == null) ? DID.createRandom() : did;
 
+        Resolver resolver=new LocalResolverImpl();
         // registering the DID and DDO
-        ocean.installLocalDDO(did, ddoString);
+        resolver.registerDID(did, ddoString);
 
         //Creating remote Account
         Map<String, Object> credentialMap = new HashMap<>();
@@ -31,7 +31,7 @@ public final class RemoteAgentConfig {
 
         RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, did, account);
+        return RemoteAgent.create(resolver, did, account);
     }
 
 }

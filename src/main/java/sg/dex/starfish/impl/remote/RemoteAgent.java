@@ -53,30 +53,30 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private final RemoteAccount account;
 
     /**
-     * Creates a RemoteAgent with the specified Ocean connection and DID
+     * Creates a RemoteAgent with the specified Resolver  and DID
      *
-     * @param ocean   Ocean connection to use
+     * @param resolver   Resolver
      * @param did     DID for this agent
      * @param account account
      */
-    protected RemoteAgent(Ocean ocean, DID did, RemoteAccount account) {
-        super(ocean, did);
+    protected RemoteAgent(Resolver resolver, DID did, RemoteAccount account) {
+        super(resolver, did);
         this.account = account;
     }
 
     /**
-     * Creates a RemoteAgent with the specified Ocean connection, DID and
+     * Creates a RemoteAgent with the specified Resolver , DID and
      * RemoteAccount
      *
-     * @param ocean   Ocean connection to use
+     * @param resolver   Resolver connection to use
      * @param did     DID for this agent
      * @param account RemoteAccount for this agent
      * @return RemoteAgent
      */
-    public static RemoteAgent create(Ocean ocean, DID did, RemoteAccount account) {
-        if (ocean == null) throw new IllegalArgumentException("Ocean connection cannot be null for remote agent");
+    public static RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
+        if (resolver == null) throw new IllegalArgumentException("Resolver  cannot be null for remote agent");
         if (did == null) throw new IllegalArgumentException("DID cannot be null for remote agent");
-        return new RemoteAgent(ocean, did, account);
+        return new RemoteAgent(resolver, did, account);
     }
 
     /**
@@ -84,12 +84,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * will create a new instance of Remote agent based on Ocean and DID reference
      * passed as an argument
      *
-     * @param ocean Ocean connection to use
+     * @param resolver Resolver
      * @param did   DID for this agent
      * @return RemoteAgent new instance of remote Agent
      */
-    public static RemoteAgent create(Ocean ocean, DID did) {
-        return new RemoteAgent(ocean, did, null);
+    public static RemoteAgent create(Resolver resolver, DID did) {
+        return new RemoteAgent(resolver, did, null);
     }
 
     /**
@@ -164,7 +164,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public RemoteAgent connect(RemoteAccount acc) {
         // TODO: get user token and store this in account
-        return new RemoteAgent(ocean, did, acc);
+        return new RemoteAgent(resolver, did, acc);
     }
 
     private <R extends Asset> R registerBundle(Asset a) {

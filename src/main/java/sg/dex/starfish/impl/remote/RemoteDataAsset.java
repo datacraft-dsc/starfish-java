@@ -27,8 +27,10 @@ import java.util.Map;
  */
 public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
 
+    private RemoteAgent remoteAgent;
     protected RemoteDataAsset(String meta, RemoteAgent remoteAgent) {
         super(meta, remoteAgent);
+        this.remoteAgent=remoteAgent;
     }
 
     /**

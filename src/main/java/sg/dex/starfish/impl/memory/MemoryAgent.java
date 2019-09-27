@@ -31,12 +31,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
     private HashMap<String, AMemoryAsset> assetStore = new HashMap<>();
-    private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
-    private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
-    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(Ocean.connect(), createRandomMemoryDID());
+    private HashMap<String, MemoryListing> listingStore = new HashMap<>();
+    private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<>();
+    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());
 
-    private MemoryAgent(Ocean ocean, DID did) {
-        super(ocean, did);
+    private MemoryAgent(Resolver resolver, DID did) {
+        super(resolver, did);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static MemoryAgent create(DID did) {
     	did=did.withoutPath();
-        return new MemoryAgent(Ocean.connect(), did);
+        return new MemoryAgent(new LocalResolverImpl(), did);
     }
     
     /**

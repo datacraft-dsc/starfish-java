@@ -1,6 +1,7 @@
 package sg.dex.starfish.integration.developerTC;
 
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
@@ -137,11 +138,11 @@ public class AgentService {
         String ddoString = JSON.toPrettyString(ddo);
 
         // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+        Resolver resolver= new LocalResolverImpl();
         // creating unique DID
         DID invokeDID = DID.createRandom();
         // registering the DID and DDO
-        ocean.installLocalDDO(invokeDID, ddoString);
+        resolver.registerDID(invokeDID, ddoString);
 
 
         //Creating remote Account
@@ -151,7 +152,7 @@ public class AgentService {
 
         RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, invokeDID, account);
+        return RemoteAgent.create(resolver, invokeDID, account);
     }
 
     /**
