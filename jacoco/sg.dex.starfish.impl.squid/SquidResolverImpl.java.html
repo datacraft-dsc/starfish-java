@@ -35,7 +35,7 @@ import java.util.Map;
 
     }
 
-    public DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
+    DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
 
 <span class="nc" id="L40">        com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());</span>
 <span class="nc" id="L41">        OceanManager oceanManager = SquidService.getResolverManager();</span>
