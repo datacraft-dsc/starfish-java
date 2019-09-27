@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.integration.squid.SquidHelperTest;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 import sg.dex.starfish.Ocean;
@@ -48,9 +49,9 @@ public class DirectPurchaseTest {
         Balance balanceSenderBefore = ocean.getBalance(senderAccount);
         Balance balanceReceiverBefore = ocean.getBalance(receiverAccount);
 
-        boolean transferred = directPurchaseAdapter.sendTokenAndLog(receiverAddress, tokenAmount, reference, reference);
+        TransactionReceipt receipt = directPurchaseAdapter.sendTokenAndLog(receiverAddress, tokenAmount, reference, reference);
 
-        assertTrue(transferred);
+        assertTrue(receipt.isStatusOK());
         Balance balanceSenderAfter = ocean.getBalance(senderAccount);
         Balance balanceReceiverAfter = ocean.getBalance(receiverAccount);
         assertEquals(balanceSenderBefore.getDrops().subtract(balanceSenderAfter.getDrops()), tokenAmount);
