@@ -199,9 +199,10 @@ public class TestMemoryBundle {
         Agent memoryAgent = MemoryAgent.create();
 
         Bundle bundle = MemoryBundle.create(assetBundle);
+        
         assertEquals(bundle.getAll().size(), assetBundle.size());
         assertEquals(bundle.isBundle(), true);
-        assertEquals(bundle.getMetadata().get(Constant.TYPE), "bundle");
+        assertEquals(bundle.getMetadata().get(Constant.TYPE), Constant.BUNDLE);
         assertEquals(bundle.get("one").getAssetID(), subAsset.getAssetID());
 
         // TODO: Figure out correct behaviour when registering a bundle
@@ -216,7 +217,7 @@ public class TestMemoryBundle {
         Bundle bundle = MemoryBundle.create(null);
         assertTrue(bundle.getAll().isEmpty());
         assertEquals(bundle.isBundle(), true);
-        assertEquals(bundle.getMetadata().get(Constant.TYPE), "bundle");
+        assertEquals(bundle.getMetadata().get(Constant.TYPE), Constant.BUNDLE);
 
     }
 
