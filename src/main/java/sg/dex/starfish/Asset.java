@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.DID;
@@ -56,7 +57,7 @@ public interface Asset {
      * @return true if the asset is a data asset, false otherwise
      */
     default boolean isDataAsset() {
-        return false;
+        return Constant.DATA_SET.equals(getMetadata().get(Constant.TYPE));
     }
 
     /**
@@ -66,7 +67,7 @@ public interface Asset {
      * @return true if this asset is an operation, false otherwise
      */
     default boolean isOperation() {
-        return false;
+        return Constant.OPERATION.equals(getMetadata().get(Constant.TYPE));
     }
 
     /**
@@ -131,6 +132,6 @@ public interface Asset {
      * @return true if this asset is an bundle, false otherwise
      */
     default boolean isBundle() {
-        return false;
+        return Constant.BUNDLE.equals(getMetadata().get(Constant.TYPE));
     }
 }
