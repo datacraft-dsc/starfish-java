@@ -8,11 +8,11 @@ import java.io.IOException;
 
 import java.math.BigInteger;
 import com.oceanprotocol.squid.models.Account;
-import com.oceanprotocol.squid.models.Balance;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import sg.dex.starfish.integration.squid.SquidHelperTest;
+import sg.dex.starfish.impl.squid.SquidAccount;
+import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
-import sg.dex.starfish.Ocean;
+import com.oceanprotocol.squid.api.OceanAPI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,27 +35,25 @@ public class DirectPurchaseTest {
     @Test
     public void Purchase() throws EthereumException {
         String receiverPasswd = "secret";
-
         String senderPasswd = "node0";
 
         Account senderAccount = new Account(senderAddress, senderPasswd);
         Account receiverAccount = new Account(receiverAddress, receiverPasswd);
 
-        Ocean ocean = SquidHelperTest.getOcean();
+        OceanAPI oceanAPI = SquidService.getOceanAPI();
+        TransactionReceipt transactionReceipt = oceanAPI.getAccountsAPI().requestTokens(tokenAmount);
+        assertTrue(transactionReceipt.isStatusOK());
 
-        BigInteger amount = ocean.requestTokens(tokenAmount);
-        assertEquals(amount, tokenAmount);
-
-        Balance balanceSenderBefore = ocean.getBalance(senderAccount);
-        Balance balanceReceiverBefore = ocean.getBalance(receiverAccount);
+        BigInteger balanceSenderBefore = SquidAccount.create(senderAccount).getOceanBalance();
+        BigInteger balanceReceiverBefore = SquidAccount.create(receiverAccount).getOceanBalance();
 
         TransactionReceipt receipt = directPurchaseAdapter.sendTokenAndLog(receiverAddress, tokenAmount, reference, reference);
-
         assertTrue(receipt.isStatusOK());
-        Balance balanceSenderAfter = ocean.getBalance(senderAccount);
-        Balance balanceReceiverAfter = ocean.getBalance(receiverAccount);
-        assertEquals(balanceSenderBefore.getDrops().subtract(balanceSenderAfter.getDrops()), tokenAmount);
-        assertEquals(balanceReceiverAfter.getDrops().subtract(balanceReceiverBefore.getDrops()), tokenAmount);
+
+        BigInteger balanceSenderAfter = SquidAccount.create(senderAccount).getOceanBalance();
+        BigInteger balanceReceiverAfter = SquidAccount.create(receiverAccount).getOceanBalance();
+        assertEquals(balanceSenderBefore.subtract(balanceSenderAfter), tokenAmount);
+        assertEquals(balanceReceiverAfter.subtract(balanceReceiverBefore), tokenAmount);
     }
 
     @Test
