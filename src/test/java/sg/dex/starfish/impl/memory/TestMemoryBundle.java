@@ -1,29 +1,44 @@
 package sg.dex.starfish.impl.memory;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.util.DID;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryBundle {
-	private Asset a1=MemoryAsset.create(new byte[] {1, 3, 4});
-	private Asset a2=MemoryAsset.create(new byte[] {2, 3, 4});
-	private Asset a3=MemoryAsset.create(new byte[] {3, 3, 4});
-	private Asset a4=MemoryAsset.create(new byte[] {4, 3, 4});
-	private Bundle b1=createTestBundle();
-	
-	private Bundle createTestBundle() {
-	    
+
+    private Asset a1;
+    private Asset a2;
+    private Asset a3;
+    private Asset a4;
+    private Bundle b1;
+
+    @Before
+    public void setup() {
+        a1 = MemoryAsset.create(new byte[]{1, 3, 4});
+        a2 = MemoryAsset.create(new byte[]{2, 3, 4});
+        a3 = MemoryAsset.create(new byte[]{3, 3, 4});
+        a4 = MemoryAsset.create(new byte[]{4, 3, 4});
+        b1 = createTestBundle();
+    }
+
+    private Bundle createTestBundle() {
+
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", a1);
@@ -31,23 +46,30 @@ public class TestMemoryBundle {
         assetBundle.put("three", a3);
         assetBundle.put("four", a4);
 
-        // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
-
         // creating additional metadata
         Map<String, Object> additionalMetaData = new HashMap<>();
         additionalMetaData.put("name", "Bundle1-Test");
-        
-        // create asset bundle with default metadata
-        Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, additionalMetaData);
+
+        // create asset bundle with default metadata and default MemoryAgent
+        Bundle memoryAssetBundle = MemoryBundle.create(assetBundle, additionalMetaData);
+        DID bundleDid=memoryAssetBundle.getDID();
+        assertTrue(bundleDid.toString().contains(memoryAssetBundle.getAssetID()));
+        assertTrue(bundleDid.toString().contains(MemoryAgent.create().getDID().toString()));
         return memoryAssetBundle;
-	}
-	
+    }
+    
+    @Test
+    public void testAttrributes() {
+    	assertTrue(b1.isBundle());
+    	assertFalse(b1.isDataAsset());
+    	assertFalse(b1.isOperation());
+    }
+
     /**
      * Test bundle creation with bundle name, so name will be null
      */
     @SuppressWarnings("unchecked")
-	@Test
+    @Test
     public void testBundleMetadata() {
         // getting the created asset bundle metadata
         Map<String, Object> metadata = b1.getMetadata();
@@ -64,9 +86,9 @@ public class TestMemoryBundle {
 
         // getting the contents of asset bundle through API
         Map<String, Asset> allAssetMap = b1.getAll();
-        assertEquals(1,allAssetMap.get("one").getContent()[0]);
-        assertEquals(3,allAssetMap.get("three").getContent()[0]);
-        assertEquals(4,allAssetMap.get("four").getContent()[0]);
+        assertEquals(1, allAssetMap.get("one").getContent()[0]);
+        assertEquals(3, allAssetMap.get("three").getContent()[0]);
+        assertEquals(4, allAssetMap.get("four").getContent()[0]);
     }
 
     /**
@@ -91,14 +113,11 @@ public class TestMemoryBundle {
 
 
         //Custom metadata
-        Map<String, Object> customeData = new HashMap<>();
-        customeData.put("name", "My First Bundle");
-
-        // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Map<String, Object> customData = new HashMap<>();
+        customData.put("name", "My First Bundle");
 
         // create asset bundle without any custom metadata // so passing null
-        Bundle memoryAssetBundle = MemoryBundle.create(memoryAgent, assetBundle, customeData);
+        Bundle memoryAssetBundle = MemoryBundle.create(assetBundle, customData);
 
         // getting the ceated asset bundle metadata
         Map<String, Object> metadata = memoryAssetBundle.getMetadata();
@@ -111,7 +130,7 @@ public class TestMemoryBundle {
      * Add sub-Asset map in empty bundle
      */
     @SuppressWarnings("unchecked")
-	@Test
+    @Test
     public void testAddAssetMapInEmptyBundle() {
 
         // creating  assets
@@ -129,11 +148,11 @@ public class TestMemoryBundle {
         assetBundle.put("two", a2);
 
         // creating a memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Agent memoryAgent = MemoryAgent.create();
 
         // create asset bundle without any custom metadata // so passing null
         // if assetMap is passed as null it will create an empty map for that
-        Bundle bundle = MemoryBundle.create(memoryAgent, assetBundle, null);
+        Bundle bundle = MemoryBundle.create(assetBundle, null);
 
         byte[] data3 = {4, 16, 7};
         Asset a3 = MemoryAsset.create(data3);
@@ -168,43 +187,42 @@ public class TestMemoryBundle {
     }
 
 
-
     /**
      * APi to test get sub-asset bundle by name
      */
     @Test
-    public void getSubAssetByName(){
-       Asset subAsset = MemoryAsset.createFromString("Test bundle asset by sub asset name");
+    public void getSubAssetByName() {
+        Asset subAsset = MemoryAsset.createFromString("Test bundle asset by sub asset name");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
-        MemoryAgent memoryAgent = MemoryAgent.create();
+        Agent memoryAgent = MemoryAgent.create();
 
-        Bundle bundle = MemoryBundle.create(memoryAgent,assetBundle);
-        assertEquals(bundle.getAll().size(),assetBundle.size());
-        assertEquals(bundle.isBundle(),true);
-        assertEquals(bundle.getMetadata().get(Constant.TYPE),"bundle");
-        assertEquals(bundle.get("one").getAssetID(),subAsset.getAssetID());
+        Bundle bundle = MemoryBundle.create(assetBundle);
+        assertEquals(bundle.getAll().size(), assetBundle.size());
+        assertEquals(bundle.isBundle(), true);
+        assertEquals(bundle.getMetadata().get(Constant.TYPE), "bundle");
+        assertEquals(bundle.get("one").getAssetID(), subAsset.getAssetID());
 
-
+        // TODO: Figure out correct behaviour when registering a bundle
+        // memoryAgent.registerAsset(bundle);
+        // assertEquals(subAsset,memoryAgent.getAsset(subAsset.getAssetID()));
     }
 
     @Test
-    public void testEmptyBundleCreation(){
+    public void testEmptyBundleCreation() {
 
-        MemoryAgent memoryAgent = MemoryAgent.create();
 
-        Bundle bundle = MemoryBundle.create(memoryAgent,null);
+        Bundle bundle = MemoryBundle.create(null);
         assertTrue(bundle.getAll().isEmpty());
-        assertEquals(bundle.isBundle(),true);
-        assertEquals(bundle.getMetadata().get(Constant.TYPE),"bundle");
+        assertEquals(bundle.isBundle(), true);
+        assertEquals(bundle.getMetadata().get(Constant.TYPE), "bundle");
 
     }
 
 
-
     @Test
-    public void testAddAllInExistingBundle(){
+    public void testAddAllInExistingBundle() {
         Asset subAsset1 = MemoryAsset.createFromString("Sub Asset 1");
         Asset subAsset2 = MemoryAsset.createFromString("Sub Asset 2");
         Asset subAsset3 = MemoryAsset.createFromString("Sub Asset 3");
@@ -213,24 +231,23 @@ public class TestMemoryBundle {
         assetBundle.put("1", subAsset1);
         assetBundle.put("2", subAsset2);
         assetBundle.put("3", subAsset3);
-        MemoryAgent memoryAgent = MemoryAgent.create();
 
-        Bundle bundle = MemoryBundle.create(memoryAgent,null);
+        Bundle bundle = MemoryBundle.create(null);
         bundle = bundle.addAll(assetBundle);
-        assertEquals(subAsset1.getAssetID(),bundle.get("1").getAssetID());
+        assertEquals(subAsset1.getAssetID(), bundle.get("1").getAssetID());
 
     }
+
     @SuppressWarnings("unchecked")
-	@Test
-    public void testNestedBundle(){
+    @Test
+    public void testNestedBundle() {
 
         Asset subAsset = MemoryAsset.createFromString("Test bundle asset by sub asset name");
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
-        MemoryAgent memoryAgent = MemoryAgent.create();
 
-        Bundle nestedBundle = MemoryBundle.create(memoryAgent,assetBundle);
+        Bundle nestedBundle = MemoryBundle.create(assetBundle);
 
         Asset subAsset2 = MemoryAsset.createFromString("Test bundle Main");
         //assigning each asset with name and adding to map
@@ -238,8 +255,7 @@ public class TestMemoryBundle {
         assetBundle2.put("1", subAsset2);
         assetBundle2.put("2", nestedBundle);
 
-        Bundle mainBundle = MemoryBundle.create(memoryAgent,assetBundle2);
-        //System.out.println(JSON.toPrettyString(mainBundle.getMetadata()));
+        Bundle mainBundle = MemoryBundle.create(assetBundle2);
         Map<String, Map<String, String>> contents = (Map<String, Map<String, String>>) mainBundle.getMetadata().get("contents");
         assertEquals(contents.get("2").get("assetID"), nestedBundle.getAssetID());
         assertEquals(mainBundle.get("2").isBundle(), true);

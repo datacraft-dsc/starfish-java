@@ -9,7 +9,7 @@ import org.junit.Test;
 public class InvokeServicePaid_21 {
 
     @Test
-    public  void test(){
+    public void test() {
 
     }
 }

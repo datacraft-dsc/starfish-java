@@ -1,9 +1,11 @@
 package sg.dex.starfish.impl.file;
 
-import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.OCTET_STREAM;
-import static sg.dex.starfish.constant.Constant.TYPE;
+import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.exception.AuthorizationException;
+import sg.dex.starfish.exception.StorageException;
+import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,12 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Map;
 
-import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.AAsset;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class exposing a file on the local file system as an Ocean asset
@@ -30,17 +27,17 @@ public class FileAsset extends AAsset implements DataAsset {
         super(meta);
         this.file = file;
     }
-    
+
     /**
      * Create File Asset with specific metadata and given path.
      *
      * @param f path of the file
      * @return FileAsset instance created using given params
      */
-    public static FileAsset create(File f,String metaString) {
+    public static FileAsset create(File f, String metaString) {
         return new FileAsset(metaString, f);
     }
-    
+
     /**
      * This method is to create File Asset with specific given path.
      *
@@ -48,28 +45,28 @@ public class FileAsset extends AAsset implements DataAsset {
      * @return FileAsset instance created using given params
      */
     public static FileAsset create(File f) {
-        return create(f,(Map<String,Object>)null);
+        return create(f, (Map<String, Object>) null);
     }
-    
+
     /**
      * This method is to create File Asset with specific given path.
      *
      * @param f path of the file
      * @return FileAsset instance created using given params
      */
-    public static FileAsset create(File f,Map<String,Object> meta) {
-        return create(f,JSON.toPrettyString(buildMetadata( meta)));
+    public static FileAsset create(File f, Map<String, Object> meta) {
+        return create(f, JSON.toPrettyString(buildMetadata(meta)));
     }
 
     /**
      * Build default metadata for a file asset
      *
      * @param metaMap metadata associated with the asset.This metadata will be be added in addition to default
-     *             metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *             default value will be overridden.
+     *                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                default value will be overridden.
      * @return The default metadata as a String
      */
-    protected static Map<String,Object> buildMetadata(Map<String,Object> metaMap) {
+    protected static Map<String, Object> buildMetadata(Map<String, Object> metaMap) {
         Map<String, Object> ob = Utils.createDefaultMetadata();
         ob.put(TYPE, DATA_SET);
         ob.put(CONTENT_TYPE, OCTET_STREAM);
@@ -106,12 +103,13 @@ public class FileAsset extends AAsset implements DataAsset {
     public long getContentSize() {
         return null != file ? file.length() : -1;
     }
+
     public File getSource() {
         return file;
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return create(this.getSource(),newMeta);
+        return create(this.getSource(), newMeta);
     }
 }

@@ -32,7 +32,7 @@ public class PurchaseAsset_17 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
         Asset a = MemoryAsset.createFromString("Test Asset purchase");
 
         // create remote Asset
@@ -41,49 +41,48 @@ public class PurchaseAsset_17 {
         Map<String, Object> data2 = new HashMap<>();
         //data.put( "status", "unpublished");
         data2.put("assetid", remoteAsset.getAssetID());
-         listing = remoteAgent.createListing(data2);
+        listing = remoteAgent.createListing(data2);
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
-        listing =remoteAgent.updateListing(data2);
+        listing = remoteAgent.updateListing(data2);
     }
 
 
     @Test
-    public  void testPurchaseAsset(){
+    public void testPurchaseAsset() {
 
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put("listingid", listing.getMetaData().get("id"));
 
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
-        assertEquals(purchase.getListing().getId(),listing.getMetaData().get("id"));
+        assertEquals(purchase.getListing().getId(), listing.getMetaData().get("id"));
 
     }
+
     @Test
-    public void testPurchaseWithUnpublishedListing(){
+    public void testPurchaseWithUnpublishedListing() {
         Asset a = MemoryAsset.createFromString("Test Asset purchase");
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
-        ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(remoteAsset);
+        ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(remoteAsset);
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
         Listing listing = remoteAgent.createListing(data2);
         data2.put("id", listing.getMetaData().get("id"));
         data2.put(STATUS, UNPUBLISHED);
-        listing =remoteAgent.updateListing(data2);
-        //System.out.println(listing.getId());
-       Map<String,Object> purchaseData = new HashMap<>();
+        listing = remoteAgent.updateListing(data2);
+        Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));
 
         Purchase purchase = remoteAgent.createPurchase(purchaseData);
 
-        assertEquals(purchase.getMetaData().get(STATUS),WISHLIST);
-;
+        assertEquals(purchase.getMetaData().get(STATUS), WISHLIST);
     }
 
     @Test(expected = StarfishValidationException.class)
-    public void testPurchaseWithNull(){
-    	assumeNotNull(remoteAgent);
+    public void testPurchaseWithNull() {
+        assumeNotNull(remoteAgent);
         remoteAgent.createPurchase(null);
     }
 

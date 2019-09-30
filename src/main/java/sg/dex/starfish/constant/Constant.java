@@ -31,13 +31,13 @@ public class Constant {
 
     //-----JOB  -------
 
-
-    public static final String STARTED = "started";
-    public static final String IN_PROGRESS = "inprogress";
-    public static final String ACCEPTED = "accepted";
+    // FIXME: confirm what are the actual job statuses in DEP6?
     public static final String SCHEDULED = "scheduled";
-    public static final String COMPLETED = "completed";
     public static final String SUCCEEDED = "succeeded";
+    public static final String RUNNING = "running";
+    public static final String FAILED = "failed";
+	public static final String CANCELLED = "cancelled";
+    
     public static final String OPERATION = "operation";
     public static final String PARAMS = "params";
     public static final String JOBS = "/jobs";
@@ -72,15 +72,25 @@ public class Constant {
 
     //--------INVOKE -----------
 
-    public static final String INVOKE_SYNC = "/invoke";
-    public static final String INVOKE_ASYNC = "/invokeasync";
+    public static final String INVOKE_SYNC = "/sync";
+    public static final String INVOKE_ASYNC = "/async";
 
     //----------SQUID CONSTANT----------------------
 
-    public static final String DEFAULT_NAME="Test_user";
-    public static final String DEFAULT_LICENSE="Test_license";
-    public static final String DEFAULT_AUTHOR="Test_author";
-    public static final String DEFAULT_DATE_CREATED="2012-10-10T17:00:000Z";
-    public static final Object DEFAULT_PRICE=5;
+    public static final String DEFAULT_NAME = "Test_user";
+    public static final String DEFAULT_LICENSE = "Test_license";
+    public static final String DEFAULT_AUTHOR = "Test_author";
+    public static final String DEFAULT_DATE_CREATED = "2012-10-10T17:00:000Z";
+    public static final Object DEFAULT_PRICE = 5;
+    
+    //----------DDO Endpoints---------------------------------
+	public static final String SERVICE = "service";
+	public static final String SERVICE_ENDPOINT = "serviceEndpoint";
+	public static final String ENDPOINT_STORAGE = "Ocean.Storage.v1";
+	public static final String ENDPOINT_META = "Ocean.Meta.v1";
+	public static final String ENDPOINT_MARKET = "Ocean.Market.v1";
+	public static final String ENDPOINT_INVOKE = "Ocean.Invoke.v1";
+
+
 
 }

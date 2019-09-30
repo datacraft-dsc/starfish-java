@@ -19,12 +19,12 @@ import static junit.framework.TestCase.assertEquals;
 public class UploadAsset_10 {
 
 
-    private  RemoteAgent remoteAgent;
+    private RemoteAgent remoteAgent;
 
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
 
     }
 
@@ -33,11 +33,10 @@ public class UploadAsset_10 {
 
         Asset asset = MemoryAsset.createFromString("test upload of asset");
 
-        // upload will do the registration and upload the content
-        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
+        RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
         // getting the content form Remote Agent (Downloading the content)
 
-        String downloadData = RemoteAgentConfig.getDataAsStringFromInputStream(ra.getContentStream());
+        String downloadData = AgentService.getDataAsStringFromInputStream(ra.getContentStream());
 
 
         assertEquals(asset.getAssetID(), ra.getAssetID());

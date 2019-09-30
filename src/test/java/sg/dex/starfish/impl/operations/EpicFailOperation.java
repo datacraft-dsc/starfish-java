@@ -11,28 +11,27 @@ import java.util.Map;
  * data asset
  *
  * @author Mike
- *
  */
 
 public class EpicFailOperation extends AMemoryOperation implements Operation {
-	protected EpicFailOperation(String meta, MemoryAgent memoryAgent) {
-		super(meta,memoryAgent);
-	}
+    protected EpicFailOperation(String meta, MemoryAgent memoryAgent) {
+        super(meta, memoryAgent);
+    }
 
-	/**
-	 * Creates a new instance of EpicFailOperation
-	 * @param meta metadata
-	 * @return new instance of EpicFailOperation
-	 */
-	public static EpicFailOperation create(String meta) {
-		//String meta =  "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-		MemoryAgent memoryAgent = MemoryAgent.create();
-		return new EpicFailOperation(meta,memoryAgent);
-	}
+    /**
+     * Creates a new instance of EpicFailOperation
+     *
+     * @param meta metadata
+     * @return new instance of EpicFailOperation
+     */
+    public static EpicFailOperation create(String meta) {
+        MemoryAgent memoryAgent = MemoryAgent.create();
+        return new EpicFailOperation(meta, memoryAgent);
+    }
 
-	@Override
-	public Map<String, Object> compute(Map<String, Object> params) {
-		throw new Error ("Always failing operation");
-	}
+    @Override
+    public synchronized Map<String, Object> compute(Map<String, Object> params) {
+        throw new Error("EPIC FAIL");
+    }
 
 }

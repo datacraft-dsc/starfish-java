@@ -6,11 +6,12 @@ import sg.dex.starfish.Purchase;
 import java.util.HashMap;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.LISTING_ID;
+import static sg.dex.starfish.constant.Constant.STATUS;
 
 /**
  * This class representing an purchase managed via a remote agent.
- *
+ * <p>
  * This class included methods for create , get listing,
  * get status and metadata of the purchase
  * The instance of this class will be present in Ocean ecosystem and be referred by using the purchase ID.
@@ -34,7 +35,7 @@ public class RemotePurchase implements Purchase {
      * and the existing listing id.
      *
      * @param remoteAgent remote Agent
-     * @param id id
+     * @param id          id
      */
     private RemotePurchase(RemoteAgent remoteAgent, String id) {
         this.remoteAgent = remoteAgent;
@@ -46,7 +47,7 @@ public class RemotePurchase implements Purchase {
      * To get the Reference of Existing Listing
      *
      * @param agent agent on which the purchase instance need to be created
-     * @param id id
+     * @param id    id
      * @return RemotePurchase instance
      */
     public static RemotePurchase create(RemoteAgent agent, String id) {
@@ -68,7 +69,7 @@ public class RemotePurchase implements Purchase {
     @Override
     public Listing getListing() {
         // get the Listing from Listing id
-           return remoteAgent.getListing(this.getListingId());
+        return remoteAgent.getListing(this.getListingId());
     }
 
     @Override
@@ -79,7 +80,7 @@ public class RemotePurchase implements Purchase {
     @Override
     public Map<String, Object> getMetaData() {
         @SuppressWarnings("unchecked")
-		Map<String, Object> metaData = metaDataCache.get(purchase_id) == null ?
+        Map<String, Object> metaData = metaDataCache.get(purchase_id) == null ?
                 remoteAgent.getPurchaseMetaData(purchase_id) : (Map<String, Object>) metaDataCache.get(purchase_id);
         return metaData;
     }

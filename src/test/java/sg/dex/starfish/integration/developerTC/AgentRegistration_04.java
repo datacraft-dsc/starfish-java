@@ -4,7 +4,8 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -39,21 +40,20 @@ public class AgentRegistration_04 {
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", "/api/v1/auth"));
-         services.add(Utils.mapOf(
+        services.add(Utils.mapOf(
                 "type", "Ocean.Market.v1",
                 "serviceEndpoint", "/api/v1/market"));
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-        //getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+Resolver resolver= new LocalResolverImpl();
         // creating unique DID
         DID surferDID = DID.createRandom();
         //registering the  DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
+        resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        RemoteAgent remoteAgent = RemoteAgent.create(ocean, surferDID);
+        RemoteAgent remoteAgent = RemoteAgent.create(resolver, surferDID);
         Assume.assumeNotNull(remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
@@ -71,11 +71,11 @@ public class AgentRegistration_04 {
 
         //Should not allow to create the null DID ?
         //getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
-        RemoteAgent remoteAgent = RemoteAgent.create(ocean, null);
+        Resolver resolver=new LocalResolverImpl();
+        RemoteAgent remoteAgent = RemoteAgent.create(resolver, null);
         //registering the  DID and DDO
 
-        ocean.installLocalDDO(null, ddoString);
+        resolver.registerDID(null, ddoString);
 
         assertEquals(remoteAgent.getDID(), null);
 

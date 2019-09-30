@@ -31,7 +31,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
         super(metaData);
         this.resourcePath = resourcePath;
     }
-    
+
     /**
      * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
      *
@@ -56,8 +56,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given resource path and metadata
      */
 
-    public static ResourceAsset create(String resourcePath, Map <String,Object> metaData) {
-        return create(resourcePath,JSON.toPrettyString(buildMetaData( metaData)));
+    public static ResourceAsset create(String resourcePath, Map<String, Object> metaData) {
+        return create(resourcePath, JSON.toPrettyString(buildMetaData(metaData)));
     }
 
     /**
@@ -67,19 +67,19 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
-        return create(resourcePath,(Map<String,Object>)null);
+        return create(resourcePath, (Map<String, Object>) null);
     }
 
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
-     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
-     *                     default value will be overridden.
+     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     *                 default value will be overridden.
      * @return String buildMetadata
      */
 
-    private static Map<String,Object> buildMetaData( Map<String,Object> metaData) {
+    private static Map<String, Object> buildMetaData(Map<String, Object> metaData) {
 
 
         Map<String, Object> ob = new HashMap<>();
@@ -99,7 +99,6 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
 
-
     /**
      * Gets InputStream corresponding to this Asset
      *
@@ -110,7 +109,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
     @Override
     public InputStream getContentStream() {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-        if (inputStream == null) throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
+        if (inputStream == null)
+            throw new IllegalStateException("Resource does not exist on classpath: " + resourcePath);
         return inputStream;
     }
 
@@ -122,13 +122,14 @@ public class ResourceAsset extends AAsset implements DataAsset {
             throw new GenericException("Exception occurred  for asset id :" + getAssetID() + " while finding getting the Content size :", e);
         }
     }
+
     public String getSource() {
         return resourcePath;
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return create(this.getSource(),newMeta);
+        return create(this.getSource(), newMeta);
     }
 
 }

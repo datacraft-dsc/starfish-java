@@ -4,7 +4,8 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -26,15 +27,14 @@ import static org.junit.Assert.assertNull;
 public class AgentEndpointUpdate_05 {
 
 
-
     @Test
     public void testServiceEndPoint() {
         // creating an instance of Remote Agent
-        String surferURL = RemoteAgentConfig.getSurferUrl();
+        String surferURL = AgentService.getSurferUrl();
         RemoteAgent remoteAgent = createRemoteAgent(surferURL);
         Assume.assumeNotNull(remoteAgent);
 
-        assertTrue(remoteAgent.getStorageEndpoint().contains( "/api/v1/assets"));
+        assertTrue(remoteAgent.getStorageEndpoint().contains("/api/v1/assets"));
         assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
 
         // below endpoint wll be null and it was not initialize while creating services for Remote Agent
@@ -59,16 +59,15 @@ public class AgentEndpointUpdate_05 {
         // converting ddo to string
         String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+        Resolver resolver = new LocalResolverImpl();
         // creating unique DID
         DID surferDID = DID.createRandom();
 
         // registering the DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
+        resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        return  RemoteAgent.create(ocean, surferDID);
+        return RemoteAgent.create(resolver, surferDID);
 
     }
 }

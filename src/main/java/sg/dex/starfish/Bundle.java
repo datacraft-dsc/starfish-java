@@ -31,11 +31,11 @@ public interface Bundle extends Asset {
      * It will add the sub-asset passed in the argument and
      * return a new Bundle asset
      *
-     * @param name Name of the sub-asset
+     * @param name  Name of the sub-asset
      * @param asset Asset the need to be added in existing bundle
      * @return An new bundle including the sub asset passed
      */
-    public Bundle add(String name, Asset asset);
+    Bundle add(String name, Asset asset);
 
     /**
      * API to create a new bundle adding all named sub-assets passed as parameters
@@ -43,7 +43,7 @@ public interface Bundle extends Asset {
      * @param assetMap sub Asset map that need to be bundled
      * @return An new bundle including the all thee given sub-assets passed as argument
      */
-    public Bundle addAll(Map<String, Asset> assetMap);
+    Bundle addAll(Map<String, Asset> assetMap);
 
     /**
      * API to get an specific asset from an asset Bundle by asset name
@@ -51,27 +51,28 @@ public interface Bundle extends Asset {
      * @param name The name of the sub-asset
      * @return The sub-asset referenced by the given name, or null if not present
      */
-    public <R extends Asset> R get(String name);
+    <R extends Asset> R get(String name);
 
     /**
      * API to get an immutable all named  sub Asset belong to asset Bundle
      *
      * @return A map of all sub-assets within this bundle
      */
-    public Map<String, Asset> getAll();
+    Map<String, Asset> getAll();
 
     @Override
-    public default DID getAssetDID() {
-        throw new UnsupportedOperationException("Unable to obtain DID for asset of class: "+getClass());
+    default DID getDID() {
+        throw new UnsupportedOperationException("Unable to obtain DID for asset of class: " + getClass());
     }
 
     /**
-     *API to get the ParamValue
+     * API to get the ParamValue
+     *
      * @return map of did and AssetID
      */
     @Override
-    public default Map<String,Object> getParamValue() {
-        Map<String,Object> o=new HashMap<>();
+    default Map<String, Object> getParamValue() {
+        Map<String, Object> o = new HashMap<>();
         o.put(Constant.DID, getAssetID());
         return o;
     }

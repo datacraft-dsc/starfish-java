@@ -1,15 +1,31 @@
-{"dateCreated":"2019-05-07T08:17:31.521445Z",
-	"size":"3",
-	"contentType":"application/octet-stream",
-	"contentHash":"4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45",
-	"tags":["primes"],
-	"license":"CC-BY",
-	"author":"Primely Inc",
-	"name":"Prime computation operation",
-	"description":"Computes prime numbers",
-	"inLanguage":"en",
-	"type":"operation",
- "operation":{
-     "modes":["sync","async"],
-		"params":{"first-n":{"type":"json"}},
-		"results":{"primes":{"type":"asset"}}}}
+{
+  "dateCreated": "2019-05-07T08:17:31.521445Z",
+  "size": "3",
+  "contentType": "application/octet-stream",
+  "contentHash": "4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45",
+  "tags": [
+    "primes"
+  ],
+  "license": "CC-BY",
+  "author": "Primely Inc",
+  "name": "Prime computation operation",
+  "description": "Computes prime numbers",
+  "inLanguage": "en",
+  "type": "operation",
+  "operation": {
+    "modes": [
+      "sync",
+      "async"
+    ],
+    "params": {
+      "first-n": {
+        "type": "json"
+      }
+    },
+    "results": {
+      "sumOfPrime": {
+        "type": "json"
+      }
+    }
+  }
+}

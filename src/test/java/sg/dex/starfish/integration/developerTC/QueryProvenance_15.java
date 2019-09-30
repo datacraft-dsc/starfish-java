@@ -10,7 +10,6 @@ import sg.dex.starfish.util.ProvUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,11 +22,11 @@ import java.util.UUID;
  */
 public class QueryProvenance_15 {
 
-    private static RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent();
+    private static RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 
     @Test
     public void testProvenance() throws URISyntaxException {
-      // adding provenance
+        // adding provenance
         String actId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();
         Map<String, Object> provmetadata = ProvUtil.createPublishProvenance(actId, agentId);
@@ -35,10 +34,10 @@ public class QueryProvenance_15 {
         metaDataAsset.put("provenance", provmetadata);
 
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
-        Asset assetUrl = URIAsset.create(new URI(url),metaDataAsset);
+        Asset assetUrl = URIAsset.create(new URI(url), metaDataAsset);
         remoteAgent.registerAsset(assetUrl);
         Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
-        Map<String,Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
+        Map<String, Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
 
         Assume.assumeNotNull(provData.get("activity"));
         Assume.assumeNotNull(provData.get("wasGeneratedBy"));

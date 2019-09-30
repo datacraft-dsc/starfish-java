@@ -5,11 +5,9 @@ import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.Ocean;
 import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.impl.AAsset;
+import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
@@ -24,38 +22,31 @@ import java.util.UUID;
  *
  * @author Tom
  */
-public class SquidAsset extends AAsset implements  DataAsset{
+public class SquidAsset extends ARemoteAsset implements DataAsset {
 
-
-    private final Ocean ocean;
-    private final DID did;
-    private DDO ddo;
-
-
-    private SquidAsset(String meta, DID did, DDO ddo, Ocean ocean) {
-        super(meta);
-        this.did = did;
-        this.ddo = ddo;
-        this.ocean = ocean;
+private com.oceanprotocol.squid.models.DID did;
+    private SquidAsset(String meta, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
+        super(meta, squidAgent);
+        this.did=did;
     }
 
-    public static SquidAsset create(String metaData, DID did, DDO ddo, Ocean ocean) {
+    public static SquidAsset create(String metaData, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
 
-        return new SquidAsset(metaData, did, ddo, ocean);
+        return new SquidAsset(metaData, squidAgent,did);
     }
 
 
-    public static Asset create(Ocean ocean, DID did) {
+    public static SquidAsset create(DID did, SquidAgent squidAgent) {
 
         com.oceanprotocol.squid.models.DID squidDID;
         try {
             squidDID =
                     com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());
-            DDO ddo = ocean.getAssetsAPI().resolve(squidDID);
+            DDO ddo = SquidService.getOceanAPI().getAssetsAPI().resolve(squidDID);
 
-           Map<String,Object> metaData =wrapDDOMeta(ddo);
+            Map<String, Object> metaData = wrapDDOMeta(ddo);
 
-            return create(JSON.toPrettyString(metaData), did, ddo, ocean);
+            return new SquidAsset(JSON.toPrettyString(metaData), squidAgent,squidDID);
         } catch (DIDFormatException e) {
             throw new Error(e);
         } catch (EthereumException e) {
@@ -67,10 +58,11 @@ public class SquidAsset extends AAsset implements  DataAsset{
 
     /**
      * Method that wrap the squid DDO data  into starfish metadata as additional information
+     *
      * @param ddo squid ddo
      * @return map of metadata which have squid DDO information
      */
-    private static HashMap<String, Object>  wrapDDOMeta(DDO ddo) {
+    private static HashMap<String, Object> wrapDDOMeta(DDO ddo) {
         HashMap<String, Object> info = new HashMap<>();
         try {
             info.put("ddoString", JSON.toMap(ddo.toJson()));
@@ -83,40 +75,15 @@ public class SquidAsset extends AAsset implements  DataAsset{
         meta.put("additionalInformation", info);
 
         // adding default provenance
-        String actId= UUID.randomUUID().toString();
-        String agentId=UUID.randomUUID().toString();
+        String actId = UUID.randomUUID().toString();
+        String agentId = UUID.randomUUID().toString();
 
-        Map<String, Object> provenanceData= ProvUtil.createPublishProvenance(actId,agentId);
-        meta.put("provenance",provenanceData);
+        Map<String, Object> provenanceData = ProvUtil.createPublishProvenance(actId, agentId);
+        meta.put("provenance", provenanceData);
 
         return meta;
     }
 
-    /**
-     * Method to get the Ocean reference
-     * @return Ocean instance
-     */
-    public Ocean getOcean() {
-        return ocean;
-    }
-
-    /**
-     * Method to get the Squid DDO
-     * @return DDO ddo
-     */
-    public DDO getSquidDDO() {
-        return ddo;
-    }
-
-    /**
-     * Gets the DID for this SquidAsset
-     *
-     * @return DID
-     */
-    @Override
-    public DID getAssetDID() {
-        return did;
-    }
 
     @Override
     public boolean isDataAsset() {
@@ -133,8 +100,9 @@ public class SquidAsset extends AAsset implements  DataAsset{
     public boolean isOperation() {
         return false;
     }
+
     @Override
-    public InputStream getContentStream(){
+    public InputStream getContentStream() {
         // todo
         throw new GenericException("Need to implement");
     }
@@ -143,6 +111,10 @@ public class SquidAsset extends AAsset implements  DataAsset{
     public long getContentSize() {
         // todo
         throw new GenericException("Need to implement");
+    }
+    @Override
+    public DID getDID() {
+        return DID.parse(this.did.toString());
     }
 
 

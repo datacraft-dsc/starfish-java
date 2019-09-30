@@ -1,11 +1,11 @@
 package sg.dex.starfish.impl.operations;
 
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,29 +14,30 @@ import java.util.Map;
  * It calculate all prime number present before any given number.
  * It reads metadata from a file which has basic detail of the input and output type.
  */
-public class FindPrime_JsonI_JsonO extends AMemoryOperation implements Operation {
-    protected FindPrime_JsonI_JsonO(String meta, MemoryAgent memoryAgent) {
+public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation implements Operation {
+    protected FindSumOfPrime_JsonInput_AssetOutput(String meta, MemoryAgent memoryAgent) {
         super(meta, memoryAgent);
     }
 
-    public static FindPrime_JsonI_JsonO create(MemoryAgent memoryAgent) throws IOException {
-        ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/test_metadata.json");
-        return new FindPrime_JsonI_JsonO(resourceAsset.getMetadataString(), memoryAgent);
+    public static FindSumOfPrime_JsonInput_AssetOutput create(MemoryAgent memoryAgent) {
+        ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/prime_asset_metadata.json");
+        return new FindSumOfPrime_JsonInput_AssetOutput(resourceAsset.getMetadataString(), memoryAgent);
     }
 
 
-    private Map<String, Object> doCompute(Object input) {
+    private Map<String, Object> doCompute(final Object input) {
         Integer num = (Integer.parseInt(input.toString()));
+        int primeSum =0;
+        for (int i = 2; i < num; i++) {
+            if (isPrime(i)) {
+                primeSum =primeSum+i;
+            }
 
-        StringBuilder res = new StringBuilder();
-
-        for (int i = 2; i <= num; i++) {
-            if (isPrime(i))
-                res.append(i + "  ");
         }
-        Map<String, Object> response = new HashMap<>();
-        response.put("output", res);
-        return response;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("sumOfPrime", primeSum);
+        return result;
     }
 
     @Override

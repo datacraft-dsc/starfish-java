@@ -40,14 +40,14 @@ public class TestMemoryListing {
         Map<String, Object> metaData = new HashMap<>();
         try {
             String metaContent = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            Map<String,Object> json = JSON.toMap(metaContent);
+            Map<String, Object> json = JSON.toMap(metaContent);
             metaData.put("info", json);
         } catch (Exception e) {
             e.printStackTrace();
         }
         metaData.put("assetid", uploadedAsset.getAssetID());
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        assertEquals(listing.getAssetID(),uploadedAsset.getAssetID());
+        assertEquals(listing.getAssetID(), uploadedAsset.getAssetID());
     }
 
     /**
@@ -68,11 +68,11 @@ public class TestMemoryListing {
 
 
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        assertEquals(listing.getAssetID(),uploadedAsset.getAssetID());
+        assertEquals(listing.getAssetID(), uploadedAsset.getAssetID());
     }
 
     /**
-     *Testing listing API with all (agreement,info,..)valid data
+     * Testing listing API with all (agreement,info,..)valid data
      */
     @Test
     public void testWithAllData() {
@@ -97,7 +97,7 @@ public class TestMemoryListing {
         metaData.put("trust_level", 0);
 
         Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-        assertEquals(listing.getAssetID(),a.getAssetID());
+        assertEquals(listing.getAssetID(), a.getAssetID());
 
     }
 
@@ -118,7 +118,7 @@ public class TestMemoryListing {
 
         try {
             String metaContent = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            Map<String,Object> json = JSON.toMap(metaContent);
+            Map<String, Object> json = JSON.toMap(metaContent);
             metaData.put("info", json);
         } catch (Exception e) {
             e.printStackTrace();

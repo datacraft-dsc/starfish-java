@@ -21,7 +21,7 @@ public class AssetDownload_19 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
         // create remote Asset
     }
@@ -31,7 +31,7 @@ public class AssetDownload_19 {
 
         Asset asset = MemoryAsset.createFromString("test upload of asset");
         // upload will register and upload the asset
-        RemoteDataAsset ra = (RemoteDataAsset)remoteAgent.uploadAsset(asset);
+        RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
 
         //ra.getContentStream()
         assertEquals(asset.getAssetID(), ra.getAssetID());

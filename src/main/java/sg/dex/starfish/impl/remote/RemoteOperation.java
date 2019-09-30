@@ -1,10 +1,10 @@
 package sg.dex.starfish.impl.remote;
 
-import java.util.Map;
-
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.util.Params;
+
+import java.util.Map;
 
 /**
  * Class representing a Invokable operation callable via the Invoke API
@@ -15,9 +15,11 @@ import sg.dex.starfish.util.Params;
  */
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
+    private RemoteAgent remoteAgent;
     protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
 
         super(meta, remoteAgent);
+         this.remoteAgent=remoteAgent;
     }
 
     /**

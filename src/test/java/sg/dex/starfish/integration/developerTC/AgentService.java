@@ -1,10 +1,12 @@
 package sg.dex.starfish.integration.developerTC;
 
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.RemoteAgentConfig;
 import sg.dex.starfish.util.Utils;
 
 import java.io.BufferedReader;
@@ -18,13 +20,12 @@ import java.util.*;
  * Currently it is written to connect with Surfer
  * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
-public class RemoteAgentConfig {
+public class AgentService {
 
     private static RemoteAgent surfer;
     private static RemoteAgent invokeAgent;
     private static String surferUrl;
     private static String bargeUrl;
-
 
 
     private static String invokeUrl;
@@ -44,14 +45,16 @@ public class RemoteAgentConfig {
         username = properties.getProperty("surfer.username");
         password = properties.getProperty("surfer.password");
 
-        surfer = getSurfer(surferUrl);
+
+
+        surfer = RemoteAgentConfig.getRemoteAgent(getDDO(surferUrl),DID.createRandom(),username,password);
 
         String ip_invoke = properties.getProperty("koi.host");
         String port_invoke = properties.getProperty("koi.port");
 
-        invokeUrl=ip_invoke+":"+port_invoke;
-        invokeAgent =getInvokeAgent(invokeUrl);
-        
+        invokeUrl = ip_invoke + ":" + port_invoke;
+        invokeAgent = getInvokeAgent(invokeUrl);
+
         // setting barge URL
         String barge_ip = properties.getProperty("barge.host");
         String barge_port = properties.getProperty("barge.port");
@@ -59,7 +62,7 @@ public class RemoteAgentConfig {
 
     }
 
-    private static RemoteAgent getSurfer(String host) {
+    private static String getDDO(String host) {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
@@ -70,7 +73,7 @@ public class RemoteAgentConfig {
                 "serviceEndpoint", host + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host ));
+                "serviceEndpoint", host));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", host + "/api/v1/auth"));
@@ -80,31 +83,18 @@ public class RemoteAgentConfig {
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
-        // creating unique DID
-        DID surferDID = DID.createRandom();
-        // registering the DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
+        return ddoString;
 
-
-
-        //Creating remote Account
-        Map<String,Object> credentialMap = new HashMap<>();
-        credentialMap.put("username",username);
-        credentialMap.put("password",password);
-
-        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
-        // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, surferDID,account);
     }
 
     public static String getSurferUrl() {
         return surferUrl;
     }
+
     public static String getInvokeUrl() {
         return invokeUrl;
     }
+
     public static String getBargeUrl() {
         return bargeUrl;
     }
@@ -117,8 +107,8 @@ public class RemoteAgentConfig {
     private static Properties getProperties() {
         Properties properties = new Properties();
         try {
-            try (InputStream is = RemoteAgentConfig.class.getClassLoader()
-                    .getResourceAsStream("application.properties")) {
+            try (InputStream is = AgentService.class.getClassLoader()
+                    .getResourceAsStream("application_test.properties")) {
                 properties.load(is);
             }
         } catch (IOException e) {
@@ -128,14 +118,13 @@ public class RemoteAgentConfig {
     }
 
 
-
     private static RemoteAgent getInvokeAgent(String host) {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
         services.add(Utils.mapOf(
                 "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host ));
+                "serviceEndpoint", host));
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
                 "serviceEndpoint", host + "/api/v1/meta"));
@@ -149,22 +138,21 @@ public class RemoteAgentConfig {
         String ddoString = JSON.toPrettyString(ddo);
 
         // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+        Resolver resolver= new LocalResolverImpl();
         // creating unique DID
         DID invokeDID = DID.createRandom();
         // registering the DID and DDO
-        ocean.installLocalDDO(invokeDID, ddoString);
-
+        resolver.registerDID(invokeDID, ddoString);
 
 
         //Creating remote Account
-        Map<String,Object> credentialMap = new HashMap<>();
-        credentialMap.put("username",username);
-        credentialMap.put("password",password);
+        Map<String, Object> credentialMap = new HashMap<>();
+        credentialMap.put("username", username);
+        credentialMap.put("password", password);
 
         RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(ocean, invokeDID,account);
+        return RemoteAgent.create(resolver, invokeDID, account);
     }
 
     /**
@@ -206,7 +194,7 @@ public class RemoteAgentConfig {
             }
 
         } catch (IOException ioe) {
-//            System.out.println("Exception while reading input " + ioe);
+            throw new RuntimeException(ioe);
         } finally {
             // close the streams using close method
             try {
@@ -214,7 +202,6 @@ public class RemoteAgentConfig {
                     br.close();
                 }
             } catch (IOException ioe) {
-                System.out.println("Error while closing stream: " + ioe);
             }
 
         }

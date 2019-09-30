@@ -6,9 +6,8 @@ import sg.dex.starfish.impl.operations.TestMemoryOperations;
 
 /**
  * Test suite for in-memory implementations
- * 
- * @author Mike
  *
+ * @author Mike
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -17,7 +16,8 @@ import sg.dex.starfish.impl.operations.TestMemoryOperations;
         TestMemoryOperations.class,
         TestMemoryBundle.class,
         TestMemoryListing.class,
-        TestMemoryPurchase.class
+        TestMemoryPurchase.class,
+        TestMemoryOperations.class
 })
 public class MemorySuite {
 

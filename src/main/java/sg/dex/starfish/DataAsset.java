@@ -1,5 +1,8 @@
 package sg.dex.starfish;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -9,14 +12,9 @@ import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
 /**
  * Interface representing a data asset.
- *
+ * <p>
  * A data asset is any asset that can be represented as an immutable sequence of bytes.
  * As such, data assets offer the following properties:
  * - They can be validated with a hash of the byte content
@@ -27,128 +25,106 @@ import java.util.Map;
  */
 public interface DataAsset extends Asset {
 
-	@Override
-	public default boolean isDataAsset() {
-		return true;
-	}
+    @Override
+    default boolean isDataAsset() {
+        return true;
+    }
 
-	/**
-	 * Gets an input stream that can be used to consume the content of this asset.
-	 *
-	 * Will throw an exception if consumption of the asset data in not possible locally.
-	 * @throws AuthorizationException if requester does not have access permission
-	 * @throws StorageException if unable to load the Asset
-	 * @return An input stream allowing consumption of the asset data
-	 */
-	public InputStream getContentStream();
+    /**
+     * Gets an input stream that can be used to consume the content of this asset.
+     * <p>
+     * Will throw an exception if consumption of the asset data in not possible locally.
+     *
+     * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requester does not have access permission
+     * @throws StorageException       if unable to load the Asset
+     */
+    @Override
+    InputStream getContentStream();
 
-	/**
-	 * Gets the data content of this data asset as a byte[] array.
-	 *
-	 * @return The byte contents of this asset.
-	 */
-	@Override
-	public default byte[] getContent() {
-		InputStream is = getContentStream();
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-		byte[] buf = new byte[16384];
-
-		int bytesRead;
-		try {
-			while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {
-				buffer.write(buf, 0, bytesRead);
-			}
-		} catch (IOException e) {
-			throw new StorageException("Unable to get Asset content",e);
-		}
-
-		return buffer.toByteArray();
-	}
-
-	/**
-	 * Gets the size of this data asset's content
-	 *
-	 * @return The size of the asset in bytes
-	 */
-	public abstract long getContentSize();
+    /**
+     * Gets the size of this data asset's content
+     *
+     * @return The size of the asset in bytes
+     */
+    long getContentSize();
 
 
-	/**
-	 * This method is to validate the hash of the asset content .
-	 * it will calculate the hash of the content of an Asset
-	 * then compare with the hash value included in metadata,
-	 * if both are not the same , StarfishValidation Exception will be thrown
-	 * @return boolean  true if the content is valid else false
-	 *
-	 * @throws StarfishValidationException if hash content is not matched , exception will be thrown
-	 */
-	public default boolean validateContentHash() {
+    /**
+     * This method is to validate the hash of the asset content .
+     * it will calculate the hash of the content of an Asset
+     * then compare with the hash value included in metadata,
+     * if both are not the same , StarfishValidation Exception will be thrown
+     *
+     * @return boolean  true if the content is valid else false
+     * @throws StarfishValidationException if hash content is not matched , exception will be thrown
+     */
+    default boolean validateContentHash() {
 
-		Object contentHashFromMetadata =  this.getMetadata().get(Constant.CONTENT_HASH);
-		if(null == contentHashFromMetadata){
+        Object contentHashFromMetadata = this.getMetadata().get(Constant.CONTENT_HASH);
+        if (null == contentHashFromMetadata) {
             throw new StarfishValidationException("Content hash is not included in the metadata");
         }
 
-            String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));
-		if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
-			throw new StarfishValidationException("Failed to validate content hash");
-		}
-		return true;
-	}
+        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));
+        if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
+            throw new StarfishValidationException("Failed to validate content hash");
+        }
+        return true;
+    }
 
-	/**
-	 * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
-	 *
-	 * @return the content of hash as string
-	 */
+    /**
+     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
+     *
+     * @return the content of hash as string
+     */
 
-	public default String getContentHash() {
+    default String getContentHash() {
 
-		return Hex.toString(Hash.sha3_256(this.getContent()));
-	}
+        return Hex.toString(Hash.sha3_256(this.getContent()));
+    }
 
-	/**
-	 * This method is to include the content of hash in the asset metadata.
-	 * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
-	 * be included in the asset metadata.
-	 * This hash content will be used to validate the integrity of asset content
-	 * Also this operation is only applicable if the Asset is of type DataAsset , if Asset is not
-	 * DataAsset Unsupported Operation Exception will be thrown
-	 *
-	 * @return respective data asset sub class.
-	 * @throws UnsupportedOperationException if the Asset type is not DataAsset
-	 */
-	public default DataAsset includeContentHash() {
+    /**
+     * This method is to include the content of hash in the asset metadata.
+     * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
+     * be included in the asset metadata.
+     * This hash content will be used to validate the integrity of asset content
+     * Also this operation is only applicable if the Asset is of type DataAsset , if Asset is not
+     * DataAsset Unsupported Operation Exception will be thrown
+     *
+     * @return respective data asset sub class.
+     * @throws UnsupportedOperationException if the Asset type is not DataAsset
+     */
+    default DataAsset includeContentHash() {
 
-		// check if the hash content is already present also
-		// validate if content is valid or not
-		if (null != this.getMetadata().get(Constant.CONTENT_HASH) && validateContentHash()) {
+        // check if the hash content is already present also
+        // validate if content is valid or not
+        if (null != this.getMetadata().get(Constant.CONTENT_HASH) && validateContentHash()) {
 
-			return this;
-		} else {
-			Map<String, Object> metaMap = this.getMetadata();
-			metaMap.put(Constant.CONTENT_HASH, getContentHash());
+            return this;
+        } else {
+            Map<String, Object> metaMap = this.getMetadata();
+            metaMap.put(Constant.CONTENT_HASH, getContentHash());
 
-			// this operation is only valid for dataAsset
-			if (this instanceof DataAsset) {
-				return this.updateMeta(JSON.toPrettyString(metaMap));
-			} else {
-				throw new UnsupportedOperationException("This method only applicable for Asset type DataAsset");
-			}
-		}
-	}
+            // this operation is only valid for dataAsset
+            if (this instanceof DataAsset) {
+                return this.updateMeta(JSON.toPrettyString(metaMap));
+            } else {
+                throw new UnsupportedOperationException("This method only applicable for Asset type DataAsset");
+            }
+        }
+    }
 
-	/**
-	 * Get the new Data Asset based on metaData passed as n argument.
-	 * This method will be implemented by the sub class
-	 *
-	 * @param newMetaData new meta data that will be used to create a Data Asset.
-	 * @return the respective dataAsset based on sub-class
-	 * @throws UnsupportedOperationException if this operation  is not supported by sub-class
-	 */
-	public default DataAsset updateMeta(String newMetaData) {
-		throw new UnsupportedOperationException("This Operation is not supported");
-	}
+    /**
+     * Get the new Data Asset based on metaData passed as n argument.
+     * This method will be implemented by the sub class
+     *
+     * @param newMetaData new meta data that will be used to create a Data Asset.
+     * @return the respective dataAsset based on sub-class
+     * @throws UnsupportedOperationException if this operation  is not supported by sub-class
+     */
+    default DataAsset updateMeta(String newMetaData) {
+        throw new UnsupportedOperationException("This Operation is not supported");
+    }
 
 }

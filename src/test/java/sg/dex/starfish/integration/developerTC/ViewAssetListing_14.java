@@ -26,7 +26,7 @@ public class ViewAssetListing_14 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
 
     }
 
@@ -35,7 +35,7 @@ public class ViewAssetListing_14 {
         // creating a memory asset
         Asset asset = MemoryAsset.createFromString("Test listing searching by listing id");
 
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset);
+        RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset);
 
         // creating metadata of listing
         Map<String, Object> data2 = new HashMap<>();
@@ -48,13 +48,12 @@ public class ViewAssetListing_14 {
         String listingId = listing.getMetaData().get("id").toString();
 
         // checking the listing id is present in remote
-        Listing listing1FromRemote =remoteAgent.getListing(listingId);
+        Listing listing1FromRemote = remoteAgent.getListing(listingId);
         // comparing both lisitng id ,it should eb same
-        assertEquals(listing1FromRemote.getMetaData().get("id"),listingId);
+        assertEquals(listing1FromRemote.getMetaData().get("id"), listingId);
 
 
     }
-
 
 
 }

@@ -1,7 +1,8 @@
 package sg.dex.starfish.integration.developerTC;
 
 import org.junit.Test;
-import sg.dex.starfish.Ocean;
+import sg.dex.starfish.Resolver;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
@@ -23,25 +24,24 @@ public class AgentEndpointQuery_06 {
 
 
     @Test
-    public  void testServiceEndPoint(){
-        RemoteAgent remoteAgent =createRemoteAgent(RemoteAgentConfig.getSurferUrl());
+    public void testServiceEndPoint() {
+        RemoteAgent remoteAgent = createRemoteAgent(AgentService.getSurferUrl());
         // getting the URL for storage service
-        String storage =remoteAgent.getStorageEndpoint();
+        String storage = remoteAgent.getStorageEndpoint();
 
         // getting the URL for invoke service
-        String invoke =remoteAgent.getInvokeEndpoint();
+        String invoke = remoteAgent.getInvokeEndpoint();
 
         // getting the URL for metaData service
-        String meta =remoteAgent.getMetaEndpoint();
+        String meta = remoteAgent.getMetaEndpoint();
 
         // getting the URL for market service
-        String market =remoteAgent.getMarketEndpoint();
+        String market = remoteAgent.getMarketEndpoint();
 
         // since we created the only the storage and meta endpoint
         // so other endpoint will be null
         assertTrue(storage.contains("/api/v1/asset"));
         assertTrue(meta.contains("/api/v1/meta"));
-
 
 
     }
@@ -63,16 +63,15 @@ public class AgentEndpointQuery_06 {
         // converting ddo to string
         String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Ocean ocean = Ocean.connect();
+        Resolver resolver= new LocalResolverImpl();
         // creating unique DID
         DID surferDID = DID.createRandom();
 
         // registering the DID and DDO
-        ocean.installLocalDDO(surferDID, ddoString);
+        resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        return  RemoteAgent.create(ocean, surferDID);
+        return RemoteAgent.create(resolver, surferDID);
 
     }
 }

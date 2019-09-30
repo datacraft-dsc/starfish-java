@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -21,7 +20,6 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertArrayEquals;
 
 
 /**
@@ -37,7 +35,7 @@ public class AssetIdentity_02 {
     @Before
     public void setup() {
         // Initialize Remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
         Assume.assumeNotNull(remoteAgent);
     }
 
@@ -49,11 +47,11 @@ public class AssetIdentity_02 {
         Asset asset1 = MemoryAsset.create(data);
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
-        ARemoteAsset aRemoteAsset =remoteAgent.registerAsset(asset1);
+        ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(asset1);
         RemoteDataAsset remoteAsset = remoteAgent.getAsset(aRemoteAsset.getAssetID());
 
         // compare both the assetID, It must be equal
-        assertEquals( asset1.getAssetID(),remoteAsset.getAssetID());
+        assertEquals(asset1.getAssetID(), remoteAsset.getAssetID());
     }
 
 
@@ -68,7 +66,7 @@ public class AssetIdentity_02 {
         metaDataAsset.put("location", "Singapore");
 
         // creating asset with MetaData
-        Asset asset2 = MemoryAsset.create( data,metaDataAsset);
+        Asset asset2 = MemoryAsset.create(data, metaDataAsset);
 
 
         //2. registration : it will just reg the asset and upload its metadata content  and will return a Remote Agent
@@ -81,7 +79,7 @@ public class AssetIdentity_02 {
         String assetID = remoteAsset.getAssetID();
 
         //Getting the content of the Asset
-        byte[] result = remoteAsset.getContent();
+        byte[] result = asset2.getContent();
 
         // compare both the assetID, It must be equal
         assertEquals(assetID, asset2.getAssetID());
@@ -98,7 +96,7 @@ public class AssetIdentity_02 {
     }
 
     @Test
-    public void createAssetWithProvMetadata(){
+    public void createAssetWithProvMetadata() {
         byte[] data = new byte[]{1, 2, 3};
         // update the metadata
         Map<String, Object> metaDataAsset = new HashMap<>();
@@ -106,14 +104,14 @@ public class AssetIdentity_02 {
         metaDataAsset.put("name", "Fig");
         metaDataAsset.put("location", "Singapore");
 
-        String actId=UUID.randomUUID().toString();
-        String agentId=UUID.randomUUID().toString();
-        
-        Map<String, Object> provmetadata= ProvUtil.createPublishProvenance(actId,agentId);
-        metaDataAsset.put("provenance",provmetadata);
+        String actId = UUID.randomUUID().toString();
+        String agentId = UUID.randomUUID().toString();
+
+        Map<String, Object> provmetadata = ProvUtil.createPublishProvenance(actId, agentId);
+        metaDataAsset.put("provenance", provmetadata);
         // creating asset with MetaData
-        Asset asset2 = MemoryAsset.create( data,metaDataAsset);
-        RemoteDataAsset remoteAsset = (RemoteDataAsset)remoteAgent.registerAsset(asset2);
+        Asset asset2 = MemoryAsset.create(data, metaDataAsset);
+        RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
         remoteAgent.uploadAsset(asset2);
@@ -121,7 +119,7 @@ public class AssetIdentity_02 {
 
         //verify prov info exists
         assertNotNull(remoteAsset.getMetadata().get("provenance"));
-        Map<String,Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
+        Map<String, Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
 
         assertNotNull(provData.get("activity"));
         assertNotNull(provData.get("wasGeneratedBy"));
@@ -134,13 +132,13 @@ public class AssetIdentity_02 {
         Asset asset3 = MemoryAsset.createFromString("Testing using String");
 
         //Registering the Asset
-        RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
+        RemoteDataAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
         // uploading the Asset, it will upload the content of an asset
         remoteAgent.uploadAsset(asset3);
 
         assertEquals(remoteAsset3.getAssetID(), asset3.getAssetID());
         // verify the content
-        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+        assertEquals(AgentService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
                 "Testing using String");
     }
 
@@ -149,23 +147,23 @@ public class AssetIdentity_02 {
         if (remoteAgent == null) return;
 
         Asset asset3 = MemoryAsset.createFromString("Testing using String");
-        RemoteDataAsset remoteAsset3 = (RemoteDataAsset)remoteAgent.registerAsset(asset3);
+        RemoteDataAsset remoteAsset3 = remoteAgent.registerAsset(asset3);
 
         Asset asset4 = MemoryAsset.createFromString("Testing using String");
-        RemoteDataAsset remoteAsset4 = (RemoteDataAsset)remoteAgent.registerAsset(asset4);
+        RemoteDataAsset remoteAsset4 = remoteAgent.registerAsset(asset4);
 
         // uploading both the Asset
         remoteAgent.uploadAsset(asset3);
         remoteAgent.uploadAsset(asset4);
 
-        assertEquals(RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
-                RemoteAgentConfig.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
+        assertEquals(AgentService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+                AgentService.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
     }
 
     @Test(expected = StarfishValidationException.class)
-    public void testForNullAsset(){
+    public void testForNullAsset() {
         // Null check should be there ?
-        remoteAgent.registerAsset(null);
+        remoteAgent.registerAsset((Asset)null);
     }
 
 }

@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-
 /**
  * An in-memory agent implementation
  * This class methods include creation of memory agent,
@@ -31,22 +30,32 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
-    private HashMap<String, MemoryAsset> assetStore = new HashMap<>();
-    private HashMap<String, MemoryListing> listingStore = new HashMap<String, MemoryListing>();
-    private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<String, MemoryPurchase>();
+    private HashMap<String, AMemoryAsset> assetStore = new HashMap<>();
+    private HashMap<String, MemoryListing> listingStore = new HashMap<>();
+    private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<>();
+    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());
 
-    private MemoryAgent(Ocean ocean, DID did) {
-        super(ocean, did);
+    private MemoryAgent(Resolver resolver, DID did) {
+        super(resolver, did);
     }
 
     /**
-     * Creates a new MemoryAgent with the given DID
+     * Creates a new MemoryAgent using the given DID
      *
      * @param did DID for this agent
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(DID did) {
-        return new MemoryAgent(Ocean.connect(), did);
+    	did=did.withoutPath();
+        return new MemoryAgent(new LocalResolverImpl(), did);
+    }
+    
+    /**
+     * Create a random DID suitable for use by an in-memory Agent
+     * @return
+     */
+    private static DID createRandomMemoryDID() {
+    	return DID.parse(DID.createRandomString());
     }
 
     /**
@@ -55,7 +64,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create() {
-        return new MemoryAgent(Ocean.connect(), DID.parse(DID.createRandomString()));
+        return defaultMemoryAgent;
     }
 
     /**
@@ -77,12 +86,20 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R registerAsset(Asset a) {
-        MemoryAsset ma = MemoryAsset.create(a);
+        if (!(a instanceof AMemoryAsset)) {
+        	throw new UnsupportedOperationException("Not yet supported!");
+        };
+        AMemoryAsset ma=(AMemoryAsset)a;
         assetStore.put(ma.getAssetID(), ma);
-        return (R)ma;
+        return (R) ma;
     }
+    
+	@Override
+	public <R extends Asset> R registerAsset(String metaString) {
+		throw new UnsupportedOperationException("MemoryAgent does not support registering assets without content");
+	}
 
     /**
      * Registers an Asset with this Agent
@@ -93,23 +110,23 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R uploadAsset(Asset a) {
         MemoryAsset ma = MemoryAsset.create(a);
         registerAsset(ma);
-        return (R)ma;
+        return (R) ma;
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <R extends Asset> R getAsset(String id) {
-    	R asset=(R) assetStore.get(id);
-    	if (asset==null) return null;
-		String rid=asset.getAssetID();
-		if (rid!=id) {
-			throw new StarfishValidationException("Expected asset ID: "+id+ " but got metadata with hash: "+rid);
-		}
-		return asset;
+        R asset = (R) assetStore.get(id);
+        if (asset == null) return null;
+        String rid = asset.getAssetID();
+        if (!id.equals(rid)) {
+            throw new StarfishValidationException("Expected asset ID: " + id + " but got metadata with hash: " + rid);
+        }
+        return asset;
     }
 
     /**
@@ -148,6 +165,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         }
         return operation.invoke(params);
     }
+
     /**
      * Invokes the specified operation on this agent. If the invoke is successfully launched,
      * will return a Job instance that can be used to access the result, otherwise throws an
@@ -162,19 +180,14 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     public Job invokeAsync(Operation operation, Map<String, Object> params) {
 
         // check the mode if sync then throw exception
-        if(isSyncMode(operation)){
+        if (isSyncMode(operation)) {
             throw new StarfishValidationException("Mode must be Async for this operation");
         }
         if (!(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-       return operation.invoke(params);
+        return operation.invoke(params);
     }
-
-    @Override
-	public <R extends Asset> R getAsset(DID did) {
-		return getAsset(did.getID());
-	}
 
     @Override
     public Listing getListing(String id) {
@@ -221,15 +234,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * API to check if the operation mode is sync or Async
+     *
      * @param operation operation of which mode need to be checked
      * @return true if mode is sync else false
      */
     private boolean isSyncMode(Operation operation) {
-        Map<String,Object> metaData = operation.getMetadata();
+        Map<String, Object> metaData = operation.getMetadata();
         Object mode = metaData.get("modes");
-        if(mode!=null && mode.toString().equals("sync")){
-            return true;
-        }
-        return false;
+        return mode != null && mode.toString().equals("sync");
     }
+
+	@Override
+	public Job getJob(String jobID) {
+		// TODO Consider caching Jobs? Or just return null
+		return null;
+	}
+
+
 }

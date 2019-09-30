@@ -7,22 +7,25 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.fail;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
     private MemoryAgent memoryAgent = MemoryAgent.create();
+    private List<String> jobStatus = Arrays.asList("scheduled", "running", "succeeded", "failed", "unknown");
 
     /**
      * This test is to test the Asset input Asset output Async
@@ -30,19 +33,18 @@ public class TestMemoryOperations {
     @Test
     public void testReverseBytesAsync() {
         byte[] data = new byte[]{1, 2, 3};
-        // String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        assertTrue(memoryOperation.isOperation());
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Asset response = job.get("output");
-
-        assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
     /**
@@ -59,84 +61,130 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Map<String,Object> result = memoryOperation.invokeResult(test);
-        Asset response= (Asset)result.get("output");
-
-
-
-        assertArrayEquals(new byte[]{3, 2, 1}, response.getContent());
+        Map<String, Object> result = memoryOperation.invokeResult(test);
+        Asset resultAsset =(Asset)result.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
 
     // ------JSON input and JSON output----------------
+
     /**
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeAsync() throws IOException {
+    public void testPrimeAsync()  {
 
-        Operation memoryOperation = FindPrime_JsonI_JsonO.create( memoryAgent);
+        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
-        Job job = memoryOperation.invokeAsync(test);
 
-        Map<String,Object> res = job.getResult(1000);
-        String s=res.get("output").toString();
-        assertTrue(s.contains("2"));
-        assertTrue(s.contains("3"));
-        assertTrue(s.contains("5"));
-        assertTrue(s.contains("7"));
+        Job job = memoryOperation.invokeAsync(test);
+        assertTrue(jobStatus.contains(job.getStatus()));
+        Map<String, Object> res = job.getResult(1000);
+        int acutal = (Integer)res.get("sumOfPrime");
+
+        int expected = 2+ 3+ 5+ 7;
+
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
+        assertEquals(expected, acutal);
     }
 
     /**
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeSync() throws IOException {
+    public void testPrimeSync()  {
 
-        FindPrime_JsonI_JsonO memoryOperation = FindPrime_JsonI_JsonO.create( memoryAgent);
+        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
         Map<String, Object> test = new HashMap<>();
-        test.put("input", "12");
-        // Map<String, Object> result =Params.formatParams(memoryOperation,test);
+        test.put("input", "15");
 
-        Map<String,Object> result = memoryOperation.invokeResult(test);
-        assertTrue(result.get("output").toString().contains("2"));
-        assertTrue(result.get("output").toString().contains("3"));
-        assertTrue(result.get("output").toString().contains("5"));
-        assertTrue(result.get("output").toString().contains("7"));
-        assertTrue(result.get("output").toString().contains("11"));
+        Map<String, Object> result = memoryOperation.invokeResult(test);
 
+        int acutal = (Integer)result.get("sumOfPrime");
 
+        int expected = 2+ 3+ 5+ 7+11+13;
+
+        assertEquals(expected, acutal);
 
     }
 
-    //-----------JSON Input and Asset output---------------------
-
-    // Todo
-
-    // ------------Asset Input and JSON output--------------------
-
     @Test
-    public void testHashAsync() throws IOException {
+    public void testHashAsyncSuccess() throws IOException {
 
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
-                        create( memoryAgent);
+                        create(memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
-
-        Map<String ,Object> response = job.getResult(1000);
-        Object r=response.get("output");
-
-
-        assertNotNull(r);
+        Map<String, Object> response = job.getResult(1000);
+        String hash = Hex.toString(Hash.sha3_256(a.getContent()));
+        assertEquals(response.get("hashed_value").toString(), hash);
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
+
+    @Test
+    public void testHashAsyncFailed()  {
+
+        byte[] data = new byte[]{1, 2, 3};
+        EpicFailOperation epicFailOperation =
+                EpicFailOperation.
+                        create("Fail operation");
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job;
+        synchronized (epicFailOperation) {
+        	job = epicFailOperation.invokeAsync(test);
+        	assertFalse(job.isDone()); // can't complete until out of synchronised block
+        }
+        
+        try {
+            job.get();
+            fail("should not succeed!!");
+        } catch (Exception e) {
+            /* OK, Expected */
+        }
+        assertTrue(job.isDone());
+        assertEquals(Constant.FAILED, job.getStatus());
+    }
+
+    @Test
+    public void testHashAsyncRunning() throws IOException {
+
+        byte[] data = new byte[]{1, 2, 3};
+        CalculateHash_AssetI_JsonO hashOperation =
+                CalculateHash_AssetI_JsonO.
+                        create(memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job;
+        synchronized (hashOperation) {
+            // run synchronised to prevent completion until end of this code block
+            job = hashOperation.invokeAsync(test);
+            assertEquals(Constant.SCHEDULED,job.getStatus());
+            assertNull(job.pollResult());
+        }
+        Map<String, Object> response = job.getResult();
+        assertEquals(Constant.SUCCEEDED, job.getStatus());
+
+        String hash = Hex.toString(Hash.sha3_256(a.getContent()));
+        assertEquals(response.get("hashed_value").toString(), hash);
+
+    }
+
 
     /**
      * This test is to test the Async Operation
@@ -146,17 +194,17 @@ public class TestMemoryOperations {
         byte[] data = new byte[]{1, 2, 3};
         CalculateHash_AssetI_JsonO hashOperation =
                 CalculateHash_AssetI_JsonO.
-                        create( memoryAgent);
+                        create(memoryAgent);
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Map<String,Object> res = hashOperation.invokeResult(test);
+        Map<String, Object> response = hashOperation.invokeResult(test);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
-        assertEquals(hash,res.get("output").toString());
+        assertEquals(response.get("hashed_value").toString(), hash);
     }
-    
+
     private String getMetaDataForAssetI_AssetO() {
         String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
                 "\t\"size\":\"3\",\n" +
@@ -211,9 +259,10 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Asset result = (Asset) job.getResult(1000).get("output");
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
 
-        assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
 
@@ -224,37 +273,34 @@ public class TestMemoryOperations {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Asset result = (Asset) job.getResult(1000).get("output");
-        assertArrayEquals(new byte[]{3, 2, 1}, result.getContent());
+        Map<String,Object> result=job.getResult();
+        Asset resultAsset = (Asset)result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
-	@Test
-    public void testBadNamedParams() {
-        byte[] data = new byte[]{1, 2, 3};
-        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
-        Asset a = MemoryAsset.create(data);
-        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a)); // should not yet fail since this is async
-        try {
-            Object result2 = badJob.getResult(1000);
-            fail("Should not succeed! Got: " + Utils.getClass(result2));
-        } catch (Exception ex) {
-            /* OK */
-        }
-    }
+//	@Test(expected = JobFailedException.class)
+//    public void testBadNamedParams() {
+//        byte[] data = new byte[]{1, 2, 3};
+//        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
+//        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+//        Asset a = MemoryAsset.create(data);
+//        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
+//        System.out.println(badJob.getStatus());
+//            Object result2 = badJob.getResult(1000);
+//            System.out.println(badJob.getStatus());
+//            fail("Should not succeed! Got: " + Utils.getClass(result2));
+//    }
 
-    @Test(expected = Exception.class)
-    public void testInsufficientParams() {
-        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
-        try {
-        	Map<String,Object> emptyParams=new HashMap<>();
-            Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
-            Object result2 = badJob.getResult(10);
-            fail("Should not succeed! Got: " + Utils.getClass(result2));
-        } catch (IllegalArgumentException ex) {
-            /* OK */
-        }
-    }
+//    @Test(expected = Exception.class)
+//    public void testInsufficientParams() {
+//        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
+//        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+//        	Map<String,Object> emptyParams=new HashMap<>();
+//            Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
+//            Object result2 = badJob.getResult(10);
+//            fail("Should not succeed! Got: " + Utils.getClass(result2));
+//            /* OK */
+//    }
 
 }

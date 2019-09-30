@@ -34,7 +34,7 @@ public class ConfirmPurchase_18 {
     @Before
     public void setUp() {
         // create remote Agent
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
         Asset a = MemoryAsset.createFromString("test Purchase");
 
         // create remote Asset
@@ -135,7 +135,7 @@ public class ConfirmPurchase_18 {
     @Test
     public void testMetaDataWithProv() {
         // create Asset
-        byte data[] = {3, 4, 5, 6};
+        byte[] data = {3, 4, 5, 6};
         // adding metadata
         String actId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();

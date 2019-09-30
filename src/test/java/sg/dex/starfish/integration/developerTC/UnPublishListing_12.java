@@ -25,14 +25,15 @@ public class UnPublishListing_12 {
 
     @Before
     public void setUp() {
-        remoteAgent = RemoteAgentConfig.getRemoteAgent();
+        remoteAgent = AgentService.getRemoteAgent();
     }
 
     /**
      * method to create listing metadata
+     *
      * @return
      */
-    private Map<String,Object> getListingMetaDataMap(){
+    private Map<String, Object> getListingMetaDataMap() {
         // creating a memory Asset
         Asset memoryAsset = MemoryAsset.createFromString("Test Publish of an Asset");
         // registering the Asset
@@ -63,9 +64,9 @@ public class UnPublishListing_12 {
      * Test to update the listing status
      */
     @Test
-    public void testUpdateListing(){
+    public void testUpdateListing() {
 
-        Map<String,Object> listingMetaData = getListingMetaDataMap();
+        Map<String, Object> listingMetaData = getListingMetaDataMap();
 
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(getListingMetaDataMap());
@@ -84,10 +85,10 @@ public class UnPublishListing_12 {
     }
 
     @Test(expected = StarfishValidationException.class)
-    public void testCreateWithoutAssetId(){
+    public void testCreateWithoutAssetId() {
 
         // this map dont have the assetid so validation will fail
-        Map<String,Object> listingMetaData = new HashMap<>();
+        Map<String, Object> listingMetaData = new HashMap<>();
 
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(listingMetaData);
@@ -95,42 +96,43 @@ public class UnPublishListing_12 {
     }
 
     @Test(expected = StarfishValidationException.class)
-    public void testUpdateWithoutCreate(){
-        Map<String,Object> listingMetaData = new HashMap<>();
+    public void testUpdateWithoutCreate() {
+        Map<String, Object> listingMetaData = new HashMap<>();
         remoteAgent.updateListing(listingMetaData);
 
     }
 
     @Test(expected = StarfishValidationException.class)
-    public void testUpdateForNull(){
+    public void testUpdateForNull() {
         remoteAgent.updateListing(null);
     }
 
     @Test
-    public void testUpdateReturnNewListing(){
-        Map<String,Object> listingMetaData = getListingMetaDataMap();
+    public void testUpdateReturnNewListing() {
+        Map<String, Object> listingMetaData = getListingMetaDataMap();
 
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(listingMetaData);
 
         // updating the listing meta data map
-        Map<String,Object> metaDataToUpdate = new HashMap<>();
+        Map<String, Object> metaDataToUpdate = new HashMap<>();
         metaDataToUpdate.put("id", listing.getMetaData().get("id"));
 
         listingMetaData.put("status", "published");
-        Listing updatedListing =remoteAgent.updateListing(metaDataToUpdate);
+        Listing updatedListing = remoteAgent.updateListing(metaDataToUpdate);
         assertNotNull(updatedListing);
         // update should create a new instance listing
         assertFalse(updatedListing.equals(listing));
 
 
     }
+
     @Test
-    public void testGetListing(){
+    public void testGetListing() {
 
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
         Listing listing = remoteAgent.createListing(getListingMetaDataMap());
-        Listing listing1 =remoteAgent.getListing(listing.getId());
+        Listing listing1 = remoteAgent.getListing(listing.getId());
         // to maintain the immutability
         assertFalse(listing1.equals(listing));
 

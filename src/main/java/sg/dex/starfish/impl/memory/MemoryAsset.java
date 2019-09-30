@@ -21,47 +21,54 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 /**
  * Class representing a local in-memory data asset.
- *
+ * <p>
  * Intended for use in testing or local development situations.
  *
  * @author Mike
- *
  */
-public class MemoryAsset extends AAsset implements DataAsset {
+public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     private final byte[] data;
 
-    private MemoryAsset(byte[] data,String metaData) {
-        super(metaData);
+
+    private MemoryAsset(byte[] data, String metaData,MemoryAgent memoryAgent) {
+        super(metaData,memoryAgent);
         this.data = data;
     }
 
+    /**
+     * Builds default metadata for a MemoryAsset.
+     * @param data
+     * @param additionalMeta
+     * @return
+     */
+    private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> additionalMeta) {
+        Map<String, Object> meta = new HashMap<>();
+        meta.put(DATE_CREATED, Instant.now().toString());
+        meta.put(TYPE, DATA_SET);
+        meta.put(SIZE, Integer.toString(data.length));
+        meta.put(CONTENT_TYPE, OCTET_STREAM);
 
-    private static Map<String, Object> buildMetaData(byte[] data, Map<String, Object> meta) {
-
-        Map<String, Object> ob = new HashMap<>();
-        ob.put(DATE_CREATED, Instant.now().toString());
-        ob.put(TYPE, DATA_SET);
-        ob.put(SIZE, Integer.toString(data.length));
-        ob.put(CONTENT_TYPE, OCTET_STREAM);
-
-        if (meta != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
-                ob.put(me.getKey(), me.getValue());
+        if (additionalMeta != null) {
+            for (Map.Entry<String, Object> me : additionalMeta.entrySet()) {
+                meta.put(me.getKey(), me.getValue());
             }
         }
 
-        return ob;
+        return meta;
     }
+
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
@@ -73,7 +80,25 @@ public class MemoryAsset extends AAsset implements DataAsset {
             return (MemoryAsset) asset;
         } else if (asset.isDataAsset()) {
             byte[] data = asset.getContent();
-            return create(data,buildMetaData(data,null));
+            return create(data, buildMetaData(data, null));
+        } else {
+            throw new IllegalArgumentException("Asset must be a data asset");
+        }
+    }
+
+    /**
+     * Gets a MemoryAsset using the content and metadata from the provided asset
+     *
+     * @param asset The asset to use to construct this MemoryAsset
+     * @param memoryAgent memoryAgent
+     * @return A new MemoryAsset containing the data from the passed asset argument
+     */
+    public static MemoryAsset create(Asset asset,MemoryAgent memoryAgent) {
+        if (asset instanceof MemoryAsset) {
+            return (MemoryAsset) asset;
+        } else if (asset.isDataAsset()) {
+            byte[] data = asset.getContent();
+            return create(data, buildMetaData(data, null),memoryAgent);
         } else {
             throw new IllegalArgumentException("Asset must be a data asset");
         }
@@ -90,7 +115,21 @@ public class MemoryAsset extends AAsset implements DataAsset {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return create(data,buildMetaData(data,null));
+        return create(data, buildMetaData(data, null),MemoryAgent.create());
+    }
+    /**
+     * Creates a MemoryAsset with the provided data. Default metadata will be
+     * generated.
+     *
+     * @param data Byte array containing the data for this asset
+     * @param memoryAgent memoryAgent
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data,MemoryAgent memoryAgent) {
+        if (data == null) {
+            throw new IllegalArgumentException("Missing data,data cannot be null");
+        }
+        return create(data, buildMetaData(data, null),memoryAgent);
     }
 
     /**
@@ -102,27 +141,62 @@ public class MemoryAsset extends AAsset implements DataAsset {
      */
     public static Asset createFromString(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        return create(data,buildMetaData(data,null));
+        
+        // set up default content type
+        Map<String,Object> meta=Utils.mapOf(Constant.CONTENT_TYPE,"text/plain");
+        
+        return create(data, meta);
     }
 
     /**
-     * Creates a MemoryAsset with the provided metadata and content
+     * Creates a MemoryAsset with given byte[] content.
+     * 
+     * Creates default metadata, and merges in and additional metadata provided
      *
-     * @param meta A map containing the metadata for this asset
+     * @param additionalMeta A map containing additional metadata for this asset
      * @param data Byte array containing the data for this asset
      * @return The newly created in-memory asset
      */
-    public static MemoryAsset create(byte[] data, Map<String, Object> meta) {
-        return new MemoryAsset(data,JSON.toPrettyString(buildMetaData(data,meta)));
+    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta) {
+        return create(data, additionalMeta,MemoryAgent.create());
+    }
+    /**
+     * Creates a MemoryAsset with given byte[] content, using the specified MemoryAgent
+     * 
+     * Creates default metadata, and merges in and additional metadata provided
+     *
+     * @param additionalMeta A map containing the metadata for this asset
+     * @param data Byte array containing the data for this asset
+     * @param memoryAgent memoryAgent
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta,MemoryAgent memoryAgent) {
+    	Map<String,Object> meta=buildMetaData(data, additionalMeta);
+    	if (!meta.containsKey(Constant.CONTENT_HASH)) {
+    		String hash=Hash.sha3_256String(data);
+    		meta.put(Constant.CONTENT_HASH, hash);
+    	};
+        return new MemoryAsset(data, JSON.toPrettyString(meta),memoryAgent);
+    }
+    
+    /**
+     * Creates a MemoryAsset with the provided metadata and content
+     *
+     * @param metaString The metadata to use for this asset
+     * @param data Byte array containing the data for this asset
+     * @return The newly created in-memory asset
+     */
+    public static MemoryAsset create(byte[] data, String metaString) {
+        return new MemoryAsset(data, metaString,MemoryAgent.create());
     }
 
 
     /**
      * Gets InputStream corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public InputStream getContentStream() {
@@ -133,9 +207,9 @@ public class MemoryAsset extends AAsset implements DataAsset {
     /**
      * Gets raw data corresponding to this Asset
      *
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException if unable to load the Asset
      * @return An input stream allowing consumption of the asset data
+     * @throws AuthorizationException if requestor does not have access permission
+     * @throws StorageException       if unable to load the Asset
      */
     @Override
     public byte[] getContent() {
@@ -158,12 +232,12 @@ public class MemoryAsset extends AAsset implements DataAsset {
     }
 
 
-    public byte[] getSource(){
+    public byte[] getSource() {
         return data;
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return new MemoryAsset(this.getSource(),newMeta);
+        return new MemoryAsset(this.getSource(), newMeta,MemoryAgent.create());
     }
 }
