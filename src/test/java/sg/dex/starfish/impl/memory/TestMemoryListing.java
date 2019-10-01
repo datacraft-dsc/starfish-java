@@ -102,34 +102,6 @@ public class TestMemoryListing {
     }
 
     /**
-     * Create listing with asset ID.IT will throw exception as asset id is mandatory for creating
-     * listing.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateListingWithoutMandatoryData() {
-
-        // create memory Agent
-        MemoryAgent memoryAgent = MemoryAgent.create();
-        // create asset
-        MemoryAsset a = MemoryAsset.create(BYTE_DATA);
-        memoryAgent.uploadAsset(a);
-
-        Map<String, Object> metaData = new HashMap<>();
-
-        try {
-            String metaContent = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            Map<String, Object> json = JSON.toMap(metaContent);
-            metaData.put("info", json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        Listing listing = memoryAgent.createListing(getResponseMetaDataListing(metaData));
-
-    }
-
-    /**
      * Prepare the listing meta data required for creating listing
      *
      * @param meta

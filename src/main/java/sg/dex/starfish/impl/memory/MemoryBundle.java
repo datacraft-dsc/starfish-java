@@ -78,7 +78,6 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * @return the newly created instance of Memory Bundle
      */
     public static Bundle create( Map<String, Asset> assetMap) {
-
         return create( assetMap, null);
     }
 

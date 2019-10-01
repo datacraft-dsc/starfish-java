@@ -135,19 +135,19 @@ public class Utils {
      *
      * @param inputStream the InputStream
      * @return The String value of inputStream
-     * @throws RuntimeException if inputStream unreadable
      */
     public static String stringFromStream(InputStream inputStream) {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         int length;
         try {
-            while ((length = inputStream.read(buffer)) != -1) {
-                result.write(buffer, 0, length);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Can't read input stream", e);
-        }
+			while ((length = inputStream.read(buffer)) != -1) {
+			    result.write(buffer, 0, length);
+			}
+		}
+		catch (IOException e) {
+			throw Utils.sneakyThrow(e);
+		}
         return new String(result.toByteArray(), StandardCharsets.UTF_8);
     }
 

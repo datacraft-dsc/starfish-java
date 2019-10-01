@@ -35,7 +35,7 @@ public class SquidResolverImpl implements Resolver {
 
     }
 
-    public DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
+    DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
 
         com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
         OceanManager oceanManager = SquidService.getResolverManager();
