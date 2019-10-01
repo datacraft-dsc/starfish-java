@@ -69,10 +69,10 @@ public class SquidAgent extends AAgent {
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
     @Override
-    public SquidAsset registerAsset(Asset asset) {
+    public <R extends Asset> R  registerAsset(Asset asset) {
 
         try {
-            return createSquidAssetInNetwork(getMetaData(asset));
+            return (R)createSquidAssetInNetwork(getMetaData(asset));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,9 +84,9 @@ public class SquidAgent extends AAgent {
     }
 
     @Override
-    public SquidAsset registerAsset(String metaString) {
+    public <R extends Asset> R  registerAsset(String metaString) {
         try {
-            return createSquidAssetInNetwork(JSON.toMap(metaString));
+            return (R)createSquidAssetInNetwork(JSON.toMap(metaString));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DDOException e) {
