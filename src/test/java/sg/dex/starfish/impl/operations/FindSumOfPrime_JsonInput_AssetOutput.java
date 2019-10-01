@@ -1,13 +1,12 @@
 package sg.dex.starfish.impl.operations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.AMemoryOperation;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.resource.ResourceAsset;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is a memory implementation of Invoke Service.

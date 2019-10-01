@@ -1,22 +1,21 @@
 package sg.dex.starfish.impl.memory;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("javadoc")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -146,10 +145,7 @@ public class TestMemoryBundle {
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", a1);
         assetBundle.put("two", a2);
-
-        // creating a memory Agent
-        Agent memoryAgent = MemoryAgent.create();
-
+        
         // create asset bundle without any custom metadata // so passing null
         // if assetMap is passed as null it will create an empty map for that
         Bundle bundle = MemoryBundle.create(assetBundle, null);
@@ -196,7 +192,6 @@ public class TestMemoryBundle {
         //assigning each asset with name and adding to map
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", subAsset);
-        Agent memoryAgent = MemoryAgent.create();
 
         Bundle bundle = MemoryBundle.create(assetBundle);
         
@@ -206,6 +201,7 @@ public class TestMemoryBundle {
         assertEquals(bundle.get("one").getAssetID(), subAsset.getAssetID());
 
         // TODO: Figure out correct behaviour when registering a bundle
+        // Agent memoryAgent = MemoryAgent.create();
         // memoryAgent.registerAsset(bundle);
         // assertEquals(subAsset,memoryAgent.getAsset(subAsset.getAssetID()));
     }
