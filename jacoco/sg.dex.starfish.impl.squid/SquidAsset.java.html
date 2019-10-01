@@ -7,7 +7,7 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.impl.remote.ARemoteAsset;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
@@ -22,37 +22,38 @@ import java.util.UUID;
  *
  * @author Tom
  */
-public class SquidAsset extends ARemoteAsset implements DataAsset {
+public class SquidAsset extends AAsset implements DataAsset {
 
-private com.oceanprotocol.squid.models.DID did;
-    private SquidAsset(String meta, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
-<span class="nc" id="L29">        super(meta, squidAgent);</span>
-<span class="nc" id="L30">        this.did=did;</span>
-<span class="nc" id="L31">    }</span>
+    private com.oceanprotocol.squid.models.DID did;
 
-    public static SquidAsset create(String metaData, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
+    private SquidAsset(String meta,com.oceanprotocol.squid.models.DID did) {
+<span class="nc" id="L30">        super(meta);</span>
+<span class="nc" id="L31">        this.did = did;</span>
+<span class="nc" id="L32">    }</span>
 
-<span class="nc" id="L35">        return new SquidAsset(metaData, squidAgent,did);</span>
+    public static SquidAsset create(String metaData, com.oceanprotocol.squid.models.DID did) {
+
+<span class="nc" id="L36">        return new SquidAsset(metaData, did);</span>
     }
 
 
-    public static SquidAsset create(DID did, SquidAgent squidAgent) {
+    public static SquidAsset create(DID did) {
 
         com.oceanprotocol.squid.models.DID squidDID;
         try {
             squidDID =
-<span class="nc" id="L44">                    com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());</span>
-<span class="nc" id="L45">            DDO ddo = SquidService.getOceanAPI().getAssetsAPI().resolve(squidDID);</span>
+<span class="nc" id="L45">                    com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());</span>
+<span class="nc" id="L46">            DDO ddo = SquidService.getOceanAPI().getAssetsAPI().resolve(squidDID);</span>
 
-<span class="nc" id="L47">            Map&lt;String, Object&gt; metaData = wrapDDOMeta(ddo);</span>
+<span class="nc" id="L48">            Map&lt;String, Object&gt; metaData = wrapDDOMeta(ddo);</span>
 
-<span class="nc" id="L49">            return new SquidAsset(JSON.toPrettyString(metaData), squidAgent,squidDID);</span>
-<span class="nc" id="L50">        } catch (DIDFormatException e) {</span>
-<span class="nc" id="L51">            throw new Error(e);</span>
-<span class="nc" id="L52">        } catch (EthereumException e) {</span>
-<span class="nc" id="L53">            throw new Error(e);</span>
-<span class="nc" id="L54">        } catch (DDOException e) {</span>
-<span class="nc" id="L55">            throw new Error(e);</span>
+<span class="nc" id="L50">            return new SquidAsset(JSON.toPrettyString(metaData),  squidDID);</span>
+<span class="nc" id="L51">        } catch (DIDFormatException e) {</span>
+<span class="nc" id="L52">            throw new Error(e);</span>
+<span class="nc" id="L53">        } catch (EthereumException e) {</span>
+<span class="nc" id="L54">            throw new Error(e);</span>
+<span class="nc" id="L55">        } catch (DDOException e) {</span>
+<span class="nc" id="L56">            throw new Error(e);</span>
         }
     }
 
@@ -63,31 +64,31 @@ private com.oceanprotocol.squid.models.DID did;
      * @return map of metadata which have squid DDO information
      */
     private static HashMap&lt;String, Object&gt; wrapDDOMeta(DDO ddo) {
-<span class="nc" id="L66">        HashMap&lt;String, Object&gt; info = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L67">        HashMap&lt;String, Object&gt; info = new HashMap&lt;&gt;();</span>
         try {
-<span class="nc" id="L68">            info.put(&quot;ddoString&quot;, JSON.toMap(ddo.toJson()));</span>
-<span class="nc" id="L69">        } catch (JsonProcessingException e) {</span>
-<span class="nc" id="L70">            throw new IllegalArgumentException(e);</span>
-<span class="nc" id="L71">        }</span>
+<span class="nc" id="L69">            info.put(&quot;ddoString&quot;, JSON.toMap(ddo.toJson()));</span>
+<span class="nc" id="L70">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L71">            throw new IllegalArgumentException(e);</span>
+<span class="nc" id="L72">        }</span>
 
-<span class="nc" id="L73">        HashMap&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L74">        meta.put(&quot;type&quot;, &quot;dataset&quot;);</span>
-<span class="nc" id="L75">        meta.put(&quot;additionalInformation&quot;, info);</span>
+<span class="nc" id="L74">        HashMap&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L75">        meta.put(&quot;type&quot;, &quot;dataset&quot;);</span>
+<span class="nc" id="L76">        meta.put(&quot;additionalInformation&quot;, info);</span>
 
         // adding default provenance
-<span class="nc" id="L78">        String actId = UUID.randomUUID().toString();</span>
-<span class="nc" id="L79">        String agentId = UUID.randomUUID().toString();</span>
+<span class="nc" id="L79">        String actId = UUID.randomUUID().toString();</span>
+<span class="nc" id="L80">        String agentId = UUID.randomUUID().toString();</span>
 
-<span class="nc" id="L81">        Map&lt;String, Object&gt; provenanceData = ProvUtil.createPublishProvenance(actId, agentId);</span>
-<span class="nc" id="L82">        meta.put(&quot;provenance&quot;, provenanceData);</span>
+<span class="nc" id="L82">        Map&lt;String, Object&gt; provenanceData = ProvUtil.createPublishProvenance(actId, agentId);</span>
+<span class="nc" id="L83">        meta.put(&quot;provenance&quot;, provenanceData);</span>
 
-<span class="nc" id="L84">        return meta;</span>
+<span class="nc" id="L85">        return meta;</span>
     }
 
 
     @Override
     public boolean isDataAsset() {
-<span class="nc" id="L90">        return true;</span>
+<span class="nc" id="L91">        return true;</span>
     }
 
     /**
@@ -98,23 +99,24 @@ private com.oceanprotocol.squid.models.DID did;
      */
     @Override
     public boolean isOperation() {
-<span class="nc" id="L101">        return false;</span>
+<span class="nc" id="L102">        return false;</span>
     }
 
     @Override
     public InputStream getContentStream() {
         // todo
-<span class="nc" id="L107">        throw new GenericException(&quot;Need to implement&quot;);</span>
+<span class="nc" id="L108">        throw new GenericException(&quot;Need to implement&quot;);</span>
     }
 
     @Override
     public long getContentSize() {
         // todo
-<span class="nc" id="L113">        throw new GenericException(&quot;Need to implement&quot;);</span>
+<span class="nc" id="L114">        throw new GenericException(&quot;Need to implement&quot;);</span>
     }
+
     @Override
     public DID getDID() {
-<span class="nc" id="L117">        return DID.parse(this.did.toString());</span>
+<span class="nc" id="L119">        return DID.parse(this.did.toString());</span>
     }
 
 

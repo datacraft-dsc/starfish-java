@@ -53,25 +53,24 @@ import java.util.Map;
         //TODO  need to register in the network
 <span class="nc" id="L54">        installLocalDDO(did, ddo);</span>
 
-
         try {
-<span class="nc" id="L58">            com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());</span>
-<span class="nc" id="L59">            SquidService.getResolverManager().</span>
-<span class="nc" id="L60">                    registerDID(didSquid, &quot;oldUrl&quot;, &quot;checksum&quot;, Arrays.asList(SquidService.getProvider()));</span>
+<span class="nc" id="L57">            com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());</span>
+<span class="nc" id="L58">            SquidService.getResolverManager().</span>
+<span class="nc" id="L59">                    registerDID(didSquid, SquidService.getAquariusService().getDdoEndpoint(),</span>
+<span class="nc" id="L60">                            &quot;checksum&quot;, Arrays.asList(SquidService.getProvider()));</span>
+
+<span class="nc" id="L62">        } catch (DIDRegisterException e) {</span>
+<span class="nc" id="L63">            e.printStackTrace();</span>
+<span class="nc" id="L64">        } catch (IOException e) {</span>
+<span class="nc" id="L65">            e.printStackTrace();</span>
+<span class="nc" id="L66">        } catch (CipherException e) {</span>
+<span class="nc" id="L67">            e.printStackTrace();</span>
+<span class="nc" id="L68">        } catch (DIDFormatException e) {</span>
+<span class="nc" id="L69">            e.printStackTrace();</span>
+<span class="nc" id="L70">        }</span>
 
 
-<span class="nc" id="L63">        } catch (DIDRegisterException e) {</span>
-<span class="nc" id="L64">            e.printStackTrace();</span>
-<span class="nc" id="L65">        } catch (IOException e) {</span>
-<span class="nc" id="L66">            e.printStackTrace();</span>
-<span class="nc" id="L67">        } catch (CipherException e) {</span>
-<span class="nc" id="L68">            e.printStackTrace();</span>
-<span class="nc" id="L69">        } catch (DIDFormatException e) {</span>
-<span class="nc" id="L70">            e.printStackTrace();</span>
-<span class="nc" id="L71">        }</span>
-
-
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L73">    }</span>
 
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -82,10 +81,10 @@ import java.util.Map;
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
-<span class="nc" id="L86">        did = did.withoutPath();</span>
-<span class="nc" id="L87">        ddoCache.put(did, ddoString);</span>
-<span class="nc" id="L88">    }</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="nc" id="L85">        did = did.withoutPath();</span>
+<span class="nc" id="L86">        ddoCache.put(did, ddoString);</span>
+<span class="nc" id="L87">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

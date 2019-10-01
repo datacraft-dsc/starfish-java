@@ -4,15 +4,15 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,Loc
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,21,161,0,10,4,35,2,15,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,3,16,0,0,1,5,1,2,1,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,132,147,15,7,21,31,17,13,8,11
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,141,147,15,7,23,31,18,13,9,11
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,71,177,12,12,14,36,13,15,4,12
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAsset,122,0,0,0,32,0,9,0,9,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAsset,119,0,0,0,32,0,9,0,9,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAccount,34,0,0,0,9,0,5,0,5,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidService,159,0,2,0,46,0,12,0,11,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidResolverImpl,108,0,6,0,35,0,8,0,5,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent,280,0,12,0,71,0,19,0,13,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidResolverImpl,109,0,6,0,36,0,8,0,5,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent,290,0,12,0,77,0,19,0,13,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAgent.new TypeReference() {...},6,0,0,0,1,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Resolver,2,13,1,1,0,4,1,1,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,DataAsset,25,54,7,5,5,12,7,4,1,4
