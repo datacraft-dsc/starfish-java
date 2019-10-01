@@ -47,9 +47,20 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static MemoryAgent create(DID did) {
     	did=did.withoutPath();
-        return new MemoryAgent(new LocalResolverImpl(), did);
+        return new MemoryAgent(new LocalResolverImpl(),did);
     }
-    
+    /**
+     * Creates a new MemoryAgent using the given DID
+     *
+     * @param did DID for this agent
+     * @param resolver Resolver
+     * @return A MemoryAgent with the given DID
+     */
+    public static MemoryAgent create(Resolver resolver,DID did) {
+        did=did.withoutPath();
+        return new MemoryAgent(resolver, did);
+    }
+
     /**
      * Create a random DID suitable for use by an in-memory Agent
      * @return

@@ -7,7 +7,7 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.DDO;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.impl.remote.ARemoteAsset;
+import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
@@ -22,21 +22,22 @@ import java.util.UUID;
  *
  * @author Tom
  */
-public class SquidAsset extends ARemoteAsset implements DataAsset {
+public class SquidAsset extends AAsset implements DataAsset {
 
-private com.oceanprotocol.squid.models.DID did;
-    private SquidAsset(String meta, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
-        super(meta, squidAgent);
-        this.did=did;
+    private com.oceanprotocol.squid.models.DID did;
+
+    private SquidAsset(String meta,com.oceanprotocol.squid.models.DID did) {
+        super(meta);
+        this.did = did;
     }
 
-    public static SquidAsset create(String metaData, SquidAgent squidAgent, com.oceanprotocol.squid.models.DID did) {
+    public static SquidAsset create(String metaData, com.oceanprotocol.squid.models.DID did) {
 
-        return new SquidAsset(metaData, squidAgent,did);
+        return new SquidAsset(metaData, did);
     }
 
 
-    public static SquidAsset create(DID did, SquidAgent squidAgent) {
+    public static SquidAsset create(DID did) {
 
         com.oceanprotocol.squid.models.DID squidDID;
         try {
@@ -46,7 +47,7 @@ private com.oceanprotocol.squid.models.DID did;
 
             Map<String, Object> metaData = wrapDDOMeta(ddo);
 
-            return new SquidAsset(JSON.toPrettyString(metaData), squidAgent,squidDID);
+            return new SquidAsset(JSON.toPrettyString(metaData),  squidDID);
         } catch (DIDFormatException e) {
             throw new Error(e);
         } catch (EthereumException e) {
@@ -112,6 +113,7 @@ private com.oceanprotocol.squid.models.DID did;
         // todo
         throw new GenericException("Need to implement");
     }
+
     @Override
     public DID getDID() {
         return DID.parse(this.did.toString());

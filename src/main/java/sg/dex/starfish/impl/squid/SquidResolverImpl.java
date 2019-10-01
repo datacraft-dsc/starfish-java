@@ -53,12 +53,11 @@ public class SquidResolverImpl implements Resolver {
         //TODO  need to register in the network
         installLocalDDO(did, ddo);
 
-
         try {
             com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
             SquidService.getResolverManager().
-                    registerDID(didSquid, "oldUrl", "checksum", Arrays.asList(SquidService.getProvider()));
-
+                    registerDID(didSquid, SquidService.getAquariusService().getDdoEndpoint(),
+                            "checksum", Arrays.asList(SquidService.getProvider()));
 
         } catch (DIDRegisterException e) {
             e.printStackTrace();
