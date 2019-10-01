@@ -32,7 +32,7 @@
     public static byte[] toBytes(String hex) {
 <span class="fc" id="L33">        int length = hex.length();</span>
 <span class="fc" id="L34">        int n = length / 2;</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (n * 2 != length) throw new Error(&quot;Hex string must have even length: &quot; + length);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (n * 2 != length) throw new IllegalArgumentException(&quot;Hex string must have even length: &quot; + length);</span>
 <span class="fc" id="L36">        byte[] result = new byte[n];</span>
 
 <span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
@@ -56,7 +56,7 @@
 <span class="pc bpc" id="L56" title="1 of 4 branches missed.">            if ((v &gt;= 65) &amp;&amp; (v &lt;= 70)) return v - 55; // uppercase</span>
 <span class="pc bpc" id="L57" title="1 of 4 branches missed.">            if ((v &gt;= 48) &amp;&amp; (v &lt;= 57)) return v - 48; // digit</span>
         }
-<span class="fc" id="L59">        throw new Error(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
+<span class="fc" id="L59">        throw new IllegalArgumentException(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
     }
 
     /**

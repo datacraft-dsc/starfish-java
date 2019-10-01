@@ -208,8 +208,8 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
-<span class="fc" id="L212">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="nc" id="L212">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
 <span class="fc" id="L215">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>

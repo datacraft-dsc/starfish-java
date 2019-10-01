@@ -4,7 +4,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,Loc
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,21,161,0,10,4,35,2,15,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryAsset,3,16,0,0,1,5,1,2,1,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,AMemoryOperation,4,40,1,1,1,13,2,4,1,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,127,152,14,8,20,32,16,14,8,11
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAgent,132,147,15,7,21,31,17,13,8,11
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,71,177,12,12,14,36,13,15,4,12
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
@@ -58,4 +58,4 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,HTTP,142,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.AgentIdType,24,0,0,0,2,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,JSON,84,159,6,8,21,42,5,10,1,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.ActivityType,34,0,0,0,2,0,1,0,1,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Utils,280,154,49,15,54,39,36,14,9,9
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Utils,278,154,49,15,54,39,36,14,9,9

@@ -135,19 +135,19 @@ import static sg.dex.starfish.constant.Constant.*;
      *
      * @param inputStream the InputStream
      * @return The String value of inputStream
-     * @throws RuntimeException if inputStream unreadable
      */
     public static String stringFromStream(InputStream inputStream) {
-<span class="fc" id="L141">        ByteArrayOutputStream result = new ByteArrayOutputStream();</span>
-<span class="fc" id="L142">        byte[] buffer = new byte[4096];</span>
+<span class="fc" id="L140">        ByteArrayOutputStream result = new ByteArrayOutputStream();</span>
+<span class="fc" id="L141">        byte[] buffer = new byte[4096];</span>
         int length;
         try {
-<span class="fc bfc" id="L145" title="All 2 branches covered.">            while ((length = inputStream.read(buffer)) != -1) {</span>
-<span class="fc" id="L146">                result.write(buffer, 0, length);</span>
-            }
-<span class="nc" id="L148">        } catch (IOException e) {</span>
-<span class="nc" id="L149">            throw new RuntimeException(&quot;Can't read input stream&quot;, e);</span>
-<span class="fc" id="L150">        }</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">			while ((length = inputStream.read(buffer)) != -1) {</span>
+<span class="fc" id="L145">			    result.write(buffer, 0, length);</span>
+			}
+		}
+<span class="nc" id="L148">		catch (IOException e) {</span>
+<span class="nc" id="L149">			throw Utils.sneakyThrow(e);</span>
+<span class="fc" id="L150">		}</span>
 <span class="fc" id="L151">        return new String(result.toByteArray(), StandardCharsets.UTF_8);</span>
     }
 
