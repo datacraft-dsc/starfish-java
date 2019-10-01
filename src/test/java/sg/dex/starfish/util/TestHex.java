@@ -41,7 +41,7 @@ public class TestHex {
         try {
             byte[] result = Hex.toBytes("A");
             fail("Hex.toBytes should throw an Error on 'A'");
-        } catch (Error e) { // expected
+        } catch (IllegalArgumentException e) { // expected
             assertEquals(e.getMessage(), "Hex string must have even length: 1");
         }
     }
@@ -52,7 +52,7 @@ public class TestHex {
         try {
             int val = Hex.val('?');
             fail("Hex.val should throw an Error on '?'");
-        } catch (Error e) { // expected
+        } catch (IllegalArgumentException e) { // expected
             assertEquals(e.getMessage(), "Invalid hex char [?] = 63");
         }
     }

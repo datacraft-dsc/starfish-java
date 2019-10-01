@@ -68,6 +68,7 @@ public class SquidAgent extends AAgent {
      * @throws StorageException              if unable to register the SquidAsset
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <R extends Asset> R  registerAsset(Asset asset) {
 

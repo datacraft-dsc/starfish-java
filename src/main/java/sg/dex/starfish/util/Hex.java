@@ -32,7 +32,7 @@ public class Hex {
     public static byte[] toBytes(String hex) {
         int length = hex.length();
         int n = length / 2;
-        if (n * 2 != length) throw new Error("Hex string must have even length: " + length);
+        if (n * 2 != length) throw new IllegalArgumentException("Hex string must have even length: " + length);
         byte[] result = new byte[n];
 
         for (int i = 0; i < n; i++) {
@@ -56,7 +56,7 @@ public class Hex {
             if ((v >= 65) && (v <= 70)) return v - 55; // uppercase
             if ((v >= 48) && (v <= 57)) return v - 48; // digit
         }
-        throw new Error("Invalid hex char [" + c + "] = " + (int) c);
+        throw new IllegalArgumentException("Invalid hex char [" + c + "] = " + (int) c);
     }
 
     /**
