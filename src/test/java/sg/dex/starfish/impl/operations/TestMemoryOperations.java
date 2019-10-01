@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.operations;
 
+import com.sun.source.tree.AssertTree;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -11,6 +12,7 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -41,7 +43,10 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = memoryOperation.invokeAsync(test);
+       String provenance= memoryOperation.getMetadata().get(Constant.PROVENANCE).toString();
 
+       Map<String,Object> provMap=JSON.toMap(provenance);
+       assertTrue(provMap.get("agent").toString().contains("opf:did:"));
         Map<String, Object> res = job.getResult(10000);
         Asset resultAsset=(Asset)res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
@@ -81,6 +86,11 @@ public class TestMemoryOperations {
         test.put("input", "10");
 
         Job job = memoryOperation.invokeAsync(test);
+        String provenance= memoryOperation.getMetadata().get(Constant.PROVENANCE).toString();
+
+        Map<String,Object> provMap=JSON.toMap(provenance);
+        assertTrue(provMap.get("agent").toString().contains("opf:did:"));
+
         assertTrue(jobStatus.contains(job.getStatus()));
         Map<String, Object> res = job.getResult(1000);
         int acutal = (Integer)res.get("sumOfPrime");
@@ -105,6 +115,11 @@ public class TestMemoryOperations {
 
         int acutal = (Integer)result.get("sumOfPrime");
 
+        String provenance= memoryOperation.getMetadata().get(Constant.PROVENANCE).toString();
+
+        Map<String,Object> provMap=JSON.toMap(provenance);
+        assertTrue(provMap.get("agent").toString().contains("opf:did:"));
+
         int expected = 2+ 3+ 5+ 7+11+13;
 
         assertEquals(expected, acutal);
@@ -124,6 +139,11 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Job job = hashOperation.invokeAsync(test);
+        String provenance= hashOperation.getMetadata().get(Constant.PROVENANCE).toString();
+
+        Map<String,Object> provMap=JSON.toMap(provenance);
+        assertTrue(provMap.get("agent").toString().contains("opf:did:"));
+
         Map<String, Object> response = job.getResult(1000);
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
@@ -134,9 +154,11 @@ public class TestMemoryOperations {
     public void testHashAsyncFailed()  {
 
         byte[] data = new byte[]{1, 2, 3};
+        Map<String,Object> meta = new HashMap<>();
+        meta.put("name","Fail operation");
         EpicFailOperation epicFailOperation =
                 EpicFailOperation.
-                        create("Fail operation");
+                        create(JSON.toPrettyString(meta));
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
@@ -154,6 +176,10 @@ public class TestMemoryOperations {
         } catch (Exception e) {
             /* OK, Expected */
         }
+        String provenance= epicFailOperation.getMetadata().get(Constant.PROVENANCE).toString();
+
+        Map<String,Object> provMap=JSON.toMap(provenance);
+        assertTrue(provMap.get("agent").toString().contains("opf:did:"));
         assertTrue(job.isDone());
         assertEquals(Constant.FAILED, job.getStatus());
     }
@@ -179,6 +205,11 @@ public class TestMemoryOperations {
         }
         Map<String, Object> response = job.getResult();
         assertEquals(Constant.SUCCEEDED, job.getStatus());
+
+        String provenance= hashOperation.getMetadata().get(Constant.PROVENANCE).toString();
+
+        Map<String,Object> provMap=JSON.toMap(provenance);
+        assertTrue(provMap.get("agent").toString().contains("opf:did:"));
 
         String hash = Hex.toString(Hash.sha3_256(a.getContent()));
         assertEquals(response.get("hashed_value").toString(), hash);
