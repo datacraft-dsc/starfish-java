@@ -5,7 +5,9 @@ import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,25 +15,49 @@ import java.util.Map;
  * Currently it is written to connect with Surfer
  * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
-<span class="nc" id="L16">public final class RemoteAgentConfig {</span>
+<span class="nc" id="L18">public final class RemoteAgentConfig {</span>
 
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, String userName, String password) {
         // creating unique DID
 
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
-<span class="nc" id="L23">        Resolver resolver=new LocalResolverImpl();</span>
+<span class="nc" id="L25">        Resolver resolver=new LocalResolverImpl();</span>
         // registering the DID and DDO
-<span class="nc" id="L25">        resolver.registerDID(did, ddoString);</span>
+<span class="nc" id="L27">        resolver.registerDID(did, ddoString);</span>
 
         //Creating remote Account
-<span class="nc" id="L28">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L29">        credentialMap.put(&quot;username&quot;, userName);</span>
-<span class="nc" id="L30">        credentialMap.put(&quot;password&quot;, password);</span>
+<span class="nc" id="L30">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L31">        credentialMap.put(&quot;username&quot;, userName);</span>
+<span class="nc" id="L32">        credentialMap.put(&quot;password&quot;, password);</span>
 
-<span class="nc" id="L32">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
+<span class="nc" id="L34">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
         // creating a Remote agent instance for given Ocean and DID
-<span class="nc" id="L34">        return RemoteAgent.create(resolver, did, account);</span>
+<span class="nc" id="L36">        return RemoteAgent.create(resolver, did, account);</span>
+    }
+    public static String getDefaultDDO(String host) {
+<span class="nc" id="L39">        Map&lt;String, Object&gt; ddo = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L40">        List&lt;Map&lt;String, Object&gt;&gt; services = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L41">        services.add(Utils.mapOf(</span>
+                &quot;type&quot;, &quot;Ocean.Meta.v1&quot;,
+                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/meta&quot;));
+<span class="nc" id="L44">        services.add(Utils.mapOf(</span>
+                &quot;type&quot;, &quot;Ocean.Storage.v1&quot;,
+                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/assets&quot;));
+<span class="nc" id="L47">        services.add(Utils.mapOf(</span>
+                &quot;type&quot;, &quot;Ocean.Invoke.v1&quot;,
+                &quot;serviceEndpoint&quot;, host));
+<span class="nc" id="L50">        services.add(Utils.mapOf(</span>
+                &quot;type&quot;, &quot;Ocean.Auth.v1&quot;,
+                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/auth&quot;));
+<span class="nc" id="L53">        services.add(Utils.mapOf(</span>
+                &quot;type&quot;, &quot;Ocean.Market.v1&quot;,
+                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/market&quot;));
+<span class="nc" id="L56">        ddo.put(&quot;service&quot;, services);</span>
+<span class="nc" id="L57">        String ddoString = JSON.toPrettyString(ddo);</span>
+
+<span class="nc" id="L59">        return ddoString;</span>
+
     }
 
 }
