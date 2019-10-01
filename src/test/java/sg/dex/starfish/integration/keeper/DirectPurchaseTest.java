@@ -19,21 +19,17 @@ import static org.junit.Assert.assertTrue;
 
 public class DirectPurchaseTest {
     private DirectPurchaseAdapter directPurchaseAdapter;
-    private String reference;
-    private BigInteger tokenAmount;
-    String receiverAddress;
-    String senderAddress;
+    private static final String reference = "0x000000000000a46daef00000000000";
+    private static final BigInteger tokenAmount = BigInteger.valueOf(10);
+    private static final String receiverAddress= "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0";
+    private static final String senderAddress= "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
 
     public DirectPurchaseTest() throws IOException, CipherException {
         directPurchaseAdapter = new DirectPurchaseAdapter();
-        reference = "0x000000000000a46daef00000000000";
-        tokenAmount = BigInteger.valueOf(10);
-        receiverAddress = "0x068Ed00cF0441e4829D9784fCBe7b9e26D4BD8d0";
-        senderAddress = "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
     }
 
     @Test
-    public void Purchase() throws EthereumException {
+    public void testPurchase() throws EthereumException {
         String receiverPasswd = "secret";
         String senderPasswd = "node0";
 
@@ -57,7 +53,7 @@ public class DirectPurchaseTest {
     }
 
     @Test
-    public void check_is_paid() {
+    public void testCheckIsPaid() {
         boolean paid = directPurchaseAdapter.checkIsPaid(senderAddress, receiverAddress, tokenAmount, reference);
         assertTrue(paid);
     }
