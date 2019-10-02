@@ -37,9 +37,21 @@ public final class DirectPurchaseAdapter {
     /**
      * Create DirectPurchaseAdapter
      *
-     * @throws IOException CipherException
+     * @param directPurchase  object
+     * @param tokenManager    object
      */
-    public DirectPurchaseAdapter() throws IOException, CipherException {
+    private DirectPurchaseAdapter(DirectPurchase directPurchase, TokenManager tokenManager)  {
+        this.directPurchase = directPurchase;
+        this.tokenManager = tokenManager;
+    }
+
+    /**
+     * Creates a DirectPurchaseAdapter
+     *
+     * @throws IOException, CipherException
+     * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
+     */
+    public static DirectPurchaseAdapter create() throws IOException, CipherException{
         // getting properties
         Properties properties = getProperties();
         String directPurchaseAddress = (String)properties.getOrDefault("contract.DirectPurchase.address", "");
@@ -47,11 +59,12 @@ public final class DirectPurchaseAdapter {
         // getting keeper
         KeeperService keeper = SquidService.getKeeperService(properties);
         // loading contract instances
-        directPurchase = DirectPurchase.load(directPurchaseAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
+        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         OceanToken oceanToken = OceanToken.load(oceanTokenAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         // initializing token manager
-        tokenManager = TokenManager.getInstance(keeper);
+        TokenManager tokenManager = TokenManager.getInstance(keeper);
         tokenManager.setTokenContract(oceanToken);
+        return new DirectPurchaseAdapter(directPurchase, tokenManager);
     }
 
     /**
@@ -134,9 +147,9 @@ public final class DirectPurchaseAdapter {
         return false;
     }
 
-    private Properties getProperties() {
+    private static Properties getProperties() {
         Properties prop = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application_spree.properties")) {
+        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("application_spree.properties")) {
 
             if (input == null) {
                 throw new IOException("properties files is missing");

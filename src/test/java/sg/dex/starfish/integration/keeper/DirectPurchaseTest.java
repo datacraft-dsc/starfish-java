@@ -25,7 +25,7 @@ public class DirectPurchaseTest {
     private static final String senderAddress= "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
 
     public DirectPurchaseTest() throws IOException, CipherException {
-        directPurchaseAdapter = new DirectPurchaseAdapter();
+        directPurchaseAdapter = DirectPurchaseAdapter.create();
     }
 
     @Test
