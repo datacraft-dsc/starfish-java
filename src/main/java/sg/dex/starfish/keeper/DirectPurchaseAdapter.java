@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.web3j.crypto.CipherException;
 
 import org.web3j.utils.Numeric;
+import sg.dex.starfish.util.Hex;
 import java.util.ArrayList;
 import java.math.BigInteger;
 import java.util.Properties;
@@ -74,8 +75,8 @@ public final class DirectPurchaseAdapter {
 
         if(tokenApproved) {
             try {
-                byte[] ref1 = Numeric.hexStringToByteArray(Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference1), 64));
-                byte[] ref2 = Numeric.hexStringToByteArray(Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference2), 64));
+                byte[] ref1 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference1));
+                byte[] ref2 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference2));
                 receipt = directPurchase.sendTokenAndLog(to, amount, ref1, ref2).send();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,9 +110,9 @@ public final class DirectPurchaseAdapter {
      */
     public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference)
     {
-        String purchaser_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(purchaser_address), 64);
-        String publisher_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(publisher_address), 64);
-        String reference_padded = Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(reference), 64);
+        String purchaser_padded = Hex.toZeroPaddedHex(purchaser_address);
+        String publisher_padded = Hex.toZeroPaddedHex(publisher_address);
+        String reference_padded = Hex.toZeroPaddedHex(reference);
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());
 
         filter.addSingleTopic(EventEncoder.encode(directPurchase.TOKENSENT_EVENT));
