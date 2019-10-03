@@ -67,7 +67,7 @@ public interface Operation extends Asset {
     /**
      * Returns the operation specification for this operation. Operations may
      * override this method to define:</br>
-     *  - what operation inputs the accept</br>
+     *  - what operation inputs are accepted</br>
      *  - what operation results are created</br>
      * <p>
      * TODO: add brief description of format and link to DEP6
