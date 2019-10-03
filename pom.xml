@@ -272,8 +272,7 @@
 						<configuration>
 							<!-- Configures the source directory of integration tests. -->
 							<sources>
-								<source>**/*IT.java</source>
-								<source>**/*Test.java</source>
+								<source>src/integration-test/java</source>
 							</sources>
 						</configuration>
 					</execution>
