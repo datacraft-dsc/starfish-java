@@ -12,12 +12,29 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
+
+import com.oceanprotocol.common.web3.KeeperService;
+import com.oceanprotocol.keeper.contracts.DIDRegistry;
 
 public class SquidResolverImpl implements Resolver {
-    private final Map<DID, String> ddoCache = new HashMap<>();
+    private DIDRegistry contract;
+
+    SquidResolverImpl() {
+        Properties properties = getProperties();
+        String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
+        KeeperService keeper = null;
+        try {
+            keeper = SquidService.getKeeperService(properties);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CipherException e) {
+            e.printStackTrace();
+        }
+        contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
+    }
 
     @Override
     public String getDDOString(DID did) {
@@ -50,13 +67,10 @@ public class SquidResolverImpl implements Resolver {
 
     @Override
     public void registerDID(DID did, String ddo) {
-        //TODO  need to register in the network
-        installLocalDDO(did, ddo);
-
         try {
             com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
             SquidService.getResolverManager().
-                    registerDID(didSquid, SquidService.getAquariusService().getDdoEndpoint(),
+                    registerDID(didSquid, ddo,
                             "checksum", Arrays.asList(SquidService.getProvider()));
 
         } catch (DIDRegisterException e) {
@@ -72,18 +86,18 @@ public class SquidResolverImpl implements Resolver {
 
     }
 
-    /**
-     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
-     * <p>
-     * This registration is intended for testing purposes.
-     *
-     * @param did       A did to register
-     * @param ddoString A string containing a valid DDO in JSON Format
-     */
-    private void installLocalDDO(DID did, String ddoString) {
-        if (did == null) throw new IllegalArgumentException("DID cannot be null");
-        did = did.withoutPath();
-        ddoCache.put(did, ddoString);
-    }
+    private Properties getProperties() {
+        Properties prop = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
 
+            if (input == null) {
+                throw new IOException("properties files is missing");
+            }
+
+            prop.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return prop;
+    }
 }
