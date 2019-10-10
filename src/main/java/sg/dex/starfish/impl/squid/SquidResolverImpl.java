@@ -9,6 +9,7 @@ import com.oceanprotocol.squid.models.DDO;
 import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -79,8 +80,7 @@ public class SquidResolverImpl implements Resolver {
         try {
             com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
             SquidService.getResolverManager().
-                    registerDID(didSquid, ddo,
-                            "checksum", Arrays.asList(SquidService.getProvider()));
+                    registerDID(didSquid, ddo, Hex.toZeroPaddedHex("0x0"), Arrays.asList(SquidService.getProvider()));
 
         } catch (DIDRegisterException e) {
             e.printStackTrace();
