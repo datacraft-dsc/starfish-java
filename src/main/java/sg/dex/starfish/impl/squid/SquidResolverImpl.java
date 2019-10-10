@@ -79,7 +79,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddo) {
+    public boolean registerDID(DID did, String ddo) {
         try {
             com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
             SquidService.getResolverManager().
@@ -87,15 +87,19 @@ public class SquidResolverImpl implements Resolver {
 
         } catch (DIDRegisterException e) {
             e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } catch (CipherException e) {
             e.printStackTrace();
+            return false;
         } catch (DIDFormatException e) {
             e.printStackTrace();
+            return false;
         }
 
-
+        return true;
     }
 
     private static Properties getProperties() {

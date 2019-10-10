@@ -37,8 +37,9 @@ public class LocalResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddoString) {
+    public boolean registerDID(DID did, String ddoString) {
         installLocalDDO(did, ddoString);
+        return true;
     }
 
     /**
