@@ -38,6 +38,7 @@ public interface Resolver {
      *
      * @param did DID to register
      * @param ddoString DDO to associate with the given DID
+     * @return Result
      */
-    void registerDID(DID did, String ddoString);
+    boolean registerDID(DID did, String ddoString);
 }
