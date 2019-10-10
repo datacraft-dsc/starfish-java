@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
@@ -12,6 +13,7 @@ import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.util.DID;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +27,13 @@ public class SquidAgentTest {
 
 
     private SquidAgent squidAgent;
-    private Resolver resolver = new SquidResolverImpl();
+    private Resolver resolver;
 
     @Before
-    public void setup() {
+    public void setup() throws IOException, CipherException {
         // create random DID
         DID did = DID.createRandom();
+        resolver =  SquidResolverImpl.create();
         squidAgent = SquidAgent.create( resolver, did);
 
     }
