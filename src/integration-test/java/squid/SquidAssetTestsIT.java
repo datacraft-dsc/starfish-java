@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -45,12 +46,9 @@ public class SquidAssetTestsIT {
     private OceanAPI oceanAPI ;
 
     @Before
-    public void setup() {
-        String path ="/Users/ayush/starfish-java-19Sept/src/integration-test/resources/application_test.properties";
-        //squidService = SquidService.create(path);
-        squidService = SquidService.create("application_test.properties");
+    public void setup() throws IOException, CipherException {
 
-        resolver = new SquidResolverImpl(squidService);
+        resolver = SquidResolverImpl.create();
         // create random DID
         DID did = DID.createRandom();
 
