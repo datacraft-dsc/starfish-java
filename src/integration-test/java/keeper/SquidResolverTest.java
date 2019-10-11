@@ -2,6 +2,7 @@ package sg.dex.starfish.integration.keeper;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.util.DID;
@@ -22,7 +23,8 @@ public class SquidResolverTest {
 
     @Test
     public void testRegister()   {
-        resolver.registerDID(did, value);
+        boolean result = resolver.registerDID(did, value);
+        assertTrue(result);
     }
 
     @Test

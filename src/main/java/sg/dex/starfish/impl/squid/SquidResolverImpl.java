@@ -1,12 +1,13 @@
 package sg.dex.starfish.impl.squid;
 
+import com.oceanprotocol.common.helpers.EncodingHelper;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
-import com.oceanprotocol.squid.exceptions.DIDRegisterException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
 import org.web3j.crypto.CipherException;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
@@ -77,26 +78,34 @@ public class SquidResolverImpl implements Resolver {
 
     @Override
     public boolean registerDID(DID did, String ddo) {
-        try {
-            com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
-            SquidService.getResolverManager().
-                    registerDID(didSquid, ddo, Hex.toZeroPaddedHex("0x0"), Arrays.asList(SquidService.getProvider()));
+        String checksum = "0x0";
 
-        } catch (DIDRegisterException e) {
+        com.oceanprotocol.squid.models.DID didSquid = null;
+        try {
+            didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
+        } catch (DIDFormatException e) {
             e.printStackTrace();
             return false;
+        }
+
+        TransactionReceipt receipt = null;
+        try {
+            receipt = (TransactionReceipt)contract.registerAttribute(
+                    EncodingHelper.hexStringToBytes(didSquid.getHash()),
+                    EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
+                    Arrays.asList(SquidService.getProvider()), ddo).send();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         } catch (CipherException e) {
             e.printStackTrace();
             return false;
-        } catch (DIDFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
-        return true;
+        return receipt.getStatus().equals("0x1");
     }
 
     private static Properties getProperties() {
