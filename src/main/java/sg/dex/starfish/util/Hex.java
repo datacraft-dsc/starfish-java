@@ -1,5 +1,7 @@
 package sg.dex.starfish.util;
 
+import org.web3j.utils.Numeric;
+
 /**
  * Utility class for hexadecimal strings
  *
@@ -99,5 +101,15 @@ public class Hex {
             hex[i] = toChar(0x0F & (value >> (28 - 4 * i)));
         }
         return new String(hex);
+    }
+
+    /**
+     * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     *
+     * @param value String to convert
+     * @return hex String result
+     */
+    public static String toZeroPaddedHex(String value) {
+        return Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(value), 64);
     }
 }

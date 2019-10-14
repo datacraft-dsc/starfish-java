@@ -117,7 +117,11 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.5.10</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.web3j</groupId>
+			<artifactId>core</artifactId>
+			<version>4.5.0</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -268,8 +272,7 @@
 						<configuration>
 							<!-- Configures the source directory of integration tests. -->
 							<sources>
-								<source>**/*IT.java</source>
-								<source>**/*Test.java</source>
+								<source>src/integration-test/java</source>
 							</sources>
 						</configuration>
 					</execution>

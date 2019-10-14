@@ -29,10 +29,10 @@ public interface Agent {
 	DID getDID();
 
     /**
-     * Registers an asset with this agent.
-     * The agent must support metadata storage.
+     * Registers an Asset with this Agent.
+     * The Agent must support metadata storage (e.g. via the DEP15 Meta API)
      *
-     * @param asset The asset to register
+     * @param asset The Asset to register
      * @return Asset
      * @throws AuthorizationException        if requester does not have register permission
      * @throws UnsupportedOperationException if the agent does not support metadata storage
@@ -40,10 +40,12 @@ public interface Agent {
 	<R extends Asset> R registerAsset(Asset asset);
 	
     /**
-     * Registers asset metadata with this agent.
-     * The agent must support metadata storage.
+     * Registers Asset metadata with this Agent, returning an Asset of the 
+     * appropriate type for this Agent.
+     * 
+     * The Agent must support metadata storage (e.g. via the DEP15 Meta API)
      *
-     * @param asset The asset to register
+     * @param asset The Asset to register
      * @return Asset
      * @throws AuthorizationException        if requester does not have register permission
      * @throws UnsupportedOperationException if the agent does not support metadata storage
@@ -55,7 +57,7 @@ public interface Agent {
      * Returns null if the asset ID does not exist in the context of the agent
      *
      * @param id The ID of the asset to get from this agent
-     * @return Asset The asset found, or null if the agent does not have the specified asset
+     * @return Asset The asset if found, or null if the agent does not have the specified asset
      */
 	<R extends Asset> R getAsset(String id);
 
@@ -64,7 +66,7 @@ public interface Agent {
      * Returns null if the asset not exist.
      *
      * @param did The DID of the asset to get from this agent
-     * @return Asset The asset found, or null if not found
+     * @return Asset The asset if found, or null if not found
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if there is an error in retrieving the Asset
      */

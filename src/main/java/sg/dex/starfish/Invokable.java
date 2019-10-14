@@ -33,17 +33,6 @@ public interface Invokable {
     Job invoke(Operation operation, Map<String, Object> params);
 
     /**
-     * Gets the parameter specification for this Invokable service given the specified operation
-     *
-     * @param op The operation for which to obtain the parameter specification
-     * @return A map of parameter names to parameter specs
-     * @throws UnsupportedOperationException if this service cannot support the given operation
-     */
-    default Map<String, Object> getParamSpec(Operation op) {
-        return op.getParamsSpec();
-    }
-
-    /**
      * Invokes this operation with the given named parameters. Operations should override
      * this method to provide an implementation of asynchronous invocation via the
      * Job interface
@@ -56,8 +45,10 @@ public interface Invokable {
     Job invokeAsync(Operation operation, Map<String, Object> params);
     
     /**
-     * Gets a Job from this invokable agent with the given jobID
-     * @param jobID ID for the Job in the context for this agent
+     * Gets a Job from this invokable agent with the given jobID. Job IDs are unique
+     * identifiers for Jobs issued by an Invokable Agent.
+     * 
+     * @param jobID ID for the Job in the context for this Agent
      * @return A Job instance, or null if the Job cannot be found
      */
     Job getJob(String jobID);
