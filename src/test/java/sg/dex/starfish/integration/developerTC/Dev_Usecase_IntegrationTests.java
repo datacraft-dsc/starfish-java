@@ -3,8 +3,8 @@ package sg.dex.starfish.integration.developerTC;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import sg.dex.starfish.integration.connection_check.AssumingConnection;
 import sg.dex.starfish.integration.connection_check.ConnectionChecker;
+import sg.dex.starfish.integration.connection_check.AssumingConnection;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

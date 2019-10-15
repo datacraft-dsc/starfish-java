@@ -217,6 +217,9 @@
 					<testSource>8</testSource>
 					<testTarget>8</testTarget>
 					<compilerArgument>-Xlint:deprecation</compilerArgument>
+					<testExcludes>
+						<testExclude>**/sg/dex/starfish/integration/keeper/DirectPurchaseTest.java</testExclude>
+					</testExcludes>
 				</configuration>
 			</plugin>
 

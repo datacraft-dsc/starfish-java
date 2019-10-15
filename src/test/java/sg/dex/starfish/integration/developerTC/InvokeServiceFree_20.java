@@ -1,4 +1,4 @@
-package sg.dex.starfish.integration.developerTC;//package sg.dex.starfish.integration.developerTC;
+package sg.dex.starfish.integration.developerTC;//package sg.dex.starfish.integration.sg.dex.starfish.integration.squid.developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
