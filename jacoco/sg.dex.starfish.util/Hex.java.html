@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">Hex.java</span></div><h1>Hex.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
 
+import org.web3j.utils.Numeric;
+
 /**
  * Utility class for hexadecimal strings
  *
  * @author Mike
  */
-<span class="nc" id="L8">public class Hex {</span>
+<span class="nc" id="L10">public class Hex {</span>
     /**
      * Converts an int value in the range 0..15 to a lowercase hexadecimal character
      *
@@ -14,11 +16,11 @@
      * @throws IllegalArgumentException on invalid hex char
      */
     public static char toChar(int value) {
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (value &gt;= 0) {</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">            if (value &lt;= 9) return (char) (value + 48);</span>
-<span class="fc bfc" id="L19" title="All 2 branches covered.">            if (value &lt;= 15) return (char) (value + 87);</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (value &gt;= 0) {</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            if (value &lt;= 9) return (char) (value + 48);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            if (value &lt;= 15) return (char) (value + 87);</span>
         }
-<span class="fc" id="L21">        throw new IllegalArgumentException(&quot;Invalid value for hex char: &quot; + value);</span>
+<span class="fc" id="L23">        throw new IllegalArgumentException(&quot;Invalid value for hex char: &quot; + value);</span>
     }
 
     /**
@@ -30,16 +32,16 @@
      * @throws Error on odd length hex string
      */
     public static byte[] toBytes(String hex) {
-<span class="fc" id="L33">        int length = hex.length();</span>
-<span class="fc" id="L34">        int n = length / 2;</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (n * 2 != length) throw new IllegalArgumentException(&quot;Hex string must have even length: &quot; + length);</span>
-<span class="fc" id="L36">        byte[] result = new byte[n];</span>
+<span class="fc" id="L35">        int length = hex.length();</span>
+<span class="fc" id="L36">        int n = length / 2;</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (n * 2 != length) throw new IllegalArgumentException(&quot;Hex string must have even length: &quot; + length);</span>
+<span class="fc" id="L38">        byte[] result = new byte[n];</span>
 
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
-<span class="fc" id="L39">            result[i] = (byte) (Hex.val(hex.charAt(2 * i)) * 16 + Hex.val(hex.charAt(2 * i + 1)));</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L41">            result[i] = (byte) (Hex.val(hex.charAt(2 * i)) * 16 + Hex.val(hex.charAt(2 * i + 1)));</span>
         }
 
-<span class="fc" id="L42">        return result;</span>
+<span class="fc" id="L44">        return result;</span>
     }
 
     /**
@@ -50,13 +52,13 @@
      * @throws Error on invalid hex char
      */
     public static int val(char c) {
-<span class="fc" id="L53">        int v = (int) c;</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (v &lt;= 102) {</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">            if (v &gt;= 97) return v - 87; // lowercase</span>
-<span class="pc bpc" id="L56" title="1 of 4 branches missed.">            if ((v &gt;= 65) &amp;&amp; (v &lt;= 70)) return v - 55; // uppercase</span>
-<span class="pc bpc" id="L57" title="1 of 4 branches missed.">            if ((v &gt;= 48) &amp;&amp; (v &lt;= 57)) return v - 48; // digit</span>
+<span class="fc" id="L55">        int v = (int) c;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (v &lt;= 102) {</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (v &gt;= 97) return v - 87; // lowercase</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">            if ((v &gt;= 65) &amp;&amp; (v &lt;= 70)) return v - 55; // uppercase</span>
+<span class="pc bpc" id="L59" title="1 of 4 branches missed.">            if ((v &gt;= 48) &amp;&amp; (v &lt;= 57)) return v - 48; // digit</span>
         }
-<span class="fc" id="L59">        throw new IllegalArgumentException(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
+<span class="fc" id="L61">        throw new IllegalArgumentException(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
     }
 
     /**
@@ -66,7 +68,7 @@
      * @return The lowercase hex string generated
      */
     public static String toString(byte[] data) {
-<span class="fc" id="L69">        return toString(data, 0, data.length);</span>
+<span class="fc" id="L71">        return toString(data, 0, data.length);</span>
     }
 
     /**
@@ -78,13 +80,13 @@
      * @return The lowercase hex string generated
      */
     public static String toString(byte[] data, int offset, int length) {
-<span class="fc" id="L81">        char[] hex = new char[length * 2];</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
-<span class="fc" id="L83">            int v = ((int) data[i + offset]) &amp; 0xFF;</span>
-<span class="fc" id="L84">            hex[i * 2] = toChar(v &gt;&gt;&gt; 4);</span>
-<span class="fc" id="L85">            hex[i * 2 + 1] = toChar(v &amp; 0xF);</span>
+<span class="fc" id="L83">        char[] hex = new char[length * 2];</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc" id="L85">            int v = ((int) data[i + offset]) &amp; 0xFF;</span>
+<span class="fc" id="L86">            hex[i * 2] = toChar(v &gt;&gt;&gt; 4);</span>
+<span class="fc" id="L87">            hex[i * 2 + 1] = toChar(v &amp; 0xF);</span>
         }
-<span class="fc" id="L87">        return new String(hex);</span>
+<span class="fc" id="L89">        return new String(hex);</span>
     }
 
     /**
@@ -94,11 +96,21 @@
      * @return hex representation
      */
     public static String toString(int value) {
-<span class="nc" id="L97">        char[] hex = new char[8];</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">        for (int i = 0; i &lt; 8; i++) {</span>
-<span class="nc" id="L99">            hex[i] = toChar(0x0F &amp; (value &gt;&gt; (28 - 4 * i)));</span>
+<span class="nc" id="L99">        char[] hex = new char[8];</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        for (int i = 0; i &lt; 8; i++) {</span>
+<span class="nc" id="L101">            hex[i] = toChar(0x0F &amp; (value &gt;&gt; (28 - 4 * i)));</span>
         }
-<span class="nc" id="L101">        return new String(hex);</span>
+<span class="nc" id="L103">        return new String(hex);</span>
+    }
+
+    /**
+     * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     *
+     * @param value String to convert
+     * @return hex String result
+     */
+    public static String toZeroPaddedHex(String value) {
+<span class="nc" id="L113">        return Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(value), 64);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

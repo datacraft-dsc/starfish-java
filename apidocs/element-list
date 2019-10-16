@@ -9,4 +9,5 @@ sg.dex.starfish.impl.memory
 sg.dex.starfish.impl.remote
 sg.dex.starfish.impl.resource
 sg.dex.starfish.impl.squid
+sg.dex.starfish.keeper
 sg.dex.starfish.util
