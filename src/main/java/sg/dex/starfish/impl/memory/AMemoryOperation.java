@@ -2,12 +2,8 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.ProvUtil;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -23,33 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class AMemoryOperation extends AMemoryAsset implements Operation {
 
     protected AMemoryOperation(String metaString, MemoryAgent memoryAgent) {
-        super(getMetaWithProv(metaString,memoryAgent), memoryAgent);
-    }
-
-    /**
-     * Method to add provenace in the metadata if not present for all Memory Operation
-     * @param metaString Metadata as string
-     * @param memoryAgent agent
-     * @return metadata with PROVENANCE
-     */
-    private static String getMetaWithProv(String metaString,MemoryAgent memoryAgent) {
-
-        Map<String,Object> meta = JSON.toMap(metaString);
-        //check if already provenance is present
-
-        if(meta.get(Constant.PROVENANCE)== null) {
-            // adding default provenance
-            String actId = UUID.randomUUID().toString();
-            // check if DID is present in agent then agent id will be did
-            // else will create a random UUID
-            String agentId = memoryAgent.getDID()!=null?
-                    memoryAgent.getDID().toString():
-                    UUID.randomUUID().toString();
-
-            Map<String, Object> provenanceData = ProvUtil.createPublishProvenance(actId, agentId);
-            meta.put(Constant.PROVENANCE, provenanceData);
-        }
-        return JSON.toPrettyString(meta);
+        super(metaString, memoryAgent);
     }
 
     @Override
