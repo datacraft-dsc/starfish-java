@@ -6,6 +6,10 @@ import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
+
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.abi.EventEncoder;
+import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
@@ -15,7 +19,11 @@ import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import io.reactivex.Flowable;
 import java.util.Properties;
 
 import com.oceanprotocol.common.web3.KeeperService;
@@ -49,18 +57,38 @@ public class SquidResolverImpl implements Resolver {
 
     @Override
     public String getDDOString(DID did) {
+        com.oceanprotocol.squid.models.DID squidDID = null;
         try {
-            com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
-            OceanManager oceanManager = SquidService.getResolverManager();
-            DDO ddo = oceanManager.resolveDID(squidDID);
-            if (ddo != null) {
-                return ddo.toJson();
-            }
-        } catch (EthereumException | DDOException | DIDFormatException | IOException | CipherException e) {
+            squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
+        } catch (DIDFormatException e) {
+            e.printStackTrace();
             throw Utils.sneakyThrow(e);
         }
-        return null;
 
+        String didHash = squidDID.getHash();
+        BigInteger blockNumber = BigInteger.valueOf(0);
+        try {
+            blockNumber = (BigInteger) contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw Utils.sneakyThrow(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw Utils.sneakyThrow(e);
+        }
+
+        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(contract.DIDATTRIBUTEREGISTERED_EVENT));
+        String didTopic = "0x" + didHash;
+        filter.addOptionalTopics(new String[]{didTopic});
+
+        Flowable<DIDRegistry.DIDAttributeRegisteredEventResponse> floable = contract.dIDAttributeRegisteredEventFlowable(filter);
+        ArrayList<DIDRegistry.DIDAttributeRegisteredEventResponse> outcome = new ArrayList<>();
+        floable.subscribe(log -> {
+            outcome.add(log);
+        });
+
+        return outcome.size() == 1 ? outcome.get(0)._value : null;
     }
 
     DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {

@@ -12,24 +12,26 @@ import java.io.IOException;
 
 public class SquidResolverTest {
     private  SquidResolverImpl resolver;
-    private String value;
+    private String value1;
+    private String value2;
     private DID did;
 
     public SquidResolverTest() throws IOException, CipherException {
         resolver = SquidResolverImpl.create();
-        value = DID.createRandomString();
+        value1 = DID.createRandomString();
+        value2 = DID.createRandomString();
         did = DID.createRandom();
     }
 
     @Test
-    public void testRegister()   {
-        boolean result = resolver.registerDID(did, value);
+    public void testRegisterResolve()   {
+        boolean result = resolver.registerDID(did, value1);
         assertTrue(result);
-    }
-
-    @Test
-    public void testResolve() {
         String val = resolver.getDDOString(did);
-        assertEquals(val, value);
+        assertEquals(val, value1);
+        result = resolver.registerDID(did, value2);
+        assertTrue(result);
+        val = resolver.getDDOString(did);
+        assertEquals(val, value2);
     }
 }
