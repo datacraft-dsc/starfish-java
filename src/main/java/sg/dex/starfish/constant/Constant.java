@@ -27,6 +27,7 @@ public class Constant {
     public static final String MODE = "modes";
     public static final String OCTET_STREAM = "application/octet-stream";
     public static final String FILE = "file";
+    public static final String PROVENANCE = "provenance";
 
     //-----JOB  -------
 
