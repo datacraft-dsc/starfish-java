@@ -149,7 +149,7 @@ public final class DirectPurchaseAdapter {
 
     private static Properties getProperties() {
 <span class="nc" id="L151">        Properties prop = new Properties();</span>
-<span class="nc" id="L152">        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream(&quot;application_spree.properties&quot;)) {</span>
+<span class="nc" id="L152">        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream(&quot;application.properties&quot;)) {</span>
 
 <span class="nc bnc" id="L154" title="All 2 branches missed.">            if (input == null) {</span>
 <span class="nc" id="L155">                throw new IOException(&quot;properties files is missing&quot;);</span>
