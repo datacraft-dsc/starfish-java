@@ -1,6 +1,5 @@
 package sg.dex.starfish.integration.keeper;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.oceanprotocol.squid.exceptions.EthereumException;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import com.oceanprotocol.squid.models.Account;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import sg.dex.starfish.impl.squid.SquidAccount;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 import com.oceanprotocol.squid.api.OceanAPI;
@@ -18,7 +16,6 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 public class DirectPurchaseTest {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000";
@@ -42,14 +39,14 @@ public class DirectPurchaseTest {
         TransactionReceipt transactionReceipt = oceanAPI.getAccountsAPI().requestTokens(tokenAmount);
         assertTrue(transactionReceipt.isStatusOK());
 
-        BigInteger balanceSenderBefore = SquidAccount.create(senderAccount).getOceanBalance();
-        BigInteger balanceReceiverBefore = SquidAccount.create(receiverAccount).getOceanBalance();
+        BigInteger balanceSenderBefore = oceanAPI.getAccountsAPI().balance(senderAccount).getDrops();
+        BigInteger balanceReceiverBefore = oceanAPI.getAccountsAPI().balance(receiverAccount).getDrops();
 
         TransactionReceipt receipt = directPurchaseAdapter.sendTokenAndLog(receiverAddress, tokenAmount, reference, reference);
         assertTrue(receipt.isStatusOK());
 
-        BigInteger balanceSenderAfter = SquidAccount.create(senderAccount).getOceanBalance();
-        BigInteger balanceReceiverAfter = SquidAccount.create(receiverAccount).getOceanBalance();
+        BigInteger balanceSenderAfter = oceanAPI.getAccountsAPI().balance(senderAccount).getDrops();
+        BigInteger balanceReceiverAfter = oceanAPI.getAccountsAPI().balance(receiverAccount).getDrops();
         assertEquals(balanceSenderBefore.subtract(balanceSenderAfter), tokenAmount);
         assertEquals(balanceReceiverAfter.subtract(balanceReceiverBefore), tokenAmount);
     }

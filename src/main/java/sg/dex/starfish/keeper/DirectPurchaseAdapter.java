@@ -149,7 +149,7 @@ public final class DirectPurchaseAdapter {
 
     private static Properties getProperties() {
         Properties prop = new Properties();
-        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("application_spree.properties")) {
+        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("application.properties")) {
 
             if (input == null) {
                 throw new IOException("properties files is missing");
