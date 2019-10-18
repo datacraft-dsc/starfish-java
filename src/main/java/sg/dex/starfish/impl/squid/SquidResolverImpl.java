@@ -138,7 +138,7 @@ public class SquidResolverImpl implements Resolver {
 
     private static Properties getProperties() {
         Properties prop = new Properties();
-        try (InputStream input = SquidResolverImpl.class.getClassLoader().getResourceAsStream("application_spree.properties")) {
+        try (InputStream input = SquidResolverImpl.class.getClassLoader().getResourceAsStream("application.properties")) {
 
             if (input == null) {
                 throw new IOException("properties files is missing");
