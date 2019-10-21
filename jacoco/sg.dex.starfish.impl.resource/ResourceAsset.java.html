@@ -88,11 +88,11 @@ public class ResourceAsset extends AAsset implements DataAsset {
 <span class="fc" id="L88">        ob.put(Constant.CONTENT_TYPE, &quot;application/octet-stream&quot;);</span>
 
 
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (metaData != null) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (metaData != null) {</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
-<span class="nc" id="L94">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L95">            }</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
+<span class="fc" id="L94">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L95">            }</span>
         }
 
 <span class="fc" id="L98">        return ob;</span>

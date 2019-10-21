@@ -46,7 +46,7 @@ public class LocalResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
 <span class="fc" id="L50">        did = did.withoutPath();</span>
 <span class="fc" id="L51">        ddoCache.put(did, ddoString);</span>
 <span class="fc" id="L52">    }</span>

@@ -23,9 +23,9 @@ public class RemoteAccount extends AAccount {
      * @param credentials The credential for this account
      */
     protected RemoteAccount(String id, Map&lt;String, Object&gt; credentials) {
-<span class="nc" id="L26">        super(id, credentials);</span>
-<span class="nc" id="L27">        userDataMap = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L28">    }</span>
+<span class="fc" id="L26">        super(id, credentials);</span>
+<span class="fc" id="L27">        userDataMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L28">    }</span>
 
     /**
      * This method is to create instance of Remote Account
@@ -37,7 +37,7 @@ public class RemoteAccount extends AAccount {
     public static RemoteAccount create(String id,
                                        Map&lt;String, Object&gt; credentials) {
 
-<span class="nc" id="L40">        return new RemoteAccount(id, credentials);</span>
+<span class="fc" id="L40">        return new RemoteAccount(id, credentials);</span>
     }
 
     /**
@@ -47,7 +47,7 @@ public class RemoteAccount extends AAccount {
      * @return userdata map
      */
     public Map&lt;String, Object&gt; getUserDataMap() {
-<span class="nc" id="L50">        return userDataMap;</span>
+<span class="fc" id="L50">        return userDataMap;</span>
     }
 
     @Override

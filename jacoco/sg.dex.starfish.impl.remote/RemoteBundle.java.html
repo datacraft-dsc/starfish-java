@@ -20,8 +20,8 @@ import static sg.dex.starfish.constant.Constant.CONTENTS;
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     protected RemoteBundle(String meta, RemoteAgent remoteAgent) {
-<span class="nc" id="L23">        super(meta, remoteAgent);</span>
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L23">        super(meta, remoteAgent);</span>
+<span class="fc" id="L24">    }</span>
 
 
     /**
@@ -32,7 +32,7 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return RemoteAsset
      */
     public static RemoteBundle create(RemoteAgent agent, String meta) {
-<span class="nc" id="L35">        return new RemoteBundle(meta, agent);</span>
+<span class="fc" id="L35">        return new RemoteBundle(meta, agent);</span>
     }
 
     /**
@@ -41,17 +41,17 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
      * @return assetMap that belong to bundle
      */
     private Map&lt;String, Asset&gt; getAssetMap() {
-<span class="nc" id="L44">        Map&lt;String, Asset&gt; subAssetMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L44">        Map&lt;String, Asset&gt; subAssetMap = new HashMap&lt;&gt;();</span>
         
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L47">		Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap =</span>
-<span class="nc" id="L48">                (Map&lt;String, Map&lt;String, String&gt;&gt;) JSON.toMap(metadataString).get(CONTENTS);</span>
+<span class="fc" id="L47">		Map&lt;String, Map&lt;String, String&gt;&gt; subAssetIdMap =</span>
+<span class="fc" id="L48">                (Map&lt;String, Map&lt;String, String&gt;&gt;) JSON.toMap(metadataString).get(CONTENTS);</span>
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (String name : subAssetIdMap.keySet()) {</span>
-<span class="nc" id="L51">            Asset asset = aAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));</span>
-<span class="nc" id="L52">            subAssetMap.put(name, asset);</span>
-<span class="nc" id="L53">        }</span>
-<span class="nc" id="L54">        return subAssetMap;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (String name : subAssetIdMap.keySet()) {</span>
+<span class="fc" id="L51">            Asset asset = aAgent.getAsset(subAssetIdMap.get(name).get(ASSET_ID));</span>
+<span class="fc" id="L52">            subAssetMap.put(name, asset);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return subAssetMap;</span>
     }
 
     @Override
@@ -73,14 +73,14 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R get(String name) {
-<span class="nc" id="L76">        return (R) getAssetMap().get(name);</span>
+<span class="fc" id="L76">        return (R) getAssetMap().get(name);</span>
     }
 
     @Override
     public Map&lt;String, Asset&gt; getAll() {
-<span class="nc" id="L81">        return getAssetMap().entrySet()</span>
-<span class="nc" id="L82">                .stream()</span>
-<span class="nc" id="L83">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
+<span class="fc" id="L81">        return getAssetMap().entrySet()</span>
+<span class="fc" id="L82">                .stream()</span>
+<span class="fc" id="L83">                .collect(Collectors.toMap(Map.Entry::getKey,</span>
                         Map.Entry::getValue));
     }
 }

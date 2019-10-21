@@ -22,7 +22,7 @@ import static sg.dex.starfish.constant.Constant.ID;
 public class RemoteListing extends AListing {
 
     // local map to cache the listing data
-<span class="nc" id="L25">    private static Map&lt;String, Object&gt; metaDataCache = null;</span>
+<span class="fc" id="L25">    private static Map&lt;String, Object&gt; metaDataCache = null;</span>
     // remote agent reference
     private RemoteAgent remoteAgent;
     // listing id
@@ -35,10 +35,10 @@ public class RemoteListing extends AListing {
      * @param remoteAgent remote agent
      * @param id          id
      */
-<span class="nc" id="L38">    private RemoteListing(RemoteAgent remoteAgent, String id) {</span>
-<span class="nc" id="L39">        this.remoteAgent = remoteAgent;</span>
-<span class="nc" id="L40">        this.listing_id = id;</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L38">    private RemoteListing(RemoteAgent remoteAgent, String id) {</span>
+<span class="fc" id="L39">        this.remoteAgent = remoteAgent;</span>
+<span class="fc" id="L40">        this.listing_id = id;</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * To get the Reference of Existing Listing
@@ -48,20 +48,20 @@ public class RemoteListing extends AListing {
      * @return RemoteListing
      */
     public static RemoteListing create(RemoteAgent agent, String id) {
-<span class="nc" id="L51">        RemoteListing remoteListing = new RemoteListing(agent, id);</span>
-<span class="nc" id="L52">        initializeCache();</span>
-<span class="nc" id="L53">        return remoteListing;</span>
+<span class="fc" id="L51">        RemoteListing remoteListing = new RemoteListing(agent, id);</span>
+<span class="fc" id="L52">        initializeCache();</span>
+<span class="fc" id="L53">        return remoteListing;</span>
     }
 
     /**
      * This method is to create the local cache instance
      */
     private static void initializeCache() {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (null == metaDataCache) {</span>
-<span class="nc" id="L61">            metaDataCache = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (null == metaDataCache) {</span>
+<span class="fc" id="L61">            metaDataCache = new HashMap&lt;&gt;();</span>
         }
 
-<span class="nc" id="L64">    }</span>
+<span class="fc" id="L64">    }</span>
 
     @Override
     public Asset getAsset() {
@@ -90,9 +90,9 @@ public class RemoteListing extends AListing {
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(listing_id) == null ?</span>
-<span class="nc" id="L94">                remoteAgent.getListingMetaData(listing_id) : (Map&lt;String, Object&gt;) metaDataCache.get(listing_id);</span>
-<span class="nc" id="L95">        return metaData;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        Map&lt;String, Object&gt; metaData = metaDataCache.get(listing_id) == null ?</span>
+<span class="pc" id="L94">                remoteAgent.getListingMetaData(listing_id) : (Map&lt;String, Object&gt;) metaDataCache.get(listing_id);</span>
+<span class="fc" id="L95">        return metaData;</span>
     }
 
     /**
@@ -112,7 +112,7 @@ public class RemoteListing extends AListing {
      */
     @Override
     public String getId() {
-<span class="nc" id="L115">        return getMetaData().get(ID).toString();</span>
+<span class="fc" id="L115">        return getMetaData().get(ID).toString();</span>
     }
 
 }

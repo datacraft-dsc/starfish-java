@@ -9,7 +9,7 @@ import java.util.UUID;
 
 <span class="nc" id="L10">public class ProvUtil {</span>
 
-<span class="nc" id="L12">    public static String OPF = &quot;opf&quot;;</span>
+<span class="fc" id="L12">    public static String OPF = &quot;opf&quot;;</span>
 
     /**
      * Create a default namespace which includes the prefix and path for Ocean
@@ -18,26 +18,26 @@ import java.util.UUID;
      * @return a Map with prefixes respective IRIs used in this document
      */
     public static Map&lt;String, Object&gt; defaultPrefix() {
-<span class="nc" id="L21">        Map&lt;String, Object&gt; prefix = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L22">        prefix.put(&quot;xsd&quot;, &quot;http://www.w3.org/2001/XMLSchema#&quot;);</span>
-<span class="nc" id="L23">        prefix.put(&quot;prov&quot;, &quot;http://www.w3.org/ns/prov#&quot;);</span>
-<span class="nc" id="L24">        prefix.put(OPF, &quot;http://oceanprotocol.com/schemas&quot;);</span>
+<span class="fc" id="L21">        Map&lt;String, Object&gt; prefix = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L22">        prefix.put(&quot;xsd&quot;, &quot;http://www.w3.org/2001/XMLSchema#&quot;);</span>
+<span class="fc" id="L23">        prefix.put(&quot;prov&quot;, &quot;http://www.w3.org/ns/prov#&quot;);</span>
+<span class="fc" id="L24">        prefix.put(OPF, &quot;http://oceanprotocol.com/schemas&quot;);</span>
 
-<span class="nc" id="L26">        Map&lt;String, Object&gt; pre = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L27">        pre.put(&quot;prefix&quot;, prefix);</span>
-<span class="nc" id="L28">        return pre;</span>
+<span class="fc" id="L26">        Map&lt;String, Object&gt; pre = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L27">        pre.put(&quot;prefix&quot;, prefix);</span>
+<span class="fc" id="L28">        return pre;</span>
     }
 
     private static Map&lt;String, Object&gt; createAssetEntity(String id) {
-<span class="nc" id="L32">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L33">        type.put(&quot;$&quot;, OPF + &quot;:asset&quot;);</span>
-<span class="nc" id="L34">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L32">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L33">        type.put(&quot;$&quot;, OPF + &quot;:asset&quot;);</span>
+<span class="fc" id="L34">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
-<span class="nc" id="L36">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L37">        typeContainer.put(&quot;prov:type&quot;, type);</span>
-<span class="nc" id="L38">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L39">        thisContainer.put(OPF + &quot;:&quot; + id, typeContainer);</span>
-<span class="nc" id="L40">        return thisContainer;</span>
+<span class="fc" id="L36">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L37">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="fc" id="L38">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L39">        thisContainer.put(OPF + &quot;:&quot; + id, typeContainer);</span>
+<span class="fc" id="L40">        return thisContainer;</span>
     }
 
     /**
@@ -46,7 +46,7 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createThisInput() {
-<span class="nc" id="L49">        return createAssetEntity(&quot;this&quot;);</span>
+<span class="fc" id="L49">        return createAssetEntity(&quot;this&quot;);</span>
     }
 
     /**
@@ -56,17 +56,17 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createAssetDependency(Asset ast) {
-<span class="nc" id="L59">        return createAssetEntity(ast.getAssetID());</span>
+<span class="fc" id="L59">        return createAssetEntity(ast.getAssetID());</span>
     }
 
     private static Map&lt;String, Object&gt; jsonMapEntry(String key, Map&lt;String, Object&gt;[] ent) {
-<span class="nc" id="L63">        Map&lt;String, Object&gt; eContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        for (Map&lt;String, Object&gt; m : ent) {</span>
-<span class="nc" id="L65">            eContainer.putAll(m);</span>
+<span class="fc" id="L63">        Map&lt;String, Object&gt; eContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (Map&lt;String, Object&gt; m : ent) {</span>
+<span class="fc" id="L65">            eContainer.putAll(m);</span>
         }
-<span class="nc" id="L67">        Map&lt;String, Object&gt; res = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L68">        res.put(key, eContainer);</span>
-<span class="nc" id="L69">        return res;</span>
+<span class="fc" id="L67">        Map&lt;String, Object&gt; res = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L68">        res.put(key, eContainer);</span>
+<span class="fc" id="L69">        return res;</span>
     }
 
     /**
@@ -76,7 +76,7 @@ import java.util.UUID;
      * @return Map
      */
     private static Map&lt;String, Object&gt; createEntities(Map&lt;String, Object&gt;... ent) {
-<span class="nc" id="L79">        return jsonMapEntry(&quot;entity&quot;, ent);</span>
+<span class="fc" id="L79">        return jsonMapEntry(&quot;entity&quot;, ent);</span>
     }
 
     /**
@@ -87,15 +87,15 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createAgent(String agentId, AgentIdType agentType) {
-<span class="nc" id="L90">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L91">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + agentType.toString());</span>
-<span class="nc" id="L92">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L90">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L91">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + agentType.toString());</span>
+<span class="fc" id="L92">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
-<span class="nc" id="L94">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L95">        typeContainer.put(&quot;prov:type&quot;, type);</span>
-<span class="nc" id="L96">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L97">        thisContainer.put(OPF + &quot;:&quot; + agentId, typeContainer);</span>
-<span class="nc" id="L98">        return thisContainer;</span>
+<span class="fc" id="L94">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L95">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="fc" id="L96">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L97">        thisContainer.put(OPF + &quot;:&quot; + agentId, typeContainer);</span>
+<span class="fc" id="L98">        return thisContainer;</span>
     }
 
     /**
@@ -105,7 +105,7 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createAgents(Map&lt;String, Object&gt;... age) {
-<span class="nc" id="L108">        return jsonMapEntry(&quot;agent&quot;, age);</span>
+<span class="fc" id="L108">        return jsonMapEntry(&quot;agent&quot;, age);</span>
     }
 
     /**
@@ -117,16 +117,16 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; associatedWith(String agentId, String activityId) {
-<span class="nc" id="L120">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L121">        type.put(&quot;prov:agent&quot;, agentId);</span>
-<span class="nc" id="L122">        type.put(&quot;prov:activity&quot;, activityId);</span>
+<span class="fc" id="L120">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L121">        type.put(&quot;prov:agent&quot;, agentId);</span>
+<span class="fc" id="L122">        type.put(&quot;prov:activity&quot;, activityId);</span>
 
-<span class="nc" id="L124">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L125">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+<span class="fc" id="L124">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L125">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
 
-<span class="nc" id="L127">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L128">        ret.put(&quot;wasAssociatedWith&quot;, asid);</span>
-<span class="nc" id="L129">        return ret;</span>
+<span class="fc" id="L127">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L128">        ret.put(&quot;wasAssociatedWith&quot;, asid);</span>
+<span class="fc" id="L129">        return ret;</span>
     }
 
     /**
@@ -137,17 +137,17 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; generatedBy(String activityId) {
-<span class="nc" id="L140">        String entityId = OPF + &quot;:this&quot;;</span>
-<span class="nc" id="L141">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L142">        type.put(&quot;prov:entity&quot;, entityId);</span>
-<span class="nc" id="L143">        type.put(&quot;prov:activity&quot;, activityId);</span>
+<span class="fc" id="L140">        String entityId = OPF + &quot;:this&quot;;</span>
+<span class="fc" id="L141">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L142">        type.put(&quot;prov:entity&quot;, entityId);</span>
+<span class="fc" id="L143">        type.put(&quot;prov:activity&quot;, activityId);</span>
 
-<span class="nc" id="L145">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L146">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+<span class="fc" id="L145">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L146">        asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
 
-<span class="nc" id="L148">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L149">        ret.put(&quot;wasGeneratedBy&quot;, asid);</span>
-<span class="nc" id="L150">        return ret;</span>
+<span class="fc" id="L148">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L149">        ret.put(&quot;wasGeneratedBy&quot;, asid);</span>
+<span class="fc" id="L150">        return ret;</span>
     }
 
     /**
@@ -158,16 +158,16 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; derivedFrom(Collection&lt;Asset&gt; entities) {
-<span class="nc" id="L161">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (Asset ast : entities) {</span>
-<span class="nc" id="L163">            Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L164">            type.put(&quot;prov:usedEntity&quot;, ast.getAssetID());</span>
-<span class="nc" id="L165">            type.put(&quot;prov:generatedEntity&quot;, OPF + &quot;this&quot;);</span>
-<span class="nc" id="L166">            asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
-<span class="nc" id="L167">        }</span>
-<span class="nc" id="L168">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L169">        ret.put(&quot;wasDerivedFrom&quot;, asid);</span>
-<span class="nc" id="L170">        return ret;</span>
+<span class="fc" id="L161">        Map&lt;String, Object&gt; asid = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        for (Asset ast : entities) {</span>
+<span class="fc" id="L163">            Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L164">            type.put(&quot;prov:usedEntity&quot;, ast.getAssetID());</span>
+<span class="fc" id="L165">            type.put(&quot;prov:generatedEntity&quot;, OPF + &quot;this&quot;);</span>
+<span class="fc" id="L166">            asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
+<span class="fc" id="L167">        }</span>
+<span class="fc" id="L168">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L169">        ret.put(&quot;wasDerivedFrom&quot;, asid);</span>
+<span class="fc" id="L170">        return ret;</span>
     }
 
     /**
@@ -178,15 +178,15 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType) {
-<span class="nc" id="L181">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L182">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
-<span class="nc" id="L183">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L181">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L182">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
+<span class="fc" id="L183">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
-<span class="nc" id="L185">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L186">        typeContainer.put(&quot;prov:type&quot;, type);</span>
-<span class="nc" id="L187">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L188">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
-<span class="nc" id="L189">        return thisContainer;</span>
+<span class="fc" id="L185">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L186">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="fc" id="L187">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L188">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
+<span class="fc" id="L189">        return thisContainer;</span>
     }
 
     /**
@@ -199,16 +199,16 @@ import java.util.UUID;
      */
     public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType,
                                                      Map&lt;String, Object&gt; actEntries) {
-<span class="nc" id="L202">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L203">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
-<span class="nc" id="L204">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L202">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L203">        type.put(&quot;$&quot;, OPF + &quot;:&quot; + activityType.toString());</span>
+<span class="fc" id="L204">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
-<span class="nc" id="L206">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L207">        typeContainer.put(&quot;prov:type&quot;, type);</span>
-<span class="nc" id="L208">        typeContainer.putAll(actEntries);</span>
-<span class="nc" id="L209">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L210">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
-<span class="nc" id="L211">        return thisContainer;</span>
+<span class="fc" id="L206">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L207">        typeContainer.put(&quot;prov:type&quot;, type);</span>
+<span class="fc" id="L208">        typeContainer.putAll(actEntries);</span>
+<span class="fc" id="L209">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L210">        thisContainer.put(OPF + &quot;:&quot; + actId, typeContainer);</span>
+<span class="fc" id="L211">        return thisContainer;</span>
     }
 
     /**
@@ -218,7 +218,7 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; createActivities(Map&lt;String, Object&gt;... acts) {
-<span class="nc" id="L221">        return jsonMapEntry(&quot;activity&quot;, acts);</span>
+<span class="fc" id="L221">        return jsonMapEntry(&quot;activity&quot;, acts);</span>
     }
 
     /**
@@ -242,17 +242,17 @@ import java.util.UUID;
      */
     public static Map&lt;String, Object&gt; createPublishProvenance(String actId,
                                                               String agentId) {
-<span class="nc" id="L245">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
-<span class="nc" id="L246">        Map&lt;String, Object&gt; e = createEntities(createThisInput());</span>
-<span class="nc" id="L247">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.PUBLISH);</span>
-<span class="nc" id="L248">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
+<span class="fc" id="L245">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
+<span class="fc" id="L246">        Map&lt;String, Object&gt; e = createEntities(createThisInput());</span>
+<span class="fc" id="L247">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.PUBLISH);</span>
+<span class="fc" id="L248">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
 
-<span class="nc" id="L250">        a.putAll(createActivities(act));</span>
-<span class="nc" id="L251">        a.putAll(e);</span>
-<span class="nc" id="L252">        a.putAll(createAgents(agent));</span>
-<span class="nc" id="L253">        a.putAll(associatedWith(agentId, actId));</span>
-<span class="nc" id="L254">        a.putAll(generatedBy(actId));</span>
-<span class="nc" id="L255">        return a;</span>
+<span class="fc" id="L250">        a.putAll(createActivities(act));</span>
+<span class="fc" id="L251">        a.putAll(e);</span>
+<span class="fc" id="L252">        a.putAll(createAgents(agent));</span>
+<span class="fc" id="L253">        a.putAll(associatedWith(agentId, actId));</span>
+<span class="fc" id="L254">        a.putAll(generatedBy(actId));</span>
+<span class="fc" id="L255">        return a;</span>
     }
 
     /**
@@ -265,18 +265,18 @@ import java.util.UUID;
      */
     public static Map&lt;String, Object&gt; createDependencies(String params,
                                                          String resultParamName) {
-<span class="nc" id="L268">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L269">        Map&lt;String, Object&gt; p = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L270">        p.put(&quot;$&quot;, resultParamName);</span>
-<span class="nc" id="L271">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
-<span class="nc" id="L272">        ret.put(OPF + &quot;:resultParamName&quot;, p);</span>
+<span class="fc" id="L268">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L269">        Map&lt;String, Object&gt; p = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L270">        p.put(&quot;$&quot;, resultParamName);</span>
+<span class="fc" id="L271">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L272">        ret.put(OPF + &quot;:resultParamName&quot;, p);</span>
 
-<span class="nc" id="L274">        p = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L275">        p.put(&quot;$&quot;, params);</span>
-<span class="nc" id="L276">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
-<span class="nc" id="L277">        ret.put(OPF + &quot;:params&quot;, p);</span>
+<span class="fc" id="L274">        p = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L275">        p.put(&quot;$&quot;, params);</span>
+<span class="fc" id="L276">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
+<span class="fc" id="L277">        ret.put(OPF + &quot;:params&quot;, p);</span>
 
-<span class="nc" id="L279">        return ret;</span>
+<span class="fc" id="L279">        return ret;</span>
     }
 
     /**
@@ -295,34 +295,34 @@ import java.util.UUID;
                                                              Collection&lt;Asset&gt; assetDependencies,
                                                              String params,
                                                              String resultParamName) {
-<span class="nc" id="L298">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
-<span class="nc" id="L299">        Map&lt;String, Object&gt; e = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L300">        e.putAll(createThisInput());</span>
-<span class="nc bnc" id="L301" title="All 2 branches missed.">        for (Asset k : assetDependencies) {</span>
-<span class="nc" id="L302">            e.putAll(createAssetDependency(k));</span>
-<span class="nc" id="L303">        }</span>
-<span class="nc" id="L304">        Map&lt;String, Object&gt; deps = createDependencies(params, resultParamName);</span>
+<span class="fc" id="L298">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
+<span class="fc" id="L299">        Map&lt;String, Object&gt; e = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L300">        e.putAll(createThisInput());</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (Asset k : assetDependencies) {</span>
+<span class="fc" id="L302">            e.putAll(createAssetDependency(k));</span>
+<span class="fc" id="L303">        }</span>
+<span class="fc" id="L304">        Map&lt;String, Object&gt; deps = createDependencies(params, resultParamName);</span>
 
-<span class="nc" id="L306">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.OPERATION, deps);</span>
-<span class="nc" id="L307">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
+<span class="fc" id="L306">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.OPERATION, deps);</span>
+<span class="fc" id="L307">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
 
-<span class="nc" id="L309">        a.putAll(createEntities(e));</span>
-<span class="nc" id="L310">        a.putAll(createActivities(act));</span>
-<span class="nc" id="L311">        a.putAll(createAgents(agent));</span>
-<span class="nc" id="L312">        a.putAll(associatedWith(agentId, actId));</span>
-<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (assetDependencies.size() &gt; 0) {</span>
-<span class="nc" id="L314">            a.putAll(derivedFrom(assetDependencies));</span>
+<span class="fc" id="L309">        a.putAll(createEntities(e));</span>
+<span class="fc" id="L310">        a.putAll(createActivities(act));</span>
+<span class="fc" id="L311">        a.putAll(createAgents(agent));</span>
+<span class="fc" id="L312">        a.putAll(associatedWith(agentId, actId));</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        if (assetDependencies.size() &gt; 0) {</span>
+<span class="fc" id="L314">            a.putAll(derivedFrom(assetDependencies));</span>
         }
-<span class="nc" id="L316">        a.putAll(generatedBy(actId));</span>
-<span class="nc" id="L317">        return a;</span>
+<span class="fc" id="L316">        a.putAll(generatedBy(actId));</span>
+<span class="fc" id="L317">        return a;</span>
     }
 
-<span class="nc" id="L320">    public enum AgentIdType {</span>
-<span class="nc" id="L321">        ACCOUNT, ETHEREUMACCOUNT</span>
+<span class="fc" id="L320">    public enum AgentIdType {</span>
+<span class="fc" id="L321">        ACCOUNT, ETHEREUMACCOUNT</span>
     }
 
-<span class="nc" id="L324">    public enum ActivityType {</span>
-<span class="nc" id="L325">        PUBLISH, IMPORT, OPERATION</span>
+<span class="fc" id="L324">    public enum ActivityType {</span>
+<span class="fc" id="L325">        PUBLISH, IMPORT, OPERATION</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -44,10 +44,10 @@ public abstract class AAgent implements Agent {
 
     @Override
     public Map&lt;String, Object&gt; getDDO() {
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (ddo == null) {</span>
-<span class="nc" id="L48">            ddo = resolver.getDDO(did);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (ddo == null) {</span>
+<span class="fc" id="L48">            ddo = resolver.getDDO(did);</span>
         }
-<span class="nc" id="L50">        return ddo;</span>
+<span class="fc" id="L50">        return ddo;</span>
     }
     
     @Override
@@ -65,14 +65,14 @@ public abstract class AAgent implements Agent {
      * @return The service endpoint, or null if not found
      */
     public String getEndpoint(String type) {
-<span class="nc" id="L68">        Map&lt;String, Object&gt; ddo = getDDO();</span>
+<span class="fc" id="L68">        Map&lt;String, Object&gt; ddo = getDDO();</span>
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L70">        List&lt;Map&lt;String,Object&gt;&gt; services = (List&lt;Map&lt;String,Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (services == null) return null;</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        for (Map&lt;String,Object&gt; service : services) {</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
-<span class="nc" id="L74">        }</span>
-<span class="nc" id="L75">        return null;</span>
+<span class="fc" id="L70">        List&lt;Map&lt;String,Object&gt;&gt; services = (List&lt;Map&lt;String,Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (services == null) return null;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Map&lt;String,Object&gt; service : services) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        return null;</span>
     }
 
     @Override
