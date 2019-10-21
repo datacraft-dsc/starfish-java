@@ -1,0 +1,9 @@
+{
+  "name": "this is a test metaData .MetaData can be used for discovery an Asset",
+  "type": "dataset",
+  "description": "This metadata explain how to write sample metada and make is discoverable",
+  "dateCreated": "2012-10-10T17:00:000Z",
+  "author": "Any Company :Name of the company ",
+  "license": "Company license",
+  "copyrightHolder": "Company license "
+}

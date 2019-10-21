@@ -30,20 +30,16 @@
 		<gpg.keyname>340395AC</gpg.keyname>
 		<gpg.useagent>true</gpg.useagent>
 
+		<jdk.version>1.8</jdk.version>
+		<junit.version>4.12</junit.version>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<junit.version>4.12</junit.version>
-		<build.profile.id>dev</build.profile.id>
-		<!-- Only unit tests are run by default. -->
-		<skip.integration.tests>true</skip.integration.tests>
 		<skip.unit.tests>false</skip.unit.tests>
+		<skip.integration.tests>true</skip.integration.tests>
 
-		<!-- Use to avoid failures on JavaDoc errors -->
 		<javadoc.opts>-Xdoclint:none</javadoc.opts>
-
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<scm>
@@ -136,90 +132,89 @@
 		</profile>
 		<profile>
 			<id>dev</id>
+			<properties>
+				<maven.javadoc.skip>true</maven.javadoc.skip>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<profile>
 			<id>integration-test</id>
 			<properties>
-				<!-- Used to locate the profile specific configuration file. -->
-				<build.profile.id>integration-test</build.profile.id>
-				<!-- Only integration tests are run. -->
 				<skip.integration.tests>false</skip.integration.tests>
-				<skip.unit.tests>false</skip.unit.tests>
+				<skip.unit.tests>true</skip.unit.tests>
+				<maven.javadoc.skip>true</maven.javadoc.skip>
 			</properties>
 		</profile>
 
 		<!-- Activate using the release property: mvn clean install -Prelease -->
-		<profile>
-			<id>release</id>
-			<activation>
-				<property>
-					<name>release</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<!-- To release to Maven central -->
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.8</version>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>oss.sonatype.org</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						</configuration>
-					</plugin>
+		<!--<profile>-->
+			<!--<id>release</id>-->
+			<!--<activation>-->
+				<!--<property>-->
+					<!--<name>release</name>-->
+				<!--</property>-->
+			<!--</activation>-->
+			<!--<build>-->
+				<!--<plugins>-->
+					<!--&lt;!&ndash; To release to Maven central &ndash;&gt;-->
+					<!--<plugin>-->
+						<!--<groupId>org.sonatype.plugins</groupId>-->
+						<!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+						<!--<version>1.6.8</version>-->
+						<!--<extensions>true</extensions>-->
+						<!--<configuration>-->
+							<!--<serverId>oss.sonatype.org</serverId>-->
+							<!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+							<!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+						<!--</configuration>-->
+					<!--</plugin>-->
 
-					<!-- To generate javadoc -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
+					<!--&lt;!&ndash; To generate javadoc &ndash;&gt;-->
+					<!--<plugin>-->
+						<!--<groupId>org.apache.maven.plugins</groupId>-->
+						<!--<artifactId>maven-source-plugin</artifactId>-->
+						<!--<executions>-->
+							<!--<execution>-->
+								<!--<id>attach-sources</id>-->
+								<!--<goals>-->
+									<!--<goal>jar-no-fork</goal>-->
+								<!--</goals>-->
+							<!--</execution>-->
+						<!--</executions>-->
+					<!--</plugin>-->
 
-					<!-- To sign the artifacts -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<!-- need to change to verify while giving maven release -->
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+					<!--&lt;!&ndash; To sign the artifacts &ndash;&gt;-->
+					<!--<plugin>-->
+						<!--<groupId>org.apache.maven.plugins</groupId>-->
+						<!--<artifactId>maven-gpg-plugin</artifactId>-->
+						<!--<version>1.6</version>-->
+						<!--<executions>-->
+							<!--<execution>-->
+								<!--<id>sign-artifacts</id>-->
+								<!--&lt;!&ndash; need to change to verify while giving maven release &ndash;&gt;-->
+								<!--<phase>verify</phase>-->
+								<!--<goals>-->
+									<!--<goal>sign</goal>-->
+								<!--</goals>-->
+							<!--</execution>-->
+						<!--</executions>-->
+					<!--</plugin>-->
+				<!--</plugins>-->
+			<!--</build>-->
+		<!--</profile>-->
 	</profiles>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.5</version>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
-					<testSource>8</testSource>
-					<testTarget>8</testTarget>
-					<compilerArgument>-Xlint:deprecation</compilerArgument>
-					<testExcludes>
-						<testExclude>**/sg/dex/starfish/integration/keeper/DirectPurchaseTest.java</testExclude>
-					</testExcludes>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 
@@ -262,10 +257,8 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>1.12</version>
 				<executions>
-					<!-- States that the plugin's add-test-source goal is executed at generate-test-sources 
-						phase. -->
 					<execution>
 						<id>add-integration-test-sources</id>
 						<phase>generate-test-sources</phase>
@@ -273,31 +266,44 @@
 							<goal>add-test-source</goal>
 						</goals>
 						<configuration>
-							<!-- Configures the source directory of integration tests. -->
+							<!-- Configures the source directory of our integration tests -->
 							<sources>
 								<source>src/integration-test/java</source>
 							</sources>
 						</configuration>
 					</execution>
+					<!-- Add a new resource directory to our build -->
+					<execution>
+						<id>add-integration-test-resources</id>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>add-test-resource</goal>
+						</goals>
+						<configuration>
+							<!-- Configures the resource directory of our integration tests -->
+							<resources>
+								<resource>
+									<filtering>true</filtering>
+									<directory>src/integration-test/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.7</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
 				<configuration>
-					<generateBackupPoms>false</generateBackupPoms>
+					<skipTests>${skip.unit.tests}</skipTests>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<version>2.19.1</version>
 				<executions>
-					<!-- Ensures that both integration-test and verify goals of the Failsafe 
-						Maven plugin are executed. -->
 					<execution>
 						<id>integration-tests</id>
 						<goals>
@@ -305,11 +311,8 @@
 							<goal>verify</goal>
 						</goals>
 						<configuration>
-							<excludes>
-								<exclude>none</exclude>
-							</excludes>
 							<includes>
-								<include>**/*IntegrationTests.java</include>
+								<include>**/*.java</include>
 							</includes>
 							<skipTests>${skip.integration.tests}</skipTests>
 						</configuration>
