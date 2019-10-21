@@ -22,7 +22,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TestMemoryListing {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
-    private static String METADATA_JSON_SAMPLE = "src/test/resources/example/asset_metadata.json";
+    private static String METADATA_JSON_SAMPLE = "src/test/resources/assets/asset_metadata.json";
 
     /**
      * API to test the create listing with extra info data
