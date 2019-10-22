@@ -89,6 +89,7 @@ You can execute the unit tests only using the following command:
 
 ```bash
 mvn clean install
+mvn test
 ```
 
 ### Integration Tests
