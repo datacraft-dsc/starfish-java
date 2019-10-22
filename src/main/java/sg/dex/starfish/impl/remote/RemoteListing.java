@@ -1,10 +1,14 @@
 package sg.dex.starfish.impl.remote;
 
-import sg.dex.starfish.Account;
+import org.web3j.crypto.CipherException;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.AListing;
+import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,8 +80,27 @@ public class RemoteListing extends AListing {
 
     @Override
     public Asset purchase() {
-        // Todo get Purchase based on account
-        return null;
+        DirectPurchaseAdapter directPurchaseAdapter = null;
+        try {
+            directPurchaseAdapter = DirectPurchaseAdapter.create();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (CipherException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        Map<String, Object> meta = getMetaData();
+
+        TransactionReceipt receipt = directPurchaseAdapter.sendTokenAndLog(
+                meta.get("publisher").toString(),
+                new BigInteger(meta.get("price").toString()),
+                remoteAgent.getDID().toString(),
+                meta.get("id").toString()
+        );
+
+        return receipt.isStatusOK() ? getAsset() : null;
     }
 
     @Override
