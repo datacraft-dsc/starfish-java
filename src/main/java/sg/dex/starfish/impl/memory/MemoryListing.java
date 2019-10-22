@@ -53,7 +53,7 @@ public class MemoryListing implements Listing {
     }
 
     @Override
-    public Asset purchase(Account account) {
+    public Asset purchase() {
         return null;
     }
 

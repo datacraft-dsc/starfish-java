@@ -37,12 +37,10 @@ public interface Listing {
 
     /**
      * Purchases this listing using the given account
-     * FIXME: should this return an asset or a purchase?
      *
-     * @param account The account to use for the purchase
      * @return The purchased asset
      */
-    Asset purchase(Account account);
+    Asset purchase();
 
     /**
      * Refreshes the Listing data from the agent where it is stored, returning a new listing.

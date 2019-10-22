@@ -75,7 +75,7 @@ public class RemoteListing extends AListing {
     }
 
     @Override
-    public Asset purchase(Account account) {
+    public Asset purchase() {
         // Todo get Purchase based on account
         return null;
     }
