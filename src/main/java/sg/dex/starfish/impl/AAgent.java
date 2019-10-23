@@ -66,12 +66,13 @@ public abstract class AAgent implements Agent {
      */
     public String getEndpoint(String type) {
         Map<String, Object> ddo = getDDO();
-        @SuppressWarnings("unchecked")
-        List<Map<String,Object>> services = (List<Map<String,Object>>) ddo.get(Constant.SERVICE);
-        if (services == null) return null;
-        for (Map<String,Object> service : services) {
-            if (type.equals(service.get("type"))) return (String) service.get(Constant.SERVICE_ENDPOINT);
-        }
+       if(null != ddo) {
+           List<Map<String, Object>> services = (List<Map<String, Object>>) ddo.get(Constant.SERVICE);
+           if (services == null) return null;
+           for (Map<String, Object> service : services) {
+               if (type.equals(service.get("type"))) return (String) service.get(Constant.SERVICE_ENDPOINT);
+           }
+       }
         return null;
     }
 

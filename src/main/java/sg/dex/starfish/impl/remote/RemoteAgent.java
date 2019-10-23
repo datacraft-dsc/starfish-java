@@ -269,10 +269,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             if (account.getUserDataMap().get("token") != null) {
                 token = account.getUserDataMap().get("token").toString();
             }
-            if (account.getCredentials().get("username").toString() != null) {
+            if (account.getCredentials().get("username") != null) {
                 username = account.getCredentials().get("username").toString();
             }
-            if (account.getCredentials().get("password").toString() != null) {
+            if (account.getCredentials().get("password") != null) {
                 password = account.getCredentials().get("password").toString();
             }
             if ((token == null) && (username == null) && (password == null)) {
@@ -1135,46 +1135,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to get the log in user details from the this agent
-     *
-     * @return userDetails map
-     */
-    public Map<String, Object> getUserDetails() {
-
-        HttpGet httpget = new HttpGet(getAuthURI(USER));
-        addAuthHeaders(httpget);
-
-        CloseableHttpResponse response;
-        try {
-            response = HTTP.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Auth not found for at: " + statusCode);
-                } else if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    // updating the user details in map
-                    account.getUserDataMap().putAll(JSON.toMap(body));
-                    return JSON.toMap(body);
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting user details failed:  :", e);
-        }
-
-    }
-
-    /**
      * The will create the token base on user name and password configured
      *
      * @param account remote account reference
      */
-    private void createToken(RemoteAccount account) {
+    public void createToken(RemoteAccount account) {
 
         // TODO this probably needs refactoring
         HttpPost httpPost = new HttpPost(getAuthURI(TOKEN));
