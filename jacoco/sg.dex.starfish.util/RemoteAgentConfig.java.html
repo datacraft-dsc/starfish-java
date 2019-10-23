@@ -35,29 +35,17 @@ import java.util.Map;
         // creating a Remote agent instance for given Ocean and DID
 <span class="fc" id="L36">        return RemoteAgent.create(resolver, did, account);</span>
     }
-    public static String getDefaultDDO(String host) {
-<span class="nc" id="L39">        Map&lt;String, Object&gt; ddo = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L40">        List&lt;Map&lt;String, Object&gt;&gt; services = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L41">        services.add(Utils.mapOf(</span>
-                &quot;type&quot;, &quot;Ocean.Meta.v1&quot;,
-                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/meta&quot;));
-<span class="nc" id="L44">        services.add(Utils.mapOf(</span>
-                &quot;type&quot;, &quot;Ocean.Storage.v1&quot;,
-                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/assets&quot;));
-<span class="nc" id="L47">        services.add(Utils.mapOf(</span>
-                &quot;type&quot;, &quot;Ocean.Invoke.v1&quot;,
-                &quot;serviceEndpoint&quot;, host));
-<span class="nc" id="L50">        services.add(Utils.mapOf(</span>
-                &quot;type&quot;, &quot;Ocean.Auth.v1&quot;,
-                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/auth&quot;));
-<span class="nc" id="L53">        services.add(Utils.mapOf(</span>
-                &quot;type&quot;, &quot;Ocean.Market.v1&quot;,
-                &quot;serviceEndpoint&quot;, host + &quot;/api/v1/market&quot;));
-<span class="nc" id="L56">        ddo.put(&quot;service&quot;, services);</span>
-<span class="nc" id="L57">        String ddoString = JSON.toPrettyString(ddo);</span>
+    public static RemoteAgent getRemoteAgent(String ddoString, DID did, RemoteAccount remoteAccount) {
+        // creating unique DID
 
-<span class="nc" id="L59">        return ddoString;</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
+<span class="fc" id="L43">        Resolver resolver=new LocalResolverImpl();</span>
+        // registering the DID and DDO
+<span class="fc" id="L45">        resolver.registerDID(did, ddoString);</span>
+
+        // creating a Remote agent instance for given Ocean and DID
+<span class="fc" id="L48">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
     }
 
 }

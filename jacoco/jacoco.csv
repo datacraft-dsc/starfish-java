@@ -9,14 +9,14 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,Mem
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteListing,36,49,1,3,6,15,6,7,5,6
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,1190,940,79,61,216,220,77,52,22,36
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAgent,1109,950,72,64,200,221,71,55,21,36
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteDataAsset,86,49,2,2,10,14,5,4,3,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteBundle,36,68,0,2,8,15,2,6,2,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,ARemoteAsset,0,7,0,0,0,3,0,1,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteOperation,44,0,0,0,9,0,6,0,6,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteJob,241,0,32,0,47,0,23,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemotePurchase,5,61,1,3,0,17,1,9,0,8
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAccount,57,19,2,0,12,5,2,3,1,3
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.remote,RemoteAccount,57,32,2,0,12,8,2,4,1,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.cli,CLIMain,37,0,4,0,9,0,4,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.constant,Constant,7,0,0,0,2,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.squid,SquidAsset,119,0,0,0,32,0,9,0,9,0
@@ -31,7 +31,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Operation,18,2,
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Asset,28,44,0,2,4,9,2,4,2,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Bundle,25,2,0,0,4,1,2,1,2,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish,Job,49,18,2,0,15,4,7,4,6,4
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAgent,29,59,3,7,4,15,4,7,2,4
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAgent,29,62,4,8,4,16,5,7,2,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AListing,0,3,0,0,0,1,0,1,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AAccount,81,28,3,1,18,7,5,4,3,4
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl,AIdentity,25,0,0,0,8,0,4,0,4,0
@@ -41,7 +41,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.file,FileA
 Starfish - Developer Toolkit for data ecosystems,sg.dex.crypto,Hash,11,61,0,0,3,14,3,9,3,9
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.resource,URIAsset,71,97,2,6,11,24,6,8,4,6
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.resource,ResourceAsset,30,91,1,5,3,21,1,11,0,9
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,RemoteException,4,5,0,0,2,2,1,1,1,1
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,RemoteException,0,9,0,0,0,4,0,2,0,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,GenericException,9,0,0,0,4,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,JobFailedException,9,0,0,0,4,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,AuthorizationException,9,0,0,0,4,0,2,0,2,0
@@ -50,7 +50,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,Stora
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Params,390,0,42,0,74,0,27,0,6,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,JSONObjectCache,18,36,0,2,3,7,1,3,1,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil,10,642,1,7,3,116,3,21,2,18
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,RemoteAgentConfig,161,36,1,1,11,8,3,1,2,1
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,RemoteAgentConfig,7,53,2,2,1,12,3,2,1,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Hex,36,186,6,20,6,24,8,13,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,DID,39,263,9,15,3,60,9,22,0,19
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,HTTP,100,57,2,0,23,18,3,6,2,6

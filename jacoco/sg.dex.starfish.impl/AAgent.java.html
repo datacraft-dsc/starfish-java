@@ -66,18 +66,19 @@ public abstract class AAgent implements Agent {
      */
     public String getEndpoint(String type) {
 <span class="fc" id="L68">        Map&lt;String, Object&gt; ddo = getDDO();</span>
-        @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L70">        List&lt;Map&lt;String,Object&gt;&gt; services = (List&lt;Map&lt;String,Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (services == null) return null;</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Map&lt;String,Object&gt; service : services) {</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
-<span class="fc" id="L74">        }</span>
-<span class="fc" id="L75">        return null;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">       if(null != ddo) {</span>
+<span class="fc" id="L70">           List&lt;Map&lt;String, Object&gt;&gt; services = (List&lt;Map&lt;String, Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">           if (services == null) return null;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">           for (Map&lt;String, Object&gt; service : services) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">               if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
+<span class="fc" id="L74">           }</span>
+       }
+<span class="fc" id="L76">        return null;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L80">        return &quot;#starfish/agent \&quot;&quot; + getDID().toString() + &quot;\&quot;&quot;;</span>
+<span class="nc" id="L81">        return &quot;#starfish/agent \&quot;&quot; + getDID().toString() + &quot;\&quot;&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
