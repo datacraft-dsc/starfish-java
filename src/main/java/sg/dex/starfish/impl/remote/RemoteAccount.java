@@ -24,8 +24,9 @@ public class RemoteAccount extends AAccount {
      */
     protected RemoteAccount(String id, Map<String, Object> credentials) {
         super(id, credentials);
-        userDataMap = new HashMap<>();
+        userDataMap = credentials;
     }
+
 
     /**
      * This method is to create instance of Remote Account
@@ -38,6 +39,21 @@ public class RemoteAccount extends AAccount {
                                        Map<String, Object> credentials) {
 
         return new RemoteAccount(id, credentials);
+    }
+
+    /**
+     * This method is to create instance of Remote Account
+     *
+     * @param id          The identifier for this account
+     * @param token The token required for authenticaiton
+     * @return RemoteAccount RemoteAccount instance
+     */
+    public static RemoteAccount create(String id,
+                                       String token) {
+        HashMap userDataMap = new HashMap<>();
+        userDataMap.put("token",token);
+
+        return new RemoteAccount(id,userDataMap);
     }
 
     /**

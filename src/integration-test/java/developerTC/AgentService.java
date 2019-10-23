@@ -208,5 +208,7 @@ public class AgentService {
 
         return result;
     }
-
+    public static String getSurfer() {
+        return surferUrl;
+    }
 }
