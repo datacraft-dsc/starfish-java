@@ -92,16 +92,26 @@ public class RemoteListing extends AListing {
             return null;
         }
 
-        Map<String, Object> meta = getMetaData();
+        Map<String, Object> metaListing = getMetaData();
+        Map<String, Object> metaPurchase = new HashMap<String, Object>();
+
+        metaPurchase.put("listingid", getId());
+
+        Purchase purchase = remoteAgent.createPurchase(metaPurchase);
+        String purchaseId = purchase.getMetaData().get(ID).toString();
 
         TransactionReceipt receipt = directPurchaseAdapter.sendTokenAndLog(
-                meta.get("publisher").toString(),
-                new BigInteger(meta.get("price").toString()),
+                metaListing.get("publisher").toString(),
+                new BigInteger(metaListing.get("price").toString()),
                 remoteAgent.getDID().toString(),
-                meta.get("id").toString()
+                purchaseId
         );
 
-        return receipt.isStatusOK() ? getAsset() : null;
+        if(receipt.isStatusOK())
+            return purchase;
+
+        // TO DO: to call "remove purchase" from surfer
+        return null;
     }
 
     @Override
