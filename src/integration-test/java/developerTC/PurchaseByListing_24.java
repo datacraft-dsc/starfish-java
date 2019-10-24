@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.Purchase;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
@@ -38,8 +39,11 @@ public class PurchaseByListing_24 {
 
         Listing listing = remoteAgent.createListing(data);
 
-        Asset purchasedAsset = listing.purchase();
+        Purchase purchase = listing.purchase();
 
+        assertNotNull(purchase);
+        assertEquals(purchase.status() , "delivered");
+        Asset purchasedAsset = listing.getAsset();
         assertNotNull(asset);
         assertEquals(asset.getAssetID(), purchasedAsset.getAssetID());
         assertNotNull(purchasedAsset.getMetadata());

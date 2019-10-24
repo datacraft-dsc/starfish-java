@@ -3,6 +3,7 @@ package sg.dex.starfish.impl.memory;
 import sg.dex.starfish.Account;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.Purchase;
 import sg.dex.starfish.util.JSON;
 
 import java.util.Map;
@@ -53,7 +54,7 @@ public class MemoryListing implements Listing {
     }
 
     @Override
-    public Asset purchase() {
+    public Purchase purchase() {
         return null;
     }
 

@@ -4,6 +4,7 @@ import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
+import sg.dex.starfish.Purchase;
 import sg.dex.starfish.impl.AListing;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 
@@ -79,7 +80,7 @@ public class RemoteListing extends AListing {
     }
 
     @Override
-    public Asset purchase() {
+    public Purchase purchase() {
         DirectPurchaseAdapter directPurchaseAdapter = null;
         try {
             directPurchaseAdapter = DirectPurchaseAdapter.create();

@@ -40,7 +40,7 @@ public interface Listing {
      *
      * @return The purchased asset
      */
-    Asset purchase();
+    Purchase purchase();
 
     /**
      * Refreshes the Listing data from the agent where it is stored, returning a new listing.
