@@ -1,4 +1,4 @@
-package sg.dex.starfish.integration.developerTC;
+package developerTC;
 
 import org.junit.Before;
 import org.junit.Ignore;
