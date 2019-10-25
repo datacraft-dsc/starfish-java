@@ -1,4 +1,4 @@
-package sg.dex.starfish.integration.keeper;
+package keeper;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
