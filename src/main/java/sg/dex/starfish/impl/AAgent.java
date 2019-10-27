@@ -1,13 +1,12 @@
 package sg.dex.starfish.impl;
 
+import java.util.Map;
+
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.util.DDO;
 import sg.dex.starfish.util.DID;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class representing an Agent in the Ocean Ecosystem
@@ -66,14 +65,8 @@ public abstract class AAgent implements Agent {
      */
     public String getEndpoint(String type) {
         Map<String, Object> ddo = getDDO();
-       if(null != ddo) {
-           List<Map<String, Object>> services = (List<Map<String, Object>>) ddo.get(Constant.SERVICE);
-           if (services == null) return null;
-           for (Map<String, Object> service : services) {
-               if (type.equals(service.get("type"))) return (String) service.get(Constant.SERVICE_ENDPOINT);
-           }
-       }
-        return null;
+       if(ddo==null ) return null; 
+       return DDO.getEndpoint(ddo, type);
     }
 
     @Override
