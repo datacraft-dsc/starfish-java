@@ -35,6 +35,7 @@ public final class RemoteAgentConfig {
         // creating a Remote agent instance for given Ocean and DID
         return RemoteAgent.create(resolver, did, account);
     }
+    
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, RemoteAccount remoteAccount) {
         // creating unique DID
 
