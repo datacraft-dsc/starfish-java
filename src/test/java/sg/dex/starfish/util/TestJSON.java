@@ -15,6 +15,12 @@ public class TestJSON {
         Map<String, Object> json = JSON.toMap("{\"foo\": 1}");
         assertEquals(Long.valueOf(1), json.get("foo"));
     }
+    
+    @Test
+    public void testLongStringInMap() {
+        Map<String, Object> json = JSON.toMap("{\"foo\": \"1\"}");
+        assertEquals("1", json.get("foo"));
+    }
 
     @Test
     public void testString() {
