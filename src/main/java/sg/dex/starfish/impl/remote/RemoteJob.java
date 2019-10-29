@@ -79,6 +79,7 @@ public class RemoteJob implements Job {
         }
 
         if (newStatus.equals(SUCCEEDED)) {
+
         	Map<String, Object> res=(Map<String, Object>) response.get(Constant.RESULTS);
         	if (res == null) throw new RemoteException("No result map in job id " + jobID + " result: " + response);
             // store result and success status
