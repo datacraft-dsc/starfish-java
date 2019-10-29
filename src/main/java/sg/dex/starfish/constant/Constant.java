@@ -74,6 +74,7 @@ public class Constant {
 
     public static final String INVOKE_SYNC = "/sync";
     public static final String INVOKE_ASYNC = "/async";
+	public static final Object RESULTS = "results";
 
     //----------SQUID CONSTANT----------------------
 
