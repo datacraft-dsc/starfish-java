@@ -71,6 +71,10 @@ public class RemoteAgentTest_26 {
         // getting the token
         String token = remoteAccount.getUserDataMap().get("token").toString();
 
+
+
+
+
         // creating remote Acc based on token
         RemoteAccount remoteAccount1 = RemoteAccount.create(Utils.createRandomHexString(32), token);
         // creating Agent 2

@@ -28,7 +28,8 @@ import org.junit.runners.Suite;
         ConfirmPurchase_18.class,
         AssetDownload_19.class,
 //        InvokeServiceFree_20.class,
-        InvokeServicePaid_21.class
+        InvokeServicePaid_21.class,
+        RemoteAgentTest_26.class
 //        AddNewAssetVersion_22.class
 
 
