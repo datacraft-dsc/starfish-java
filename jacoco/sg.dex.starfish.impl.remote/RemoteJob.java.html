@@ -79,55 +79,56 @@ public class RemoteJob implements Job {
         }
 
 <span class="nc bnc" id="L81" title="All 2 branches missed.">        if (newStatus.equals(SUCCEEDED)) {</span>
-<span class="nc" id="L82">        	Map&lt;String, Object&gt; res=(Map&lt;String, Object&gt;) response.get(Constant.RESULTS);</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        	if (res == null) throw new RemoteException(&quot;No result map in job id &quot; + jobID + &quot; result: &quot; + response);</span>
+
+<span class="nc" id="L83">        	Map&lt;String, Object&gt; res=(Map&lt;String, Object&gt;) response.get(Constant.RESULTS);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        	if (res == null) throw new RemoteException(&quot;No result map in job id &quot; + jobID + &quot; result: &quot; + response);</span>
             // store result and success status
-<span class="nc" id="L85">        	result=res;</span>
-<span class="nc" id="L86">            this.status = SUCCEEDED;</span>
-<span class="nc" id="L87">            return res;</span>
+<span class="nc" id="L86">        	result=res;</span>
+<span class="nc" id="L87">            this.status = SUCCEEDED;</span>
+<span class="nc" id="L88">            return res;</span>
         }
         
-<span class="nc bnc" id="L90" title="All 4 branches missed.">        if (newStatus.equals(CANCELLED)||newStatus.equals(FAILED)) {</span>
-<span class="nc" id="L91">        	this.status=newStatus;</span>
-<span class="nc" id="L92">        	throw new RemoteException(&quot;Job failed to complete with status: [&quot;+newStatus+&quot;]&quot;);</span>
+<span class="nc bnc" id="L91" title="All 4 branches missed.">        if (newStatus.equals(CANCELLED)||newStatus.equals(FAILED)) {</span>
+<span class="nc" id="L92">        	this.status=newStatus;</span>
+<span class="nc" id="L93">        	throw new RemoteException(&quot;Job failed to complete with status: [&quot;+newStatus+&quot;]&quot;);</span>
         }
         
-<span class="nc" id="L95">        throw new RemoteException(&quot;Unexpected Job status: [&quot;+newStatus+&quot;]&quot;);</span>
+<span class="nc" id="L96">        throw new RemoteException(&quot;Unexpected Job status: [&quot;+newStatus+&quot;]&quot;);</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; get(long timeout, TimeUnit timeUnit) throws TimeoutException {
  	
-<span class="nc" id="L101">        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);</span>
-<span class="nc" id="L102">        long start = System.currentTimeMillis();</span>
-<span class="nc" id="L103">        int sleepTime = 100;</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
-<span class="nc" id="L105">            Map&lt;String, Object&gt; a = pollResult();</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (a != null) {</span>
-<span class="nc" id="L107">                return a ;</span>
+<span class="nc" id="L102">        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);</span>
+<span class="nc" id="L103">        long start = System.currentTimeMillis();</span>
+<span class="nc" id="L104">        int sleepTime = 100;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
+<span class="nc" id="L106">            Map&lt;String, Object&gt; a = pollResult();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (a != null) {</span>
+<span class="nc" id="L108">                return a ;</span>
             }
             try {
-<span class="nc" id="L110">                Thread.sleep(sleepTime);</span>
-<span class="nc" id="L111">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L112">                throw new JobFailedException(&quot;Job failed with exception: &quot; + e.getCause(), e);</span>
-<span class="nc" id="L113">            }</span>
-<span class="nc" id="L114">            sleepTime *= 2;</span>
-<span class="nc" id="L115">        }</span>
-<span class="nc" id="L116">        Map&lt;String, Object&gt; a = pollResult();</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (a != null) {</span>
-<span class="nc" id="L118">            return a;</span>
+<span class="nc" id="L111">                Thread.sleep(sleepTime);</span>
+<span class="nc" id="L112">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L113">                throw new JobFailedException(&quot;Job failed with exception: &quot; + e.getCause(), e);</span>
+<span class="nc" id="L114">            }</span>
+<span class="nc" id="L115">            sleepTime *= 2;</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">        Map&lt;String, Object&gt; a = pollResult();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (a != null) {</span>
+<span class="nc" id="L119">            return a;</span>
         }
-<span class="nc" id="L120">        throw new TimeoutException(&quot;Timeout in remote Job get&quot;);</span>
+<span class="nc" id="L121">        throw new TimeoutException(&quot;Timeout in remote Job get&quot;);</span>
     }
 
     @Override
     public String getStatus() {
-<span class="nc" id="L125">        return status;</span>
+<span class="nc" id="L126">        return status;</span>
     }
 
     @Override
     public String getJobID() {
-<span class="nc" id="L130">        return jobID;</span>
+<span class="nc" id="L131">        return jobID;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
