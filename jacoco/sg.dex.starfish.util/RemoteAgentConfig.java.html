@@ -35,17 +35,18 @@ import java.util.Map;
         // creating a Remote agent instance for given Ocean and DID
 <span class="fc" id="L36">        return RemoteAgent.create(resolver, did, account);</span>
     }
+    
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, RemoteAccount remoteAccount) {
         // creating unique DID
 
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
-<span class="fc" id="L43">        Resolver resolver=new LocalResolverImpl();</span>
+<span class="fc" id="L44">        Resolver resolver=new LocalResolverImpl();</span>
         // registering the DID and DDO
-<span class="fc" id="L45">        resolver.registerDID(did, ddoString);</span>
+<span class="fc" id="L46">        resolver.registerDID(did, ddoString);</span>
 
         // creating a Remote agent instance for given Ocean and DID
-<span class="fc" id="L48">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
+<span class="fc" id="L49">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
     }
 
 }
