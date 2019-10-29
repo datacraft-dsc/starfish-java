@@ -148,62 +148,61 @@
 			</properties>
 		</profile>
 
-		<!-- Activate using the release property: mvn clean install -Prelease -->
-		<!--<profile>-->
-			<!--<id>release</id>-->
-			<!--<activation>-->
-				<!--<property>-->
-					<!--<name>release</name>-->
-				<!--</property>-->
-			<!--</activation>-->
-			<!--<build>-->
-				<!--<plugins>-->
-					<!--&lt;!&ndash; To release to Maven central &ndash;&gt;-->
-					<!--<plugin>-->
-						<!--<groupId>org.sonatype.plugins</groupId>-->
-						<!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
-						<!--<version>1.6.8</version>-->
-						<!--<extensions>true</extensions>-->
-						<!--<configuration>-->
-							<!--<serverId>oss.sonatype.org</serverId>-->
-							<!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-							<!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-						<!--</configuration>-->
-					<!--</plugin>-->
+		<!--  Activate using the release property: mvn clean install -Prelease -->
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>release</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<!-- To release to Maven central -->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.8</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>oss.sonatype.org</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
 
-					<!--&lt;!&ndash; To generate javadoc &ndash;&gt;-->
-					<!--<plugin>-->
-						<!--<groupId>org.apache.maven.plugins</groupId>-->
-						<!--<artifactId>maven-source-plugin</artifactId>-->
-						<!--<executions>-->
-							<!--<execution>-->
-								<!--<id>attach-sources</id>-->
-								<!--<goals>-->
-									<!--<goal>jar-no-fork</goal>-->
-								<!--</goals>-->
-							<!--</execution>-->
-						<!--</executions>-->
-					<!--</plugin>-->
+					<!-- To generate javadoc -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 
-					<!--&lt;!&ndash; To sign the artifacts &ndash;&gt;-->
-					<!--<plugin>-->
-						<!--<groupId>org.apache.maven.plugins</groupId>-->
-						<!--<artifactId>maven-gpg-plugin</artifactId>-->
-						<!--<version>1.6</version>-->
-						<!--<executions>-->
-							<!--<execution>-->
-								<!--<id>sign-artifacts</id>-->
-								<!--&lt;!&ndash; need to change to verify while giving maven release &ndash;&gt;-->
-								<!--<phase>verify</phase>-->
-								<!--<goals>-->
-									<!--<goal>sign</goal>-->
-								<!--</goals>-->
-							<!--</execution>-->
-						<!--</executions>-->
-					<!--</plugin>-->
-				<!--</plugins>-->
-			<!--</build>-->
-		<!--</profile>-->
+					<!-- To sign the artifacts -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 	<build>
 		<plugins>
