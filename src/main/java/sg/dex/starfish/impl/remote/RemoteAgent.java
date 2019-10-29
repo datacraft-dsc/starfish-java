@@ -119,8 +119,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             	if (body.startsWith("{")) {
             		// interpret as a JSON map, should contain jobid
             		Map<String,Object> json=JSON.parse(body);
-
-            		jobID=json.get("jobid").toString();
+			jobID=(String) json.get("jobid");
             		if (jobID==null) throw new RemoteException("Invoke failed: no jobid in body: "+body);
             	} else {
             		// interpret as a raw job ID
