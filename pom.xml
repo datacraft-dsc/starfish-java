@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sg.dex</groupId>
 	<artifactId>starfish-java</artifactId>
-	<version>0.7.8-SNAPSHOT</version>
+	<version>0.7.8</version>
 
 	<name>Starfish - Developer Toolkit for data ecosystems</name>
 	<url>https://github.com/DEX-company/starfish-java</url>
@@ -46,7 +46,7 @@
 		<connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
-		<tag>starfish-java-0.7.0</tag>
+		<tag>starfish-java-0.7.8</tag>
 	</scm>
 
 	<repositories>
