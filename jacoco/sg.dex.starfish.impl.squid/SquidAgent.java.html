@@ -41,9 +41,9 @@ public class SquidAgent extends AAgent {
      */
     protected SquidAgent(
             Resolver resolver, DID did) {
-<span class="nc" id="L44">        super(resolver, did);</span>
-<span class="nc" id="L45">        squidResolver = (SquidResolverImpl) resolver;</span>
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L44">        super(resolver, did);</span>
+<span class="fc" id="L45">        squidResolver = (SquidResolverImpl) resolver;</span>
+<span class="fc" id="L46">    }</span>
 
 
     /**
@@ -54,7 +54,7 @@ public class SquidAgent extends AAgent {
      * @return RemoteAgent return instance of remote Agent
      */
     public static SquidAgent create(Resolver resolver, DID did) {
-<span class="nc" id="L57">        return new SquidAgent(resolver, did);</span>
+<span class="fc" id="L57">        return new SquidAgent(resolver, did);</span>
     }
 
 
@@ -73,7 +73,7 @@ public class SquidAgent extends AAgent {
     public &lt;R extends Asset&gt; R  registerAsset(Asset asset) {
 
         try {
-<span class="nc" id="L76">            return (R)createSquidAssetInNetwork(getMetaData(asset));</span>
+<span class="fc" id="L76">            return (R)createSquidAssetInNetwork(getMetaData(asset));</span>
 
 <span class="nc" id="L78">        } catch (IOException e) {</span>
 <span class="nc" id="L79">            e.printStackTrace();</span>
@@ -109,45 +109,45 @@ public class SquidAgent extends AAgent {
     private SquidAsset createSquidAssetInNetwork(Map&lt;String, Object&gt; metaData) throws IOException, DDOException {
 
         // get metadata required registration on OCN
-<span class="nc" id="L112">        AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);</span>
+<span class="fc" id="L112">        AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);</span>
 
-<span class="nc" id="L114">        DDO squidDDO = SquidService.getAssetAPI().create(metadataBase, SquidService.getProvideConfig());</span>
-<span class="nc" id="L115">        return SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());</span>
+<span class="fc" id="L114">        DDO squidDDO = SquidService.getAssetAPI().create(metadataBase, SquidService.getProvideConfig());</span>
+<span class="fc" id="L115">        return SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());</span>
 
     }
 
     private AssetMetadata getMetadataForSquidFromAsset(Map&lt;String, Object&gt; metaData) throws IOException {
 
         // todo map mandatory attribute
-<span class="nc" id="L122">        Map&lt;String, Object&gt; squidMetaDAta = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L122">        Map&lt;String, Object&gt; squidMetaDAta = new HashMap&lt;&gt;();</span>
         // modify get metadata to squid..metadata
-<span class="nc" id="L124">        squidMetaDAta.put(&quot;base&quot;, metaData);</span>
+<span class="fc" id="L124">        squidMetaDAta.put(&quot;base&quot;, metaData);</span>
 
-<span class="nc" id="L126">        return DDO.fromJSON(new TypeReference&lt;AssetMetadata&gt;() {</span>
-<span class="nc" id="L127">        }, JSON.toString(squidMetaDAta));</span>
+<span class="fc" id="L126">        return DDO.fromJSON(new TypeReference&lt;AssetMetadata&gt;() {</span>
+<span class="fc" id="L127">        }, JSON.toString(squidMetaDAta));</span>
     }
 
     private Map&lt;String, Object&gt; getMetaData(Asset asset) {
-<span class="nc" id="L131">        Map&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L131">        Map&lt;String, Object&gt; meta = new HashMap&lt;&gt;();</span>
         // getting asset meta data
-<span class="nc" id="L133">        Map&lt;String, Object&gt; assetMetadata = JSON.toMap(asset.getMetadataString());//.getMetadata();</span>
+<span class="fc" id="L133">        Map&lt;String, Object&gt; assetMetadata = JSON.toMap(asset.getMetadataString());//.getMetadata();</span>
         // initialize with default value
 
-<span class="nc" id="L136">        meta.put(Constant.TYPE, Constant.DATA_SET);</span>
-<span class="nc" id="L137">        meta.put(Constant.NAME, Constant.DEFAULT_NAME);</span>
-<span class="nc" id="L138">        meta.put(&quot;license&quot;, Constant.DEFAULT_LICENSE);</span>
-<span class="nc" id="L139">        meta.put(&quot;author&quot;, Constant.DEFAULT_AUTHOR);</span>
-<span class="nc" id="L140">        meta.put(&quot;price&quot;, Constant.DEFAULT_PRICE);</span>
+<span class="fc" id="L136">        meta.put(Constant.TYPE, Constant.DATA_SET);</span>
+<span class="fc" id="L137">        meta.put(Constant.NAME, Constant.DEFAULT_NAME);</span>
+<span class="fc" id="L138">        meta.put(&quot;license&quot;, Constant.DEFAULT_LICENSE);</span>
+<span class="fc" id="L139">        meta.put(&quot;author&quot;, Constant.DEFAULT_AUTHOR);</span>
+<span class="fc" id="L140">        meta.put(&quot;price&quot;, Constant.DEFAULT_PRICE);</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (assetMetadata != null) {</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">                if (assetMetadata.get(me.getKey()) != null) {</span>
-<span class="nc" id="L145">                    meta.put(me.getKey(), assetMetadata.get(me.getKey()));</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (assetMetadata != null) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : meta.entrySet()) {</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                if (assetMetadata.get(me.getKey()) != null) {</span>
+<span class="fc" id="L145">                    meta.put(me.getKey(), assetMetadata.get(me.getKey()));</span>
                 }
-<span class="nc" id="L147">            }</span>
+<span class="fc" id="L147">            }</span>
         }
-<span class="nc" id="L149">        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);</span>
-<span class="nc" id="L150">        return meta;</span>
+<span class="fc" id="L149">        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);</span>
+<span class="fc" id="L150">        return meta;</span>
     }
 
     /**
@@ -170,8 +170,8 @@ public class SquidAgent extends AAgent {
 
 
         try {
-<span class="nc" id="L173">            DDO squidDDO = squidResolver.getSquidDDO(did);</span>
-<span class="nc" id="L174">            SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());</span>
+<span class="fc" id="L173">            DDO squidDDO = squidResolver.getSquidDDO(did);</span>
+<span class="fc" id="L174">            SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());</span>
 <span class="nc" id="L175">        } catch (EthereumException e) {</span>
 <span class="nc" id="L176">            e.printStackTrace();</span>
 <span class="nc" id="L177">        } catch (DDOException e) {</span>
@@ -182,9 +182,9 @@ public class SquidAgent extends AAgent {
 <span class="nc" id="L182">            e.printStackTrace();</span>
 <span class="nc" id="L183">        } catch (IOException e) {</span>
 <span class="nc" id="L184">            e.printStackTrace();</span>
-<span class="nc" id="L185">        }</span>
+<span class="pc" id="L185">        }</span>
 
-<span class="nc" id="L187">        return SquidAsset.create(did);</span>
+<span class="fc" id="L187">        return SquidAsset.create(did);</span>
 
     }
 
