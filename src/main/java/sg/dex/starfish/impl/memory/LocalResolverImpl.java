@@ -11,12 +11,12 @@ public class LocalResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
     private final Resolver nextInChain;
 
-    public LocalResolverImpl() {
-    	nextInChain=null;
-    }
-    
     public LocalResolverImpl(Resolver next) {
     	nextInChain=next;
+    }
+    
+    public LocalResolverImpl() {
+    	this(null);
     }
     
     @Override
