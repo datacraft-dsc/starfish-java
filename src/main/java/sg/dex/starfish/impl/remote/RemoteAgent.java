@@ -527,13 +527,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @return The URI for this agent's invoke endpoint
 	 * @throws RuntimeException on URI syntax errors
 	 */
-	private URI getInvokeAsyncURI(Object did) {
+	private URI getInvokeAsyncURI(String operationID) {
 		try {
-			if (did == null) {
-				return new URI(getInvokeEndpoint());
-			} else {
-				return new URI(getInvokeEndpoint() + INVOKE_ASYNC + "/" + did.toString());
-			}
+			return new URI(getInvokeEndpoint() + INVOKE_ASYNC + "/" + operationID);
 		}
 		catch (URISyntaxException e) {
 			throw new RuntimeException(e);
