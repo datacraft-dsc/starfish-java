@@ -7,35 +7,39 @@ import sg.dex.starfish.util.JSON;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * In-memory local resolver implementation.
+ *
+ */
 public class LocalResolverImpl implements Resolver {
-<span class="pc" id="L11">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L15">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;&gt;();</span>
     private final Resolver nextInChain;
 
-<span class="fc" id="L14">    public LocalResolverImpl() {</span>
-<span class="fc" id="L15">    	nextInChain=null;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L18">    public LocalResolverImpl(Resolver next) {</span>
+<span class="fc" id="L19">    	nextInChain=next;</span>
+<span class="fc" id="L20">    }</span>
     
-<span class="nc" id="L18">    public LocalResolverImpl(Resolver next) {</span>
-<span class="nc" id="L19">    	nextInChain=next;</span>
-<span class="nc" id="L20">    }</span>
+    public LocalResolverImpl() {
+<span class="fc" id="L23">    	this(null);</span>
+<span class="fc" id="L24">    }</span>
     
     @Override
     public String getDDOString(DID did) {
         // remove path to get DDO for basic did
-<span class="fc" id="L25">        did = did.withoutPath();</span>
-<span class="fc" id="L26">        String localDDO = ddoCache.get(did);</span>
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (localDDO != null) {</span>
-<span class="fc" id="L28">            return localDDO;</span>
+<span class="fc" id="L29">        did = did.withoutPath();</span>
+<span class="fc" id="L30">        String localDDO = ddoCache.get(did);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (localDDO != null) {</span>
+<span class="fc" id="L32">            return localDDO;</span>
         }
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (nextInChain==null) return null;</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (nextInChain==null) return null;</span>
         
-<span class="nc" id="L32">        return nextInChain.getDDOString(did);</span>
+<span class="nc" id="L36">        return nextInChain.getDDOString(did);</span>
     }
 
     @Override
     public void registerDID(DID did, String ddoString) {
-<span class="fc" id="L37">        installLocalDDO(did, ddoString);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L41">        installLocalDDO(did, ddoString);</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -46,10 +50,10 @@ public class LocalResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
-<span class="fc" id="L50">        did = did.withoutPath();</span>
-<span class="fc" id="L51">        ddoCache.put(did, ddoString);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="fc" id="L54">        did = did.withoutPath();</span>
+<span class="fc" id="L55">        ddoCache.put(did, ddoString);</span>
+<span class="fc" id="L56">    }</span>
 
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -60,8 +64,8 @@ public class LocalResolverImpl implements Resolver {
      * @param ddo A Map containing a valid DDO
      */
     public void installLocalDDO(DID did, Map&lt;String, Object&gt; ddo) {
-<span class="nc" id="L63">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L67">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Gets a DDO for a specified DID via the Universal resolver
@@ -70,7 +74,7 @@ public class LocalResolverImpl implements Resolver {
      * @return The DDO as a JSON map
      */
     public Map&lt;String, Object&gt; getDDO(String did) {
-<span class="nc" id="L73">        return JSON.parse(getDDOString(did));</span>
+<span class="nc" id="L77">        return JSON.parse(getDDOString(did));</span>
     }
 
     /**
@@ -80,7 +84,7 @@ public class LocalResolverImpl implements Resolver {
      * @return The DDO as a JSON map
      */
     public String getDDOString(String did) {
-<span class="nc" id="L83">        return getDDOString(DID.parse(did));</span>
+<span class="nc" id="L87">        return getDDOString(DID.parse(did));</span>
     }
 
 }
