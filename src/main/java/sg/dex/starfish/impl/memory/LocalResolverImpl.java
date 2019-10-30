@@ -7,6 +7,10 @@ import sg.dex.starfish.util.JSON;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * In-memory local resolver implementation.
+ *
+ */
 public class LocalResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
     private final Resolver nextInChain;
