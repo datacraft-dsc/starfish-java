@@ -1,9 +1,9 @@
 {
-  "name": "Know your Vehicle: Metada",
+  "name": "This is to verify the asset registration on Network ",
   "type": "dataset",
-  "description": "This is a KYV dataset  .The vehicle is a 10 year old BMW 325I Coupe XL in excellent condition.",
+  "description": "This is to verify the asset registration on Network",
   "dateCreated": "2012-10-10T17:00:000Z",
-  "author": "Vehicle Owner ",
-  "license": "Vehicle Owner",
-  "copyrightHolder": "Vehicle Owner "
+  "author": "Test Asset owner ",
+  "license": "Test Asset owner ",
+  "copyrightHolder": "Test Asset owner "
 }
