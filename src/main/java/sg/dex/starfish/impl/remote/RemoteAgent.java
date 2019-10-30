@@ -521,10 +521,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * Gets URI for this agent's invoke endpoint
+	 * Gets URI for invoking a specific operation asynchronously
 	 *
-	 * @param did did
-	 * @return The URI for this agent's invoke endpoint
+	 * @param operationID Asset ID of the operation to invoke
+	 * @return The URI for this the async invoke endpoint for the specified operation
 	 * @throws RuntimeException on URI syntax errors
 	 */
 	private URI getInvokeAsyncURI(String operationID) {
