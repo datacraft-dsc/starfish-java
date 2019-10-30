@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -56,8 +59,10 @@ public class SquidAssetTests {
     @Test
     public void testRegistration() {
         byte[] data = {1, 2, 3, 4};
+        Map<String,Object> additionalMetaData = new HashMap<>();
+        additionalMetaData.put("name"," This asset is to test registration on network :: "+ new Date().toString());
 
-        MemoryAsset asset = MemoryAsset.create(data);
+        MemoryAsset asset = MemoryAsset.create(data,additionalMetaData);
 
         // register the Starfish asset created above into OCN
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
