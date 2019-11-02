@@ -35,6 +35,9 @@ public class TestMemoryOperations {
         byte[] data = new byte[]{1, 2, 3};
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
         assertTrue(memoryOperation.isOperation());
+        
+        // should not have a content hash
+        assertFalse(memoryOperation.getMetadata().containsKey(Constant.CONTENT_HASH));
 
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
@@ -207,9 +210,7 @@ public class TestMemoryOperations {
 
     private String getMetaDataForAssetI_AssetO() {
         String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
-                "\t\"size\":\"3\",\n" +
-                "\t\"contentType\":\"application/octet-stream\",\n" +
-                "\t\"contentHash\":\"4e03657aea45a94fc7d47ba826c8d667c0d1e6e33a64a036ec44f58fa12d6c45\",\n" +
+                 "\t\"contentType\":\"application/octet-stream\",\n" +
                 "\t\"tags\":[\"Reverse byte\"],\n" +
                 "\t\"license\":\"CC-BY\",\n" +
                 "\t\"author\":\"Reverse Byte Inc\",\n" +
