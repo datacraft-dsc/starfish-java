@@ -854,7 +854,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	@SuppressWarnings("unchecked")
 	private boolean isModeSupported(Operation operation, String mode) {
 		Map<String, Object> metaData = operation.getOperationSpec();
-		List<String> modes = (List<String>) metaData.get(MODE);
+		List<String> modes = (List<String>) metaData.get(MODES);
 		if (modes==null) return true; // assume OK if not present
 		return modes.contains(mode);
 	}

@@ -24,7 +24,7 @@ public class Constant {
     public static final String DID_METHOD = "op";
     public static final String SYNC = "sync";
     public static final String ASYNC = "async";
-    public static final String MODE = "modes";
+    public static final String MODES = "modes";
     public static final String OCTET_STREAM = "application/octet-stream";
     public static final String FILE = "file";
     public static final String PROVENANCE = "provenance";
