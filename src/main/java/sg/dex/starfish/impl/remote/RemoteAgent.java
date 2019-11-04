@@ -845,11 +845,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
+	/**
+	 * Check if the mode is supported in a DEP6 invoke.
+	 * @param operation Operation to check
+	 * @param mode String value of mode
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	private boolean isModeSupported(Operation operation, String mode) {
 		Map<String, Object> metaData = operation.getOperationSpec();
-		JSONArray modes = (JSONArray) metaData.get(MODE);
+		List<String> modes = (List<String>) metaData.get(MODE);
+		if (modes==null) return true; // assume OK if not present
 		return modes.contains(mode);
-
 	}
 
 	/**
