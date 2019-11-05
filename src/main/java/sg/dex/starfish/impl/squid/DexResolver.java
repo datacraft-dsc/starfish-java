@@ -29,7 +29,7 @@ import java.util.Properties;
 import com.oceanprotocol.common.web3.KeeperService;
 import com.oceanprotocol.keeper.contracts.DIDRegistry;
 
-public class SquidResolverImpl implements Resolver {
+public class DexResolver implements Resolver {
     private DIDRegistry contract;
 
     /**
@@ -37,7 +37,7 @@ public class SquidResolverImpl implements Resolver {
      *
      * @param DIDRegistry contract
      */
-    private SquidResolverImpl(DIDRegistry contract)  {
+    private DexResolver(DIDRegistry contract)  {
         this.contract = contract;
     }
 
@@ -47,12 +47,12 @@ public class SquidResolverImpl implements Resolver {
      * @throws IOException, CipherException
      * @return SquidResolverImpl The newly created SquidResolverImpl
      */
-    public static SquidResolverImpl create() throws IOException, CipherException{
+    public static DexResolver create() throws IOException, CipherException{
         Properties properties = getProperties();
         String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
         KeeperService keeper = SquidService.getKeeperService(properties);
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
-        return new SquidResolverImpl(contract);
+        return new DexResolver(contract);
     }
 
     public SquidResolverImpl(SquidService squidService){
@@ -141,7 +141,7 @@ public class SquidResolverImpl implements Resolver {
 
     private static Properties getProperties() {
         Properties prop = new Properties();
-        try (InputStream input = SquidResolverImpl.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (InputStream input = DexResolver.class.getClassLoader().getResourceAsStream("application.properties")) {
 
             if (input == null) {
                 throw new IOException("properties files is missing");
