@@ -3,6 +3,7 @@ package keeper;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
@@ -33,5 +34,12 @@ public class DexResolverTest {
         assertTrue(result);
         val = resolver.getDDOString(did);
         assertEquals(val, valueUpdate);
+    }
+
+    @Test
+    public void testGetInvalidDID()   {
+        DID temp = DID.createRandom();
+        String val = resolver.getDDOString(temp);
+        assertNull(val);
     }
 }
