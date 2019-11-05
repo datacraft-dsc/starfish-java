@@ -1,6 +1,8 @@
 package sg.dex.starfish.impl.squid;
 
 import com.oceanprotocol.common.helpers.EncodingHelper;
+import com.oceanprotocol.squid.api.config.OceanConfig;
+import com.oceanprotocol.squid.api.config.OceanConfigFactory;
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
@@ -44,13 +46,20 @@ public class DexResolver implements Resolver {
     /**
      * Creates a SquidResolverImpl
      *
+     * @param String addressFrom: owner of DID record in the ledger. Only this address is allowed to update it
+     * @param String password: its password
+     * @param String credentialFile: its parity credential file
      * @throws IOException, CipherException
      * @return SquidResolverImpl The newly created SquidResolverImpl
      */
-    public static DexResolver create() throws IOException, CipherException{
+    public static DexResolver create(String addressFrom, String password, String credentialFile) throws IOException, CipherException{
         Properties properties = getProperties();
         String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
-        KeeperService keeper = SquidService.getKeeperService(properties);
+        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
+        oceanConfig.setMainAccountAddress(addressFrom);
+        oceanConfig.setMainAccountPassword(password);
+        oceanConfig.setMainAccountCredentialsFile(credentialFile);
+        KeeperService keeper = SquidService.getKeeperService(oceanConfig);
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         return new DexResolver(contract);
     }

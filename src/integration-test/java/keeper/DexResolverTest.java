@@ -16,9 +16,12 @@ public class DexResolverTest {
     private String valueSet;
     private String valueUpdate;
     private DID did;
+    private final String accountFrom = "0x413c9ba0a05b8a600899b41b0c62dd661e689354";
+    private final String password = "ocean_secret";
+    private final String credentialFile = "src/main/resources/accounts/parity/0x413c9ba0a05b8a600899b41b0c62dd661e689354.json";
 
     public DexResolverTest() throws IOException, CipherException {
-        resolver = DexResolver.create();
+        resolver = DexResolver.create(accountFrom, password, credentialFile);
         valueSet = DID.createRandomString();
         valueUpdate = DID.createRandomString();
         did = DID.createRandom();
