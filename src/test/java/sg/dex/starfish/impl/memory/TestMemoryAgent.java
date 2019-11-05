@@ -4,10 +4,16 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Job;
+import sg.dex.starfish.Operation;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.impl.operations.ReverseByte_AssetI_AssetO;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -133,5 +139,114 @@ public class TestMemoryAgent {
         assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
         assertEquals(registeredAsset.getDID(), assetFromAgent.getDID());
 
+    }
+
+    /**
+     * This test is to test the Asset input Asset output Async
+     */
+    @Test
+    public void testInvokeAsync() {
+        byte[] data = new byte[]{1, 2, 3};
+        DID did = DID.parse(DID.createRandomString());
+        MemoryAgent memoryAgent = MemoryAgent.create(did);
+
+        Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        assertTrue(memoryOperation.isOperation());
+
+        // should not have a content hash
+        assertFalse(memoryOperation.getMetadata().containsKey(Constant.CONTENT_HASH));
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+
+
+        Job job = memoryAgent.invokeAsync(memoryOperation,test);
+
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+    }
+
+    /**
+     * This test is to test the Asset input Asset output Async
+     */
+    @Test
+    public void testInvoke() {
+        byte[] data = new byte[]{1, 2, 3};
+        DID did = DID.parse(DID.createRandomString());
+        MemoryAgent memoryAgent = MemoryAgent.create(did);
+
+        Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        assertTrue(memoryOperation.isOperation());
+
+        // should not have a content hash
+        assertFalse(memoryOperation.getMetadata().containsKey(Constant.CONTENT_HASH));
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+
+
+        Job job = memoryAgent.invoke(memoryOperation,test);
+
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvokeException() {
+        byte[] data = new byte[]{1, 2, 3};
+        DID did = DID.parse(DID.createRandomString());
+        MemoryAgent memoryAgent = MemoryAgent.create(did);
+
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryAgent.invoke(null,test);
+
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvokeAsyncException() {
+        byte[] data = new byte[]{1, 2, 3};
+        DID did = DID.parse(DID.createRandomString());
+        MemoryAgent memoryAgent = MemoryAgent.create(did);
+
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryAgent.invokeAsync(null,test);
+
+        Map<String, Object> res = job.getResult(10000);
+        Asset resultAsset=(Asset)res.get("reverse_result");
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+    }
+
+
+    private String getMetaDataForAssetI_AssetO() {
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Byte Inc\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"sync\",\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+        return meta;
     }
 }

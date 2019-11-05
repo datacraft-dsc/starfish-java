@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.*;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
@@ -171,7 +172,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Map<String, Object> params) {
-        if (!(operation instanceof AMemoryOperation)) {
+        if (null == operation || !(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
         return operation.invoke(params);
@@ -190,13 +191,14 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public Job invokeAsync(Operation operation, Map<String, Object> params) {
 
+        if (null == operation || !(operation instanceof AMemoryOperation)) {
+            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
+        }
         // check the mode if sync then throw exception
         if (isSyncMode(operation)) {
             throw new StarfishValidationException("Mode must be Async for this operation");
         }
-        if (!(operation instanceof AMemoryOperation)) {
-            throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
-        }
+
         return operation.invoke(params);
     }
 
@@ -251,8 +253,8 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     private boolean isSyncMode(Operation operation) {
         Map<String, Object> metaData = operation.getMetadata();
-        Object mode = metaData.get("modes");
-        return mode != null && mode.toString().equals("sync");
+        Object mode = metaData.get(Constant.MODES);
+        return (mode != null &&  mode.toString().equals("sync"))? true:false;
     }
 
 	@Override
