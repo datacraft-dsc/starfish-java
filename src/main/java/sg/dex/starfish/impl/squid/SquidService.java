@@ -38,9 +38,8 @@ public final class SquidService {
 
     }
 
-    public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
+    public static KeeperService getKeeperService(OceanConfig oceanConfig) throws IOException, CipherException {
 
-        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         KeeperService keeper = KeeperService.getInstance(
                 oceanConfig.getKeeperUrl(),
                 oceanConfig.getMainAccountAddress(),
@@ -53,6 +52,13 @@ public final class SquidService {
         keeper.setGasLimit(oceanConfig.getKeeperGasLimit())
                 .setGasPrice(oceanConfig.getKeeperGasPrice());
         return keeper;
+
+    }
+
+    public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
+
+        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
+        return getKeeperService(oceanConfig);
 
     }
 
