@@ -103,19 +103,6 @@ public class DexResolver implements Resolver {
         return outcome.size() == 1 ? outcome.get(0)._value : null;
     }
 
-    DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
-
-        com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
-        OceanManager oceanManager = squidService.getResolverManager();
-        DDO ddo = oceanManager.resolveDID(squidDID);
-        if (ddo != null) {
-            return ddo;
-        }
-
-        return null;
-
-    }
-
     @Override
     public boolean registerDID(DID did, String ddo) {
         String checksum = "0x0";
