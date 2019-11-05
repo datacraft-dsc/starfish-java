@@ -49,7 +49,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddo) {
+    public boolean registerDID(DID did, String ddo) {
         //TODO  need to register in the network
         installLocalDDO(did, ddo);
 
@@ -69,7 +69,7 @@ public class SquidResolverImpl implements Resolver {
             e.printStackTrace();
         }
 
-
+        return true;
     }
 
     /**
