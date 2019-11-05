@@ -3,6 +3,7 @@ package developerTC;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset
@@ -143,6 +145,36 @@ public class AccessBundleAsset_16 {
         RemoteBundle remoteBundle1 = remoteAgent.registerAsset(bundle);
         RemoteBundle nestedB = remoteBundle1.get("nested");
         assertEquals(nestedB.getAll().size(), 2);
+
+    }
+
+    /**
+     * Test Nested Bundle
+     */
+    @Test
+    public void testBundleForSize() {
+        Map<String, Asset> nestedAsset = getAssetMap();
+
+        Bundle bundle = MemoryBundle.create(nestedAsset);
+        assertNull(bundle.getMetadata().get(Constant.SIZE));
+        RemoteBundle remoteBundle1 = remoteAgent.registerAsset(bundle);
+        assertNull(remoteBundle1.getMetadata().get(Constant.SIZE));
+
+
+    }
+
+    /**
+     * Test Nested Bundle
+     */
+    @Test
+    public void testBundleForContentHash() {
+        Map<String, Asset> nestedAsset = getAssetMap();
+
+        Bundle bundle = MemoryBundle.create(nestedAsset);
+        assertNull(bundle.getMetadata().get(Constant.CONTENT_HASH));
+        RemoteBundle remoteBundle1 = remoteAgent.registerAsset(bundle);
+        assertNull(remoteBundle1.getMetadata().get(Constant.CONTENT_HASH));
+
 
     }
 

@@ -333,6 +333,17 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.2</version>
+				<configuration>
+					<includes>
+					</includes>
+					<excludes>
+						<exclude>**/remote/*.*</exclude>
+						<exclude>**/squid/*.*</exclude>
+						<exclude>**/keeper/*.*</exclude>
+						<exclude>**/cli/*.*</exclude>
+						<exclude>**/constant/*.*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

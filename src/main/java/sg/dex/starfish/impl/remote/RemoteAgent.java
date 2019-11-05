@@ -17,7 +17,6 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
-import org.json.simple.JSONArray;
 import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
@@ -762,6 +761,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	@Override
 	public Job invokeAsync(Operation operation, Map<String, Object> params) {
+		if (null == operation || !(operation instanceof RemoteOperation)) {
+			throw new IllegalArgumentException("Operation must be a RemoteOperation but got: " + Utils.getClass(operation));
+		}
 
 		Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 

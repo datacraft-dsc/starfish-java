@@ -1,0 +1,33 @@
+{
+  "name": "Verify the dummy asset registration",
+  "type": "dataset",
+  "description": "Verify the dummy asset registration",
+  "dateCreated": "2012-10-10T17:00:000Z",
+  "author": "Met Office",
+  "license": "CC-BY",
+  "copyrightHolder": "Met Office",
+  "workExample": "423432fsd,51.509865,-0.118092,2011-01-01T10:55:11+00:00,7.2,68",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/tbertinmahieux/MSongsDB/master/Tasks_Demos/CoverSongs/shs_dataset_test.txt",
+      "index": 0,
+      "checksum": "efb2c764274b745f5fc37f97c6b0e761",
+      "contentLength": 4535431,
+      "contentType": "text/csv",
+      "encoding": "UTF-8",
+      "compression": "zip"
+    }
+  ],
+  "links": [{
+    "name": "Sample of Asset Data",
+    "type": "sample",
+    "url": "https://foo.com/sample.csv"
+  }, {
+    "name": "Data Format Definition",
+    "type": "format",
+    "url": "https://foo.com/sample2.csv"
+  }],
+  "inLanguage": "en",
+  "tags": ["weather", "uk", "2011", "temperature", "humidity"],
+  "price": "1"
+}
