@@ -52,9 +52,8 @@ public final class SquidService {
 
     }
 
-    public  KeeperService getKeeperService() throws IOException, CipherException {
+    public static KeeperService getKeeperService(OceanConfig oceanConfig) throws IOException, CipherException {
 
-        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         KeeperService keeper = KeeperService.getInstance(
                 oceanConfig.getKeeperUrl(),
                 oceanConfig.getMainAccountAddress(),
@@ -70,7 +69,14 @@ public final class SquidService {
 
     }
 
-    public  AquariusService getAquariusService() {
+    public static KeeperService getKeeperService(Properties properties) throws IOException, CipherException {
+
+        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
+        return getKeeperService(oceanConfig);
+
+    }
+
+    public static AquariusService getAquariusService() {
         return oceanInitializationHelper.getAquarius();
 
     }
