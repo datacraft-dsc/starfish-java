@@ -5,11 +5,9 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -45,9 +43,9 @@ public class SquidAssetTests {
     private OceanAPI oceanAPI = SquidService.getOceanAPI();
 
     @Before
-    public void setup() throws IOException, CipherException {
+    public void setup() {
 
-        resolver = SquidResolverImpl.create();
+        resolver = new SquidResolverImpl();
         // create random DID
         DID did = DID.createRandom();
 
