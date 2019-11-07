@@ -3,11 +3,7 @@ package sg.dex.starfish.impl.squid;
 import com.oceanprotocol.common.helpers.EncodingHelper;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.api.config.OceanConfigFactory;
-import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
-import com.oceanprotocol.squid.exceptions.EthereumException;
-import com.oceanprotocol.squid.manager.OceanManager;
-import com.oceanprotocol.squid.models.DDO;
 
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.abi.EventEncoder;
@@ -74,7 +70,7 @@ public class DexResolver implements Resolver {
             squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
         } catch (DIDFormatException e) {
             e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            return null;
         }
 
         String didHash = squidDID.getHash();
@@ -123,13 +119,13 @@ public class DexResolver implements Resolver {
                     Arrays.asList(SquidService.getProvider()), ddo).send();
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            throw Utils.sneakyThrow(e);
         } catch (CipherException e) {
             e.printStackTrace();
-            return false;
+            throw Utils.sneakyThrow(e);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            throw Utils.sneakyThrow(e);
         }
 
         return receipt.getStatus().equals("0x1");
