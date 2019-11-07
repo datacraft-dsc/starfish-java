@@ -50,7 +50,6 @@ public class SquidResolverImpl implements Resolver {
 
     @Override
     public boolean registerDID(DID did, String ddo) {
-        //TODO  need to register in the network
         installLocalDDO(did, ddo);
 
         try {
