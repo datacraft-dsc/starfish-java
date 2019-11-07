@@ -3,7 +3,7 @@
   "crypto": {
     "cipher": "aes-128-ctr",
     "cipherparams": {
-      "iv": "7d67da0ed4bb4c845de5889872771470",
+      "iv": "7d67da0ed4bb4c845de5889872771470"
     },
     "ciphertext": "f123004078f6a91d7fc259a861cb9b23097a27fce97bb2dccf6ef8360d44a991",
     "kdf": "pbkdf2",
@@ -11,10 +11,10 @@
       "c": 1000000,
       "dklen": 32,
       "prf": "hmac-sha256",
-      "salt": "bbedf2c7a91a6212a114d4aef487a093",
+      "salt": "bbedf2c7a91a6212a114d4aef487a093"
     },
-    "mac": "d6cfe9c58734c559d0c3ecbfae0a0c16e1e29ee37942adeb4a8293c453915cae",
+    "mac": "d6cfe9c58734c559d0c3ecbfae0a0c16e1e29ee37942adeb4a8293c453915cae"
   },
   "id": "d7a11dd7-790a-40ad-8864-31b2721002ac",
-  "version": 3,
+  "version": 3
 }
