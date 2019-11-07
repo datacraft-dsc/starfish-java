@@ -51,13 +51,15 @@ public final class DirectPurchaseAdapter {
      * @throws IOException, CipherException
      * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
      */
-    public static DirectPurchaseAdapter create() throws IOException, CipherException{
+    public static DirectPurchaseAdapter create(SquidService squidService) throws IOException, CipherException{
         // getting properties
-        Properties properties = getProperties();
-        String directPurchaseAddress = (String)properties.getOrDefault("contract.DirectPurchase.address", "");
-        String oceanTokenAddress = (String)properties.getOrDefault("contract.OceanToken.address", "");
+        String directPurchaseAddress = squidService.getProperties().get("contract.DirectPurchase.address").toString();
+        String oceanTokenAddress =squidService.getProperties().get("contract.OceanToken.address").toString();
+         directPurchaseAddress = directPurchaseAddress==null? "" :directPurchaseAddress;
+        oceanTokenAddress = oceanTokenAddress==null? "" :oceanTokenAddress;
+
         // getting keeper
-        KeeperService keeper = SquidService.getKeeperService(properties);
+        KeeperService keeper = squidService.getKeeperService();
         // loading contract instances
         DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         OceanToken oceanToken = OceanToken.load(oceanTokenAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
@@ -149,7 +151,7 @@ public final class DirectPurchaseAdapter {
 
     private static Properties getProperties() {
         Properties prop = new Properties();
-        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("ded.properties")) {
 
             if (input == null) {
                 throw new IOException("properties files is missing");

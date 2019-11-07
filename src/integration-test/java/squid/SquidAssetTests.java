@@ -37,21 +37,27 @@ import static org.junit.Assert.assertTrue;
  * ./start_ocean.sh
  */
 @RunWith(JUnit4.class)
-@Ignore
+//@Ignore
 public class SquidAssetTests {
     private SquidAgent squidAgent;
     private Resolver resolver;
-    private OceanAPI oceanAPI = SquidService.getOceanAPI();
+
+    private SquidService squidService;
+    private OceanAPI oceanAPI ;
 
     @Before
     public void setup() {
+        String path ="/Users/ayush/starfish-java-19Sept/src/integration-test/resources/application_test.properties";
+        //squidService = SquidService.create(path);
+        squidService = SquidService.create("application_test.properties");
 
-        resolver = new SquidResolverImpl();
+        resolver = new SquidResolverImpl(squidService);
         // create random DID
         DID did = DID.createRandom();
 
         // initialize squidAgent
-        squidAgent = SquidAgent.create(resolver, did);
+        squidAgent = SquidAgent.create(resolver, did,squidService);
+        oceanAPI =squidService.getOceanAPI();
     }
 
 
