@@ -35,6 +35,7 @@ install:
 after_success:
   - mvn javadoc:javadoc
   - touch ./target/site/.nojekyll
+  - touch ./target/apidocs/.nojekyll
 
 deploy:
   - provider: releases
