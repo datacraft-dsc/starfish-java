@@ -37,13 +37,13 @@ public class SquidAsset extends AAsset implements DataAsset {
     }
 
 
-    public static SquidAsset create(DID did) {
+    public static SquidAsset create(DID did,SquidService squidService) {
 
         com.oceanprotocol.squid.models.DID squidDID;
         try {
             squidDID =
                     com.oceanprotocol.squid.models.DID.builder().setDid(did.toString());
-            DDO ddo = SquidService.getOceanAPI().getAssetsAPI().resolve(squidDID);
+            DDO ddo = squidService.getOceanAPI().getAssetsAPI().resolve(squidDID);
 
             Map<String, Object> metaData = wrapDDOMeta(ddo);
 

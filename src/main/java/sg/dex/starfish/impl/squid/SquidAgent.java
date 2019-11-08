@@ -32,6 +32,7 @@ import java.util.Map;
 public class SquidAgent extends AAgent {
 
     private SquidResolverImpl squidResolver;
+    private SquidService squidService;
 
     /**
      * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
@@ -40,9 +41,10 @@ public class SquidAgent extends AAgent {
      * @param did      DID for this agent
      */
     protected SquidAgent(
-            Resolver resolver, DID did) {
+            Resolver resolver, DID did,SquidService squidService) {
         super(resolver, did);
         squidResolver = (SquidResolverImpl) resolver;
+        this.squidService=squidService;
     }
 
 
@@ -53,8 +55,9 @@ public class SquidAgent extends AAgent {
      * @param did      DID for this agent
      * @return RemoteAgent return instance of remote Agent
      */
-    public static SquidAgent create(Resolver resolver, DID did) {
-        return new SquidAgent(resolver, did);
+    public static SquidAgent create(Resolver resolver, DID did,SquidService squidService) {
+
+        return new SquidAgent(resolver, did,squidService);
     }
 
 
@@ -73,7 +76,7 @@ public class SquidAgent extends AAgent {
     public <R extends Asset> R  registerAsset(Asset asset) {
 
         try {
-            return (R)createSquidAssetInNetwork(getMetaData(asset));
+            return (R)createSquidAssetInNetwork(getMetaData(asset),squidService);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,7 +90,7 @@ public class SquidAgent extends AAgent {
     @Override
     public <R extends Asset> R  registerAsset(String metaString) {
         try {
-            return (R)createSquidAssetInNetwork(JSON.toMap(metaString));
+            return (R)createSquidAssetInNetwork(JSON.toMap(metaString),squidService);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DDOException e) {
@@ -106,12 +109,12 @@ public class SquidAgent extends AAgent {
      * @throws DDOException       DDOException will be thrown
      * @throws DIDFormatException DIDFormatException will be thrown
      */
-    private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData) throws IOException, DDOException {
+    private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData,SquidService squidService) throws IOException, DDOException {
 
         // get metadata required registration on OCN
         AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);
 
-        DDO squidDDO = SquidService.getAssetAPI().create(metadataBase, SquidService.getProvideConfig());
+        DDO squidDDO = squidService.getAssetAPI().create(metadataBase, squidService.getProvideConfig());
         return SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());
 
     }
@@ -184,7 +187,7 @@ public class SquidAgent extends AAgent {
             e.printStackTrace();
         }
 
-        return SquidAsset.create(did);
+        return SquidAsset.create(did,squidService);
 
     }
 
@@ -214,7 +217,7 @@ public class SquidAgent extends AAgent {
      */
 
     public List<SquidAsset> searchAsset(String text) throws DDOException {
-        SearchResult searchResult = SquidService.getOceanAPI().getAssetsAPI().search(text);
+        SearchResult searchResult = squidService.getOceanAPI().getAssetsAPI().search(text);
         List<DDO> listDDO = searchResult.results;
         List<SquidAsset> squidAssetLst = new ArrayList<>();
         for (DDO ddo : listDDO) {
@@ -252,7 +255,7 @@ public class SquidAgent extends AAgent {
      */
     public List<SquidAsset> queryAsset(Map<String, Object> queryMapData) throws Exception {
 
-        List<DDO> listDDO = SquidService.getAssetAPI().query(queryMapData).getResults();
+        List<DDO> listDDO = squidService.getAssetAPI().query(queryMapData).getResults();
         List<SquidAsset> squidAssetLst = new ArrayList<>();
         for (DDO ddo : listDDO) {
             DID did = DID.parse(ddo.getDid().toString());
