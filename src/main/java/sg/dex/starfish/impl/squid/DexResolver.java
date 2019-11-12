@@ -50,14 +50,11 @@ public class DexResolver implements Resolver {
      * @throws IOException, CipherException
      * @return SquidResolverImpl The newly created SquidResolverImpl
      */
-    public static DexResolver create(String addressFrom, String password, String credentialFile) throws IOException, CipherException{
-        SquidService squidService = SquidService.create("application_test.properties");
+    public static DexResolver create(String configFile) throws IOException, CipherException{
+        SquidService squidService = SquidService.create(configFile);
         Properties properties = squidService.getProperties();
         String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
-        oceanConfig.setMainAccountAddress(addressFrom);
-        oceanConfig.setMainAccountPassword(password);
-        oceanConfig.setMainAccountCredentialsFile(credentialFile);
         KeeperService keeper = squidService.getKeeperService(oceanConfig);
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         return new DexResolver(contract, squidService);

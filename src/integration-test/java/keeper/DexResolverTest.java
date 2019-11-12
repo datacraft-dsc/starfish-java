@@ -12,16 +12,15 @@ import org.web3j.crypto.CipherException;
 import java.io.IOException;
 
 public class DexResolverTest {
-    private DexResolver resolver;
+    private DexResolver resolver1;
+    private DexResolver resolver2;
     private String valueSet;
     private String valueUpdate;
     private DID did;
-    private final String accountFrom = "0x1936111c43e86Ca38866fe015F58bbEC63c64EC5";
-    private final String password = "1234567890";
-    private final String credentialFile = "src/integration-test/resources/accounts/parity/0x1936111c43e86Ca38866fe015F58bbEC63c64EC5.json";
 
     public DexResolverTest() throws IOException, CipherException {
-        resolver = DexResolver.create(accountFrom, password, credentialFile);
+        resolver1 = DexResolver.create("application_test.properties");
+        resolver2 = DexResolver.create("application_resolver.properties");
         valueSet = DID.createRandomString();
         valueUpdate = DID.createRandomString();
         did = DID.createRandom();
@@ -29,20 +28,20 @@ public class DexResolverTest {
 
     @Test
     public void testRegisterResolve()   {
-        boolean result = resolver.registerDID(did, valueSet);
+        boolean result = resolver1.registerDID(did, valueSet);
         assertTrue(result);
-        String val = resolver.getDDOString(did);
+        String val = resolver1.getDDOString(did);
         assertEquals(val, valueSet);
-        result = resolver.registerDID(did, valueUpdate);
+        result = resolver1.registerDID(did, valueUpdate);
         assertTrue(result);
-        val = resolver.getDDOString(did);
+        val = resolver1.getDDOString(did);
         assertEquals(val, valueUpdate);
     }
 
     @Test
     public void testGetInvalidDID()   {
         DID temp = DID.createRandom();
-        String val = resolver.getDDOString(temp);
+        String val = resolver1.getDDOString(temp);
         assertNull(val);
     }
 }
