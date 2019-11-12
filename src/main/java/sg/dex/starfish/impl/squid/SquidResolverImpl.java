@@ -20,6 +20,11 @@ public class SquidResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
     private SquidService squidService;
 
+    /**
+     * Create SquidResolverImpl
+     *
+     * @param SquidService squidService
+     */
     public SquidResolverImpl(SquidService squidService){
         this.squidService=squidService;
     }
