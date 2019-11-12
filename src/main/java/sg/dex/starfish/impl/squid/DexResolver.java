@@ -16,7 +16,6 @@ import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -29,14 +28,16 @@ import com.oceanprotocol.keeper.contracts.DIDRegistry;
 
 public class DexResolver implements Resolver {
     private DIDRegistry contract;
+    private SquidService squidService;
 
     /**
      * Create SquidResolverImpl
      *
      * @param DIDRegistry contract
      */
-    private DexResolver(DIDRegistry contract)  {
+    private DexResolver(DIDRegistry contract, SquidService squidService)  {
         this.contract = contract;
+        this.squidService = squidService;
     }
 
     /**
@@ -49,20 +50,18 @@ public class DexResolver implements Resolver {
      * @return SquidResolverImpl The newly created SquidResolverImpl
      */
     public static DexResolver create(String addressFrom, String password, String credentialFile) throws IOException, CipherException{
-        Properties properties = getProperties();
+        SquidService squidService = SquidService.create("application_test.properties");
+        Properties properties = squidService.getProperties();
         String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         oceanConfig.setMainAccountAddress(addressFrom);
         oceanConfig.setMainAccountPassword(password);
         oceanConfig.setMainAccountCredentialsFile(credentialFile);
-        KeeperService keeper = SquidService.getKeeperService(oceanConfig);
+        KeeperService keeper = squidService.getKeeperService(oceanConfig);
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
-        return new DexResolver(contract);
+        return new DexResolver(contract, squidService);
     }
 
-    public SquidResolverImpl(SquidService squidService){
-        this.squidService=squidService;
-    }
     @Override
     public String getDDOString(DID did) {
         com.oceanprotocol.squid.models.DID squidDID = null;
@@ -116,7 +115,7 @@ public class DexResolver implements Resolver {
             receipt = (TransactionReceipt)contract.registerAttribute(
                     EncodingHelper.hexStringToBytes(didSquid.getHash()),
                     EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
-                    Arrays.asList(SquidService.getProvider()), ddo).send();
+                    Arrays.asList(squidService.getProvider()), ddo).send();
         } catch (IOException e) {
             e.printStackTrace();
             throw Utils.sneakyThrow(e);
@@ -129,20 +128,5 @@ public class DexResolver implements Resolver {
         }
 
         return receipt.getStatus().equals("0x1");
-    }
-
-    private static Properties getProperties() {
-        Properties prop = new Properties();
-        try (InputStream input = DexResolver.class.getClassLoader().getResourceAsStream("application.properties")) {
-
-            if (input == null) {
-                throw new IOException("properties files is missing");
-            }
-
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return prop;
     }
 }

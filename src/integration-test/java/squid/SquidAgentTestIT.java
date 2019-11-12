@@ -25,14 +25,17 @@ public class SquidAgentTestIT {
 
 
     private SquidAgent squidAgent;
-    private Resolver resolver = new SquidResolverImpl();
+    private Resolver resolver;
+    private SquidService squidService;
 
     @Before
     public void setup() {
+        squidService = SquidService.create("application_test.properties");
         // create random DID
 
         DID did = DID.createRandom();
-        squidAgent = SquidAgent.create( resolver, did);
+        squidAgent = SquidAgent.create( resolver, did,squidService);
+        resolver = new SquidResolverImpl(squidService);
 
     }
 

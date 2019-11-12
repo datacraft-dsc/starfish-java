@@ -5,6 +5,7 @@ import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -45,8 +46,9 @@ public class SquidAssetTestsIT {
 
     @Before
     public void setup() {
+        squidService = SquidService.create("application_test.properties");
 
-        resolver = new SquidResolverImpl();
+        resolver = new SquidResolverImpl(squidService);
         // create random DID
         DID did = DID.createRandom();
 

@@ -18,7 +18,7 @@ public class DexResolverTest {
     private DID did;
     private final String accountFrom = "0x1936111c43e86Ca38866fe015F58bbEC63c64EC5";
     private final String password = "1234567890";
-    private final String credentialFile = "src/main/resources/accounts/parity/0x1936111c43e86Ca38866fe015F58bbEC63c64EC5.json";
+    private final String credentialFile = "src/integration-test/resources/accounts/parity/0x1936111c43e86Ca38866fe015F58bbEC63c64EC5.json";
 
     public DexResolverTest() throws IOException, CipherException {
         resolver = DexResolver.create(accountFrom, password, credentialFile);
