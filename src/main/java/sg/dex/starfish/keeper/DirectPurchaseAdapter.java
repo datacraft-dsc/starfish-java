@@ -53,10 +53,8 @@ public final class DirectPurchaseAdapter {
      */
     public static DirectPurchaseAdapter create(SquidService squidService) throws IOException, CipherException{
         // getting properties
-        String directPurchaseAddress = squidService.getProperties().get("contract.DirectPurchase.address").toString();
-        String oceanTokenAddress =squidService.getProperties().get("contract.OceanToken.address").toString();
-         directPurchaseAddress = directPurchaseAddress==null? "" :directPurchaseAddress;
-        oceanTokenAddress = oceanTokenAddress==null? "" :oceanTokenAddress;
+        String directPurchaseAddress = squidService.getProperties().getProperty("contract.DirectPurchase.address", "");
+        String oceanTokenAddress = squidService.getProperties().getProperty("contract.OceanToken.address", "");
 
         // getting keeper
         KeeperService keeper = squidService.getKeeperService();
