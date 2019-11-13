@@ -20,6 +20,8 @@ public class DexResolverTest {
     private String valueSet;
     private String valueUpdate;
     private DID did;
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     public DexResolverTest() throws IOException, CipherException {
         resolver1 = DexResolver.create("application_test.properties");
@@ -47,9 +49,6 @@ public class DexResolverTest {
         String val = resolver1.getDDOString(temp);
         assertNull(val);
     }
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testPermissions()   {
