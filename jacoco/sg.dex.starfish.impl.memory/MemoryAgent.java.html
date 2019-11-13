@@ -194,22 +194,18 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 <span class="pc bpc" id="L194" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
 <span class="fc" id="L195">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-        // check the mode if sync then throw exception
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (isSyncMode(operation)) {</span>
-<span class="nc" id="L199">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
-        }
 
-<span class="fc" id="L202">        return operation.invoke(params);</span>
+<span class="fc" id="L198">        return operation.invoke(params);</span>
     }
 
     @Override
     public Listing getListing(String id) {
-<span class="nc" id="L207">        return listingStore.get(id);</span>
+<span class="nc" id="L203">        return listingStore.get(id);</span>
     }
 
     @Override
     public Purchase getPurchase(String id) {
-<span class="nc" id="L212">        return purchaseStore.get(id);</span>
+<span class="nc" id="L208">        return purchaseStore.get(id);</span>
     }
 
 
@@ -221,12 +217,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="pc bpc" id="L224" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
-<span class="nc" id="L225">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="nc" id="L221">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L228">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
-<span class="fc" id="L229">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L224">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
+<span class="fc" id="L225">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
     }
 
     /**
@@ -236,31 +232,19 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map&lt;String, Object&gt; purchaseData) {
-<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
-<span class="fc" id="L240">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
+<span class="fc" id="L236">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L243">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
-<span class="fc" id="L244">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L239">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
+<span class="fc" id="L240">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
     }
 
-
-    /**
-     * API to check if the operation mode is sync or Async
-     *
-     * @param operation operation of which mode need to be checked
-     * @return true if mode is sync else false
-     */
-    private boolean isSyncMode(Operation operation) {
-<span class="fc" id="L255">        Map&lt;String, Object&gt; metaData = operation.getMetadata();</span>
-<span class="fc" id="L256">        Object mode = metaData.get(Constant.MODES);</span>
-<span class="pc bpc" id="L257" title="3 of 4 branches missed.">        return (mode != null &amp;&amp;  mode.toString().equals(&quot;sync&quot;))? true:false;</span>
-    }
 
 	@Override
 	public Job getJob(String jobID) {
 		// TODO Consider caching Jobs? Or just return null
-<span class="nc" id="L263">		return null;</span>
+<span class="nc" id="L247">		return null;</span>
 	}
 
 
