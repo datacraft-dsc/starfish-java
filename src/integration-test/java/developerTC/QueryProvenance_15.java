@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static junit.framework.TestCase.assertTrue;
+
 
 /**
  * "As a developer or data scientist working with Ocean,
@@ -39,7 +41,8 @@ public class QueryProvenance_15 {
         Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
         Map<String, Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
 
-        Assume.assumeNotNull(provData.get("activity"));
-        Assume.assumeNotNull(provData.get("wasGeneratedBy"));
+        assertTrue(provData.get("activity").toString().contains(actId));
+        assertTrue(provData.get("wasGeneratedBy").toString().contains(actId));
+
     }
 }
