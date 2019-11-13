@@ -2,9 +2,16 @@ package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import static sg.dex.starfish.constant.Constant.*;
+import static sg.dex.starfish.constant.Constant.MODES;
 
 /**
  * Class representing a local in-memory operation asset. Operations are executed in
@@ -20,10 +27,20 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     protected AMemoryOperation(String metaString, MemoryAgent memoryAgent) {
         super(metaString, memoryAgent);
+
+
     }
+
 
     @Override
     public Job invokeAsync(Map<String, Object> params) {
+        // validate the memory operation metadata
+        Utils.validateAssetMetaData(this.getMetadataString());
+
+        if (validateOperationMode(this) != null && !validateOperationMode(this).contains( ASYNC)) {
+            throw new StarfishValidationException("Mode must be Async for this operation");
+        }
+
         // default implementation for an asynchronous invoke job in memory, using a
         // Future<Asset>.
         // Implementations may override this for custom behaviour (e.g. a custom thread
@@ -46,13 +63,46 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
     @Override
     public final Map<String, Object> invokeResult(Map<String, Object> params) {
+
+        // validate the memory operation metadata
+        Utils.validateAssetMetaData(this.getMetadataString());
+
+        if (validateOperationMode(this) != null && !validateOperationMode(this).contains(SYNC)) {
+            throw new StarfishValidationException("Mode must be Async for this operation");
+        }
         return compute(params);
     }
 
     @Override
     public Job invoke(Map<String, Object> params) {
+
         return invokeAsync(params);
     }
+    private List<String> validateOperationMode(Operation operation){
+
+        Map<String,Object> operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());
+        //1. check if mode is present
+
+        if(operationData.get(MODES)== null){
+            return null;
+        }
+        List<String> modeLst= (List<String>)operationData.get(MODES);
+        for(Object mode: modeLst){
+            if(mode.toString().equals(SYNC)||
+                    mode.toString().equals(ASYNC)){
+
+            }
+            else{
+                throw new StarfishValidationException("Invalid mode of the given operation:"+operation.toString());
+            }
+        }
+
+        return modeLst;
+
+
+
+    }
+
 
     /**
      * Method for computation of the memory operation.

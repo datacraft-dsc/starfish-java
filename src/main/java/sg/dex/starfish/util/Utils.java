@@ -225,6 +225,7 @@ public class Utils {
      * @throws StarfishValidationException for exception
      */
     public static boolean validateAssetMetaData(String metaData) {
+
         Map<String, Object> metaDataMap = JSON.toMap(metaData);
 
         String type = null == metaDataMap.get("type") ? null : metaDataMap.get("type").toString();
@@ -299,4 +300,5 @@ public class Utils {
         }
         return ob;
     }
+
 }
