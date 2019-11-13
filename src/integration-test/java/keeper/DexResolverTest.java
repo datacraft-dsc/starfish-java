@@ -1,10 +1,13 @@
 package keeper;
 
+import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
 
+import org.junit.rules.ExpectedException;
+import org.web3j.protocol.exceptions.TransactionException;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 
@@ -43,5 +46,18 @@ public class DexResolverTest {
         DID temp = DID.createRandom();
         String val = resolver1.getDDOString(temp);
         assertNull(val);
+    }
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void testPermissions()   {
+        boolean result = resolver1.registerDID(did, valueSet);
+        assertTrue(result);
+        String val = resolver2.getDDOString(did);
+        assertEquals(val, valueSet);
+        exception.expect(TransactionException.class);
+        resolver2.registerDID(did, valueUpdate);
     }
 }
