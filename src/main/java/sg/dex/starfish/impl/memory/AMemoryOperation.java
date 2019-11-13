@@ -68,7 +68,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         Utils.validateAssetMetaData(this.getMetadataString());
 
         if (validateOperationMode(this) != null && !validateOperationMode(this).contains(SYNC)) {
-            throw new StarfishValidationException("Mode must be Async for this operation");
+            throw new StarfishValidationException("Mode must be Sync for this operation");
         }
         return compute(params);
     }
