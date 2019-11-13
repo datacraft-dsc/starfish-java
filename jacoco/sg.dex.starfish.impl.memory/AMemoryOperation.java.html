@@ -37,8 +37,8 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         // validate the memory operation metadata
 <span class="fc" id="L38">        Utils.validateAssetMetaData(this.getMetadataString());</span>
 
-<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains( ASYNC)) {</span>
-<span class="nc" id="L41">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
+<span class="fc bfc" id="L40" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains( ASYNC)) {</span>
+<span class="fc" id="L41">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
         }
 
         // default implementation for an asynchronous invoke job in memory, using a
@@ -67,8 +67,8 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         // validate the memory operation metadata
 <span class="fc" id="L68">        Utils.validateAssetMetaData(this.getMetadataString());</span>
 
-<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains(SYNC)) {</span>
-<span class="nc" id="L71">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
+<span class="fc bfc" id="L70" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains(SYNC)) {</span>
+<span class="fc" id="L71">            throw new StarfishValidationException(&quot;Mode must be Sync for this operation&quot;);</span>
         }
 <span class="fc" id="L73">        return compute(params);</span>
     }
@@ -83,17 +83,17 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 <span class="fc" id="L83">        Map&lt;String,Object&gt; operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());</span>
         //1. check if mode is present
 
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if(operationData.get(MODES)== null){</span>
-<span class="nc" id="L87">            return null;</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if(operationData.get(MODES)== null){</span>
+<span class="fc" id="L87">            return null;</span>
         }
 <span class="fc" id="L89">        List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
 <span class="fc bfc" id="L90" title="All 2 branches covered.">        for(Object mode: modeLst){</span>
 <span class="fc bfc" id="L91" title="All 2 branches covered.">            if(mode.toString().equals(SYNC)||</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                    mode.toString().equals(ASYNC)){</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">                    mode.toString().equals(ASYNC)){</span>
 
             }
             else{
-<span class="nc" id="L96">                throw new StarfishValidationException(&quot;Invalid mode of the given operation:&quot;+operation.toString());</span>
+<span class="fc" id="L96">                throw new StarfishValidationException(&quot;Invalid mode of the given operation:&quot;+operation.toString());</span>
             }
 <span class="fc" id="L98">        }</span>
 
