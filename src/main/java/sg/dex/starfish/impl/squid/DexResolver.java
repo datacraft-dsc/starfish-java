@@ -44,9 +44,7 @@ public class DexResolver implements Resolver {
     /**
      * Creates a SquidResolverImpl
      *
-     * @param String addressFrom: owner of DID record in the ledger. Only this address is allowed to update it
-     * @param String password: its password
-     * @param String credentialFile: its parity credential file
+     * @param String configFile. All information about account credentials will be taken from this file
      * @throws IOException, CipherException
      * @return SquidResolverImpl The newly created SquidResolverImpl
      */
