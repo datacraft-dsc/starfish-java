@@ -364,7 +364,7 @@ public class TestMemoryOperations {
     /**
      * This test is to test the  Operation metadata have invalid mode
      */
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testMetadataWithInvalidMode() {
         byte[] data = new byte[]{1, 2, 3};
 
@@ -389,12 +389,13 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = memoryOperation.invokeAsync(test);
 
-        Map<String, Object> result = job.getResult();
-        Asset resultAsset = (Asset) result.get("reverse_result");
-
-        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+        try {
+            Job job = memoryOperation.invokeAsync(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Invalid mode"));
+        }
 
     }
     /**
