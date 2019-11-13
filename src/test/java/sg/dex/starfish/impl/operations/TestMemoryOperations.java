@@ -272,6 +272,207 @@ public class TestMemoryOperations {
 
     }
 
+    /**
+     * This test is to test the  Operation is valid or not
+     */
+    @Test(expected = StarfishValidationException.class)
+    public void testInvalidMetadata() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "Invalid With No Operation";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+
+    }
+    /**
+     * This test is to test the  Operation metadata having no Mode
+     */
+    @Test
+    public void testMetadataWithNoMode() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+        Map<String, Object> result = job.getResult();
+        Asset resultAsset = (Asset) result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
+    }
+    /**
+     * This test is to test the  Operation metadata having no Mode
+     */
+    @Test
+    public void testMetadataWithNoMode_Sync() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Map<String, Object> result = memoryOperation.invokeResult(test);
+
+        Asset resultAsset = (Asset) result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
+    }
+    /**
+     * This test is to test the  Operation metadata have invalid mode
+     */
+    @Test(expected = StarfishValidationException.class)
+    public void testMetadataWithInvalidMode() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"Invalid\",\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+        Map<String, Object> result = job.getResult();
+        Asset resultAsset = (Asset) result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
+    }
+    /**
+     * This test is to test the  Operation mode Sync butt call Async operation
+     */
+    @Test
+    public void testMetadataWitModeSyncForAsyncCall() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"sync\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        try {
+             Job job = memoryOperation.invokeAsync(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Mode must be Async for this"));
+        }
+
+
+    }
+    /**
+     * This test is to test the  Operation mode is Async but call is Sync
+     */
+    @Test
+    public void testMetadataWitModeASyncForSyncCall() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        try {
+            memoryOperation.invokeResult(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Mode must be Sync for this"));
+        }
+
+
+    }
+
+
     @Test
     public void testNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
