@@ -1,10 +1,10 @@
 package developerTC;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -17,6 +17,7 @@ import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +26,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
+import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
 
 
 /**
@@ -38,7 +41,6 @@ public class AssetRegistration_08 {
     @Before
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
 
     }
 
@@ -51,8 +53,8 @@ public class AssetRegistration_08 {
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         // get registered Asset by ID
-        assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
-        assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
+        assertTrue(remoteAsset.isDataAsset());
+        assertEquals(remoteAsset.getMetadataString(), asset.getMetadataString());
     }
 
     @Test
@@ -63,10 +65,13 @@ public class AssetRegistration_08 {
         Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
 
         assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
+        // get registered Asset by ID
+        assertTrue(remoteAsset.isDataAsset());
+        assertTrue(remoteAsset1.isDataAsset());
     }
 
     @Test
-    public void testRegisterWithProv() {
+    public void testRegisterWithProvenance() {
         byte[] data = {1, 2, 3, 4};
 
         String actId = UUID.randomUUID().toString();
@@ -81,66 +86,57 @@ public class AssetRegistration_08 {
 
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
+        Map<String, Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
+
         // get registered Asset by ID
         assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
         assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
-        assertNotNull(asset.getMetadata().get("provenance"));
+        assertTrue(provData.get("activity").toString().contains(actId));
+        assertTrue(provData.get("wasGeneratedBy").toString().contains(actId));
+
     }
 
     @Test
-    public void testHashForResourceAsset() throws IOException {
+    public void testVerifyContent() throws IOException {
 
         // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
+        String content = new String(Files.readAllBytes(Paths.get("src/integration-test/resources/assets/test_content.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
+        Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
-        remoteAgent.uploadAsset(resourceAsset);
-        remoteAgent.getContentStream(resourceAsset.getAssetID());
+        DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
 
-        resourceAsset = (ResourceAsset) resourceAsset.includeContentHash();
-        assertNotNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
-
+        assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
 
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testHashForRemoteAsset() throws IOException {
 
+
         // read metadata
-        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
+        String content = new String(Files.readAllBytes(Paths.get("src/integration-test/resources/assets/test_content.json")));
 
         // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json", JSON.toMap(asset_metaData));
+        Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
-        remoteAgent.uploadAsset(resourceAsset);
-        remoteAgent.getContentStream(resourceAsset.getAssetID());
+        DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
+        DataAsset dataAssetWithHash =dataAsset.includeContentHash();
 
-        RemoteDataAsset remoteAsset = remoteAgent.getAsset(resourceAsset.getAssetID());
-
-        remoteAsset = (RemoteDataAsset) remoteAsset.includeContentHash();
-        assertNotNull(remoteAsset.getMetadata().get(Constant.CONTENT_HASH));
-
+        assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
+//        assertEquals(Hex.toString(Hash.sha3_256(dataAssetWithHash.getMetadata().get(CONTENT_HASH).toString())), Hex.toString(Hash.sha3_256(content)));
 
     }
 
-    @Test
-    public void testMetadataWithHash() {
 
-        // create asset using metadata and given content
-        ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
-        // calculate content hash
-        String expected = Hash.sha3_256String(resourceAsset.getMetadataString());
-        assertEquals(expected, resourceAsset.getAssetID());
-    }
 
     @Test
     public void testMetadataWithoutHash() {
 
         // create asset using metadata and given content
         ResourceAsset resourceAsset = ResourceAsset.create("assets/test_content.json");
-        assertNull(resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        assertNull(resourceAsset.getMetadata().get(CONTENT_HASH));
     }
 
     @Test
@@ -155,29 +151,10 @@ public class AssetRegistration_08 {
         String expected = Hex.toString(Hash.sha3_256(content));
 
         fileAsset = (FileAsset) fileAsset.includeContentHash();
-        String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
+        String actual = fileAsset.getMetadata().get(CONTENT_HASH).toString();
 
         assertEquals(expected, actual);
     }
 
-    public void testfileNotExist() {
 
-        // read metadata
-
-        Path path = Paths.get("src/test/resources/assets/test_content.json");
-        // create asset using metadata and given content
-        FileAsset fileAsset = FileAsset.create(path.toFile());
-        String content = Utils.stringFromStream(fileAsset.getContentStream());
-
-
-        assertNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
-        fileAsset = (FileAsset) fileAsset.includeContentHash();
-        assertNotNull(fileAsset.getMetadata().get(Constant.CONTENT_HASH));
-        fileAsset.validateContentHash();
-
-
-        String expected = Hex.toString(Hash.sha3_256(content));
-        String actual = fileAsset.getMetadata().get(Constant.CONTENT_HASH).toString();
-        assertEquals(expected, actual);
-    }
 }
