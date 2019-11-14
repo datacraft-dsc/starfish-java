@@ -46,8 +46,11 @@ public class ViewAssetListing_14 {
 
         // checking the listing id is present in remote
         Listing listing1FromRemote = remoteAgent.getListing(listingId);
-        // comparing both lisitng id ,it should eb same
+        // comparing both listing id ,it should be same
         assertEquals(listing1FromRemote.getMetaData().get("id"), listingId);
+
+        // comparing both asset ID
+        assertEquals(listing1FromRemote.getAssetID(),remoteAsset.getAssetID());
 
 
     }

@@ -12,6 +12,7 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import java.util.HashMap;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 /**
@@ -43,7 +44,9 @@ public class SearchAssetListing_13 {
 
         String listingId = listing.getMetaData().get("id").toString();
         // verifying if the listing has been created
-        assertNotNull(remoteAgent.getListing(listingId));
+        Listing listingFromAgent =remoteAgent.getListing(listingId);
+        assertEquals(listingId,listingFromAgent.getId());
+        assertEquals(listing.getAssetID(),listingFromAgent.getAssetID());
 
     }
 

@@ -4,10 +4,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.JSON;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class MetaDataAccess_07 {
 
 
     private RemoteAgent remoteAgent;
-    private static String METADATA_JSON_SAMPLE = "src/test/resources/assets/asset_metadata.json";
+    private static String METADATA_JSON_SAMPLE = "src/integration-test/resources/assets/test_metadata.json";
 
     @Before
     public void setup() {
@@ -33,10 +35,10 @@ public class MetaDataAccess_07 {
     }
 
     @Test
-    public void testMEmoryAgentMetaData() {
+    public void testMEmoryAgentMetaData()  {
         byte[] data = {2, 5, 7};
         MemoryAsset asset = MemoryAsset.create(data);
-        Asset remoteAsset = remoteAgent.registerAsset(asset);
+        DataAsset remoteAsset = remoteAgent.registerAsset(asset);
 
         assertEquals(remoteAsset.getMetadata().get(DATE_CREATED).toString(), asset.getMetadata().get(DATE_CREATED).toString());
         assertEquals(remoteAsset.getMetadata().get(TYPE).toString(), asset.getMetadata().get(TYPE));
@@ -46,26 +48,20 @@ public class MetaDataAccess_07 {
     }
 
     @Test
-    public void testRemoteAssetMetaDataAsset() {
+    public void testRemoteAssetMetaDataAsset() throws IOException {
+
+        String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
         byte[] data = {2, 5, 7};
-        MemoryAsset asset = MemoryAsset.create(data, getMetaData());
+        MemoryAsset asset = MemoryAsset.create(data, METADATA_JSON_CONTENT);
 
-        Asset remoteAsset = remoteAgent.registerAsset(asset);
-        assertEquals(remoteAsset.getMetadata().get("title"), "First listing");
-        assertEquals(remoteAsset.getMetadata().get("description"), "this is the Memory listing");
+        DataAsset remoteAsset = remoteAgent.registerAsset(asset);
+        assertEquals(remoteAsset.getMetadata().get("name").toString(), "This is to verify the asset registration on Network ");
+        assertEquals(remoteAsset.getMetadata().get("description").toString(), "This is to verify the asset registration on Network");
 
     }
 
 
-    private Map<String, Object> getMetaData() {
-        try {
-            String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-            return JSON.toMap(METADATA_JSON_CONTENT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
     @After
     public void clear() {
