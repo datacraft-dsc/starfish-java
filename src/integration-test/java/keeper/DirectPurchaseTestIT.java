@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @Ignore
-public class DirectPurchaseTest {
+public class DirectPurchaseTestIT {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000";
     private static final BigInteger tokenAmount = BigInteger.valueOf(10);
@@ -26,7 +26,7 @@ public class DirectPurchaseTest {
     private static final String senderAddress= "0x00bd138abd70e2f00903268f3db08f2d25677c9e";
     private SquidService squidService;
 
-    public DirectPurchaseTest() throws IOException, CipherException {
+    public DirectPurchaseTestIT() throws IOException, CipherException {
         squidService =SquidService.create("application_test.properties");
         directPurchaseAdapter = DirectPurchaseAdapter.create(squidService);
     }
