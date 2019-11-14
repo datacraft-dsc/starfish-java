@@ -97,7 +97,7 @@ mvn test
 You can execute the integration tests using the following command:
 
 ```bash
-mvn clean install -P integration-test
+mvn clean verify -P integration-test
 ```
 
 ### All the tests
