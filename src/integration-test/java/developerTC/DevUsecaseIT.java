@@ -34,7 +34,7 @@ import org.junit.runners.Suite;
 
 
 })
-public class Dev_Usecase_IT {
+public class DevUsecaseIT {
 
     @ClassRule
     public static AssumingConnection assumingConnectionSurfer =
