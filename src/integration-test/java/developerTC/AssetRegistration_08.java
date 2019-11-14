@@ -3,8 +3,6 @@ package developerTC;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
@@ -33,7 +31,6 @@ import static org.junit.Assert.*;
 /**
  * As a developer working with Ocean, I need a way to register a new asset with Ocean
  */
-@RunWith(JUnit4.class)
 public class AssetRegistration_08 {
 
     private RemoteAgent remoteAgent;

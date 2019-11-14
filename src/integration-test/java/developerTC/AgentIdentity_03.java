@@ -1,10 +1,9 @@
 package developerTC;
+
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 
@@ -19,7 +18,6 @@ import static org.junit.Assert.assertTrue;
  * I need a stable identifier (Agent ID) for an arbitrary Agent in the Ocean ecosystem
  * This test class with validate the DID and DDO format and and their data
  */
-@RunWith(JUnit4.class)
 public class AgentIdentity_03 {
 
     private RemoteAgent remoteAgent;

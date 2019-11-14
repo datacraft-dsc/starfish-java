@@ -3,8 +3,6 @@ package developerTC;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -26,7 +24,6 @@ import static junit.framework.TestCase.assertNotNull;
  * As a developer working with Ocean,
  * I need a stable identifier (Asset ID) for an arbitrary asset in the Ocean ecosystem
  */
-@RunWith(JUnit4.class)
 
 public class AssetIdentity_02 {
 

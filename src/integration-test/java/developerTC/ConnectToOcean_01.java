@@ -1,8 +1,6 @@
 package developerTC;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
@@ -17,7 +15,6 @@ import static org.junit.Assert.assertEquals;
  * As a developer working with Ocean,
  * I need a way to connect to the Ocean Network
  */
-@RunWith(JUnit4.class)
 public class ConnectToOcean_01 {
 
 

@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.RemoteException;
@@ -20,7 +18,6 @@ import static junit.framework.TestCase.assertNotNull;
  * As a developer building client code to interact with an Ocean marketplace,
  * I need a way to search available asset listings
  */
-@RunWith(JUnit4.class)
 public class SearchAssetListing_13 {
 
     private RemoteAgent remoteAgent;

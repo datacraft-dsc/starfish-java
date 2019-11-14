@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -18,7 +16,6 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Class to test the Remote listing functionality
  */
-@RunWith(JUnit4.class)
 public class ViewAssetListing_14 {
 
     private RemoteAgent remoteAgent;
