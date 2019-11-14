@@ -3,8 +3,6 @@ package developerTC;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -21,7 +19,6 @@ import static sg.dex.starfish.constant.Constant.*;
  * As a developer working with Ocean,
  * I need a way to request metadata for an arbitrary asset
  */
-@RunWith(JUnit4.class)
 public class MetaDataAccess_07 {
 
 

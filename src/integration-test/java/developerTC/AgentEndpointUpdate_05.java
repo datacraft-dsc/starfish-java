@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Assume;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -23,7 +21,6 @@ import static org.junit.Assert.assertNull;
  * As a developer managing a Ocean Agent,
  * I need to be able to update service endpoints for my Agent
  */
-@RunWith(JUnit4.class)
 public class AgentEndpointUpdate_05 {
 
 

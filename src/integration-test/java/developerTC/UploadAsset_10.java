@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -15,7 +13,6 @@ import static junit.framework.TestCase.assertEquals;
  * As a developer working with an Ocean marketplace,
  * I need a way to upload my asset with a service agreement
  */
-@RunWith(JUnit4.class)
 public class UploadAsset_10 {
 
 

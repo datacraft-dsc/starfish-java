@@ -20,7 +20,6 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-@RunWith(JUnit4.class)
 @Ignore
 public class SquidAgentTestIT {
 

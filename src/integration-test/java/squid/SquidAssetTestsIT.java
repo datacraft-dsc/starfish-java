@@ -36,7 +36,6 @@ import static org.junit.Assert.assertTrue;
  * cd barge
  * ./start_ocean.sh
  */
-@RunWith(JUnit4.class)
 @Ignore
 public class SquidAssetTestsIT {
     private SquidAgent squidAgent;
