@@ -16,7 +16,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DirectPurchaseTest {
+public class DirectPurchaseTestIT {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value
     private static final BigInteger tokenAmount = BigInteger.valueOf(10);
@@ -25,7 +25,7 @@ public class DirectPurchaseTest {
 
     private SquidService squidService;
 
-    public DirectPurchaseTest() throws IOException, CipherException {
+    public DirectPurchaseTestIT() throws IOException, CipherException {
         squidService = SquidService.create("application_test.properties");
         directPurchaseAdapter = DirectPurchaseAdapter.create(squidService);
 
