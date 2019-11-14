@@ -99,9 +99,9 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L102" title="3 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L102" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="nc" id="L104">            return this;</span>
+<span class="fc" id="L104">            return this;</span>
         } else {
 <span class="fc" id="L106">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
 <span class="fc" id="L107">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
@@ -124,7 +124,7 @@ public interface DataAsset extends Asset {
      * @throws UnsupportedOperationException if this operation  is not supported by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="fc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }
