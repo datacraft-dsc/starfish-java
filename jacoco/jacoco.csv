@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,64,71,3,5,13,24,5,7,3,5
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,71,177,12,12,14,36,13,15,4,12
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,64,184,12,12,13,37,12,16,3,13
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,LocalResolverImpl,22,55,1,5,5,17,4,7,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,21,161,0,10,4,35,2,15,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
