@@ -22,7 +22,7 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(JUnit4.class)
 @Ignore
-public class SquidAgentTest {
+public class SquidAgentTestIT {
 
 
     private SquidAgent squidAgent;

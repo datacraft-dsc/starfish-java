@@ -38,7 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(JUnit4.class)
 @Ignore
-public class SquidAssetTests {
+public class SquidAssetTestsIT {
     private SquidAgent squidAgent;
     private Resolver resolver;
 
