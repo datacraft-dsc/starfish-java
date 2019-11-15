@@ -27,21 +27,21 @@ import org.junit.runners.Suite;
         PurchaseAsset_17.class,
         ConfirmPurchase_18.class,
         AssetDownload_19.class,
-//        InvokeServiceFree_20.class,
+        InvokeServiceFree_20.class,
         InvokeServicePaid_21.class,
-        RemoteAgentTest_26.class
-//        AddNewAssetVersion_22.class
+        RemoteAgentTest_26.class,
+        AddNewAssetVersion_22.class
 
 
 })
-public class Dev_Usecase_IntegrationTests {
+public class DevUsecaseIT {
 
     @ClassRule
     public static AssumingConnection assumingConnectionSurfer =
             new AssumingConnection(new ConnectionChecker(AgentService.getSurferUrl()));
-//    @ClassRule
-//    public static AssumingConnection assumingConnectionInvoke =
-//            new AssumingConnection(new ConnectionChecker(AgentService.getInvokeUrl()));
+    @ClassRule
+    public static AssumingConnection assumingConnectionInvoke =
+            new AssumingConnection(new ConnectionChecker(AgentService.getInvokeUrl()));
 
 
 }

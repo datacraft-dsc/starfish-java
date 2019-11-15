@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -18,7 +16,6 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Class to test the Remote listing functionality
  */
-@RunWith(JUnit4.class)
 public class ViewAssetListing_14 {
 
     private RemoteAgent remoteAgent;
@@ -49,8 +46,11 @@ public class ViewAssetListing_14 {
 
         // checking the listing id is present in remote
         Listing listing1FromRemote = remoteAgent.getListing(listingId);
-        // comparing both lisitng id ,it should eb same
+        // comparing both listing id ,it should be same
         assertEquals(listing1FromRemote.getMetaData().get("id"), listingId);
+
+        // comparing both asset ID
+        assertEquals(listing1FromRemote.getAssetID(),remoteAsset.getAssetID());
 
 
     }

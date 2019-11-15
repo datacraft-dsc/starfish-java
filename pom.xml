@@ -312,7 +312,7 @@
 						</goals>
 						<configuration>
 							<includes>
-								<include>**/*.java</include>
+								<include>**/*IT.java</include>
 							</includes>
 							<skipTests>${skip.integration.tests}</skipTests>
 						</configuration>

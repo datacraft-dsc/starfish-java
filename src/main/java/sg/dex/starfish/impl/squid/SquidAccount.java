@@ -22,8 +22,8 @@ public class SquidAccount extends AAccount {
         this.account = account;
     }
 
-    public static SquidAccount create(Account account) {
-        AccountsAPI accountAPI = SquidService.getOceanAPI().getAccountsAPI();
+    public static SquidAccount create(Account account,SquidService squidService) {
+        AccountsAPI accountAPI = squidService.getOceanAPI().getAccountsAPI();
         return new SquidAccount(accountAPI, account);
     }
 

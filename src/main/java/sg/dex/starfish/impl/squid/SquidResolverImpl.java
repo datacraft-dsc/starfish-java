@@ -18,12 +18,16 @@ import java.util.Map;
 
 public class SquidResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
+    private SquidService squidService;
 
+    public SquidResolverImpl(SquidService squidService){
+        this.squidService=squidService;
+    }
     @Override
     public String getDDOString(DID did) {
         try {
             com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
-            OceanManager oceanManager = SquidService.getResolverManager();
+            OceanManager oceanManager = squidService.getResolverManager();
             DDO ddo = oceanManager.resolveDID(squidDID);
             if (ddo != null) {
                 return ddo.toJson();
@@ -38,7 +42,7 @@ public class SquidResolverImpl implements Resolver {
     DDO getSquidDDO(DID did) throws EthereumException, DDOException, IOException, CipherException, DIDFormatException {
 
         com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
-        OceanManager oceanManager = SquidService.getResolverManager();
+        OceanManager oceanManager = squidService.getResolverManager();
         DDO ddo = oceanManager.resolveDID(squidDID);
         if (ddo != null) {
             return ddo;
@@ -55,9 +59,9 @@ public class SquidResolverImpl implements Resolver {
 
         try {
             com.oceanprotocol.squid.models.DID didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
-            SquidService.getResolverManager().
-                    registerDID(didSquid, SquidService.getAquariusService().getDdoEndpoint(),
-                            "checksum", Arrays.asList(SquidService.getProvider()));
+            squidService.getResolverManager().
+                    registerDID(didSquid, squidService.getAquariusService().getDdoEndpoint(),
+                            "checksum", Arrays.asList(squidService.getProvider()));
 
         } catch (DIDRegisterException e) {
             e.printStackTrace();

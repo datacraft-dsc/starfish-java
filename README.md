@@ -51,7 +51,7 @@ Typically in Maven you can add squid-java as a dependency:
 <dependency>
     <groupId>sg.dex</groupId>
     <artifactId>starfish-java</artifactId>
-    <version>0.7.3</version>
+    <version>0.7.8</version>
 </dependency>
 
 ```
@@ -97,7 +97,7 @@ mvn test
 You can execute the integration tests using the following command:
 
 ```bash
-mvn clean install -P integration-test
+mvn clean verify -P integration-test
 ```
 
 ### All the tests

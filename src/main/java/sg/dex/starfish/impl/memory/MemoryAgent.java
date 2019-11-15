@@ -194,10 +194,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         if (null == operation || !(operation instanceof AMemoryOperation)) {
             throw new IllegalArgumentException("Operation must be a MemoryOperation but got: " + Utils.getClass(operation));
         }
-        // check the mode if sync then throw exception
-        if (isSyncMode(operation)) {
-            throw new StarfishValidationException("Mode must be Async for this operation");
-        }
 
         return operation.invoke(params);
     }
@@ -244,18 +240,6 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
         return purchaseStore.get(purchaseData.get("id").toString());
     }
 
-
-    /**
-     * API to check if the operation mode is sync or Async
-     *
-     * @param operation operation of which mode need to be checked
-     * @return true if mode is sync else false
-     */
-    private boolean isSyncMode(Operation operation) {
-        Map<String, Object> metaData = operation.getMetadata();
-        Object mode = metaData.get(Constant.MODES);
-        return (mode != null &&  mode.toString().equals("sync"))? true:false;
-    }
 
 	@Override
 	public Job getJob(String jobID) {

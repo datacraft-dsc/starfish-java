@@ -2,8 +2,6 @@ package developerTC;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.RemoteException;
@@ -14,13 +12,13 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import java.util.HashMap;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 /**
  * As a developer building client code to interact with an Ocean marketplace,
  * I need a way to search available asset listings
  */
-@RunWith(JUnit4.class)
 public class SearchAssetListing_13 {
 
     private RemoteAgent remoteAgent;
@@ -46,7 +44,9 @@ public class SearchAssetListing_13 {
 
         String listingId = listing.getMetaData().get("id").toString();
         // verifying if the listing has been created
-        assertNotNull(remoteAgent.getListing(listingId));
+        Listing listingFromAgent =remoteAgent.getListing(listingId);
+        assertEquals(listingId,listingFromAgent.getId());
+        assertEquals(listing.getAssetID(),listingFromAgent.getAssetID());
 
     }
 

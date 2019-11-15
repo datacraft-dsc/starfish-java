@@ -765,12 +765,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			throw new IllegalArgumentException("Operation must be a RemoteOperation but got: " + Utils.getClass(operation));
 		}
 
-		Map<String, Object> paramValueMap = Params.formatParams(operation, params);
+		// validate the memory operation metadata
+		Utils.validateAssetMetaData(operation.getMetadataString());
 
-		// check if the mode is sync else throw exception
-		if (!isModeSupported(operation, ASYNC)) {
-			throw new StarfishValidationException("Mode must be Async for this operation");
-		}
+		Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		URI uri = getInvokeAsyncURI(operation.getAssetID());
@@ -809,13 +807,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 */
 	public Map<String, Object> invokeResult(Operation operation, Map<String, Object> params) {
 
+		// validate operation metadata
+		Utils.validateAssetMetaData(operation.getMetadataString());
+
 		// this will validate if the required input is provided or not
 		Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 
-		// check if the mode is sync else throw exception
-		if (!isModeSupported(operation, SYNC)) {
-			throw new StarfishValidationException("Mode must be sync for this operation");
-		}
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		URI uri = getInvokeSyncURI(operation.getAssetID());
@@ -847,19 +844,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
-	/**
-	 * Check if the mode is supported in a DEP6 invoke.
-	 * @param operation Operation to check
-	 * @param mode String value of mode
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private boolean isModeSupported(Operation operation, String mode) {
-		Map<String, Object> metaData = operation.getOperationSpec();
-		List<String> modes = (List<String>) metaData.get(MODES);
-		if (modes==null) return true; // assume OK if not present
-		return modes.contains(mode);
-	}
+
 
 	/**
 	 * API to get List of map of all Metadata

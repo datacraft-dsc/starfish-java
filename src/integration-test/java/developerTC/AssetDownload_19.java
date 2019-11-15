@@ -1,12 +1,13 @@
 package developerTC;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
+import sg.dex.starfish.util.Utils;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -22,19 +23,28 @@ public class AssetDownload_19 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
-        // create remote Asset
     }
 
     @Test
     public void testDownloadAsset() {
 
-        Asset asset = MemoryAsset.createFromString("test upload of asset");
+        String data="test upload of asset";
+        Asset asset = MemoryAsset.createFromString(data);
         // upload will register and upload the asset
         RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
 
-        //ra.getContentStream()
+        // verify asset ID of both
         assertEquals(asset.getAssetID(), ra.getAssetID());
+
+
+
+        // check if the asset is registered
+        DataAsset remoteAsset =remoteAgent.getAsset(asset.getAssetID());
+        assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
+
+        // verify the content of both asset
+        String content = Utils.stringFromStream(ra.getContentStream());
+        assertEquals(content,data);
 
     }
 }

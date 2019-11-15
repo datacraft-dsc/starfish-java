@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import sg.dex.starfish.exception.StarfishValidationException;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -124,7 +125,7 @@ public class JSON {
      *
      * @param jsonString A string containing a valid JSON object
      * @return A map representing the JSON object
-     * @throws Error on JSON parsing error
+     * @throws Exception on JSON parsing error
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> toMap(String jsonString) {
@@ -133,7 +134,7 @@ public class JSON {
             JSONObject result = (JSONObject) parser.parse(jsonString);
             return new JSONObject(result);
         } catch (ParseException e) {
-            throw new Error("Error in JSON parsing: " + e.getMessage(), e);
+            throw new StarfishValidationException("Exception in JSON parsing: " + e.getMessage(), e);
         }
     }
 

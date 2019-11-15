@@ -1,5 +1,7 @@
 package sg.dex.starfish.impl.operations;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +20,9 @@ public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation imple
         super(meta, memoryAgent);
     }
 
-    public static FindSumOfPrime_JsonInput_AssetOutput create(MemoryAgent memoryAgent) {
-        ResourceAsset resourceAsset = ResourceAsset.create("src/test/resources/assets/prime_asset_metadata.json");
-        return new FindSumOfPrime_JsonInput_AssetOutput(resourceAsset.getMetadataString(), memoryAgent);
+    public static FindSumOfPrime_JsonInput_AssetOutput create(String metadata,MemoryAgent memoryAgent) {
+
+        return new FindSumOfPrime_JsonInput_AssetOutput(metadata, memoryAgent);
     }
 
 

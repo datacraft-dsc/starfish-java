@@ -10,6 +10,7 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
 import sg.dex.starfish.impl.squid.SquidAsset;
 import sg.dex.starfish.impl.squid.SquidResolverImpl;
+import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
 
 import java.util.HashMap;
@@ -19,19 +20,22 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-@RunWith(JUnit4.class)
 @Ignore
-public class SquidAgentTest {
+public class SquidAgentTestIT {
 
 
     private SquidAgent squidAgent;
-    private Resolver resolver = new SquidResolverImpl();
+    private Resolver resolver;
+    private SquidService squidService;
 
     @Before
     public void setup() {
+        squidService = SquidService.create("application_test.properties");
         // create random DID
+
         DID did = DID.createRandom();
-        squidAgent = SquidAgent.create( resolver, did);
+        squidAgent = SquidAgent.create( resolver, did,squidService);
+        resolver = new SquidResolverImpl(squidService);
 
     }
 

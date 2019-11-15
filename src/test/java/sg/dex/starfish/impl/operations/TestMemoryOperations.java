@@ -8,12 +8,15 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAgent;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,7 @@ public class TestMemoryOperations {
         byte[] data = new byte[]{1, 2, 3};
         Operation memoryOperation = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
         assertTrue(memoryOperation.isOperation());
-        
+
         // should not have a content hash
         assertFalse(memoryOperation.getMetadata().containsKey(Constant.CONTENT_HASH));
 
@@ -46,7 +49,7 @@ public class TestMemoryOperations {
         Job job = memoryOperation.invokeAsync(test);
 
         Map<String, Object> res = job.getResult(10000);
-        Asset resultAsset=(Asset)res.get("reverse_result");
+        Asset resultAsset = (Asset) res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -65,7 +68,7 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
-        Asset resultAsset =(Asset)result.get("reverse_result");
+        Asset resultAsset = (Asset) result.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -76,9 +79,13 @@ public class TestMemoryOperations {
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeAsync()  {
+    public void testPrimeAsync() throws IOException {
 
-        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
+
+
+        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData,memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
@@ -86,9 +93,9 @@ public class TestMemoryOperations {
         Job job = memoryOperation.invokeAsync(test);
         assertTrue(jobStatus.contains(job.getStatus()));
         Map<String, Object> res = job.getResult(1000);
-        int acutal = (Integer)res.get("sumOfPrime");
+        int acutal = (Integer) res.get("sumOfPrime");
 
-        int expected = 2+ 3+ 5+ 7;
+        int expected = 2 + 3 + 5 + 7;
 
         assertEquals(Constant.SUCCEEDED, job.getStatus());
         assertEquals(expected, acutal);
@@ -98,17 +105,20 @@ public class TestMemoryOperations {
      * This test is to test the Async Operation
      */
     @Test
-    public void testPrimeSync()  {
+    public void testPrimeSync() throws IOException {
 
-        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(memoryAgent);
+        // read metadata
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
+
+        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData,memoryAgent);
         Map<String, Object> test = new HashMap<>();
         test.put("input", "15");
 
         Map<String, Object> result = memoryOperation.invokeResult(test);
 
-        int acutal = (Integer)result.get("sumOfPrime");
+        int acutal = (Integer) result.get("sumOfPrime");
 
-        int expected = 2+ 3+ 5+ 7+11+13;
+        int expected = 2 + 3 + 5 + 7 + 11 + 13;
 
         assertEquals(expected, acutal);
 
@@ -133,8 +143,8 @@ public class TestMemoryOperations {
         assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
 
-    @Test
-    public void testHashAsyncFailed()  {
+    @Test(expected = StarfishValidationException.class)
+    public void testHashAsyncFailed() {
 
         byte[] data = new byte[]{1, 2, 3};
         EpicFailOperation epicFailOperation =
@@ -147,10 +157,10 @@ public class TestMemoryOperations {
 
         Job job;
         synchronized (epicFailOperation) {
-        	job = epicFailOperation.invokeAsync(test);
-        	assertFalse(job.isDone()); // can't complete until out of synchronised block
+            job = epicFailOperation.invokeAsync(test);
+            assertFalse(job.isDone()); // can't complete until out of synchronised block
         }
-        
+
         try {
             job.get();
             fail("should not succeed!!");
@@ -177,7 +187,7 @@ public class TestMemoryOperations {
         synchronized (hashOperation) {
             // run synchronised to prevent completion until end of this code block
             job = hashOperation.invokeAsync(test);
-            assertEquals(Constant.SCHEDULED,job.getStatus());
+            assertEquals(Constant.SCHEDULED, job.getStatus());
             assertNull(job.pollResult());
         }
         Map<String, Object> response = job.getResult();
@@ -210,7 +220,7 @@ public class TestMemoryOperations {
 
     private String getMetaDataForAssetI_AssetO() {
         String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
-                 "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
                 "\t\"tags\":[\"Reverse byte\"],\n" +
                 "\t\"license\":\"CC-BY\",\n" +
                 "\t\"author\":\"Reverse Byte Inc\",\n" +
@@ -232,24 +242,19 @@ public class TestMemoryOperations {
     public void testReverseBytesAsyncWithDifferentMetadata() {
         byte[] data = new byte[]{1, 2, 3};
 
-        String meta = "{\n" +
-                "  \"params\": {\n" +
-                "    \"input\": {\n" +
-                "      \"required\": \"true\",\n" +
-                "      \"position\": 0,\n" +
-                "      \"type\": \"Object\"\n" +
-                "      \n" +
-                "    },\n" +
-                "    \"did\": \"hashing\"\n" +
-                "  },\n" +
-                "  \"mode\":\"Async\",\n" +
-                "  \"result\": {\n" +
-                "        \"hash-value\": {\n" +
-                "           \"type\": \"Object\"\n" +
-                "      \n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"sync\",\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -260,48 +265,245 @@ public class TestMemoryOperations {
 
         Job job = memoryOperation.invokeAsync(test);
 
-        Map<String,Object> result=job.getResult();
-        Asset resultAsset = (Asset)result.get("reverse_result");
+        Map<String, Object> result = job.getResult();
+        Asset resultAsset = (Asset) result.get("reverse_result");
 
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
+
+    /**
+     * This test is to test the  Operation is valid or not
+     */
+    @Test(expected = StarfishValidationException.class)
+    public void testInvalidMetadata() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "Invalid With No Operation";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+
+    }
+    /**
+     * This test is to test the  Operation metadata having no Mode
+     */
+    @Test
+    public void testMetadataWithNoMode() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Job job = memoryOperation.invokeAsync(test);
+
+        Map<String, Object> result = job.getResult();
+        Asset resultAsset = (Asset) result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
+    }
+    /**
+     * This test is to test the  Operation metadata having no Mode
+     */
+    @Test
+    public void testMetadataWithNoMode_Sync() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        Map<String, Object> result = memoryOperation.invokeResult(test);
+
+        Asset resultAsset = (Asset) result.get("reverse_result");
+
+        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
+    }
+    /**
+     * This test is to test the  Operation metadata have invalid mode
+     */
+    @Test
+    public void testMetadataWithInvalidMode() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"Invalid\",\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+
+        try {
+            Job job = memoryOperation.invokeAsync(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Invalid mode"));
+        }
+
+    }
+    /**
+     * This test is to test the  Operation mode Sync butt call Async operation
+     */
+    @Test
+    public void testMetadataWitModeSyncForAsyncCall() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"sync\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        try {
+             Job job = memoryOperation.invokeAsync(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Mode must be Async for this"));
+        }
+
+
+    }
+    /**
+     * This test is to test the  Operation mode is Async but call is Sync
+     */
+    @Test
+    public void testMetadataWitModeASyncForSyncCall() {
+        byte[] data = new byte[]{1, 2, 3};
+
+        String meta = "{\"dateCreated\":\"2019-05-07T08:17:31.521445Z\",\n" +
+                "\t\"contentType\":\"application/octet-stream\",\n" +
+                "\t\"tags\":[\"Reverse byte\"],\n" +
+                "\t\"license\":\"CC-BY\",\n" +
+                "\t\"author\":\"Reverse Different\",\n" +
+                "\t\"name\":\"Reverse byte computation operation\",\n" +
+                "\t\"description\":\"Reverse the give byte\",\n" +
+                "\t\"inLanguage\":\"en\",\n" +
+                "\t\"type\":\"operation\",\n" +
+                " \"operation\":{\n" +
+                "     \"modes\":[\"async\"],\n" +
+                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+
+
+        ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+
+        Asset a = MemoryAsset.create(data);
+        Map<String, Object> test = new HashMap<>();
+        test.put("input", a);
+
+        try {
+            memoryOperation.invokeResult(test);
+        }
+        catch (StarfishValidationException e){
+            assertTrue(e.getMessage().contains("Mode must be Sync for this"));
+        }
+
+
+    }
+
 
     @Test
     public void testNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
-        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
+        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
         Asset a = MemoryAsset.create(data);
         Job job = op.invokeAsync(Utils.mapOf("input", a));
-        Map<String,Object> result=job.getResult();
-        Asset resultAsset = (Asset)result.get("reverse_result");
+        Map<String, Object> result = job.getResult();
+        Asset resultAsset = (Asset) result.get("reverse_result");
 
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
-//	@Test(expected = JobFailedException.class)
-//    public void testBadNamedParams() {
-//        byte[] data = new byte[]{1, 2, 3};
-//        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-//        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
-//        Asset a = MemoryAsset.create(data);
-//        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
-//        System.out.println(badJob.getStatus());
-//            Object result2 = badJob.getResult(1000);
-//            System.out.println(badJob.getStatus());
-//            fail("Should not succeed! Got: " + Utils.getClass(result2));
-//    }
+    @Test(expected = Exception.class)
+    public void testBadNamedParams() {
+        byte[] data = new byte[]{1, 2, 3};
+        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        Asset a = MemoryAsset.create(data);
+        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
+        Object result2 = badJob.getResult(10);
+        fail("Should not succeed! Got: " + Utils.getClass(result2));
+    }
 
-//    @Test(expected = Exception.class)
-//    public void testInsufficientParams() {
-//        String meta = "{\"params\": {\"input\": {\"required\":true, \"type\":\"asset\", \"position\":0}}}";
-//        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
-//        	Map<String,Object> emptyParams=new HashMap<>();
-//            Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
-//            Object result2 = badJob.getResult(10);
-//            fail("Should not succeed! Got: " + Utils.getClass(result2));
-//            /* OK */
-//    }
+    @Test(expected = Exception.class)
+    public void testInsufficientParams() {
+        ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
+        Map<String, Object> emptyParams = new HashMap<>();
+        Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
+        Object result2 = badJob.getResult(10);
+        fail("Should not succeed! Got: " + Utils.getClass(result2));
+
+    }
 
 }

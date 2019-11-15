@@ -1,6 +1,5 @@
 package developerTC;
 
-import org.junit.Assume;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -13,6 +12,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -36,10 +39,11 @@ public class QueryProvenance_15 {
         String url = "https://s3.eu-west-2.amazonaws.com/blockchainhub.media/Blockchain+Technology+Handbook.pdf";
         Asset assetUrl = URIAsset.create(new URI(url), metaDataAsset);
         remoteAgent.registerAsset(assetUrl);
-        Assume.assumeNotNull(assetUrl.getMetadata().get("provenance"));
+        assertNotNull(assetUrl.getMetadata().get("provenance"));
         Map<String, Object> provData = JSON.toMap(assetUrl.getMetadata().get("provenance").toString());
 
-        Assume.assumeNotNull(provData.get("activity"));
-        Assume.assumeNotNull(provData.get("wasGeneratedBy"));
+        assertTrue(provData.get("activity").toString().contains(actId));
+        assertTrue(provData.get("wasGeneratedBy").toString().contains(actId));
+
     }
 }
