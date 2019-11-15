@@ -54,8 +54,8 @@ public class DirectPurchaseTestIT {
 
         BigInteger balanceSenderAfter = oceanAPI.getAccountsAPI().balance(senderAccount).getDrops();
         BigInteger balanceReceiverAfter = oceanAPI.getAccountsAPI().balance(receiverAccount).getDrops();
-        assertEquals(balanceSenderBefore.subtract(balanceSenderAfter), tokenAmount);
-        assertEquals(balanceReceiverAfter.subtract(balanceReceiverBefore), tokenAmount);
+        assertEquals(tokenAmount, balanceSenderBefore.subtract(balanceSenderAfter));
+        assertEquals(tokenAmount, balanceReceiverAfter.subtract(balanceReceiverBefore));
     }
 
     @Test
