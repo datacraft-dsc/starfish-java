@@ -67,10 +67,12 @@ public interface DataAsset extends Asset {
         }
 
         String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));
-        if (null != contentHashFromMetadata && !contentHashFromMetadata.toString().equals(contentHash)) {
-            throw new StarfishValidationException("Failed to validate content hash");
+        // if hash of asset content is equal
+        if (contentHashFromMetadata.toString().equals(contentHash)) {
+            return true;
+
         }
-        return true;
+        throw new StarfishValidationException("Failed to validate content hash");
     }
 
     /**
@@ -102,6 +104,7 @@ public interface DataAsset extends Asset {
         if (null != this.getMetadata().get(Constant.CONTENT_HASH) && validateContentHash()) {
 
             return this;
+
         } else {
             Map<String, Object> metaMap = this.getMetadata();
             metaMap.put(Constant.CONTENT_HASH, getContentHash());

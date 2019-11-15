@@ -1,26 +1,22 @@
 package sg.dex.starfish.keeper;
 
-import sg.dex.starfish.impl.squid.SquidService;
 import com.oceanprotocol.common.web3.KeeperService;
-
-import com.oceanprotocol.squid.exceptions.TokenApproveException;
-import java.io.IOException;
-import org.web3j.crypto.CipherException;
-
-import org.web3j.utils.Numeric;
-import sg.dex.starfish.util.Hex;
-import java.util.ArrayList;
-import java.math.BigInteger;
-import java.util.Properties;
-import java.io.InputStream;
 import com.oceanprotocol.keeper.contracts.OceanToken;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-
-import org.web3j.protocol.core.methods.request.EthFilter;
+import com.oceanprotocol.squid.exceptions.TokenApproveException;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
+import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.utils.Numeric;
+import sg.dex.starfish.impl.squid.SquidService;
+import sg.dex.starfish.util.Hex;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * Direct purchase adapter.
@@ -37,10 +33,10 @@ public final class DirectPurchaseAdapter {
     /**
      * Create DirectPurchaseAdapter
      *
-     * @param directPurchase  object
-     * @param tokenManager    object
+     * @param directPurchase object
+     * @param tokenManager   object
      */
-    private DirectPurchaseAdapter(DirectPurchase directPurchase, TokenManager tokenManager)  {
+    private DirectPurchaseAdapter(DirectPurchase directPurchase, TokenManager tokenManager) {
         this.directPurchase = directPurchase;
         this.tokenManager = tokenManager;
     }
@@ -48,10 +44,10 @@ public final class DirectPurchaseAdapter {
     /**
      * Creates a DirectPurchaseAdapter
      *
-     * @throws IOException, CipherException
      * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
+     * @throws IOException, CipherException
      */
-    public static DirectPurchaseAdapter create(SquidService squidService) throws IOException, CipherException{
+    public static DirectPurchaseAdapter create(SquidService squidService) throws IOException, CipherException {
         // getting properties
         String directPurchaseAddress = squidService.getProperties().getProperty("contract.DirectPurchase.address", "");
         String oceanTokenAddress = squidService.getProperties().getProperty("contract.OceanToken.address", "");
@@ -70,10 +66,10 @@ public final class DirectPurchaseAdapter {
     /**
      * Sends tokens and log this transaction in blockchain.
      *
-     * @param to                  The publisher address who is paid for asset
-     * @param amount              The amount of tokens being transferred
-     * @param reference1          32 byte identifier (agent id)
-     * @param reference2          Unique 32 byte identifier of asset
+     * @param to         The publisher address who is paid for asset
+     * @param amount     The amount of tokens being transferred
+     * @param reference1 32 byte identifier (agent id)
+     * @param reference2 Unique 32 byte identifier of asset
      * @return TransactionReceipt Ethereum transaction receipt.
      */
     public TransactionReceipt sendTokenAndLog(String to, BigInteger amount, String reference1, String reference2) {
@@ -86,7 +82,7 @@ public final class DirectPurchaseAdapter {
             return receipt;
         }
 
-        if(tokenApproved) {
+        if (tokenApproved) {
             try {
                 byte[] ref1 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference1));
                 byte[] ref2 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference2));
@@ -121,8 +117,7 @@ public final class DirectPurchaseAdapter {
      * @param reference         Unique 32 byte identifier of asset
      * @return boolean          Result
      */
-    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference)
-    {
+    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference) {
         String purchaser_padded = Hex.toZeroPaddedHex(purchaser_address);
         String publisher_padded = Hex.toZeroPaddedHex(publisher_address);
         String reference_padded = Hex.toZeroPaddedHex(reference);
@@ -140,25 +135,11 @@ public final class DirectPurchaseAdapter {
             outcome.add(log);
         });
 
-        for (DirectPurchase.TokenSentEventResponse obj:outcome) {
+        for (DirectPurchase.TokenSentEventResponse obj : outcome) {
             if (obj._amount.equals(amount))
                 return true;
         }
         return false;
     }
 
-    private static Properties getProperties() {
-        Properties prop = new Properties();
-        try (InputStream input = DirectPurchaseAdapter.class.getClassLoader().getResourceAsStream("ded.properties")) {
-
-            if (input == null) {
-                throw new IOException("properties files is missing");
-            }
-
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return prop;
-    }
 }
