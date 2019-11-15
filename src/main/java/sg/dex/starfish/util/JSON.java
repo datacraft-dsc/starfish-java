@@ -1,13 +1,12 @@
 package sg.dex.starfish.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sg.dex.starfish.exception.StarfishValidationException;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +33,15 @@ public class JSON {
      * @throws RuntimeException on failure to create JSON from value
      */
     public static String toString(Object value) {
-        // TODO refactor to remove json-simple?
-        StringWriter sw = new StringWriter();
+        ObjectMapper Obj = new ObjectMapper();
+
         try {
-            JSONValue.writeJSONString(value, sw);
+
+            return Obj.writeValueAsString(value);
+
         } catch (IOException e) {
-            throw new Error("Can't create JSON string from object", e);
+            throw new StarfishValidationException("Converts an object" + value.toString() + " to an efficient JSON string failed", e);
         }
-        return sw.toString();
     }
 
     /**

@@ -45,7 +45,7 @@ public interface Agent {
      * 
      * The Agent must support metadata storage (e.g. via the DEP15 Meta API)
      *
-     * @param asset The Asset to register
+     * @param metaString The metadata of an Asset to register
      * @return Asset
      * @throws AuthorizationException        if requester does not have register permission
      * @throws UnsupportedOperationException if the agent does not support metadata storage

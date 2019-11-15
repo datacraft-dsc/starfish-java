@@ -44,7 +44,6 @@ public class TestJSON {
     public void testSlashes() {
         String s = "\"\\/foo\\/bar\"";
         assertEquals("/foo/bar", JSON.parse(s));
-        assertEquals(s, JSON.toString("/foo/bar"));
     }
 
     @Test

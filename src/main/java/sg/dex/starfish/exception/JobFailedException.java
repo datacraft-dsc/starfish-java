@@ -16,8 +16,5 @@ public class JobFailedException extends RuntimeException {
         super(message, e);
     }
 
-    public JobFailedException(String message) {
-        super(message);
-    }
 
 }
