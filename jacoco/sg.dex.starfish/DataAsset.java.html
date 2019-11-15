@@ -67,10 +67,12 @@ public interface DataAsset extends Asset {
         }
 
 <span class="fc" id="L69">        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
-<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        if (null != contentHashFromMetadata &amp;&amp; !contentHashFromMetadata.toString().equals(contentHash)) {</span>
-<span class="nc" id="L71">            throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
+        // if hash of asset content is equal
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (contentHashFromMetadata.toString().equals(contentHash)) {</span>
+<span class="fc" id="L72">            return true;</span>
+
         }
-<span class="fc" id="L73">        return true;</span>
+<span class="nc" id="L75">        throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
     }
 
     /**
@@ -81,7 +83,7 @@ public interface DataAsset extends Asset {
 
     default String getContentHash() {
 
-<span class="fc" id="L84">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
+<span class="fc" id="L86">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
     }
 
     /**
@@ -99,18 +101,19 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L102" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L104" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="fc" id="L104">            return this;</span>
+<span class="fc" id="L106">            return this;</span>
+
         } else {
-<span class="fc" id="L106">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
-<span class="fc" id="L107">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
+<span class="fc" id="L109">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
+<span class="fc" id="L110">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
 
             // this operation is only valid for dataAsset
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            if (this instanceof DataAsset) {</span>
-<span class="fc" id="L111">                return this.updateMeta(JSON.toPrettyString(metaMap));</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            if (this instanceof DataAsset) {</span>
+<span class="fc" id="L114">                return this.updateMeta(JSON.toPrettyString(metaMap));</span>
             } else {
-<span class="nc" id="L113">                throw new UnsupportedOperationException(&quot;This method only applicable for Asset type DataAsset&quot;);</span>
+<span class="nc" id="L116">                throw new UnsupportedOperationException(&quot;This method only applicable for Asset type DataAsset&quot;);</span>
             }
         }
     }
@@ -124,7 +127,7 @@ public interface DataAsset extends Asset {
      * @throws UnsupportedOperationException if this operation  is not supported by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="nc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L130">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }

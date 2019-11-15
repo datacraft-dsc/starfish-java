@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSON.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.util</a> &gt; <span class="el_source">JSON.java</span></div><h1>JSON.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sg.dex.starfish.exception.StarfishValidationException;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +20,10 @@ import java.util.Map;
  * @author Mike
  * @version 0.5
  */
-<span class="nc" id="L24">public class JSON {</span>
+<span class="nc" id="L23">public class JSON {</span>
 
-<span class="fc" id="L26">    private static String WHITESPACE = &quot;                                                             &quot;;</span>
-<span class="fc" id="L27">    private static int WHITESPACE_LENGTH = WHITESPACE.length();</span>
+<span class="fc" id="L25">    private static String WHITESPACE = &quot;                                                             &quot;;</span>
+<span class="fc" id="L26">    private static int WHITESPACE_LENGTH = WHITESPACE.length();</span>
 
     /**
      * Converts an object to an efficient JSON string representation
@@ -34,14 +33,15 @@ import java.util.Map;
      * @throws RuntimeException on failure to create JSON from value
      */
     public static String toString(Object value) {
-        // TODO refactor to remove json-simple?
-<span class="fc" id="L38">        StringWriter sw = new StringWriter();</span>
+<span class="fc" id="L36">        ObjectMapper Obj = new ObjectMapper();</span>
+
         try {
-<span class="fc" id="L40">            JSONValue.writeJSONString(value, sw);</span>
-<span class="nc" id="L41">        } catch (IOException e) {</span>
-<span class="nc" id="L42">            throw new Error(&quot;Can't create JSON string from object&quot;, e);</span>
-<span class="fc" id="L43">        }</span>
-<span class="fc" id="L44">        return sw.toString();</span>
+
+<span class="fc" id="L40">            return Obj.writeValueAsString(value);</span>
+
+<span class="nc" id="L42">        } catch (IOException e) {</span>
+<span class="nc" id="L43">            throw new StarfishValidationException(&quot;Converts an object&quot; + value.toString() + &quot; to an efficient JSON string failed&quot;, e);</span>
+        }
     }
 
     /**
