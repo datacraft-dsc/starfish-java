@@ -109,9 +109,9 @@ public interface Operation extends Asset {
          if (operationData==null ) {
          	 throw new StarfishValidationException("No operation metadata found");
          }
-         //1. check if mode is present
 
          if(operationData.get(MODES)== null){
+        	 // return default list (all supported modes) as per DEP6
              return List.of("sync", "async");
          }
          List<String> modeLst= (List<String>)operationData.get(MODES);
