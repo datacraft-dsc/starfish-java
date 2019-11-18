@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Params;
 
@@ -83,7 +84,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings("unchecked")
 	default Map<String, Object> getOperationSpec() {
-        return (Map<String, Object>) getMetadata().get("operation");
+        return (Map<String, Object>) getMetadata().get(Constant.OPERATION);
     }
 
     /**
@@ -105,7 +106,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings("unchecked")
  	default List<String> getOperationModes() {
-         Map<String,Object> operationData = (Map<String, Object>) getMetadata().get(OPERATION);
+         Map<String,Object> operationData = getOperationSpec();
          if (operationData==null ) {
          	 throw new StarfishValidationException("No operation metadata found");
          }
