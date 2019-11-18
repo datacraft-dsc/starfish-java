@@ -82,7 +82,7 @@ public interface DataAsset extends Asset {
      */
 
     default String getContentHash() {
-
+    	// TODO: convert to InputStream calculation
         return Hex.toString(Hash.sha3_256(this.getContent()));
     }
 

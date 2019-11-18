@@ -1,7 +1,14 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Params;
 
+import static sg.dex.starfish.constant.Constant.ASYNC;
+import static sg.dex.starfish.constant.Constant.MODES;
+import static sg.dex.starfish.constant.Constant.OPERATION;
+import static sg.dex.starfish.constant.Constant.SYNC;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -91,5 +98,33 @@ public interface Operation extends Asset {
 	default Map<String, Object> getParamsSpec() {
         return (Map<String, Object>) getOperationSpec().get("params");
     }
+    
+    /**
+     * Return the list of modes supported for invocations of this operation.
+     * Currently supported modes are "sync" and "async"
+     */
+    @SuppressWarnings("unchecked")
+ 	default List<String> getOperationModes() {
+         Map<String,Object> operationData = (Map<String, Object>) getMetadata().get(OPERATION);
+         if (operationData==null ) {
+         	 throw new StarfishValidationException("No operation metadata found");
+         }
+         //1. check if mode is present
+
+         if(operationData.get(MODES)== null){
+             return List.of("sync", "async");
+         }
+         List<String> modeLst= (List<String>)operationData.get(MODES);
+         for(String mode: modeLst){
+             if(mode.equals(SYNC)||
+                     mode.equals(ASYNC)){
+             }
+             else{
+                 throw new StarfishValidationException("Invalid mode in operation metadata: "+mode);
+             }
+         }
+
+         return modeLst;
+     }
 
 }

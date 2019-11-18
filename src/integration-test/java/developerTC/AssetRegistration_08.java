@@ -149,6 +149,7 @@ public class AssetRegistration_08 {
         Path path = Paths.get("src/test/resources/assets/test_content.json");
         // create asset using metadata and given content
         FileAsset fileAsset = FileAsset.create(path.toFile());
+        // TODO: compute on bytes
         String content = Utils.stringFromStream(fileAsset.getContentStream());
         String expected = Hex.toString(Hash.sha3_256(content));
 

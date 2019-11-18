@@ -39,30 +39,8 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
         return new RemoteOperation(a, meta);
     }
-    private List<String> validateOperationMode(Operation operation){
-
-        Map<String,Object> operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());
-        //1. check if mode is present
-
-        if(operationData.get(MODES)== null){
-            return null;
-        }
-        List<String> modeLst= (List<String>)operationData.get(MODES);
-        for(Object mode: modeLst){
-            if(mode.toString().equals(SYNC)||
-                    mode.toString().equals(ASYNC)){
-
-            }
-            else{
-                throw new StarfishValidationException("Invalid mode of the given operation:"+operation.toString());
-            }
-        }
-
-        return modeLst;
-
-
-
-    }
+    
+ 
 
     @Override
     public Job invoke(Object... params) {
@@ -71,18 +49,18 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     @Override
     public Job invokeAsync(Map<String, Object> params) {
-        if (validateOperationMode(this) != null &&
-                !validateOperationMode(this).contains(ASYNC)) {
-            throw new StarfishValidationException("Mode must be Async for this operation");
+    	List<String> modes=getOperationModes();
+        if (!modes.contains(ASYNC)) {
+            throw new IllegalArgumentException("This operation does not support async invoke.");
         }
         return remoteAgent.invokeAsync(this, params);
     }
 
     @Override
     public Map<String, Object> invokeResult(Map<String, Object> params) {
-        if (validateOperationMode(this) != null &&
-                !validateOperationMode(this).contains(SYNC)) {
-            throw new StarfishValidationException("Mode must be Sync for this operation");
+       	List<String> modes=getOperationModes();
+        if (!modes.contains(SYNC)) {
+            throw new IllegalArgumentException("This operation does not support sync invoke.");
         }
         Map<String, Object> response = remoteAgent.invokeResult(this, params);
         return Params.formatResponse(this, response, remoteAgent);
@@ -91,9 +69,9 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     @Override
     public Job invoke(Map<String, Object> params) {
-        if (validateOperationMode(this) != null &&
-                !validateOperationMode(this).contains(ASYNC)) {
-            throw new StarfishValidationException("Mode must be Async for this operation");
+       	List<String> modes=getOperationModes();
+        if (modes.contains(ASYNC)) {
+            throw new IllegalArgumentException("This operation does not support async invoke.");
         }
         return remoteAgent.invoke(this, params);
     }
