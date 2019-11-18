@@ -82,7 +82,7 @@ public interface DataAsset extends Asset {
      */
 
     default String getContentHash() {
-
+    	// TODO: convert to InputStream calculation
 <span class="fc" id="L86">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
     }
 
@@ -109,12 +109,7 @@ public interface DataAsset extends Asset {
 <span class="fc" id="L109">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
 <span class="fc" id="L110">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
 
-            // this operation is only valid for dataAsset
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            if (this instanceof DataAsset) {</span>
-<span class="fc" id="L114">                return this.updateMeta(JSON.toPrettyString(metaMap));</span>
-            } else {
-<span class="nc" id="L116">                throw new UnsupportedOperationException(&quot;This method only applicable for Asset type DataAsset&quot;);</span>
-            }
+<span class="fc" id="L112">            return this.updateMeta(JSON.toPrettyString(metaMap));</span>
         }
     }
 
@@ -127,7 +122,7 @@ public interface DataAsset extends Asset {
      * @throws UnsupportedOperationException if this operation  is not supported by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="nc" id="L130">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L125">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }
