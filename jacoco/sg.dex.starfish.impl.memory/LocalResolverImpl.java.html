@@ -37,9 +37,10 @@ public class LocalResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddoString) {
+    public boolean registerDID(DID did, String ddoString) {
 <span class="fc" id="L41">        installLocalDDO(did, ddoString);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L42">        return true;</span>
+    }
 
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -50,10 +51,10 @@ public class LocalResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
-<span class="fc" id="L54">        did = did.withoutPath();</span>
-<span class="fc" id="L55">        ddoCache.put(did, ddoString);</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (did == null) throw new IllegalArgumentException(&quot;DID cannot be null&quot;);</span>
+<span class="fc" id="L55">        did = did.withoutPath();</span>
+<span class="fc" id="L56">        ddoCache.put(did, ddoString);</span>
+<span class="fc" id="L57">    }</span>
 
     /**
      * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
@@ -64,8 +65,8 @@ public class LocalResolverImpl implements Resolver {
      * @param ddo A Map containing a valid DDO
      */
     public void installLocalDDO(DID did, Map&lt;String, Object&gt; ddo) {
-<span class="nc" id="L67">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L68">        installLocalDDO(did, JSON.toPrettyString(ddo));</span>
+<span class="nc" id="L69">    }</span>
 
     /**
      * Gets a DDO for a specified DID via the Universal resolver
@@ -74,7 +75,7 @@ public class LocalResolverImpl implements Resolver {
      * @return The DDO as a JSON map
      */
     public Map&lt;String, Object&gt; getDDO(String did) {
-<span class="nc" id="L77">        return JSON.parse(getDDOString(did));</span>
+<span class="nc" id="L78">        return JSON.parse(getDDOString(did));</span>
     }
 
     /**
@@ -84,7 +85,7 @@ public class LocalResolverImpl implements Resolver {
      * @return The DDO as a JSON map
      */
     public String getDDOString(String did) {
-<span class="nc" id="L87">        return getDDOString(DID.parse(did));</span>
+<span class="nc" id="L88">        return getDDOString(DID.parse(did));</span>
     }
 
 }
