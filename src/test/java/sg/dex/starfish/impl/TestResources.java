@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("javadoc")
@@ -24,9 +25,9 @@ public class TestResources {
         assertNotNull(dataAsset.getMetadataString());
         assertEquals(14, dataAsset.getContentSize());
 
-        assertNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+        assertFalse(dataAsset.getMetadata().containsKey(Constant.CONTENT_HASH));
         dataAsset = dataAsset.includeContentHash();
-        assertNotNull(dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+        assertEquals("e4be09f07f5665ecacc078223e86c1dba18b38a3e07a3d575167b5ba7a1821d1",dataAsset.getMetadata().get(Constant.CONTENT_HASH));
         assertEquals(dataAsset.validateContentHash(), true);
     }
 }
