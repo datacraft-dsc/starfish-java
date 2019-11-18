@@ -43,7 +43,7 @@ public class AgentRegistration_04 {
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-Resolver resolver= new LocalResolverImpl();
+        Resolver resolver= new LocalResolverImpl();
         // creating unique DID
         DID surferDID = DID.createRandom();
         //registering the  DID and DDO

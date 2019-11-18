@@ -8,7 +8,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ConnectToOcean_01.class,
+        TestResolver_01.class,
         AssetIdentity_02.class,
         AgentIdentity_03.class,
         AgentRegistration_04.class,

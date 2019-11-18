@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * As a developer working with Ocean,
  * I need a way to connect to the Ocean Network
  */
-public class ConnectToOcean_01 {
+public class TestResolver_01 {
 
 
     @Test

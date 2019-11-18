@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -23,6 +24,7 @@ public class AssetDownload_19 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
     }
 
     @Test

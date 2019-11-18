@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.crypto.Hash;
@@ -41,6 +42,7 @@ public class AssetRegistration_08 {
     @Before
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
 
     }
 

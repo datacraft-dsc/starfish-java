@@ -1,7 +1,6 @@
 package developerTC;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -14,11 +13,8 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -35,8 +31,8 @@ public class UploadAsset_11 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
     }
-
 
 
     @Test
@@ -50,7 +46,7 @@ public class UploadAsset_11 {
 
         assertEquals(remoteAssetUpload.getContent().length, data.length);
         assertEquals(a.getAssetID(), remoteAssetUpload.getAssetID());
-        assertArrayEquals(data,remoteAssetUpload.getContent());
+        assertArrayEquals(data, remoteAssetUpload.getContent());
 
     }
 
@@ -58,9 +54,7 @@ public class UploadAsset_11 {
     public void testNullUpload() {
         try {
             remoteAgent.uploadAsset(null);
-        }
-        catch (StarfishValidationException e)
-        {
+        } catch (StarfishValidationException e) {
             assertTrue(e.getMessage().contains("Asset cannot be null"));
         }
     }
@@ -81,11 +75,10 @@ public class UploadAsset_11 {
     @Test
     public void testNullRegister() {
         try {
-            remoteAgent.uploadAsset(null);
-        }
-        catch (StarfishValidationException e)
-        {
-            assertTrue(e.getMessage().contains("Asset cannot be null"));
+            String testNull=null;
+            remoteAgent.registerAsset(testNull);
+        } catch (StarfishValidationException e) {
+            assertTrue(e.getMessage().contains("Asset metadata cannot be null"));
         }
     }
 
