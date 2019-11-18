@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Operation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">Operation.java</span></div><h1>Operation.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
 
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Params;
 
@@ -21,7 +22,7 @@ public interface Operation extends Asset {
 
     @Override
 	default boolean isOperation() {
-<span class="fc" id="L24">        return true;</span>
+<span class="fc" id="L25">        return true;</span>
     }
 
     /**
@@ -32,7 +33,7 @@ public interface Operation extends Asset {
      * @throws IllegalArgumentException if required parameters are not available.
      */
     default Job invoke(Object... params) {
-<span class="nc" id="L35">        return invoke(Params.namedParams(this, params));</span>
+<span class="nc" id="L36">        return invoke(Params.namedParams(this, params));</span>
     }
 
     /**
@@ -83,7 +84,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="nc" id="L86">        return (Map&lt;String, Object&gt;) getMetadata().get(&quot;operation&quot;);</span>
+<span class="nc" id="L87">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
     }
 
     /**
@@ -96,7 +97,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L99">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
+<span class="nc" id="L100">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
     }
     
     /**
@@ -105,26 +106,26 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
  	default List&lt;String&gt; getOperationModes() {
-<span class="nc" id="L108">         Map&lt;String,Object&gt; operationData = (Map&lt;String, Object&gt;) getMetadata().get(OPERATION);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">         if (operationData==null ) {</span>
-<span class="nc" id="L110">         	 throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
+<span class="nc" id="L109">         Map&lt;String,Object&gt; operationData = getOperationSpec();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">         if (operationData==null ) {</span>
+<span class="nc" id="L111">         	 throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
          }
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">         if(operationData.get(MODES)== null){</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">         if(operationData.get(MODES)== null){</span>
         	 // return default list (all supported modes) as per DEP6
-<span class="nc" id="L115">             return List.of(&quot;sync&quot;, &quot;async&quot;);</span>
+<span class="nc" id="L116">             return List.of(&quot;sync&quot;, &quot;async&quot;);</span>
          }
-<span class="nc" id="L117">         List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">         for(String mode: modeLst){</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">             if(mode.equals(SYNC)||</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">                     mode.equals(ASYNC)){</span>
+<span class="nc" id="L118">         List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">         for(String mode: modeLst){</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">             if(mode.equals(SYNC)||</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                     mode.equals(ASYNC)){</span>
              }
              else{
-<span class="nc" id="L123">                 throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot;+mode);</span>
+<span class="nc" id="L124">                 throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot;+mode);</span>
              }
-<span class="nc" id="L125">         }</span>
+<span class="nc" id="L126">         }</span>
 
-<span class="nc" id="L127">         return modeLst;</span>
+<span class="nc" id="L128">         return modeLst;</span>
      }
 
 }
