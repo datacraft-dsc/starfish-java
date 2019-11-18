@@ -1,24 +1,20 @@
 package sg.dex.starfish.impl.memory;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryBundle {
 
     private Asset a1;
@@ -27,7 +23,7 @@ public class TestMemoryBundle {
     private Asset a4;
     private Bundle b1;
 
-    @Before
+    @BeforeEach
     public void setup() {
         a1 = MemoryAsset.create(new byte[]{1, 3, 4});
         a2 = MemoryAsset.create(new byte[]{2, 3, 4});
@@ -51,17 +47,17 @@ public class TestMemoryBundle {
 
         // create asset bundle with default metadata and default MemoryAgent
         Bundle memoryAssetBundle = MemoryBundle.create(assetBundle, additionalMetaData);
-        DID bundleDid=memoryAssetBundle.getDID();
+        DID bundleDid = memoryAssetBundle.getDID();
         assertTrue(bundleDid.toString().contains(memoryAssetBundle.getAssetID()));
         assertTrue(bundleDid.toString().contains(MemoryAgent.create().getDID().toString()));
         return memoryAssetBundle;
     }
-    
+
     @Test
     public void testAttrributes() {
-    	assertTrue(b1.isBundle());
-    	assertFalse(b1.isDataAsset());
-    	assertFalse(b1.isOperation());
+        assertTrue(b1.isBundle());
+        assertFalse(b1.isDataAsset());
+        assertFalse(b1.isOperation());
     }
 
     /**
@@ -145,7 +141,7 @@ public class TestMemoryBundle {
         Map<String, Asset> assetBundle = new HashMap<>();
         assetBundle.put("one", a1);
         assetBundle.put("two", a2);
-        
+
         // create asset bundle without any custom metadata // so passing null
         // if assetMap is passed as null it will create an empty map for that
         Bundle bundle = MemoryBundle.create(assetBundle, null);
@@ -194,7 +190,7 @@ public class TestMemoryBundle {
         assetBundle.put("one", subAsset);
 
         Bundle bundle = MemoryBundle.create(assetBundle);
-        
+
         assertEquals(bundle.getAll().size(), assetBundle.size());
         assertEquals(bundle.isBundle(), true);
         assertEquals(bundle.getMetadata().get(Constant.TYPE), Constant.BUNDLE);

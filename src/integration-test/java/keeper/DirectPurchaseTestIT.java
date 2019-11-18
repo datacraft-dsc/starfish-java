@@ -16,6 +16,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+@Ignore
 public class DirectPurchaseTestIT {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value

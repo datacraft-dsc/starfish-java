@@ -1,6 +1,7 @@
 package sg.dex.starfish.util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +14,7 @@ public class TestDID {
 		assertEquals(did,DID.parse(ds));
 	}
 	
-	@Test 
+	@Test
 	public void testRoundTrips() {
 		testRoundTrip("did:bar:foo");
 		testRoundTrip("did:op:1234/5678#foo");

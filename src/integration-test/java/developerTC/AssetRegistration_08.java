@@ -66,7 +66,6 @@ public class AssetRegistration_08 {
         Asset remoteAsset = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
         Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
 
-        assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
         // get registered Asset by ID
         assertTrue(remoteAsset.isDataAsset());
         assertTrue(remoteAsset1.isDataAsset());

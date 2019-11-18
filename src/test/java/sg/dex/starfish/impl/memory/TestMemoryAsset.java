@@ -1,8 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.util.DID;
@@ -15,7 +14,6 @@ import static org.junit.Assert.*;
 import static sg.dex.starfish.constant.Constant.ID;
 
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAsset {
 
 	@Test
@@ -42,10 +40,15 @@ public class TestMemoryAsset {
 	/**
 	 * Test case for null data
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNullData() {
 		byte[] data = null;
-		MemoryAsset.create(data);
+
+
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			MemoryAsset.create(data);
+		});
+
 	}
 
 	/**

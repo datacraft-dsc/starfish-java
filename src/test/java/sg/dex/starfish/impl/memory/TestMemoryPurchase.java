@@ -1,8 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
@@ -14,7 +13,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryPurchase {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
@@ -51,7 +49,7 @@ public class TestMemoryPurchase {
     /**
      * Listing id is mandatory, if it not there it will throw exception
      */
-    @Test(expected = Exception.class)
+    @Test
     public void testPurchaseMissingData() {
 
         // create memory Agent
@@ -64,8 +62,11 @@ public class TestMemoryPurchase {
         Map<String, Object> metaDataForPurchase = getResponseMetaDataPurchase(metaDataForListing);
 
 
-        MemoryPurchase memoryPurchase = memoryAgent.createPurchase(metaDataForPurchase);
-        assertEquals(a,memoryPurchase.getListing().getAsset());
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            memoryAgent.createPurchase(metaDataForPurchase);
+        });
+
     }
 
     /**

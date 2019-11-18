@@ -113,7 +113,7 @@ public interface Operation extends Asset {
 
          if(operationData.get(MODES)== null){
         	 // return default list (all supported modes) as per DEP6
-             return List.of("sync", "async");
+             return List.of(SYNC, ASYNC);
          }
          List<String> modeLst= (List<String>)operationData.get(MODES);
          for(String mode: modeLst){

@@ -1,12 +1,12 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.operations.ReverseByte_AssetI_AssetO;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
@@ -18,7 +18,6 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryAgent {
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");
 
@@ -44,15 +43,15 @@ public class TestMemoryAgent {
 
         Asset a = MemoryAsset.create(BYTE_DATA);
         String id = a.getAssetID();
-        
+
         // TODO: figure out automatic registration
         // assertNull(agent1.getAsset(id));
 
         // register
-        Asset aReg =agent1.registerAsset(a);
+        Asset aReg = agent1.registerAsset(a);
 
-        assertEquals(id,aReg.getDID().getPath());
-        assertEquals(id,agent1.getAsset(id).getAssetID());
+        assertEquals(id, aReg.getDID().getPath());
+        assertEquals(id, agent1.getAsset(id).getAssetID());
 
         // upload will create an Asset and then register it with agent and return the Uploaded asset ref.
         Asset a1 = agent1.uploadAsset(a);
@@ -123,6 +122,7 @@ public class TestMemoryAgent {
         Asset assetFromAgent = agent1.getAsset(id);
         assertEquals(asset.getMetadataString(), assetFromAgent.getMetadataString());
     }
+
     /**
      * Test GET Asset by asset DID
      */
@@ -134,7 +134,7 @@ public class TestMemoryAgent {
 
         Asset asset = MemoryAsset.create(BYTE_DATA);
 
-        Asset registeredAsset =agent1.registerAsset(asset);
+        Asset registeredAsset = agent1.registerAsset(asset);
         Asset assetFromAgent = agent1.getAsset(asset.getAssetID());
         assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
         assertEquals(registeredAsset.getDID(), assetFromAgent.getDID());
@@ -161,11 +161,10 @@ public class TestMemoryAgent {
         test.put("input", a);
 
 
-
-        Job job = memoryAgent.invokeAsync(memoryOperation,test);
+        Job job = memoryAgent.invokeAsync(memoryOperation, test);
 
         Map<String, Object> res = job.getResult(10000);
-        Asset resultAsset=(Asset)res.get("reverse_result");
+        Asset resultAsset = (Asset) res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
@@ -189,32 +188,32 @@ public class TestMemoryAgent {
         test.put("input", a);
 
 
-
-        Job job = memoryAgent.invoke(memoryOperation,test);
+        Job job = memoryAgent.invoke(memoryOperation, test);
 
         Map<String, Object> res = job.getResult(10000);
-        Asset resultAsset=(Asset)res.get("reverse_result");
+        Asset resultAsset = (Asset) res.get("reverse_result");
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvokeException() {
         byte[] data = new byte[]{1, 2, 3};
         DID did = DID.parse(DID.createRandomString());
         MemoryAgent memoryAgent = MemoryAgent.create(did);
 
-
         Asset a = MemoryAsset.create(data);
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = memoryAgent.invoke(null,test);
 
-        Map<String, Object> res = job.getResult(10000);
-        Asset resultAsset=(Asset)res.get("reverse_result");
-        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            memoryAgent.invoke(null, test);
+        });
+
+
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvokeAsyncException() {
         byte[] data = new byte[]{1, 2, 3};
         DID did = DID.parse(DID.createRandomString());
@@ -225,11 +224,12 @@ public class TestMemoryAgent {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = memoryAgent.invokeAsync(null,test);
+        //Job job = memoryAgent.invokeAsync(null, test);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            memoryAgent.invokeAsync(null, test);
+        });
 
-        Map<String, Object> res = job.getResult(10000);
-        Asset resultAsset=(Asset)res.get("reverse_result");
-        assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
+
     }
 
 
