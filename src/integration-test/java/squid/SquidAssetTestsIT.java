@@ -46,8 +46,6 @@ public class SquidAssetTestsIT {
 
     @Before
     public void setup() {
-        String path ="/Users/ayush/starfish-java-19Sept/src/integration-test/resources/application_test.properties";
-        //squidService = SquidService.create(path);
         squidService = SquidService.create("application_test.properties");
 
         resolver = new SquidResolverImpl(squidService);

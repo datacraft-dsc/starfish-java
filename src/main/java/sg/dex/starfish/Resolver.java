@@ -14,7 +14,7 @@ public interface Resolver {
      * Method to  get a DDO (as a String) for any given DID registered with the resolver.
      *
      * @param did Given DID which is registered with the resolver
-     * @return DDO String value
+     * @return DDO String value or null
      */
     String getDDOString(DID did);
 
@@ -38,6 +38,7 @@ public interface Resolver {
      *
      * @param did DID to register
      * @param ddoString DDO to associate with the given DID
+     * @return true if registration is successful, false otherwise
      */
-    void registerDID(DID did, String ddoString);
+    boolean registerDID(DID did, String ddoString);
 }

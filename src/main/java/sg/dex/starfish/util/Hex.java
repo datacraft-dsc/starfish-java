@@ -105,11 +105,23 @@ public class Hex {
 
     /**
      * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     * With Prefix
      *
      * @param value String to convert
      * @return hex String result
      */
     public static String toZeroPaddedHex(String value) {
         return Numeric.toHexStringWithPrefixZeroPadded(Numeric.toBigInt(value), 64);
+    }
+
+    /**
+     * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     * No Prefix
+     *
+     * @param value String to convert
+     * @return hex String result
+     */
+    public static String toZeroPaddedHexNoPrefix(String value) {
+        return Numeric.toHexStringNoPrefixZeroPadded(Numeric.toBigInt(value), 64);
     }
 }

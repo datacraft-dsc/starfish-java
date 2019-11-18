@@ -20,9 +20,15 @@ public class SquidResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
     private SquidService squidService;
 
+    /**
+     * Create SquidResolverImpl
+     *
+     * @param SquidService squidService
+     */
     public SquidResolverImpl(SquidService squidService){
         this.squidService=squidService;
     }
+
     @Override
     public String getDDOString(DID did) {
         try {
@@ -53,8 +59,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddo) {
-        //TODO  need to register in the network
+    public boolean registerDID(DID did, String ddo) {
         installLocalDDO(did, ddo);
 
         try {
@@ -73,7 +78,7 @@ public class SquidResolverImpl implements Resolver {
             e.printStackTrace();
         }
 
-
+        return true;
     }
 
     /**
