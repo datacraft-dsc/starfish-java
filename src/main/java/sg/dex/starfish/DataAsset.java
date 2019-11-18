@@ -109,12 +109,7 @@ public interface DataAsset extends Asset {
             Map<String, Object> metaMap = this.getMetadata();
             metaMap.put(Constant.CONTENT_HASH, getContentHash());
 
-            // this operation is only valid for dataAsset
-            if (this instanceof DataAsset) {
-                return this.updateMeta(JSON.toPrettyString(metaMap));
-            } else {
-                throw new UnsupportedOperationException("This method only applicable for Asset type DataAsset");
-            }
+            return this.updateMeta(JSON.toPrettyString(metaMap));
         }
     }
 
