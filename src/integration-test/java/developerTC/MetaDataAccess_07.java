@@ -1,6 +1,7 @@
 package developerTC;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -25,12 +26,15 @@ public class MetaDataAccess_07 {
 
 
     private RemoteAgent remoteAgent;
-    private static String METADATA_JSON_SAMPLE = "src/integration-test/resources/assets/test_metadata.json";
+    private static String METADATA_JSON_CONTENT;
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
 
         remoteAgent = AgentService.getRemoteAgent();
+        String METADATA_JSON_SAMPLE = "src/integration-test/resources/assets/test_metadata.json";
+        METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+        Assume.assumeNotNull(remoteAgent);
 
     }
 
@@ -50,7 +54,7 @@ public class MetaDataAccess_07 {
     @Test
     public void testRemoteAssetMetaDataAsset() throws IOException {
 
-        String METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
+
         byte[] data = {2, 5, 7};
         MemoryAsset asset = MemoryAsset.create(data, METADATA_JSON_CONTENT);
 

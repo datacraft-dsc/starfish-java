@@ -11,6 +11,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.ProvUtil;
+import sg.dex.starfish.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -135,7 +136,7 @@ public class AssetIdentity_02 {
 
         assertEquals(remoteAsset3.getAssetID(), asset3.getAssetID());
         // verify the content
-        assertEquals(AgentService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
+        assertEquals(Utils.stringFromStream(remoteAsset3.getContentStream()),
                 "Testing using String");
     }
 
@@ -153,8 +154,8 @@ public class AssetIdentity_02 {
         remoteAgent.uploadAsset(asset3);
         remoteAgent.uploadAsset(asset4);
 
-        assertEquals(AgentService.getDataAsStringFromInputStream(remoteAsset3.getContentStream()),
-                AgentService.getDataAsStringFromInputStream(remoteAsset4.getContentStream()));
+        assertEquals(Utils.stringFromStream(remoteAsset3.getContentStream()),
+                Utils.stringFromStream(remoteAsset4.getContentStream()));
     }
 
     @Test(expected = StarfishValidationException.class)

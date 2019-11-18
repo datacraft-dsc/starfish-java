@@ -197,6 +197,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 	@Override
 	public <R extends Asset> R registerAsset(String metaString) {
+		if (null == metaString) {
+			throw new StarfishValidationException("Asset metadata cannot be null");
+		}
+
 		URI uri = getMetaURI();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(uri);

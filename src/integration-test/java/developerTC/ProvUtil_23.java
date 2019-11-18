@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -24,6 +25,7 @@ public class ProvUtil_23 {
     @Before
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
+        Assume.assumeNotNull(remoteAgent);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -44,6 +45,10 @@ public class PurchaseAsset_17 {
         data2.put("id", listing.getMetaData().get("id"));
         data2.put("status", "published");
         listing = remoteAgent.updateListing(data2);
+
+        Assume.assumeNotNull(remoteAgent);
+        Assume.assumeNotNull(listing);
+        Assume.assumeNotNull(remoteAsset);
     }
 
 
@@ -64,12 +69,16 @@ public class PurchaseAsset_17 {
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
-        ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(remoteAsset);
+      ///  ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(remoteAsset);
+
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());
+
         Listing listing = remoteAgent.createListing(data2);
         data2.put("id", listing.getMetaData().get("id"));
+
         data2.put(STATUS, UNPUBLISHED);
+
         listing = remoteAgent.updateListing(data2);
         Map<String, Object> purchaseData = new HashMap<>();
         purchaseData.put(LISTING_ID, listing.getMetaData().get(ID));

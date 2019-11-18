@@ -9,10 +9,8 @@ import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.RemoteAgentConfig;
 import sg.dex.starfish.util.Utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -46,8 +44,7 @@ public class AgentService {
         password = properties.getProperty("surfer.password");
 
 
-
-        surfer = RemoteAgentConfig.getRemoteAgent(getDDO(surferUrl),DID.createRandom(),username,password);
+        surfer = RemoteAgentConfig.getRemoteAgent(getDDO(surferUrl), DID.createRandom(), username, password);
 
         String ip_invoke = properties.getProperty("koi.host");
         String port_invoke = properties.getProperty("koi.port");
@@ -138,7 +135,7 @@ public class AgentService {
         String ddoString = JSON.toPrettyString(ddo);
 
         // getting the default Ocean instance
-        Resolver resolver= new LocalResolverImpl();
+        Resolver resolver = new LocalResolverImpl();
         // creating unique DID
         DID invokeDID = DID.createRandom();
         // registering the DID and DDO
@@ -175,40 +172,4 @@ public class AgentService {
 
     }
 
-
-    public static String getDataAsStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        String result = "";
-
-        try {
-
-            // is = System.in;
-            br = new BufferedReader(new InputStreamReader(is));
-
-            String line = null;
-
-            while ((line = br.readLine()) != null) {
-
-                result = result + line;
-            }
-
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        } finally {
-            // close the streams using close method
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ioe) {
-            }
-
-        }
-
-        return result;
-    }
-    public static String getSurfer() {
-        return surferUrl;
-    }
 }

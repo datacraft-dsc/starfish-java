@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import sg.dex.starfish.Asset;
@@ -47,6 +48,10 @@ public class ConfirmPurchase_18 {
         data2.put(ID, listing.getMetaData().get(ID));
         data2.put(STATUS, PUBLISHED);
         listing = remoteAgent.updateListing(data2);
+
+        Assume.assumeNotNull(remoteAgent);
+        Assume.assumeNotNull(remoteAsset);
+        Assume.assumeNotNull(listing);
     }
 
 
