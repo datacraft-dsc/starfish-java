@@ -40,11 +40,33 @@ public class DexResolver implements Resolver {
     }
 
     /**
-     * Creates a SquidResolverImpl
+     * Creates a DexResolver
+     *
+     * @param SquidService squidService: SquidService with set Squid configuration
+     * @param String addressFrom: owner of DID record in the ledger. Only this address is allowed to update it
+     * @param String password: its password
+     * @param String credentialFile: its parity credential file
+     * @throws IOException, CipherException
+     * @return DexResolver The newly created SquidResolverImpl
+     */
+    public static DexResolver create(SquidService squidService, String addressFrom, String password, String credentialFile) throws IOException, CipherException{
+        Properties properties = squidService.getProperties();
+        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
+        oceanConfig.setMainAccountAddress(addressFrom);
+        oceanConfig.setMainAccountPassword(password);
+        oceanConfig.setMainAccountCredentialsFile(credentialFile);
+        String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
+        KeeperService keeper = squidService.getKeeperService(oceanConfig);
+        DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
+        return new DexResolver(contract, squidService);
+    }
+
+    /**
+     * Creates a DexResolver
      *
      * @param String configFile. All information about account credentials will be taken from this file
      * @throws IOException, CipherException
-     * @return SquidResolverImpl The newly created SquidResolverImpl
+     * @return DexResolver The newly created SquidResolverImpl
      */
     public static DexResolver create(String configFile) throws IOException, CipherException{
         SquidService squidService = SquidService.create(configFile);
