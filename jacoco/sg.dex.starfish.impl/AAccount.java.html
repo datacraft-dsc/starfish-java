@@ -30,10 +30,10 @@ public abstract class AAccount implements Account {
 <span class="nc" id="L30">        this.credentials = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L31">    }</span>
 
-<span class="nc" id="L33">    protected AAccount(String id, Map&lt;String, Object&gt; credentials) {</span>
-<span class="nc" id="L34">        this.id = id;</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        this.credentials = (credentials == null) ? new HashMap&lt;&gt;() : credentials;</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L33">    protected AAccount(String id, Map&lt;String, Object&gt; credentials) {</span>
+<span class="fc" id="L34">        this.id = id;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        this.credentials = (credentials == null) ? new HashMap&lt;&gt;() : credentials;</span>
+<span class="fc" id="L36">    }</span>
 
     @Override
     public String getID() {
@@ -43,9 +43,9 @@ public abstract class AAccount implements Account {
     @Override
     public Map&lt;String, Object&gt; getCredentials() {
         // deep cloning the map
-<span class="nc" id="L46">        return credentials.entrySet().stream()</span>
-<span class="nc" id="L47">                .collect(Collectors.toMap(e -&gt; e.getKey(),</span>
-<span class="nc" id="L48">                        e -&gt; e.getValue()));</span>
+<span class="fc" id="L46">        return credentials.entrySet().stream()</span>
+<span class="fc" id="L47">                .collect(Collectors.toMap(e -&gt; e.getKey(),</span>
+<span class="fc" id="L48">                        e -&gt; e.getValue()));</span>
     }
 
     @Override

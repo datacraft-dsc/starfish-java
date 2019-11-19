@@ -101,9 +101,9 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L104" title="3 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L104" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="nc" id="L106">            return this;</span>
+<span class="fc" id="L106">            return this;</span>
 
         } else {
 <span class="fc" id="L109">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>

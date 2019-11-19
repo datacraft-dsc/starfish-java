@@ -39,7 +39,7 @@ import java.nio.charset.StandardCharsets;
      * @return HttpEntity
      */
     public static HttpEntity textEntity(String s) {
-<span class="nc" id="L42">        return new ByteArrayEntity(s.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L42">        return new ByteArrayEntity(s.getBytes(StandardCharsets.UTF_8));</span>
     }
 
     /**
@@ -73,15 +73,15 @@ import java.nio.charset.StandardCharsets;
      * @return An HTTP Response object
      */
     public static CloseableHttpResponse executeWithAuth(HttpUriRequest httpRequest, String user, String password) {
-<span class="nc" id="L76">        CredentialsProvider provider = new BasicCredentialsProvider();</span>
-<span class="nc" id="L77">        UsernamePasswordCredentials cred = new UsernamePasswordCredentials(user, password);</span>
-<span class="nc" id="L78">        provider.setCredentials(org.apache.http.auth.AuthScope.ANY, cred);</span>
+<span class="fc" id="L76">        CredentialsProvider provider = new BasicCredentialsProvider();</span>
+<span class="fc" id="L77">        UsernamePasswordCredentials cred = new UsernamePasswordCredentials(user, password);</span>
+<span class="fc" id="L78">        provider.setCredentials(org.apache.http.auth.AuthScope.ANY, cred);</span>
 
-<span class="nc" id="L80">        CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();</span>
+<span class="fc" id="L80">        CloseableHttpClient httpclient = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();</span>
         CloseableHttpResponse response;
         try {
-<span class="nc" id="L83">            response = httpclient.execute(httpRequest);</span>
-<span class="nc" id="L84">            return response;</span>
+<span class="fc" id="L83">            response = httpclient.execute(httpRequest);</span>
+<span class="fc" id="L84">            return response;</span>
 <span class="nc" id="L85">        } catch (ClientProtocolException e) {</span>
 <span class="nc" id="L86">            throw new RemoteException(&quot;ClientProtocolException executing HTTP request ,&quot; + e.getMessage(), e);</span>
 <span class="nc" id="L87">        } catch (IOException e) {</span>
@@ -97,11 +97,11 @@ import java.nio.charset.StandardCharsets;
      */
     public static void close(CloseableHttpResponse response) {
         try {
-<span class="nc" id="L100">            response.close();</span>
+<span class="fc" id="L100">            response.close();</span>
 <span class="nc" id="L101">        } catch (IOException e) {</span>
 <span class="nc" id="L102">            throw new RuntimeException(e);</span>
-<span class="nc" id="L103">        }</span>
-<span class="nc" id="L104">    }</span>
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Gets HTTP response content
@@ -149,13 +149,13 @@ import java.nio.charset.StandardCharsets;
      * @return A multipart HttpEntity with the given  content
      */
     public static HttpEntity createMultiPart(String partName, ContentBody body) {
-<span class="nc" id="L152">        return MultipartEntityBuilder</span>
-<span class="nc" id="L153">                .create()</span>
+<span class="fc" id="L152">        return MultipartEntityBuilder</span>
+<span class="fc" id="L153">                .create()</span>
                 // to upload a file
                 // .addBinaryBody(&quot;file&quot;, f, ContentType.create(&quot;application/octet-stream&quot;),
                 // f.getName())
-<span class="nc" id="L157">                .addPart(partName, body)</span>
-<span class="nc" id="L158">                .build();</span>
+<span class="fc" id="L157">                .addPart(partName, body)</span>
+<span class="fc" id="L158">                .build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
