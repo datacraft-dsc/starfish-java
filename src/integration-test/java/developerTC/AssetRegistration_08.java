@@ -1,8 +1,7 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
@@ -26,6 +25,7 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
 
 
@@ -36,10 +36,10 @@ public class AssetRegistration_08 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
 
     }
 

@@ -3,8 +3,8 @@ package keeper;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.impl.squid.SquidService;
@@ -15,11 +15,11 @@ import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-@Ignore
+
 public class DirectPurchaseTestIT {
-    private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value
     private static final BigInteger tokenAmount = BigInteger.valueOf(10);
+    private DirectPurchaseAdapter directPurchaseAdapter;
     private Account senderAccount;
     private Account receiverAccount;
 
@@ -38,6 +38,7 @@ public class DirectPurchaseTestIT {
         receiverAccount = new Account(receiverAddress, receiverPasswd);
     }
 
+    @Disabled
     @Test
     public void testPurchase() throws EthereumException {
 
@@ -57,6 +58,7 @@ public class DirectPurchaseTestIT {
         assertEquals(tokenAmount, balanceReceiverAfter.subtract(balanceReceiverBefore));
     }
 
+    @Disabled
     @Test
     public void testCheckIsPaid() {
         boolean paid = directPurchaseAdapter.checkIsPaid(senderAccount.getAddress(), receiverAccount.getAddress(), tokenAmount, reference);

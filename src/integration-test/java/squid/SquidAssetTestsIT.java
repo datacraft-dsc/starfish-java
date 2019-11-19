@@ -4,9 +4,9 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
  * cd barge
  * ./start_ocean.sh
  */
-@Ignore
+@Disabled
 public class SquidAssetTestsIT {
     private SquidAgent squidAgent;
     private Resolver resolver;
@@ -42,7 +42,7 @@ public class SquidAssetTestsIT {
     private SquidService squidService;
     private OceanAPI oceanAPI ;
 
-    @Before
+    @BeforeAll
     public void setup() {
         squidService = SquidService.create("application_test.properties");
 

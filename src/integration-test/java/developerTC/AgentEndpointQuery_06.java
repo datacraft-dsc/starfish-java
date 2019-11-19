@@ -1,6 +1,6 @@
 package developerTC;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;

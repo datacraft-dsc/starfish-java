@@ -1,9 +1,7 @@
 package developerTC;
 
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -13,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
@@ -25,13 +24,13 @@ public class MetaDataAccess_07 {
     private RemoteAgent remoteAgent;
     private static String METADATA_JSON_CONTENT;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
 
         remoteAgent = AgentService.getRemoteAgent();
         String METADATA_JSON_SAMPLE = "src/integration-test/resources/assets/test_metadata.json";
         METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
 
     }
 
@@ -64,8 +63,5 @@ public class MetaDataAccess_07 {
 
 
 
-    @After
-    public void clear() {
-        remoteAgent = null;
-    }
+
 }

@@ -1,7 +1,8 @@
 package developerTC;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -9,6 +10,7 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with an Ocean marketplace,
@@ -19,10 +21,11 @@ public class UploadAsset_10 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
+        assumeTrue(null!= remoteAgent);
 
     }
 
