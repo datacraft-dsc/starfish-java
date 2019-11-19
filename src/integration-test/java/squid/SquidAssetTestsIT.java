@@ -4,7 +4,7 @@ import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
 import com.oceanprotocol.squid.models.Balance;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -42,7 +42,7 @@ public class SquidAssetTestsIT {
     private SquidService squidService;
     private OceanAPI oceanAPI ;
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         squidService = SquidService.create("application_test.properties");
 
