@@ -1,7 +1,6 @@
 package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.*;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;

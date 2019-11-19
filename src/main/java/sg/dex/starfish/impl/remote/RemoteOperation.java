@@ -2,15 +2,13 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.exception.StarfishValidationException;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
 
 import java.util.List;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.*;
 import static sg.dex.starfish.constant.Constant.ASYNC;
+import static sg.dex.starfish.constant.Constant.SYNC;
 
 /**
  * Class representing a Invokable operation callable via the Invoke API

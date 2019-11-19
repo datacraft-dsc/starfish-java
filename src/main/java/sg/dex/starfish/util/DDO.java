@@ -1,10 +1,10 @@
 package sg.dex.starfish.util;
 
+import sg.dex.starfish.constant.Constant;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import sg.dex.starfish.constant.Constant;
 
 /**
  * Utility functions for handling and managing W3C DDOs

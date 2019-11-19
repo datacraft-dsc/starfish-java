@@ -1,16 +1,16 @@
 package sg.dex.starfish.impl.memory;
 
-import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import sg.dex.starfish.Job;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
+
+import java.util.Map;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Class representing a Job being conducted asynchronously in the local JVM, which wraps

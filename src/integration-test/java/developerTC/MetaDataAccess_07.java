@@ -4,16 +4,13 @@ import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static sg.dex.starfish.constant.Constant.*;

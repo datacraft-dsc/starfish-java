@@ -1,8 +1,8 @@
 package sg.dex.starfish.keeper;
 
+import com.oceanprotocol.common.web3.KeeperService;
 import com.oceanprotocol.squid.exceptions.TokenApproveException;
 import com.oceanprotocol.squid.manager.BaseManager;
-import com.oceanprotocol.common.web3.KeeperService;
 
 /**
  * Adapter to access token smart contract.

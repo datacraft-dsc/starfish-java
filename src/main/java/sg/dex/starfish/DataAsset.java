@@ -1,8 +1,5 @@
 package sg.dex.starfish;
 
-import java.io.InputStream;
-import java.util.Map;
-
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
@@ -11,6 +8,9 @@ import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
+
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Interface representing a data asset.

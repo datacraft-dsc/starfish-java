@@ -2,17 +2,15 @@ package keeper;
 
 import org.junit.Rule;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
-
 import org.junit.rules.ExpectedException;
+import org.web3j.crypto.CipherException;
 import org.web3j.protocol.exceptions.TransactionException;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 
-import org.web3j.crypto.CipherException;
 import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 public class DexResolverTest {
     private DexResolver resolver1;

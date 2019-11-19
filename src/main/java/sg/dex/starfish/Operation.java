@@ -4,13 +4,10 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Params;
 
-import static sg.dex.starfish.constant.Constant.ASYNC;
-import static sg.dex.starfish.constant.Constant.MODES;
-import static sg.dex.starfish.constant.Constant.OPERATION;
-import static sg.dex.starfish.constant.Constant.SYNC;
-
 import java.util.List;
 import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Interface representing an invokable Operation

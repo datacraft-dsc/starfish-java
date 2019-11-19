@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 
 /**
  * As a developer building client code to interact with an Ocean marketplace,
