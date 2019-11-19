@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sg.dex.starfish.constant.Constant.*;
