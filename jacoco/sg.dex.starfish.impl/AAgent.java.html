@@ -43,10 +43,10 @@ public abstract class AAgent implements Agent {
 
     @Override
     public Map&lt;String, Object&gt; getDDO() {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (ddo == null) {</span>
-<span class="fc" id="L47">            ddo = resolver.getDDO(did);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (ddo == null) {</span>
+<span class="nc" id="L47">            ddo = resolver.getDDO(did);</span>
         }
-<span class="fc" id="L49">        return ddo;</span>
+<span class="nc" id="L49">        return ddo;</span>
     }
     
     @Override
@@ -64,9 +64,9 @@ public abstract class AAgent implements Agent {
      * @return The service endpoint, or null if not found
      */
     public String getEndpoint(String type) {
-<span class="fc" id="L67">        Map&lt;String, Object&gt; ddo = getDDO();</span>
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">       if(ddo==null ) return null; </span>
-<span class="fc" id="L69">       return DDO.getEndpoint(ddo, type);</span>
+<span class="nc" id="L67">        Map&lt;String, Object&gt; ddo = getDDO();</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">       if(ddo==null ) return null; </span>
+<span class="nc" id="L69">       return DDO.getEndpoint(ddo, type);</span>
     }
 
     @Override

@@ -82,21 +82,21 @@ import java.util.Map;
 <span class="fc" id="L82">            }</span>
 <span class="fc" id="L83">            sb = appendWhitespaceString(sb, indent);</span>
 <span class="fc" id="L84">            sb.append(&quot;}&quot;);</span>
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        } else if (o instanceof List) {</span>
-<span class="fc" id="L86">            List&lt;Object&gt; list = (List&lt;Object&gt;) o;</span>
-<span class="fc" id="L87">            int size = list.size();</span>
-<span class="fc" id="L88">            int entryIndent = indent + 1;</span>
-<span class="fc" id="L89">            sb.append(&quot;[&quot;);</span>
-<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (i &gt; 0) {</span>
-<span class="fc" id="L92">                    sb.append(&quot;,\n&quot;);</span>
-<span class="fc" id="L93">                    sb = appendWhitespaceString(sb, entryIndent);</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        } else if (o instanceof List) {</span>
+<span class="nc" id="L86">            List&lt;Object&gt; list = (List&lt;Object&gt;) o;</span>
+<span class="nc" id="L87">            int size = list.size();</span>
+<span class="nc" id="L88">            int entryIndent = indent + 1;</span>
+<span class="nc" id="L89">            sb.append(&quot;[&quot;);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                if (i &gt; 0) {</span>
+<span class="nc" id="L92">                    sb.append(&quot;,\n&quot;);</span>
+<span class="nc" id="L93">                    sb = appendWhitespaceString(sb, entryIndent);</span>
                 }
-<span class="fc" id="L95">                Object v = list.get(i);</span>
-<span class="fc" id="L96">                sb = appendPrettyString(sb, v, entryIndent);</span>
+<span class="nc" id="L95">                Object v = list.get(i);</span>
+<span class="nc" id="L96">                sb = appendPrettyString(sb, v, entryIndent);</span>
             }
-<span class="fc" id="L98">            sb.append(&quot;]&quot;);</span>
-<span class="fc" id="L99">        } else {</span>
+<span class="nc" id="L98">            sb.append(&quot;]&quot;);</span>
+<span class="nc" id="L99">        } else {</span>
 <span class="fc" id="L100">            sb.append(toString(o));</span>
         }
 <span class="fc" id="L102">        return sb;</span>
@@ -110,9 +110,9 @@ import java.util.Map;
      * @return Updated StringBuilder
      */
     private static StringBuilder appendWhitespaceString(StringBuilder sb, int count) {
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        while (count &gt; WHITESPACE_LENGTH) {</span>
-<span class="fc" id="L114">            sb.append(WHITESPACE);</span>
-<span class="fc" id="L115">            count -= WHITESPACE_LENGTH;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        while (count &gt; WHITESPACE_LENGTH) {</span>
+<span class="nc" id="L114">            sb.append(WHITESPACE);</span>
+<span class="nc" id="L115">            count -= WHITESPACE_LENGTH;</span>
         }
 <span class="fc" id="L117">        sb.append(WHITESPACE, 0, count);</span>
 <span class="fc" id="L118">        return sb;</span>
