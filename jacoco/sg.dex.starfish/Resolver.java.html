@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Resolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - Developer Toolkit for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish</a> &gt; <span class="el_source">Resolver.java</span></div><h1>Resolver.java</h1><pre class="source lang-java linenums">package sg.dex.starfish;
 
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -14,9 +15,10 @@ public interface Resolver {
      * Method to  get a DDO (as a String) for any given DID registered with the resolver.
      *
      * @param did Given DID which is registered with the resolver
+     * @throws ResolverException
      * @return DDO String value or null
      */
-    String getDDOString(DID did);
+    String getDDOString(DID did) throws ResolverException;
 
     /**
      * Gets a DDO Object for a given DDO.
@@ -27,10 +29,10 @@ public interface Resolver {
      * @throws UnsupportedOperationException not yet implemented
      */
     public default Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L30">    	did=did.withoutPath();</span>
-<span class="fc" id="L31">        String ddoString = getDDOString(did);</span>
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
-<span class="fc" id="L33">        return JSON.parse(ddoString);</span>
+<span class="fc" id="L32">    	did=did.withoutPath();</span>
+<span class="fc" id="L33">        String ddoString = getDDOString(did);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
+<span class="fc" id="L35">        return JSON.parse(ddoString);</span>
     }
     
     /**
@@ -38,8 +40,9 @@ public interface Resolver {
      *
      * @param did DID to register
      * @param ddoString DDO to associate with the given DID
+     * @throws ResolverException
      * @return true if registration is successful, false otherwise
      */
-    boolean registerDID(DID did, String ddoString);
+    void registerDID(DID did, String ddoString) throws ResolverException;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
