@@ -32,12 +32,10 @@ public class DexResolverTest {
 
     @Test
     public void testRegisterResolve()   {
-        boolean result = resolver1.registerDID(did, valueSet);
-        assertTrue(result);
+        resolver1.registerDID(did, valueSet);
         String val = resolver1.getDDOString(did);
         assertTrue(val.equals( valueSet));
-        result = resolver1.registerDID(did, valueUpdate);
-        assertTrue(result);
+        resolver1.registerDID(did, valueUpdate);
         val = resolver1.getDDOString(did);
         assertTrue(val.equals( valueUpdate));
     }
@@ -51,8 +49,7 @@ public class DexResolverTest {
 
     @Test
     public void testPermissions()   {
-        boolean result = resolver1.registerDID(did, valueSet);
-        assertTrue(result);
+        resolver1.registerDID(did, valueSet);
         String val = resolver2.getDDOString(did);
         assertTrue(val.equals(valueSet) );
         exception.expect(TransactionException.class);

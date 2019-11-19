@@ -8,6 +8,7 @@ import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
 import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Utils;
 
@@ -30,7 +31,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) {
+    public String getDDOString(DID did) throws ResolverException {
         try {
             com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
             OceanManager oceanManager = squidService.getResolverManager();
@@ -39,7 +40,7 @@ public class SquidResolverImpl implements Resolver {
                 return ddo.toJson();
             }
         } catch (EthereumException | DDOException | DIDFormatException | IOException | CipherException e) {
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         }
         return null;
 
@@ -59,7 +60,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public boolean registerDID(DID did, String ddo) {
+    public void registerDID(DID did, String ddo) throws ResolverException {
         installLocalDDO(did, ddo);
 
         try {
@@ -69,16 +70,14 @@ public class SquidResolverImpl implements Resolver {
                             "checksum", Arrays.asList(squidService.getProvider()));
 
         } catch (DIDRegisterException e) {
-            e.printStackTrace();
+            throw new ResolverException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ResolverException(e);
         } catch (CipherException e) {
-            e.printStackTrace();
+            throw new ResolverException(e);
         } catch (DIDFormatException e) {
-            e.printStackTrace();
+            throw new ResolverException(e);
         }
-
-        return true;
     }
 
     /**

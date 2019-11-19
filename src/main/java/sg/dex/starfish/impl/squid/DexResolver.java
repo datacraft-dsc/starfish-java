@@ -13,6 +13,7 @@ import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.Utils;
@@ -47,7 +48,7 @@ public class DexResolver implements Resolver {
      * @param String password: its password
      * @param String credentialFile: its parity credential file
      * @throws IOException, CipherException
-     * @return DexResolver The newly created SquidResolverImpl
+     * @return DexResolver The newly created DexResolver
      */
     public static DexResolver create(SquidService squidService, String addressFrom, String password, String credentialFile) throws IOException, CipherException{
         Properties properties = squidService.getProperties();
@@ -66,7 +67,7 @@ public class DexResolver implements Resolver {
      *
      * @param String configFile. All information about account credentials will be taken from this file
      * @throws IOException, CipherException
-     * @return DexResolver The newly created SquidResolverImpl
+     * @return DexResolver The newly created DexResolver
      */
     public static DexResolver create(String configFile) throws IOException, CipherException{
         SquidService squidService = SquidService.create(configFile);
@@ -79,13 +80,12 @@ public class DexResolver implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) {
+    public String getDDOString(DID did) throws ResolverException {
         com.oceanprotocol.squid.models.DID squidDID = null;
         try {
             squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
         } catch (DIDFormatException e) {
-            e.printStackTrace();
-            return null;
+            throw new ResolverException(e);
         }
 
         String didHash = squidDID.getHash();
@@ -93,11 +93,9 @@ public class DexResolver implements Resolver {
         try {
             blockNumber = (BigInteger) contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         }
 
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());
@@ -115,15 +113,14 @@ public class DexResolver implements Resolver {
     }
 
     @Override
-    public boolean registerDID(DID did, String ddo) {
+    public void registerDID(DID did, String ddo) throws ResolverException {
         String checksum = "0x0";
 
         com.oceanprotocol.squid.models.DID didSquid = null;
         try {
             didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
         } catch (DIDFormatException e) {
-            e.printStackTrace();
-            return false;
+            throw new ResolverException(e);
         }
 
         TransactionReceipt receipt = null;
@@ -133,16 +130,14 @@ public class DexResolver implements Resolver {
                     EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
                     Arrays.asList(squidService.getProvider()), ddo).send();
         } catch (IOException e) {
-            e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         } catch (CipherException e) {
-            e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw Utils.sneakyThrow(e);
+            throw new ResolverException(e);
         }
 
-        return receipt.getStatus().equals("0x1");
+        if(!receipt.getStatus().equals("0x1"))
+            throw new ResolverException();
     }
 }

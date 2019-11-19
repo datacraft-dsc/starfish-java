@@ -1,5 +1,6 @@
 package sg.dex.starfish;
 
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -14,9 +15,10 @@ public interface Resolver {
      * Method to  get a DDO (as a String) for any given DID registered with the resolver.
      *
      * @param did Given DID which is registered with the resolver
+     * @throws ResolverException
      * @return DDO String value or null
      */
-    String getDDOString(DID did);
+    String getDDOString(DID did) throws ResolverException;
 
     /**
      * Gets a DDO Object for a given DDO.
@@ -38,7 +40,8 @@ public interface Resolver {
      *
      * @param did DID to register
      * @param ddoString DDO to associate with the given DID
+     * @throws ResolverException
      * @return true if registration is successful, false otherwise
      */
-    boolean registerDID(DID did, String ddoString);
+    void registerDID(DID did, String ddoString) throws ResolverException;
 }
