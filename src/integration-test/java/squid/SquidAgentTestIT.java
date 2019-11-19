@@ -1,6 +1,6 @@
 package squid;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
@@ -26,7 +26,7 @@ public class SquidAgentTestIT {
     private Resolver resolver;
     private SquidService squidService;
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         squidService = SquidService.create("application_test.properties");
         // create random DID
