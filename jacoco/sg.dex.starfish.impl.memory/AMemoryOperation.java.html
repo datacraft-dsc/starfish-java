@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static sg.dex.starfish.constant.Constant.*;
-import static sg.dex.starfish.constant.Constant.MODES;
 
 /**
  * Class representing a local in-memory operation asset. Operations are executed in
@@ -26,19 +25,19 @@ import static sg.dex.starfish.constant.Constant.MODES;
 public abstract class AMemoryOperation extends AMemoryAsset implements Operation {
 
     protected AMemoryOperation(String metaString, MemoryAgent memoryAgent) {
-<span class="fc" id="L29">        super(metaString, memoryAgent);</span>
+<span class="fc" id="L28">        super(metaString, memoryAgent);</span>
 
 
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L31">    }</span>
 
 
     @Override
     public Job invokeAsync(Map&lt;String, Object&gt; params) {
         // validate the memory operation metadata
-<span class="fc" id="L38">        Utils.validateAssetMetaData(this.getMetadataString());</span>
+<span class="fc" id="L37">        Utils.validateAssetMetaData(this.getMetadataString());</span>
 
-<span class="fc bfc" id="L40" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains( ASYNC)) {</span>
-<span class="fc" id="L41">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains( ASYNC)) {</span>
+<span class="fc" id="L40">            throw new StarfishValidationException(&quot;Mode must be Async for this operation&quot;);</span>
         }
 
         // default implementation for an asynchronous invoke job in memory, using a
@@ -46,58 +45,58 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         // Implementations may override this for custom behaviour (e.g. a custom thread
         // pool)
         // But this should be sufficient for most cases.
-<span class="fc" id="L49">        final CompletableFuture&lt;Map&lt;String, Object&gt;&gt; future = new CompletableFuture&lt;&gt;();</span>
-<span class="fc" id="L50">        MemoryJob memoryJob = MemoryJob.create(future);</span>
-<span class="fc" id="L51">        MemoryAgent.THREAD_POOL.submit(() -&gt; {</span>
+<span class="fc" id="L48">        final CompletableFuture&lt;Map&lt;String, Object&gt;&gt; future = new CompletableFuture&lt;&gt;();</span>
+<span class="fc" id="L49">        MemoryJob memoryJob = MemoryJob.create(future);</span>
+<span class="fc" id="L50">        MemoryAgent.THREAD_POOL.submit(() -&gt; {</span>
             try {
-<span class="fc" id="L53">                Map&lt;String, Object&gt; result = compute(params);</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                if (future.complete(result)) {</span>
+<span class="fc" id="L52">                Map&lt;String, Object&gt; result = compute(params);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">                if (future.complete(result)) {</span>
                 }
-<span class="fc" id="L56">            } catch (Throwable t) {</span>
-<span class="fc" id="L57">                future.completeExceptionally(t);</span>
-<span class="fc" id="L58">            }</span>
-<span class="fc" id="L59">        });</span>
+<span class="fc" id="L55">            } catch (Throwable t) {</span>
+<span class="fc" id="L56">                future.completeExceptionally(t);</span>
+<span class="fc" id="L57">            }</span>
+<span class="fc" id="L58">        });</span>
 
-<span class="fc" id="L61">        return memoryJob;</span>
+<span class="fc" id="L60">        return memoryJob;</span>
     }
 
     @Override
     public final Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params) {
 
         // validate the memory operation metadata
-<span class="fc" id="L68">        Utils.validateAssetMetaData(this.getMetadataString());</span>
+<span class="fc" id="L67">        Utils.validateAssetMetaData(this.getMetadataString());</span>
 
-<span class="fc bfc" id="L70" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains(SYNC)) {</span>
-<span class="fc" id="L71">            throw new StarfishValidationException(&quot;Mode must be Sync for this operation&quot;);</span>
+<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (validateOperationMode(this) != null &amp;&amp; !validateOperationMode(this).contains(SYNC)) {</span>
+<span class="fc" id="L70">            throw new StarfishValidationException(&quot;Mode must be Sync for this operation&quot;);</span>
         }
-<span class="fc" id="L73">        return compute(params);</span>
+<span class="fc" id="L72">        return compute(params);</span>
     }
 
     @Override
     public Job invoke(Map&lt;String, Object&gt; params) {
 
-<span class="fc" id="L79">        return invokeAsync(params);</span>
+<span class="fc" id="L78">        return invokeAsync(params);</span>
     }
     private List&lt;String&gt; validateOperationMode(Operation operation){
 
-<span class="fc" id="L83">        Map&lt;String,Object&gt; operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());</span>
+<span class="fc" id="L82">        Map&lt;String,Object&gt; operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());</span>
         //1. check if mode is present
 
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        if(operationData.get(MODES)== null){</span>
-<span class="fc" id="L87">            return null;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if(operationData.get(MODES)== null){</span>
+<span class="fc" id="L86">            return null;</span>
         }
-<span class="fc" id="L89">        List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        for(Object mode: modeLst){</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">            if(mode.toString().equals(SYNC)||</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">                    mode.toString().equals(ASYNC)){</span>
+<span class="fc" id="L88">        List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for(Object mode: modeLst){</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            if(mode.toString().equals(SYNC)||</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                    mode.toString().equals(ASYNC)){</span>
 
             }
             else{
-<span class="fc" id="L96">                throw new StarfishValidationException(&quot;Invalid mode of the given operation:&quot;+operation.toString());</span>
+<span class="fc" id="L95">                throw new StarfishValidationException(&quot;Invalid mode of the given operation:&quot;+operation.toString());</span>
             }
-<span class="fc" id="L98">        }</span>
+<span class="fc" id="L97">        }</span>
 
-<span class="fc" id="L100">        return modeLst;</span>
+<span class="fc" id="L99">        return modeLst;</span>
 
 
 

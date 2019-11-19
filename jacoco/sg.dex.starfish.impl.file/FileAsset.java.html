@@ -72,10 +72,10 @@ public class FileAsset extends AAsset implements DataAsset {
 <span class="fc" id="L72">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
         // TODO: maybe include file name?
 
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (metaMap != null) {</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
-<span class="fc" id="L77">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L78">            }</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (metaMap != null) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
+<span class="nc" id="L77">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L78">            }</span>
         }
 <span class="fc" id="L80">        return ob;</span>
     }
@@ -94,8 +94,8 @@ public class FileAsset extends AAsset implements DataAsset {
     public InputStream getContentStream() {
         try {
 <span class="fc" id="L96">            return new FileInputStream(file);</span>
-<span class="fc" id="L97">        } catch (FileNotFoundException e) {</span>
-<span class="fc" id="L98">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
+<span class="nc" id="L97">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L98">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
         }
     }
 

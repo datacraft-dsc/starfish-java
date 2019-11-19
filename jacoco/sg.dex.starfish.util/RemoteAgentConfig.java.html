@@ -5,9 +5,7 @@ import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,38 +13,38 @@ import java.util.Map;
  * Currently it is written to connect with Surfer
  * It will connect with default OCEAN (a placeholder for real OCEAN instance)
  */
-<span class="nc" id="L18">public final class RemoteAgentConfig {</span>
+<span class="nc" id="L16">public final class RemoteAgentConfig {</span>
 
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, String userName, String password) {
         // creating unique DID
 
-<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
-<span class="fc" id="L25">        Resolver resolver=new LocalResolverImpl();</span>
+<span class="fc" id="L23">        Resolver resolver=new LocalResolverImpl();</span>
         // registering the DID and DDO
-<span class="fc" id="L27">        resolver.registerDID(did, ddoString);</span>
+<span class="fc" id="L25">        resolver.registerDID(did, ddoString);</span>
 
         //Creating remote Account
-<span class="fc" id="L30">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L31">        credentialMap.put(&quot;username&quot;, userName);</span>
-<span class="fc" id="L32">        credentialMap.put(&quot;password&quot;, password);</span>
+<span class="fc" id="L28">        Map&lt;String, Object&gt; credentialMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L29">        credentialMap.put(&quot;username&quot;, userName);</span>
+<span class="fc" id="L30">        credentialMap.put(&quot;password&quot;, password);</span>
 
-<span class="fc" id="L34">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
+<span class="fc" id="L32">        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);</span>
         // creating a Remote agent instance for given Ocean and DID
-<span class="fc" id="L36">        return RemoteAgent.create(resolver, did, account);</span>
+<span class="fc" id="L34">        return RemoteAgent.create(resolver, did, account);</span>
     }
     
     public static RemoteAgent getRemoteAgent(String ddoString, DID did, RemoteAccount remoteAccount) {
         // creating unique DID
 
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        did = (did == null) ? DID.createRandom() : did;</span>
 
-<span class="fc" id="L44">        Resolver resolver=new LocalResolverImpl();</span>
+<span class="fc" id="L42">        Resolver resolver=new LocalResolverImpl();</span>
         // registering the DID and DDO
-<span class="fc" id="L46">        resolver.registerDID(did, ddoString);</span>
+<span class="fc" id="L44">        resolver.registerDID(did, ddoString);</span>
 
         // creating a Remote agent instance for given Ocean and DID
-<span class="fc" id="L49">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
+<span class="fc" id="L47">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
     }
 
 }
