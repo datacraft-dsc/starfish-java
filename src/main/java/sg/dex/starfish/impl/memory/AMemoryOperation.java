@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static sg.dex.starfish.constant.Constant.*;
-import static sg.dex.starfish.constant.Constant.MODES;
 
 /**
  * Class representing a local in-memory operation asset. Operations are executed in

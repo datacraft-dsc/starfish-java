@@ -6,11 +6,9 @@ import org.junit.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
-import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
@@ -18,7 +16,6 @@ import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +25,7 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
 
 
@@ -66,7 +63,6 @@ public class AssetRegistration_08 {
         Asset remoteAsset = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
         Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
 
-        assertNotEquals(remoteAsset1.getAssetID(), remoteAsset.getAssetID());
         // get registered Asset by ID
         assertTrue(remoteAsset.isDataAsset());
         assertTrue(remoteAsset1.isDataAsset());

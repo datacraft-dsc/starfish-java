@@ -1,14 +1,16 @@
 package sg.dex.starfish.impl.squid;
 
 import com.oceanprotocol.common.helpers.EncodingHelper;
+import com.oceanprotocol.common.web3.KeeperService;
+import com.oceanprotocol.keeper.contracts.DIDRegistry;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.api.config.OceanConfigFactory;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
-
-import org.web3j.protocol.core.methods.request.EthFilter;
+import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
-import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.crypto.CipherException;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.util.DID;
@@ -20,11 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import io.reactivex.Flowable;
 import java.util.Properties;
-
-import com.oceanprotocol.common.web3.KeeperService;
-import com.oceanprotocol.keeper.contracts.DIDRegistry;
 
 public class DexResolver implements Resolver {
     private DIDRegistry contract;

@@ -1,12 +1,12 @@
 package sg.dex.starfish.impl;
 
-import java.util.Map;
-
 import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.util.DDO;
 import sg.dex.starfish.util.DID;
+
+import java.util.Map;
 
 /**
  * Class representing an Agent in the Ocean Ecosystem

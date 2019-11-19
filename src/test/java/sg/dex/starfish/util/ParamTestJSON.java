@@ -1,23 +1,20 @@
 package sg.dex.starfish.util;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(Parameterized.class)
 public class ParamTestJSON {
     private String data;
 
-    public ParamTestJSON(String label, String data) {
+    public ParamTestJSON(String data) {
         this.data = data;
     }
 
-    @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<String[]> dataExamples() {
         return Arrays.asList(new String[][]{
                 {"Number", "1"},

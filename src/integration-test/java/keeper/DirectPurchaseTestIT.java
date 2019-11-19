@@ -1,21 +1,21 @@
 package keeper;
 
+import com.oceanprotocol.squid.api.OceanAPI;
+import com.oceanprotocol.squid.exceptions.EthereumException;
+import com.oceanprotocol.squid.models.Account;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.oceanprotocol.squid.exceptions.EthereumException;
 import org.web3j.crypto.CipherException;
-import java.io.IOException;
-
-import java.math.BigInteger;
-import com.oceanprotocol.squid.models.Account;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
-import com.oceanprotocol.squid.api.OceanAPI;
+
+import java.io.IOException;
+import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+@Ignore
 public class DirectPurchaseTestIT {
     private DirectPurchaseAdapter directPurchaseAdapter;
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value

@@ -1,6 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.resource.URIAsset;

@@ -1,8 +1,7 @@
 package sg.dex.starfish.impl.operations;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
@@ -25,7 +24,6 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryOperations {
     private MemoryAgent memoryAgent = MemoryAgent.create();
     private List<String> jobStatus = Arrays.asList("scheduled", "running", "succeeded", "failed", "unknown");
@@ -143,7 +141,7 @@ public class TestMemoryOperations {
         assertEquals(Constant.SUCCEEDED, job.getStatus());
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testHashAsyncFailed() {
 
         byte[] data = new byte[]{1, 2, 3};
@@ -155,20 +153,25 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job;
-        synchronized (epicFailOperation) {
-            job = epicFailOperation.invokeAsync(test);
-            assertFalse(job.isDone()); // can't complete until out of synchronised block
-        }
 
-        try {
-            job.get();
-            fail("should not succeed!!");
-        } catch (Exception e) {
-            /* OK, Expected */
-        }
-        assertTrue(job.isDone());
-        assertEquals(Constant.FAILED, job.getStatus());
+        Assertions.assertThrows(StarfishValidationException.class, () -> {
+            epicFailOperation.invokeAsync(test);
+        });
+
+//        Job job;
+//        synchronized (epicFailOperation) {
+//            job = epicFailOperation.invokeAsync(test);
+//            assertFalse(job.isDone()); // can't complete until out of synchronised block
+//        }
+//
+//        try {
+//            job.get();
+//            fail("should not succeed!!");
+//        } catch (Exception e) {
+//            /* OK, Expected */
+//        }
+//        assertTrue(job.isDone());
+//        assertEquals(Constant.FAILED, job.getStatus());
     }
 
     @Test
@@ -275,7 +278,7 @@ public class TestMemoryOperations {
     /**
      * This test is to test the  Operation is valid or not
      */
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testInvalidMetadata() {
         byte[] data = new byte[]{1, 2, 3};
 
@@ -288,7 +291,10 @@ public class TestMemoryOperations {
         Map<String, Object> test = new HashMap<>();
         test.put("input", a);
 
-        Job job = memoryOperation.invokeAsync(test);
+
+        Assertions.assertThrows(StarfishValidationException.class, () -> {
+            memoryOperation.invokeAsync(test);
+        });
 
 
     }
@@ -486,23 +492,34 @@ public class TestMemoryOperations {
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testBadNamedParams() {
         byte[] data = new byte[]{1, 2, 3};
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
         Asset a = MemoryAsset.create(data);
-        Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
-        Object result2 = badJob.getResult(10);
-        fail("Should not succeed! Got: " + Utils.getClass(result2));
+
+
+
+        Assertions.assertThrows(Exception.class, () -> {
+            Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
+            badJob.getResult(10);
+        });
+
+
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testInsufficientParams() {
         ReverseByte_AssetI_AssetO op = ReverseByte_AssetI_AssetO.create(getMetaDataForAssetI_AssetO(), memoryAgent);
         Map<String, Object> emptyParams = new HashMap<>();
-        Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
-        Object result2 = badJob.getResult(10);
-        fail("Should not succeed! Got: " + Utils.getClass(result2));
+
+
+        Assertions.assertThrows(Exception.class, () -> {
+            Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
+             badJob.getResult(1000);
+        });
+
+
 
     }
 

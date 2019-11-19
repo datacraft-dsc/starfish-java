@@ -1,9 +1,9 @@
 package sg.dex.starfish;
 
-import java.util.Map;
-
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
+
+import java.util.Map;
 
 /**
  * This interface represents a Resolver instance used to resolve / register DIDs and DDOd.

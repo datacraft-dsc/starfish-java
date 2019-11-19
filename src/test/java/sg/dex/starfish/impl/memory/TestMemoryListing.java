@@ -1,8 +1,6 @@
 package sg.dex.starfish.impl.memory;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.util.DID;
@@ -18,7 +16,6 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 
 @SuppressWarnings("javadoc")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestMemoryListing {
 
     private static final byte[] BYTE_DATA = Hex.toBytes("0123456789");

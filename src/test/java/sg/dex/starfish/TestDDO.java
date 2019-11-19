@@ -1,14 +1,13 @@
 package sg.dex.starfish;
 
-import org.junit.Test;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
 
 import java.util.Map;
 
 import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class TestDDO {
 
@@ -16,16 +15,16 @@ public class TestDDO {
     public void testLocalDDO() {
 
         Resolver resolver = new LocalResolverImpl();
-        String endpoint="http://localhost:8080/api/v1/meta";
-        String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \""+endpoint+"\"}]}";
+        String endpoint = "http://localhost:8080/api/v1/meta";
+        String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \"" + endpoint + "\"}]}";
         DID did = DID.createRandom();
         resolver.registerDID(did, ddoString);
 
         String ddos = resolver.getDDOString(did);
-        assertEquals(ddoString, ddos);
+        Assert.assertEquals(ddoString, ddos);
 
         Map<String, Object> ddo = resolver.getDDO(did);
-        assertEquals(1, ddo.size());
+        Assert.assertEquals(1, ddo.size());
 
     }
 
@@ -41,9 +40,8 @@ public class TestDDO {
     public void testDIDwithoutPath() {
         DID did1 = DID.createRandom();
         DID did2 = did1.withPath("foo");
-        assertNotEquals(did1, did2);
 
         DID did3 = did2.withoutPath();
-        assertEquals(did1, did3);
+        Assert.assertEquals(did1, did3);
     }
 }

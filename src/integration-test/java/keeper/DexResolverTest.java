@@ -2,17 +2,16 @@ package keeper;
 
 import org.junit.Rule;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
-
 import org.junit.rules.ExpectedException;
+import org.web3j.crypto.CipherException;
 import org.web3j.protocol.exceptions.TransactionException;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 
-import org.web3j.crypto.CipherException;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class DexResolverTest {
     private DexResolver resolver1;
@@ -36,18 +35,18 @@ public class DexResolverTest {
         boolean result = resolver1.registerDID(did, valueSet);
         assertTrue(result);
         String val = resolver1.getDDOString(did);
-        assertEquals(val, valueSet);
+        assertTrue(val.equals( valueSet));
         result = resolver1.registerDID(did, valueUpdate);
         assertTrue(result);
         val = resolver1.getDDOString(did);
-        assertEquals(val, valueUpdate);
+        assertTrue(val.equals( valueUpdate));
     }
 
     @Test
     public void testGetInvalidDID()   {
         DID temp = DID.createRandom();
         String val = resolver1.getDDOString(temp);
-        assertNull(val);
+        assertTrue(val==null);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class DexResolverTest {
         boolean result = resolver1.registerDID(did, valueSet);
         assertTrue(result);
         String val = resolver2.getDDOString(did);
-        assertEquals(val, valueSet);
+        assertTrue(val.equals(valueSet) );
         exception.expect(TransactionException.class);
         resolver2.registerDID(did, valueUpdate);
     }
