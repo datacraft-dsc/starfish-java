@@ -1,8 +1,8 @@
 package squid;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.squid.SquidAgent;
@@ -18,7 +18,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-@Ignore
+@Disabled
 public class SquidAgentTestIT {
 
 
@@ -26,7 +26,7 @@ public class SquidAgentTestIT {
     private Resolver resolver;
     private SquidService squidService;
 
-    @Before
+    @BeforeAll
     public void setup() {
         squidService = SquidService.create("application_test.properties");
         // create random DID
@@ -38,7 +38,7 @@ public class SquidAgentTestIT {
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testUploadAsset() {
         byte[] data = {1, 2, 3, 4};
         MemoryAsset asset = MemoryAsset.create(data);

@@ -1,8 +1,7 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -11,6 +10,7 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.Utils;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with Ocean,
@@ -20,11 +20,11 @@ public class AssetDownload_19 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
     }
 
     @Test

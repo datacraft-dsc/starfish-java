@@ -1,7 +1,6 @@
 package developerTC;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RemoteAgentTest_26 {
 
@@ -49,7 +50,7 @@ public class RemoteAgentTest_26 {
         try {
             remoteAgent.getAsset("1234");
         } catch (RemoteException e) {
-            Assert.assertTrue(e.getMessage().contains("Asset ID not found "));
+            assertTrue(e.getMessage().contains("Asset ID not found "));
         }
 
     }
@@ -82,7 +83,7 @@ public class RemoteAgentTest_26 {
         try {
             remoteAgent1.getAsset("1234");
         } catch (RemoteException e) {
-            Assert.assertTrue(e.getMessage().contains("Asset ID not found "));
+            assertTrue(e.getMessage().contains("Asset ID not found "));
         }
 
     }

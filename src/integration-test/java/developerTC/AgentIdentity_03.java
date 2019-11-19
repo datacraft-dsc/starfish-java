@@ -1,9 +1,7 @@
 package developerTC;
 
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
 
@@ -12,6 +10,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with Ocean,
@@ -22,11 +21,11 @@ public class AgentIdentity_03 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
     }
 
     @Test
@@ -46,14 +45,11 @@ public class AgentIdentity_03 {
         List<Map<String, Object>> services = (List<Map<String, Object>>) ddo.get("service");
 
 
-        Assume.assumeNotNull(services);
+        assumeTrue(null != services);
         assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
         assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
 
     }
 
-    @After
-    public void clear() {
-        remoteAgent = null;
-    }
+
 }

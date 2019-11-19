@@ -1,7 +1,8 @@
 package developerTC;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.StarfishValidationException;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with an Ocean marketplace,
@@ -23,9 +26,10 @@ public class UnPublishListing_12 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         remoteAgent = AgentService.getRemoteAgent();
+        assumeTrue(null != remoteAgent);
     }
 
 
@@ -89,27 +93,35 @@ public class UnPublishListing_12 {
 
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testCreateWithoutAssetId() {
 
         // this map dont have the assetid so validation will fail
         Map<String, Object> listingMetaData = new HashMap<>();
 
         // to create listing Asset must be registered and map must have an asset id against which the listing will be created
-        Listing listing = remoteAgent.createListing(listingMetaData);
 
+        assertThrows(StarfishValidationException.class, () -> {
+            remoteAgent.createListing(listingMetaData);
+
+        });
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testUpdateWithoutCreate() {
         Map<String, Object> listingMetaData = new HashMap<>();
-        remoteAgent.updateListing(listingMetaData);
 
+        assertThrows(StarfishValidationException.class, () -> {
+            remoteAgent.updateListing(listingMetaData);
+        });
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testUpdateForNull() {
-        remoteAgent.updateListing(null);
+
+        assertThrows(StarfishValidationException.class, () -> {
+            remoteAgent.updateListing(null);
+        });
     }
 
     @Test

@@ -1,8 +1,7 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -17,6 +16,7 @@ import java.nio.file.Paths;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer wishing to make an asset available for download,
@@ -27,11 +27,11 @@ public class UploadAsset_11 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
     }
 
 

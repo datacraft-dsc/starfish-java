@@ -1,6 +1,6 @@
 package developerTC;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * As a developer working with Ocean,
@@ -48,14 +49,15 @@ public class TestResolver_01 {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testnullDID() {
         Resolver resolver = new LocalResolverImpl();
         Map<String, Object> ddo = new HashMap<>();
         DID surferDID = null;
         ddo.put("test", "test");
-        resolver.registerDID(surferDID, JSON.toPrettyString(ddo));
-        assertEquals(resolver.getDDO(surferDID).get("test").toString(), "test");
+        assertThrows(IllegalArgumentException.class, () -> {
+            resolver.registerDID(surferDID, JSON.toPrettyString(ddo));
+        });
 
     }
 

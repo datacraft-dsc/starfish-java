@@ -1,8 +1,7 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.Purchase;
@@ -17,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sg.dex.starfish.constant.Constant.*;
 
 
@@ -32,7 +32,7 @@ public class ConfirmPurchase_18 {
     private RemoteAgent remoteAgent;
     private Listing listing;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
@@ -49,9 +49,7 @@ public class ConfirmPurchase_18 {
         data2.put(STATUS, PUBLISHED);
         listing = remoteAgent.updateListing(data2);
 
-        Assume.assumeNotNull(remoteAgent);
-        Assume.assumeNotNull(remoteAsset);
-        Assume.assumeNotNull(listing);
+
     }
 
 
@@ -127,12 +125,15 @@ public class ConfirmPurchase_18 {
 
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testNullData() {
 
-        Purchase purchase = remoteAgent.createPurchase(null);
-        Map<String, Object> meta = purchase.getMetaData();
-        assertEquals(meta.get(STATUS), DELIVERED);
+
+
+        assertThrows(StarfishValidationException.class, () -> {
+            Purchase purchase = remoteAgent.createPurchase(null);
+            purchase.getMetaData();
+        });
 
     }
 

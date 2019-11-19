@@ -1,7 +1,6 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -15,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer building or managing an Ocean Agent,
@@ -51,18 +52,17 @@ public class AgentRegistration_04 {
 
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.create(resolver, surferDID);
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
         assertEquals(remoteAgent.getDID().getMethod(), "op");
         assertEquals(remoteAgent.getDID().getScheme(), "did");
-        Assume.assumeNotNull(remoteAgent.getDDO());
+        assumeTrue(null != remoteAgent.getDDO());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testRegistrationForException() {
         Map<String, Object> ddo = new HashMap<>();
-        List<Map<String, Object>> services = new ArrayList<>();
 
         String ddoString = JSON.toPrettyString(ddo);
 
@@ -72,9 +72,11 @@ public class AgentRegistration_04 {
         RemoteAgent remoteAgent = RemoteAgent.create(resolver, null);
         //registering the  DID and DDO
 
-        resolver.registerDID(null, ddoString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            resolver.registerDID(null, ddoString);
+        });
 
-        assertEquals(remoteAgent.getDID(), null);
+
 
 
     }

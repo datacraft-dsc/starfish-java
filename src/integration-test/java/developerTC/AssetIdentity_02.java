@@ -1,8 +1,7 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -19,6 +18,8 @@ import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 /**
@@ -30,11 +31,11 @@ public class AssetIdentity_02 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setup() {
         // Initialize Remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        Assume.assumeNotNull(remoteAgent);
+        assumeTrue(null != remoteAgent);
     }
 
     @Test
@@ -158,10 +159,13 @@ public class AssetIdentity_02 {
                 Utils.stringFromStream(remoteAsset4.getContentStream()));
     }
 
-    @Test(expected = StarfishValidationException.class)
+    @Test
     public void testForNullAsset() {
         // Null check should be there ?
-        remoteAgent.registerAsset((Asset)null);
+        assertThrows(StarfishValidationException.class, () -> {
+            remoteAgent.registerAsset((Asset)null);
+        });
+
     }
 
 }

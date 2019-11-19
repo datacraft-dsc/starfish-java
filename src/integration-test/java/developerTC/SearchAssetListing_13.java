@@ -1,7 +1,7 @@
 package developerTC;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.RemoteException;
@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer building client code to interact with an Ocean marketplace,
@@ -22,10 +24,11 @@ public class SearchAssetListing_13 {
 
     private RemoteAgent remoteAgent;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
+        assumeTrue(null!= remoteAgent);
 
     }
 
@@ -50,7 +53,7 @@ public class SearchAssetListing_13 {
     }
 
 
-    @Test(expected = RemoteException.class)
+    @Test
     public void testSearchListingByInvalidId() {
 
         Asset asset = MemoryAsset.createFromString("Test Searching of listing");
@@ -60,8 +63,9 @@ public class SearchAssetListing_13 {
         // adding some invalid asset-id in the map and try to create the listing
         data2.put("assetid", remoteAsset.getAssetID() + "Invalid");
 
-        Listing listing = remoteAgent.createListing(data2);
-
+        assertThrows(RemoteException.class, () -> {
+            remoteAgent.createListing(data2);
+        });
 
     }
 
