@@ -13,8 +13,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**

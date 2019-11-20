@@ -9,7 +9,7 @@ import sg.dex.starfish.util.JSON;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -50,7 +50,7 @@ public class TestResolver_01 {
     }
 
     @Test
-    public void testnullDID() {
+    public void testNullDID() {
         Resolver resolver = new LocalResolverImpl();
         Map<String, Object> ddo = new HashMap<>();
         DID surferDID = null;
