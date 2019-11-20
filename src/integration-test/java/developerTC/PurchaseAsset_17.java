@@ -13,9 +13,9 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**

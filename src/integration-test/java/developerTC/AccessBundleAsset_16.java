@@ -12,8 +12,8 @@ import sg.dex.starfish.impl.remote.RemoteBundle;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset

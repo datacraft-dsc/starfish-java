@@ -10,7 +10,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @SuppressWarnings("javadoc")
 public class TestMemoryPurchase {

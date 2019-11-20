@@ -14,7 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SuppressWarnings("javadoc")
 public class TestMemoryAgent {
@@ -116,7 +117,7 @@ public class TestMemoryAgent {
         String id = asset.getAssetID();
         assertEquals(64, id.length());
 
-        assertNull(agent1.getAsset(id));
+        assertTrue(null == agent1.getAsset(id));
         agent1.registerAsset(asset);
         Asset assetFromAgent = agent1.getAsset(id);
         assertEquals(asset.getMetadataString(), assetFromAgent.getMetadataString());

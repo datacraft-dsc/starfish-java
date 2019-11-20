@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static sg.dex.starfish.constant.Constant.*;
 
@@ -127,8 +127,6 @@ public class ConfirmPurchase_18 {
 
     @Test
     public void testNullData() {
-
-
 
         assertThrows(StarfishValidationException.class, () -> {
             Purchase purchase = remoteAgent.createPurchase(null);

@@ -13,8 +13,9 @@ import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class DirectPurchaseTestIT {
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value
