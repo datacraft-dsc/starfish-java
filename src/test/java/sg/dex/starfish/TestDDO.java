@@ -7,7 +7,8 @@ import sg.dex.starfish.util.DID;
 
 import java.util.Map;
 
-import static junit.framework.TestCase.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 public class TestDDO {
 

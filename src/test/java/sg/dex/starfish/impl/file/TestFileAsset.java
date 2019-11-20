@@ -16,7 +16,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SuppressWarnings("javadoc")
 public class TestFileAsset {

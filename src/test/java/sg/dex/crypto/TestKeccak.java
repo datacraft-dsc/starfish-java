@@ -3,7 +3,7 @@ package sg.dex.crypto;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.util.Hex;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("javadoc")
 public class TestKeccak {

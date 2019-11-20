@@ -10,7 +10,7 @@ import sg.dex.starfish.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static sg.dex.starfish.constant.Constant.ID;
 
 @SuppressWarnings("javadoc")

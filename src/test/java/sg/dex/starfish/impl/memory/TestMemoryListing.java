@@ -13,7 +13,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @SuppressWarnings("javadoc")
 public class TestMemoryListing {

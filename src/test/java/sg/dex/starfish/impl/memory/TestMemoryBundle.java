@@ -10,9 +10,8 @@ import sg.dex.starfish.util.DID;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SuppressWarnings("javadoc")
 public class TestMemoryBundle {
