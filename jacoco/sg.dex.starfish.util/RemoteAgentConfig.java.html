@@ -47,5 +47,10 @@ import java.util.Map;
 <span class="fc" id="L47">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
     }
 
+    public static RemoteAgent getRemoteAgent(DID did, Resolver resolver, RemoteAccount remoteAccount) {
+        // creating a Remote agent instance for given Ocean and DID
+<span class="nc" id="L52">        return RemoteAgent.create(resolver, did, remoteAccount);</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
