@@ -50,7 +50,8 @@ public class AgentService {
         String port_invoke = properties.getProperty("koi.port");
 
         invokeUrl = ip_invoke + ":" + port_invoke;
-        invokeAgent = getInvokeAgent(invokeUrl);
+        Resolver resolver = new LocalResolverImpl();
+        invokeAgent = getInvokeAgent(invokeUrl, resolver);
 
         // setting barge URL
         String barge_ip = properties.getProperty("barge.host");
@@ -115,7 +116,7 @@ public class AgentService {
     }
 
 
-    private static RemoteAgent getInvokeAgent(String host) {
+    private static RemoteAgent getInvokeAgent(String host, Resolver resolver) {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
@@ -134,8 +135,6 @@ public class AgentService {
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-        // getting the default Ocean instance
-        Resolver resolver = new LocalResolverImpl();
         // creating unique DID
         DID invokeDID = DID.createRandom();
         // registering the DID and DDO
