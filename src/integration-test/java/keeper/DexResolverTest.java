@@ -1,16 +1,27 @@
 package keeper;
 
+import developerTC.AgentService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.exceptions.TransactionException;
+import sg.dex.starfish.impl.remote.RemoteAccount;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.RemoteAgentConfig;
+import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class DexResolverTest {
@@ -58,5 +69,38 @@ public class DexResolverTest {
             resolver2.registerDID(did, valueUpdate);
         });
 
+    }
+
+    @Disabled
+    @Test
+    public void testResolveAgent()   {
+        // Creating remote Account
+        HashMap<String, Object> credentialMap = new HashMap<>();
+        credentialMap.put("username", "Aladdin");
+        credentialMap.put("password", "OpenSesame");
+        RemoteAccount remoteAccount = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
+        // Creating ddo string
+        String surferURL = AgentService.getSurferUrl();
+        String invokeURL = AgentService.getInvokeUrl();
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+
+        services.add(Utils.mapOf(
+                "type", "Ocean.Invoke.v1",
+                "serviceEndpoint", invokeURL + "/api/v1"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Meta.v1",
+                "serviceEndpoint", surferURL + "/api/v1/meta"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Storage.v1",
+                "serviceEndpoint", surferURL + "/api/v1/assets"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Auth.v1",
+                "serviceEndpoint", surferURL + "/api/v1/auth"));
+        ddo.put("service", services);
+
+        resolver1.registerDID(did, JSON.toPrettyString(ddo));
+        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(did, resolver1, remoteAccount);
+        assertEquals(remoteAgent.getDID(), did);
     }
 }
