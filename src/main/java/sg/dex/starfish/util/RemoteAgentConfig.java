@@ -47,4 +47,9 @@ public final class RemoteAgentConfig {
         return RemoteAgent.create(resolver, did, remoteAccount);
     }
 
+    public static RemoteAgent getRemoteAgent(DID did, Resolver resolver, RemoteAccount remoteAccount) {
+        // creating a Remote agent instance for given Ocean and DID
+        return RemoteAgent.create(resolver, did, remoteAccount);
+    }
+
 }

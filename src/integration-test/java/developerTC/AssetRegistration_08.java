@@ -4,10 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Bundle;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
+import sg.dex.starfish.impl.memory.MemoryBundle;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.remote.RemoteBundle;
+import sg.dex.starfish.impl.remote.RemoteDataAsset;
+import sg.dex.starfish.impl.remote.RemoteOperation;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
@@ -155,5 +160,31 @@ public class AssetRegistration_08 {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testGetDIDAllTypes() throws IOException {
+        // RemoteDataAsset
+        Asset asset = MemoryAsset.createFromString("Simple memory Asset");
+        RemoteDataAsset remoteDataAsset = remoteAgent.registerAsset(asset);
+
+        assertEquals(asset.getAssetID(), remoteDataAsset.getDID().getPath());
+        assertEquals(remoteAgent.getDID().getID(), remoteDataAsset.getDID().getID());
+
+        // RemoteBundle
+        Map<String, Asset> assetBundle = new HashMap<>();
+        assetBundle.put("one", asset);
+        Bundle bundle = MemoryBundle.create(assetBundle);
+        RemoteBundle remoteBundle = remoteAgent.registerAsset(bundle);
+
+        assertEquals(bundle.getAssetID(), remoteBundle.getDID().getPath());
+        assertEquals(remoteAgent.getDID().getID(), remoteBundle.getDID().getID());
+
+        // RemoteOperation
+        String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
+        RemoteOperation operationAsset = RemoteOperation.create(remoteAgent, asset_metaData);
+        RemoteOperation remoteOperationAsset = remoteAgent.registerAsset(operationAsset);
+
+        assertEquals(operationAsset.getAssetID(), remoteOperationAsset.getDID().getPath());
+        assertEquals(remoteAgent.getDID().getID(), remoteOperationAsset.getDID().getID());
+    }
 
 }
