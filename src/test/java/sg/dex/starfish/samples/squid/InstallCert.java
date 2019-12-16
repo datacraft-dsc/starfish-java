@@ -184,7 +184,8 @@ public class InstallCert {
             this.tm = tm;
         }
 
-        public X509Certificate[] getAcceptedIssuers() {
+        @Override
+		public X509Certificate[] getAcceptedIssuers() {
 
             /**
              * This change has been done due to the following resolution advised for Java 1.7+
@@ -195,12 +196,14 @@ public class InstallCert {
             //throw new UnsupportedOperationException();
         }
 
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
+        @Override
+		public void checkClientTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
             throw new UnsupportedOperationException();
         }
 
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
+        @Override
+		public void checkServerTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
             this.chain = chain;
             tm.checkServerTrusted(chain, authType);

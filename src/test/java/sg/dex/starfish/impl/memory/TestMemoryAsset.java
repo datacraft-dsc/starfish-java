@@ -13,7 +13,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static sg.dex.starfish.constant.Constant.ID;
 
-@SuppressWarnings("javadoc")
 public class TestMemoryAsset {
 
 	@Test

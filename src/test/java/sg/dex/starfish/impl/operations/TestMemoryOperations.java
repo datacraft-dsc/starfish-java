@@ -398,7 +398,7 @@ public class TestMemoryOperations {
 
 
         try {
-            Job job = memoryOperation.invokeAsync(test);
+            memoryOperation.invokeAsync(test);
         }
         catch (StarfishValidationException e){
             assertTrue(e.getMessage().contains("Invalid mode"));
@@ -434,7 +434,7 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         try {
-             Job job = memoryOperation.invokeAsync(test);
+             memoryOperation.invokeAsync(test);
         }
         catch (StarfishValidationException e){
             assertTrue(e.getMessage().contains("Mode must be Async for this"));

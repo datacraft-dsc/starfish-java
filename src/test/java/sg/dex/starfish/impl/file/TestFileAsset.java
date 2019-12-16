@@ -1,12 +1,9 @@
 package sg.dex.starfish.impl.file;
 
-import org.junit.jupiter.api.Test;
-import sg.dex.crypto.Hash;
-import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.Hex;
-import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Utils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +13,13 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import sg.dex.crypto.Hash;
+import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.util.Hex;
+import sg.dex.starfish.util.JSON;
+import sg.dex.starfish.util.Utils;
 
 
 @SuppressWarnings("javadoc")
