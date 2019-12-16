@@ -1253,4 +1253,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		return RemoteJob.create(this, jobID);
 	}
 
+	@Override
+	public Agent withAccount(Account a) {
+		return connect((RemoteAccount)a);
+	}
+
 }

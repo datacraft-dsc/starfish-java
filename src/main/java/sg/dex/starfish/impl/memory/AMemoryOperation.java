@@ -82,10 +82,13 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         Map<String,Object> operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());
         //1. check if mode is present
 
-        if(operationData.get(MODES)== null){
+        @SuppressWarnings("unchecked")
+		List<String> modeLst= (List<String>)(operationData.get(MODES));
+        
+        if(modeLst== null){
             return null;
         }
-        List<String> modeLst= (List<String>)operationData.get(MODES);
+        
         for(Object mode: modeLst){
             if(mode.toString().equals(SYNC)||
                     mode.toString().equals(ASYNC)){
@@ -97,9 +100,6 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         }
 
         return modeLst;
-
-
-
     }
 
 

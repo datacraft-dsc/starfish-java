@@ -246,5 +246,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 		return null;
 	}
 
+	@Override
+	public Agent withAccount(Account a) {
+		// no concept of accounts for MemoryAgent?
+		return this;
+	}
+
 
 }

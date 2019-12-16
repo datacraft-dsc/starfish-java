@@ -1,21 +1,22 @@
 package sg.dex.starfish.impl.squid;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.web3j.crypto.CipherException;
+
 import com.oceanprotocol.squid.exceptions.DDOException;
 import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import com.oceanprotocol.squid.exceptions.DIDRegisterException;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
-import org.web3j.crypto.CipherException;
+
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Utils;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SquidResolverImpl implements Resolver {
     private final Map<DID, String> ddoCache = new HashMap<>();
@@ -24,7 +25,7 @@ public class SquidResolverImpl implements Resolver {
     /**
      * Create SquidResolverImpl
      *
-     * @param SquidService squidService
+     * @param squidService
      */
     public SquidResolverImpl(SquidService squidService){
         this.squidService=squidService;

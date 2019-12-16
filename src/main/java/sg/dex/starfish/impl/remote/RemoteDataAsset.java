@@ -1,22 +1,22 @@
 package sg.dex.starfish.impl.remote;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
+
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class representing a data asset managed via a remote agent.

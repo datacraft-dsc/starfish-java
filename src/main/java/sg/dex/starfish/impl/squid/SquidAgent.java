@@ -8,6 +8,9 @@ import com.oceanprotocol.squid.models.DDO;
 import com.oceanprotocol.squid.models.aquarius.SearchResult;
 import com.oceanprotocol.squid.models.asset.AssetMetadata;
 import org.web3j.crypto.CipherException;
+
+import sg.dex.starfish.Account;
+import sg.dex.starfish.Agent;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
@@ -31,239 +34,252 @@ import java.util.Map;
  */
 public class SquidAgent extends AAgent {
 
-    private SquidResolverImpl squidResolver;
-    private SquidService squidService;
+	private SquidResolverImpl squidResolver;
+	private SquidService squidService;
 
-    /**
-     * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
-     *
-     * @param resolver Resolver instance used to resolve / register DIDs and DDO.
-     * @param did      DID for this agent
-     */
-    protected SquidAgent(
-            Resolver resolver, DID did,SquidService squidService) {
-        super(resolver, did);
-        squidResolver = (SquidResolverImpl) resolver;
-        this.squidService=squidService;
-    }
+	/**
+	 * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
+	 *
+	 * @param resolver Resolver instance used to resolve / register DIDs and DDO.
+	 * @param did DID for this agent
+	 */
+	protected SquidAgent(
+			Resolver resolver, DID did, SquidService squidService) {
+		super(resolver, did);
+		squidResolver = (SquidResolverImpl) resolver;
+		this.squidService = squidService;
+	}
 
+	/**
+	 * Creates a RemoteAgent with the specified Resolver and DID
+	 *
+	 * @param resolver Resolver instance used to resolve / register DIDs and DDO
+	 * @param did DID for this agent
+	 * @return RemoteAgent return instance of remote Agent
+	 */
+	public static SquidAgent create(Resolver resolver, DID did, SquidService squidService) {
 
-    /**
-     * Creates a RemoteAgent with the specified Resolver and DID
-     *
-     * @param resolver Resolver instance used to resolve / register DIDs and DDO
-     * @param did      DID for this agent
-     * @return RemoteAgent return instance of remote Agent
-     */
-    public static SquidAgent create(Resolver resolver, DID did,SquidService squidService) {
+		return new SquidAgent(resolver, did, squidService);
+	}
 
-        return new SquidAgent(resolver, did,squidService);
-    }
+	/**
+	 * Registers an asset with this agent. The agent must support metadata storage.
+	 *
+	 * @param asset The asset to register
+	 * @return SquidAsset
+	 * @throws AuthorizationException if requestor does not have register permission
+	 * @throws StorageException if unable to register the SquidAsset
+	 * @throws UnsupportedOperationException if the agent does not support metadata
+	 *             storage
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <R extends Asset> R registerAsset(Asset asset) {
 
+		try {
+			return (R) createSquidAssetInNetwork(getMetaData(asset), squidService);
 
-    /**
-     * Registers an asset with this agent.
-     * The agent must support metadata storage.
-     *
-     * @param asset The asset to register
-     * @return SquidAsset
-     * @throws AuthorizationException        if requestor does not have register permission
-     * @throws StorageException              if unable to register the SquidAsset
-     * @throws UnsupportedOperationException if the agent does not support metadata storage
-     */
-@SuppressWarnings("unchecked")
-    @Override
-    public <R extends Asset> R  registerAsset(Asset asset) {
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (DDOException e) {
+			e.printStackTrace();
+		}
+		// Todo FIX IT, may throw exception
+		throw new GenericException("Exception while registering Asset into OCN");
+	}
 
-        try {
-            return (R)createSquidAssetInNetwork(getMetaData(asset),squidService);
+	@SuppressWarnings("unchecked")
+	@Override
+	public <R extends Asset> R registerAsset(String metaString) {
+		try {
+			return (R) createSquidAssetInNetwork(JSON.toMap(metaString), squidService);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (DDOException e) {
+			e.printStackTrace();
+		}
+		// Todo FIX IT, may throw exception
+		throw new GenericException("Exception while registering Asset into OCN");
+	}
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DDOException e) {
-            e.printStackTrace();
-        }
-        //Todo FIX IT, may throw exception
-        throw new GenericException("Exception while registering Asset into OCN");
-    }
+	/**
+	 * Methods to get the Squid Asset after registering to Ocean Network
+	 *
+	 * @param metaData metaData
+	 * @return Squid Asset
+	 * @throws IOException IOException will be thrown
+	 * @throws DDOException DDOException will be thrown
+	 * @throws DIDFormatException DIDFormatException will be thrown
+	 */
+	private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData, SquidService squidService)
+			throws IOException, DDOException {
 
-    @Override
-    public <R extends Asset> R  registerAsset(String metaString) {
-        try {
-            return (R)createSquidAssetInNetwork(JSON.toMap(metaString),squidService);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DDOException e) {
-            e.printStackTrace();
-        }
-        //Todo FIX IT, may throw exception
-        throw new GenericException("Exception while registering Asset into OCN");
-    }
+		// get metadata required registration on OCN
+		AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);
 
-    /**
-     * Methods to get the Squid Asset after registering to Ocean Network
-     *
-     * @param metaData metaData
-     * @return Squid Asset
-     * @throws IOException        IOException will be thrown
-     * @throws DDOException       DDOException will be thrown
-     * @throws DIDFormatException DIDFormatException will be thrown
-     */
-    private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData,SquidService squidService) throws IOException, DDOException {
+		DDO squidDDO = squidService.getAssetAPI().create(metadataBase, squidService.getProvideConfig());
+		return SquidAsset.create(squidDDO.metadata.toString(), squidDDO.getDid());
 
-        // get metadata required registration on OCN
-        AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);
+	}
 
-        DDO squidDDO = squidService.getAssetAPI().create(metadataBase, squidService.getProvideConfig());
-        return SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());
+	private AssetMetadata getMetadataForSquidFromAsset(Map<String, Object> metaData) throws IOException {
 
-    }
+		// todo map mandatory attribute
+		Map<String, Object> squidMetaDAta = new HashMap<>();
+		// modify get metadata to squid..metadata
+		squidMetaDAta.put("base", metaData);
 
-    private AssetMetadata getMetadataForSquidFromAsset(Map<String, Object> metaData) throws IOException {
+		return DDO.fromJSON(new TypeReference<AssetMetadata>() {}, JSON.toString(squidMetaDAta));
+	}
 
-        // todo map mandatory attribute
-        Map<String, Object> squidMetaDAta = new HashMap<>();
-        // modify get metadata to squid..metadata
-        squidMetaDAta.put("base", metaData);
+	private Map<String, Object> getMetaData(Asset asset) {
+		Map<String, Object> meta = new HashMap<>();
+		// getting asset meta data
+		Map<String, Object> assetMetadata = JSON.toMap(asset.getMetadataString());// .getMetadata();
+		// initialize with default value
 
-        return DDO.fromJSON(new TypeReference<AssetMetadata>() {
-        }, JSON.toString(squidMetaDAta));
-    }
+		meta.put(Constant.TYPE, Constant.DATA_SET);
+		meta.put(Constant.NAME, Constant.DEFAULT_NAME);
+		meta.put("license", Constant.DEFAULT_LICENSE);
+		meta.put("author", Constant.DEFAULT_AUTHOR);
+		meta.put("price", Constant.DEFAULT_PRICE);
 
-    private Map<String, Object> getMetaData(Asset asset) {
-        Map<String, Object> meta = new HashMap<>();
-        // getting asset meta data
-        Map<String, Object> assetMetadata = JSON.toMap(asset.getMetadataString());//.getMetadata();
-        // initialize with default value
+		if (assetMetadata != null) {
+			for (Map.Entry<String, Object> me : meta.entrySet()) {
+				if (assetMetadata.get(me.getKey()) != null) {
+					meta.put(me.getKey(), assetMetadata.get(me.getKey()));
+				}
+			}
+		}
+		meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);
+		return meta;
+	}
 
-        meta.put(Constant.TYPE, Constant.DATA_SET);
-        meta.put(Constant.NAME, Constant.DEFAULT_NAME);
-        meta.put("license", Constant.DEFAULT_LICENSE);
-        meta.put("author", Constant.DEFAULT_AUTHOR);
-        meta.put("price", Constant.DEFAULT_PRICE);
+	/**
+	 * Gets an asset for the given asset ID from this agent. Returns null if the
+	 * asset ID does not exist.
+	 *
+	 * @param id The ID of the asset to get from this agent
+	 * @return SquidAsset The asset found
+	 * @throws AuthorizationException if requestor does not have access permission
+	 * @throws StorageException if there is an error in retrieving the SquidAsset
+	 */
+	@Override
+	public <R extends Asset> R getAsset(String id) {
+		DID did = DID.create("op", id, null, null);
+		return getAsset(did);
+	}
 
-        if (assetMetadata != null) {
-            for (Map.Entry<String, Object> me : meta.entrySet()) {
-                if (assetMetadata.get(me.getKey()) != null) {
-                    meta.put(me.getKey(), assetMetadata.get(me.getKey()));
-                }
-            }
-        }
-        meta.put(Constant.DATE_CREATED, Constant.DEFAULT_DATE_CREATED);
-        return meta;
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <R extends Asset> R getAsset(DID did) {
 
-    /**
-     * Gets an asset for the given asset ID from this agent.
-     * Returns null if the asset ID does not exist.
-     *
-     * @param id The ID of the asset to get from this agent
-     * @return SquidAsset The asset found
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException       if there is an error in retrieving the SquidAsset
-     */
-    @Override
-    public SquidAsset getAsset(String id) {
-        DID did = DID.create("op", id, null, null);
-        return getAsset(did);
-    }
+		try {
+			DDO squidDDO = squidResolver.getSquidDDO(did);
+			SquidAsset.create(squidDDO.metadata.toString(), squidDDO.getDid());
+		}
+		catch (EthereumException e) {
+			e.printStackTrace();
+		}
+		catch (DDOException e) {
+			e.printStackTrace();
+		}
+		catch (DIDFormatException e) {
+			e.printStackTrace();
+		}
+		catch (CipherException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public SquidAsset getAsset(DID did) {
+		return (R) SquidAsset.create(did, squidService);
 
+	}
 
-        try {
-            DDO squidDDO = squidResolver.getSquidDDO(did);
-            SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());
-        } catch (EthereumException e) {
-            e.printStackTrace();
-        } catch (DDOException e) {
-            e.printStackTrace();
-        } catch (DIDFormatException e) {
-            e.printStackTrace();
-        } catch (CipherException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	/**
+	 * API to uploads an squid asset to this agent. Registers the asset with the
+	 * agent if required.
+	 * <p>
+	 * Throws an exception if upload is not possible, with the following likely
+	 * causes: - The agent does not support uploads of this asset type / size - The
+	 * data for the asset cannot be accessed by the agent
+	 *
+	 * @param a SquidAsset to upload
+	 * @return SquidAsset An asset stored on the agent if the upload is successful
+	 * @throws AuthorizationException if requestor does not have upload permission
+	 * @throws StorageException if there is an error in uploading the SquidAsset
+	 */
+	@Override
+	public <R extends Asset> R uploadAsset(Asset a) {
+		throw new UnsupportedOperationException("Upload not supported by squid agent");
+	}
 
-        return SquidAsset.create(did,squidService);
+	/**
+	 * Method to search an asset
+	 *
+	 * @param text asset to be searched
+	 * @return List of Squid Asset that matches
+	 * @throws DDOException exception
+	 */
 
-    }
+	public List<SquidAsset> searchAsset(String text) throws DDOException {
+		SearchResult searchResult = squidService.getOceanAPI().getAssetsAPI().search(text);
+		List<DDO> listDDO = searchResult.results;
+		List<SquidAsset> squidAssetLst = new ArrayList<>();
+		for (DDO ddo : listDDO) {
+			DID did = DID.parse(ddo.getDid().toString());
+			SquidAsset asset = getAsset(did);
+			squidAssetLst.add(asset);
+		}
+		return squidAssetLst;
 
-    /**
-     * API to uploads an squid asset to this agent. Registers the asset with the agent if required.
-     * <p>
-     * Throws an exception if upload is not possible, with the following likely causes:
-     * - The agent does not support uploads of this asset type / size
-     * - The data for the asset cannot be accessed by the agent
-     *
-     * @param a SquidAsset to upload
-     * @return SquidAsset An asset stored on the agent if the upload is successful
-     * @throws AuthorizationException if requestor does not have upload permission
-     * @throws StorageException       if there is an error in uploading the SquidAsset
-     */
-    @Override
-    public SquidAsset uploadAsset(Asset a) {
-        throw new UnsupportedOperationException("Upload not supported by squid agent");
-    }
+	}
 
-    /**
-     * Method to search an asset
-     *
-     * @param text asset to be searched
-     * @return List of Squid Asset that matches
-     * @throws DDOException exception
-     */
+	/**
+	 * API to return Squid DDO based on Squid DID
+	 *
+	 * @param did DID
+	 * @return DDO ddo
+	 * @throws UnsupportedOperationException exception
+	 */
+	public SquidAsset resolveSquidDID(DID did) {
 
-    public List<SquidAsset> searchAsset(String text) throws DDOException {
-        SearchResult searchResult = squidService.getOceanAPI().getAssetsAPI().search(text);
-        List<DDO> listDDO = searchResult.results;
-        List<SquidAsset> squidAssetLst = new ArrayList<>();
-        for (DDO ddo : listDDO) {
-            DID did = DID.parse(ddo.getDid().toString());
-            SquidAsset asset = getAsset(did);
-            squidAssetLst.add(asset);
-        }
-        return squidAssetLst;
+		if (null == did) {
+			throw new UnsupportedOperationException("DID cannot be null");
+		}
+		SquidAsset squidAsset = getAsset(did);
+		return squidAsset;
 
-    }
+	}
 
-    /**
-     * API to return Squid DDO based on Squid DID
-     *
-     * @param did DID
-     * @return DDO ddo
-     * @throws UnsupportedOperationException exception
-     */
-    public SquidAsset resolveSquidDID(DID did) {
+	/**
+	 * API to Query Asset based on map argument passed
+	 *
+	 * @param queryMapData map data
+	 * @return list of Squid Asset
+	 * @throws Exception any exception occur while calling squid API
+	 */
+	public List<SquidAsset> queryAsset(Map<String, Object> queryMapData) throws Exception {
 
-        if (null == did) {
-            throw new UnsupportedOperationException("DID cannot be null");
-        }
-        SquidAsset squidAsset = getAsset(did);
-        return squidAsset;
+		List<DDO> listDDO = squidService.getAssetAPI().query(queryMapData).getResults();
+		List<SquidAsset> squidAssetLst = new ArrayList<>();
+		for (DDO ddo : listDDO) {
+			DID did = DID.parse(ddo.getDid().toString());
+			SquidAsset asset = getAsset(did);
+			squidAssetLst.add(asset);
+		}
+		return squidAssetLst;
+	}
 
-    }
-
-    /**
-     * API to Query Asset based on map argument passed
-     *
-     * @param queryMapData map data
-     * @return list of Squid Asset
-     * @throws Exception any exception occur while calling squid API
-     */
-    public List<SquidAsset> queryAsset(Map<String, Object> queryMapData) throws Exception {
-
-        List<DDO> listDDO = squidService.getAssetAPI().query(queryMapData).getResults();
-        List<SquidAsset> squidAssetLst = new ArrayList<>();
-        for (DDO ddo : listDDO) {
-            DID did = DID.parse(ddo.getDid().toString());
-            SquidAsset asset = getAsset(did);
-            squidAssetLst.add(asset);
-        }
-        return squidAssetLst;
-    }
-
+	@Override
+	public Agent withAccount(Account a) {
+		throw new UnsupportedOperationException();
+	}
 
 }

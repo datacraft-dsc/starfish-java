@@ -41,7 +41,6 @@ public interface Resolver {
      * @param did DID to register
      * @param ddoString DDO to associate with the given DID
      * @throws ResolverException
-     * @return true if registration is successful, false otherwise
      */
     void registerDID(DID did, String ddoString) throws ResolverException;
 }

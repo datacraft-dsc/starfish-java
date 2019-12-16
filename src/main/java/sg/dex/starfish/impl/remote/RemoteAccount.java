@@ -50,7 +50,7 @@ public class RemoteAccount extends AAccount {
      */
     public static RemoteAccount create(String id,
                                        String token) {
-        HashMap userDataMap = new HashMap<>();
+        HashMap<String, Object> userDataMap = new HashMap<>();
         userDataMap.put("token",token);
 
         return new RemoteAccount(id,userDataMap);

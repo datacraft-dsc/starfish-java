@@ -93,10 +93,6 @@ public final class SquidService {
 
         try (InputStream input = new FileInputStream(file.getPath())) {
 
-            if (input == null) {
-                throw new IOException("properties files is missing");
-            }
-
             prop.load(input);
         } catch (IOException e) {
             e.printStackTrace();

@@ -125,7 +125,6 @@ public class JSON {
      *
      * @param jsonString A string containing a valid JSON object
      * @return A map representing the JSON object
-     * @throws Exception on JSON parsing error
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> toMap(String jsonString) {

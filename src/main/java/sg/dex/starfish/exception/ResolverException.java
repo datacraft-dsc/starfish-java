@@ -5,6 +5,7 @@ package sg.dex.starfish.exception;
  *
  * @author Ilia
  */
+@SuppressWarnings("serial")
 public class ResolverException extends RuntimeException {
     /**
      * API to create Resolver Exception instance

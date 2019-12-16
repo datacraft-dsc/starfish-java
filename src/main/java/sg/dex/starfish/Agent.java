@@ -72,6 +72,13 @@ public interface Agent {
      */
 	<R extends Asset> R getAsset(DID did);
 
+	/**
+	 * Gets an updated version of this agent using the given Account.
+	 * @param a An account compatible with the agent 
+	 * @return
+	 */
+	Agent withAccount(Account a);
+	
     /**
      * Uploads an asset to this agent. Registers the asset with the agent if required.
      * <p>
