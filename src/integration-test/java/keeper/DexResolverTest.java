@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.exceptions.TransactionException;
+import sg.dex.starfish.Asset;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.DexResolver;
@@ -101,6 +103,15 @@ public class DexResolverTest {
 
         resolver1.registerDID(did, JSON.toPrettyString(ddo));
         RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(did, resolver1, remoteAccount);
-        assertEquals(remoteAgent.getDID(), did);
+        Asset asset = MemoryAsset.createFromString("Asset from string");
+        Asset registeredAsset = remoteAgent.registerAsset(asset);
+        // resolving
+        RemoteAgent resolvedAgent = RemoteAgentConfig.getRemoteAgent(did, resolver2, remoteAccount);
+        Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
+
+        assertEquals(resolvedAgent.getDID(), did);
+        assertEquals(resolvedAgent.getMetaEndpoint(), surferURL + "/api/v1/meta");
+        assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
+        assertEquals(registeredAsset.getDID(), assetFromAgent.getDID());
     }
 }
