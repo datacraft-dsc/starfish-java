@@ -51,7 +51,7 @@ public class LocalResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-        if (did == null) throw new IllegalArgumentException("DID cannot be null");
+        if (null == did || null == ddoString) throw new IllegalArgumentException("DID/DDO cannot be null");
         did = did.withoutPath();
         ddoCache.put(did, ddoString);
     }

@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.platform.commons.util.StringUtils;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
@@ -11,6 +12,9 @@ import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -36,7 +40,7 @@ public class AgentService {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
-        surferUrl = ip + ":" + port;
+        surferUrl = (StringUtils.isBlank(port)) ?ip : (ip + ":" + port) ;
         socketTimeout = properties.getProperty("socket.timeout");
 
         //username and password
@@ -160,6 +164,20 @@ public class AgentService {
         return surfer;
 
     }
+    public static boolean isServerReachable(String uri) {
+
+        try {
+            int timeOut = AgentService.getSocketTimeout();
+            URL url = new URL(uri);
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);
+            socket.close();
+            return true;
+        } catch (Exception e) {
+
+            return false;
+        }
+    }
 
     /**
      * Gets the koi remote agent for testing purposes
@@ -171,4 +189,7 @@ public class AgentService {
 
     }
 
+    public static boolean checkSurfer() {
+        return isServerReachable(surferUrl);
+    }
 }

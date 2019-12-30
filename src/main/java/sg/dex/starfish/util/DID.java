@@ -209,7 +209,7 @@ public class DID {
         SecureRandom sr = new SecureRandom();
         byte[] bytes = new byte[Utils.DID_LENGTH];
         sr.nextBytes(bytes);
-        return "did:" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
+        return Constant.DID+":" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
     }
 
     /**

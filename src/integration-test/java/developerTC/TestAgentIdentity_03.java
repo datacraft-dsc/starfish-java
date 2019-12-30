@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * I need a stable identifier (Agent ID) for an arbitrary Agent in the Ocean ecosystem
  * This test class with validate the DID and DDO format and and their data
  */
-public class AgentIdentity_03 {
+public class TestAgentIdentity_03 {
 
     private RemoteAgent remoteAgent;
 

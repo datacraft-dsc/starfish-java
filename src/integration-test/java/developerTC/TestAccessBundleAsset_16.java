@@ -1,5 +1,8 @@
 package developerTC;
 
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
@@ -18,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset
  */
-public class AccessBundleAsset_16 {
+public class TestAccessBundleAsset_16 {
 
     private RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 
@@ -37,6 +40,13 @@ public class AccessBundleAsset_16 {
         assetBundle.put("two", a2);
         return assetBundle;
     }
+
+//    @BeforeAll
+//    @DisplayName("Verify Surfer is running")
+//    public static void verifySurfer(){
+//        Assumptions.assumeTrue(AgentService.checkSurfer());
+//        System.exit(1);
+//    }
 
     /**
      * Create Remote bundle of 2 sub-asset

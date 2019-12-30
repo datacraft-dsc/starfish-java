@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * As a developer managing a Ocean Agent,
  * I need to be able to update service endpoints for my Agent
  */
-public class AgentEndpointUpdate_05 {
+public class TestAgentEndpointUpdate_05 {
 
 
     @Test

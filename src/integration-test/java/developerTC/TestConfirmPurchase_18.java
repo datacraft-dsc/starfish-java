@@ -1,6 +1,7 @@
 package developerTC;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
@@ -26,7 +27,8 @@ import static sg.dex.starfish.constant.Constant.*;
  * I can determine whether to serve the asset to a given requestor
  * "
  */
-public class ConfirmPurchase_18 {
+@Disabled
+public class TestConfirmPurchase_18 {
 
     private ARemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;

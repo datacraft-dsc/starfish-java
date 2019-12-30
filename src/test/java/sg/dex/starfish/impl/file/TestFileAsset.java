@@ -3,7 +3,6 @@ package sg.dex.starfish.impl.file;
 import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;

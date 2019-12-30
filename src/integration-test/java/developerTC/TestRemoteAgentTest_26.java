@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RemoteAgentTest_26 {
+public class TestRemoteAgentTest_26 {
 
 
     private static String getDDO() {

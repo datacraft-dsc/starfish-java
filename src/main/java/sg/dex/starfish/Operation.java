@@ -7,9 +7,7 @@ import sg.dex.starfish.util.Params;
 import java.util.List;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.SYNC;
-import static sg.dex.starfish.constant.Constant.ASYNC;
-import static sg.dex.starfish.constant.Constant.MODES;
+import static sg.dex.starfish.constant.Constant.*;
 
 
 /**

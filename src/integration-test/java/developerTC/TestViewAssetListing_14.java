@@ -2,6 +2,7 @@ package developerTC;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
@@ -18,7 +19,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 /**
  * Class to test the Remote listing functionality
  */
-public class ViewAssetListing_14 {
+@Disabled
+public class TestViewAssetListing_14 {
 
     private RemoteAgent remoteAgent;
 
