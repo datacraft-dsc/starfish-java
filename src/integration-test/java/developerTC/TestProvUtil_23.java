@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class ProvUtil_23 {
+public class TestProvUtil_23 {
 
     private RemoteAgent remoteAgent;
 

@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * and obtain the results as a new Ocean Asset
  */
 @Disabled("Disabled until get updated the asset id ")
-public class InvokeServiceFree_20 {
+public class TestInvokeServiceFree_20 {
 
 
     private DID did;

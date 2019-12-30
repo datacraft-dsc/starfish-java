@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer wishing to make an asset available for download,
  * I need a way to upload the asset data to an appropriate service provider
  */
-public class UploadAsset_11 {
+public class TestUploadAsset_11 {
 
 
     private RemoteAgent remoteAgent;

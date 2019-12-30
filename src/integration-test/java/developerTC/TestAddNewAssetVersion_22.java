@@ -9,7 +9,7 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
  * I want to publish a new asset (as a new version of an existing asset), so that consumers can purchase the latest version
  */
 @Disabled
-public class AddNewAssetVersion_22 {
+public class TestAddNewAssetVersion_22 {
     private RemoteAgent remoteAgent;
 
 

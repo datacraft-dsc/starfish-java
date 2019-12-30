@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * As a developer working with Ocean,
  * I need to obtain service endpoints for an arbitrary Agent in the Ocean ecosystem
  */
-public class AgentEndpointQuery_06 {
+public class TestAgentEndpointQuery_06 {
 
 
     @Test

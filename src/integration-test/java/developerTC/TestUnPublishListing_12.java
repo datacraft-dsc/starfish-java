@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * I need a way to un publish my asset (i.e. remove relevant listings) from a marketplace
  */
 @Disabled
-public class UnPublishListing_12 {
+public class TestUnPublishListing_12 {
 
 
     private RemoteAgent remoteAgent;

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * I need a way to search available asset listings
  */
 @Disabled
-public class SearchAssetListing_13 {
+public class TestSearchAssetListing_13 {
 
     private RemoteAgent remoteAgent;
 
