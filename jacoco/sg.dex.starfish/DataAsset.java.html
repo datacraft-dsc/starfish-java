@@ -83,7 +83,7 @@ public interface DataAsset extends Asset {
 
     default String getContentHash() {
     	// TODO: convert to InputStream calculation
-<span class="fc" id="L86">        return Hex.toString(Hash.sha3_256(this.getContent()));</span>
+<span class="fc" id="L86">        return Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
     }
 
     /**
