@@ -209,7 +209,7 @@ public class DID {
 <span class="fc" id="L209">        SecureRandom sr = new SecureRandom();</span>
 <span class="fc" id="L210">        byte[] bytes = new byte[Utils.DID_LENGTH];</span>
 <span class="fc" id="L211">        sr.nextBytes(bytes);</span>
-<span class="fc" id="L212">        return &quot;did:&quot; + Constant.DID_METHOD + &quot;:&quot; + Hex.toString(bytes);</span>
+<span class="fc" id="L212">        return Constant.DID+&quot;:&quot; + Constant.DID_METHOD + &quot;:&quot; + Hex.toString(bytes);</span>
     }
 
     /**

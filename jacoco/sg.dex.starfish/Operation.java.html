@@ -7,9 +7,7 @@ import sg.dex.starfish.util.Params;
 import java.util.List;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.SYNC;
-import static sg.dex.starfish.constant.Constant.ASYNC;
-import static sg.dex.starfish.constant.Constant.MODES;
+import static sg.dex.starfish.constant.Constant.*;
 
 
 /**
@@ -22,7 +20,7 @@ public interface Operation extends Asset {
 
     @Override
 	default boolean isOperation() {
-<span class="fc" id="L25">        return true;</span>
+<span class="fc" id="L23">        return true;</span>
     }
 
     /**
@@ -33,7 +31,7 @@ public interface Operation extends Asset {
      * @throws IllegalArgumentException if required parameters are not available.
      */
     default Job invoke(Object... params) {
-<span class="nc" id="L36">        return invoke(Params.namedParams(this, params));</span>
+<span class="nc" id="L34">        return invoke(Params.namedParams(this, params));</span>
     }
 
     /**
@@ -84,7 +82,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="nc" id="L87">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
+<span class="nc" id="L85">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
     }
 
     /**
@@ -97,7 +95,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 	default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L100">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
+<span class="nc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
     }
     
     /**
@@ -106,26 +104,26 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
  	default List&lt;String&gt; getOperationModes() {
-<span class="nc" id="L109">         Map&lt;String,Object&gt; operationData = getOperationSpec();</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">         if (operationData==null ) {</span>
-<span class="nc" id="L111">         	 throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
+<span class="nc" id="L107">         Map&lt;String,Object&gt; operationData = getOperationSpec();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">         if (operationData==null ) {</span>
+<span class="nc" id="L109">         	 throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
          }
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">         if(operationData.get(MODES)== null){</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">         if(operationData.get(MODES)== null){</span>
         	 // return default list (all supported modes) as per DEP6
-<span class="nc" id="L116">             return List.of(SYNC, ASYNC);</span>
+<span class="nc" id="L114">             return List.of(SYNC, ASYNC);</span>
          }
-<span class="nc" id="L118">         List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">         for(String mode: modeLst){</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">             if(mode.equals(SYNC)||</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">                     mode.equals(ASYNC)){</span>
+<span class="nc" id="L116">         List&lt;String&gt; modeLst= (List&lt;String&gt;)operationData.get(MODES);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">         for(String mode: modeLst){</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">             if(mode.equals(SYNC)||</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                     mode.equals(ASYNC)){</span>
              }
              else{
-<span class="nc" id="L124">                 throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot;+mode);</span>
+<span class="nc" id="L122">                 throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot;+mode);</span>
              }
-<span class="nc" id="L126">         }</span>
+<span class="nc" id="L124">         }</span>
 
-<span class="nc" id="L128">         return modeLst;</span>
+<span class="nc" id="L126">         return modeLst;</span>
      }
 
 }
