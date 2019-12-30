@@ -22,13 +22,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static sg.dex.starfish.constant.Constant.DATA_SET;
-import static sg.dex.starfish.constant.Constant.DATE_CREATED;
-import static sg.dex.starfish.constant.Constant.TYPE;
-import static sg.dex.starfish.constant.Constant.SIZE;
-import static sg.dex.starfish.constant.Constant.OCTET_STREAM;
-import static sg.dex.starfish.constant.Constant.ID;
-import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Class representing a local in-memory data asset.

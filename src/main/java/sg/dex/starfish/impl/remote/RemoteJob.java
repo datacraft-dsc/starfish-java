@@ -9,12 +9,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static sg.dex.starfish.constant.Constant.SCHEDULED;
-import static sg.dex.starfish.constant.Constant.SUCCEEDED;
-import static sg.dex.starfish.constant.Constant.STATUS;
-import static sg.dex.starfish.constant.Constant.RUNNING;
-import static sg.dex.starfish.constant.Constant.FAILED;
-import static sg.dex.starfish.constant.Constant.CANCELLED;
+import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * This class represents a remote Job executed via the Invoke API on a remote agent.

@@ -10,7 +10,6 @@ import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.util.Arrays;

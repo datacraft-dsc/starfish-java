@@ -1,6 +1,7 @@
 package developerTC;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * As a developer working with Ocean,

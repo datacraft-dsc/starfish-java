@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
@@ -27,8 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
@@ -54,11 +53,11 @@ public class AssetRegistration_08 {
         Asset asset = MemoryAsset.createFromString(data);
         Asset remoteAsset = remoteAgent.registerAsset(asset);
 
-        assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
+        Assertions.assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         // get registered Asset by ID
-        assertTrue(remoteAsset.isDataAsset());
-        assertEquals(remoteAsset.getMetadataString(), asset.getMetadataString());
+        Assertions.assertTrue(remoteAsset.isDataAsset());
+        Assertions.assertEquals(remoteAsset.getMetadataString(), asset.getMetadataString());
     }
 
     @Test
@@ -69,8 +68,8 @@ public class AssetRegistration_08 {
         Asset remoteAsset1 = remoteAgent.registerAsset(MemoryAsset.createFromString(stringData));
 
         // get registered Asset by ID
-        assertTrue(remoteAsset.isDataAsset());
-        assertTrue(remoteAsset1.isDataAsset());
+        Assertions.assertTrue(remoteAsset.isDataAsset());
+        Assertions.assertTrue(remoteAsset1.isDataAsset());
     }
 
     @Test
@@ -87,15 +86,15 @@ public class AssetRegistration_08 {
 
         Asset remoteAsset = remoteAgent.registerAsset(asset);
 
-        assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
+        Assertions.assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         Map<String, Object> provData = JSON.toMap(remoteAsset.getMetadata().get("provenance").toString());
 
         // get registered Asset by ID
-        assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
-        assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
-        assertTrue(provData.get("activity").toString().contains(actId));
-        assertTrue(provData.get("wasGeneratedBy").toString().contains(actId));
+        Assertions.assertEquals(remoteAsset.isDataAsset(), remoteAsset.isDataAsset());
+        Assertions.assertEquals(remoteAsset.getMetadataString(), remoteAsset.getMetadataString());
+        Assertions.assertTrue(provData.get("activity").toString().contains(actId));
+        Assertions.assertTrue(provData.get("wasGeneratedBy").toString().contains(actId));
 
     }
 
@@ -110,7 +109,7 @@ public class AssetRegistration_08 {
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
 
-        assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
+        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
 
     }
 
@@ -125,13 +124,12 @@ public class AssetRegistration_08 {
         Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
-        DataAsset dataAssetWithHash =dataAsset.includeContentHash();
+        DataAsset dataAssetWithHash = dataAsset.includeContentHash();
 
-        assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
+        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
 //        assertEquals(Hex.toString(Hash.sha3_256(dataAssetWithHash.getMetadata().get(CONTENT_HASH).toString())), Hex.toString(Hash.sha3_256(content)));
 
     }
-
 
 
     @Test
@@ -157,7 +155,7 @@ public class AssetRegistration_08 {
         fileAsset = (FileAsset) fileAsset.includeContentHash();
         String actual = fileAsset.getMetadata().get(CONTENT_HASH).toString();
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -166,8 +164,8 @@ public class AssetRegistration_08 {
         Asset asset = MemoryAsset.createFromString("Simple memory Asset");
         RemoteDataAsset remoteDataAsset = remoteAgent.registerAsset(asset);
 
-        assertEquals(asset.getAssetID(), remoteDataAsset.getDID().getPath());
-        assertEquals(remoteAgent.getDID().getID(), remoteDataAsset.getDID().getID());
+        Assertions.assertEquals(asset.getAssetID(), remoteDataAsset.getDID().getPath());
+        Assertions.assertEquals(remoteAgent.getDID().getID(), remoteDataAsset.getDID().getID());
 
         // RemoteBundle
         Map<String, Asset> assetBundle = new HashMap<>();
@@ -175,16 +173,16 @@ public class AssetRegistration_08 {
         Bundle bundle = MemoryBundle.create(assetBundle);
         RemoteBundle remoteBundle = remoteAgent.registerAsset(bundle);
 
-        assertEquals(bundle.getAssetID(), remoteBundle.getDID().getPath());
-        assertEquals(remoteAgent.getDID().getID(), remoteBundle.getDID().getID());
+        Assertions.assertEquals(bundle.getAssetID(), remoteBundle.getDID().getPath());
+        Assertions.assertEquals(remoteAgent.getDID().getID(), remoteBundle.getDID().getID());
 
         // RemoteOperation
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
         RemoteOperation operationAsset = RemoteOperation.create(remoteAgent, asset_metaData);
         RemoteOperation remoteOperationAsset = remoteAgent.registerAsset(operationAsset);
 
-        assertEquals(operationAsset.getAssetID(), remoteOperationAsset.getDID().getPath());
-        assertEquals(remoteAgent.getDID().getID(), remoteOperationAsset.getDID().getID());
+        Assertions.assertEquals(operationAsset.getAssetID(), remoteOperationAsset.getDID().getPath());
+        Assertions.assertEquals(remoteAgent.getDID().getID(), remoteOperationAsset.getDID().getID());
     }
 
 }

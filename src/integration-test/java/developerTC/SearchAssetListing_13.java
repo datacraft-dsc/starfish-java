@@ -1,6 +1,7 @@
 package developerTC;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer building client code to interact with an Ocean marketplace,
  * I need a way to search available asset listings
  */
+@Disabled
 public class SearchAssetListing_13 {
 
     private RemoteAgent remoteAgent;

@@ -1,6 +1,7 @@
 package developerTC;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
@@ -24,6 +25,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * I have reviewed and agreed to the service agreement offered in a relevant Asset Listing
  * "
  */
+@Disabled
 public class PurchaseAsset_17 {
 
     ARemoteAsset remoteAsset;

@@ -1,5 +1,8 @@
 package developerTC;
 
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
@@ -36,6 +39,13 @@ public class AccessBundleAsset_16 {
         assetBundle.put("one", a1);
         assetBundle.put("two", a2);
         return assetBundle;
+    }
+
+    @BeforeAll
+    @DisplayName("Verify Surfer is running")
+    public static void verifySurfer(){
+        Assumptions.assumeTrue(AgentService.checkSurfer());
+        System.exit(1);
     }
 
     /**

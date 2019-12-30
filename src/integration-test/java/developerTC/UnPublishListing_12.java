@@ -2,6 +2,7 @@ package developerTC;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer working with an Ocean marketplace,
  * I need a way to un publish my asset (i.e. remove relevant listings) from a marketplace
  */
+@Disabled
 public class UnPublishListing_12 {
 
 

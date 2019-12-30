@@ -9,7 +9,6 @@ import sg.dex.starfish.exception.AuthorizationException;
 import sg.dex.starfish.exception.GenericException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
-import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
 
 import java.io.IOException;

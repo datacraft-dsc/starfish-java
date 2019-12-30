@@ -1,6 +1,6 @@
 package sg.dex.starfish;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
@@ -22,10 +22,10 @@ public class TestDDO {
         resolver.registerDID(did, ddoString);
 
         String ddos = resolver.getDDOString(did);
-        Assert.assertEquals(ddoString, ddos);
+        Assertions.assertEquals(ddoString, ddos);
 
         Map<String, Object> ddo = resolver.getDDO(did);
-        Assert.assertEquals(1, ddo.size());
+        Assertions.assertEquals(1, ddo.size());
 
     }
 
@@ -43,6 +43,6 @@ public class TestDDO {
         DID did2 = did1.withPath("foo");
 
         DID did3 = did2.withoutPath();
-        Assert.assertEquals(did1, did3);
+        Assertions.assertEquals(did1, did3);
     }
 }
