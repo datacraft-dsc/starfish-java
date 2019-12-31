@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.impl.AAccount;
+import sg.dex.starfish.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,16 +45,32 @@ public class RemoteAccount extends AAccount {
     /**
      * This method is to create instance of Remote Account
      *
-     * @param id          The identifier for this account
+     * @param userName userName  for this account
+     * @param password password for this account
+     * @return RemoteAccount RemoteAccount instance
+     */
+    public static RemoteAccount create(String userName,String password) {
+
+        //Creating remote Account
+        Map<String, Object> credentialMap = new HashMap<>();
+        credentialMap.put("username", userName);
+        credentialMap.put("password", password);
+
+      return RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
+
+    }
+    /**
+     * This method is to create instance of Remote Account
+     *
      * @param token The token required for authenticaiton
      * @return RemoteAccount RemoteAccount instance
      */
-    public static RemoteAccount create(String id,
+    public static RemoteAccount create(
                                        String token) {
         HashMap userDataMap = new HashMap<>();
         userDataMap.put("token",token);
 
-        return new RemoteAccount(id,userDataMap);
+        return new RemoteAccount(Utils.createRandomHexString(32),userDataMap);
     }
 
     /**
