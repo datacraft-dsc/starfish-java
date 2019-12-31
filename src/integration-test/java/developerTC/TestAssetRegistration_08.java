@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.DigestException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -115,7 +116,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testHashForRemoteAsset() throws IOException {
+    public void testHashForRemoteAsset() throws IOException, DigestException {
 
 
         // read metadata
@@ -141,7 +142,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testHashForFileAssetWithDefaultMetadata() {
+    public void testHashForFileAssetWithDefaultMetadata() throws DigestException {
 
         // read metadata
 

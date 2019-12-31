@@ -13,6 +13,7 @@ import sg.dex.starfish.util.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.DigestException;
 import java.util.Map;
 
 /**
@@ -84,7 +85,7 @@ public interface DataAsset extends Asset {
      * @return the content of hash as string
      */
 
-    default String getContentHash() {
+    default String getContentHash() throws DigestException {
 
         return Hash.checkSum(this.getContentStream());
     }
@@ -102,7 +103,7 @@ public interface DataAsset extends Asset {
      * @return respective data asset sub class.
      * @throws UnsupportedOperationException if the Asset type is not DataAsset
      */
-    default DataAsset includeContentHash() {
+    default DataAsset includeContentHash() throws DigestException {
 
         // check if the hash content is already present also
         // validate if content is valid or not

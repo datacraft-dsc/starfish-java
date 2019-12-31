@@ -8,6 +8,7 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 
 import java.nio.charset.StandardCharsets;
+import java.security.DigestException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class TestResources {
 
     @Test
-    public void testResourceAssetWithContentHash() {
+    public void testResourceAssetWithContentHash() throws DigestException {
         DataAsset dataAsset = ResourceAsset.create("assets/hello.txt");
         byte[] bs = dataAsset.getContent();
         assertFalse(dataAsset.getMetadata().containsKey(Constant.CONTENT_HASH));

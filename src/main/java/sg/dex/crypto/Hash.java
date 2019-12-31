@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.DigestException;
 
 /**
  * Utility class for hash functions
@@ -137,7 +138,7 @@ public class Hash {
      * @param inputStream
      * @return
      */
-    public static String checkSum(InputStream inputStream) {
+    public static String checkSum(InputStream inputStream) throws DigestException {
         String checksum = null;
         try {
 
@@ -151,6 +152,7 @@ public class Hash {
             byte[] hash = md.digest();
             checksum = new BigInteger(1, hash).toString(16); //don't use this, truncates leading zero
         } catch (IOException e) {
+            throw new DigestException("couldn't make digest of partial content");
         }
         assert checksum != null;
         return checksum.trim();
