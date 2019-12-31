@@ -85,7 +85,7 @@ public interface DataAsset extends Asset {
      */
 
     default String getContentHash() {
-        
+
         return Hash.checkSum(this.getContentStream());
     }
 
