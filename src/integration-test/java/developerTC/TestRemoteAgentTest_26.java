@@ -1,5 +1,6 @@
 package developerTC;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.remote.RemoteAccount;
@@ -50,7 +51,7 @@ public class TestRemoteAgentTest_26 {
         try {
             remoteAgent.getAsset("1234");
         } catch (RemoteException e) {
-            assertTrue(e.getMessage().contains("Asset ID not found "));
+            Assertions.assertTrue(e.getMessage().contains("Asset ID not found "));
         }
 
     }
@@ -73,7 +74,7 @@ public class TestRemoteAgentTest_26 {
         String token = remoteAccount.getUserDataMap().get("token").toString();
 
         // creating remote Acc based on token
-        RemoteAccount remoteAccount1 = RemoteAccount.create(Utils.createRandomHexString(32), token);
+        RemoteAccount remoteAccount1 = RemoteAccount.create( token);
         // creating Agent 2
         RemoteAgent remoteAgent1 = RemoteAgentConfig.getRemoteAgent(getDDO(), did, remoteAccount1);
         try {
@@ -83,6 +84,31 @@ public class TestRemoteAgentTest_26 {
         }
 
     }
+    @Test
+    public void testCreatRemoteAccount_WithUsernamePassword() {
 
+        RemoteAccount remoteAccount = RemoteAccount.create("Aladdin","OpenSesame");
+        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(getDDO(), DID.createRandom(), remoteAccount);
+        try {
+            remoteAgent.getAsset("1234");
+        } catch (RemoteException e) {
+            // just o validate the auth is successful
+            Assertions.assertTrue(e.getMessage().contains("Asset ID not found "));
+        }
+
+    }
+    @Test
+    public void testCreatRemoteAccount_WithWrongUsernamePassword() {
+
+        RemoteAccount remoteAccount = RemoteAccount.create("WrongUser","WrongPassword");
+        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(getDDO(), DID.createRandom(), remoteAccount);
+        try {
+            remoteAgent.getAsset("1234");
+        } catch (RemoteException e) {
+            // just o validate the auth is successful
+            Assertions.assertTrue(e.getMessage().contains("Create token failed for account"));
+        }
+
+    }
 
 }
