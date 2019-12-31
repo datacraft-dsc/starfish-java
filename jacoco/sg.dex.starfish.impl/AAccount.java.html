@@ -50,19 +50,19 @@ public abstract class AAccount implements Account {
 
     @Override
     public String toString() {
-<span class="nc" id="L53">        final StringBuilder tmp = new StringBuilder();</span>
-<span class="nc" id="L54">        tmp.append(getClass().getName());</span>
-<span class="nc" id="L55">        tmp.append(&quot;:&quot;);</span>
-<span class="nc" id="L56">        tmp.append(id);</span>
-<span class="nc" id="L57">        tmp.append(&quot;{&quot;);</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; entry : credentials.entrySet()) {</span>
-<span class="nc" id="L59">            tmp.append(entry.getKey());</span>
-<span class="nc" id="L60">            tmp.append(&quot;=&quot;);</span>
-<span class="nc" id="L61">            tmp.append(entry.getValue().toString());</span>
-<span class="nc" id="L62">            tmp.append(&quot;,&quot;);</span>
-<span class="nc" id="L63">        }</span>
-<span class="nc" id="L64">        tmp.append(&quot;}&quot;);</span>
-<span class="nc" id="L65">        return tmp.toString();</span>
+<span class="fc" id="L53">        final StringBuilder tmp = new StringBuilder();</span>
+<span class="fc" id="L54">        tmp.append(getClass().getName());</span>
+<span class="fc" id="L55">        tmp.append(&quot;:&quot;);</span>
+<span class="fc" id="L56">        tmp.append(id);</span>
+<span class="fc" id="L57">        tmp.append(&quot;{&quot;);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; entry : credentials.entrySet()) {</span>
+<span class="fc" id="L59">            tmp.append(entry.getKey());</span>
+<span class="fc" id="L60">            tmp.append(&quot;=&quot;);</span>
+<span class="fc" id="L61">            tmp.append(entry.getValue().toString());</span>
+<span class="fc" id="L62">            tmp.append(&quot;,&quot;);</span>
+<span class="fc" id="L63">        }</span>
+<span class="fc" id="L64">        tmp.append(&quot;}&quot;);</span>
+<span class="fc" id="L65">        return tmp.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
