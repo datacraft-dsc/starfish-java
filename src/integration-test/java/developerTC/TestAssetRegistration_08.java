@@ -7,6 +7,7 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
@@ -124,10 +125,9 @@ public class TestAssetRegistration_08 {
         Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
-        DataAsset dataAssetWithHash = dataAsset.includeContentHash();
+        dataAsset.includeContentHash();
 
-        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
-//        assertEquals(Hex.toString(Hash.sha3_256(dataAssetWithHash.getMetadata().get(CONTENT_HASH).toString())), Hex.toString(Hash.sha3_256(content)));
+        Assertions.assertEquals(Hash.checkSum(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 
