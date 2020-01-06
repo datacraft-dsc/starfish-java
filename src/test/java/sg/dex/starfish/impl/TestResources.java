@@ -32,6 +32,7 @@ public class TestResources {
         Assertions.assertEquals(Hash.computeHashWithSHA3(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
         Assertions.assertEquals(expected, dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
+        Assertions.assertEquals("e4be09f07f5665ecacc078223e86c1dba18b38a3e07a3d575167b5ba7a1821d1", dataAsset.getMetadata().get(Constant.CONTENT_HASH));
         Assertions.assertEquals(dataAsset.validateContentHash(), true);
     }
 

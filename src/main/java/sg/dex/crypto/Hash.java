@@ -144,7 +144,6 @@ public class Hash {
         if(null==inputStream){
             throw new IOException("Asset content passed is  null");
         }
-        try {
 
             SHA3.DigestSHA3 md = new SHA3.Digest256();
             //Using MessageDigest update() method to provide input
@@ -155,9 +154,7 @@ public class Hash {
             }
             byte[] hash = md.digest();
             checksum =  Hex.toString(hash);
-        } catch (IOException e) {
-            throw new IOException("Couldn't compute the hash  of partial content");
-        }
+
         return checksum;
     }
 }
