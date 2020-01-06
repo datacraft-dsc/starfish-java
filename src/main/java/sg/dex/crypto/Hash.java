@@ -2,6 +2,7 @@ package sg.dex.crypto;
 
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Hex;
 
 import java.io.IOException;
@@ -135,11 +136,14 @@ public class Hash {
      * Once all the data to be updated has been updated, one of the digest
      * methods should be called to complete the hash computation.
      *
-     * @param inputStream
-     * @return
+     * @param inputStream for which the compute is to be performed
+     * @return compute hash value
      */
-    public static String checkSum(InputStream inputStream) throws DigestException {
-        String checksum = null;
+    public static String computeHashWithSHA3(InputStream inputStream) throws IOException {
+        String checksum;
+        if(null==inputStream){
+            throw new IOException("Asset content passed is  null");
+        }
         try {
 
             SHA3.DigestSHA3 md = new SHA3.Digest256();
@@ -150,11 +154,10 @@ public class Hash {
                 md.update(buffer, 0, numOfBytesRead);
             }
             byte[] hash = md.digest();
-            checksum = new BigInteger(1, hash).toString(16); //don't use this, truncates leading zero
+            checksum =  Hex.toString(hash);
         } catch (IOException e) {
-            throw new DigestException("couldn't make digest of partial content");
+            throw new IOException("Couldn't compute the hash  of partial content");
         }
-        assert checksum != null;
-        return checksum.trim();
+        return checksum;
     }
 }

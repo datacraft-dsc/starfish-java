@@ -116,7 +116,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testHashForRemoteAsset() throws IOException, DigestException {
+    public void testHashForRemoteAsset() throws IOException {
 
 
         // read metadata
@@ -128,7 +128,7 @@ public class TestAssetRegistration_08 {
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
         dataAsset.includeContentHash();
 
-        Assertions.assertEquals(Hash.checkSum(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+        Assertions.assertEquals(Hash.computeHashWithSHA3(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 
@@ -142,7 +142,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testHashForFileAssetWithDefaultMetadata() throws DigestException {
+    public void testHashForFileAssetWithDefaultMetadata() throws IOException {
 
         // read metadata
 

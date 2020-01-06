@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.file;
 
+import com.typesafe.config.ConfigException;
 import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestFileAsset {
 
     @Test
-    public void testFileAssetWithNewFile() throws DigestException {
+    public void testFileAssetWithNewFile() throws IOException {
 
         // file creation
         String name = Utils.createRandomHexString(16);

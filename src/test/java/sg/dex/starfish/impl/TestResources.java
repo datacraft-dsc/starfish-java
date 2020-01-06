@@ -7,6 +7,7 @@ import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestException;
 
@@ -17,12 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class TestResources {
 
     @Test
-    public void testResourceAssetWithContentHash() throws DigestException {
+    public void testResourceAssetWithContentHash() throws  IOException {
         DataAsset dataAsset = ResourceAsset.create("assets/hello.txt");
         byte[] bs = dataAsset.getContent();
+        String expected =Hash.sha3_256String(bs);
+
+        String s = new String(bs, StandardCharsets.UTF_8);
+        Assertions.assertEquals("Hello Starfish", s);
+
         assertFalse(dataAsset.getMetadata().containsKey(Constant.CONTENT_HASH));
         dataAsset = dataAsset.includeContentHash();
-        Assertions.assertEquals(Hash.checkSum(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+
+        Assertions.assertEquals(Hash.computeHashWithSHA3(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+        Assertions.assertEquals(expected, dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+
         Assertions.assertEquals(dataAsset.validateContentHash(), true);
     }
 
