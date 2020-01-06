@@ -139,11 +139,8 @@ public class Hash {
      * @param inputStream for which the compute is to be performed
      * @return compute hash value
      */
-    public static String computeHashWithSHA3(InputStream inputStream) throws IOException {
+    public static String sha3_256String(InputStream inputStream) throws IOException {
         String checksum;
-        if(null==inputStream){
-            throw new IOException("Asset content passed is  null");
-        }
 
             SHA3.DigestSHA3 md = new SHA3.Digest256();
             //Using MessageDigest update() method to provide input

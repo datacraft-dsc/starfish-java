@@ -11,7 +11,6 @@ import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.DigestException;
 import java.util.Map;
 
 /**
@@ -85,7 +84,7 @@ public interface DataAsset extends Asset {
 
     default String getContentHash() throws IOException {
 
-        return Hash.computeHashWithSHA3(this.getContentStream());
+        return Hash.sha3_256String(this.getContentStream());
     }
 
 

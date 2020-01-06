@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.DigestException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -126,9 +125,10 @@ public class TestAssetRegistration_08 {
         Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
+        // here the byte in asset content is more that 8192
         dataAsset.includeContentHash();
 
-        Assertions.assertEquals(Hash.computeHashWithSHA3(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
+        Assertions.assertEquals(Hash.sha3_256String(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 
