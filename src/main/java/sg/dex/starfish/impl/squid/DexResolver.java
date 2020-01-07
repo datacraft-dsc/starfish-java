@@ -68,12 +68,18 @@ public class DexResolver implements Resolver {
      * @throws IOException, CipherException
      * @return DexResolver The newly created DexResolver
      */
-    public static DexResolver create(String configFile) throws IOException, CipherException{
+    public static DexResolver create(String configFile) throws IOException{
         SquidService squidService = SquidService.create(configFile);
         Properties properties = squidService.getProperties();
         String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
-        KeeperService keeper = squidService.getKeeperService(oceanConfig);
+        KeeperService keeper = null;
+        try {
+            keeper = squidService.getKeeperService(oceanConfig);
+        } catch (CipherException e) {
+            System.err.println("Wrong credential file or its password");
+            e.printStackTrace();
+        }
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         return new DexResolver(contract, squidService);
     }

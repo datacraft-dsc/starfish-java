@@ -3,8 +3,7 @@ package keeper;
 import developerTC.AgentService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.web3j.crypto.CipherException;
-import org.web3j.protocol.exceptions.TransactionException;
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
@@ -31,7 +30,7 @@ public class DexResolverTest {
     private String valueUpdate;
     private DID did;
 
-    public DexResolverTest() throws IOException, CipherException {
+    public DexResolverTest() throws IOException {
         resolver1 = DexResolver.create("application_test.properties");
         resolver2 = DexResolver.create("application_resolver.properties");
         valueSet = DID.createRandomString();
@@ -65,7 +64,7 @@ public class DexResolverTest {
         resolver1.registerDID(did, valueSet);
         String val = resolver2.getDDOString(did);
         assertTrue(val.equals(valueSet) );
-        assertThrows(TransactionException.class, () -> {
+        assertThrows(ResolverException.class, () -> {
             resolver2.registerDID(did, valueUpdate);
         });
 
