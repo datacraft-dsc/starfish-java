@@ -117,7 +117,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
     @Override
     public long getContentSize() {
         try {
-<span class="fc" id="L120">            return getContentStream().available();</span>
+<span class="nc" id="L120">            return getContentStream().available();</span>
 <span class="nc" id="L121">        } catch (IOException e) {</span>
 <span class="nc" id="L122">            throw new GenericException(&quot;Exception occurred  for asset id :&quot; + getAssetID() + &quot; while finding getting the Content size :&quot;, e);</span>
         }
