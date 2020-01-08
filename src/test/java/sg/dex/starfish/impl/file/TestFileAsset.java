@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.file;
 
+import com.typesafe.config.ConfigException;
 import org.junit.jupiter.api.Test;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.constant.Constant;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.DigestException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestFileAsset {
 
     @Test
-    public void testFileAssetWithNewFile() {
+    public void testFileAssetWithNewFile() throws IOException {
 
         // file creation
         String name = Utils.createRandomHexString(16);
@@ -60,7 +62,7 @@ public class TestFileAsset {
     }
 
     @Test
-    public void testFileAssetWithExistingFile() throws IOException {
+    public void testFileAssetWithExistingFile() throws IOException, DigestException {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/test_metadata.json")));
 
         Path path = Paths.get("src/test/resources/assets/test_content.json");

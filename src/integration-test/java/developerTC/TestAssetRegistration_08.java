@@ -7,6 +7,7 @@ import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.DataAsset;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
@@ -124,10 +125,10 @@ public class TestAssetRegistration_08 {
         Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
-        DataAsset dataAssetWithHash = dataAsset.includeContentHash();
+        // here the byte in asset content is more that 8192
+        dataAsset.includeContentHash();
 
-        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
-//        assertEquals(Hex.toString(Hash.sha3_256(dataAssetWithHash.getMetadata().get(CONTENT_HASH).toString())), Hex.toString(Hash.sha3_256(content)));
+        Assertions.assertEquals(Hash.sha3_256String(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 
@@ -141,7 +142,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testHashForFileAssetWithDefaultMetadata() {
+    public void testHashForFileAssetWithDefaultMetadata() throws IOException {
 
         // read metadata
 

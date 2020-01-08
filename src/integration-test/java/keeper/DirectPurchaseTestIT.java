@@ -39,7 +39,6 @@ public class DirectPurchaseTestIT {
         receiverAccount = new Account(receiverAddress, receiverPasswd);
     }
 
-    @Disabled
     @Test
     public void testPurchase() throws EthereumException {
 
@@ -59,7 +58,6 @@ public class DirectPurchaseTestIT {
         assertEquals(tokenAmount, balanceReceiverAfter.subtract(balanceReceiverBefore));
     }
 
-    @Disabled
     @Test
     public void testCheckIsPaid() {
         boolean paid = directPurchaseAdapter.checkIsPaid(senderAccount.getAddress(), receiverAccount.getAddress(), tokenAmount, reference);

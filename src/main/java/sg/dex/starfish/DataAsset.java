@@ -9,6 +9,7 @@ import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -81,10 +82,12 @@ public interface DataAsset extends Asset {
      * @return the content of hash as string
      */
 
-    default String getContentHash() {
-    	// TODO: convert to InputStream calculation
-        return Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));
+    default String getContentHash() throws IOException {
+
+        return Hash.sha3_256String(this.getContentStream());
     }
+
+
 
     /**
      * This method is to include the content of hash in the asset metadata.
@@ -97,7 +100,7 @@ public interface DataAsset extends Asset {
      * @return respective data asset sub class.
      * @throws UnsupportedOperationException if the Asset type is not DataAsset
      */
-    default DataAsset includeContentHash() {
+    default DataAsset includeContentHash() throws IOException {
 
         // check if the hash content is already present also
         // validate if content is valid or not
