@@ -39,7 +39,6 @@ public class DexResolverTest {
     }
 
 
-    @Disabled
     @Test
     public void testRegisterResolve()   {
         resolver1.registerDID(did, valueSet);
@@ -50,7 +49,6 @@ public class DexResolverTest {
         assertTrue(val.equals( valueUpdate));
     }
 
-    @Disabled
     @Test
     public void testGetInvalidDID()   {
         DID temp = DID.createRandom();
@@ -58,7 +56,6 @@ public class DexResolverTest {
         assertTrue(val==null);
     }
 
-    @Disabled
     @Test
     public void testPermissions()   {
         resolver1.registerDID(did, valueSet);
@@ -70,7 +67,6 @@ public class DexResolverTest {
 
     }
 
-    @Disabled
     @Test
     public void testResolveAgent()   {
         // Creating remote Account

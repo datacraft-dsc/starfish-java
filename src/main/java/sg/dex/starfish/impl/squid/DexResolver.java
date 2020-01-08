@@ -31,8 +31,8 @@ public class DexResolver implements Resolver {
     /**
      * Create DexResolver
      *
-     * @param DIDRegistry contract
-     * @param SquidService squidService
+     * @param contract contract
+     * @param squidService squidService
      */
     private DexResolver(DIDRegistry contract, SquidService squidService)  {
         this.contract = contract;
