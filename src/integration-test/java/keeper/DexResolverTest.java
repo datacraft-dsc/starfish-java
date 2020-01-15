@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DexResolverTest {
     private DexResolver resolver1;
     private DexResolver resolver2;
+    private DexResolver default_resolver;
     private String valueSet;
     private String valueUpdate;
     private DID did;
@@ -33,6 +34,7 @@ public class DexResolverTest {
     public DexResolverTest() throws IOException {
         resolver1 = DexResolver.create("application_test.properties");
         resolver2 = DexResolver.create("application_resolver.properties");
+        default_resolver = DexResolver.create();
         valueSet = DID.createRandomString();
         valueUpdate = DID.createRandomString();
         did = DID.createRandom();
@@ -94,12 +96,12 @@ public class DexResolverTest {
                 "serviceEndpoint", surferURL + "/api/v1/auth"));
         ddo.put("service", services);
 
-        resolver1.registerDID(did, JSON.toPrettyString(ddo));
-        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(did, resolver1, remoteAccount);
+        default_resolver.registerDID(did, JSON.toPrettyString(ddo));
+        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(did, default_resolver, remoteAccount);
         Asset asset = MemoryAsset.createFromString("Asset from string");
         Asset registeredAsset = remoteAgent.registerAsset(asset);
         // resolving
-        RemoteAgent resolvedAgent = RemoteAgentConfig.getRemoteAgent(did, resolver2, remoteAccount);
+        RemoteAgent resolvedAgent = RemoteAgentConfig.getRemoteAgent(did, default_resolver, remoteAccount);
         Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
 
         assertEquals(resolvedAgent.getDID(), did);

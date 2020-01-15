@@ -62,10 +62,20 @@ public class DexResolver implements Resolver {
     }
 
     /**
+     * Creates default DexResolver
+     *
+     * @throws IOException
+     * @return DexResolver The newly created DexResolver
+     */
+    public static DexResolver create() throws IOException {
+        return create("resolver_default.properties");
+    }
+
+    /**
      * Creates a DexResolver
      *
      * @param String configFile. All information about account credentials will be taken from this file
-     * @throws IOException, CipherException
+     * @throws IOException
      * @return DexResolver The newly created DexResolver
      */
     public static DexResolver create(String configFile) throws IOException{
