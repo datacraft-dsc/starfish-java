@@ -1,9 +1,16 @@
 package developerTC;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.RemoteException;
@@ -14,11 +21,14 @@ import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteBundle;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
+import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Params;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -305,43 +315,45 @@ public class TestInvokeServiceFree_20 {
         }
 
     }
-//    @Test
-//    public void testMergeSync_1() {
-//
-//        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
-//        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
-//
-//
-//        // input to the operation
-//        Map<String, Object> metaMap = new HashMap<>();
-//        MemoryAsset workshopData =MemoryAsset.create("BMW workshopt".getBytes());
-//        MemoryAsset vechileData =MemoryAsset.create("Vechile_ car".getBytes());
-//        RemoteDataAsset remoteworkshopData =agentI.uploadAsset(workshopData);
-//        RemoteDataAsset remotevechileData =agentI.uploadAsset(vechileData);
-//        metaMap.put("workshop-dataset", remoteworkshopData);
-//        metaMap.put("vehicle-dataset", remotevechileData);
-////        String expected = Hash.sha3_256String("test_Async");
-//
-//        Operation remoteOperation = agentIKoi.getAsset("be2108d9e3221689482fec43c06fbf9b92d455a84548cfe9b3e7a01ea41bd115");
-//
-//        // response will have asset id as value which has the result of the operation
-//        Map<String, Object> response = remoteOperation.invokeResult(metaMap);
-//
-//
-//        for (Map.Entry<String, Object> res : response.entrySet()) {
-//            Object r = res.getValue();
-//            if (r instanceof DID) {
-//                DID did = (DID) r;
-//                Asset resultAsset = agentI.getAsset(did.getID());
-//                String actual = Utils.stringFromStream(resultAsset.getContentStream());
-//                System.out.println(actual);
-//               // String expected = "b35af2607950b7c071fd220006f120dbe7af8944c5a91611a633173823574fe9";
-//                //assertTrue(expected.equals(actual));
-//
-//            }
-//
-//        }
-//
-//    }
+    @Test
+    public void testMergeSync_1() throws  JSONException {
+
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
+
+
+        // input to the operation
+        Map<String, Object> metaMap = new HashMap<>();
+        DataAsset workshopData = ResourceAsset.create("assets/vehicle.json");
+        DataAsset vechileData = ResourceAsset.create("assets/workshop.json");
+        RemoteDataAsset remoteworkshopData =agentI.uploadAsset(workshopData);
+        RemoteDataAsset remotevechileData =agentI.uploadAsset(vechileData);
+        metaMap.put("workshop-dataset", remoteworkshopData);
+        metaMap.put("vehicle-dataset", remotevechileData);
+//        String expected = Hash.sha3_256String("test_Async");
+
+        Operation remoteOperation = agentIKoi.getAsset("be2108d9e3221689482fec43c06fbf9b92d455a84548cfe9b3e7a01ea41bd115");
+
+        // response will have asset id as value which has the result of the operation
+        Map<String, Object> response = remoteOperation.invokeResult(metaMap);
+
+
+        for (Map.Entry<String, Object> res : response.entrySet()) {
+            Object r = res.getValue();
+            if (r instanceof DID) {
+                DID did = (DID) r;
+                Asset resultAsset = agentI.getAsset(did.getID());
+                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+                InputStream inputStream = Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("assets/joined_output.json");
+                String expected = Utils.stringFromStream(inputStream);
+                JSONAssert.assertEquals(expected, actual, false);
+
+
+            }
+
+        }
+
+    }
 
 }
