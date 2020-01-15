@@ -4,6 +4,7 @@ package developerTC;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.*;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
@@ -23,8 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -36,17 +36,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TestInvokeServiceFree_20 {
 
 
-    private DID did;
+    private DID didSurfer;
+    private DID didInvoke;
     private Resolver resolver = new LocalResolverImpl();
+    private Resolver resolverKoi = new LocalResolverImpl();
     private RemoteAccount remoteAccount;
 
 
     @BeforeEach
     public void setUp() {
         // surfer should be running
-        did = getInvokeDid();
+        didSurfer = getSurferDid();
+        didInvoke = getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin", "OpenSesame");
-        resolver.registerDID(did, getDdo());
+        resolver.registerDID(didSurfer, getDdo());
+        resolverKoi.registerDID(didInvoke, getDDOForInvokeAgent());
 
 
     }
@@ -82,8 +86,32 @@ public class TestInvokeServiceFree_20 {
         return JSON.toPrettyString(ddo);
 
     }
+    private String getDDOForInvokeAgent() {
+        String invokeURL = AgentService.getInvokeUrl();
+        Map<String, Object> ddo = new HashMap<>();
+        List<Map<String, Object>> services = new ArrayList<>();
+        String surferURL = AgentService.getSurferUrl();
+        services.add(Utils.mapOf(
+                "type", "Ocean.Invoke.v1",
+                "serviceEndpoint", invokeURL + "/api/v1/invoke"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Meta.v1",
+                "serviceEndpoint", invokeURL + "/api/v1/meta"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Auth.v1",
+                "serviceEndpoint", surferURL + "/api/v1/auth"));
+
+        ddo.put("service", services);
+        return JSON.toPrettyString(ddo);
+
+    }
 
     private DID getInvokeDid() {
+        DID did = DID.createRandom();
+        return did;
+
+    }
+    private DID getSurferDid() {
         DID did = DID.createRandom();
         return did;
 
@@ -101,29 +129,27 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
-        Operation remoteOperation = agentI.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
+        Operation remoteOperation = agentIKoi.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
 
 //        // response will have asset id as value which has the result of the operation
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
-//
-        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-
-
-        for (Map.Entry<String, Object> me : result.entrySet()) {
-            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-            String type = (String) spec.get("type");
-            if (type.equals("asset")) {
-                DataAsset dataAsset = (DataAsset) response.get(me.getKey());
-                assertArrayEquals(new byte[]{2, 3, 5, 7, 11}, dataAsset.getContent());
-
-            } else if (type.equals("json")) {
-                Object a = response.get(me.getKey());
+        for (Map.Entry<String, Object> res : response.entrySet()) {
+            Object r = res.getValue();
+            if (r instanceof DID) {
+                DID did = (DID) r;
+                Asset resultAsset = agentI.getAsset(did.getID());
+                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+                String expected = "2" + System.lineSeparator() + "3" + System.lineSeparator() + "5" + System.lineSeparator() + "7";
+                assertTrue(expected.trim().equals(actual.trim()));
 
             }
+
         }
+//
 
     }
 
@@ -137,35 +163,33 @@ public class TestInvokeServiceFree_20 {
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("first-n", "20");
+        metaMap.put("first-n", "11");
 
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
 
-        // get asset form asset id
-        Operation remoteOperation = agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
+        // get asset form asset id of remote operation asset
+        Operation remoteOperation = agentIKoi.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
+
         // invoking the prime operation and will get the job associated
         Job job = remoteOperation.invokeAsync(metaMap);
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult();
+        Map<String, Object>  response=Params.formatResponse(remoteOperation, remoteAsset);
 
-        // Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
 
-
-        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-
-        for (Map.Entry<String, Object> me : result.entrySet()) {
-            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-            String type = (String) spec.get("type");
-            if (type.equals("asset")) {
-                DataAsset asset = (DataAsset) remoteAsset.get(me.getKey());
-                assertArrayEquals(asset.getContent(), new byte[]{2, 3, 5, 7, 11, 13, 17, 19});
-
-            } else if (type.equals("json")) {
-                Object a = remoteAsset.get(me.getKey());
+        for (Map.Entry<String, Object> res : response.entrySet()) {
+            Object r = res.getValue();
+            if (r instanceof DID) {
+                DID did = (DID) r;
+                Asset resultAsset = agentI.getAsset(did.getID());
+                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+                String expected = "2" + System.lineSeparator() + "3" + System.lineSeparator() + "5" + System.lineSeparator() + "7";
+                assertTrue(expected.trim().equals(actual.trim()));
 
             }
+
         }
 
 
@@ -188,24 +212,12 @@ public class TestInvokeServiceFree_20 {
         metaMap.put("first-n", "20");
 
         // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
 
 
         assertThrows(RemoteException.class, () -> {
             agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
         });
-//        // get asset form asset id
-//        Operation remoteOperation =
-//        // invoking the prime operation and will get the job associated
-//        Job job = remoteOperation.invokeAsync(metaMap);
-//        Map<String, Object> jobData = new HashMap<>();
-//        jobData.put("jobid", "invalid");
-//        Job invalidJob = RemoteJob.create(agentI, JSON.toPrettyString(jobData));
-//
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            invalidJob.getResult(10000);
-//        });
-
 
     }
 
@@ -216,43 +228,40 @@ public class TestInvokeServiceFree_20 {
      */
     @Test
     public void testHashingAsync_1() {
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
+
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("to-hash", "test_Async");
+        MemoryAsset memoryAsset =MemoryAsset.create("test_Async".getBytes());
+        RemoteDataAsset remoteDataAsset =agentI.uploadAsset(memoryAsset);
+        metaMap.put("to-hash", remoteDataAsset);
+//        String expected = Hash.sha3_256String("test_Async");
 
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
+        Operation remoteOperation = agentIKoi.getAsset("e5574e68df2dd9b1ebe277687c7e5cdd0051f4a70d0069647da948e60da47b59");
 
-        assertThrows(RemoteException.class, () -> {
-            agentI.getAsset("0e48ad0c07f6fe87762e24cba3e013a029b7cd734310bface8b3218280366791");
-        });
-
-        //Todo update the test cases properly
-//        // get asset form asset id
-//        Operation remoteOperation = agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
-//
 //        // invoking the prime operation and will get the job associated
-//        Job job = remoteOperation.invokeAsync(metaMap);
+        Job job = remoteOperation.invokeAsync(metaMap);
 //
 //        // waiting for job to get completed
-//        Map<String, Object> remoteAsset = job.getResult(10000);
+        Map<String, Object> remoteAsset = job.getResult(10000);
 //
-//        Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
-//
-//
-//        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-//
-//        for (Map.Entry<String, Object> me : result.entrySet()) {
-//            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-//            String type = (String) spec.get("type");
-//            if (type.equals("asset")) {
-//                Asset a = (Asset) response.get(me.getKey());
-//            } else if (type.equals("json")) {
-//                Object a = response.get(me.getKey());
-//
-//            }
-//        }
+        Map<String, Object>  response=Params.formatResponse(remoteOperation, remoteAsset);
+
+
+        for (Map.Entry<String, Object> res : response.entrySet()) {
+            Object r = res.getValue();
+            if (r instanceof DID) {
+                DID did = (DID) r;
+                Asset resultAsset = agentI.getAsset(did.getID());
+                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+                String expected = "b35af2607950b7c071fd220006f120dbe7af8944c5a91611a633173823574fe9";
+                assertTrue(expected.equals(actual));
+
+            }
+
+        }
 
 
     }
@@ -265,161 +274,74 @@ public class TestInvokeServiceFree_20 {
     @Test
     public void testHashingSync_1() {
 
+        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
+
+
+        // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("to-hash", "test");
+        MemoryAsset memoryAsset =MemoryAsset.create("test_Async".getBytes());
+        RemoteDataAsset remoteDataAsset =agentI.uploadAsset(memoryAsset);
+        metaMap.put("to-hash", remoteDataAsset);
+//        String expected = Hash.sha3_256String("test_Async");
 
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
+        Operation remoteOperation = agentIKoi.getAsset("e5574e68df2dd9b1ebe277687c7e5cdd0051f4a70d0069647da948e60da47b59");
 
-        // get asset form asset id
-        Operation remoteOperation = agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
-
-        // invoking the prime operation and will get the job associated
+        // response will have asset id as value which has the result of the operation
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
-        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-        for (Map.Entry<String, Object> me : result.entrySet()) {
-            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-            String type = (String) spec.get("type");
-            if (type.equals("asset")) {
-                RemoteDataAsset a = (RemoteDataAsset) response.get(me.getKey());
-            } else if (type.equals("json")) {
-                Object a = response.get(me.getKey());
+
+
+        for (Map.Entry<String, Object> res : response.entrySet()) {
+            Object r = res.getValue();
+            if (r instanceof DID) {
+                DID did = (DID) r;
+                Asset resultAsset = agentI.getAsset(did.getID());
+                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+                String expected = "b35af2607950b7c071fd220006f120dbe7af8944c5a91611a633173823574fe9";
+                assertTrue(expected.equals(actual));
 
             }
+
         }
 
     }
+//    @Test
+//    public void testMergeSync_1() {
+//
+//        RemoteAgent agentI = RemoteAgent.create(resolver, didSurfer, remoteAccount);
+//        RemoteAgent agentIKoi = RemoteAgent.create(resolverKoi, didInvoke, remoteAccount);
+//
+//
+//        // input to the operation
+//        Map<String, Object> metaMap = new HashMap<>();
+//        MemoryAsset workshopData =MemoryAsset.create("BMW workshopt".getBytes());
+//        MemoryAsset vechileData =MemoryAsset.create("Vechile_ car".getBytes());
+//        RemoteDataAsset remoteworkshopData =agentI.uploadAsset(workshopData);
+//        RemoteDataAsset remotevechileData =agentI.uploadAsset(vechileData);
+//        metaMap.put("workshop-dataset", remoteworkshopData);
+//        metaMap.put("vehicle-dataset", remotevechileData);
+////        String expected = Hash.sha3_256String("test_Async");
+//
+//        Operation remoteOperation = agentIKoi.getAsset("be2108d9e3221689482fec43c06fbf9b92d455a84548cfe9b3e7a01ea41bd115");
+//
+//        // response will have asset id as value which has the result of the operation
+//        Map<String, Object> response = remoteOperation.invokeResult(metaMap);
+//
+//
+//        for (Map.Entry<String, Object> res : response.entrySet()) {
+//            Object r = res.getValue();
+//            if (r instanceof DID) {
+//                DID did = (DID) r;
+//                Asset resultAsset = agentI.getAsset(did.getID());
+//                String actual = Utils.stringFromStream(resultAsset.getContentStream());
+//                System.out.println(actual);
+//               // String expected = "b35af2607950b7c071fd220006f120dbe7af8944c5a91611a633173823574fe9";
+//                //assertTrue(expected.equals(actual));
+//
+//            }
+//
+//        }
+//
+//    }
 
-    /**
-     * TEST ASSET_HASHING ::For this operation the input must be type JSON and the response will  be type asset.
-     * it support both SYNC and ASYNC
-     * this test case is for testing Sync behaviour of ASSET_HASHING
-     */
-    //Sync is not working : issue reported , Kiran is working on this..
-    @Test
-    public void testAssetHashingSync_1() {
-
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
-        // asset must be uploaded as invoke will work only on RemoteAsset
-        Asset a = MemoryAsset.create(new byte[]{3, 4, 5, 6});
-        // uploading the asset, it will do the registration and upload both
-        RemoteDataAsset remoteAsset1 = agentI.uploadAsset(a);
-
-        Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset1);
-
-
-        // get asset form asset id
-        // Operation remoteOperation =(Operation)agentI.getAsset("3099ae4f493d72777e4b57db43226456d67867728c0695d1eaf51f3035b20e07");
-        Operation remoteOperation = agentI.getAsset("3eea0affa77814713e5b18f22761d433162d53530e9824cd14fcca7d38b64f73");
-
-        // invoking the prime operation and will get the job associatedm
-        Map<String, Object> metaData = remoteOperation.invokeResult(metaMap);
-
-
-    }
-
-
-    /**
-     * TEST ASSET_HASHING ::For this operation the input must be type JSON and the response will  be type asset.
-     * it support both SYNC and ASYNC
-     * this test case is for testing ASync behaviour of ASSET_HASHING
-     */
-    @Test
-    public void testAssetHashingAsync_1() {
-
-
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
-
-
-        // asset must be uploaded as invoke will work only on RemoteAsset
-        Asset a1 = MemoryAsset.create(new byte[]{3, 4, 5, 6});
-        // uploading the asset, it will do the registration and upload both
-        RemoteDataAsset remoteAsset1 = agentI.uploadAsset(a1);
-
-        Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset1);
-        // get asset form asset id
-        Operation remoteOperation = agentI.getAsset("3eea0affa77814713e5b18f22761d433162d53530e9824cd14fcca7d38b64f73");
-
-
-        // invoking the prime operation and will get the job associated
-        Job job = remoteOperation.invokeAsync(metaMap);
-
-        // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.getResult(10000);
-
-        Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
-
-
-        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-
-        for (Map.Entry<String, Object> me : result.entrySet()) {
-            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-            String type = (String) spec.get("type");
-            if (type.equals("asset")) {
-                RemoteDataAsset a = (RemoteDataAsset) response.get(me.getKey());
-            } else if (type.equals("json")) {
-                Object a = response.get(me.getKey());
-
-            }
-        }
-    }
-
-    /**
-     * TEST ASSET_HASHING ::For this operation the input must be type JSON and the response will  be type asset.
-     * it support both SYNC and ASYNC
-     * this test case is for testing ASync behaviour of ASSET_HASHING
-     */
-    @Test
-    public void testAssetHashingAsyncForBundle_1() {
-
-
-        // RemoteAgent agentS =RemoteAgent.create(ocean,didSurfer,remoteAccount);
-        RemoteAgent agentI = RemoteAgent.create(resolver, did, remoteAccount);
-
-
-        // creating  assets
-
-        Asset a1 = MemoryAsset.create("testing bundle".getBytes());
-        //ARemoteAsset ra1 =agentI.registerAsset(a1);
-
-        //assigning each asset with name and adding to map
-        Map<String, Asset> assetBundle = new HashMap<>();
-        assetBundle.put("one", a1);
-
-        Bundle remoteBundle = MemoryBundle.create(assetBundle);
-        // uploading the asset, it will do the registration and upload both
-        RemoteBundle remoteAsset1 = agentI.registerAsset(remoteBundle);
-
-        Map<String, Object> metaMap = new HashMap<>();
-        metaMap.put("to-hash", remoteAsset1);
-        // get asset form asset id
-        Operation remoteOperation = agentI.getAsset("678d5e333ca9ea1a0f7939b4f1d923f73a1641dda8da0430c2b3604d3ceb5991");
-
-
-        // invoking the prime operation and will get the job associated
-        Job job = remoteOperation.invokeAsync(metaMap);
-
-        // waiting for job to get completed
-        Map<String, Object> remoteAsset = job.getResult(10000);
-
-        // Map<String, Object> response = Params.formatResponse(remoteOperation, JSON.toMap(remoteAsset.toString()), agentI);
-
-
-        Map<String, Object> result = (Map<String, Object>) remoteOperation.getOperationSpec().get("results");
-
-        for (Map.Entry<String, Object> me : result.entrySet()) {
-            Map<String, Object> spec = (Map<String, Object>) me.getValue();
-            String type = (String) spec.get("type");
-            if (type.equals("asset")) {
-                RemoteDataAsset a = (RemoteDataAsset) remoteAsset.get(me.getKey());
-            } else if (type.equals("json")) {
-                Object a = remoteAsset.get(me.getKey());
-
-            }
-        }
-    }
 }

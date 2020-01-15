@@ -84,13 +84,11 @@ public class Params {
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
      * @param operation   instance reference
-     * @param res         response received from the Invoke call
-     * @param remoteAgent agent on which this operation has done.
+     * @param response         response received from the Invoke call
      * @return formatted map of the response received
      */
-    public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> res, RemoteAgent remoteAgent) {
+    public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> response) {
 
-        Map<String, Object> response = JSON.toMap(res.get("results").toString());
         HashMap<String, Object> result = new HashMap<>(response.size());
         @SuppressWarnings("unchecked")
         Map<String, Object> paramSpec = (Map<String, Object>) operation.getOperationSpec().get("results");
@@ -102,11 +100,10 @@ public class Params {
             String type = (String) spec.get("type");
             if (response.containsKey(paramName)) {
                 if (type.equals("asset")) {
-                    // get the did of the asset
-                    @SuppressWarnings("unchecked")
+
                     Map<String, Object> didMap = (Map<String, Object>) response.get(paramName);
-                    Asset a = (remoteAgent.getAsset(didMap.get("did").toString()));
-                    result.put(paramName, a);
+                    DID did = DID.create("op", (String)didMap.get("did"), null, null);
+                    result.put(paramName, did);
                 } else if (type.equals("json")) {
                     result.put(paramName, response.get(paramName));
                 } else {

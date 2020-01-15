@@ -61,7 +61,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
             throw new IllegalArgumentException("This operation does not support sync invoke.");
         }
         Map<String, Object> response = remoteAgent.invokeResult(this, params);
-        return Params.formatResponse(this, response, remoteAgent);
+        return Params.formatResponse(this, response);
 
     }
 
