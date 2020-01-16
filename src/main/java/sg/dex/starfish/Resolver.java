@@ -36,9 +36,9 @@ public interface Resolver {
     }
     
     /**
-     * Method to register a DDO for a DID .
+     * Method to register or update a DDO for a DID .
      *
-     * @param did DID to register
+     * @param did DID to register or update
      * @param ddoString DDO to associate with the given DID
      * @throws ResolverException
      * @return true if registration is successful, false otherwise
