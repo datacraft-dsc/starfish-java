@@ -21,6 +21,7 @@ import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
 
@@ -154,18 +155,25 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * This method is to add the remote account details to RemoteAgent. This will
-	 * return a new RemoteAgent with have the Remote Account details passed as an
-	 * argument
-	 *
+	 * This method is to connect to a Remote Agent
+	 * @param resolver
+     * @param did did of the agent
 	 * @param acc remote account that need to be updated in remote Agent
 	 * @return New Remote Agent with has the Remote Account details
 	 */
-	public RemoteAgent connect(RemoteAccount acc) {
-		// TODO: get user token and store this in account
+	public static RemoteAgent connectAgent(Resolver resolver,DID did,RemoteAccount acc) {
 		return new RemoteAgent(resolver, did, acc);
 	}
 
+    /**
+     * This method is to connect to a Remote Agent
+     * @param did did of the agent
+     * @param acc remote account that need to be updated in remote Agent
+     * @return New Remote Agent with has the Remote Account details
+     */
+    public static RemoteAgent connectAgent(DID did,RemoteAccount acc) throws IOException {
+        return new RemoteAgent(DexResolver.create(), did, acc);
+    }
 	private <R extends Asset> R registerBundle(Asset a) {
 		Bundle remoteBundle = (Bundle) a;
 
@@ -1181,7 +1189,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				StatusLine statusLine = response.getStatusLine();
 				int statusCode = statusLine.getStatusCode();
 				if (statusCode == 404) {
-					throw new RemoteException("Asset ID not found for at: " + "");
+					throw new RemoteException("Invalid username or Password");
 				}
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
