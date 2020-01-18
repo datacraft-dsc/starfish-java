@@ -11,7 +11,6 @@ import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.RemoteAgentConfig;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -97,11 +96,11 @@ public class DexResolverTest {
         ddo.put("service", services);
 
         default_resolver.registerDID(did, JSON.toPrettyString(ddo));
-        RemoteAgent remoteAgent = RemoteAgentConfig.getRemoteAgent(did, default_resolver, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
         Asset asset = MemoryAsset.createFromString("Asset from string");
         Asset registeredAsset = remoteAgent.registerAsset(asset);
         // resolving
-        RemoteAgent resolvedAgent = RemoteAgentConfig.getRemoteAgent(did, default_resolver, remoteAccount);
+        RemoteAgent resolvedAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
         Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
 
         assertEquals(resolvedAgent.getDID(), did);

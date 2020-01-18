@@ -2,12 +2,11 @@ package developerTC;
 
 import org.junit.platform.commons.util.StringUtils;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.RemoteAgentConfig;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -26,11 +25,11 @@ public class AgentService {
 
     private static RemoteAgent surfer;
     private static RemoteAgent invokeAgent;
-    private static String surferUrl;
-    private static String bargeUrl;
 
+    private static String surferUrl;
 
     private static String invokeUrl;
+
     private static String socketTimeout;
     private static String username;
     private static String password;
@@ -48,19 +47,28 @@ public class AgentService {
         password = properties.getProperty("surfer.password");
 
 
-        surfer = RemoteAgentConfig.getRemoteAgent(getDDO(surferUrl), DID.createRandom(), username, password);
+
 
         String ip_invoke = properties.getProperty("koi.host");
         String port_invoke = properties.getProperty("koi.port");
 
         invokeUrl = ip_invoke + ":" + port_invoke;
-        Resolver resolver = new LocalResolverImpl();
-        invokeAgent = getInvokeAgent(invokeUrl, resolver);
+        Resolver resolver = null;
+        try {
+            resolver = DexResolver.create();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DID didSurfer = DID.createRandom();
+        DID didInvoke = DID.createRandom();
 
-        // setting barge URL
-        String barge_ip = properties.getProperty("barge.host");
-        String barge_port = properties.getProperty("barge.port");
-        bargeUrl = barge_ip + ":" + barge_port;
+        resolver.registerDID(didSurfer,getDDO(surferUrl));
+        resolver.registerDID(didInvoke,getDDO(invokeUrl));
+
+        RemoteAccount remoteAccount =  RemoteAccount.create(username,password);
+
+        surfer = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
+        invokeAgent = RemoteAgent.connectAgent(resolver, didInvoke, remoteAccount);
 
     }
 
@@ -97,10 +105,6 @@ public class AgentService {
         return invokeUrl;
     }
 
-    public static String getBargeUrl() {
-        return bargeUrl;
-    }
-
 
     public static int getSocketTimeout() {
         return Integer.parseInt(socketTimeout);
@@ -120,7 +124,7 @@ public class AgentService {
     }
 
 
-    private static RemoteAgent getInvokeAgent(String host, Resolver resolver) {
+    private static String getInvokeDDO(String host, Resolver resolver) {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
@@ -137,22 +141,9 @@ public class AgentService {
                 "type", "Ocean.Auth.v1",
                 "serviceEndpoint", host + "/api/v1/auth"));
         ddo.put("service", services);
-        String ddoString = JSON.toPrettyString(ddo);
-
-        // creating unique DID
-        DID invokeDID = DID.createRandom();
-        // registering the DID and DDO
-        resolver.registerDID(invokeDID, ddoString);
+        return JSON.toPrettyString(ddo);
 
 
-        //Creating remote Account
-        Map<String, Object> credentialMap = new HashMap<>();
-        credentialMap.put("username", username);
-        credentialMap.put("password", password);
-
-        RemoteAccount account = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
-        // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(resolver, invokeDID, account);
     }
 
     /**
