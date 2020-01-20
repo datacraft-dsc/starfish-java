@@ -155,23 +155,26 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	}
 
 	/**
-	 * This method is to connect to a Remote Agent
-	 * @param resolver
+	 * This method is to create a Remote Agent Instance based on Resolver, DID and RemoteAccount
+	 * @param resolver it will be used to resolver the DID and get DDO
      * @param did did of the agent
-	 * @param acc remote account that need to be updated in remote Agent
-	 * @return New Remote Agent with has the Remote Account details
+	 * @param acc remote account
+	 * @return New Remote Agent Instance
 	 */
-	public static RemoteAgent connectAgent(Resolver resolver,DID did,RemoteAccount acc) {
+	public static RemoteAgent connect(Resolver resolver, DID did, RemoteAccount acc) {
 		return new RemoteAgent(resolver, did, acc);
 	}
 
     /**
-     * This method is to connect to a Remote Agent
+     * This method is to create a Remote Agent Instance based on Resolver, DID and RemoteAccount
      * @param did did of the agent
      * @param acc remote account that need to be updated in remote Agent
-     * @return New Remote Agent with has the Remote Account details
+     * @return New Remote Agent Instance
      */
-    public static RemoteAgent connectAgent(DID did,RemoteAccount acc) throws IOException {
+    public static RemoteAgent connect(DID did, RemoteAccount acc) throws IOException {
+    	if(null== did || null == acc){
+    		throw new IllegalArgumentException("Missing Argument , Either DID or Acc is null");
+		}
         return new RemoteAgent(DexResolver.create(), did, acc);
     }
 	private <R extends Asset> R registerBundle(Asset a) {

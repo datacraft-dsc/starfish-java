@@ -30,10 +30,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
-import static sg.dex.starfish.constant.Constant.PROVENANCE;
 
 
 /**
@@ -105,16 +103,14 @@ public class TestAssetRegistration_08 {
     public void testVerifyContent() throws IOException {
 
         // read metadata
-        String expected = new String(Files.readAllBytes(
-                Paths.get("src/integration-test/resources/assets/test_content.json")));
+        String content = new String(Files.readAllBytes(Paths.get("src/integration-test/resources/assets/test_content.json")));
 
         // create asset using metadata and given content
-        Asset memoryAsset = MemoryAsset.create(expected.getBytes());
+        Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
-        String actual =Utils.stringFromStream(dataAsset.getContentStream());
 
-        Assertions.assertEquals(expected,actual);
+        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
 
     }
 
@@ -122,16 +118,17 @@ public class TestAssetRegistration_08 {
     public void testHashForRemoteAsset() throws IOException {
 
 
+        // read metadata
+        String content = new String(Files.readAllBytes(Paths.get("src/integration-test/resources/assets/test_content.json")));
 
-        Map<String,Object> additionalMeta = new HashMap<>();
-        additionalMeta.put("name","BMW data ");
-        DataAsset  resourceAsset = ResourceAsset.create("assets/test_content.json",additionalMeta);
+        // create asset using metadata and given content
+        Asset memoryAsset = MemoryAsset.create(content.getBytes());
 
+        DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
         // here the byte in asset content is more that 8192
-        resourceAsset =resourceAsset.includeContentHash();
+        dataAsset.includeContentHash();
 
-
-        Assertions.assertEquals(Hash.sha3_256String(resourceAsset.getContentStream()), resourceAsset.getMetadata().get(Constant.CONTENT_HASH));
+        Assertions.assertEquals(Hash.sha3_256String(dataAsset.getContentStream()), dataAsset.getMetadata().get(Constant.CONTENT_HASH));
 
     }
 
@@ -187,50 +184,6 @@ public class TestAssetRegistration_08 {
 
         Assertions.assertEquals(operationAsset.getAssetID(), remoteOperationAsset.getDID().getPath());
         Assertions.assertEquals(remoteAgent.getDID().getID(), remoteOperationAsset.getDID().getID());
-    }
-
-    @Test
-    public void testProvenaceForNamedAsset01()  {
-
-
-
-        Map<String,Object> additionalMeta = new HashMap<>();
-        additionalMeta.put("name","BMW data ");
-        DataAsset  resourceAsset = ResourceAsset.create("assets/test_content.json",additionalMeta);
-
-        //  include Provenace
-        resourceAsset= resourceAsset.includeProvenace();
-
-        Map<String, Object> provData = JSON.toMap(resourceAsset.getMetadata().get("provenance").toString());
-        assertTrue(provData.get("wasAssociatedWith").toString().contains("BMW data "));
-
-    }
-
-    @Test
-    public void testProvenaceForAsset02()  {
-
-
-
-        Map<String,Object> additionalMeta = new HashMap<>();
-        additionalMeta.put("name","BMW data ");
-        additionalMeta.put(PROVENANCE,ProvUtil.createPublishProvenance("BMW data "));
-        DataAsset  resourceAsset = ResourceAsset.create("assets/test_content.json",additionalMeta);
-
-        Map<String, Object> provData = JSON.toMap(resourceAsset.getMetadata().get("provenance").toString());
-        assertTrue(provData.get("wasAssociatedWith").toString().contains("BMW data "));
-
-    }
-    @Test
-    public void testProvenaceForAsset03()  {
-
-        Map<String,Object> additionalMeta = new HashMap<>();
-        additionalMeta.put("name","BMW data ");
-        additionalMeta.put(PROVENANCE,ProvUtil.createPublishProvenance("test1213","BMW "));
-        DataAsset  resourceAsset = ResourceAsset.create("assets/test_content.json",additionalMeta);
-
-        Map<String, Object> provData = JSON.toMap(resourceAsset.getMetadata().get("provenance").toString());
-        assertTrue(provData.get("wasAssociatedWith").toString().contains("BMW"));
-
     }
 
 }

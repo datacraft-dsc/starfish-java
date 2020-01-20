@@ -133,8 +133,8 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation remoteOperation = agentIKoi.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
@@ -169,8 +169,8 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentData = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentOperation = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentData = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentOperation = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation operation = agentOperation.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
@@ -216,7 +216,7 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "20");
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
 
 
         assertThrows(RemoteException.class, () -> {
@@ -233,8 +233,8 @@ public class TestInvokeServiceFree_20 {
     @Test
     public void testHashingAsync_1() {
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -278,8 +278,8 @@ public class TestInvokeServiceFree_20 {
     @Test
     public void testHashingSync_1() {
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -323,8 +323,8 @@ public class TestInvokeServiceFree_20 {
     @Test
     public void test_Vehicle_Workshop_Merge_Sync() throws JSONException {
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -372,8 +372,8 @@ public class TestInvokeServiceFree_20 {
     @Test
     public void test_Vehicle_Workshop_Merge_ASync() throws JSONException {
 
-        RemoteAgent agentI = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connectAgent(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
 
 
         // input to the operation

@@ -95,11 +95,11 @@ public class DexResolverTest {
         ddo.put("service", services);
 
         default_resolver.registerDID(did, JSON.toPrettyString(ddo));
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
         Asset asset = MemoryAsset.createFromString("Asset from string");
         Asset registeredAsset = remoteAgent.registerAsset(asset);
         // resolving
-        RemoteAgent resolvedAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
+        RemoteAgent resolvedAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
         Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
 
         assertEquals(resolvedAgent.getDID(), did);

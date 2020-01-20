@@ -7,7 +7,6 @@ import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.ProvUtil;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -113,7 +112,7 @@ public interface DataAsset extends Asset {
             Map<String, Object> metaMap = this.getMetadata();
             metaMap.put(Constant.CONTENT_HASH, getContentHash());
 
-            return updateMeta(JSON.toPrettyString(metaMap));
+            return this.updateMeta(JSON.toPrettyString(metaMap));
         }
     }
 
@@ -127,27 +126,6 @@ public interface DataAsset extends Asset {
      */
     default DataAsset updateMeta(String newMetaData) {
         throw new UnsupportedOperationException("This Operation is not supported");
-    }
-
-    /**
-     * This method is to include the include provenace in the asset metadata.
-     * Create default provenance metadata for publishing an asset.
-     * This create a random activity ID for tracking the provenance.
-     *
-     * @return respective data asset sub class.
-     */
-    default DataAsset includeProvenace()  {
-
-        if (null != this.getMetadata().get(Constant.PROVENANCE) ) {
-            return this;
-
-        } else {
-            Map<String, Object> metaMap = this.getMetadata();
-            String  name  =null != metaMap.get("name") ?
-            metaMap.get("name").toString() :"Prov_data_of";
-            metaMap.put(Constant.PROVENANCE,   ProvUtil.createPublishProvenance(name));
-            return updateMeta(JSON.toPrettyString(metaMap));
-        }
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class ProvUtil {
 
-    public static String DEX = "dex";
+    public static String OPF = "opf";
 
     /**
      * Create a default namespace which includes the prefix and path for Ocean
@@ -21,7 +21,7 @@ public class ProvUtil {
         Map<String, Object> prefix = new HashMap<String, Object>();
         prefix.put("xsd", "http://www.w3.org/2001/XMLSchema#");
         prefix.put("prov", "http://www.w3.org/ns/prov#");
-        prefix.put(DEX, "http://dex.sg");
+        prefix.put(OPF, "http://oceanprotocol.com/schemas");
 
         Map<String, Object> pre = new HashMap<String, Object>();
         pre.put("prefix", prefix);
@@ -30,13 +30,13 @@ public class ProvUtil {
 
     private static Map<String, Object> createAssetEntity(String id) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":asset");
+        type.put("$", OPF + ":asset");
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + id, typeContainer);
+        thisContainer.put(OPF + ":" + id, typeContainer);
         return thisContainer;
     }
 
@@ -88,13 +88,13 @@ public class ProvUtil {
      */
     public static Map<String, Object> createAgent(String agentId, AgentIdType agentType) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + agentType.toString());
+        type.put("$", OPF + ":" + agentType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + agentId, typeContainer);
+        thisContainer.put(OPF + ":" + agentId, typeContainer);
         return thisContainer;
     }
 
@@ -137,7 +137,7 @@ public class ProvUtil {
      * @return Map
      */
     public static Map<String, Object> generatedBy(String activityId) {
-        String entityId = DEX + ":this";
+        String entityId = OPF + ":this";
         Map<String, Object> type = new HashMap<String, Object>();
         type.put("prov:entity", entityId);
         type.put("prov:activity", activityId);
@@ -162,7 +162,7 @@ public class ProvUtil {
         for (Asset ast : entities) {
             Map<String, Object> type = new HashMap<String, Object>();
             type.put("prov:usedEntity", ast.getAssetID());
-            type.put("prov:generatedEntity", DEX + "this");
+            type.put("prov:generatedEntity", OPF + "this");
             asid.put("_:" + UUID.randomUUID().toString(), type);
         }
         Map<String, Object> ret = new HashMap<String, Object>();
@@ -179,13 +179,13 @@ public class ProvUtil {
      */
     public static Map<String, Object> createActivity(String actId, ActivityType activityType) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + activityType.toString());
+        type.put("$", OPF + ":" + activityType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + actId, typeContainer);
+        thisContainer.put(OPF + ":" + actId, typeContainer);
         return thisContainer;
     }
 
@@ -200,14 +200,14 @@ public class ProvUtil {
     public static Map<String, Object> createActivity(String actId, ActivityType activityType,
                                                      Map<String, Object> actEntries) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + activityType.toString());
+        type.put("$", OPF + ":" + activityType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         typeContainer.putAll(actEntries);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + actId, typeContainer);
+        thisContainer.put(OPF + ":" + actId, typeContainer);
         return thisContainer;
     }
 
@@ -269,12 +269,12 @@ public class ProvUtil {
         Map<String, Object> p = new HashMap<String, Object>();
         p.put("$", resultParamName);
         p.put("type", "xsd:string");
-        ret.put(DEX + ":resultParamName", p);
+        ret.put(OPF + ":resultParamName", p);
 
         p = new HashMap<String, Object>();
         p.put("$", params);
         p.put("type", "xsd:string");
-        ret.put(DEX + ":params", p);
+        ret.put(OPF + ":params", p);
 
         return ret;
     }

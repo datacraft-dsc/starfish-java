@@ -1,9 +1,8 @@
 package developerTC;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
@@ -17,50 +16,64 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer building or managing an Ocean Agent,
  * I need to be able to register my Agent on the network and obtain an Agent ID
  */
 public class TestAgentRegistration_04 {
-
-
     @Test
     public void testRegistration() throws IOException {
-
-
-        Resolver resolver=DexResolver.create();
-        DID did = DID.createRandom();
-        resolver.registerDID(did,getAgentDDO());
-
-
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver,did,  AgentService.getRemoteAccount());
-
-        Asset asset = MemoryAsset.createFromString("Asset from string");
-        Asset registeredAsset = remoteAgent.registerAsset(asset);
-
-        Asset assetFromAgent = remoteAgent.getAsset(asset.getAssetID());
-
-        assertEquals(remoteAgent.getDID(), did);
-        assertEquals(remoteAgent.getMetaEndpoint(),  AgentService.getSurferUrl()+"/api/v1/meta");
-        assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
-
-
-    }
-
-    private String getAgentDDO(){
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", AgentService.getSurferUrl()+"/api/v1/meta"));
-
+                "serviceEndpoint", "/api/v1/meta"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Storage.v1",
+                "serviceEndpoint", "/api/v1/assets"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Invoke.v1",
+                "serviceEndpoint", "/api/v1/invoke"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint",AgentService.getSurferUrl()+ "/api/v1/auth"));
-
+                "serviceEndpoint", "/api/v1/auth"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Market.v1",
+                "serviceEndpoint", "/api/v1/market"));
         ddo.put("service", services);
-        return JSON.toPrettyString(ddo);
+        String ddoString = JSON.toPrettyString(ddo);
+
+        Resolver resolver= DexResolver.create();
+        // creating unique DID
+        DID surferDID = DID.createRandom();
+        //registering the  DID and DDO
+        resolver.registerDID(surferDID, ddoString);
+
+        // creating a Remote agent instance for given Ocean and DID
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID,AgentService.getRemoteAccount());
+        assumeTrue(null != remoteAgent);
+        assertEquals(remoteAgent.getDID(), surferDID);
+        // verify the DID format
+        assertEquals(remoteAgent.getDID().getMethod(), "op");
+        assertEquals(remoteAgent.getDID().getScheme(), "did");
+        assumeTrue(null != remoteAgent.getDDO());
+    }
+
+    @Test
+    public void testRegistrationForException()  {
+
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            RemoteAgent.connect(null, null);
+        });
+
+
+
+
+
     }
 
 }
