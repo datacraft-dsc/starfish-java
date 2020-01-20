@@ -42,7 +42,7 @@ public class TestAgentRegistration_04 {
         Asset assetFromAgent = remoteAgent.getAsset(asset.getAssetID());
 
         assertEquals(remoteAgent.getDID(), did);
-        assertEquals(remoteAgent.getMetaEndpoint(),  "/api/v1/meta");
+        assertEquals(remoteAgent.getMetaEndpoint(),  AgentService.getSurferUrl()+"/api/v1/meta");
         assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
 
 
@@ -53,19 +53,12 @@ public class TestAgentRegistration_04 {
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
-                "serviceEndpoint", "/api/v1/meta"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
-                "serviceEndpoint", "/api/v1/assets"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", "/api/v1/invoke"));
+                "serviceEndpoint", AgentService.getSurferUrl()+"/api/v1/meta"));
+
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",
-                "serviceEndpoint", "/api/v1/auth"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Market.v1",
-                "serviceEndpoint", "/api/v1/market"));
+                "serviceEndpoint",AgentService.getSurferUrl()+ "/api/v1/auth"));
+
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
     }
