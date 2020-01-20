@@ -72,7 +72,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param account RemoteAccount for this agent
 	 * @return RemoteAgent
 	 */
-	public static RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
+	protected static RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
 		if (resolver == null) throw new IllegalArgumentException("Resolver  cannot be null for remote agent");
 		if (did == null) throw new IllegalArgumentException("DID cannot be null for remote agent");
 		return new RemoteAgent(resolver, did, account);
@@ -87,7 +87,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent new instance of remote Agent
 	 */
-	public static RemoteAgent create(Resolver resolver, DID did) {
+	protected static RemoteAgent create(Resolver resolver, DID did) {
 		return new RemoteAgent(resolver, did, null);
 	}
 

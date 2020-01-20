@@ -1,29 +1,54 @@
 package developerTC;
 
 import org.junit.jupiter.api.Test;
+import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.memory.LocalResolverImpl;
+import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer building or managing an Ocean Agent,
  * I need to be able to register my Agent on the network and obtain an Agent ID
  */
 public class TestAgentRegistration_04 {
+
+
     @Test
-    public void testRegistration() {
+    public void testRegistration() throws IOException {
+
+
+        Resolver resolver=DexResolver.create();
+        DID did = DID.createRandom();
+        resolver.registerDID(did,getAgentDDO());
+
+
+        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver,did,  AgentService.getRemoteAccount());
+
+        Asset asset = MemoryAsset.createFromString("Asset from string");
+        Asset registeredAsset = remoteAgent.registerAsset(asset);
+
+        Asset assetFromAgent = remoteAgent.getAsset(asset.getAssetID());
+
+        assertEquals(remoteAgent.getDID(), did);
+        assertEquals(remoteAgent.getMetaEndpoint(),  "/api/v1/meta");
+        assertEquals(registeredAsset.getMetadataString(), assetFromAgent.getMetadataString());
+
+
+    }
+
+    private String getAgentDDO(){
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
@@ -42,43 +67,7 @@ public class TestAgentRegistration_04 {
                 "type", "Ocean.Market.v1",
                 "serviceEndpoint", "/api/v1/market"));
         ddo.put("service", services);
-        String ddoString = JSON.toPrettyString(ddo);
-
-        Resolver resolver= new LocalResolverImpl();
-        // creating unique DID
-        DID surferDID = DID.createRandom();
-        //registering the  DID and DDO
-        resolver.registerDID(surferDID, ddoString);
-
-        // creating a Remote agent instance for given Ocean and DID
-        RemoteAgent remoteAgent = RemoteAgent.create(resolver, surferDID);
-        assumeTrue(null != remoteAgent);
-        assertEquals(remoteAgent.getDID(), surferDID);
-        // verify the DID format
-        assertEquals(remoteAgent.getDID().getMethod(), "op");
-        assertEquals(remoteAgent.getDID().getScheme(), "did");
-        assumeTrue(null != remoteAgent.getDDO());
-    }
-
-    @Test
-    public void testRegistrationForException() {
-        Map<String, Object> ddo = new HashMap<>();
-
-        String ddoString = JSON.toPrettyString(ddo);
-
-        //Should not allow to create the null DID ?
-        //getting the default Ocean instance
-        Resolver resolver=new LocalResolverImpl();
-        RemoteAgent remoteAgent = RemoteAgent.create(resolver, null);
-        //registering the  DID and DDO
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            resolver.registerDID(null, ddoString);
-        });
-
-
-
-
+        return JSON.toPrettyString(ddo);
     }
 
 }

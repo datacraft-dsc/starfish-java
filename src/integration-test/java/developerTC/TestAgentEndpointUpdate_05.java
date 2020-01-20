@@ -3,11 +3,14 @@ package developerTC;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
+import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +27,7 @@ public class TestAgentEndpointUpdate_05 {
 
 
     @Test
-    public void testServiceEndPoint() {
+    public void testServiceEndPoint() throws IOException {
         // creating an instance of Remote Agent
         String surferURL = AgentService.getSurferUrl();
         RemoteAgent remoteAgent = createRemoteAgent(surferURL);
@@ -37,7 +40,7 @@ public class TestAgentEndpointUpdate_05 {
         assertNull(remoteAgent.getAuthEndpoint());
     }
 
-    private RemoteAgent createRemoteAgent(String host) {
+    private RemoteAgent createRemoteAgent(String host) throws IOException {
 
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
@@ -53,16 +56,17 @@ public class TestAgentEndpointUpdate_05 {
         ddo.put("service", services);
         // converting ddo to string
         String ddoString = JSON.toPrettyString(ddo);
-
-        Resolver resolver = new LocalResolverImpl();
-        // creating unique DID
         DID surferDID = DID.createRandom();
+        Resolver resolver = DexResolver.create();
+        resolver.registerDID(surferDID,ddoString);
+        // creating unique DID
+
 
         // registering the DID and DDO
         resolver.registerDID(surferDID, ddoString);
-
+        RemoteAccount remoteAccount = RemoteAccount.create("test","Test");
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(resolver, surferDID);
+        return RemoteAgent.connectAgent(surferDID, remoteAccount);
 
     }
 }

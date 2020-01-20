@@ -34,6 +34,12 @@ public class AgentService {
     private static String username;
     private static String password;
 
+    public static RemoteAccount getRemoteAccount() {
+        return remoteAccount;
+    }
+
+    private static RemoteAccount remoteAccount;
+
 
     static {
         Properties properties = getProperties();
@@ -65,7 +71,7 @@ public class AgentService {
         resolver.registerDID(didSurfer,getDDO(surferUrl));
         resolver.registerDID(didInvoke,getDDO(invokeUrl));
 
-        RemoteAccount remoteAccount =  RemoteAccount.create(username,password);
+        remoteAccount =  RemoteAccount.create(username,password);
 
         surfer = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
         invokeAgent = RemoteAgent.connectAgent(resolver, didInvoke, remoteAccount);
