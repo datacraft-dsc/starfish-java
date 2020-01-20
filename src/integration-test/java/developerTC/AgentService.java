@@ -11,9 +11,6 @@ import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -30,13 +27,10 @@ public class AgentService {
 
     private static String invokeUrl;
 
-    private static String socketTimeout;
     private static String username;
     private static String password;
 
-    public static RemoteAccount getRemoteAccount() {
-        return remoteAccount;
-    }
+
 
     private static RemoteAccount remoteAccount;
 
@@ -46,7 +40,6 @@ public class AgentService {
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
         surferUrl = (StringUtils.isBlank(port)) ?ip : (ip + ":" + port) ;
-        socketTimeout = properties.getProperty("socket.timeout");
 
         //username and password
         username = properties.getProperty("surfer.username");
@@ -112,10 +105,6 @@ public class AgentService {
     }
 
 
-    public static int getSocketTimeout() {
-        return Integer.parseInt(socketTimeout);
-    }
-
     private static Properties getProperties() {
         Properties properties = new Properties();
         try {
@@ -130,27 +119,6 @@ public class AgentService {
     }
 
 
-    private static String getInvokeDDO(String host, Resolver resolver) {
-        Map<String, Object> ddo = new HashMap<>();
-        List<Map<String, Object>> services = new ArrayList<>();
-
-        services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", host));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
-                "serviceEndpoint", host + "/api/v1/meta"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
-                "serviceEndpoint", host + "/api/v1/assets"));
-        services.add(Utils.mapOf(
-                "type", "Ocean.Auth.v1",
-                "serviceEndpoint", host + "/api/v1/auth"));
-        ddo.put("service", services);
-        return JSON.toPrettyString(ddo);
-
-
-    }
 
     /**
      * Gets the surfer remote agent for testing purposes
@@ -161,32 +129,10 @@ public class AgentService {
         return surfer;
 
     }
-    public static boolean isServerReachable(String uri) {
 
-        try {
-            int timeOut = AgentService.getSocketTimeout();
-            URL url = new URL(uri);
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);
-            socket.close();
-            return true;
-        } catch (Exception e) {
 
-            return false;
-        }
+    public static RemoteAccount getRemoteAccount() {
+        return remoteAccount;
     }
 
-    /**
-     * Gets the koi remote agent for testing purposes
-     *
-     * @return The RemoteAgent, or null if not up
-     */
-    public static RemoteAgent getInvoke() {
-        return invokeAgent;
-
-    }
-
-    public static boolean checkSurfer() {
-        return isServerReachable(surferUrl);
-    }
 }

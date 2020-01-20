@@ -2,7 +2,6 @@ package developerTC;
 
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.squid.DexResolver;

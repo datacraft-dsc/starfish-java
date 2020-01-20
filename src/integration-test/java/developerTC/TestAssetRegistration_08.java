@@ -105,14 +105,16 @@ public class TestAssetRegistration_08 {
     public void testVerifyContent() throws IOException {
 
         // read metadata
-        String content = new String(Files.readAllBytes(Paths.get("src/integration-test/resources/assets/test_content.json")));
+        String expected = new String(Files.readAllBytes(
+                Paths.get("src/integration-test/resources/assets/test_content.json")));
 
         // create asset using metadata and given content
-        Asset memoryAsset = MemoryAsset.create(content.getBytes());
+        Asset memoryAsset = MemoryAsset.create(expected.getBytes());
 
         DataAsset dataAsset = remoteAgent.uploadAsset(memoryAsset);
+        String actual =Utils.stringFromStream(dataAsset.getContentStream());
 
-        Assertions.assertEquals(Hex.toString(Hash.sha3_256(dataAsset.getContent())), Hex.toString(Hash.sha3_256(content)));
+        Assertions.assertEquals(expected,actual);
 
     }
 
@@ -188,7 +190,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testProvenaceForNamed_Asset_01()  {
+    public void testProvenaceForNamedAsset01()  {
 
 
 
@@ -205,7 +207,7 @@ public class TestAssetRegistration_08 {
     }
 
     @Test
-    public void testProvenaceForAsset_02()  {
+    public void testProvenaceForAsset02()  {
 
 
 
@@ -219,9 +221,7 @@ public class TestAssetRegistration_08 {
 
     }
     @Test
-    public void testProvenaceForAsset_022()  {
-
-
+    public void testProvenaceForAsset03()  {
 
         Map<String,Object> additionalMeta = new HashMap<>();
         additionalMeta.put("name","BMW data ");
