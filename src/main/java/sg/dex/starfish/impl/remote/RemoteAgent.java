@@ -648,6 +648,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public String getInvokeEndpoint() {
 		return getEndpoint(Constant.ENDPOINT_INVOKE);
 	}
+	public String getStatusEndpoint() {
+		return getEndpoint(Constant.ENDPOINT_STATUS);
+	}
+	public String getDDOEndpoint() {
+		return getEndpoint(Constant.ENDPOINT_DDO);
+	}
 
 	/**
 	 * Gets the Meta API endpoint for this agent, or null if this does not exist
@@ -1262,6 +1268,111 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	public Job getJob(String jobID) {
 		// TODO: should poll for job status / existence?
 		return RemoteJob.create(this, jobID);
+	}
+
+	/**
+	 * API to get the Status of an Remote Agent.
+	 * the status will have name , description and
+	 * other information about the agent.
+	 * @return response Map
+	 */
+	public Map<String, Object> getStatus() {
+		URI uri = getStatusUri();
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(uri);
+		addAuthHeaders(httpget);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			try {
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+
+				if (statusCode == 200) {
+					String body = Utils.stringFromStream(response.getEntity().getContent());
+					if (body.isEmpty()) {
+						throw new RemoteException("Expected JSON status but got no body ");
+					}
+					Map<String, Object> result = JSON.toMap(body);
+					return result;
+				} else {
+					return null;
+				}
+			}
+			finally {
+				response.close();
+			}
+		}
+		catch (IOException e) {
+			throw new JobFailedException(" Status invocation failed ", e);
+		}
+	}
+
+	/**
+	 * The method used to get the Status URI of an Agent
+	 * @return status uri
+	 */
+	private URI getStatusUri() {
+		try {
+			String endPoint = getStatusEndpoint();
+			if (endPoint == null) throw new IllegalArgumentException("Agent has no Status endpoint defined");
+			return new URI(endPoint );
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Can't create valid URI ", e);
+		}
+	}
+
+	/**
+	 * The method used to get the DDO URI of an Agent
+	 * @return ddo uri
+	 */
+	private URI getDDOUri() {
+		try {
+			String endPoint = getDDOEndpoint();
+			if (endPoint == null) throw new IllegalArgumentException("Agent has no DDO endpoint defined");
+			return new URI(endPoint );
+		}
+		catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Can't create valid URI ", e);
+		}
+	}
+
+	/**
+	 * This method is to ge the DDO of an agent.
+	 * The DDO response include the DID, all services Endpoints.
+	 *
+	 * @return JSON
+	 */
+	public Map<String, Object> getAgentDDO() {
+		URI uri = getDDOUri();
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(uri);
+		addAuthHeaders(httpget);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			try {
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+
+				if (statusCode == 200) {
+					String body = Utils.stringFromStream(response.getEntity().getContent());
+					if (body.isEmpty()) {
+						throw new RemoteException("Expected JSON DDO  but got no body" );
+					}
+					return JSON.toMap(body);
+				} else {
+					return null;
+				}
+			}
+			finally {
+				response.close();
+			}
+		}
+		catch (IOException e) {
+			throw new JobFailedException(" DDO invocation failed  " , e);
+		}
 	}
 
 }

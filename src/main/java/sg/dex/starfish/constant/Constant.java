@@ -93,5 +93,6 @@ public class Constant {
 	public static final String ENDPOINT_INVOKE = "Ocean.Invoke.v1";
 
 
-
+    public static final String ENDPOINT_STATUS = "Ocean.Status";
+    public static final String ENDPOINT_DDO = "Ocean.DDO";
 }
