@@ -1,6 +1,5 @@
 package developerTC;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -46,14 +45,14 @@ public class TestAgentRegistration_04 {
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-        Resolver resolver= DexResolver.create();
+        Resolver resolver = DexResolver.create();
         // creating unique DID
         DID surferDID = DID.createRandom();
         //registering the  DID and DDO
         resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID,AgentService.getRemoteAccount());
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID, AgentService.getRemoteAccount());
         assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
@@ -63,15 +62,12 @@ public class TestAgentRegistration_04 {
     }
 
     @Test
-    public void testRegistrationForException()  {
+    public void testRegistrationForException() {
 
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             RemoteAgent.connect(null, null);
         });
-
-
-
 
 
     }
