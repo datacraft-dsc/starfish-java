@@ -1,6 +1,5 @@
 package developerTC;
 
-import com.sun.tools.javac.comp.Resolve;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
@@ -52,7 +51,7 @@ public class TestRemoteAgentTest_26 {
         credentialMap.put("password", "OpenSesame");
 
         RemoteAccount remoteAccount = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver, did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         try {
             remoteAgent.getAsset("1234");
         } catch (RemoteException e) {
@@ -74,7 +73,7 @@ public class TestRemoteAgentTest_26 {
         credentialMap.put("password", "OpenSesame");
 
         RemoteAccount remoteAccount = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver, did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         remoteAgent.createToken(remoteAccount);
 
         // getting the token
@@ -83,7 +82,7 @@ public class TestRemoteAgentTest_26 {
         // creating remote Acc based on token
         RemoteAccount remoteAccount1 = RemoteAccount.create( token);
         // creating Agent 2
-        RemoteAgent remoteAgent1 = RemoteAgent.connectAgent(resolver, did, remoteAccount1);
+        RemoteAgent remoteAgent1 = RemoteAgent.connect(resolver, did, remoteAccount1);
         try {
             remoteAgent1.getAsset("1234");
         } catch (RemoteException e) {
@@ -100,7 +99,7 @@ public class TestRemoteAgentTest_26 {
         resolver.registerDID(did,getDDO());
 
         RemoteAccount remoteAccount = RemoteAccount.create("Aladdin","OpenSesame");
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver, did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         try {
             remoteAgent.getAsset("1234");
         } catch (RemoteException e) {
@@ -118,7 +117,7 @@ public class TestRemoteAgentTest_26 {
         resolver.registerDID(did,getDDO());
 
         RemoteAccount remoteAccount = RemoteAccount.create("WrongUser","WrongPassword");
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(resolver, did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         try {
             remoteAgent.getAsset("1234");
         } catch (RemoteException e) {

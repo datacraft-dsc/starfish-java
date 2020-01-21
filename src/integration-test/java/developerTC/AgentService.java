@@ -35,6 +35,10 @@ public class AgentService {
     private static String password;
 
 
+
+    private static RemoteAccount remoteAccount;
+
+
     static {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
@@ -65,10 +69,10 @@ public class AgentService {
         resolver.registerDID(didSurfer,getDDO(surferUrl));
         resolver.registerDID(didInvoke,getDDO(invokeUrl));
 
-        RemoteAccount remoteAccount =  RemoteAccount.create(username,password);
+        remoteAccount =  RemoteAccount.create(username,password);
 
-        surfer = RemoteAgent.connectAgent(resolver, didSurfer, remoteAccount);
-        invokeAgent = RemoteAgent.connectAgent(resolver, didInvoke, remoteAccount);
+        surfer = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        invokeAgent = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
     }
 
@@ -182,5 +186,9 @@ public class AgentService {
 
     public static boolean checkSurfer() {
         return isServerReachable(surferUrl);
+    }
+
+    public static RemoteAccount getRemoteAccount() {
+        return remoteAccount;
     }
 }

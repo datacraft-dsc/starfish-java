@@ -1,10 +1,9 @@
 package keeper;
 
 import developerTC.AgentService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -96,11 +95,11 @@ public class DexResolverTest {
         ddo.put("service", services);
 
         default_resolver.registerDID(did, JSON.toPrettyString(ddo));
-        RemoteAgent remoteAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
         Asset asset = MemoryAsset.createFromString("Asset from string");
         Asset registeredAsset = remoteAgent.registerAsset(asset);
         // resolving
-        RemoteAgent resolvedAgent = RemoteAgent.connectAgent(default_resolver,did, remoteAccount);
+        RemoteAgent resolvedAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
         Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
 
         assertEquals(resolvedAgent.getDID(), did);

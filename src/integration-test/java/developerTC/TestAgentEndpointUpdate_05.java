@@ -60,9 +60,8 @@ public class TestAgentEndpointUpdate_05 {
 
         // registering the DID and DDO
         resolver.registerDID(surferDID, ddoString);
-
         // creating a Remote agent instance for given Ocean and DID
-        return RemoteAgent.create(resolver, surferDID);
+        return RemoteAgent.connect(resolver, surferDID,AgentService.getRemoteAccount());
 
     }
 }

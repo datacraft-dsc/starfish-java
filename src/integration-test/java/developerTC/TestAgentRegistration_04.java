@@ -2,12 +2,13 @@ package developerTC;
 
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class TestAgentRegistration_04 {
     @Test
-    public void testRegistration() {
+    public void testRegistration() throws IOException {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
@@ -44,14 +45,14 @@ public class TestAgentRegistration_04 {
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
-        Resolver resolver= new LocalResolverImpl();
+        Resolver resolver = DexResolver.create();
         // creating unique DID
         DID surferDID = DID.createRandom();
         //registering the  DID and DDO
         resolver.registerDID(surferDID, ddoString);
 
         // creating a Remote agent instance for given Ocean and DID
-        RemoteAgent remoteAgent = RemoteAgent.create(resolver, surferDID);
+        RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID, AgentService.getRemoteAccount());
         assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
@@ -62,21 +63,11 @@ public class TestAgentRegistration_04 {
 
     @Test
     public void testRegistrationForException() {
-        Map<String, Object> ddo = new HashMap<>();
 
-        String ddoString = JSON.toPrettyString(ddo);
-
-        //Should not allow to create the null DID ?
-        //getting the default Ocean instance
-        Resolver resolver=new LocalResolverImpl();
-        RemoteAgent remoteAgent = RemoteAgent.create(resolver, null);
-        //registering the  DID and DDO
 
         assertThrows(IllegalArgumentException.class, () -> {
-            resolver.registerDID(null, ddoString);
+            RemoteAgent.connect(null, null);
         });
-
-
 
 
     }
