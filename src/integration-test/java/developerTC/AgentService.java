@@ -94,6 +94,12 @@ public class AgentService {
         services.add(Utils.mapOf(
                 "type", "Ocean.Market.v1",
                 "serviceEndpoint", host + "/api/v1/market"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.Status",
+                "serviceEndpoint", host + "/api/status"));
+        services.add(Utils.mapOf(
+                "type", "Ocean.DDO",
+                "serviceEndpoint", host + "/api/ddo"));
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);
 
