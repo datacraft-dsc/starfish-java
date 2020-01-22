@@ -1291,7 +1291,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					if (body.isEmpty()) {
-						throw new RemoteException("Expected JSON status but got no body ");
+						throw new RemoteException("No Content in the response for :" +uri);
 					}
 					Map<String, Object> result = JSON.toMap(body);
 					return result;
@@ -1304,7 +1304,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			}
 		}
 		catch (IOException e) {
-			throw new JobFailedException(" Status invocation failed ", e);
+			throw new RemoteException(" Getting Remote Agent status failed: ", e);
 		}
 	}
 
@@ -1359,7 +1359,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 				if (statusCode == 200) {
 					String body = Utils.stringFromStream(response.getEntity().getContent());
 					if (body.isEmpty()) {
-						throw new RemoteException("Expected JSON DDO  but got no body" );
+						throw new RemoteException("No Content in the response for :"+uri.toString());
 					}
 					return JSON.toMap(body);
 				} else {
@@ -1371,7 +1371,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 			}
 		}
 		catch (IOException e) {
-			throw new JobFailedException(" DDO invocation failed  " , e);
+			throw new RemoteException(" Getting Remote Agent DDO failed: ", e);
 		}
 	}
 
