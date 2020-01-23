@@ -96,14 +96,7 @@ public class DexResolver implements Resolver {
 
     @Override
     public String getDDOString(DID did) throws ResolverException {
-        com.oceanprotocol.squid.models.DID squidDID = null;
-        try {
-            squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
-        } catch (DIDFormatException e) {
-            throw new ResolverException(e);
-        }
-
-        String didHash = squidDID.getHash();
+        String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
             blockNumber = (BigInteger) contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
@@ -131,17 +124,10 @@ public class DexResolver implements Resolver {
     public void registerDID(DID did, String ddo) throws ResolverException {
         String checksum = "0x0";
 
-        com.oceanprotocol.squid.models.DID didSquid = null;
-        try {
-            didSquid = new com.oceanprotocol.squid.models.DID(did.toString());
-        } catch (DIDFormatException e) {
-            throw new ResolverException(e);
-        }
-
         TransactionReceipt receipt = null;
         try {
             receipt = (TransactionReceipt)contract.registerAttribute(
-                    EncodingHelper.hexStringToBytes(didSquid.getHash()),
+                    EncodingHelper.hexStringToBytes(did.getID()),
                     EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
                     Arrays.asList(squidService.getProvider()), ddo).send();
         } catch (IOException e) {
