@@ -28,7 +28,7 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,Starf
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,RemoteException,0,9,0,0,0,4,0,2,0,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,GenericException,9,0,0,0,4,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,JobFailedException,5,0,0,0,2,0,1,0,1,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,ResolverException,3,4,0,0,2,2,1,1,1,1
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,ResolverException,7,4,0,0,4,2,2,1,2,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,StorageException,5,0,0,0,2,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,AuthorizationException,9,0,0,0,4,0,2,0,2,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Params,386,0,42,0,73,0,27,0,6,0
