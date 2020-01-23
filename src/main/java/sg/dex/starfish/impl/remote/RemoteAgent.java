@@ -21,6 +21,7 @@ import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
@@ -59,9 +60,42 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param did DID for this agent
 	 * @param account account
 	 */
-	protected RemoteAgent(Resolver resolver, DID did, RemoteAccount account) {
+	private RemoteAgent(Resolver resolver, DID did, RemoteAccount account) {
 		super(resolver, did);
 		this.account = account;
+	}
+
+	/**
+	 * Creates a RemoteAgent with the specified URL of Agent adn user Account detial.
+     * This method is used to get an instance of an Remote Agent based on Agent URL.
+     * IT will connect to an Agent and get the DDO and did from the Agent using the
+     * Status Endpoint and create respective  Agent Instance
+	 *
+	 * @param account RemoteAccount for this agent
+	 * @return RemoteAgent
+	 */
+	private static RemoteAgent create(String url, RemoteAccount account) throws  URISyntaxException {
+
+		if (url == null) throw new IllegalArgumentException("URL  cannot be null ");
+		if (account == null) throw new IllegalArgumentException("Account cannot be null ");
+
+		Map<String, Object>  result = getDDOByURL(url,account);
+		Map<String, Object>  serviceMap = new HashMap<>();
+
+		serviceMap.put("service",result.get("service"));
+		String did =result.get("id").toString();
+
+		//DID did1=sg.dex.starfish.util.DID.create("op",did,null,null);
+		DID did1=sg.dex.starfish.util.DID.parse(did);
+
+		// todo remove the LocalResolverImpl with DEx resolver
+        //todo currently dexresolver is not working for did:dex , it only works for did:op.
+
+		Resolver resolver =new LocalResolverImpl();
+
+		resolver.registerDID(did1,JSON.toPrettyString(serviceMap));
+
+		return new RemoteAgent(resolver, did1, account);
 	}
 
 	/**
@@ -72,7 +106,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param account RemoteAccount for this agent
 	 * @return RemoteAgent
 	 */
-	protected static RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
+	protected RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
 		if (resolver == null) throw new IllegalArgumentException("Resolver  cannot be null for remote agent");
 		if (did == null) throw new IllegalArgumentException("DID cannot be null for remote agent");
 		return new RemoteAgent(resolver, did, account);
@@ -87,7 +121,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param did DID for this agent
 	 * @return RemoteAgent new instance of remote Agent
 	 */
-	protected static RemoteAgent create(Resolver resolver, DID did) {
+	protected RemoteAgent create(Resolver resolver, DID did) {
 		return new RemoteAgent(resolver, did, null);
 	}
 
@@ -173,10 +207,20 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static RemoteAgent connect(DID did, RemoteAccount acc) throws IOException {
     	if(null== did || null == acc){
-    		throw new IllegalArgumentException("Missing Argument , Either DID or Acc is null");
+    		throw new IllegalArgumentException("Missing Argument , Either DID or Account is null");
 		}
         return new RemoteAgent(DexResolver.create(), did, acc);
     }
+	/**
+	 * This method is to create a Remote Agent Instance based on agent url and user Account
+	 * this method will connect with Agent through REST endpoint and get the DDO based on give DID.
+	 * @param url url of the Agent
+	 * @param acc remote account
+	 * @return New Remote Agent Instance
+	 */
+	public static RemoteAgent connect(String url, RemoteAccount acc) throws IOException, URISyntaxException {
+		return create(url,  acc);
+	}
 	private <R extends Asset> R registerBundle(Asset a) {
 		Bundle remoteBundle = (Bundle) a;
 
@@ -1352,6 +1396,46 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		CloseableHttpResponse response;
 		try {
 			response = httpclient.execute(httpget);
+			try {
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+
+				if (statusCode == 200) {
+					String body = Utils.stringFromStream(response.getEntity().getContent());
+					if (body.isEmpty()) {
+						throw new RemoteException("No Content in the response for :"+uri.toString());
+					}
+					return JSON.toMap(body);
+				} else {
+					return null;
+				}
+			}
+			finally {
+				response.close();
+			}
+		}
+		catch (IOException e) {
+			throw new RemoteException(" Getting Remote Agent DDO failed: ", e);
+		}
+	}
+
+	/**
+	 * This method is to get the DDO from and agent with agent URL and UserAccount.
+     * This will make an HTTP call to remote agent whose and will parse the response .
+	 * The DDO response include the DID, all services Endpoints.
+	 *
+	 * @return JSON
+	 */
+	private static Map<String, Object> getDDOByURL(String url,Account account) throws URISyntaxException {
+		URI uri = new URI(url + "/api/ddo");
+		HttpGet httpget = new HttpGet(uri);
+
+		String username = account.getCredentials().get(USER_NAME).toString();
+		String password = account.getCredentials().get(PASSWORD).toString();
+
+		CloseableHttpResponse response;
+		try {
+			response = HTTP.executeWithAuth(httpget, username, password);
 			try {
 				StatusLine statusLine = response.getStatusLine();
 				int statusCode = statusLine.getStatusCode();
