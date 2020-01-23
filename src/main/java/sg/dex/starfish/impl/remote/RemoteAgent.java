@@ -51,7 +51,9 @@ import static sg.dex.starfish.constant.Constant.*;
  */
 public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
-	private final RemoteAccount account;
+
+
+    private final RemoteAccount account;
 
 	/**
 	 * Creates a RemoteAgent with the specified Resolver and DID
@@ -218,7 +220,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 	 * @param acc remote account
 	 * @return New Remote Agent Instance
 	 */
-	public static RemoteAgent connect(String url, RemoteAccount acc) throws IOException, URISyntaxException {
+	public static RemoteAgent connect(String url, RemoteAccount acc) throws  URISyntaxException {
 		return create(url,  acc);
 	}
 	private <R extends Asset> R registerBundle(Asset a) {
@@ -1459,4 +1461,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 		}
 	}
 
+    /**
+     * This method is used to get the remote account associated with the Remote Agent
+     * @return
+     */
+    public RemoteAccount getAccount() {
+        return account;
+    }
 }
