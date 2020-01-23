@@ -6,6 +6,12 @@ import sg.dex.starfish.util.DID;
 
 import java.io.IOException;
 
+/**
+ * Class encapsulating all possible resolvers
+ * and automatically deciding which one to choose.
+ *
+ * @author Ilya
+ */
 public class UniversalResolver implements Resolver {
     private DexResolver dexResolver;
     private SquidResolverImpl squidResolverImpl;
@@ -21,6 +27,20 @@ public class UniversalResolver implements Resolver {
         this.dexResolver = dexResolver;
         this.squidResolverImpl = squidResolverImpl;
     }
+
+    /**
+     * Creates UniversalResolver
+     *
+     * @param String squidConfigFile. Squid config file which is used to initialize Squid Resolver.
+     *
+     * @throws IOException
+     * @return UniversalResolver The newly created UniversalResolver
+     */
+    public static UniversalResolver create(String squidConfigFile) throws IOException {
+        SquidService squidService = SquidService.create(squidConfigFile);
+        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));
+    }
+
     /**
      * Creates UniversalResolver
      *
@@ -28,8 +48,7 @@ public class UniversalResolver implements Resolver {
      * @return UniversalResolver The newly created UniversalResolver
      */
     public static UniversalResolver create() throws IOException {
-        SquidService squidService = SquidService.create("application_test.properties");
-        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));
+        return new UniversalResolver(DexResolver.create(), null);
     }
 
     @Override
@@ -37,6 +56,9 @@ public class UniversalResolver implements Resolver {
         if(did.getMethod() == DEX_METHOD) {
             return this.dexResolver.getDDOString(did);
         } else {
+            if (squidResolverImpl == null) {
+                throw new ResolverException("Config for Ocean Protocol type of DID must be provided");
+            }
             return this.squidResolverImpl.getDDOString(did);
         }
     }
@@ -46,6 +68,9 @@ public class UniversalResolver implements Resolver {
         if(did.getMethod() == DEX_METHOD) {
             this.dexResolver.registerDID(did,ddo);
         } else {
+            if (squidResolverImpl == null) {
+                throw new ResolverException("Config for Ocean Protocol type of DID must be provided");
+            }
             this.squidResolverImpl.registerDID(did,ddo);
         }
     }

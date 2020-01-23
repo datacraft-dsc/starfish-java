@@ -22,4 +22,8 @@ public class ResolverException extends RuntimeException {
     public ResolverException() {
         super();
     }
+
+    public ResolverException(String message) {
+        super(message);
+    }
 }
