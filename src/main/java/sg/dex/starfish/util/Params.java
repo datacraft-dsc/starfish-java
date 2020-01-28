@@ -1,10 +1,13 @@
 package sg.dex.starfish.util;
 
+import org.apache.commons.httpclient.RedirectException;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.exception.StarfishValidationException;
+import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,7 +90,7 @@ public class Params {
      * @param response         response received from the Invoke call
      * @return formatted map of the response received
      */
-    public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> response) {
+    public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
         @SuppressWarnings("unchecked")
@@ -102,8 +105,8 @@ public class Params {
                 if (type.equals("asset")) {
 
                     Map<String, Object> didMap = (Map<String, Object>) response.get(paramName);
-                    DID did = DID.create("op", (String)didMap.get("did"), null, null);
-                    result.put(paramName, did);
+                   // DID did = DID.create("op", (String)didMap.get("did"), null, null);
+                    result.put(paramName, getAsset(didMap.get("did"),remoteAccount));
                 } else if (type.equals("json")) {
                     result.put(paramName, response.get(paramName));
                 } else {
@@ -115,6 +118,20 @@ public class Params {
 
         }
         return result;
+
+    }
+
+    private static Object getAsset(Object di,RemoteAccount remoteAccount) throws IOException {
+        if(di == null){
+            throw new RedirectException("DID is null");
+        }
+        String didS=  (String)di;
+        DID did= DID.parse(didS);
+        DID agentDID = did.withoutPath();
+        String path =did.getPath();
+        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID,remoteAccount);
+        Asset asset =remoteAgent.getAsset(path);
+        return asset;
 
     }
 

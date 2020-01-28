@@ -13,17 +13,17 @@ import java.io.IOException;
  * @author Ilya
  */
 public class UniversalResolver implements Resolver {
-    private DexResolver dexResolver;
-    private SquidResolverImpl squidResolverImpl;
+    private Resolver dexResolver;
+    private Resolver squidResolverImpl;
     private static final String DEX_METHOD = "dex";
 
     /**
      * Create UniversalResolver
      *
-     * @param DexResolver dexResolver
-     * @param SquidResolverImpl squidResolverImpl
+     * @param dexResolver dexResolver
+     * @param squidResolverImpl squidResolverImpl
      */
-    private UniversalResolver(DexResolver dexResolver, SquidResolverImpl squidResolverImpl)  {
+    private UniversalResolver(Resolver dexResolver, Resolver squidResolverImpl)  {
         this.dexResolver = dexResolver;
         this.squidResolverImpl = squidResolverImpl;
     }
@@ -31,7 +31,7 @@ public class UniversalResolver implements Resolver {
     /**
      * Creates UniversalResolver
      *
-     * @param String squidConfigFile. Squid config file which is used to initialize Squid Resolver.
+     * @param squidConfigFile squidConfigFile. Squid config file which is used to initialize Squid Resolver.
      *
      * @throws IOException
      * @return UniversalResolver The newly created UniversalResolver

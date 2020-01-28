@@ -2,8 +2,10 @@ package sg.dex.starfish.impl.remote;
 
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.util.Params;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +63,11 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
             throw new IllegalArgumentException("This operation does not support sync invoke.");
         }
         Map<String, Object> response = remoteAgent.invokeResult(this, params);
-        return Params.formatResponse(this, response);
+        try {
+            return Params.formatResponse(this, response,remoteAgent.getAccount());
+        } catch (IOException e) {
+            throw new RemoteException("Error in creating the Result");
+        }
 
     }
 

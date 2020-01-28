@@ -3,6 +3,7 @@ package keeper;
 import developerTC.AgentService;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
+import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DexResolverTest {
     private DexResolver resolver1;
     private DexResolver resolver2;
-    private DexResolver default_resolver;
+    private Resolver default_resolver;
     private String valueSet;
     private String valueUpdate;
     private DID did;

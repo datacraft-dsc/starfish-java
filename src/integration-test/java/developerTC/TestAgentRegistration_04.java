@@ -66,7 +66,7 @@ public class TestAgentRegistration_04 {
 
 
         assertThrows(IllegalArgumentException.class, () -> {
-            RemoteAgent.connect(null, null);
+            RemoteAgent.connect(DID.createRandom(), null);
         });
 
 

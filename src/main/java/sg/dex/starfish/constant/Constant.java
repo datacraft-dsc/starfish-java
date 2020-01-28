@@ -95,4 +95,5 @@ public class Constant {
 
     public static final String ENDPOINT_STATUS = "Ocean.Status";
     public static final String ENDPOINT_DDO = "Ocean.DDO";
+    public static final String DDO_PATH = "/api/ddo";
 }

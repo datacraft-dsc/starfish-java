@@ -14,6 +14,7 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
@@ -67,8 +68,9 @@ public class DexResolver implements Resolver {
      * @throws IOException
      * @return DexResolver The newly created DexResolver
      */
-    public static DexResolver create() throws IOException {
-        return create("resolver_default.properties");
+    public static Resolver create() throws IOException {
+        return new LocalResolverImpl();
+       // return create("resolver_default.properties");
     }
 
     /**

@@ -14,11 +14,12 @@ import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
+import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
-import sg.dex.starfish.util.Params;
 import sg.dex.starfish.util.Utils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,19 +41,20 @@ public class TestInvokeServiceFree_20 {
 
     private DID didSurfer;
     private DID didInvoke;
-    private Resolver resolver = new LocalResolverImpl();
-    private Resolver resolverKoi = new LocalResolverImpl();
+    private Resolver resolver;
     private RemoteAccount remoteAccount;
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
+       // resolver=DexResolver.create("application_resolver.properties");
+        resolver=new LocalResolverImpl();
         // surfer should be running
         didSurfer = getSurferDid();
         didInvoke = getInvokeDid();
         remoteAccount = getRemoteAccount("Aladdin", "OpenSesame");
         resolver.registerDID(didSurfer, getDdo());
-        resolverKoi.registerDID(didInvoke, getDDOForInvokeAgent());
+        resolver.registerDID(didInvoke, getDDOForInvokeAgent());
 
 
     }
@@ -68,13 +70,10 @@ public class TestInvokeServiceFree_20 {
 
     private String getDdo() {
         String surferURL = AgentService.getSurferUrl();
-        String invokeURL = AgentService.getInvokeUrl();
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
-        services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
-                "serviceEndpoint", invokeURL + "/api/v1"));
+
         services.add(Utils.mapOf(
                 "type", "Ocean.Meta.v1",
                 "serviceEndpoint", surferURL + "/api/v1/meta"));
@@ -90,7 +89,7 @@ public class TestInvokeServiceFree_20 {
     }
 
     private String getDDOForInvokeAgent() {
-        String invokeURL = AgentService.getInvokeUrl();
+        String invokeURL = "http://52.230.52.223:8191";
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         String surferURL = AgentService.getSurferUrl();
@@ -110,13 +109,13 @@ public class TestInvokeServiceFree_20 {
     }
 
     private DID getInvokeDid() {
-        DID did = DID.createRandom();
+        DID did = DID.parse("did:op:a1d2dbf875ad06ea96432ca4d091e23c26f211b7caedba1e0b71121b2d88e1fd");
         return did;
 
     }
 
     private DID getSurferDid() {
-        DID did = DID.createRandom();
+        DID did = DID.parse("did:dex:1acd41655b2d8ea3f3513cc847965e72c31bbc9bfc38e7e7ec901852bd3c457c");
         return did;
 
     }
@@ -127,14 +126,14 @@ public class TestInvokeServiceFree_20 {
      * this test case is for testing Sync behaviour SYNC
      */
     @Test
-    public void testPrimeSync_1() {
+    public void testPrimeSync_1() throws IOException {
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver,didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolver,didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation remoteOperation = agentIKoi.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
@@ -143,9 +142,9 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> response = remoteOperation.invokeResult(metaMap);
         for (Map.Entry<String, Object> res : response.entrySet()) {
             Object r = res.getValue();
-            if (r instanceof DID) {
-                DID did = (DID) r;
-                Asset resultAsset = agentI.getAsset(did.getID());
+            if (r instanceof Asset) {
+
+                Asset resultAsset = (Asset) r;
                 String actual = Utils.stringFromStream(resultAsset.getContentStream());
                 String expected = "2" + System.lineSeparator() + "3" + System.lineSeparator() + "5" + System.lineSeparator() + "7";
                 assertTrue(expected.trim().equals(actual.trim()));
@@ -163,14 +162,14 @@ public class TestInvokeServiceFree_20 {
      * this test case is for testing ASYNC behaviour SYNC
      */
     @Test
-    public void testPrimeAsync_1() {
+    public void testPrimeAsync_1() throws IOException {
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentData = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentOperation = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentData = RemoteAgent.connect(didSurfer, remoteAccount);
+        RemoteAgent agentOperation = RemoteAgent.connect(didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation operation = agentOperation.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");
@@ -180,14 +179,13 @@ public class TestInvokeServiceFree_20 {
 
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult();
-        Map<String, Object> response = Params.formatResponse(operation, remoteAsset);
+        // Map<String, Object> response = Params.formatResponse(operation, remoteAsset);
 
 
-        for (Map.Entry<String, Object> res : response.entrySet()) {
+        for (Map.Entry<String, Object> res : remoteAsset.entrySet()) {
             Object r = res.getValue();
-            if (r instanceof DID) {
-                DID did = (DID) r;
-                Asset resultAsset = agentData.getAsset(did.getID());
+            if (r instanceof Asset) {
+                Asset resultAsset = (Asset) r;//agentData.getAsset(did.getID());
                 String actual = Utils.stringFromStream(resultAsset.getContentStream());
                 // used line separator ans result was returned haveing each digit in new line.
                 String expected = "2" + System.lineSeparator() + "3" + System.lineSeparator() + "5" + System.lineSeparator() + "7";
@@ -231,10 +229,10 @@ public class TestInvokeServiceFree_20 {
      * this test case is for testing ASync behaviour of HASHING
      */
     @Test
-    public void testHashingAsync_1() {
+    public void testHashingAsync_1() throws IOException {
 
-        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -251,14 +249,13 @@ public class TestInvokeServiceFree_20 {
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult(10000);
 
-        Map<String, Object> response = Params.formatResponse(remoteOperation, remoteAsset);
+        // Map<String, Object> response = Params.formatResponse(remoteOperation, remoteAsset);
 
 
-        for (Map.Entry<String, Object> res : response.entrySet()) {
+        for (Map.Entry<String, Object> res : remoteAsset.entrySet()) {
             Object r = res.getValue();
-            if (r instanceof DID) {
-                DID did = (DID) r;
-                Asset resultAsset = agentI.getAsset(did.getID());
+            if (r instanceof Asset) {
+                Asset resultAsset = (Asset) r;
                 String actual = Utils.stringFromStream(resultAsset.getContentStream());
                 String expected = "b35af2607950b7c071fd220006f120dbe7af8944c5a91611a633173823574fe9";
                 assertTrue(expected.equals(actual));
@@ -272,14 +269,14 @@ public class TestInvokeServiceFree_20 {
 
     /**
      * TEST HASHING ::For this operation the input must be type ASSET and the response will  be type asset.
-     *this is to test the sync mode
+     * this is to test the sync mode
      * this test case is for testing SYNC behaviour of HASHING
      */
     @Test
     public void testHashingSync_1() {
 
         RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -324,7 +321,7 @@ public class TestInvokeServiceFree_20 {
     public void test_Vehicle_Workshop_Merge_Sync() throws JSONException {
 
         RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -373,7 +370,7 @@ public class TestInvokeServiceFree_20 {
     public void test_Vehicle_Workshop_Merge_ASync() throws JSONException {
 
         RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolverKoi, didInvoke, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
 
         // input to the operation
@@ -395,20 +392,16 @@ public class TestInvokeServiceFree_20 {
         // waiting for job to get completed
         Map<String, Object> remoteAsset = job.getResult(10000);
 
-        Map<String, Object> response = Params.formatResponse(remoteOperation, remoteAsset);
 
-
-        for (Map.Entry<String, Object> res : response.entrySet()) {
+        for (Map.Entry<String, Object> res : remoteAsset.entrySet()) {
             Object r = res.getValue();
             if (r instanceof DID) {
-                DID did = (DID) r;
-                Asset resultAsset = agentI.getAsset(did.getID());
+                Asset resultAsset = (Asset) r;
                 String actual = Utils.stringFromStream(resultAsset.getContentStream());
                 InputStream inputStream = Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("assets/joined_output.json");
                 String expected = Utils.stringFromStream(inputStream);
                 JSONAssert.assertEquals(expected, actual, false);
-
 
             }
 
