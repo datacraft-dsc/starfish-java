@@ -5,7 +5,6 @@ import com.oceanprotocol.common.web3.KeeperService;
 import com.oceanprotocol.keeper.contracts.DIDRegistry;
 import com.oceanprotocol.squid.api.config.OceanConfig;
 import com.oceanprotocol.squid.api.config.OceanConfigFactory;
-import com.oceanprotocol.squid.exceptions.DIDFormatException;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
@@ -32,10 +31,10 @@ public class DexResolver implements Resolver {
     /**
      * Create DexResolver
      *
-     * @param contract contract
+     * @param contract     contract
      * @param squidService squidService
      */
-    private DexResolver(DIDRegistry contract, SquidService squidService)  {
+    private DexResolver(DIDRegistry contract, SquidService squidService) {
         this.contract = contract;
         this.squidService = squidService;
     }
@@ -43,20 +42,20 @@ public class DexResolver implements Resolver {
     /**
      * Creates a DexResolver
      *
-     * @param SquidService squidService: SquidService with set Squid configuration
-     * @param String addressFrom: owner of DID record in the ledger. Only this address is allowed to update it
-     * @param String password: its password
-     * @param String credentialFile: its parity credential file
-     * @throws IOException, CipherException
+     * @param squidService:   SquidService with set Squid configuration
+     * @param addressFrom:    owner of DID record in the ledger. Only this address is allowed to update it
+     * @param password:       its password
+     * @param credentialFile: its parity credential file
      * @return DexResolver The newly created DexResolver
+     * @throws IOException, CipherException
      */
-    public static DexResolver create(SquidService squidService, String addressFrom, String password, String credentialFile) throws IOException, CipherException{
+    public static DexResolver create(SquidService squidService, String addressFrom, String password, String credentialFile) throws IOException, CipherException {
         Properties properties = squidService.getProperties();
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         oceanConfig.setMainAccountAddress(addressFrom);
         oceanConfig.setMainAccountPassword(password);
         oceanConfig.setMainAccountCredentialsFile(credentialFile);
-        String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
+        String address = (String) properties.getOrDefault("contract.DIDRegistry.address", "");
         KeeperService keeper = squidService.getKeeperService(oceanConfig);
         DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
         return new DexResolver(contract, squidService);
@@ -65,25 +64,26 @@ public class DexResolver implements Resolver {
     /**
      * Creates default DexResolver
      *
-     * @throws IOException
      * @return DexResolver The newly created DexResolver
+     * @throws IOException
      */
     public static Resolver create() throws IOException {
+        // todo need to remote as create is failing now may be due to Nile network is issue
         return new LocalResolverImpl();
-       // return create("resolver_default.properties");
+        // return create("resolver_default.properties");
     }
 
     /**
      * Creates a DexResolver
      *
-     * @param String configFile. All information about account credentials will be taken from this file
-     * @throws IOException
+     * @param configFile configFile. All information about account credentials will be taken from this file
      * @return DexResolver The newly created DexResolver
+     * @throws IOException
      */
-    public static DexResolver create(String configFile) throws IOException{
+    public static DexResolver create(String configFile) throws IOException {
         SquidService squidService = SquidService.create(configFile);
         Properties properties = squidService.getProperties();
-        String address = (String)properties.getOrDefault("contract.DIDRegistry.address", "");
+        String address = (String) properties.getOrDefault("contract.DIDRegistry.address", "");
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         KeeperService keeper = null;
         try {
@@ -128,7 +128,7 @@ public class DexResolver implements Resolver {
 
         TransactionReceipt receipt = null;
         try {
-            receipt = (TransactionReceipt)contract.registerAttribute(
+            receipt = (TransactionReceipt) contract.registerAttribute(
                     EncodingHelper.hexStringToBytes(did.getID()),
                     EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
                     Arrays.asList(squidService.getProvider()), ddo).send();
@@ -140,7 +140,7 @@ public class DexResolver implements Resolver {
             throw new ResolverException(e);
         }
 
-        if(!receipt.getStatus().equals("0x1"))
+        if (!receipt.getStatus().equals("0x1"))
             throw new ResolverException();
     }
 }

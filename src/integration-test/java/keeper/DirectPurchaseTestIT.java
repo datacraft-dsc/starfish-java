@@ -3,6 +3,7 @@ package keeper;
 import com.oceanprotocol.squid.api.OceanAPI;
 import com.oceanprotocol.squid.exceptions.EthereumException;
 import com.oceanprotocol.squid.models.Account;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -15,7 +16,7 @@ import java.math.BigInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+@Disabled
 public class DirectPurchaseTestIT {
     private static final String reference = "0x000000000000a46daef00000000000"; // must be any hardcoded value
     private static final BigInteger tokenAmount = BigInteger.valueOf(10);
