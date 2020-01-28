@@ -52,7 +52,8 @@ public class TestStatusAPI {
     }
 
     @Test
-    public void testCreatAgentByURL() throws IOException, URISyntaxException {
+    public void testCreatAgentByURL() throws URISyntaxException, IOException {
+
         RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
         RemoteAgent remoteAgent = RemoteAgent.connect("http://52.230.82.125:3030", remoteAccount);
         Asset asset = MemoryAsset.create("test".getBytes());
