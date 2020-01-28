@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryJob,64,71,3,5,13,24,5,7,3,5
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,64,184,12,12,13,37,12,16,3,13
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,LocalResolverImpl,22,59,2,6,5,17,5,7,3,5
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,LocalResolverImpl,21,55,2,6,5,17,5,8,3,6
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryBundle,21,161,0,10,4,35,2,15,2,10
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,39,28,2,0,5,7,6,3,5,3
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,37,33,2,0,6,9,7,4,6,4
@@ -31,13 +31,13 @@ Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,JobFa
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,ResolverException,7,4,0,0,4,2,2,1,2,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,StorageException,5,0,0,0,2,0,1,0,1,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.exception,AuthorizationException,9,0,0,0,4,0,2,0,2,0
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Params,386,0,42,0,73,0,27,0,6,0
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Params,410,0,44,0,81,0,29,0,7,0
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,JSONObjectCache,18,36,0,2,3,7,1,3,1,2
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,DID,41,261,10,14,3,60,10,21,0,19
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,HTTP,100,57,2,0,23,18,3,6,2,6
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil,10,642,1,7,3,116,3,21,2,18
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.AgentIdType,0,24,0,0,0,2,0,1,0,1
-Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Hex,31,196,6,20,5,26,7,15,2,7
+Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Hex,36,191,6,20,6,25,8,14,3,6
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,JSON,25,225,0,14,5,56,1,14,1,7
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,ProvUtil.ActivityType,0,34,0,0,0,2,0,1,0,1
 Starfish - Developer Toolkit for data ecosystems,sg.dex.starfish.util,Utils,199,233,40,24,36,57,33,17,5,13

@@ -13,8 +13,8 @@ import java.util.Map;
  *
  */
 public class LocalResolverImpl implements Resolver {
-<span class="fc" id="L16">    private final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;&gt;();</span>
-    private final Resolver nextInChain;
+<span class="fc" id="L16">    private static final Map&lt;DID, String&gt; ddoCache = new HashMap&lt;&gt;();</span>
+    private static  Resolver nextInChain;
 
 <span class="fc" id="L19">    public LocalResolverImpl(Resolver next) {</span>
 <span class="fc" id="L20">    	nextInChain=next;</span>
