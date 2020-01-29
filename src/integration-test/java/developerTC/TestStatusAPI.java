@@ -40,7 +40,7 @@ public class TestStatusAPI {
     }
 
     @Test
-    public void testDDO() {
+    public void testDDO() throws URISyntaxException {
         Map<String, Object> result = remoteAgent.getAgentDDO();
         String id = result.get("id").toString();
         Map<String, Object> cre = JSON.parse(result.get("credentials").toString());
