@@ -203,7 +203,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return JSON
      */
     private static Map<String, Object> getDDOByURL(String url, Account account) throws URISyntaxException {
-        URI uri = new URI(url + Constant.DDO_PATH);
+        URI uri ;
+        if(url.contains(Constant.DDO_PATH)){
+             uri = new URI(url );
+        }
+        else{
+            uri = new URI(url + Constant.DDO_PATH);
+        }
+
         HttpGet httpget = new HttpGet(uri);
 
         String username = account.getCredentials().get(USER_NAME).toString();
@@ -1392,33 +1399,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @return JSON
      */
-    public Map<String, Object> getAgentDDO() {
+    public Map<String, Object> getAgentDDO() throws URISyntaxException {
         URI uri = getDDOUri();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(uri);
-        addAuthHeaders(httpget);
-        CloseableHttpResponse response;
-        try {
-            response = httpclient.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    if (body.isEmpty()) {
-                        throw new RemoteException("No Content in the response for :" + uri.toString());
-                    }
-                    return JSON.toMap(body);
-                } else {
-                    return null;
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting Remote Agent DDO failed: ", e);
-        }
+        return getDDOByURL(uri.toString(),this.getAccount());
     }
 
     /**
