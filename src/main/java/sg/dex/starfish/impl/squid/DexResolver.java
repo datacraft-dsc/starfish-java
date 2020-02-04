@@ -8,6 +8,12 @@ import com.oceanprotocol.squid.api.config.OceanConfigFactory;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -85,14 +91,19 @@ public class DexResolver implements Resolver {
         Properties properties = squidService.getProperties();
         String address = (String) properties.getOrDefault("contract.DIDRegistry.address", "");
         OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
-        KeeperService keeper = null;
+
+        Credentials credentials = null;
         try {
-            keeper = squidService.getKeeperService(oceanConfig);
+            credentials = WalletUtils.loadCredentials(oceanConfig.getMainAccountPassword(), oceanConfig.getMainAccountCredentialsFile());
         } catch (CipherException e) {
             System.err.println("Wrong credential file or its password");
             e.printStackTrace();
         }
-        DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
+
+        Web3j web3 = Web3j.build(new HttpService(oceanConfig.getKeeperUrl()));
+
+        ContractGasProvider gasProvider = new StaticGasProvider(oceanConfig.getKeeperGasPrice(), oceanConfig.getKeeperGasLimit());
+        DIDRegistry contract = DIDRegistry.load(address, web3, credentials, gasProvider);
         return new DexResolver(contract, squidService);
     }
 
