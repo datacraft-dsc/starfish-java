@@ -11,6 +11,7 @@ import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 import org.web3j.protocol.Web3j;
@@ -20,6 +21,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
+import sg.dex.starfish.keeper.DexTransactionManager;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
@@ -101,9 +103,9 @@ public class DexResolver implements Resolver {
         }
 
         Web3j web3 = Web3j.build(new HttpService(oceanConfig.getKeeperUrl()));
-
+        TransactionManager txManager = new DexTransactionManager(web3, credentials, oceanConfig.getMainAccountPassword(), (int) oceanConfig.getKeeperTxSleepDuration(), oceanConfig.getKeeperTxAttempts());
         ContractGasProvider gasProvider = new StaticGasProvider(oceanConfig.getKeeperGasPrice(), oceanConfig.getKeeperGasLimit());
-        DIDRegistry contract = DIDRegistry.load(address, web3, credentials, gasProvider);
+        DIDRegistry contract = DIDRegistry.load(address, web3, txManager, gasProvider);
         return new DexResolver(contract, squidService);
     }
 
