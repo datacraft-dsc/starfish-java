@@ -6,11 +6,14 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.impl.remote.RemoteAccount;
+import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.ProvUtil;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,14 +47,14 @@ import java.util.Map;
 public class InvokeExample {
 
 
-    public static void main(String a[]) throws IOException {
+    public static void main(String a[]) throws IOException, URISyntaxException {
 
         InvokeExample invokeExample = new InvokeExample();
         invokeExample.invokeDemo_Basic();
 
     }
 
-    private void invokeDemo_Basic() throws IOException {
+    private void invokeDemo_Basic() throws IOException, URISyntaxException {
 
         System.out.println("Create Surfer and KOI instance!! ");
         // Initializing the Agent

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
+import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.nio.file.Files;

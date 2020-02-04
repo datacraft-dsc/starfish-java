@@ -127,12 +127,24 @@ public class Params {
         }
         String didS=  (String)di;
         DID did= DID.parse(didS);
+        return getAssetByDID(did,remoteAccount);
+
+    }
+
+    /**
+     * this methid is used to ge the Asset based on DID and the account.
+     *
+     * @param did did of the asset
+     * @param remoteAccount user credential
+     * @return Asset
+     * @throws IOException
+     */
+    public static Asset getAssetByDID( DID did, RemoteAccount remoteAccount) throws IOException {
         DID agentDID = did.withoutPath();
         String path =did.getPath();
         RemoteAgent remoteAgent = RemoteAgent.connect(agentDID,remoteAccount);
         Asset asset =remoteAgent.getAsset(path);
         return asset;
-
     }
 
     /**

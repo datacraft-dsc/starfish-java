@@ -102,7 +102,7 @@ public class TestAssetIdentity_02 {
         metaDataAsset.put("location", "Singapore");
 
         String actId = UUID.randomUUID().toString();
-        String agentId = UUID.randomUUID().toString();
+        String agentId = remoteAgent.getDID().toString();
 
         Map<String, Object> provmetadata = ProvUtil.createPublishProvenance(actId, agentId);
         metaDataAsset.put("provenance", provmetadata);

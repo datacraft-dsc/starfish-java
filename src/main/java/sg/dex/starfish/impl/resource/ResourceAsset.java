@@ -27,7 +27,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
     private final String resourcePath;
 
-    protected ResourceAsset(String metaData, String resourcePath) {
+    protected ResourceAsset( String resourcePath,String metaData) {
         super(metaData);
         this.resourcePath = resourcePath;
     }
@@ -43,7 +43,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, String metaData) {
-        return new ResourceAsset(metaData, resourcePath);
+        return create(resourcePath, JSON.toMap(metaData));
     }
 
     /**
@@ -57,7 +57,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, Map<String, Object> metaData) {
-        return create(resourcePath, JSON.toPrettyString(buildMetaData(metaData)));
+        return new ResourceAsset(resourcePath, JSON.toPrettyString(buildMetaData(metaData)));
     }
 
     /**
@@ -67,7 +67,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
-        return create(resourcePath, (Map<String, Object>) null);
+        return create(resourcePath, buildMetaData(null));
     }
 
     /**
