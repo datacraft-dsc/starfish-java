@@ -27,7 +27,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
     private final String resourcePath;
 
-    protected ResourceAsset(String metaData, String resourcePath) {
+    protected ResourceAsset( String resourcePath,String metaData) {
 <span class="fc" id="L31">        super(metaData);</span>
 <span class="fc" id="L32">        this.resourcePath = resourcePath;</span>
 <span class="fc" id="L33">    }</span>
@@ -43,7 +43,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, String metaData) {
-<span class="fc" id="L46">        return new ResourceAsset(metaData, resourcePath);</span>
+<span class="fc" id="L46">        return create(resourcePath, JSON.toMap(metaData));</span>
     }
 
     /**
@@ -57,7 +57,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, Map&lt;String, Object&gt; metaData) {
-<span class="fc" id="L60">        return create(resourcePath, JSON.toPrettyString(buildMetaData(metaData)));</span>
+<span class="fc" id="L60">        return new ResourceAsset(resourcePath, JSON.toPrettyString(buildMetaData(metaData)));</span>
     }
 
     /**
@@ -67,7 +67,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
-<span class="fc" id="L70">        return create(resourcePath, (Map&lt;String, Object&gt;) null);</span>
+<span class="fc" id="L70">        return create(resourcePath, buildMetaData(null));</span>
     }
 
     /**
@@ -88,11 +88,11 @@ public class ResourceAsset extends AAsset implements DataAsset {
 <span class="fc" id="L88">        ob.put(Constant.CONTENT_TYPE, &quot;application/octet-stream&quot;);</span>
 
 
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (metaData != null) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (metaData != null) {</span>
 
-<span class="nc bnc" id="L93" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
-<span class="nc" id="L94">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L95">            }</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
+<span class="fc" id="L94">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L95">            }</span>
         }
 
 <span class="fc" id="L98">        return ob;</span>

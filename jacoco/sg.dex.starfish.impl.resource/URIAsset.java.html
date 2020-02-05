@@ -31,7 +31,7 @@ public class URIAsset extends AAsset implements DataAsset {
 
     private final URI uri;
 
-    protected URIAsset(String meta, URI uri) {
+    protected URIAsset( URI uri,String meta) {
 <span class="fc" id="L35">        super(meta);</span>
 <span class="fc" id="L36">        this.uri = uri;</span>
 <span class="fc" id="L37">    }</span>
@@ -43,7 +43,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-<span class="fc" id="L46">        return new URIAsset(metaString, uri);</span>
+<span class="fc" id="L46">        return new URIAsset( uri,metaString);</span>
     }
 
     /**
@@ -53,7 +53,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-<span class="fc" id="L56">        return create(uri, (Map&lt;String, Object&gt;) null);</span>
+<span class="fc" id="L56">        return create(uri, JSON.toPrettyString(buildMetaData(null)));</span>
     }
 
     /**
@@ -66,7 +66,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map&lt;String, Object&gt; metaData) {
-<span class="fc" id="L69">        return create(uri, JSON.toPrettyString(buildMetaData(metaData, uri)));</span>
+<span class="fc" id="L69">        return new URIAsset(uri, JSON.toPrettyString(buildMetaData(metaData)));</span>
     }
 
     /**
@@ -77,7 +77,7 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map&lt;String, Object&gt; buildMetaData(Map&lt;String, Object&gt; metaData, URI uri) {
+    private static Map&lt;String, Object&gt; buildMetaData(Map&lt;String, Object&gt; metaData) {
 
 <span class="fc" id="L82">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L83">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
