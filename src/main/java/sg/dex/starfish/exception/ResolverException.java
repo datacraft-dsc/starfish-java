@@ -17,7 +17,6 @@ public class ResolverException extends RuntimeException {
 
     /**
      * API to create Resolver Exception instance
-     *
      */
     public ResolverException() {
         super();

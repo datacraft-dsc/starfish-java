@@ -17,6 +17,7 @@ public abstract class ARemoteAsset extends AAsset {
         super(meta);
         this.aAgent = remoteAgent;
     }
+
     @Override
     public DID getDID() {
         // DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path

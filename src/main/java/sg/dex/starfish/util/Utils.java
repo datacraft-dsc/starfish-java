@@ -25,6 +25,10 @@ import static sg.dex.starfish.constant.Constant.*;
  */
 public class Utils {
 
+    /**
+     * Length of a DID identifier in bytes
+     */
+    public static final int DID_LENGTH = 32;
     private static List<String> assetType = new ArrayList<>();
 
     static {
@@ -33,11 +37,6 @@ public class Utils {
         assetType.add(DATA_SET);
 
     }
-
-    /**
-     * Length of a DID identifier in bytes
-     */
-    public static final int DID_LENGTH = 32;
 
     /**
      * Creates a random hex string of the specified length
@@ -141,13 +140,12 @@ public class Utils {
         byte[] buffer = new byte[4096];
         int length;
         try {
-			while ((length = inputStream.read(buffer)) != -1) {
-			    result.write(buffer, 0, length);
-			}
-		}
-		catch (IOException e) {
-			throw Utils.sneakyThrow(e);
-		}
+            while ((length = inputStream.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+        } catch (IOException e) {
+            throw Utils.sneakyThrow(e);
+        }
         return new String(result.toByteArray(), StandardCharsets.UTF_8);
     }
 

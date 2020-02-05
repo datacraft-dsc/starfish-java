@@ -41,27 +41,27 @@ public class DexResolverTest {
 
 
     @Test
-    public void testRegisterResolve()   {
+    public void testRegisterResolve() {
         resolver1.registerDID(did, valueSet);
         String val = resolver1.getDDOString(did);
-        assertTrue(val.equals( valueSet));
+        assertTrue(val.equals(valueSet));
         resolver1.registerDID(did, valueUpdate);
         val = resolver1.getDDOString(did);
-        assertTrue(val.equals( valueUpdate));
+        assertTrue(val.equals(valueUpdate));
     }
 
     @Test
-    public void testGetInvalidDID()   {
+    public void testGetInvalidDID() {
         DID temp = DID.createRandom();
         String val = resolver1.getDDOString(temp);
-        assertTrue(val==null);
+        assertTrue(val == null);
     }
 
     @Test
-    public void testPermissions()   {
+    public void testPermissions() {
         resolver1.registerDID(did, valueSet);
         String val = resolver2.getDDOString(did);
-        assertTrue(val.equals(valueSet) );
+        assertTrue(val.equals(valueSet));
         assertThrows(ResolverException.class, () -> {
             resolver2.registerDID(did, valueUpdate);
         });
@@ -69,7 +69,7 @@ public class DexResolverTest {
     }
 
     @Test
-    public void testResolveAgent()   {
+    public void testResolveAgent() {
         // Creating remote Account
         HashMap<String, Object> credentialMap = new HashMap<>();
         credentialMap.put("username", "Aladdin");
@@ -96,11 +96,11 @@ public class DexResolverTest {
         ddo.put("service", services);
 
         default_resolver.registerDID(did, JSON.toPrettyString(ddo));
-        RemoteAgent remoteAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
+        RemoteAgent remoteAgent = RemoteAgent.connect(default_resolver, did, remoteAccount);
         Asset asset = MemoryAsset.createFromString("Asset from string");
         Asset registeredAsset = remoteAgent.registerAsset(asset);
         // resolving
-        RemoteAgent resolvedAgent = RemoteAgent.connect(default_resolver,did, remoteAccount);
+        RemoteAgent resolvedAgent = RemoteAgent.connect(default_resolver, did, remoteAccount);
         Asset assetFromAgent = resolvedAgent.getAsset(asset.getAssetID());
 
         assertEquals(resolvedAgent.getDID(), did);

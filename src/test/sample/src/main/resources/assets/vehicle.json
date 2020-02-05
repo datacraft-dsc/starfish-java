@@ -16,22 +16,56 @@
   "trans": "Auto",
   "feature_reversesensor_derived": "1",
   "mileage_graph": [
-    {"mileage":"12000", "date":"2010-1-12"},
-    {"mileage":"24000", "date":"2012-1-12"},
-    {"mileage":"36000", "date":"2015-1-12"}
+    {
+      "mileage": "12000",
+      "date": "2010-1-12"
+    },
+    {
+      "mileage": "24000",
+      "date": "2012-1-12"
+    },
+    {
+      "mileage": "36000",
+      "date": "2015-1-12"
+    }
   ],
-  "pros_and_cons":{
-    "pros":["first pro","second pro","third prod"],
-    "cons":["first con","second cons","third cons"]},
-  "provenance":{"vertices":{
-    "adsd":"destn1",
-    "src2":"destn1",
-    "destn1":"destn3"},
-    "nodes":[{"id": "adsd", "type":"asset"},
-      {"id": "src2", "type":"asset"},
-      {"id": "destn1", "type":"operation"},
-      {"id": "destn3", "type":"asset"}]},
-
+  "pros_and_cons": {
+    "pros": [
+      "first pro",
+      "second pro",
+      "third prod"
+    ],
+    "cons": [
+      "first con",
+      "second cons",
+      "third cons"
+    ]
+  },
+  "provenance": {
+    "vertices": {
+      "adsd": "destn1",
+      "src2": "destn1",
+      "destn1": "destn3"
+    },
+    "nodes": [
+      {
+        "id": "adsd",
+        "type": "asset"
+      },
+      {
+        "id": "src2",
+        "type": "asset"
+      },
+      {
+        "id": "destn1",
+        "type": "operation"
+      },
+      {
+        "id": "destn3",
+        "type": "asset"
+      }
+    ]
+  },
   "touchups": "Dent on driver side passenger door need touch up.",
   "original_DT": "Performance Motors",
   "accidentfree_score": "10",

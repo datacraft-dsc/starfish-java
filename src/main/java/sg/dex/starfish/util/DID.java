@@ -175,8 +175,8 @@ public class DID {
         if (!method.equals(d.method)) return false;
         if (!id.equals(d.id)) return false;
         if (!Utils.equals(path, d.path)) return false;
-		return Utils.equals(fragment, d.fragment);
-	}
+        return Utils.equals(fragment, d.fragment);
+    }
 
     @Override
     public int hashCode() {
@@ -199,7 +199,7 @@ public class DID {
     }
 
     /**
-     * Creates a random Ocean-compliant DID as a string, of the format:
+     * Creates a random DEP-compliant DID as a string, of the format:
      * <p>
      * "did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
      *

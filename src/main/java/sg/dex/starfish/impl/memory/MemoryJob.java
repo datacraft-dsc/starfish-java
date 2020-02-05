@@ -45,28 +45,27 @@ public class MemoryJob implements Job {
 
     @Override
     public boolean isCancelled() {
-    	if (future.isCancelled()) {
-    		status=Constant.CANCELLED;
-    	}
-    	return status.equals(Constant.CANCELLED);
+        if (future.isCancelled()) {
+            status = Constant.CANCELLED;
+        }
+        return status.equals(Constant.CANCELLED);
     }
 
     @Override
     public Map<String, Object> pollResult() {
         if (!future.isDone()) return null;
         try {
-        	// get result from future. Must be done at this point.
+            // get result from future. Must be done at this point.
             Map<String, Object> result = future.get();
-            status=Constant.SUCCEEDED;
+            status = Constant.SUCCEEDED;
             return result;
-        }
-        catch (CancellationException t) {
-        	status=Constant.CANCELLED;
-        	throw Utils.sneakyThrow(t);
+        } catch (CancellationException t) {
+            status = Constant.CANCELLED;
+            throw Utils.sneakyThrow(t);
         } catch (Throwable t) {
-			status=Constant.FAILED;
-			throw Utils.sneakyThrow(t);
-		}
+            status = Constant.FAILED;
+            throw Utils.sneakyThrow(t);
+        }
     }
 
     @Override
@@ -77,13 +76,13 @@ public class MemoryJob implements Job {
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
-            	status=Constant.SUCCEEDED;
+                status = Constant.SUCCEEDED;
                 return a;
             }
             try {
                 Thread.sleep(initialSleep);
             } catch (InterruptedException e) {
-            	status=Constant.CANCELLED;
+                status = Constant.CANCELLED;
                 throw new JobFailedException("Job interrupted with exception: " + e.getCause(), e);
             }
             initialSleep *= 2;
@@ -98,7 +97,7 @@ public class MemoryJob implements Job {
 
     @Override
     public String getJobID() {
-    	// ID is local only, identity of object in JVM
+        // ID is local only, identity of object in JVM
         return "MemoryJob:" + Hex.toString(System.identityHashCode(this));
     }
 

@@ -57,7 +57,7 @@ public class TestUnPublishListing_12 {
         assertEquals(listing.getMetaData().get("id"), listing.getId());
 
         // comparing both asset ID
-        assertEquals(listing.getAssetID(),remoteAsset.getAssetID());
+        assertEquals(listing.getAssetID(), remoteAsset.getAssetID());
 
 
     }

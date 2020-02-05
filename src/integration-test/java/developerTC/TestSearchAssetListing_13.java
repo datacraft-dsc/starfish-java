@@ -30,7 +30,7 @@ public class TestSearchAssetListing_13 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null!= remoteAgent);
+        assumeTrue(null != remoteAgent);
 
     }
 
@@ -48,9 +48,9 @@ public class TestSearchAssetListing_13 {
 
         String listingId = listing.getMetaData().get("id").toString();
         // verifying if the listing has been created
-        Listing listingFromAgent =remoteAgent.getListing(listingId);
-        assertEquals(listingId,listingFromAgent.getId());
-        assertEquals(listing.getAssetID(),listingFromAgent.getAssetID());
+        Listing listingFromAgent = remoteAgent.getListing(listingId);
+        assertEquals(listingId, listingFromAgent.getId());
+        assertEquals(listing.getAssetID(), listingFromAgent.getAssetID());
 
     }
 

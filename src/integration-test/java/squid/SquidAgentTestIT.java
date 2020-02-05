@@ -33,7 +33,7 @@ public class SquidAgentTestIT {
         // create random DID
 
         DID did = DID.createRandom();
-        squidAgent = SquidAgent.create( resolver, did,squidService);
+        squidAgent = SquidAgent.create(resolver, did, squidService);
         resolver = new SquidResolverImpl(squidService);
 
     }
@@ -66,12 +66,11 @@ public class SquidAgentTestIT {
     public void testQueryAsset() throws Exception {
 
 
-
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("license", "Test_license");
 
         byte[] data = {1, 2, 3, 4};
-        MemoryAsset asset = MemoryAsset.create(data,queryMap);
+        MemoryAsset asset = MemoryAsset.create(data, queryMap);
 
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
 

@@ -84,7 +84,7 @@ public class TestMemoryOperations {
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
 
 
-        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData,memoryAgent);
+        Operation memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData, memoryAgent);
 
         Map<String, Object> test = new HashMap<>();
         test.put("input", "10");
@@ -109,7 +109,7 @@ public class TestMemoryOperations {
         // read metadata
         String asset_metaData = new String(Files.readAllBytes(Paths.get("src/test/resources/assets/prime_asset_metadata.json")));
 
-        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData,memoryAgent);
+        FindSumOfPrime_JsonInput_AssetOutput memoryOperation = FindSumOfPrime_JsonInput_AssetOutput.create(asset_metaData, memoryAgent);
         Map<String, Object> test = new HashMap<>();
         test.put("input", "15");
 
@@ -299,6 +299,7 @@ public class TestMemoryOperations {
 
 
     }
+
     /**
      * This test is to test the  Operation metadata having no Mode
      */
@@ -334,6 +335,7 @@ public class TestMemoryOperations {
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
+
     /**
      * This test is to test the  Operation metadata having no Mode
      */
@@ -368,6 +370,7 @@ public class TestMemoryOperations {
         assertArrayEquals(new byte[]{3, 2, 1}, resultAsset.getContent());
 
     }
+
     /**
      * This test is to test the  Operation metadata have invalid mode
      */
@@ -399,12 +402,12 @@ public class TestMemoryOperations {
 
         try {
             Job job = memoryOperation.invokeAsync(test);
-        }
-        catch (StarfishValidationException e){
+        } catch (StarfishValidationException e) {
             assertTrue(e.getMessage().contains("Invalid mode"));
         }
 
     }
+
     /**
      * This test is to test the  Operation mode Sync butt call Async operation
      */
@@ -434,14 +437,14 @@ public class TestMemoryOperations {
         test.put("input", a);
 
         try {
-             Job job = memoryOperation.invokeAsync(test);
-        }
-        catch (StarfishValidationException e){
+            Job job = memoryOperation.invokeAsync(test);
+        } catch (StarfishValidationException e) {
             assertTrue(e.getMessage().contains("Mode must be Async for this"));
         }
 
 
     }
+
     /**
      * This test is to test the  Operation mode is Async but call is Sync
      */
@@ -472,8 +475,7 @@ public class TestMemoryOperations {
 
         try {
             memoryOperation.invokeResult(test);
-        }
-        catch (StarfishValidationException e){
+        } catch (StarfishValidationException e) {
             assertTrue(e.getMessage().contains("Mode must be Sync for this"));
         }
 
@@ -500,7 +502,6 @@ public class TestMemoryOperations {
         Asset a = MemoryAsset.create(data);
 
 
-
         Assertions.assertThrows(Exception.class, () -> {
             Job badJob = op.invokeAsync(Utils.mapOf("nonsense", a));
             badJob.getResult(10);
@@ -517,9 +518,8 @@ public class TestMemoryOperations {
 
         Assertions.assertThrows(Exception.class, () -> {
             Job badJob = op.invokeAsync(emptyParams); // should not yet fail since this is async
-             badJob.getResult(1000);
+            badJob.getResult(1000);
         });
-
 
 
     }

@@ -35,7 +35,6 @@ public class AgentService {
     private static String password;
 
 
-
     private static RemoteAccount remoteAccount;
 
 
@@ -43,14 +42,12 @@ public class AgentService {
         Properties properties = getProperties();
         String ip = properties.getProperty("surfer.host");
         String port = properties.getProperty("surfer.port");
-        surferUrl = (StringUtils.isBlank(port)) ?ip : (ip + ":" + port) ;
+        surferUrl = (StringUtils.isBlank(port)) ? ip : (ip + ":" + port);
         socketTimeout = properties.getProperty("socket.timeout");
 
         //username and password
         username = properties.getProperty("surfer.username");
         password = properties.getProperty("surfer.password");
-
-
 
 
         String ip_invoke = properties.getProperty("koi.host");
@@ -66,10 +63,10 @@ public class AgentService {
         DID didSurfer = DID.createRandom();
         DID didInvoke = DID.createRandom();
 
-        resolver.registerDID(didSurfer,getDDO(surferUrl));
-        resolver.registerDID(didInvoke,getDDO(invokeUrl));
+        resolver.registerDID(didSurfer, getDDO(surferUrl));
+        resolver.registerDID(didInvoke, getDDO(invokeUrl));
 
-        remoteAccount =  RemoteAccount.create(username,password);
+        remoteAccount = RemoteAccount.create(username, password);
 
         surfer = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
         invokeAgent = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
@@ -165,6 +162,7 @@ public class AgentService {
         return surfer;
 
     }
+
     public static boolean isServerReachable(String uri) {
 
         try {

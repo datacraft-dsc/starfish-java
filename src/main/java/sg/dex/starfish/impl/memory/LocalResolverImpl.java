@@ -10,20 +10,19 @@ import java.util.Map;
 
 /**
  * In-memory local resolver implementation.
- *
  */
 public class LocalResolverImpl implements Resolver {
     private static final Map<DID, String> ddoCache = new HashMap<>();
-    private static  Resolver nextInChain;
+    private static Resolver nextInChain;
 
     public LocalResolverImpl(Resolver next) {
-    	nextInChain=next;
+        nextInChain = next;
     }
-    
+
     public LocalResolverImpl() {
-    	this(null);
+        this(null);
     }
-    
+
     @Override
     public String getDDOString(DID did) throws ResolverException {
         // remove path to get DDO for basic did
@@ -32,8 +31,8 @@ public class LocalResolverImpl implements Resolver {
         if (localDDO != null) {
             return localDDO;
         }
-        if (nextInChain==null) return null;
-        
+        if (nextInChain == null) return null;
+
         return nextInChain.getDDOString(did);
     }
 

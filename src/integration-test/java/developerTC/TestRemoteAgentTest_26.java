@@ -43,7 +43,7 @@ public class TestRemoteAgentTest_26 {
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
-        resolver.registerDID(did,getDDO());
+        resolver.registerDID(did, getDDO());
 
         // create remote acc with credential
         Map<String, Object> credentialMap = new HashMap<>();
@@ -65,7 +65,7 @@ public class TestRemoteAgentTest_26 {
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
-        resolver.registerDID(did,getDDO());
+        resolver.registerDID(did, getDDO());
 
         // create remote acc with credential
         Map<String, Object> credentialMap = new HashMap<>();
@@ -80,7 +80,7 @@ public class TestRemoteAgentTest_26 {
         String token = remoteAccount.getUserDataMap().get("token").toString();
 
         // creating remote Acc based on token
-        RemoteAccount remoteAccount1 = RemoteAccount.create( token);
+        RemoteAccount remoteAccount1 = RemoteAccount.create(token);
         // creating Agent 2
         RemoteAgent remoteAgent1 = RemoteAgent.connect(resolver, did, remoteAccount1);
         try {
@@ -90,15 +90,16 @@ public class TestRemoteAgentTest_26 {
         }
 
     }
+
     @Test
     public void testCreatRemoteAccount_WithUsernamePassword() throws IOException {
 
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
-        resolver.registerDID(did,getDDO());
+        resolver.registerDID(did, getDDO());
 
-        RemoteAccount remoteAccount = RemoteAccount.create("Aladdin","OpenSesame");
+        RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         try {
             remoteAgent.getAsset("1234");
@@ -108,15 +109,16 @@ public class TestRemoteAgentTest_26 {
         }
 
     }
+
     @Test
     public void testCreatRemoteAccount_WithWrongUsernamePassword() throws IOException {
 
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
-        resolver.registerDID(did,getDDO());
+        resolver.registerDID(did, getDDO());
 
-        RemoteAccount remoteAccount = RemoteAccount.create("WrongUser","WrongPassword");
+        RemoteAccount remoteAccount = RemoteAccount.create("WrongUser", "WrongPassword");
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
         try {
             remoteAgent.getAsset("1234");

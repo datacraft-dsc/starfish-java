@@ -29,11 +29,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * A cached thread pool for jobs executed in memory
      */
     public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
-
+    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());
     private HashMap<String, AMemoryAsset> assetStore = new HashMap<>();
     private HashMap<String, MemoryListing> listingStore = new HashMap<>();
     private HashMap<String, MemoryPurchase> purchaseStore = new HashMap<>();
-    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());
 
     private MemoryAgent(Resolver resolver, DID did) {
         super(resolver, did);
@@ -46,27 +45,29 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(DID did) {
-    	did=did.withoutPath();
-        return new MemoryAgent(new LocalResolverImpl(),did);
+        did = did.withoutPath();
+        return new MemoryAgent(new LocalResolverImpl(), did);
     }
+
     /**
      * Creates a new MemoryAgent using the given DID
      *
-     * @param did DID for this agent
+     * @param did      DID for this agent
      * @param resolver Resolver
      * @return A MemoryAgent with the given DID
      */
-    public static MemoryAgent create(Resolver resolver,DID did) {
-        did=did.withoutPath();
+    public static MemoryAgent create(Resolver resolver, DID did) {
+        did = did.withoutPath();
         return new MemoryAgent(resolver, did);
     }
 
     /**
      * Create a random DID suitable for use by an in-memory Agent
+     *
      * @return
      */
     private static DID createRandomMemoryDID() {
-    	return DID.parse(DID.createRandomString());
+        return DID.parse(DID.createRandomString());
     }
 
     /**
@@ -100,17 +101,17 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public <R extends Asset> R registerAsset(Asset a) {
         if (!(a instanceof AMemoryAsset)) {
-        	throw new UnsupportedOperationException("Not yet supported!");
-        };
-        AMemoryAsset ma=(AMemoryAsset)a;
+            throw new UnsupportedOperationException("Not yet supported!");
+        }
+        AMemoryAsset ma = (AMemoryAsset) a;
         assetStore.put(ma.getAssetID(), ma);
         return (R) ma;
     }
-    
-	@Override
-	public <R extends Asset> R registerAsset(String metaString) {
-		throw new UnsupportedOperationException("MemoryAgent does not support registering assets without content");
-	}
+
+    @Override
+    public <R extends Asset> R registerAsset(String metaString) {
+        throw new UnsupportedOperationException("MemoryAgent does not support registering assets without content");
+    }
 
     /**
      * Registers an Asset with this Agent
@@ -240,11 +241,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
 
-	@Override
-	public Job getJob(String jobID) {
-		// TODO Consider caching Jobs? Or just return null
-		return null;
-	}
+    @Override
+    public Job getJob(String jobID) {
+        // TODO Consider caching Jobs? Or just return null
+        return null;
+    }
 
 
 }

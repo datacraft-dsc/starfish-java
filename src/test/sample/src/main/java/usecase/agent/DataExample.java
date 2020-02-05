@@ -21,7 +21,7 @@ public class DataExample {
     private String surferURL = "http://52.230.82.125:3030";
 
 
-    public static void main(String a[]) throws IOException, URISyntaxException {
+    public static void main(String[] a) throws IOException, URISyntaxException {
         DataExample dataExample = new DataExample();
         dataExample.createRemoteAgent_WithAgentURL();
 //        dataExample.createRemoteAgent_WithResolver();
@@ -34,7 +34,6 @@ public class DataExample {
     }
 
     void createRemoteAgent_WithAgentURL() throws IOException, URISyntaxException {
-        System.out.println("Create RemoteAgent Instance by URL");
 
         RemoteAgent remoteAgent = RemoteAgent.connect("http://52.230.82.125:3030", remoteAccount);
         System.in.read();
@@ -59,7 +58,7 @@ public class DataExample {
         Asset asset = MemoryAsset.create("test".getBytes());
         RemoteDataAsset remoteDataAsset = surfer.registerAsset(asset);
         System.out.println("Asset ID :" + asset.getAssetID());
-        DID did=remoteDataAsset.getDID();
+        DID did = remoteDataAsset.getDID();
         // api to get asset
         System.out.println("Registered Asset ID : " + remoteDataAsset.getDID());
     }

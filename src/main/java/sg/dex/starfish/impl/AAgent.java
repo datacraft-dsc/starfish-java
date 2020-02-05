@@ -19,16 +19,14 @@ import java.util.Map;
 public abstract class AAgent implements Agent {
 
     protected final DID did;
-
-    private Map<String, Object> ddo;
-
     protected final Resolver resolver;
+    private Map<String, Object> ddo;
 
     /**
      * Create an agent with the provided Ocean connection and DID
      *
      * @param resolver The ocean connection to use for this agent
-     * @param did   The DID for this agent
+     * @param did      The DID for this agent
      */
     protected AAgent(Resolver resolver, DID did) {
         this.resolver = resolver;
@@ -48,11 +46,11 @@ public abstract class AAgent implements Agent {
         }
         return ddo;
     }
-    
+
     @Override
     public <R extends Asset> R getAsset(DID did) {
-    	String assetID=did.getPath();
-    	if (assetID==null) throw new IllegalArgumentException("Expected Asset ID in DID path");
+        String assetID = did.getPath();
+        if (assetID == null) throw new IllegalArgumentException("Expected Asset ID in DID path");
         return getAsset(assetID);
     }
 
@@ -65,8 +63,8 @@ public abstract class AAgent implements Agent {
      */
     public String getEndpoint(String type) {
         Map<String, Object> ddo = getDDO();
-       if(ddo==null ) return null; 
-       return DDO.getEndpoint(ddo, type);
+        if (ddo == null) return null;
+        return DDO.getEndpoint(ddo, type);
     }
 
     @Override

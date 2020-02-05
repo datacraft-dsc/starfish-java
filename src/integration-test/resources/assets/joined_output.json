@@ -1,15 +1,15 @@
 {
-  "details":{
-    "workshop-name":"Performance Motors, LTD",
-    "workshop-address":"Sentosa Island, Singapore, SG"
+  "details": {
+    "workshop-name": "Performance Motors, LTD",
+    "workshop-address": "Sentosa Island, Singapore, SG"
   },
-  "jobs":[
+  "jobs": [
     {
-      "aid":"13179",
-      "date":"2011-09-23",
-      "data":{
-        "Lighting":{
-          "parts":[
+      "aid": "13179",
+      "date": "2011-09-23",
+      "data": {
+        "Lighting": {
+          "parts": [
             [
               "PHILIP BULB T20W W21W 12V",
               "Z-PARTS"
@@ -20,14 +20,14 @@
             ]
           ]
         },
-        "Brake":{
-          "parts":[
+        "Brake": {
+          "parts": [
             [
               "BRAKE PAD FR",
               "Z-PARTS"
             ]
           ],
-          "service":[
+          "service": [
             [
               "WORKMANSHIP",
               "Z-SERVICE"
@@ -37,11 +37,11 @@
       }
     },
     {
-      "aid":"13179",
-      "date":"2013-11-03",
-      "data":{
-        "Lighting":{
-          "parts":[
+      "aid": "13179",
+      "date": "2013-11-03",
+      "data": {
+        "Lighting": {
+          "parts": [
             [
               "PHILIP BULB T20W W21W 12V",
               "Z-PARTS"
@@ -52,14 +52,14 @@
             ]
           ]
         },
-        "Brake":{
-          "parts":[
+        "Brake": {
+          "parts": [
             [
               "BRAKE PAD FR",
               "Z-PARTS"
             ]
           ],
-          "service":[
+          "service": [
             [
               "WORKMANSHIP",
               "Z-SERVICE"
@@ -69,11 +69,11 @@
       }
     },
     {
-      "aid":"13180",
-      "date":"2011-09-23",
-      "data":{
-        "Lighting":{
-          "parts":[
+      "aid": "13180",
+      "date": "2011-09-23",
+      "data": {
+        "Lighting": {
+          "parts": [
             [
               "PHILIP BULB T20W W21W 12V",
               "Z-PARTS"
@@ -84,14 +84,14 @@
             ]
           ]
         },
-        "Brake":{
-          "parts":[
+        "Brake": {
+          "parts": [
             [
               "BRAKE PAD FR",
               "Z-PARTS"
             ]
           ],
-          "service":[
+          "service": [
             [
               "WORKMANSHIP",
               "Z-SERVICE"
@@ -101,7 +101,6 @@
       }
     }
   ],
-  "maintenance":[
-
+  "maintenance": [
   ]
 }
