@@ -32,7 +32,7 @@ public class TestAgentIdentity_03 {
     public void testDidFormat() {
         // getting the did of the agent
         DID did = remoteAgent.getDID();
-        assertEquals(did.getMethod(), "op");
+        assertEquals(did.getMethod(), "dep");
         assertEquals(did.getScheme(), "did");
 
     }

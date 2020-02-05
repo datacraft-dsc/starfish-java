@@ -56,7 +56,7 @@ public class TestAgentRegistration_04 {
         assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
-        assertEquals(remoteAgent.getDID().getMethod(), "op");
+        assertEquals(remoteAgent.getDID().getMethod(), "dep");
         assertEquals(remoteAgent.getDID().getScheme(), "did");
         assumeTrue(null != remoteAgent.getDDO());
     }
