@@ -70,7 +70,7 @@ public class DexResolver implements Resolver {
     public static Resolver create() throws IOException {
         // todo need to remote as create is failing now may be due to Nile network is issue
         return new LocalResolverImpl();
-        // return create("resolver_default.properties");
+//         return create("resolver_default.properties");
     }
 
     /**

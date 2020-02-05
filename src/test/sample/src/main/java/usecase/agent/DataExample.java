@@ -24,8 +24,8 @@ public class DataExample {
     public static void main(String a[]) throws IOException, URISyntaxException {
         DataExample dataExample = new DataExample();
         dataExample.createRemoteAgent_WithAgentURL();
-        dataExample.createRemoteAgent_WithResolver();
-        dataExample.createRemoteAgent_WithDID();
+//        dataExample.createRemoteAgent_WithResolver();
+//        dataExample.createRemoteAgent_WithDID();
     }
 
     private static DID getSurferDid() {
@@ -42,7 +42,7 @@ public class DataExample {
         System.out.println("Create an Asset and verify the registration");
 
         Asset asset = MemoryAsset.create("test creation of agent by URL ".getBytes());
-        RemoteDataAsset remoteDataAsset = remoteAgent.registerAsset(asset);
+        RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
         System.in.read();
         System.out.println("Asset ID : " + asset.getAssetID());
@@ -59,7 +59,9 @@ public class DataExample {
         Asset asset = MemoryAsset.create("test".getBytes());
         RemoteDataAsset remoteDataAsset = surfer.registerAsset(asset);
         System.out.println("Asset ID :" + asset.getAssetID());
-        System.out.println("Registered Asset ID : " + remoteDataAsset.getAssetID());
+        DID did=remoteDataAsset.getDID();
+        // api to get asset
+        System.out.println("Registered Asset ID : " + remoteDataAsset.getDID());
     }
 
     void createRemoteAgent_WithDID() throws IOException, URISyntaxException {

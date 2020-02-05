@@ -181,7 +181,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, String metaString) {
-        return new MemoryAsset(data, metaString,MemoryAgent.create());
+         return create(data, JSON.toMap(metaString),MemoryAgent.create());
     }
 
 

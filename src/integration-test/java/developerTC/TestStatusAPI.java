@@ -43,7 +43,7 @@ public class TestStatusAPI {
     public void testDDO() throws URISyntaxException {
         Map<String, Object> result = remoteAgent.getAgentDDO();
         String id = result.get("id").toString();
-        Map<String, Object> cre = JSON.parse(result.get("credentials").toString());
+        Map<String, Object> cre=remoteAgent.getAccount().getCredentials();
 
         assertTrue(id.contains("did:"));
         assertTrue(cre.get("username").toString().equals("Aladdin"));

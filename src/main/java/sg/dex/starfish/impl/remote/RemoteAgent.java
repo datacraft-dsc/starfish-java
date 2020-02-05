@@ -941,7 +941,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return List marketMetaData
      */
     private List<Map<String, Object>> getAllMarketMetaData(String marketAgentUrl) {
-        URI uri = getMarketLURI(marketAgentUrl);
+        URI uri = getMarketURI(marketAgentUrl);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
         CloseableHttpResponse response;
@@ -980,7 +980,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     private String createMarketAgentInstance(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(getMarketLURI(marketAgentUrl));
+        HttpPost httpPost = new HttpPost(getMarketURI(marketAgentUrl));
 
         addAuthHeaders(httpPost);
         httpPost.addHeader("Accept", "application/json");
@@ -1016,7 +1016,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return market metadata as String
      */
     private String getMarketMetaData(String marketAgentUrl) {
-        HttpGet httpget = new HttpGet(getMarketLURI(marketAgentUrl));
+        HttpGet httpget = new HttpGet(getMarketURI(marketAgentUrl));
         addAuthHeaders(httpget);
         try {
             CloseableHttpResponse response = HTTP.execute(httpget);
@@ -1041,7 +1041,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     private String updateMarketMetaData(Map<String, Object> listingData, String marketAgentUrl) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPut put = new HttpPut(getMarketLURI(marketAgentUrl));
+        HttpPut put = new HttpPut(getMarketURI(marketAgentUrl));
 
         addAuthHeaders(put);
         put.addHeader("Accept", "application/json");
@@ -1077,7 +1077,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *                                       API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
      */
-    private URI getMarketLURI(String marketAgentUrl) {
+    private URI getMarketURI(String marketAgentUrl) {
         String marketEndpoint = getMarketEndpoint();
         if (marketEndpoint == null)
             throw new UnsupportedOperationException("This agent does not support the Market API (no endpoint defined)");

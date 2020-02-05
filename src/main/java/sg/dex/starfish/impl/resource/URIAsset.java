@@ -31,7 +31,7 @@ public class URIAsset extends AAsset implements DataAsset {
 
     private final URI uri;
 
-    protected URIAsset(String meta, URI uri) {
+    protected URIAsset( URI uri,String meta) {
         super(meta);
         this.uri = uri;
     }
@@ -43,7 +43,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-        return new URIAsset(metaString, uri);
+        return new URIAsset( uri,metaString);
     }
 
     /**
@@ -53,7 +53,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-        return create(uri, (Map<String, Object>) null);
+        return create(uri, JSON.toPrettyString(buildMetaData(null)));
     }
 
     /**
@@ -66,7 +66,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map<String, Object> metaData) {
-        return create(uri, JSON.toPrettyString(buildMetaData(metaData, uri)));
+        return new URIAsset(uri, JSON.toPrettyString(buildMetaData(metaData)));
     }
 
     /**
@@ -77,7 +77,7 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map<String, Object> buildMetaData(Map<String, Object> metaData, URI uri) {
+    private static Map<String, Object> buildMetaData(Map<String, Object> metaData) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
