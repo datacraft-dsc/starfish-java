@@ -760,7 +760,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * "https://www.myagent.com/api/v1/meta"
      */
     public String getAuthEndpoint() {
-        return getEndpoint("Ocean.Auth.v1");
+        return getEndpoint(Constant.ENDPOINT_AUTH);
     }
 
     @Override
