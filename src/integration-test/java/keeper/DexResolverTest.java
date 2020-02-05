@@ -1,6 +1,7 @@
 package keeper;
 
 import developerTC.AgentService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
@@ -41,6 +42,7 @@ public class DexResolverTest {
 
 
     @Test
+    @Disabled
     public void testRegisterResolve() {
         resolver1.registerDID(did, valueSet);
         String val = resolver1.getDDOString(did);
