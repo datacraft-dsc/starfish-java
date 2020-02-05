@@ -28,7 +28,7 @@ public class TestViewAssetListing_14 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null!=remoteAgent);
+        assumeTrue(null != remoteAgent);
 
     }
 
@@ -55,7 +55,7 @@ public class TestViewAssetListing_14 {
         assertEquals(listing1FromRemote.getMetaData().get("id"), listingId);
 
         // comparing both asset ID
-        assertEquals(listing1FromRemote.getAssetID(),remoteAsset.getAssetID());
+        assertEquals(listing1FromRemote.getAssetID(), remoteAsset.getAssetID());
 
 
     }

@@ -17,13 +17,9 @@ import java.util.Map;
 public class AgentFactory {
     private static String username = "Aladdin";
     private static String password = "OpenSesame";
-
-    private static String surferURL = "http://52.230.82.125:3030";
-
     static RemoteAccount remoteAccount = RemoteAccount.create(username, password);
-
+    private static String surferURL = "http://52.230.82.125:3030";
     private static Resolver defaultResolver = new LocalResolverImpl();
-
 
 
     public static Agent getSurfer() {
@@ -41,7 +37,6 @@ public class AgentFactory {
 
 
     public static String getDdo(String surferURL) {
-
 
 
 //        String invokeURL = "http://52.230.52.223:8191";

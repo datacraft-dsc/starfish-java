@@ -21,8 +21,8 @@ public class TestParams {
         Asset asset = MemoryAsset.create("test".getBytes());
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
-        Asset asset1 =Params.getAssetByDID(remoteDataAsset.getDID(),remoteAccount);
-        Assert.assertEquals(asset.getMetadataString(),asset1.getMetadataString());
-        Assert.assertEquals(asset.getAssetID(),asset1.getAssetID());
+        Asset asset1 = Params.getAssetByDID(remoteDataAsset.getDID(), remoteAccount);
+        Assert.assertEquals(asset.getMetadataString(), asset1.getMetadataString());
+        Assert.assertEquals(asset.getAssetID(), asset1.getAssetID());
     }
 }

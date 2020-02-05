@@ -24,7 +24,7 @@ public abstract class AIdentity implements Identity {
     protected AIdentity(String id) {
         this.id = id;
         this.accounts = new HashMap<String, Account>();
-	}
+    }
 
     /**
      * Gets the ID for an Identity

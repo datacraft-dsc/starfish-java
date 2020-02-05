@@ -50,7 +50,7 @@ public class TestPurchaseAsset_17 {
         listing = remoteAgent.updateListing(data2);
 
         assumeTrue(null != remoteAgent);
-        assumeTrue(null !=listing);
+        assumeTrue(null != listing);
         assumeTrue(null != remoteAsset);
     }
 
@@ -72,7 +72,7 @@ public class TestPurchaseAsset_17 {
 
         // create remote Asset
         remoteAsset = remoteAgent.registerAsset(a);
-      ///  ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(remoteAsset);
+        ///  ARemoteAsset aRemoteAsset = remoteAgent.registerAsset(remoteAsset);
 
         Map<String, Object> data2 = new HashMap<>();
         data2.put("assetid", remoteAsset.getAssetID());

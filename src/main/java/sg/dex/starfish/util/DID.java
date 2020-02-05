@@ -90,6 +90,29 @@ public class DID {
     }
 
     /**
+     * Creates a random Ocean-compliant DID as a string, of the format:
+     * <p>
+     * "did:op:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+     *
+     * @return A valid Ocean DID represented as a string
+     */
+    public static String createRandomString() {
+        SecureRandom sr = new SecureRandom();
+        byte[] bytes = new byte[Utils.DID_LENGTH];
+        sr.nextBytes(bytes);
+        return Constant.DID + ":" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
+    }
+
+    /**
+     * Creates a random Ocean-compliant DID
+     *
+     * @return The created DID
+     */
+    public static DID createRandom() {
+        return parse(DID.createRandomString());
+    }
+
+    /**
      * Gets the DID scheme for this DID
      *
      * @return String The DID scheme, always defined as "did"
@@ -175,8 +198,8 @@ public class DID {
         if (!method.equals(d.method)) return false;
         if (!id.equals(d.id)) return false;
         if (!Utils.equals(path, d.path)) return false;
-		return Utils.equals(fragment, d.fragment);
-	}
+        return Utils.equals(fragment, d.fragment);
+    }
 
     @Override
     public int hashCode() {
@@ -196,29 +219,6 @@ public class DID {
      */
     public DID withPath(String path) {
         return DID.create(method, id, path, fragment);
-    }
-
-    /**
-     * Creates a random Ocean-compliant DID as a string, of the format:
-     * <p>
-     * "did:op:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
-     *
-     * @return A valid Ocean DID represented as a string
-     */
-    public static String createRandomString() {
-        SecureRandom sr = new SecureRandom();
-        byte[] bytes = new byte[Utils.DID_LENGTH];
-        sr.nextBytes(bytes);
-        return Constant.DID+":" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
-    }
-
-    /**
-     * Creates a random Ocean-compliant DID
-     *
-     * @return The created DID
-     */
-    public static DID createRandom() {
-        return parse(DID.createRandomString());
     }
 
     /**

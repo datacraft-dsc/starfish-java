@@ -41,10 +41,10 @@ public class SquidAgent extends AAgent {
      * @param did      DID for this agent
      */
     protected SquidAgent(
-            Resolver resolver, DID did,SquidService squidService) {
+            Resolver resolver, DID did, SquidService squidService) {
         super(resolver, did);
         squidResolver = (SquidResolverImpl) resolver;
-        this.squidService=squidService;
+        this.squidService = squidService;
     }
 
 
@@ -55,9 +55,9 @@ public class SquidAgent extends AAgent {
      * @param did      DID for this agent
      * @return RemoteAgent return instance of remote Agent
      */
-    public static SquidAgent create(Resolver resolver, DID did,SquidService squidService) {
+    public static SquidAgent create(Resolver resolver, DID did, SquidService squidService) {
 
-        return new SquidAgent(resolver, did,squidService);
+        return new SquidAgent(resolver, did, squidService);
     }
 
 
@@ -71,12 +71,12 @@ public class SquidAgent extends AAgent {
      * @throws StorageException              if unable to register the SquidAsset
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
-@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     @Override
-    public <R extends Asset> R  registerAsset(Asset asset) {
+    public <R extends Asset> R registerAsset(Asset asset) {
 
         try {
-            return (R)createSquidAssetInNetwork(getMetaData(asset),squidService);
+            return (R) createSquidAssetInNetwork(getMetaData(asset), squidService);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,9 +88,9 @@ public class SquidAgent extends AAgent {
     }
 
     @Override
-    public <R extends Asset> R  registerAsset(String metaString) {
+    public <R extends Asset> R registerAsset(String metaString) {
         try {
-            return (R)createSquidAssetInNetwork(JSON.toMap(metaString),squidService);
+            return (R) createSquidAssetInNetwork(JSON.toMap(metaString), squidService);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DDOException e) {
@@ -109,13 +109,13 @@ public class SquidAgent extends AAgent {
      * @throws DDOException       DDOException will be thrown
      * @throws DIDFormatException DIDFormatException will be thrown
      */
-    private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData,SquidService squidService) throws IOException, DDOException {
+    private SquidAsset createSquidAssetInNetwork(Map<String, Object> metaData, SquidService squidService) throws IOException, DDOException {
 
         // get metadata required registration on OCN
         AssetMetadata metadataBase = getMetadataForSquidFromAsset(metaData);
 
         DDO squidDDO = squidService.getAssetAPI().create(metadataBase, squidService.getProvideConfig());
-        return SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());
+        return SquidAsset.create(squidDDO.metadata.toString(), squidDDO.getDid());
 
     }
 
@@ -174,7 +174,7 @@ public class SquidAgent extends AAgent {
 
         try {
             DDO squidDDO = squidResolver.getSquidDDO(did);
-            SquidAsset.create(squidDDO.metadata.toString(),  squidDDO.getDid());
+            SquidAsset.create(squidDDO.metadata.toString(), squidDDO.getDid());
         } catch (EthereumException e) {
             e.printStackTrace();
         } catch (DDOException e) {
@@ -187,7 +187,7 @@ public class SquidAgent extends AAgent {
             e.printStackTrace();
         }
 
-        return SquidAsset.create(did,squidService);
+        return SquidAsset.create(did, squidService);
 
     }
 

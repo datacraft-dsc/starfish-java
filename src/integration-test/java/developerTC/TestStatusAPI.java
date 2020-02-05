@@ -8,7 +8,6 @@ import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
-import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
@@ -35,7 +34,6 @@ public class TestStatusAPI {
 
         assertEquals("Surfer", result.get("name"));
         assertTrue(result.get("description").toString().contains("Data Ecosystem Agent"));
-        System.out.println(result.get("api-versions"));
 
     }
 
@@ -43,7 +41,7 @@ public class TestStatusAPI {
     public void testDDO() throws URISyntaxException {
         Map<String, Object> result = remoteAgent.getAgentDDO();
         String id = result.get("id").toString();
-        Map<String, Object> cre=remoteAgent.getAccount().getCredentials();
+        Map<String, Object> cre = remoteAgent.getAccount().getCredentials();
 
         assertTrue(id.contains("did:"));
         assertTrue(cre.get("username").toString().equals("Aladdin"));

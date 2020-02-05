@@ -203,11 +203,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return JSON
      */
     private static Map<String, Object> getDDOByURL(String url, Account account) throws URISyntaxException {
-        URI uri ;
-        if(url.contains(Constant.DDO_PATH)){
-             uri = new URI(url );
-        }
-        else{
+        URI uri;
+        if (url.contains(Constant.DDO_PATH)) {
+            uri = new URI(url);
+        } else {
             uri = new URI(url + Constant.DDO_PATH);
         }
 
@@ -565,7 +564,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         addAuthHeaders(post);
         post.addHeader("Accept", "application/json");
 
-        InputStream assetContentAsStream = ((DataAsset) asset).getContentStream();
+        InputStream assetContentAsStream = asset.getContentStream();
         HttpEntity entity = HTTP.createMultiPart(FILE,
                 new InputStreamBody(assetContentAsStream, Utils.createRandomHexString(16) + ".tmp"));
 
@@ -1243,7 +1242,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public void createToken(RemoteAccount account) {
 
-        if( account.getUserDataMap().get(TOKEN)!= null){
+        if (account.getUserDataMap().get(TOKEN) != null) {
             return;
         }
         // TODO this probably needs refactoring
@@ -1401,7 +1400,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public Map<String, Object> getAgentDDO() throws URISyntaxException {
         URI uri = getDDOUri();
-        return getDDOByURL(uri.toString(),this.getAccount());
+        return getDDOByURL(uri.toString(), this.getAccount());
     }
 
     /**

@@ -41,7 +41,7 @@ public class SquidAssetTestsIT {
     private Resolver resolver;
 
     private SquidService squidService;
-    private OceanAPI oceanAPI ;
+    private OceanAPI oceanAPI;
 
     @BeforeEach
     public void setup() {
@@ -52,19 +52,18 @@ public class SquidAssetTestsIT {
         DID did = DID.createRandom();
 
         // initialize squidAgent
-        squidAgent = SquidAgent.create(resolver, did,squidService);
-        oceanAPI =squidService.getOceanAPI();
+        squidAgent = SquidAgent.create(resolver, did, squidService);
+        oceanAPI = squidService.getOceanAPI();
     }
-
 
 
     @Test
     public void testRegistration() {
         byte[] data = {1, 2, 3, 4};
-        Map<String,Object> additionalMetaData = new HashMap<>();
-        additionalMetaData.put("name"," This asset is to test registration on network :: "+ new Date().toString());
+        Map<String, Object> additionalMetaData = new HashMap<>();
+        additionalMetaData.put("name", " This asset is to test registration on network :: " + new Date().toString());
 
-        MemoryAsset asset = MemoryAsset.create(data,additionalMetaData);
+        MemoryAsset asset = MemoryAsset.create(data, additionalMetaData);
 
         // register the Starfish asset created above into OCN
         SquidAsset squidAsset = squidAgent.registerAsset(asset);
@@ -90,7 +89,7 @@ public class SquidAssetTestsIT {
 
         String receiverAddress = "0x064789569D09b4d40b54383d84A25A840E5D67aD";
         String receiverPasswd = "ocean_secret";
-        int transferAmount =2;
+        int transferAmount = 2;
 
         Account receiverAccount = new Account(receiverAddress, receiverPasswd);
 

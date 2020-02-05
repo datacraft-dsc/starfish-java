@@ -42,8 +42,8 @@ public class ParamTestJSON {
         String s1 = JSON.toString(o1);
         Object o2 = JSON.parse(s1);
         String s2 = JSON.toString(o2);
-        assertTrue(s1.equals( s2));
-        assertTrue(o1.equals( o2));
+        assertTrue(s1.equals(s2));
+        assertTrue(o1.equals(o2));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ParamTestJSON {
         String ps1 = JSON.toPrettyString(o1);
         Object o2 = JSON.parse(ps1);
         String ps2 = JSON.toPrettyString(o2);
-        assertTrue(ps1.equals( ps2));
+        assertTrue(ps1.equals(ps2));
         assertTrue(o1.equals(o2));
     }
 }

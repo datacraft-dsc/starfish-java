@@ -7,21 +7,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestDID {
-	
-	private void testRoundTrip(String s) {
-		DID did=DID.parse(s);
-		String ds=did.toString();
-		assertEquals(s, ds);
-		assertEquals(did,DID.parse(ds));
-	}
-	
-	@Test
-	public void testRoundTrips() {
-		testRoundTrip("did:bar:foo");
-		testRoundTrip("did:op:1234/5678#foo");
-		testRoundTrip("did:op:1234#foo");
-	}
-	
+
+    private void testRoundTrip(String s) {
+        DID did = DID.parse(s);
+        String ds = did.toString();
+        assertEquals(s, ds);
+        assertEquals(did, DID.parse(ds));
+    }
+
+    @Test
+    public void testRoundTrips() {
+        testRoundTrip("did:bar:foo");
+        testRoundTrip("did:op:1234/5678#foo");
+        testRoundTrip("did:op:1234#foo");
+    }
+
     @Test
     public void testParse() {
         DID d1 = DID.parse("did:ocn:1234");

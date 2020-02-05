@@ -34,6 +34,7 @@ public abstract class AMemoryAsset extends AAsset {
 
     /**
      * Method to get the Memory Agent reference
+     *
      * @return memory agent reference
      */
     public MemoryAgent getMemoryAgent() {

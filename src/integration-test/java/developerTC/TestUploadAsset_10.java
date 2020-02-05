@@ -24,7 +24,7 @@ public class TestUploadAsset_10 {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null!= remoteAgent);
+        assumeTrue(null != remoteAgent);
 
     }
 

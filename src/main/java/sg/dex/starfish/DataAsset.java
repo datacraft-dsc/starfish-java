@@ -88,7 +88,6 @@ public interface DataAsset extends Asset {
     }
 
 
-
     /**
      * This method is to include the content of hash in the asset metadata.
      * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will

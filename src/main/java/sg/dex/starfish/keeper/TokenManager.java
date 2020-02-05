@@ -33,4 +33,4 @@ public class TokenManager extends BaseManager {
     public boolean tokenApprove(String spenderAddress, String price) throws TokenApproveException {
         return super.tokenApprove(tokenContract, spenderAddress, price);
     }
-};
+}

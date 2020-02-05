@@ -86,8 +86,8 @@ public class Params {
      * Eg: if the result of the response is type Json ,then it type caste the response to Json
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
-     * @param operation   instance reference
-     * @param response         response received from the Invoke call
+     * @param operation instance reference
+     * @param response  response received from the Invoke call
      * @return formatted map of the response received
      */
     public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
@@ -105,8 +105,8 @@ public class Params {
                 if (type.equals("asset")) {
 
                     Map<String, Object> didMap = (Map<String, Object>) response.get(paramName);
-                   // DID did = DID.create("op", (String)didMap.get("did"), null, null);
-                    result.put(paramName, getAsset(didMap.get("did"),remoteAccount));
+                    // DID did = DID.create("op", (String)didMap.get("did"), null, null);
+                    result.put(paramName, getAsset(didMap.get("did"), remoteAccount));
                 } else if (type.equals("json")) {
                     result.put(paramName, response.get(paramName));
                 } else {
@@ -121,29 +121,29 @@ public class Params {
 
     }
 
-    private static Object getAsset(Object di,RemoteAccount remoteAccount) throws IOException {
-        if(di == null){
+    private static Object getAsset(Object di, RemoteAccount remoteAccount) throws IOException {
+        if (di == null) {
             throw new RedirectException("DID is null");
         }
-        String didS=  (String)di;
-        DID did= DID.parse(didS);
-        return getAssetByDID(did,remoteAccount);
+        String didS = (String) di;
+        DID did = DID.parse(didS);
+        return getAssetByDID(did, remoteAccount);
 
     }
 
     /**
      * this methid is used to ge the Asset based on DID and the account.
      *
-     * @param did did of the asset
+     * @param did           did of the asset
      * @param remoteAccount user credential
      * @return Asset
      * @throws IOException
      */
-    public static Asset getAssetByDID( DID did, RemoteAccount remoteAccount) throws IOException {
+    public static Asset getAssetByDID(DID did, RemoteAccount remoteAccount) throws IOException {
         DID agentDID = did.withoutPath();
-        String path =did.getPath();
-        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID,remoteAccount);
-        Asset asset =remoteAgent.getAsset(path);
+        String path = did.getPath();
+        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID, remoteAccount);
+        Asset asset = remoteAgent.getAsset(path);
         return asset;
     }
 

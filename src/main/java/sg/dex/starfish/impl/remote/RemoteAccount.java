@@ -49,16 +49,17 @@ public class RemoteAccount extends AAccount {
      * @param password password for this account
      * @return RemoteAccount RemoteAccount instance
      */
-    public static RemoteAccount create(String userName,String password) {
+    public static RemoteAccount create(String userName, String password) {
 
         //Creating remote Account
         Map<String, Object> credentialMap = new HashMap<>();
         credentialMap.put("username", userName);
         credentialMap.put("password", password);
 
-      return RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
+        return RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
 
     }
+
     /**
      * This method is to create instance of Remote Account
      *
@@ -66,11 +67,11 @@ public class RemoteAccount extends AAccount {
      * @return RemoteAccount RemoteAccount instance
      */
     public static RemoteAccount create(
-                                       String token) {
+            String token) {
         HashMap userDataMap = new HashMap<>();
-        userDataMap.put("token",token);
+        userDataMap.put("token", token);
 
-        return new RemoteAccount(Utils.createRandomHexString(32),userDataMap);
+        return new RemoteAccount(Utils.createRandomHexString(32), userDataMap);
     }
 
     /**

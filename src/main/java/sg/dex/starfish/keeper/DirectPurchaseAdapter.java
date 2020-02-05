@@ -123,7 +123,7 @@ public final class DirectPurchaseAdapter {
         String reference_padded = Hex.toZeroPaddedHex(reference);
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());
 
-        filter.addSingleTopic(EventEncoder.encode(directPurchase.TOKENSENT_EVENT));
+        filter.addSingleTopic(EventEncoder.encode(DirectPurchase.TOKENSENT_EVENT));
         // addOptionalTopic does not work for some reason.
         filter.addSingleTopic(purchaser_padded);
         filter.addSingleTopic(publisher_padded);

@@ -14,7 +14,6 @@ import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
-import sg.dex.starfish.impl.squid.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
@@ -47,8 +46,8 @@ public class TestInvokeServiceFree_20 {
 
     @BeforeEach
     public void setUp() throws IOException {
-       // resolver=DexResolver.create("application_resolver.properties");
-        resolver=new LocalResolverImpl();
+        // resolver=DexResolver.create("application_resolver.properties");
+        resolver = new LocalResolverImpl();
         // surfer should be running
         didSurfer = getSurferDid();
         didInvoke = getInvokeDid();
@@ -132,8 +131,8 @@ public class TestInvokeServiceFree_20 {
         Map<String, Object> metaMap = new HashMap<>();
         metaMap.put("first-n", "11");
 
-        RemoteAgent agentI = RemoteAgent.connect(resolver,didSurfer, remoteAccount);
-        RemoteAgent agentIKoi = RemoteAgent.connect(resolver,didInvoke, remoteAccount);
+        RemoteAgent agentI = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
+        RemoteAgent agentIKoi = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
         // get asset form asset id of remote operation asset
         Operation remoteOperation = agentIKoi.getAsset("1c9796e94bc2d19f6f2f5d95724f4ad63ea6aa36b31227bf19b99cb4ab09eda3");

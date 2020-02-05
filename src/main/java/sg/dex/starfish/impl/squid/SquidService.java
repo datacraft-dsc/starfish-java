@@ -21,29 +21,26 @@ import java.net.URL;
 import java.util.Properties;
 
 public final class SquidService {
-    public Properties getProperties() {
-        return properties;
-    }
-
-    private  final Properties properties;
+    private final Properties properties;
     private final OceanConfig oceanConfig;
     private final OceanInitializationHelper oceanInitializationHelper;
-
-
-    private SquidService(String fileName){
+    private SquidService(String fileName) {
         properties = getProperties(fileName);
         oceanConfig = OceanConfigFactory.getOceanConfig(properties);
         oceanInitializationHelper = new OceanInitializationHelper(oceanConfig);
 
     }
 
-    public static  SquidService create(String fileName){
+    public static SquidService create(String fileName) {
         return new SquidService(fileName);
 
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
 
-    public  OceanManager getResolverManager() throws IOException, CipherException {
+    public OceanManager getResolverManager() throws IOException, CipherException {
 
         OceanManager oceanManager = OceanManager.getInstance(getKeeperService(), getAquariusService());
         oceanManager.setDidRegistryContract(oceanInitializationHelper.loadDIDRegistryContract(getKeeperService()));
@@ -82,12 +79,12 @@ public final class SquidService {
     }
 
 
-    public  String getProvider() {
+    public String getProvider() {
         return oceanConfig.getMainAccountAddress();
 
     }
 
-    private   Properties getProperties(String fileName) {
+    private Properties getProperties(String fileName) {
         File file = getFileFromResources(fileName);
         Properties prop = new Properties();
 
@@ -104,6 +101,7 @@ public final class SquidService {
         return prop;
 
     }
+
     // get file from classpath, resources folder
     private File getFileFromResources(String fileName) {
 
@@ -118,7 +116,7 @@ public final class SquidService {
 
     }
 
-    public  OceanAPI getOceanAPI() {
+    public OceanAPI getOceanAPI() {
         OceanAPI oceanAPI = null;
         try {
             oceanAPI = OceanAPI.getInstance(properties);
@@ -131,7 +129,7 @@ public final class SquidService {
         // ocean = Ocean.connect(oceanAPI);
     }
 
-    public  ProviderConfig getProvideConfig() {
+    public ProviderConfig getProvideConfig() {
 
         String metadataUrl = properties.get(OceanConfig.AQUARIUS_URL) + "/api/v1/aquarius/assets/ddo/{did}";
         String consumeUrl = properties.get("brizo.url") + "/api/v1/brizo/services/consume";
@@ -141,7 +139,8 @@ public final class SquidService {
 
         return new ProviderConfig(consumeUrl, purchaseEndpoint, metadataUrl, secretStoreEndpoint, providerAddress);
     }
-    public  AssetsAPI getAssetAPI() {
+
+    public AssetsAPI getAssetAPI() {
         return getOceanAPI().getAssetsAPI();
     }
 }

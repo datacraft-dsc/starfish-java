@@ -19,14 +19,14 @@ public interface Agent {
      *
      * @return The DDO of the agent as a metadata Map
      */
-	Map<String, Object> getDDO();
+    Map<String, Object> getDDO();
 
     /**
      * Gets the DID for an Agent
      *
      * @return DID The DID that can be used to address this agent in the Ocean Ecosystem
      */
-	DID getDID();
+    DID getDID();
 
     /**
      * Registers an Asset with this Agent.
@@ -37,12 +37,12 @@ public interface Agent {
      * @throws AuthorizationException        if requester does not have register permission
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
-	<R extends Asset> R registerAsset(Asset asset);
-	
+    <R extends Asset> R registerAsset(Asset asset);
+
     /**
-     * Registers Asset metadata with this Agent, returning an Asset of the 
+     * Registers Asset metadata with this Agent, returning an Asset of the
      * appropriate type for this Agent.
-     * 
+     * <p>
      * The Agent must support metadata storage (e.g. via the DEP15 Meta API)
      *
      * @param metaString The metadata of an Asset to register
@@ -50,7 +50,7 @@ public interface Agent {
      * @throws AuthorizationException        if requester does not have register permission
      * @throws UnsupportedOperationException if the agent does not support metadata storage
      */
-	<R extends Asset> R registerAsset(String metaString);
+    <R extends Asset> R registerAsset(String metaString);
 
     /**
      * Gets an asset for the given asset ID from this agent.
@@ -59,7 +59,7 @@ public interface Agent {
      * @param id The ID of the asset to get from this agent
      * @return Asset The asset if found, or null if the agent does not have the specified asset
      */
-	<R extends Asset> R getAsset(String id);
+    <R extends Asset> R getAsset(String id);
 
     /**
      * Gets an asset for the given asset DID from this agent.
@@ -70,7 +70,7 @@ public interface Agent {
      * @throws AuthorizationException if requester does not have access permission
      * @throws StorageException       if there is an error in retrieving the Asset
      */
-	<R extends Asset> R getAsset(DID did);
+    <R extends Asset> R getAsset(DID did);
 
     /**
      * Uploads an asset to this agent. Registers the asset with the agent if required.
@@ -84,7 +84,7 @@ public interface Agent {
      * @throws AuthorizationException if requester does not have upload permission
      * @throws StorageException       if there is an error in uploading the Asset
      */
-	<R extends Asset> R uploadAsset(Asset a);
+    <R extends Asset> R uploadAsset(Asset a);
 
 
 }
