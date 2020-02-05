@@ -30,7 +30,7 @@ public class TestAssetDownload_19 {
     @Test
     public void testDownloadAsset() {
 
-        String data="test upload of asset";
+        String data = "test upload of asset";
         Asset asset = MemoryAsset.createFromString(data);
         // upload will register and upload the asset
         RemoteDataAsset ra = remoteAgent.uploadAsset(asset);
@@ -39,14 +39,13 @@ public class TestAssetDownload_19 {
         assertEquals(asset.getAssetID(), ra.getAssetID());
 
 
-
         // check if the asset is registered
-        DataAsset remoteAsset =remoteAgent.getAsset(asset.getAssetID());
+        DataAsset remoteAsset = remoteAgent.getAsset(asset.getAssetID());
         assertEquals(asset.getAssetID(), remoteAsset.getAssetID());
 
         // verify the content of both asset
         String content = Utils.stringFromStream(ra.getContentStream());
-        assertEquals(content,data);
+        assertEquals(content, data);
 
     }
 }

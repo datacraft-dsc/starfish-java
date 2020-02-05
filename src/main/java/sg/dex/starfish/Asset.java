@@ -29,7 +29,7 @@ public interface Asset {
      * @return the assetID
      * @throws UnsupportedOperationException if unable to obtain ID
      */
-	String getAssetID();
+    String getAssetID();
 
     /**
      * Gets the  DID for this asset. The DID may include a DID path to specify
@@ -39,7 +39,7 @@ public interface Asset {
      * @return The global DID for this asset.
      * @see <a href="https://w3c-ccg.github.io/did-spec">W3C DID spec</a>
      */
-	DID getDID();
+    DID getDID();
 
     /**
      * Gets a copy of the JSON metadata for this asset, as a map of strings to values.
@@ -48,7 +48,7 @@ public interface Asset {
      *
      * @return New clone of the parsed JSON metadata for this asset
      */
-	Map<String, Object> getMetadata();
+    Map<String, Object> getMetadata();
 
     /**
      * Returns true if this asset is a data asset, i.e. the asset represents an immutable
@@ -79,7 +79,7 @@ public interface Asset {
      *
      * @return The metadata of this asset as a String
      */
-	String getMetadataString();
+    String getMetadataString();
 
     /**
      * Gets the contents of this data asset as a byte[] array.
@@ -105,7 +105,7 @@ public interface Asset {
         }
         return buffer.toByteArray();
     }
-    
+
     /**
      * Gets the contents of this data asset as a input stream.
      *
@@ -124,7 +124,7 @@ public interface Asset {
      *
      * @return A map representing this asset
      */
-	Map<String, Object> getParamValue();
+    Map<String, Object> getParamValue();
 
     /**
      * Tests if this asset is an bundle, i.e. can contain sub-assets.

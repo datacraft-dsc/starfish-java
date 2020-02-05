@@ -3,9 +3,10 @@
     "workshop-name": "Performance Motors, LTD",
     "workshop-address": "Sentosa Island, Singapore, SG"
   },
-  "maintenance":[
-    {"aid": "13179",
-      "date":"2011-09-23",
+  "maintenance": [
+    {
+      "aid": "13179",
+      "date": "2011-09-23",
       "data": {
         "Lighting": {
           "parts": [
@@ -35,8 +36,9 @@
         }
       }
     },
-    {"aid": "13179",
-      "date":"2013-11-03",
+    {
+      "aid": "13179",
+      "date": "2013-11-03",
       "data": {
         "Lighting": {
           "parts": [
@@ -66,8 +68,9 @@
         }
       }
     },
-    {"aid": "13180",
-      "date":"2011-09-23",
+    {
+      "aid": "13180",
+      "date": "2011-09-23",
       "data": {
         "Lighting": {
           "parts": [

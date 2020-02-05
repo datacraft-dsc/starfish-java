@@ -22,10 +22,11 @@ import static sg.dex.starfish.constant.Constant.SYNC;
 public class RemoteOperation extends ARemoteAsset implements Operation {
 
     private RemoteAgent remoteAgent;
+
     protected RemoteOperation(RemoteAgent remoteAgent, String meta) {
 
         super(meta, remoteAgent);
-         this.remoteAgent=remoteAgent;
+        this.remoteAgent = remoteAgent;
     }
 
     /**
@@ -39,8 +40,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
         return new RemoteOperation(a, meta);
     }
-    
- 
+
 
     @Override
     public Job invoke(Object... params) {
@@ -49,7 +49,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     @Override
     public Job invokeAsync(Map<String, Object> params) {
-    	List<String> modes=getOperationModes();
+        List<String> modes = getOperationModes();
         if (!modes.contains(ASYNC)) {
             throw new IllegalArgumentException("This operation does not support async invoke.");
         }
@@ -58,13 +58,13 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     @Override
     public Map<String, Object> invokeResult(Map<String, Object> params) {
-       	List<String> modes=getOperationModes();
+        List<String> modes = getOperationModes();
         if (!modes.contains(SYNC)) {
             throw new IllegalArgumentException("This operation does not support sync invoke.");
         }
         Map<String, Object> response = remoteAgent.invokeResult(this, params);
         try {
-            return Params.formatResponse(this, response,remoteAgent.getAccount());
+            return Params.formatResponse(this, response, remoteAgent.getAccount());
         } catch (IOException e) {
             throw new RemoteException("Error in creating the Result");
         }
@@ -73,7 +73,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
 
     @Override
     public Job invoke(Map<String, Object> params) {
-       	List<String> modes=getOperationModes();
+        List<String> modes = getOperationModes();
         if (modes.contains(ASYNC)) {
             throw new IllegalArgumentException("This operation does not support async invoke.");
         }

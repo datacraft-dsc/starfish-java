@@ -2,14 +2,11 @@ package sg.dex.crypto;
 
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.util.Hex;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.DigestException;
 
 /**
  * Utility class for hash functions
@@ -142,15 +139,15 @@ public class Hash {
     public static String sha3_256String(InputStream inputStream) throws IOException {
         String checksum;
 
-            SHA3.DigestSHA3 md = new SHA3.Digest256();
-            //Using MessageDigest update() method to provide input
-            byte[] buffer = new byte[8192];
-            int numOfBytesRead;
-            while ((numOfBytesRead = inputStream.read(buffer)) > 0) {
-                md.update(buffer, 0, numOfBytesRead);
-            }
-            byte[] hash = md.digest();
-            checksum =  Hex.toString(hash);
+        SHA3.DigestSHA3 md = new SHA3.Digest256();
+        //Using MessageDigest update() method to provide input
+        byte[] buffer = new byte[8192];
+        int numOfBytesRead;
+        while ((numOfBytesRead = inputStream.read(buffer)) > 0) {
+            md.update(buffer, 0, numOfBytesRead);
+        }
+        byte[] hash = md.digest();
+        checksum = Hex.toString(hash);
 
         return checksum;
     }

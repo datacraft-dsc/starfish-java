@@ -30,11 +30,11 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * Constructor to create the instance of memory bundle
      *
      * @param metaData    metaDAta
-     * @param memoryAgent    memoryAgent
+     * @param memoryAgent memoryAgent
      * @param assetMap    asset map
      */
-    private MemoryBundle(String metaData, Map<String, Asset> assetMap,MemoryAgent memoryAgent) {
-        super(metaData,memoryAgent);
+    private MemoryBundle(String metaData, Map<String, Asset> assetMap, MemoryAgent memoryAgent) {
+        super(metaData, memoryAgent);
         this.assetMap = assetMap == null ? new HashMap<>() : assetMap;
 
     }
@@ -46,27 +46,28 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * based on assetMap  passed in the argument.
      * Default memory Agent will be passed to create bundle
      *
-     * @param assetMap    map of all asset with name and Asset
-     * @param meta        additional meta data need for creating bundle asset
+     * @param assetMap map of all asset with name and Asset
+     * @param meta     additional meta data need for creating bundle asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create( Map<String, Asset> assetMap, Map<String, Object> meta) {
+    public static Bundle create(Map<String, Asset> assetMap, Map<String, Object> meta) {
 
-        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap,MemoryAgent.create());
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, MemoryAgent.create());
     }
+
     /**
      * Create a memory bundle asset.
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap  passed in the argument.
      *
      * @param assetMap    map of all asset with name and Asset
-     * @param memoryAgent  memoryAgent instance
+     * @param memoryAgent memoryAgent instance
      * @param meta        additional meta data need for creating bundle asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create( Map<String, Asset> assetMap, Map<String, Object> meta,MemoryAgent memoryAgent) {
+    public static Bundle create(Map<String, Asset> assetMap, Map<String, Object> meta, MemoryAgent memoryAgent) {
 
-        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap,memoryAgent);
+        return new MemoryBundle(buildMetaData(assetMap, meta), assetMap, memoryAgent);
     }
 
     /**
@@ -74,11 +75,11 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
      * This method will create a bundle asset which may contain zero or more sub-asset
      * based on assetMap map passed in the argument.
      *
-     * @param assetMap    map of all asset with name and Asset
+     * @param assetMap map of all asset with name and Asset
      * @return the newly created instance of Memory Bundle
      */
-    public static Bundle create( Map<String, Asset> assetMap) {
-        return create( assetMap, null);
+    public static Bundle create(Map<String, Asset> assetMap) {
+        return create(assetMap, null);
     }
 
     /**
@@ -149,14 +150,14 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     public Bundle add(String name, Asset asset) {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.put(name, asset);
-        return create( copyMap, null);
+        return create(copyMap, null);
     }
 
     @Override
     public Bundle addAll(Map<String, Asset> assetMapp) {
         Map<String, Asset> copyMap = getAssetMap();
         copyMap.putAll(assetMapp);
-        return create( copyMap, this.getMetadata());
+        return create(copyMap, this.getMetadata());
     }
 
     @SuppressWarnings("unchecked")

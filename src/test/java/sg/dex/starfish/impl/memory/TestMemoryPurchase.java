@@ -63,7 +63,6 @@ public class TestMemoryPurchase {
         Map<String, Object> metaDataForPurchase = getResponseMetaDataPurchase(metaDataForListing);
 
 
-
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             memoryAgent.createPurchase(metaDataForPurchase);
         });

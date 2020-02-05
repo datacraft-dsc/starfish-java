@@ -161,7 +161,7 @@ public class TestAssetIdentity_02 {
     public void testForNullAsset() {
         // Null check should be there ?
         assertThrows(StarfishValidationException.class, () -> {
-            remoteAgent.registerAsset((Asset)null);
+            remoteAgent.registerAsset((Asset) null);
         });
 
     }

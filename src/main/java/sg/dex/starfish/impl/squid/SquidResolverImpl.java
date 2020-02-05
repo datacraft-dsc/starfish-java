@@ -26,8 +26,8 @@ public class SquidResolverImpl implements Resolver {
      *
      * @param SquidService squidService
      */
-    public SquidResolverImpl(SquidService squidService){
-        this.squidService=squidService;
+    public SquidResolverImpl(SquidService squidService) {
+        this.squidService = squidService;
     }
 
     @Override

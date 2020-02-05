@@ -26,7 +26,7 @@ public class SquidAsset extends AAsset implements DataAsset {
 
     private com.oceanprotocol.squid.models.DID did;
 
-    private SquidAsset(String meta,com.oceanprotocol.squid.models.DID did) {
+    private SquidAsset(String meta, com.oceanprotocol.squid.models.DID did) {
         super(meta);
         this.did = did;
     }
@@ -37,7 +37,7 @@ public class SquidAsset extends AAsset implements DataAsset {
     }
 
 
-    public static SquidAsset create(DID did,SquidService squidService) {
+    public static SquidAsset create(DID did, SquidService squidService) {
 
         com.oceanprotocol.squid.models.DID squidDID;
         try {
@@ -47,7 +47,7 @@ public class SquidAsset extends AAsset implements DataAsset {
 
             Map<String, Object> metaData = wrapDDOMeta(ddo);
 
-            return new SquidAsset(JSON.toPrettyString(metaData),  squidDID);
+            return new SquidAsset(JSON.toPrettyString(metaData), squidDID);
         } catch (DIDFormatException e) {
             throw new Error(e);
         } catch (EthereumException e) {

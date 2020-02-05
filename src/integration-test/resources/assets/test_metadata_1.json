@@ -18,16 +18,25 @@
       "compression": "zip"
     }
   ],
-  "links": [{
-    "name": "Sample of Asset Data",
-    "type": "sample",
-    "url": "https://foo.com/sample.csv"
-  }, {
-    "name": "Data Format Definition",
-    "type": "format",
-    "url": "https://foo.com/sample2.csv"
-  }],
+  "links": [
+    {
+      "name": "Sample of Asset Data",
+      "type": "sample",
+      "url": "https://foo.com/sample.csv"
+    },
+    {
+      "name": "Data Format Definition",
+      "type": "format",
+      "url": "https://foo.com/sample2.csv"
+    }
+  ],
   "inLanguage": "en",
-  "tags": ["weather", "uk", "2011", "temperature", "humidity"],
+  "tags": [
+    "weather",
+    "uk",
+    "2011",
+    "temperature",
+    "humidity"
+  ],
   "price": "1"
 }

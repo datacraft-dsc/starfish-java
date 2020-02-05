@@ -101,7 +101,7 @@ public class DexResolver implements Resolver {
         String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
-            blockNumber = (BigInteger) contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
+            blockNumber = contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
         } catch (UnsupportedEncodingException e) {
             throw new ResolverException(e);
         } catch (Exception e) {
@@ -109,9 +109,9 @@ public class DexResolver implements Resolver {
         }
 
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(contract.DIDATTRIBUTEREGISTERED_EVENT));
+        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDATTRIBUTEREGISTERED_EVENT));
         String didTopic = "0x" + didHash;
-        filter.addOptionalTopics(new String[]{didTopic});
+        filter.addOptionalTopics(didTopic);
 
         Flowable<DIDRegistry.DIDAttributeRegisteredEventResponse> floable = contract.dIDAttributeRegisteredEventFlowable(filter);
         ArrayList<DIDRegistry.DIDAttributeRegisteredEventResponse> outcome = new ArrayList<>();
@@ -128,7 +128,7 @@ public class DexResolver implements Resolver {
 
         TransactionReceipt receipt = null;
         try {
-            receipt = (TransactionReceipt) contract.registerAttribute(
+            receipt = contract.registerAttribute(
                     EncodingHelper.hexStringToBytes(did.getID()),
                     EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
                     Arrays.asList(squidService.getProvider()), ddo).send();

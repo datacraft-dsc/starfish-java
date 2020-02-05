@@ -16,10 +16,9 @@ import static sg.dex.starfish.constant.Constant.ID;
  * Intended for use in testing or local development situations.
  */
 public class MemoryListing implements Listing {
-    private MemoryAgent agent;
-
     private final Map<String, Object> meta;
     private final String id;
+    private MemoryAgent agent;
 
     private MemoryListing(MemoryAgent agent, String listingID, Map<String, Object> metaMap) {
         this.agent = agent;

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.util.JSON;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,8 +21,8 @@ import static sg.dex.starfish.constant.Constant.*;
 public class TestMetaDataAccess_07 {
 
 
-    private RemoteAgent remoteAgent;
     private static String METADATA_JSON_CONTENT;
+    private RemoteAgent remoteAgent;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -36,7 +35,7 @@ public class TestMetaDataAccess_07 {
     }
 
     @Test
-    public void testMEmoryAgentMetaData()  {
+    public void testMEmoryAgentMetaData() {
         byte[] data = {2, 5, 7};
         MemoryAsset asset = MemoryAsset.create(data);
         DataAsset remoteAsset = remoteAgent.registerAsset(asset);
@@ -60,9 +59,6 @@ public class TestMetaDataAccess_07 {
         assertEquals(remoteAsset.getMetadata().get("description").toString(), "This is to verify the asset registration on Network");
 
     }
-
-
-
 
 
 }

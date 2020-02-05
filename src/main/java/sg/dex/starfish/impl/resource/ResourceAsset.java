@@ -27,7 +27,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
 
     private final String resourcePath;
 
-    protected ResourceAsset( String resourcePath,String metaData) {
+    protected ResourceAsset(String resourcePath, String metaData) {
         super(metaData);
         this.resourcePath = resourcePath;
     }

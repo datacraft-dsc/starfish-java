@@ -36,7 +36,7 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
         // validate the memory operation metadata
         Utils.validateAssetMetaData(this.getMetadataString());
 
-        if (validateOperationMode(this) != null && !validateOperationMode(this).contains( ASYNC)) {
+        if (validateOperationMode(this) != null && !validateOperationMode(this).contains(ASYNC)) {
             throw new StarfishValidationException("Mode must be Async for this operation");
         }
 
@@ -77,27 +77,26 @@ public abstract class AMemoryOperation extends AMemoryAsset implements Operation
 
         return invokeAsync(params);
     }
-    private List<String> validateOperationMode(Operation operation){
 
-        Map<String,Object> operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());
+    private List<String> validateOperationMode(Operation operation) {
+
+        Map<String, Object> operationData = JSON.toMap(operation.getMetadata().get(OPERATION).toString());
         //1. check if mode is present
 
-        if(operationData.get(MODES)== null){
+        if (operationData.get(MODES) == null) {
             return null;
         }
-        List<String> modeLst= (List<String>)operationData.get(MODES);
-        for(Object mode: modeLst){
-            if(mode.toString().equals(SYNC)||
-                    mode.toString().equals(ASYNC)){
+        List<String> modeLst = (List<String>) operationData.get(MODES);
+        for (Object mode : modeLst) {
+            if (mode.toString().equals(SYNC) ||
+                    mode.toString().equals(ASYNC)) {
 
-            }
-            else{
-                throw new StarfishValidationException("Invalid mode of the given operation:"+operation.toString());
+            } else {
+                throw new StarfishValidationException("Invalid mode of the given operation:" + operation.toString());
             }
         }
 
         return modeLst;
-
 
 
     }

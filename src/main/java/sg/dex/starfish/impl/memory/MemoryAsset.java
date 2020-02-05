@@ -36,13 +36,14 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     private final byte[] data;
 
 
-    private MemoryAsset(byte[] data, String metaData,MemoryAgent memoryAgent) {
-        super(metaData,memoryAgent);
+    private MemoryAsset(byte[] data, String metaData, MemoryAgent memoryAgent) {
+        super(metaData, memoryAgent);
         this.data = data;
     }
 
     /**
      * Builds default metadata for a MemoryAsset.
+     *
      * @param data
      * @param additionalMeta
      * @return
@@ -83,16 +84,16 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     /**
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
-     * @param asset The asset to use to construct this MemoryAsset
+     * @param asset       The asset to use to construct this MemoryAsset
      * @param memoryAgent memoryAgent
      * @return A new MemoryAsset containing the data from the passed asset argument
      */
-    public static MemoryAsset create(Asset asset,MemoryAgent memoryAgent) {
+    public static MemoryAsset create(Asset asset, MemoryAgent memoryAgent) {
         if (asset instanceof MemoryAsset) {
             return (MemoryAsset) asset;
         } else if (asset.isDataAsset()) {
             byte[] data = asset.getContent();
-            return create(data, buildMetaData(data, null),memoryAgent);
+            return create(data, buildMetaData(data, null), memoryAgent);
         } else {
             throw new IllegalArgumentException("Asset must be a data asset");
         }
@@ -109,21 +110,22 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return create(data, buildMetaData(data, null),MemoryAgent.create());
+        return create(data, buildMetaData(data, null), MemoryAgent.create());
     }
+
     /**
      * Creates a MemoryAsset with the provided data. Default metadata will be
      * generated.
      *
-     * @param data Byte array containing the data for this asset
+     * @param data        Byte array containing the data for this asset
      * @param memoryAgent memoryAgent
      * @return The newly created in-memory asset
      */
-    public static MemoryAsset create(byte[] data,MemoryAgent memoryAgent) {
+    public static MemoryAsset create(byte[] data, MemoryAgent memoryAgent) {
         if (data == null) {
             throw new IllegalArgumentException("Missing data,data cannot be null");
         }
-        return create(data, buildMetaData(data, null),memoryAgent);
+        return create(data, buildMetaData(data, null), memoryAgent);
     }
 
     /**
@@ -135,53 +137,54 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      */
     public static Asset createFromString(String string) {
         byte[] data = string.getBytes(StandardCharsets.UTF_8);
-        
+
         // set up default content type
-        Map<String,Object> meta=Utils.mapOf(Constant.CONTENT_TYPE,"text/plain");
-        
+        Map<String, Object> meta = Utils.mapOf(Constant.CONTENT_TYPE, "text/plain");
+
         return create(data, meta);
     }
 
     /**
      * Creates a MemoryAsset with given byte[] content.
-     * 
+     * <p>
      * Creates default metadata, and merges in and additional metadata provided
      *
      * @param additionalMeta A map containing additional metadata for this asset
-     * @param data Byte array containing the data for this asset
+     * @param data           Byte array containing the data for this asset
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta) {
-        return create(data, additionalMeta,MemoryAgent.create());
+        return create(data, additionalMeta, MemoryAgent.create());
     }
+
     /**
      * Creates a MemoryAsset with given byte[] content, using the specified MemoryAgent
-     * 
+     * <p>
      * Creates default metadata, and merges in and additional metadata provided
      *
      * @param additionalMeta A map containing the metadata for this asset
-     * @param data Byte array containing the data for this asset
-     * @param memoryAgent memoryAgent
+     * @param data           Byte array containing the data for this asset
+     * @param memoryAgent    memoryAgent
      * @return The newly created in-memory asset
      */
-    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta,MemoryAgent memoryAgent) {
-    	Map<String,Object> meta=buildMetaData(data, additionalMeta);
-    	if (!meta.containsKey(Constant.CONTENT_HASH)) {
-    		String hash=Hash.sha3_256String(data);
-    		meta.put(Constant.CONTENT_HASH, hash);
-    	};
-        return new MemoryAsset(data, JSON.toPrettyString(meta),memoryAgent);
+    public static MemoryAsset create(byte[] data, Map<String, Object> additionalMeta, MemoryAgent memoryAgent) {
+        Map<String, Object> meta = buildMetaData(data, additionalMeta);
+        if (!meta.containsKey(Constant.CONTENT_HASH)) {
+            String hash = Hash.sha3_256String(data);
+            meta.put(Constant.CONTENT_HASH, hash);
+        }
+        return new MemoryAsset(data, JSON.toPrettyString(meta), memoryAgent);
     }
-    
+
     /**
      * Creates a MemoryAsset with the provided metadata and content
      *
      * @param metaString The metadata to use for this asset
-     * @param data Byte array containing the data for this asset
+     * @param data       Byte array containing the data for this asset
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, String metaString) {
-         return create(data, JSON.toMap(metaString),MemoryAgent.create());
+        return create(data, JSON.toMap(metaString), MemoryAgent.create());
     }
 
 
@@ -232,6 +235,6 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-        return new MemoryAsset(this.getSource(), newMeta,MemoryAgent.create());
+        return new MemoryAsset(this.getSource(), newMeta, MemoryAgent.create());
     }
 }

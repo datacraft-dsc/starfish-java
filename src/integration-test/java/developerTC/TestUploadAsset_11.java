@@ -73,7 +73,7 @@ public class TestUploadAsset_11 {
     @Test
     public void testNullRegister() {
         try {
-            String testNull=null;
+            String testNull = null;
             remoteAgent.registerAsset(testNull);
         } catch (StarfishValidationException e) {
             assertTrue(e.getMessage().contains("Asset metadata cannot be null"));

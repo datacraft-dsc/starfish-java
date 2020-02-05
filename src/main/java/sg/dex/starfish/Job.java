@@ -32,7 +32,7 @@ public interface Job extends Future<Map<String, Object>> {
      * Gets the Job ID associated with this Job. Job IDs are allocated by the agent
      * implementation responsible for completing the job, and may be used to refer
      * to the Job via other mechanisms.
-     * 
+     * <p>
      * The definition of a Job ID is Agent-specific
      *
      * @return jobID
@@ -41,7 +41,7 @@ public interface Job extends Future<Map<String, Object>> {
 
     /**
      * Returns true if the Job has been completed, either due to success, failure or cancellation.
-     * 
+     * <p>
      * If the job has succeeded, the result may be obtained via get() or getResult()
      *
      * @return boolean true if the job is complete, false otherwise.
@@ -55,8 +55,8 @@ public interface Job extends Future<Map<String, Object>> {
      * @return The Asset resulting from the job, or null if not yet available
      */
     default Map<String, Object> pollResult() {
-    	if (!isDone()) return null;
-    	return getResult();
+        if (!isDone()) return null;
+        return getResult();
     }
 
     /**
@@ -97,11 +97,11 @@ public interface Job extends Future<Map<String, Object>> {
 
     /**
      * Waits for the result of the Operation and returns the result map.
-     * 
+     * <p>
      * Throws an exception if:
      * - the timeout in milliseconds expires before the asset is available.
      * - The Job fails or is cancelled
-     * 
+     * <p>
      * A timeout will not prevent the Job from completing at a later time.
      *
      * @return The result map from the job
@@ -119,9 +119,9 @@ public interface Job extends Future<Map<String, Object>> {
      *                      throwing a TimeoutException
      * @return The result from the Job
      * @throws ExecutionException if Job fails with an error
-     * @throws TimeoutException if the result is not returned by the given timeout
+     * @throws TimeoutException   if the result is not returned by the given timeout
      */
-    public default Map<String, Object> get(long timeoutMillis)
+    default Map<String, Object> get(long timeoutMillis)
             throws TimeoutException, ExecutionException {
         return get(timeoutMillis, TimeUnit.MILLISECONDS);
     }
@@ -135,19 +135,19 @@ public interface Job extends Future<Map<String, Object>> {
     default Map<String, Object> getResult(long timeoutMillis) {
         return getResult(timeoutMillis, TimeUnit.MILLISECONDS);
     }
-    
+
     /**
      * Convenience method to get the result of the Job without checked exceptions.
      *
      * @param timeout Timeout to wait for the Job result
-     * @param unit Time unit for timeout value, e.g. TimeUnit.MILLISECONDS
+     * @param unit    Time unit for timeout value, e.g. TimeUnit.MILLISECONDS
      * @return The result of the Job
      */
     default Map<String, Object> getResult(long timeout, TimeUnit unit) {
-    	try {
+        try {
             return get(timeout, unit);
         } catch (TimeoutException e) {
-        	// re-throw exceptions sneakily to avoid checked exceptions
+            // re-throw exceptions sneakily to avoid checked exceptions
             throw Utils.sneakyThrow(e);
         }
     }
@@ -161,7 +161,7 @@ public interface Job extends Future<Map<String, Object>> {
         try {
             return get();
         } catch (InterruptedException | ExecutionException e) {
-        	// re-throw exceptions sneakily to avoid checked exceptions
+            // re-throw exceptions sneakily to avoid checked exceptions
             throw Utils.sneakyThrow(e);
         }
     }
@@ -214,10 +214,9 @@ public interface Job extends Future<Map<String, Object>> {
 
     /**
      * Returns true if the Job is known to be cancelled.
-     * 
      */
     @Override
     default boolean isCancelled() {
-    	return getStatus().equals(Constant.CANCELLED);
+        return getStatus().equals(Constant.CANCELLED);
     }
 }

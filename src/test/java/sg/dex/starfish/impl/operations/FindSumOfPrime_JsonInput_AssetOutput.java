@@ -17,7 +17,7 @@ public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation imple
         super(meta, memoryAgent);
     }
 
-    public static FindSumOfPrime_JsonInput_AssetOutput create(String metadata,MemoryAgent memoryAgent) {
+    public static FindSumOfPrime_JsonInput_AssetOutput create(String metadata, MemoryAgent memoryAgent) {
 
         return new FindSumOfPrime_JsonInput_AssetOutput(metadata, memoryAgent);
     }
@@ -25,10 +25,10 @@ public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation imple
 
     private Map<String, Object> doCompute(final Object input) {
         Integer num = (Integer.parseInt(input.toString()));
-        int primeSum =0;
+        int primeSum = 0;
         for (int i = 2; i < num; i++) {
             if (isPrime(i)) {
-                primeSum =primeSum+i;
+                primeSum = primeSum + i;
             }
 
         }

@@ -6,8 +6,6 @@ import sg.dex.starfish.Asset;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.impl.remote.RemoteAccount;
-import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.ProvUtil;
@@ -19,13 +17,13 @@ import java.util.Map;
 
 /**
  * USE CASE 01:
- *  <p>
+ * <p>
  * One user say user1  has data and other user say user 2  has operation and
  * user1 wanted to run operation on his data and result should be also publish to an Agent(user agent)
- *  </p>
+ * </p>
  * <p>
  * Example:
- *
+ * <p>
  * User 1 - this user has two data set one is  vehicle Data and other is workshop data.
  * This data can be in local pc/DB/Cloud storage.
  * In this example I have used data present in local pc .User upload( will be registered als)
@@ -47,7 +45,7 @@ import java.util.Map;
 public class InvokeExample {
 
 
-    public static void main(String a[]) throws IOException, URISyntaxException {
+    public static void main(String[] a) throws IOException, URISyntaxException {
 
         InvokeExample invokeExample = new InvokeExample();
         invokeExample.invokeDemo_Basic();
@@ -72,25 +70,25 @@ public class InvokeExample {
 
         Map<String, Object> additionalMetadata = new HashMap<>();
         additionalMetadata.put(Constant.PROVENANCE,
-                ProvUtil.createPublishProvenance("Merge Operation","vehicle_13179"));
+                ProvUtil.createPublishProvenance("Merge Operation", "vehicle_13179"));
 
 
         DataAsset vehicleData =
                 ResourceAsset.create("assets/vehicle.json");
-       // DataAsset vehicle_13180 = ResourceAsset.create("assets/vehicle_13180.json");
+        // DataAsset vehicle_13180 = ResourceAsset.create("assets/vehicle_13180.json");
         DataAsset workshopData = ResourceAsset.create("assets/workshop.json");
 
 
         RemoteDataAsset workshopDataRemote = surfer.uploadAsset(workshopData);
         RemoteDataAsset vehicle_13179_R = surfer.uploadAsset(vehicleData);
-      //  RemoteDataAsset vehicle_13180_R = surfer.uploadAsset(vehicle_13180);
+        //  RemoteDataAsset vehicle_13180_R = surfer.uploadAsset(vehicle_13180);
 
         System.out.println("Data is Registered successfully !!!");
         System.out.println();
         System.out.println("Asset ID of registered assets: ");
         System.out.println();
         System.out.println(vehicle_13179_R.getAssetID());
-      //  System.out.println(vehicle_13180_R.getAssetID());
+        //  System.out.println(vehicle_13180_R.getAssetID());
         System.out.println();
         System.out.println();
 
@@ -134,7 +132,6 @@ public class InvokeExample {
             Object r = res.getValue();
             if (r instanceof Asset) {
                 Asset asset = (Asset) r;
-                System.out.println("Result Asset DID : ");
                 System.out.println(asset.getDID());
             }
 
@@ -145,7 +142,6 @@ public class InvokeExample {
 //        String provData =vehicle_13179_R.getMetadata().get(Constant.PROVENANCE).toString();
 //        System.out.println(JSON.toPrettyString(JSON.parse(provData)));
     }
-
 
 
 }

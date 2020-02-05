@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class TestResources {
 
     @Test
-    public void testResourceAssetWithContentHash() throws  IOException {
+    public void testResourceAssetWithContentHash() throws IOException {
         DataAsset dataAsset = ResourceAsset.create("assets/hello.txt");
         byte[] bs = dataAsset.getContent();
-        String expected =Hash.sha3_256String(bs);
+        String expected = Hash.sha3_256String(bs);
 
         String s = new String(bs, StandardCharsets.UTF_8);
         Assertions.assertEquals("Hello Starfish", s);
