@@ -21,7 +21,7 @@ public class Constant {
     public static final String NAME = "name";
     public static final String DID = "did";
 
-    public static final String DID_METHOD = "op";
+    public static final String DID_METHOD = "dep";
     public static final String SYNC = "sync";
     public static final String ASYNC = "async";
     public static final String MODES = "modes";

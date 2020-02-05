@@ -101,7 +101,7 @@ public class DID {
     /**
      * Gets the DID method for this DID
      *
-     * @return String The DID method, e.g. "op"
+     * @return String The DID method, e.g. "dep"
      */
     public String getMethod() {
         return method;
@@ -201,7 +201,7 @@ public class DID {
     /**
      * Creates a random Ocean-compliant DID as a string, of the format:
      * <p>
-     * "did:op:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+     * "did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
      *
      * @return A valid Ocean DID represented as a string
      */
