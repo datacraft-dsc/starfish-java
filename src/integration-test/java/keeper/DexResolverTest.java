@@ -85,7 +85,7 @@ public class DexResolverTest {
                 "type", "Ocean.Invoke.v1",
                 "serviceEndpoint", invokeURL + "/api/v1"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", surferURL + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",

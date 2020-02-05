@@ -74,7 +74,7 @@ public class TestInvokeServiceFree_20 {
 
 
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", surferURL + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",
@@ -96,7 +96,7 @@ public class TestInvokeServiceFree_20 {
                 "type", "Ocean.Invoke.v1",
                 "serviceEndpoint", invokeURL + "/api/v1/invoke"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", invokeURL + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",

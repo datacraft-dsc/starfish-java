@@ -26,7 +26,7 @@ public class TestRemoteAgentTest_26 {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", AgentService.getSurferUrl() + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Auth.v1",

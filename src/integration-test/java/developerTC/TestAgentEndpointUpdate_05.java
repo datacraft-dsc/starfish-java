@@ -44,7 +44,7 @@ public class TestAgentEndpointUpdate_05 {
         List<Map<String, Object>> services = new ArrayList<>();
         // add the respective end points
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", host + "/api/v1/meta"));
         services.add(Utils.mapOf(
                 "type", "Ocean.Storage.v1",

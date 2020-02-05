@@ -17,7 +17,7 @@ public class TestDDO {
 
         Resolver resolver = new LocalResolverImpl();
         String endpoint = "http://localhost:8080/api/v1/meta";
-        String ddoString = "{\"service\" [{\"type\" : \"Ocean.Meta.v1\" , \"serviceEndpoint\": \"" + endpoint + "\"}]}";
+        String ddoString = "{\"service\" [{\"type\" : \"DEP.Meta.v1\" , \"serviceEndpoint\": \"" + endpoint + "\"}]}";
         DID did = DID.createRandom();
         resolver.registerDID(did, ddoString);
 

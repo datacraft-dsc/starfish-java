@@ -54,7 +54,7 @@
 //                "type", "Ocean.Invoke.v1",
 //                "serviceEndpoint", "http://localhost:3000/api/v1" ));
 //        services.add(Utils.mapOf(
-//                "type", "Ocean.Meta.v1",
+//                "type", "DEP.Meta.v1",
 //                "serviceEndpoint", "http://localhost:8080" + "/api/v1/meta"));
 //        services.add(Utils.mapOf(
 //                "type", "Ocean.Storage.v1",
