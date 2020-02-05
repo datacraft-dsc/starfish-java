@@ -1,7 +1,13 @@
 package sg.dex.starfish.keeper;
 
 import org.web3j.tx.TransactionManager;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -24,8 +30,9 @@ public class DexConfigFactory {
      * @param properties configuration values
      * @return an DexConfig value with all the values set
      */
-    public static DexConfig getOceanConfig(Properties properties) {
+    public static DexConfig getDexConfig(String fileName) {
 
+        Properties properties = getProperties(fileName);
         DexConfig dexConfig = new DexConfig();
 
         properties.getOrDefault(DexConfig.CONSUME_BASE_PATH, DEFAULT_CONSUME_PATH);
@@ -62,5 +69,30 @@ public class DexConfigFactory {
 
         return dexConfig;
 
+    }
+
+    private static Properties getProperties(String fileName) {
+        File file;
+
+        URL resource = DexConfigFactory.class.getClassLoader().getResource(fileName);
+        if (resource == null) {
+            file =  new File(fileName);
+        } else {
+            file = new File(resource.getFile());
+        }
+
+        Properties prop = new Properties();
+
+        try (InputStream input = new FileInputStream(file.getPath())) {
+
+            if (input == null) {
+                throw new IOException("properties files is missing");
+            }
+
+            prop.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return prop;
     }
 }
