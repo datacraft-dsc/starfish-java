@@ -21,7 +21,7 @@ public class Constant {
     public static final String NAME = "name";
     public static final String DID = "did";
 
-    public static final String DID_METHOD = "op";
+    public static final String DID_METHOD = "dep";
     public static final String SYNC = "sync";
     public static final String ASYNC = "async";
     public static final String MODES = "modes";
@@ -92,8 +92,9 @@ public class Constant {
     public static final String ENDPOINT_MARKET = "DEP.Market.v1";
     public static final String ENDPOINT_INVOKE = "DEP.Invoke.v1";
 
+    public static final String ENDPOINT_AUTH = "DEP.Auth.v1";
 
-    public static final String ENDPOINT_STATUS = "Ocean.Status";
-    public static final String ENDPOINT_DDO = "Ocean.DDO";
+    public static final String ENDPOINT_STATUS = "DEP.Status";
+    public static final String ENDPOINT_DDO = "DEP.DDO";
     public static final String DDO_PATH = "/api/ddo";
 }
