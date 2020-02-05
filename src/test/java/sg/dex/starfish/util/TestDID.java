@@ -8,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDID {
 
-    private void testRoundTrip(String s) {
+    @Test
+	private void testRoundTrip(String s) {
         DID did = DID.parse(s);
         String ds = did.toString();
         assertEquals(s, ds);
