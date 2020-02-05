@@ -86,8 +86,8 @@ import java.util.Map;
      * Eg: if the result of the response is type Json ,then it type caste the response to Json
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
-     * @param operation   instance reference
-     * @param response         response received from the Invoke call
+     * @param operation instance reference
+     * @param response  response received from the Invoke call
      * @return formatted map of the response received
      */
     public static Map&lt;String, Object&gt; formatResponse(Operation operation, Map&lt;String, Object&gt; response, RemoteAccount remoteAccount) throws IOException {
@@ -105,8 +105,8 @@ import java.util.Map;
 <span class="nc bnc" id="L105" title="All 2 branches missed.">                if (type.equals(&quot;asset&quot;)) {</span>
 
 <span class="nc" id="L107">                    Map&lt;String, Object&gt; didMap = (Map&lt;String, Object&gt;) response.get(paramName);</span>
-                   // DID did = DID.create(&quot;op&quot;, (String)didMap.get(&quot;did&quot;), null, null);
-<span class="nc" id="L109">                    result.put(paramName, getAsset(didMap.get(&quot;did&quot;),remoteAccount));</span>
+                    // DID did = DID.create(&quot;op&quot;, (String)didMap.get(&quot;did&quot;), null, null);
+<span class="nc" id="L109">                    result.put(paramName, getAsset(didMap.get(&quot;did&quot;), remoteAccount));</span>
 <span class="nc bnc" id="L110" title="All 2 branches missed.">                } else if (type.equals(&quot;json&quot;)) {</span>
 <span class="nc" id="L111">                    result.put(paramName, response.get(paramName));</span>
                 } else {
@@ -121,29 +121,29 @@ import java.util.Map;
 
     }
 
-    private static Object getAsset(Object di,RemoteAccount remoteAccount) throws IOException {
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        if(di == null){</span>
+    private static Object getAsset(Object di, RemoteAccount remoteAccount) throws IOException {
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (di == null) {</span>
 <span class="nc" id="L126">            throw new RedirectException(&quot;DID is null&quot;);</span>
         }
-<span class="nc" id="L128">        String didS=  (String)di;</span>
-<span class="nc" id="L129">        DID did= DID.parse(didS);</span>
-<span class="nc" id="L130">        return getAssetByDID(did,remoteAccount);</span>
+<span class="nc" id="L128">        String didS = (String) di;</span>
+<span class="nc" id="L129">        DID did = DID.parse(didS);</span>
+<span class="nc" id="L130">        return getAssetByDID(did, remoteAccount);</span>
 
     }
 
     /**
      * this methid is used to ge the Asset based on DID and the account.
      *
-     * @param did did of the asset
+     * @param did           did of the asset
      * @param remoteAccount user credential
      * @return Asset
      * @throws IOException
      */
-    public static Asset getAssetByDID( DID did, RemoteAccount remoteAccount) throws IOException {
+    public static Asset getAssetByDID(DID did, RemoteAccount remoteAccount) throws IOException {
 <span class="fc" id="L143">        DID agentDID = did.withoutPath();</span>
-<span class="fc" id="L144">        String path =did.getPath();</span>
-<span class="fc" id="L145">        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID,remoteAccount);</span>
-<span class="fc" id="L146">        Asset asset =remoteAgent.getAsset(path);</span>
+<span class="fc" id="L144">        String path = did.getPath();</span>
+<span class="fc" id="L145">        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID, remoteAccount);</span>
+<span class="fc" id="L146">        Asset asset = remoteAgent.getAsset(path);</span>
 <span class="fc" id="L147">        return asset;</span>
     }
 

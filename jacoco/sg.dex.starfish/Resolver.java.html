@@ -15,8 +15,8 @@ public interface Resolver {
      * Method to  get a DDO (as a String) for any given DID registered with the resolver.
      *
      * @param did Given DID which is registered with the resolver
-     * @throws ResolverException
      * @return DDO String value or null
+     * @throws ResolverException
      */
     String getDDOString(DID did) throws ResolverException;
 
@@ -28,20 +28,20 @@ public interface Resolver {
      * @return The DDO as a JSON map
      * @throws UnsupportedOperationException not yet implemented
      */
-    public default Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L32">    	did=did.withoutPath();</span>
+    default Map&lt;String, Object&gt; getDDO(DID did) {
+<span class="fc" id="L32">        did = did.withoutPath();</span>
 <span class="fc" id="L33">        String ddoString = getDDOString(did);</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (ddoString==null) return null;</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (ddoString == null) return null;</span>
 <span class="fc" id="L35">        return JSON.parse(ddoString);</span>
     }
-    
+
     /**
      * Method to register or update a DDO for a DID .
      *
-     * @param did DID to register or update
+     * @param did       DID to register or update
      * @param ddoString DDO to associate with the given DID
-     * @throws ResolverException
      * @return true if registration is successful, false otherwise
+     * @throws ResolverException
      */
     void registerDID(DID did, String ddoString) throws ResolverException;
 }

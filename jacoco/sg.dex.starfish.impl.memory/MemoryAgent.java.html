@@ -29,15 +29,14 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * A cached thread pool for jobs executed in memory
      */
 <span class="fc" id="L31">    public static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();</span>
-
+<span class="fc" id="L32">    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());</span>
 <span class="fc" id="L33">    private HashMap&lt;String, AMemoryAsset&gt; assetStore = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L34">    private HashMap&lt;String, MemoryListing&gt; listingStore = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L35">    private HashMap&lt;String, MemoryPurchase&gt; purchaseStore = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L36">    private static MemoryAgent defaultMemoryAgent = new MemoryAgent(new LocalResolverImpl(), createRandomMemoryDID());</span>
 
     private MemoryAgent(Resolver resolver, DID did) {
-<span class="fc" id="L39">        super(resolver, did);</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L38">        super(resolver, did);</span>
+<span class="fc" id="L39">    }</span>
 
     /**
      * Creates a new MemoryAgent using the given DID
@@ -46,27 +45,29 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(DID did) {
-<span class="fc" id="L49">    	did=did.withoutPath();</span>
-<span class="fc" id="L50">        return new MemoryAgent(new LocalResolverImpl(),did);</span>
+<span class="fc" id="L48">        did = did.withoutPath();</span>
+<span class="fc" id="L49">        return new MemoryAgent(new LocalResolverImpl(), did);</span>
     }
+
     /**
      * Creates a new MemoryAgent using the given DID
      *
-     * @param did DID for this agent
+     * @param did      DID for this agent
      * @param resolver Resolver
      * @return A MemoryAgent with the given DID
      */
-    public static MemoryAgent create(Resolver resolver,DID did) {
-<span class="nc" id="L60">        did=did.withoutPath();</span>
+    public static MemoryAgent create(Resolver resolver, DID did) {
+<span class="nc" id="L60">        did = did.withoutPath();</span>
 <span class="nc" id="L61">        return new MemoryAgent(resolver, did);</span>
     }
 
     /**
      * Create a random DID suitable for use by an in-memory Agent
+     *
      * @return
      */
     private static DID createRandomMemoryDID() {
-<span class="fc" id="L69">    	return DID.parse(DID.createRandomString());</span>
+<span class="fc" id="L70">        return DID.parse(DID.createRandomString());</span>
     }
 
     /**
@@ -75,7 +76,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create() {
-<span class="fc" id="L78">        return defaultMemoryAgent;</span>
+<span class="fc" id="L79">        return defaultMemoryAgent;</span>
     }
 
     /**
@@ -85,7 +86,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(String did) {
-<span class="fc" id="L88">        return create(DID.parse(did));</span>
+<span class="fc" id="L89">        return create(DID.parse(did));</span>
     }
 
     /**
@@ -99,18 +100,18 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R registerAsset(Asset a) {
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
-<span class="nc" id="L103">        	throw new UnsupportedOperationException(&quot;Not yet supported!&quot;);</span>
-        };
-<span class="fc" id="L105">        AMemoryAsset ma=(AMemoryAsset)a;</span>
-<span class="fc" id="L106">        assetStore.put(ma.getAssetID(), ma);</span>
-<span class="fc" id="L107">        return (R) ma;</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
+<span class="nc" id="L104">            throw new UnsupportedOperationException(&quot;Not yet supported!&quot;);</span>
+        }
+<span class="fc" id="L106">        AMemoryAsset ma = (AMemoryAsset) a;</span>
+<span class="fc" id="L107">        assetStore.put(ma.getAssetID(), ma);</span>
+<span class="fc" id="L108">        return (R) ma;</span>
     }
-    
-	@Override
-	public &lt;R extends Asset&gt; R registerAsset(String metaString) {
-<span class="nc" id="L112">		throw new UnsupportedOperationException(&quot;MemoryAgent does not support registering assets without content&quot;);</span>
-	}
+
+    @Override
+    public &lt;R extends Asset&gt; R registerAsset(String metaString) {
+<span class="nc" id="L113">        throw new UnsupportedOperationException(&quot;MemoryAgent does not support registering assets without content&quot;);</span>
+    }
 
     /**
      * Registers an Asset with this Agent
@@ -123,21 +124,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R uploadAsset(Asset a) {
-<span class="fc" id="L126">        MemoryAsset ma = MemoryAsset.create(a);</span>
-<span class="fc" id="L127">        registerAsset(ma);</span>
-<span class="fc" id="L128">        return (R) ma;</span>
+<span class="fc" id="L127">        MemoryAsset ma = MemoryAsset.create(a);</span>
+<span class="fc" id="L128">        registerAsset(ma);</span>
+<span class="fc" id="L129">        return (R) ma;</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R getAsset(String id) {
-<span class="fc" id="L134">        R asset = (R) assetStore.get(id);</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (asset == null) return null;</span>
-<span class="fc" id="L136">        String rid = asset.getAssetID();</span>
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (!id.equals(rid)) {</span>
-<span class="nc" id="L138">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
+<span class="fc" id="L135">        R asset = (R) assetStore.get(id);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (asset == null) return null;</span>
+<span class="fc" id="L137">        String rid = asset.getAssetID();</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (!id.equals(rid)) {</span>
+<span class="nc" id="L139">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
         }
-<span class="fc" id="L140">        return asset;</span>
+<span class="fc" id="L141">        return asset;</span>
     }
 
     /**
@@ -152,10 +153,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Object... params) {
-<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L156">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L157">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L158">        return operation.invoke(params);</span>
+<span class="nc" id="L159">        return operation.invoke(params);</span>
     }
 
 
@@ -171,10 +172,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="pc bpc" id="L174" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="fc" id="L175">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="pc bpc" id="L175" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="fc" id="L176">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="fc" id="L177">        return operation.invoke(params);</span>
+<span class="fc" id="L178">        return operation.invoke(params);</span>
     }
 
     /**
@@ -190,21 +191,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
-<span class="pc bpc" id="L193" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="fc" id="L194">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="pc bpc" id="L194" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="fc" id="L195">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
 
-<span class="fc" id="L197">        return operation.invoke(params);</span>
+<span class="fc" id="L198">        return operation.invoke(params);</span>
     }
 
     @Override
     public Listing getListing(String id) {
-<span class="nc" id="L202">        return listingStore.get(id);</span>
+<span class="nc" id="L203">        return listingStore.get(id);</span>
     }
 
     @Override
     public Purchase getPurchase(String id) {
-<span class="nc" id="L207">        return purchaseStore.get(id);</span>
+<span class="nc" id="L208">        return purchaseStore.get(id);</span>
     }
 
 
@@ -216,12 +217,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
-<span class="nc" id="L220">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="nc" id="L221">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L223">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
-<span class="fc" id="L224">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L224">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
+<span class="fc" id="L225">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
     }
 
     /**
@@ -231,20 +232,20 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map&lt;String, Object&gt; purchaseData) {
-<span class="fc bfc" id="L234" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
-<span class="fc" id="L235">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
+<span class="fc" id="L236">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L238">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
-<span class="fc" id="L239">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
+<span class="fc" id="L239">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
+<span class="fc" id="L240">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
     }
 
 
-	@Override
-	public Job getJob(String jobID) {
-		// TODO Consider caching Jobs? Or just return null
-<span class="nc" id="L246">		return null;</span>
-	}
+    @Override
+    public Job getJob(String jobID) {
+        // TODO Consider caching Jobs? Or just return null
+<span class="nc" id="L247">        return null;</span>
+    }
 
 
 }

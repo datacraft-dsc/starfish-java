@@ -88,7 +88,6 @@ public interface DataAsset extends Asset {
     }
 
 
-
     /**
      * This method is to include the content of hash in the asset metadata.
      * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
@@ -104,15 +103,15 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L107" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="fc" id="L109">            return this;</span>
+<span class="fc" id="L108">            return this;</span>
 
         } else {
-<span class="fc" id="L112">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
-<span class="fc" id="L113">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
+<span class="fc" id="L111">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
+<span class="fc" id="L112">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
 
-<span class="fc" id="L115">            return this.updateMeta(JSON.toPrettyString(metaMap));</span>
+<span class="fc" id="L114">            return this.updateMeta(JSON.toPrettyString(metaMap));</span>
         }
     }
 
@@ -125,7 +124,7 @@ public interface DataAsset extends Asset {
      * @throws UnsupportedOperationException if this operation  is not supported by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="nc" id="L128">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }

@@ -31,7 +31,7 @@ public class URIAsset extends AAsset implements DataAsset {
 
     private final URI uri;
 
-    protected URIAsset( URI uri,String meta) {
+    protected URIAsset(URI uri, String meta) {
 <span class="fc" id="L35">        super(meta);</span>
 <span class="fc" id="L36">        this.uri = uri;</span>
 <span class="fc" id="L37">    }</span>
@@ -43,7 +43,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-<span class="fc" id="L46">        return new URIAsset( uri,metaString);</span>
+<span class="fc" id="L46">        return new URIAsset(uri, metaString);</span>
     }
 
     /**
