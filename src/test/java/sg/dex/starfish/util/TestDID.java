@@ -15,6 +15,11 @@ public class TestDID {
         assertEquals(s, ds);
         assertEquals(did, DID.parse(ds));
     }
+    
+    @Test
+	private void testDefaultMethod(String s) {
+        assertEquals("dep",DID.createRandom().getMethod());
+    }
 
     @Test
     public void testRoundTrips() {
