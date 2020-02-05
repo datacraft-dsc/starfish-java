@@ -29,7 +29,7 @@ public class TestRemoteAgentTest_26 {
                 "type", "DEP.Meta.v1",
                 "serviceEndpoint", AgentService.getSurferUrl() + "/api/v1/meta"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Auth.v1",
+                "type", "DEP.Auth.v1",
                 "serviceEndpoint", AgentService.getSurferUrl() + "/api/v1/auth"));
         ddo.put("service", services);
         String ddoString = JSON.toPrettyString(ddo);

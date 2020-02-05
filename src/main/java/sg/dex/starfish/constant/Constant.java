@@ -87,10 +87,10 @@ public class Constant {
     //----------DDO Endpoints---------------------------------
     public static final String SERVICE = "service";
     public static final String SERVICE_ENDPOINT = "serviceEndpoint";
-    public static final String ENDPOINT_STORAGE = "Ocean.Storage.v1";
+    public static final String ENDPOINT_STORAGE = "DEP.Storage.v1";
     public static final String ENDPOINT_META = "DEP.Meta.v1";
-    public static final String ENDPOINT_MARKET = "Ocean.Market.v1";
-    public static final String ENDPOINT_INVOKE = "Ocean.Invoke.v1";
+    public static final String ENDPOINT_MARKET = "DEP.Market.v1";
+    public static final String ENDPOINT_INVOKE = "DEP.Invoke.v1";
 
 
     public static final String ENDPOINT_STATUS = "Ocean.Status";

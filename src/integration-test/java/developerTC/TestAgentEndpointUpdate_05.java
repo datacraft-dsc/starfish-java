@@ -47,7 +47,7 @@ public class TestAgentEndpointUpdate_05 {
                 "type", "DEP.Meta.v1",
                 "serviceEndpoint", host + "/api/v1/meta"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
+                "type", "DEP.Storage.v1",
                 "serviceEndpoint", host + "/api/v1/assets"));
 
         // adding to ddo map

@@ -6,15 +6,15 @@
     },
     {
       "serviceEndpoint": "http:/13.67.33.157:8080/api/v1/assets",
-      "type": "Ocean.Storage.v1"
+      "type": "DEP.Storage.v1"
     },
     {
       "serviceEndpoint": "http:/13.67.33.157:8080/api/v1/invoke",
-      "type": "Ocean.Invoke.v1"
+      "type": "DEP.Invoke.v1"
     },
     {
       "serviceEndpoint": "http:/13.67.33.157:8080/api/v1/market",
-      "type": "Ocean.Market.v1"
+      "type": "DEP.Market.v1"
     }
   ]
 }
