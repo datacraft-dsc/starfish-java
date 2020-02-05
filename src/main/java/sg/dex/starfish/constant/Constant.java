@@ -91,6 +91,7 @@ public class Constant {
     public static final String ENDPOINT_META = "DEP.Meta.v1";
     public static final String ENDPOINT_MARKET = "DEP.Market.v1";
     public static final String ENDPOINT_INVOKE = "DEP.Invoke.v1";
+
     public static final String ENDPOINT_AUTH = "DEP.Auth.v1";
 
     public static final String ENDPOINT_STATUS = "DEP.Status";

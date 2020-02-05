@@ -16,12 +16,12 @@ public class TestParams {
 
     @Test
     public void testAssetByDID() throws IOException, URISyntaxException {
-        RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
-        RemoteAgent remoteAgent = RemoteAgent.connect("http://52.230.82.125:3030", remoteAccount);
+        RemoteAgent remoteAgent =AgentService.getRemoteAgent();
+
         Asset asset = MemoryAsset.create("test".getBytes());
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
-        Asset asset1 = Params.getAssetByDID(remoteDataAsset.getDID(), remoteAccount);
+        Asset asset1 = Params.getAssetByDID(remoteDataAsset.getDID(), remoteAgent.getAccount());
         Assert.assertEquals(asset.getMetadataString(), asset1.getMetadataString());
         Assert.assertEquals(asset.getAssetID(), asset1.getAssetID());
     }

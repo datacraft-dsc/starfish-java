@@ -44,13 +44,13 @@ public class AgentFactory {
         List<Map<String, Object>> services = new ArrayList<>();
 
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", surferURL + "/api/v1/meta"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Storage.v1",
+                "type", "DEP.Storage.v1",
                 "serviceEndpoint", surferURL + "/api/v1/assets"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Auth.v1",
+                "type", "DEP.Auth.v1",
                 "serviceEndpoint", surferURL + "/api/v1/auth"));
         ddo.put("service", services);
         return JSON.toPrettyString(ddo);
@@ -64,13 +64,13 @@ public class AgentFactory {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(
-                "type", "Ocean.Invoke.v1",
+                "type", "DEP.Invoke.v1",
                 "serviceEndpoint", invokeURL + "/api/v1/invoke"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Meta.v1",
+                "type", "DEP.Meta.v1",
                 "serviceEndpoint", invokeURL + "/api/v1/meta"));
         services.add(Utils.mapOf(
-                "type", "Ocean.Auth.v1",
+                "type", "DEP.Auth.v1",
                 "serviceEndpoint", surferURL + "/api/v1/auth"));
 
         ddo.put("service", services);
