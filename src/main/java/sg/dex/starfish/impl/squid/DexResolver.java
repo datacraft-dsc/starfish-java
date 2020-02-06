@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.squid;
 
-import com.oceanprotocol.common.helpers.EncodingHelper;
 import com.oceanprotocol.keeper.contracts.DIDRegistry;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
@@ -15,6 +14,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
@@ -87,7 +87,7 @@ public class DexResolver implements Resolver {
         String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
-            blockNumber = contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
+            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();
         } catch (UnsupportedEncodingException e) {
             throw new ResolverException(e);
         } catch (Exception e) {
@@ -115,8 +115,8 @@ public class DexResolver implements Resolver {
         TransactionReceipt receipt = null;
         try {
             receipt = contract.registerAttribute(
-                    EncodingHelper.hexStringToBytes(did.getID()),
-                    EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
+                    Numeric.hexStringToByteArray(did.getID()),
+                    Numeric.hexStringToByteArray(Hex.toZeroPaddedHexNoPrefix(checksum)),
                     Arrays.asList(config.getMainAccountAddress()), ddo).send();
         } catch (IOException e) {
             throw new ResolverException(e);
