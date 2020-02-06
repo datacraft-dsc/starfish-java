@@ -19,6 +19,7 @@ public class DexConfig {
     public static final String MAIN_ACCOUNT_PASSWORD = "account.main.password";
     public static final String MAIN_ACCOUNT_CREDENTIALS_FILE = "account.main.credentialsFile";
     public static final String DID_REGISTRY_ADDRESS = "contract.DIDRegistry.address";
+    public static final String DIRECT_PURCHASE_ADDRESS = "contract.DirectPurchase.address";
     public static final String AGREEMENT_STORE_MANAGER_ADDRESS = "contract.AgreementStoreManager.address";
     public static final String CONDITION_STORE_MANAGER_ADDRESS = "contract.ConditionStoreManager.address";
     public static final String LOCKREWARD_CONDITIONS_ADDRESS = "contract.LockRewardCondition.address";
@@ -43,6 +44,7 @@ public class DexConfig {
     private String mainAccountPassword;
     private String mainAccountCredentialsFile;
     private String didRegistryAddress;
+    private String directPurchaseAddress;
     private String agreementStoreManagerAddress;
     private String conditionStoreManagerAddress;
     private String escrowRewardAddress;
@@ -121,8 +123,17 @@ public class DexConfig {
         return didRegistryAddress;
     }
 
+    public String getDirectPurchaseAddress() {
+        return directPurchaseAddress;
+    }
+
     public DexConfig setDidRegistryAddress(String address) {
         this.didRegistryAddress = address;
+        return this;
+    }
+
+    public DexConfig setDirectPurchaseAddress(String address) {
+        this.directPurchaseAddress = address;
         return this;
     }
 

@@ -53,6 +53,7 @@ public class DexConfigFactory {
         dexConfig.setSecretStoreUrl((String) properties.getOrDefault(dexConfig.SECRETSTORE_URL, DEFAULT_SECRET_STORE_URL));
         dexConfig.setProviderAddress((String) properties.getOrDefault(dexConfig.PROVIDER_ADDRESS, ""));
         dexConfig.setDidRegistryAddress((String) properties.getOrDefault(dexConfig.DID_REGISTRY_ADDRESS, ""));
+        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, ""));
         dexConfig.setEscrowRewardConditionsAddress((String) properties.getOrDefault(dexConfig.ESCROWREWARD_CONDITIONS_ADDRESS, ""));
         dexConfig.setEscrowAccessSecretStoreTemplateAddress((String) properties.getOrDefault(dexConfig.ESCROW_ACCESS_SS_CONDITIONS_ADDRESS, ""));
         dexConfig.setLockrewardConditionsAddress((String) properties.getOrDefault(dexConfig.LOCKREWARD_CONDITIONS_ADDRESS, ""));
