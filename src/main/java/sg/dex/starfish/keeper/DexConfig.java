@@ -17,6 +17,8 @@ public class DexConfig {
     public static final String PROVIDER_ADDRESS = "provider.address";
     public static final String MAIN_ACCOUNT_ADDRESS = "account.main.address";
     public static final String MAIN_ACCOUNT_PASSWORD = "account.main.password";
+    public static final String PARITY_ACCOUNT_ADDRESS = "account.parity.address";
+    public static final String PARITY_ACCOUNT_PASSWORD = "account.parity.password";
     public static final String MAIN_ACCOUNT_CREDENTIALS_FILE = "account.main.credentialsFile";
     public static final String DID_REGISTRY_ADDRESS = "contract.DIDRegistry.address";
     public static final String DIRECT_PURCHASE_ADDRESS = "contract.DirectPurchase.address";
@@ -41,7 +43,9 @@ public class DexConfig {
     private String secretStoreUrl;
     private String providerAddress;
     private String mainAccountAddress;
+    private String parityAccountAddress;
     private String mainAccountPassword;
+    private String parityAccountPassword;
     private String mainAccountCredentialsFile;
     private String didRegistryAddress;
     private String directPurchaseAddress;
@@ -200,12 +204,30 @@ public class DexConfig {
         return this;
     }
 
+    public String getParityAccountAddress() {
+        return parityAccountAddress;
+    }
+
+    public DexConfig setParityAccountAddress(String parityAccountAddress) {
+        this.parityAccountAddress = parityAccountAddress;
+        return this;
+    }
+
     public String getMainAccountPassword() {
         return mainAccountPassword;
     }
 
     public DexConfig setMainAccountPassword(String mainAccountPassword) {
         this.mainAccountPassword = mainAccountPassword;
+        return this;
+    }
+
+    public String getParityAccountPassword() {
+        return parityAccountPassword;
+    }
+
+    public DexConfig setParityAccountPassword(String parityAccountPassword) {
+        this.parityAccountPassword = parityAccountPassword;
         return this;
     }
 
