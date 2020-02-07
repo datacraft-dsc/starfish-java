@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.impl.squid.SquidService;
+import sg.dex.starfish.keeper.DexConfig;
+import sg.dex.starfish.keeper.DexConfigFactory;
 import sg.dex.starfish.keeper.DirectPurchaseAdapter;
 
 import java.io.IOException;
@@ -24,16 +26,15 @@ public class DirectPurchaseTestIT {
     private Account senderAccount;
     private Account receiverAccount;
 
-    private SquidService squidService;
-
     public DirectPurchaseTestIT() throws IOException, CipherException {
-        squidService = SquidService.create("application_test.properties");
-        directPurchaseAdapter = DirectPurchaseAdapter.create(squidService);
+        DexConfig dexConfig = DexConfigFactory.getDexConfig("application_test.properties");
 
-        String senderAddress = squidService.getProperties().getProperty("account.main.address", "");
-        String receiverAddress = squidService.getProperties().getProperty("account.parity.address", "");
-        String senderPasswd = squidService.getProperties().getProperty("account.main.password", "");
-        String receiverPasswd = squidService.getProperties().getProperty("account.parity.password", "");
+        directPurchaseAdapter = DirectPurchaseAdapter.create(dexConfig);
+
+        String senderAddress = dexConfig.getMainAccountAddress();
+        String receiverAddress = dexConfig.getParityAccountAddress();
+        String senderPasswd = dexConfig.getMainAccountPassword();
+        String receiverPasswd = dexConfig.getParityAccountPassword();
 
         senderAccount = new Account(senderAddress, senderPasswd);
         receiverAccount = new Account(receiverAddress, receiverPasswd);
@@ -42,6 +43,7 @@ public class DirectPurchaseTestIT {
     @Test
     public void testPurchase() throws EthereumException {
 
+        SquidService squidService = SquidService.create("application_test.properties");
         OceanAPI oceanAPI = squidService.getOceanAPI();
         TransactionReceipt transactionReceipt = oceanAPI.getAccountsAPI().requestTokens(tokenAmount);
         assertTrue(transactionReceipt.isStatusOK());
