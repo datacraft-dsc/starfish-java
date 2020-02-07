@@ -1,17 +1,22 @@
 package sg.dex.starfish.keeper;
 
-import com.oceanprotocol.common.web3.KeeperService;
 import com.oceanprotocol.keeper.contracts.OceanToken;
 import com.oceanprotocol.squid.exceptions.TokenApproveException;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
 import org.web3j.utils.Numeric;
-import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.Hex;
 
 import java.io.IOException;
@@ -47,18 +52,29 @@ public final class DirectPurchaseAdapter {
      * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
      * @throws IOException, CipherException
      */
-    public static DirectPurchaseAdapter create(SquidService squidService) throws IOException, CipherException {
+    public static DirectPurchaseAdapter create(DexConfig dexConfig) throws IOException, CipherException {
         // getting properties
-        String directPurchaseAddress = squidService.getProperties().getProperty("contract.DirectPurchase.address", "");
-        String oceanTokenAddress = squidService.getProperties().getProperty("contract.OceanToken.address", "");
 
-        // getting keeper
-        KeeperService keeper = squidService.getKeeperService();
+        String directPurchaseAddress = dexConfig.getDirectPurchaseAddress();
+        String oceanTokenAddress = dexConfig.getTokenAddress();
+
+        Credentials credentials = null;
+        try {
+            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());
+        } catch (CipherException e) {
+            System.err.println("Wrong credential file or its password");
+            e.printStackTrace();
+        }
+
+        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));
+        TransactionManager txManager = new DexTransactionManager(web3, credentials, dexConfig.getMainAccountPassword(), (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());
+        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());
+
         // loading contract instances
-        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
-        OceanToken oceanToken = OceanToken.load(oceanTokenAddress, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
+        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress,  web3, txManager, gasProvider);
+        OceanToken oceanToken = OceanToken.load(oceanTokenAddress,  web3, txManager, gasProvider);
         // initializing token manager
-        TokenManager tokenManager = TokenManager.getInstance(keeper);
+        TokenManager tokenManager = TokenManager.getInstance();
         tokenManager.setTokenContract(oceanToken);
         return new DirectPurchaseAdapter(directPurchase, tokenManager);
     }
