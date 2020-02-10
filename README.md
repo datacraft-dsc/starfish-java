@@ -31,7 +31,7 @@ Starfish is a developer toolkit for the data economy. Based on underlying data e
 
 Starfish works with blockchain networks, such as Ocean Protocol, and common web services through agents, allowing unprecedented flexibility in asset discovery and data supply line management.
 
-### Easiest Way to Build and Manage Data Supply Lines
+### Effective Way to Build and Manage Digital Supply Lines
 Starfish provides a common abstraction to enable decentralised data infrastructure to interoperate effectively, allowing data supply lines to be easily created and managed using standardised interface. 
 
 ### Data Sharing Made Simple for Everyone
@@ -44,7 +44,7 @@ There is no practical limit to the types of operations that can be created, and 
 ---
 ## Installation
 
-Typically in Maven you can add squid-java as a dependency:
+Typically in Maven you can add starfish-java as a dependency:
 
 ```xml
 <!-- https://mvnrepository.com/artifact/sg.dex/starfish-java -->
@@ -115,7 +115,7 @@ mvn clean install -P all-tests
 ## License
 
 Copyright 2018 Ocean Protocol Foundation Ltd.
-Copyright 2018-2019 DEX Pte. Ltd.
+Copyright 2018-2020 DEX Pte. Ltd.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
