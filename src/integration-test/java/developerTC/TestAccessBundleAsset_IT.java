@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset
  */
-public class TestAccessBundleAsset_16 {
+public class TestAccessBundleAsset_IT {
 
     private RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 

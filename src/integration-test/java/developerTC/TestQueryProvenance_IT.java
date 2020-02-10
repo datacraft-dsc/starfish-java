@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * I need a way to view the provenance for an asset
  * "
  */
-public class TestQueryProvenance_15 {
+public class TestQueryProvenance_IT {
 
     private static RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 

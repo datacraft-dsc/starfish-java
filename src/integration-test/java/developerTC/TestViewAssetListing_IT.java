@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Class to test the Remote listing functionality
  */
 @Disabled
-public class TestViewAssetListing_14 {
+public class TestViewAssetListing_IT {
 
     private RemoteAgent remoteAgent;
 
