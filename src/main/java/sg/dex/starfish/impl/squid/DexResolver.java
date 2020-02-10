@@ -1,19 +1,26 @@
 package sg.dex.starfish.impl.squid;
 
-import com.oceanprotocol.common.helpers.EncodingHelper;
-import com.oceanprotocol.common.web3.KeeperService;
 import com.oceanprotocol.keeper.contracts.DIDRegistry;
-import com.oceanprotocol.squid.api.config.OceanConfig;
-import com.oceanprotocol.squid.api.config.OceanConfigFactory;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.LocalResolverImpl;
+import sg.dex.starfish.keeper.DexConfig;
+import sg.dex.starfish.keeper.DexConfigFactory;
+import sg.dex.starfish.keeper.DexTransactionManager;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
@@ -22,43 +29,20 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Properties;
 
 public class DexResolver implements Resolver {
     private DIDRegistry contract;
-    private SquidService squidService;
+    private DexConfig config;
 
     /**
      * Create DexResolver
      *
      * @param contract     contract
-     * @param squidService squidService
+     * @param DexConfig    config
      */
-    private DexResolver(DIDRegistry contract, SquidService squidService) {
+    private DexResolver(DIDRegistry contract, DexConfig config) {
         this.contract = contract;
-        this.squidService = squidService;
-    }
-
-    /**
-     * Creates a DexResolver
-     *
-     * @param squidService:   SquidService with set Squid configuration
-     * @param addressFrom:    owner of DID record in the ledger. Only this address is allowed to update it
-     * @param password:       its password
-     * @param credentialFile: its parity credential file
-     * @return DexResolver The newly created DexResolver
-     * @throws IOException, CipherException
-     */
-    public static DexResolver create(SquidService squidService, String addressFrom, String password, String credentialFile) throws IOException, CipherException {
-        Properties properties = squidService.getProperties();
-        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
-        oceanConfig.setMainAccountAddress(addressFrom);
-        oceanConfig.setMainAccountPassword(password);
-        oceanConfig.setMainAccountCredentialsFile(credentialFile);
-        String address = (String) properties.getOrDefault("contract.DIDRegistry.address", "");
-        KeeperService keeper = squidService.getKeeperService(oceanConfig);
-        DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
-        return new DexResolver(contract, squidService);
+        this.config = config;
     }
 
     /**
@@ -81,19 +65,21 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static DexResolver create(String configFile) throws IOException {
-        SquidService squidService = SquidService.create(configFile);
-        Properties properties = squidService.getProperties();
-        String address = (String) properties.getOrDefault("contract.DIDRegistry.address", "");
-        OceanConfig oceanConfig = OceanConfigFactory.getOceanConfig(properties);
-        KeeperService keeper = null;
+        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);
+
+        Credentials credentials = null;
         try {
-            keeper = squidService.getKeeperService(oceanConfig);
+            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());
         } catch (CipherException e) {
             System.err.println("Wrong credential file or its password");
             e.printStackTrace();
         }
-        DIDRegistry contract = DIDRegistry.load(address, keeper.getWeb3(), keeper.getTxManager(), keeper.getContractGasProvider());
-        return new DexResolver(contract, squidService);
+
+        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));
+        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());
+        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());
+        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);
+        return new DexResolver(contract, dexConfig);
     }
 
     @Override
@@ -101,7 +87,7 @@ public class DexResolver implements Resolver {
         String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
-            blockNumber = contract.getBlockNumberUpdated(EncodingHelper.hexStringToBytes(didHash)).send();
+            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();
         } catch (UnsupportedEncodingException e) {
             throw new ResolverException(e);
         } catch (Exception e) {
@@ -129,9 +115,9 @@ public class DexResolver implements Resolver {
         TransactionReceipt receipt = null;
         try {
             receipt = contract.registerAttribute(
-                    EncodingHelper.hexStringToBytes(did.getID()),
-                    EncodingHelper.hexStringToBytes(Hex.toZeroPaddedHexNoPrefix(checksum)),
-                    Arrays.asList(squidService.getProvider()), ddo).send();
+                    Numeric.hexStringToByteArray(did.getID()),
+                    Numeric.hexStringToByteArray(Hex.toZeroPaddedHexNoPrefix(checksum)),
+                    Arrays.asList(config.getMainAccountAddress()), ddo).send();
         } catch (IOException e) {
             throw new ResolverException(e);
         } catch (CipherException e) {

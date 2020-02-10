@@ -14,12 +14,12 @@ import com.oceanprotocol.squid.manager.BaseManager;
  * @author Ilya Bukalov
  */
 public class TokenManager extends BaseManager {
-    private TokenManager(KeeperService keeperService) {
-        super(keeperService, null);
+    private TokenManager() {
+        super(null, null);
     }
 
-    public static TokenManager getInstance(KeeperService keeperService) {
-        return new TokenManager(keeperService);
+    public static TokenManager getInstance() {
+        return new TokenManager();
     }
 
     /**
