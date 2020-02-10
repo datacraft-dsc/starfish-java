@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * As a developer working with Ocean,
  * I need a way to connect to the Ocean Network
  */
-public class TestResolver_01 {
+public class TestResolver_IT {
 
 
     @Test

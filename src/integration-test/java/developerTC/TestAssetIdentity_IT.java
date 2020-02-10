@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * I need a stable identifier (Asset ID) for an arbitrary asset in the Ocean ecosystem
  */
 
-public class TestAssetIdentity_02 {
+public class TestAssetIdentity_IT {
 
     private RemoteAgent remoteAgent;
 

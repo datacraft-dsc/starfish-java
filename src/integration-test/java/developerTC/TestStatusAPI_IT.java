@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class TestStatusAPI {
+public class TestStatusAPI_IT {
     private RemoteAgent remoteAgent;
 
     @BeforeEach

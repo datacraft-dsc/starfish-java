@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer working with an Ocean marketplace,
  * I need a way to upload my asset with a service agreement
  */
-public class TestUploadAsset_10 {
+public class TestUploadAsset_IT {
 
 
     private RemoteAgent remoteAgent;

@@ -23,7 +23,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class DexResolverTest {
+public class DexResolverTest_IT {
     private DexResolver resolver1;
     private DexResolver resolver2;
     private Resolver default_resolver;
@@ -31,7 +31,7 @@ public class DexResolverTest {
     private String valueUpdate;
     private DID did;
 
-    public DexResolverTest() throws IOException {
+    public DexResolverTest_IT() throws IOException {
         resolver1 = DexResolver.create("application_test.properties");
         resolver2 = DexResolver.create("application_resolver.properties");
         default_resolver = DexResolver.create();

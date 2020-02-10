@@ -18,7 +18,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * As a developer working with Ocean,
  * I need a way to request metadata for an arbitrary asset
  */
-public class TestMetaDataAccess_07 {
+public class TestMetaDataAccess_IT {
 
 
     private static String METADATA_JSON_CONTENT;

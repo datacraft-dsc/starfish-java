@@ -28,7 +28,7 @@ import static sg.dex.starfish.constant.Constant.*;
  * "
  */
 @Disabled
-public class TestConfirmPurchase_18 {
+public class TestConfirmPurchase_IT {
 
     private ARemoteAsset remoteAsset;
     private RemoteAgent remoteAgent;

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
  * I wish to invoke a paid service available on the Ocean ecosystem and obtain the results as a new Ocean Asset
  */
 
-public class TestInvokeServicePaid_21 {
+public class TestInvokeServicePaid_IT {
 
     @Test
     public void test() {

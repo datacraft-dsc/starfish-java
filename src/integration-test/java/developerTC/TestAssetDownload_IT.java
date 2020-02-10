@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer working with Ocean,
  * I need a way to download the data for a data asset that I have purchased
  */
-public class TestAssetDownload_19 {
+public class TestAssetDownload_IT {
 
     private RemoteAgent remoteAgent;
 

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * As a developer building or managing an Ocean Agent,
  * I need to be able to register my Agent on the network and obtain an Agent ID
  */
-public class TestAgentRegistration_04 {
+public class TestAgentRegistration_IT {
     @Test
     public void testRegistration() throws IOException {
         Map<String, Object> ddo = new HashMap<>();

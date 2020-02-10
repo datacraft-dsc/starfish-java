@@ -12,7 +12,7 @@ import sg.dex.starfish.util.Params;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class TestParams {
+public class TestParams_IT {
 
     @Test
     public void testAssetByDID() throws IOException, URISyntaxException {
