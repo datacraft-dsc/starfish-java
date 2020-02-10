@@ -24,7 +24,7 @@ public class DexConfigFactory {
     /**
      * Creates an DexConfig object from a set of properties
      *
-     * @param properties configuration values
+     * @param String fileName configuration file
      * @return an DexConfig value with all the values set
      */
     public static DexConfig getDexConfig(String fileName) {
