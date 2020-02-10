@@ -1,6 +1,7 @@
 package sg.dex.starfish.impl.squid;
 
 import sg.dex.starfish.Resolver;
+import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 
@@ -13,7 +14,6 @@ import java.io.IOException;
  * @author Ilya
  */
 public class UniversalResolver implements Resolver {
-    private static final String DEX_METHOD = "dex";
     private Resolver dexResolver;
     private Resolver squidResolverImpl;
 
@@ -52,7 +52,7 @@ public class UniversalResolver implements Resolver {
 
     @Override
     public String getDDOString(DID did) throws ResolverException {
-        if (did.getMethod() == DEX_METHOD) {
+        if (did.getMethod() == Constant.DID_METHOD) {
             return this.dexResolver.getDDOString(did);
         } else {
             if (squidResolverImpl == null) {
@@ -64,7 +64,7 @@ public class UniversalResolver implements Resolver {
 
     @Override
     public void registerDID(DID did, String ddo) throws ResolverException {
-        if (did.getMethod() == DEX_METHOD) {
+        if (did.getMethod() == Constant.DID_METHOD) {
             this.dexResolver.registerDID(did, ddo);
         } else {
             if (squidResolverImpl == null) {
