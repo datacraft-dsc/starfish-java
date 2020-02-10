@@ -146,7 +146,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     default Map&lt;String, Object&gt; getResult(long timeout, TimeUnit unit) {
         try {
 <span class="fc" id="L148">            return get(timeout, unit);</span>
-<span class="fc" id="L149">        } catch (TimeoutException e) {</span>
+<span class="nc" id="L149">        } catch (TimeoutException e) {</span>
             // re-throw exceptions sneakily to avoid checked exceptions
 <span class="nc" id="L151">            throw Utils.sneakyThrow(e);</span>
         }
