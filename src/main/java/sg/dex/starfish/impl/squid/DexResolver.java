@@ -76,7 +76,7 @@ public class DexResolver implements Resolver {
         }
 
         Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));
-        TransactionManager txManager = new DexTransactionManager(web3, credentials, dexConfig.getMainAccountPassword(), (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());
+        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());
         ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());
         DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);
         return new DexResolver(contract, dexConfig);
