@@ -14,7 +14,7 @@ import static sg.dex.starfish.constant.Constant.STATUS;
  * <p>
  * This class included methods for create , get listing,
  * get status and metadata of the purchase
- * The instance of this class will be present in Ocean ecosystem and be referred by using the purchase ID.
+ * The instance of this class can be referred by using the purchase ID.
  *
  * @author Ayush
  * @version 0.5

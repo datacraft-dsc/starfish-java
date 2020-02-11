@@ -6,7 +6,7 @@ import sg.dex.starfish.exception.StorageException;
 import java.util.Map;
 
 /**
- * Interface representing a listing of an asset on the Ocean Network
+ * Interface representing a listing of an asset available for use in the data ecosystem.
  * <p>
  * Listings can be used to query and purchase Assets
  *

@@ -203,7 +203,7 @@ public class DID {
      * <p>
      * "did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
      *
-     * @return A valid Ocean DID represented as a string
+     * @return A valid DID represented as a string
      */
     public static String createRandomString() {
         SecureRandom sr = new SecureRandom();
@@ -213,7 +213,7 @@ public class DID {
     }
 
     /**
-     * Creates a random Ocean-compliant DID
+     * Creates a random DEP-compliant DID
      *
      * @return The created DID
      */

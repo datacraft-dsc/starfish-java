@@ -3,7 +3,7 @@ package sg.dex.starfish;
 import java.util.Map;
 
 /**
- * Interface representing an Identity in the Ocean ecosystem
+ * Interface representing an Identity in the data ecosystem
  *
  * @author Tom
  * @version 0.5

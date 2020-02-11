@@ -14,9 +14,7 @@ import static sg.dex.starfish.constant.Constant.CONTENTS;
 
 
 /**
- * Class representing an bundle asset managed via a remote agent.
- * <p>
- * This bundle asset will be present in Ocean ecosystem and be referred by using the asset ID.
+ * Class representing an Bundle Asset managed via a remote agent.
  */
 public class RemoteBundle extends ARemoteAsset implements Bundle {
     protected RemoteBundle(String meta, RemoteAgent remoteAgent) {

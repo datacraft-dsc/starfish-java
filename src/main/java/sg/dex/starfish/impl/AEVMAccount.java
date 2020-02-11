@@ -1,12 +1,9 @@
 package sg.dex.starfish.impl;
 
-import com.oceanprotocol.squid.exceptions.EthereumException;
-import com.oceanprotocol.squid.models.Balance;
-
 import java.util.HashMap;
 
 /**
- * Class representing an Ethereum Account in the Ocean Ecosystem
+ * Class representing an Ethereum Account 
  *
  * @author Tom
  */
@@ -36,10 +33,11 @@ public abstract class AEVMAccount extends AAccount {
 
     /**
      * Returns the Balance of an account
+     * TODO: Needs concrete implementation
      *
      * @return the Balance of the account
      * @throws EthereumException EthereumException
      */
-    abstract public Balance balance() throws EthereumException;
+    abstract public Object balance();
 
 }

@@ -254,8 +254,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Creates a RemoteAgent with the specified Ocean connection and DID This method
-     * will create a new instance of Remote agent based on Ocean and DID reference
+     * Creates a RemoteAgent with the specified Resolver and DID This method
+     * will create a new instance of Remote agent based on the Resolver and DID reference
      * passed as an argument
      *
      * @param resolver Resolver

@@ -7,7 +7,7 @@ import sg.dex.starfish.util.DID;
 import java.util.Map;
 
 /**
- * Interface representing an Agent in the Ocean ecosystem
+ * Interface representing an Agent in the ecosystem
  *
  * @author Mike
  * @version 0.5
@@ -24,7 +24,7 @@ public interface Agent {
     /**
      * Gets the DID for an Agent
      *
-     * @return DID The DID that can be used to address this agent in the Ocean Ecosystem
+     * @return DID The DID that can be used to address this agent in the Ecosystem
      */
     DID getDID();
 

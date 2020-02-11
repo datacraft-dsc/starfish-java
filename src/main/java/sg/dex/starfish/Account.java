@@ -3,7 +3,7 @@ package sg.dex.starfish;
 import java.util.Map;
 
 /**
- * Interface representing an Account with one or more agents in the Ocean ecosystem
+ * Interface representing an Account with one or more agents in the ecosystem
  *
  * @author Tom
  * @version 0.5

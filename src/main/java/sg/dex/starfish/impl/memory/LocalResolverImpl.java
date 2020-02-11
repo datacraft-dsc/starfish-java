@@ -42,7 +42,7 @@ public class LocalResolverImpl implements Resolver {
     }
 
     /**
-     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * Registers a DID with a DDO on the local machine.
      * <p>
      * This registration is intended for testing purposes.
      *
@@ -56,7 +56,7 @@ public class LocalResolverImpl implements Resolver {
     }
 
     /**
-     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * Registers a DID with a DDO in the context of the local machine.
      * <p>
      * This registration is intended for testing purposes.
      *

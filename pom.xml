@@ -6,7 +6,7 @@
 	<artifactId>starfish-java</artifactId>
 	<version>0.7.9-SNAPSHOT</version>
 
-	<name>Starfish - Developer Toolkit for data ecosystems</name>
+	<name>Starfish - client library for data ecosystems</name>
 	<url>https://github.com/DEX-company/starfish-java</url>
 	<licenses>
 		<license>
@@ -15,8 +15,8 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<description>Starfish supports developing interoperable decentralised data exchange solutions,
-		including use of the Ocean Protocol
+	<description>
+	  Starfish is a client library for decentralised data ecosystems.
 	</description>
 
 	<developers>

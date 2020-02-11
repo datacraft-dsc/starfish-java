@@ -1,8 +1,5 @@
 /**
- * Represents an Asset on the Ocean Network.
- * <p>
- * Assets are defined by JSON metadata, and the Asset ID is the keccak256 hash of the metadata
- * as encoded in UTF-8.
+ * Represents an Asset stored in Memory.
  */
 package sg.dex.starfish.impl.memory;
 

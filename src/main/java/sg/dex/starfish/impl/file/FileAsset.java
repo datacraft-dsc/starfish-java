@@ -16,7 +16,7 @@ import java.util.Map;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
- * Class exposing a file on the local file system as an Ocean asset
+ * Class exposing a file on the local file system as an Asset
  *
  * @author Mike
  */

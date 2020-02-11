@@ -13,7 +13,7 @@ import static sg.dex.starfish.constant.Constant.ID;
 /**
  * Class representing an Listing managed via a remote agent.
  * <p>
- * This Listing will be present in Ocean ecosystem and be referred by using the Listing ID.
+ * This Listing can be referred by using the Listing ID.
  *
  * @author Ayush
  * @version 0.5

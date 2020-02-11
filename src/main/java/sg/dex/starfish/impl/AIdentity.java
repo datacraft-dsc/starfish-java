@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class representing an Identity in the Ocean Ecosystem
+ * Class representing an Identity in the data ecosystem
  *
  * @author Tom
  */

@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * Interface representing an Asset. An Asset in Starfish is an entity in the Ocean Ecosystem
+ * Interface representing an Asset. An Asset in Starfish is an entity in the decentralised data ecosystem
  * that is:
  * A) Described by metadata
- * B) Able to be used in Data Supply Lines
+ * B) Able to be used in Digital Supply Lines
  *
  * @author Mike
  * @version 0.5

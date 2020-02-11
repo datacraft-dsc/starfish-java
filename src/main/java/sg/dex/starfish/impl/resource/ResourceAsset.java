@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class exposing a Java classpath resource as an Ocean asset.
+ * Class exposing a Java classpath resource as a local Asset.
  * <p>
  * Mainly useful for testing, or for applications that wish to embed some default assets such as
  * scripts as fixed resources.

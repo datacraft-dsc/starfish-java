@@ -12,7 +12,7 @@ public class ProvUtil {
     public static String DEX = "dex";
 
     /**
-     * Create a default namespace which includes the prefix and path for Ocean
+     * Create a default namespace which includes the prefix and path for DEP standard provenance
      * protocol schema
      *
      * @return a Map with prefixes respective IRIs used in this document

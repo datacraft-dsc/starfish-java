@@ -9,7 +9,7 @@ import sg.dex.starfish.util.DID;
 import java.util.Map;
 
 /**
- * Class representing an Agent in the Ocean Ecosystem
+ * Class representing an Agent in the Ecosystem
  * <p>
  * Agents are addressed with a W3C DID
  *
@@ -23,9 +23,9 @@ public abstract class AAgent implements Agent {
     private Map<String, Object> ddo;
 
     /**
-     * Create an agent with the provided Ocean connection and DID
+     * Create an agent with the provided Resolver and DID
      *
-     * @param resolver The ocean connection to use for this agent
+     * @param resolver The Resolver to use for this agent
      * @param did      The DID for this agent
      */
     protected AAgent(Resolver resolver, DID did) {

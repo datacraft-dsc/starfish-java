@@ -37,8 +37,6 @@ public class TestMemoryAgent {
 
     @Test
     public void testRegisterUpload() {
-        // it will create Memory agent instance.
-        //the instance will be associated with default Ocean and will have unique DID.
         MemoryAgent agent1 = MemoryAgent.create();
 
         Asset a = MemoryAsset.create(BYTE_DATA);

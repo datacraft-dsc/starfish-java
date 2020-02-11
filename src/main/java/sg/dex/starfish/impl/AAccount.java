@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Class representing an Account in the Ocean Ecosystem
+ * Class representing an Account in the Ecosystem
  * <p>
- * This class include method to get the accoutn ID,
+ * This class include methods to get the account ID,
  * get the credential.
  * </p>
  *
