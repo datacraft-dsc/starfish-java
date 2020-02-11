@@ -17,14 +17,14 @@
       "sync",
       "async"
     ],
-    "params": {
+    "inputs": {
       "to-hash": {
         "type": "asset",
         "position": 0,
         "required": true
       }
     },
-    "results": {
+    "outputs": {
       "keccak256": {
         "type": "json"
       },

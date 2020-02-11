@@ -243,8 +243,8 @@ public class TestMemoryAgent {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"sync\",\"async\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
         return meta;
     }
 }

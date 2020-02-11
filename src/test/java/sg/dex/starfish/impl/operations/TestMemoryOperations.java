@@ -234,8 +234,8 @@ public class TestMemoryOperations {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"sync\",\"async\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
         return meta;
     }
 
@@ -257,8 +257,8 @@ public class TestMemoryOperations {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"sync\",\"async\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -317,8 +317,8 @@ public class TestMemoryOperations {
                 "\t\"inLanguage\":\"en\",\n" +
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -353,8 +353,8 @@ public class TestMemoryOperations {
                 "\t\"inLanguage\":\"en\",\n" +
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -389,8 +389,8 @@ public class TestMemoryOperations {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"Invalid\",\"async\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -426,8 +426,8 @@ public class TestMemoryOperations {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"sync\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);
@@ -463,8 +463,8 @@ public class TestMemoryOperations {
                 "\t\"type\":\"operation\",\n" +
                 " \"operation\":{\n" +
                 "     \"modes\":[\"async\"],\n" +
-                "\t\t\"params\":{\"input\":{\"type\":\"asset\"}},\n" +
-                "\t\t\"results\":{\"output\":{\"type\":\"asset\"}}}}";
+                "\t\t\"inputs\":{\"input\":{\"type\":\"asset\"}},\n" +
+                "\t\t\"outputs\":{\"output\":{\"type\":\"asset\"}}}}";
 
 
         ReverseByte_AssetI_AssetO memoryOperation = ReverseByte_AssetI_AssetO.create(meta, memoryAgent);

@@ -247,7 +247,7 @@ public class Utils {
         } else if (type.equals(OPERATION)) {
             // for bundle attribute params and results is mandatory
             Map<String, Object> operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());
-            if (operationMap.get(PARAMS) == null || operationMap.get("results") == null) {
+            if (operationMap.get("inputs") == null || operationMap.get("outputs") == null) {
                 throw new StarfishValidationException("Mandatory attribute missing : , either Params or results attribute is missing in operation asset");
             }
         } else if (type.equals(DATA_SET) && ((metaDataMap.get("contentType") == null) || (metaDataMap.get("size") == null))) {

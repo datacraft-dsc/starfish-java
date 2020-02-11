@@ -39,7 +39,7 @@ public class Constant {
     public static final String CANCELLED = "cancelled";
 
     public static final String OPERATION = "operation";
-    public static final String PARAMS = "params";
+    public static final String PARAMS = "inputs";
     public static final String JOBS = "/jobs";
     public static final String JOB_ID = "jobid";
     public static final String STATUS = "status";

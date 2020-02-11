@@ -38,7 +38,7 @@ public class DexResolver implements Resolver {
      * Create DexResolver
      *
      * @param contract     contract
-     * @param DexConfig    config
+     * @param config    config
      */
     private DexResolver(DIDRegistry contract, DexConfig config) {
         this.contract = contract;
