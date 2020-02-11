@@ -17,12 +17,12 @@
       "sync",
       "async"
     ],
-    "params": {
+    "inputs": {
       "first-n": {
         "type": "json"
       }
     },
-    "results": {
+    "outputs": {
       "sumOfPrime": {
         "type": "json"
       }
