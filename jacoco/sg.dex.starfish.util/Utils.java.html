@@ -247,7 +247,7 @@ import static sg.dex.starfish.constant.Constant.*;
 <span class="nc bnc" id="L247" title="All 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
             // for bundle attribute params and results is mandatory
 <span class="nc" id="L249">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
-<span class="nc bnc" id="L250" title="All 4 branches missed.">            if (operationMap.get(PARAMS) == null || operationMap.get(&quot;results&quot;) == null) {</span>
+<span class="nc bnc" id="L250" title="All 4 branches missed.">            if (operationMap.get(&quot;inputs&quot;) == null || operationMap.get(&quot;outputs&quot;) == null) {</span>
 <span class="nc" id="L251">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
             }
 <span class="nc bnc" id="L253" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
