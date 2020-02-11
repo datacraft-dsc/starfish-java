@@ -15,12 +15,12 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Configuration](#configuration)
-  * [Using Starfish-Java with Surfer](#using-squid-java-with-surfer)
+  * [Using Starfish-Java with Surfer](#using-starfish-java-with-surfer)
 * [Documentation](#documentation)
 * [Testing](#testing)
   * [Unit Tests](#unit-tests)
   * [Integration Tests](#integration-tests)
-* [Maintainers](#Maintainers)
+* [Maintainers](#maintainers)
 * [License](#license)
 
 ---
@@ -110,7 +110,7 @@ mvn clean install -P all-tests
 
 ## Maintainers
 
- [Developer Dex team][developer@dex.sg]
+ - [DEX Developer team](developer@dex.sg)
 
 ## License
 
@@ -129,8 +129,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[1]: http://www.apache.org/licenses/LICENSE-2.0
-[2]: https://www.dex.sg/
-[3]: https://github.com/DEX-Company/starfish-java
-[4]: https://travis-ci.com/DEX-Company/starfish-java
 
