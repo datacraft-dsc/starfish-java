@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import sg.dex.starfish.impl.AAgent;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 
@@ -11,17 +10,17 @@ import sg.dex.starfish.util.DID;
  */
 public abstract class ARemoteAsset extends AAsset {
 
-    protected AAgent aAgent;
+    protected RemoteAgent agent;
 
-    protected ARemoteAsset(String meta, AAgent remoteAgent) {
+    protected ARemoteAsset(String meta, RemoteAgent agent) {
         super(meta);
-        this.aAgent = remoteAgent;
+        this.agent = agent;
     }
 
     @Override
     public DID getDID() {
         // DID of a remote asset is the DID of the appropriate agent with the asset ID as a resource path
-        DID agentDID = aAgent.getDID();
+        DID agentDID = agent.getDID();
         return agentDID.withPath(getAssetID());
     }
 }
