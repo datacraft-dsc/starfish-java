@@ -23,6 +23,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+@Disabled
 public class DexResolverTest_IT {
     private DexResolver resolver1;
     private DexResolver resolver2;
