@@ -46,7 +46,6 @@
 		<connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
 		<url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
 		<developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
-		<tag>starfish-java-0.7.0</tag>
 	</scm>
 
 	<repositories>
