@@ -18,9 +18,9 @@ import org.web3j.utils.Numeric;
     public static char toChar(int value) {
 <span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (value &gt;= 0) {</span>
 <span class="fc bfc" id="L20" title="All 2 branches covered.">            if (value &lt;= 9) return (char) (value + 48);</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">            if (value &lt;= 15) return (char) (value + 87);</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">            if (value &lt;= 15) return (char) (value + 87);</span>
         }
-<span class="fc" id="L23">        throw new IllegalArgumentException(&quot;Invalid value for hex char: &quot; + value);</span>
+<span class="nc" id="L23">        throw new IllegalArgumentException(&quot;Invalid value for hex char: &quot; + value);</span>
     }
 
     /**
@@ -32,16 +32,16 @@ import org.web3j.utils.Numeric;
      * @throws Error on odd length hex string
      */
     public static byte[] toBytes(String hex) {
-<span class="fc" id="L35">        int length = hex.length();</span>
-<span class="fc" id="L36">        int n = length / 2;</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (n * 2 != length) throw new IllegalArgumentException(&quot;Hex string must have even length: &quot; + length);</span>
-<span class="fc" id="L38">        byte[] result = new byte[n];</span>
+<span class="nc" id="L35">        int length = hex.length();</span>
+<span class="nc" id="L36">        int n = length / 2;</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (n * 2 != length) throw new IllegalArgumentException(&quot;Hex string must have even length: &quot; + length);</span>
+<span class="nc" id="L38">        byte[] result = new byte[n];</span>
 
-<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
-<span class="fc" id="L41">            result[i] = (byte) (Hex.val(hex.charAt(2 * i)) * 16 + Hex.val(hex.charAt(2 * i + 1)));</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="nc" id="L41">            result[i] = (byte) (Hex.val(hex.charAt(2 * i)) * 16 + Hex.val(hex.charAt(2 * i + 1)));</span>
         }
 
-<span class="fc" id="L44">        return result;</span>
+<span class="nc" id="L44">        return result;</span>
     }
 
     /**
@@ -52,13 +52,13 @@ import org.web3j.utils.Numeric;
      * @throws Error on invalid hex char
      */
     public static int val(char c) {
-<span class="fc" id="L55">        int v = (int) c;</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (v &lt;= 102) {</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (v &gt;= 97) return v - 87; // lowercase</span>
-<span class="pc bpc" id="L58" title="1 of 4 branches missed.">            if ((v &gt;= 65) &amp;&amp; (v &lt;= 70)) return v - 55; // uppercase</span>
-<span class="pc bpc" id="L59" title="1 of 4 branches missed.">            if ((v &gt;= 48) &amp;&amp; (v &lt;= 57)) return v - 48; // digit</span>
+<span class="nc" id="L55">        int v = (int) c;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (v &lt;= 102) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (v &gt;= 97) return v - 87; // lowercase</span>
+<span class="nc bnc" id="L58" title="All 4 branches missed.">            if ((v &gt;= 65) &amp;&amp; (v &lt;= 70)) return v - 55; // uppercase</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            if ((v &gt;= 48) &amp;&amp; (v &lt;= 57)) return v - 48; // digit</span>
         }
-<span class="fc" id="L61">        throw new IllegalArgumentException(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
+<span class="nc" id="L61">        throw new IllegalArgumentException(&quot;Invalid hex char [&quot; + c + &quot;] = &quot; + (int) c);</span>
     }
 
     /**

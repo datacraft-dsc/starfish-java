@@ -133,8 +133,8 @@ import java.util.Map;
         try {
 <span class="fc" id="L134">            JSONObject result = (JSONObject) parser.parse(jsonString);</span>
 <span class="fc" id="L135">            return new JSONObject(result);</span>
-<span class="fc" id="L136">        } catch (ParseException e) {</span>
-<span class="fc" id="L137">            throw new StarfishValidationException(&quot;Exception in JSON parsing: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L136">        } catch (ParseException e) {</span>
+<span class="nc" id="L137">            throw new StarfishValidationException(&quot;Exception in JSON parsing: &quot; + e.getMessage(), e);</span>
         }
     }
 

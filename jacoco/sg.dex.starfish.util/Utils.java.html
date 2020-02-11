@@ -84,7 +84,7 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public static &lt;T&gt; Class&lt;T&gt; getClass(T o) {
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if (o == null) return null;</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (o == null) return null;</span>
 <span class="nc" id="L88">        return (Class&lt;T&gt;) o.getClass();</span>
     }
 
@@ -116,15 +116,15 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return The coerced int value of the object
      */
     public static int coerceInt(Object o) {
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (o instanceof Number) {</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">            if (o instanceof Integer) return (Integer) o;</span>
-<span class="fc" id="L121">            Number n = (Number) o;</span>
-<span class="fc" id="L122">            int value = (int) n.longValue();</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (value != n.doubleValue()) throw new IllegalArgumentException(&quot;Cannot coerce to int without loss:&quot;);</span>
-<span class="fc" id="L124">            return value;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (o instanceof Number) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (o instanceof Integer) return (Integer) o;</span>
+<span class="nc" id="L121">            Number n = (Number) o;</span>
+<span class="nc" id="L122">            int value = (int) n.longValue();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (value != n.doubleValue()) throw new IllegalArgumentException(&quot;Cannot coerce to int without loss:&quot;);</span>
+<span class="nc" id="L124">            return value;</span>
         }
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (o instanceof String) {</span>
-<span class="fc" id="L127">            return Integer.parseInt((String) o);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (o instanceof String) {</span>
+<span class="nc" id="L127">            return Integer.parseInt((String) o);</span>
         }
 <span class="nc" id="L129">        throw new IllegalArgumentException(&quot;Can't coerce to int: &quot; + o);</span>
     }
@@ -224,37 +224,37 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     public static boolean validateAssetMetaData(String metaData) {
 
-<span class="fc" id="L227">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
+<span class="nc" id="L227">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
 
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
 
-<span class="pc bpc" id="L231" title="2 of 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
 <span class="nc" id="L232">            throw new StarfishValidationException(&quot;Type is mandatory for creating Asset.It cannot be null or Empty&quot;);</span>
         }
-<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (!assetType.contains(type)) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (!assetType.contains(type)) {</span>
 <span class="nc" id="L235">            throw new StarfishValidationException(&quot;Type is not a valid assetType.It should be operation,bundle,dataset&quot;);</span>
         }
 
 
-<span class="fc" id="L239">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
+<span class="nc" id="L239">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
 
-<span class="fc" id="L241">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
+<span class="nc" id="L241">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
 <span class="nc" id="L244">            throw new StarfishValidationException(&quot;Not a valid asset metadata, one or few mandatory is missing&quot;);</span>
-<span class="pc bpc" id="L245" title="3 of 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
+<span class="nc bnc" id="L245" title="All 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
 <span class="nc" id="L246">            throw new StarfishValidationException(&quot;Mandatory attribute missing : ,contents attribute is mandatory for bundle attribute&quot;);</span>
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
             // for bundle attribute params and results is mandatory
-<span class="fc" id="L249">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
-<span class="pc bpc" id="L250" title="2 of 4 branches missed.">            if (operationMap.get(PARAMS) == null || operationMap.get(&quot;results&quot;) == null) {</span>
+<span class="nc" id="L249">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
+<span class="nc bnc" id="L250" title="All 4 branches missed.">            if (operationMap.get(PARAMS) == null || operationMap.get(&quot;results&quot;) == null) {</span>
 <span class="nc" id="L251">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
             }
-<span class="pc bnc" id="L253" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
+<span class="nc bnc" id="L253" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
 <span class="nc" id="L254">            throw new StarfishValidationException(&quot;Mandatory attribute missing :,either contentType or size  attribute is missing in dataset asset&quot;);</span>
         }
 
-<span class="fc" id="L257">        return true;</span>
+<span class="nc" id="L257">        return true;</span>
 
     }
 
@@ -265,13 +265,13 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return list of String
      */
     private static List&lt;String&gt; getMadatoryAttribute() {
-<span class="fc" id="L268">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L269">        mandatoryList.add(&quot;type&quot;);</span>
+<span class="nc" id="L268">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L269">        mandatoryList.add(&quot;type&quot;);</span>
         //  mandatoryList.add(&quot;name&quot;);
         //mandatoryList.add(&quot;license&quot;);
-<span class="fc" id="L272">        mandatoryList.add(&quot;dateCreated&quot;);</span>
+<span class="nc" id="L272">        mandatoryList.add(&quot;dateCreated&quot;);</span>
         // mandatoryList.add(&quot;author&quot;);
-<span class="fc" id="L274">        return mandatoryList;</span>
+<span class="nc" id="L274">        return mandatoryList;</span>
     }
 
     /**
@@ -279,7 +279,7 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public static &lt;T extends Throwable&gt; T sneakyThrow(Throwable t) throws T {
-<span class="fc" id="L282">        throw (T) t;</span>
+<span class="nc" id="L282">        throw (T) t;</span>
     }
 
     /**

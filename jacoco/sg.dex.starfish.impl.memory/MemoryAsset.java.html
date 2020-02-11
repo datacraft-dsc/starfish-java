@@ -71,8 +71,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return A new MemoryAsset containing the data from the passed asset argument
      */
     public static MemoryAsset create(Asset asset) {
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
-<span class="fc" id="L75">            return (MemoryAsset) asset;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
+<span class="nc" id="L75">            return (MemoryAsset) asset;</span>
 <span class="nc bnc" id="L76" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
 <span class="nc" id="L77">            byte[] data = asset.getContent();</span>
 <span class="nc" id="L78">            return create(data, buildMetaData(data, null));</span>
@@ -107,8 +107,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data) {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (data == null) {</span>
-<span class="fc" id="L111">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if (data == null) {</span>
+<span class="nc" id="L111">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
         }
 <span class="fc" id="L113">        return create(data, buildMetaData(data, null), MemoryAgent.create());</span>
     }
@@ -122,10 +122,10 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, MemoryAgent memoryAgent) {
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (data == null) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (data == null) {</span>
 <span class="nc" id="L126">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
         }
-<span class="fc" id="L128">        return create(data, buildMetaData(data, null), memoryAgent);</span>
+<span class="nc" id="L128">        return create(data, buildMetaData(data, null), memoryAgent);</span>
     }
 
     /**
@@ -217,15 +217,15 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
 
     @Override
     public Map&lt;String, Object&gt; getParamValue() {
-<span class="fc" id="L220">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L220">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
         // pass the asset ID, i.e. hash of content
-<span class="fc" id="L222">        o.put(ID, getAssetID());</span>
-<span class="fc" id="L223">        return o;</span>
+<span class="nc" id="L222">        o.put(ID, getAssetID());</span>
+<span class="nc" id="L223">        return o;</span>
     }
 
     @Override
     public long getContentSize() {
-<span class="pc bpc" id="L228" title="1 of 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
     }
 
 

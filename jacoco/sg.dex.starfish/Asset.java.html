@@ -57,7 +57,7 @@ public interface Asset {
      * @return true if the asset is a data asset, false otherwise
      */
     default boolean isDataAsset() {
-<span class="fc" id="L60">        return Constant.DATA_SET.equals(getMetadata().get(Constant.TYPE));</span>
+<span class="nc" id="L60">        return Constant.DATA_SET.equals(getMetadata().get(Constant.TYPE));</span>
     }
 
     /**
@@ -67,7 +67,7 @@ public interface Asset {
      * @return true if this asset is an operation, false otherwise
      */
     default boolean isOperation() {
-<span class="fc" id="L70">        return Constant.OPERATION.equals(getMetadata().get(Constant.TYPE));</span>
+<span class="nc" id="L70">        return Constant.OPERATION.equals(getMetadata().get(Constant.TYPE));</span>
     }
 
     /**

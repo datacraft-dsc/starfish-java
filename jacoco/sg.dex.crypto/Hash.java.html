@@ -25,9 +25,9 @@ import java.nio.charset.StandardCharsets;
      * @return byte[]
      */
     public static byte[] keccak256(byte[] data, int offset, int length) {
-<span class="fc" id="L28">        Keccak.DigestKeccak keccak = new Keccak.Digest256();</span>
-<span class="fc" id="L29">        keccak.update(data, offset, length);</span>
-<span class="fc" id="L30">        return keccak.digest();</span>
+<span class="nc" id="L28">        Keccak.DigestKeccak keccak = new Keccak.Digest256();</span>
+<span class="nc" id="L29">        keccak.update(data, offset, length);</span>
+<span class="nc" id="L30">        return keccak.digest();</span>
     }
 
     /**
@@ -52,7 +52,7 @@ import java.nio.charset.StandardCharsets;
      * @return byte[]
      */
     public static byte[] keccak256(byte[] data) {
-<span class="fc" id="L55">        return keccak256(data, 0, data.length);</span>
+<span class="nc" id="L55">        return keccak256(data, 0, data.length);</span>
     }
 
     /**
@@ -72,7 +72,7 @@ import java.nio.charset.StandardCharsets;
      * @return byte[]
      */
     public static byte[] keccak256(String string) {
-<span class="fc" id="L75">        return keccak256(string.getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L75">        return keccak256(string.getBytes(StandardCharsets.UTF_8));</span>
     }
 
     /**

@@ -73,7 +73,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
     @Override
     default Map&lt;String, Object&gt; get() throws InterruptedException, ExecutionException {
         try {
-<span class="fc" id="L76">            return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L76">            return get(MAX_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);</span>
 <span class="nc" id="L77">        } catch (TimeoutException t) {</span>
 <span class="nc" id="L78">            throw Utils.sneakyThrow(t);</span>
         }
@@ -133,7 +133,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      * @return The result of the Job
      */
     default Map&lt;String, Object&gt; getResult(long timeoutMillis) {
-<span class="fc" id="L136">        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L136">        return getResult(timeoutMillis, TimeUnit.MILLISECONDS);</span>
     }
 
     /**
@@ -145,7 +145,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     default Map&lt;String, Object&gt; getResult(long timeout, TimeUnit unit) {
         try {
-<span class="fc" id="L148">            return get(timeout, unit);</span>
+<span class="nc" id="L148">            return get(timeout, unit);</span>
 <span class="nc" id="L149">        } catch (TimeoutException e) {</span>
             // re-throw exceptions sneakily to avoid checked exceptions
 <span class="nc" id="L151">            throw Utils.sneakyThrow(e);</span>
@@ -159,7 +159,7 @@ public interface Job extends Future&lt;Map&lt;String, Object&gt;&gt; {
      */
     default Map&lt;String, Object&gt; getResult() {
         try {
-<span class="fc" id="L162">            return get();</span>
+<span class="nc" id="L162">            return get();</span>
 <span class="nc" id="L163">        } catch (InterruptedException | ExecutionException e) {</span>
             // re-throw exceptions sneakily to avoid checked exceptions
 <span class="nc" id="L165">            throw Utils.sneakyThrow(e);</span>

@@ -43,7 +43,7 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
 
     public static ResourceAsset create(String resourcePath, String metaData) {
-<span class="fc" id="L46">        return create(resourcePath, JSON.toMap(metaData));</span>
+<span class="nc" id="L46">        return create(resourcePath, JSON.toMap(metaData));</span>
     }
 
     /**
@@ -108,10 +108,10 @@ public class ResourceAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-<span class="fc" id="L111">        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);</span>
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (inputStream == null)</span>
+<span class="nc" id="L111">        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (inputStream == null)</span>
 <span class="nc" id="L113">            throw new IllegalStateException(&quot;Resource does not exist on classpath: &quot; + resourcePath);</span>
-<span class="fc" id="L114">        return inputStream;</span>
+<span class="nc" id="L114">        return inputStream;</span>
     }
 
     @Override
@@ -124,12 +124,12 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     public String getSource() {
-<span class="fc" id="L127">        return resourcePath;</span>
+<span class="nc" id="L127">        return resourcePath;</span>
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="fc" id="L132">        return create(this.getSource(), newMeta);</span>
+<span class="nc" id="L132">        return create(this.getSource(), newMeta);</span>
     }
 
 }

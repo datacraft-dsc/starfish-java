@@ -28,10 +28,10 @@ public class LocalResolverImpl implements Resolver {
         // remove path to get DDO for basic did
 <span class="fc" id="L29">        did = did.withoutPath();</span>
 <span class="fc" id="L30">        String localDDO = ddoCache.get(did);</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (localDDO != null) {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (localDDO != null) {</span>
 <span class="fc" id="L32">            return localDDO;</span>
         }
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (nextInChain == null) return null;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (nextInChain == null) return null;</span>
 
 <span class="nc" id="L36">        return nextInChain.getDDOString(did);</span>
     }

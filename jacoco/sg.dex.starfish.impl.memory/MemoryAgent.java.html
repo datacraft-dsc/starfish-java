@@ -45,8 +45,8 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(DID did) {
-<span class="fc" id="L48">        did = did.withoutPath();</span>
-<span class="fc" id="L49">        return new MemoryAgent(new LocalResolverImpl(), did);</span>
+<span class="nc" id="L48">        did = did.withoutPath();</span>
+<span class="nc" id="L49">        return new MemoryAgent(new LocalResolverImpl(), did);</span>
     }
 
     /**
@@ -86,7 +86,7 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return A MemoryAgent with the given DID
      */
     public static MemoryAgent create(String did) {
-<span class="fc" id="L89">        return create(DID.parse(did));</span>
+<span class="nc" id="L89">        return create(DID.parse(did));</span>
     }
 
     /**
@@ -100,12 +100,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R registerAsset(Asset a) {
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
 <span class="nc" id="L104">            throw new UnsupportedOperationException(&quot;Not yet supported!&quot;);</span>
         }
-<span class="fc" id="L106">        AMemoryAsset ma = (AMemoryAsset) a;</span>
-<span class="fc" id="L107">        assetStore.put(ma.getAssetID(), ma);</span>
-<span class="fc" id="L108">        return (R) ma;</span>
+<span class="nc" id="L106">        AMemoryAsset ma = (AMemoryAsset) a;</span>
+<span class="nc" id="L107">        assetStore.put(ma.getAssetID(), ma);</span>
+<span class="nc" id="L108">        return (R) ma;</span>
     }
 
     @Override
@@ -124,21 +124,21 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R uploadAsset(Asset a) {
-<span class="fc" id="L127">        MemoryAsset ma = MemoryAsset.create(a);</span>
-<span class="fc" id="L128">        registerAsset(ma);</span>
-<span class="fc" id="L129">        return (R) ma;</span>
+<span class="nc" id="L127">        MemoryAsset ma = MemoryAsset.create(a);</span>
+<span class="nc" id="L128">        registerAsset(ma);</span>
+<span class="nc" id="L129">        return (R) ma;</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R getAsset(String id) {
-<span class="fc" id="L135">        R asset = (R) assetStore.get(id);</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (asset == null) return null;</span>
-<span class="fc" id="L137">        String rid = asset.getAssetID();</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (!id.equals(rid)) {</span>
+<span class="nc" id="L135">        R asset = (R) assetStore.get(id);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (asset == null) return null;</span>
+<span class="nc" id="L137">        String rid = asset.getAssetID();</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (!id.equals(rid)) {</span>
 <span class="nc" id="L139">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
         }
-<span class="fc" id="L141">        return asset;</span>
+<span class="nc" id="L141">        return asset;</span>
     }
 
     /**
@@ -172,10 +172,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="pc bpc" id="L175" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="fc" id="L176">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L176">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="fc" id="L178">        return operation.invoke(params);</span>
+<span class="nc" id="L178">        return operation.invoke(params);</span>
     }
 
     /**
@@ -191,11 +191,11 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
-<span class="pc bpc" id="L194" title="1 of 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="fc" id="L195">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L194" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L195">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
 
-<span class="fc" id="L198">        return operation.invoke(params);</span>
+<span class="nc" id="L198">        return operation.invoke(params);</span>
     }
 
     @Override
@@ -217,12 +217,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
 <span class="nc" id="L221">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L224">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
-<span class="fc" id="L225">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
+<span class="nc" id="L224">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
+<span class="nc" id="L225">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
     }
 
     /**
@@ -232,12 +232,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map&lt;String, Object&gt; purchaseData) {
-<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
-<span class="fc" id="L236">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
+<span class="nc" id="L236">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="fc" id="L239">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
-<span class="fc" id="L240">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
+<span class="nc" id="L239">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
+<span class="nc" id="L240">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
     }
 
 

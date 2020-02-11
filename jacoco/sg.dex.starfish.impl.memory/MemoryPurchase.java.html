@@ -19,11 +19,11 @@ public class MemoryPurchase implements Purchase {
     private final String id;
     private MemoryAgent agent;
 
-<span class="fc" id="L22">    private MemoryPurchase(MemoryAgent agent, String listingID, Map&lt;String, Object&gt; metaMap) {</span>
-<span class="fc" id="L23">        this.agent = agent;</span>
-<span class="fc" id="L24">        this.meta = metaMap;</span>
-<span class="fc" id="L25">        this.id = listingID;</span>
-<span class="fc" id="L26">    }</span>
+<span class="nc" id="L22">    private MemoryPurchase(MemoryAgent agent, String listingID, Map&lt;String, Object&gt; metaMap) {</span>
+<span class="nc" id="L23">        this.agent = agent;</span>
+<span class="nc" id="L24">        this.meta = metaMap;</span>
+<span class="nc" id="L25">        this.id = listingID;</span>
+<span class="nc" id="L26">    }</span>
 
     /**
      * Create method is to create a instance of Memory Purchase
@@ -35,7 +35,7 @@ public class MemoryPurchase implements Purchase {
      */
     public static MemoryPurchase create(MemoryAgent agent, Map&lt;String, Object&gt; metaMap) {
 
-<span class="fc" id="L38">        return new MemoryPurchase(agent, metaMap.get(ID).toString(), metaMap);</span>
+<span class="nc" id="L38">        return new MemoryPurchase(agent, metaMap.get(ID).toString(), metaMap);</span>
     }
 
     /**
@@ -45,7 +45,7 @@ public class MemoryPurchase implements Purchase {
      * @return Listing id
      */
     public String getListingId() {
-<span class="fc" id="L48">        return meta.get(LISTING_ID).toString();</span>
+<span class="nc" id="L48">        return meta.get(LISTING_ID).toString();</span>
     }
 
     /**

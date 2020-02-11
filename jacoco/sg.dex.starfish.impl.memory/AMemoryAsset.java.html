@@ -28,8 +28,8 @@ public abstract class AMemoryAsset extends AAsset {
     @Override
     public DID getDID() {
         // DID of a memory asset is the DID of the appropriate agent with the asset ID as a resource path
-<span class="fc" id="L31">        DID agentDID = memoryAgent.getDID();</span>
-<span class="fc" id="L32">        return agentDID.withPath(getAssetID());</span>
+<span class="nc" id="L31">        DID agentDID = memoryAgent.getDID();</span>
+<span class="nc" id="L32">        return agentDID.withPath(getAssetID());</span>
     }
 
     /**
