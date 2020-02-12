@@ -28,7 +28,7 @@ Starfish - client library for data ecosystems,sg.dex.starfish.exception,Starfish
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,RemoteException,0,9,0,0,0,4,0,2,0,2
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,GenericException,9,0,0,0,4,0,2,0,2,0
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,JobFailedException,5,0,0,0,2,0,1,0,1,0
-Starfish - client library for data ecosystems,sg.dex.starfish.exception,ResolverException,11,0,0,0,6,0,3,0,3,0
+Starfish - client library for data ecosystems,sg.dex.starfish.exception,ResolverException,7,4,0,0,4,2,2,1,2,1
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,StorageException,5,0,0,0,2,0,1,0,1,0
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,AuthorizationException,9,0,0,0,4,0,2,0,2,0
 Starfish - client library for data ecosystems,sg.dex.starfish.util,Params,398,16,44,0,77,5,29,1,7,1
@@ -37,8 +37,8 @@ Starfish - client library for data ecosystems,sg.dex.starfish.util,DID,99,203,13
 Starfish - client library for data ecosystems,sg.dex.starfish.util,HTTP,100,57,2,0,23,18,3,6,2,6
 Starfish - client library for data ecosystems,sg.dex.starfish.util,ProvUtil,10,642,1,7,3,116,3,21,2,18
 Starfish - client library for data ecosystems,sg.dex.starfish.util,ProvUtil.AgentIdType,0,24,0,0,0,2,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.util,Hex,158,69,20,6,21,10,17,5,6,3
+Starfish - client library for data ecosystems,sg.dex.starfish.util,Hex,148,79,20,6,19,12,15,7,4,5
 Starfish - client library for data ecosystems,sg.dex.starfish.util,JSON,40,210,0,14,7,54,1,14,1,7
 Starfish - client library for data ecosystems,sg.dex.starfish.util,ProvUtil.ActivityType,0,34,0,0,0,2,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.util,Utils,313,119,56,8,64,29,41,9,11,7
+Starfish - client library for data ecosystems,sg.dex.starfish.util,Utils,309,123,55,9,63,30,40,10,11,7
 Starfish - client library for data ecosystems,sg.dex.starfish.util,DDO,23,34,1,5,5,7,3,4,2,2
