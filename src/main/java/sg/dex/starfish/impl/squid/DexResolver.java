@@ -17,7 +17,6 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
-import sg.dex.starfish.impl.memory.LocalResolverImpl;
 import sg.dex.starfish.keeper.DexConfig;
 import sg.dex.starfish.keeper.DexConfigFactory;
 import sg.dex.starfish.keeper.DexTransactionManager;
@@ -52,9 +51,7 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static Resolver create() throws IOException {
-        // todo need to remote as create is failing now may be due to Nile network is issue
-        return new LocalResolverImpl();
-//         return create("resolver_default.properties");
+         return create("resolver_default.properties");
     }
 
     /**
