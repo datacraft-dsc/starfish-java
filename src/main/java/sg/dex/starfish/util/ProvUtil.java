@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class ProvUtil {
 
-    public static String DEX = "dex";
+    public static String DEP = "dep";
 
     /**
      * Create a default namespace which includes the prefix and path for DEP standard provenance
@@ -21,7 +21,7 @@ public class ProvUtil {
         Map<String, Object> prefix = new HashMap<String, Object>();
         prefix.put("xsd", "http://www.w3.org/2001/XMLSchema#");
         prefix.put("prov", "http://www.w3.org/ns/prov#");
-        prefix.put(DEX, "http://dex.sg");
+        prefix.put(DEP, "http://dex.sg");
 
         Map<String, Object> pre = new HashMap<String, Object>();
         pre.put("prefix", prefix);
@@ -30,13 +30,13 @@ public class ProvUtil {
 
     private static Map<String, Object> createAssetEntity(String id) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":asset");
+        type.put("$", DEP + ":asset");
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + id, typeContainer);
+        thisContainer.put(DEP + ":" + id, typeContainer);
         return thisContainer;
     }
 
@@ -88,13 +88,13 @@ public class ProvUtil {
      */
     public static Map<String, Object> createAgent(String agentId, AgentIdType agentType) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + agentType.toString());
+        type.put("$", DEP + ":" + agentType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + agentId, typeContainer);
+        thisContainer.put(DEP + ":" + agentId, typeContainer);
         return thisContainer;
     }
 
@@ -137,7 +137,7 @@ public class ProvUtil {
      * @return Map
      */
     public static Map<String, Object> generatedBy(String activityId) {
-        String entityId = DEX + ":this";
+        String entityId = DEP + ":this";
         Map<String, Object> type = new HashMap<String, Object>();
         type.put("prov:entity", entityId);
         type.put("prov:activity", activityId);
@@ -162,7 +162,7 @@ public class ProvUtil {
         for (Asset ast : entities) {
             Map<String, Object> type = new HashMap<String, Object>();
             type.put("prov:usedEntity", ast.getAssetID());
-            type.put("prov:generatedEntity", DEX + "this");
+            type.put("prov:generatedEntity", DEP + "this");
             asid.put("_:" + UUID.randomUUID().toString(), type);
         }
         Map<String, Object> ret = new HashMap<String, Object>();
@@ -179,13 +179,13 @@ public class ProvUtil {
      */
     public static Map<String, Object> createActivity(String actId, ActivityType activityType) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + activityType.toString());
+        type.put("$", DEP + ":" + activityType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + actId, typeContainer);
+        thisContainer.put(DEP + ":" + actId, typeContainer);
         return thisContainer;
     }
 
@@ -200,14 +200,14 @@ public class ProvUtil {
     public static Map<String, Object> createActivity(String actId, ActivityType activityType,
                                                      Map<String, Object> actEntries) {
         Map<String, Object> type = new HashMap<String, Object>();
-        type.put("$", DEX + ":" + activityType.toString());
+        type.put("$", DEP + ":" + activityType.toString());
         type.put("type", "xsd:string");
 
         Map<String, Object> typeContainer = new HashMap<String, Object>();
         typeContainer.put("prov:type", type);
         typeContainer.putAll(actEntries);
         Map<String, Object> thisContainer = new HashMap<String, Object>();
-        thisContainer.put(DEX + ":" + actId, typeContainer);
+        thisContainer.put(DEP + ":" + actId, typeContainer);
         return thisContainer;
     }
 
@@ -259,22 +259,22 @@ public class ProvUtil {
      * Create dependencies. There are 2 sets of dependencies: one that are assets,
      * and the second which is JSON payloads.
      *
-     * @param params          the param string sent to the invoke rest API
-     * @param resultParamName the param name of the generated asset
+     * @param inputs          the param string sent to the invoke rest API
+     * @param outputs the param name of the generated asset
      * @return the input and output encoded as a Map
      */
-    public static Map<String, Object> createDependencies(String params,
-                                                         String resultParamName) {
+    public static Map<String, Object> createDependencies(String inputs,
+                                                         String outputs) {
         Map<String, Object> ret = new HashMap<String, Object>();
         Map<String, Object> p = new HashMap<String, Object>();
-        p.put("$", resultParamName);
+        p.put("$", outputs);
         p.put("type", "xsd:string");
-        ret.put(DEX + ":resultParamName", p);
+        ret.put(DEP + ":outputs", p);
 
         p = new HashMap<String, Object>();
-        p.put("$", params);
+        p.put("$", inputs);
         p.put("type", "xsd:string");
-        ret.put(DEX + ":params", p);
+        ret.put(DEP + ":inputs", p);
 
         return ret;
     }
@@ -286,22 +286,22 @@ public class ProvUtil {
      * @param actId             the activity Id
      * @param agentId           the agent identifier
      * @param assetDependencies the list of assets that consumed by the operation
-     * @param params            the argument string passed to the operation
-     * @param resultParamName   the name of the result argument for the generated
+     * @param inputs            the argument string passed to the operation
+     * @param outputs   the name of the result argument for the generated
      *                          asset
      * @return Map
      */
     public static Map<String, Object> createInvokeProvenance(String actId, String agentId,
                                                              Collection<Asset> assetDependencies,
-                                                             String params,
-                                                             String resultParamName) {
+                                                             String inputs,
+                                                             String outputs) {
         Map<String, Object> a = defaultPrefix();
         Map<String, Object> e = new HashMap<String, Object>();
         e.putAll(createThisInput());
         for (Asset k : assetDependencies) {
             e.putAll(createAssetDependency(k));
         }
-        Map<String, Object> deps = createDependencies(params, resultParamName);
+        Map<String, Object> deps = createDependencies(inputs, outputs);
 
         Map<String, Object> act = createActivity(actId, ActivityType.OPERATION, deps);
         Map<String, Object> agent = createAgent(agentId, AgentIdType.ACCOUNT);
