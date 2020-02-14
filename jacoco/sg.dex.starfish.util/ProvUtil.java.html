@@ -9,7 +9,7 @@ import java.util.UUID;
 
 <span class="nc" id="L10">public class ProvUtil {</span>
 
-<span class="fc" id="L12">    public static String DEX = &quot;dex&quot;;</span>
+<span class="fc" id="L12">    public static String DEP = &quot;dep&quot;;</span>
 
     /**
      * Create a default namespace which includes the prefix and path for DEP standard provenance
@@ -21,7 +21,7 @@ import java.util.UUID;
 <span class="fc" id="L21">        Map&lt;String, Object&gt; prefix = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L22">        prefix.put(&quot;xsd&quot;, &quot;http://www.w3.org/2001/XMLSchema#&quot;);</span>
 <span class="fc" id="L23">        prefix.put(&quot;prov&quot;, &quot;http://www.w3.org/ns/prov#&quot;);</span>
-<span class="fc" id="L24">        prefix.put(DEX, &quot;http://dex.sg&quot;);</span>
+<span class="fc" id="L24">        prefix.put(DEP, &quot;http://dex.sg&quot;);</span>
 
 <span class="fc" id="L26">        Map&lt;String, Object&gt; pre = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L27">        pre.put(&quot;prefix&quot;, prefix);</span>
@@ -30,13 +30,13 @@ import java.util.UUID;
 
     private static Map&lt;String, Object&gt; createAssetEntity(String id) {
 <span class="fc" id="L32">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L33">        type.put(&quot;$&quot;, DEX + &quot;:asset&quot;);</span>
+<span class="fc" id="L33">        type.put(&quot;$&quot;, DEP + &quot;:asset&quot;);</span>
 <span class="fc" id="L34">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
 <span class="fc" id="L36">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L37">        typeContainer.put(&quot;prov:type&quot;, type);</span>
 <span class="fc" id="L38">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L39">        thisContainer.put(DEX + &quot;:&quot; + id, typeContainer);</span>
+<span class="fc" id="L39">        thisContainer.put(DEP + &quot;:&quot; + id, typeContainer);</span>
 <span class="fc" id="L40">        return thisContainer;</span>
     }
 
@@ -88,13 +88,13 @@ import java.util.UUID;
      */
     public static Map&lt;String, Object&gt; createAgent(String agentId, AgentIdType agentType) {
 <span class="fc" id="L90">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L91">        type.put(&quot;$&quot;, DEX + &quot;:&quot; + agentType.toString());</span>
+<span class="fc" id="L91">        type.put(&quot;$&quot;, DEP + &quot;:&quot; + agentType.toString());</span>
 <span class="fc" id="L92">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
 <span class="fc" id="L94">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L95">        typeContainer.put(&quot;prov:type&quot;, type);</span>
 <span class="fc" id="L96">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L97">        thisContainer.put(DEX + &quot;:&quot; + agentId, typeContainer);</span>
+<span class="fc" id="L97">        thisContainer.put(DEP + &quot;:&quot; + agentId, typeContainer);</span>
 <span class="fc" id="L98">        return thisContainer;</span>
     }
 
@@ -137,7 +137,7 @@ import java.util.UUID;
      * @return Map
      */
     public static Map&lt;String, Object&gt; generatedBy(String activityId) {
-<span class="fc" id="L140">        String entityId = DEX + &quot;:this&quot;;</span>
+<span class="fc" id="L140">        String entityId = DEP + &quot;:this&quot;;</span>
 <span class="fc" id="L141">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L142">        type.put(&quot;prov:entity&quot;, entityId);</span>
 <span class="fc" id="L143">        type.put(&quot;prov:activity&quot;, activityId);</span>
@@ -162,7 +162,7 @@ import java.util.UUID;
 <span class="fc bfc" id="L162" title="All 2 branches covered.">        for (Asset ast : entities) {</span>
 <span class="fc" id="L163">            Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L164">            type.put(&quot;prov:usedEntity&quot;, ast.getAssetID());</span>
-<span class="fc" id="L165">            type.put(&quot;prov:generatedEntity&quot;, DEX + &quot;this&quot;);</span>
+<span class="fc" id="L165">            type.put(&quot;prov:generatedEntity&quot;, DEP + &quot;this&quot;);</span>
 <span class="fc" id="L166">            asid.put(&quot;_:&quot; + UUID.randomUUID().toString(), type);</span>
 <span class="fc" id="L167">        }</span>
 <span class="fc" id="L168">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
@@ -179,13 +179,13 @@ import java.util.UUID;
      */
     public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType) {
 <span class="fc" id="L181">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L182">        type.put(&quot;$&quot;, DEX + &quot;:&quot; + activityType.toString());</span>
+<span class="fc" id="L182">        type.put(&quot;$&quot;, DEP + &quot;:&quot; + activityType.toString());</span>
 <span class="fc" id="L183">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
 <span class="fc" id="L185">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L186">        typeContainer.put(&quot;prov:type&quot;, type);</span>
 <span class="fc" id="L187">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L188">        thisContainer.put(DEX + &quot;:&quot; + actId, typeContainer);</span>
+<span class="fc" id="L188">        thisContainer.put(DEP + &quot;:&quot; + actId, typeContainer);</span>
 <span class="fc" id="L189">        return thisContainer;</span>
     }
 
@@ -200,14 +200,14 @@ import java.util.UUID;
     public static Map&lt;String, Object&gt; createActivity(String actId, ActivityType activityType,
                                                      Map&lt;String, Object&gt; actEntries) {
 <span class="fc" id="L202">        Map&lt;String, Object&gt; type = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L203">        type.put(&quot;$&quot;, DEX + &quot;:&quot; + activityType.toString());</span>
+<span class="fc" id="L203">        type.put(&quot;$&quot;, DEP + &quot;:&quot; + activityType.toString());</span>
 <span class="fc" id="L204">        type.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
 
 <span class="fc" id="L206">        Map&lt;String, Object&gt; typeContainer = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L207">        typeContainer.put(&quot;prov:type&quot;, type);</span>
 <span class="fc" id="L208">        typeContainer.putAll(actEntries);</span>
 <span class="fc" id="L209">        Map&lt;String, Object&gt; thisContainer = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L210">        thisContainer.put(DEX + &quot;:&quot; + actId, typeContainer);</span>
+<span class="fc" id="L210">        thisContainer.put(DEP + &quot;:&quot; + actId, typeContainer);</span>
 <span class="fc" id="L211">        return thisContainer;</span>
     }
 
@@ -259,22 +259,22 @@ import java.util.UUID;
      * Create dependencies. There are 2 sets of dependencies: one that are assets,
      * and the second which is JSON payloads.
      *
-     * @param params          the param string sent to the invoke rest API
-     * @param resultParamName the param name of the generated asset
+     * @param inputs          the param string sent to the invoke rest API
+     * @param outputs the param name of the generated asset
      * @return the input and output encoded as a Map
      */
-    public static Map&lt;String, Object&gt; createDependencies(String params,
-                                                         String resultParamName) {
+    public static Map&lt;String, Object&gt; createDependencies(String inputs,
+                                                         String outputs) {
 <span class="fc" id="L268">        Map&lt;String, Object&gt; ret = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L269">        Map&lt;String, Object&gt; p = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L270">        p.put(&quot;$&quot;, resultParamName);</span>
+<span class="fc" id="L270">        p.put(&quot;$&quot;, outputs);</span>
 <span class="fc" id="L271">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
-<span class="fc" id="L272">        ret.put(DEX + &quot;:resultParamName&quot;, p);</span>
+<span class="fc" id="L272">        ret.put(DEP + &quot;:outputs&quot;, p);</span>
 
 <span class="fc" id="L274">        p = new HashMap&lt;String, Object&gt;();</span>
-<span class="fc" id="L275">        p.put(&quot;$&quot;, params);</span>
+<span class="fc" id="L275">        p.put(&quot;$&quot;, inputs);</span>
 <span class="fc" id="L276">        p.put(&quot;type&quot;, &quot;xsd:string&quot;);</span>
-<span class="fc" id="L277">        ret.put(DEX + &quot;:params&quot;, p);</span>
+<span class="fc" id="L277">        ret.put(DEP + &quot;:inputs&quot;, p);</span>
 
 <span class="fc" id="L279">        return ret;</span>
     }
@@ -286,22 +286,22 @@ import java.util.UUID;
      * @param actId             the activity Id
      * @param agentId           the agent identifier
      * @param assetDependencies the list of assets that consumed by the operation
-     * @param params            the argument string passed to the operation
-     * @param resultParamName   the name of the result argument for the generated
+     * @param inputs            the argument string passed to the operation
+     * @param outputs   the name of the result argument for the generated
      *                          asset
      * @return Map
      */
     public static Map&lt;String, Object&gt; createInvokeProvenance(String actId, String agentId,
                                                              Collection&lt;Asset&gt; assetDependencies,
-                                                             String params,
-                                                             String resultParamName) {
+                                                             String inputs,
+                                                             String outputs) {
 <span class="fc" id="L298">        Map&lt;String, Object&gt; a = defaultPrefix();</span>
 <span class="fc" id="L299">        Map&lt;String, Object&gt; e = new HashMap&lt;String, Object&gt;();</span>
 <span class="fc" id="L300">        e.putAll(createThisInput());</span>
 <span class="fc bfc" id="L301" title="All 2 branches covered.">        for (Asset k : assetDependencies) {</span>
 <span class="fc" id="L302">            e.putAll(createAssetDependency(k));</span>
 <span class="fc" id="L303">        }</span>
-<span class="fc" id="L304">        Map&lt;String, Object&gt; deps = createDependencies(params, resultParamName);</span>
+<span class="fc" id="L304">        Map&lt;String, Object&gt; deps = createDependencies(inputs, outputs);</span>
 
 <span class="fc" id="L306">        Map&lt;String, Object&gt; act = createActivity(actId, ActivityType.OPERATION, deps);</span>
 <span class="fc" id="L307">        Map&lt;String, Object&gt; agent = createAgent(agentId, AgentIdType.ACCOUNT);</span>
