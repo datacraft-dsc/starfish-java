@@ -108,13 +108,13 @@ public class TestInvokeServiceFree_IT {
     }
 
     private DID getInvokeDid() {
-        DID did = DID.parse("did:op:a1d2dbf875ad06ea96432ca4d091e23c26f211b7caedba1e0b71121b2d88e1fd");
+        DID did = DID.parse("did:dex:a1d2dbf875ad06ea96432ca4d091e23c26f211b7caedba1e0b71121b2d88e1fd");
         return did;
 
     }
 
     private DID getSurferDid() {
-        DID did = DID.parse("did:dex:1acd41655b2d8ea3f3513cc847965e72c31bbc9bfc38e7e7ec901852bd3c457c");
+        DID did = DID.parse("did:dep:1acd41655b2d8ea3f3513cc847965e72c31bbc9bfc38e7e7ec901852bd3c457c");
         return did;
 
     }

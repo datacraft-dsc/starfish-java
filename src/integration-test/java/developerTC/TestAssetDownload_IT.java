@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * As a developer working with Ocean,
+ * As a developer working with Data Supply line,
  * I need a way to download the data for a data asset that I have purchased
  */
 public class TestAssetDownload_IT {

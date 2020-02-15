@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
         TestConfirmPurchase_IT.class,
         TestAssetDownload_IT.class,
         TestInvokeServiceFree_IT.class,
-        TestInvokeServicePaid_IT.class,
         TestRemoteAgentTest_IT.class,
         TestAddNewAssetVersion_IT.class
 

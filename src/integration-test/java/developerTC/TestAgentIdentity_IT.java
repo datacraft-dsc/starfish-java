@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * As a developer working with Ocean,
- * I need a stable identifier (Agent ID) for an arbitrary Agent in the Ocean ecosystem
+ * As a developer working with Data Supply line,
+ * I need a stable identifier (Agent ID) for an arbitrary Agent in the Data ecosystem
  * This test class with validate the DID and DDO format and and their data
  */
 public class TestAgentIdentity_IT {

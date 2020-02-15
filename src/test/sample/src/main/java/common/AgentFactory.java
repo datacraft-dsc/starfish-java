@@ -79,7 +79,7 @@ public class AgentFactory {
     }
 
     private static DID getInvokeDid() {
-        DID did = DID.parse("did:op:a1d2dbf875ad06ea96432ca4d091e23c26f211b7caedba1e0b71121b2d88e1fd");
+        DID did = DID.parse("did:dex:a1d2dbf875ad06ea96432ca4d091e23c26f211b7caedba1e0b71121b2d88e1fd");
 
         return did;
 

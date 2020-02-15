@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 /**
- * As a developer working with Ocean,
- * I need a stable identifier (Asset ID) for an arbitrary asset in the Ocean ecosystem
+ * As a developer working with Data Supply Line,
+ * I need a stable identifier (Asset ID) for an arbitrary asset in the Data supply line  ecosystem
  */
 
 public class TestAssetIdentity_IT {

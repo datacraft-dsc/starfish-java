@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * As a developer working with Ocean,
- * I need a way to connect to the Ocean Network
+ * As a developer working with Data Supply Lines,
+ * I need a way to connect to the  Network
  */
 public class TestResolver_IT {
 
 
     @Test
-    public void testOceanConnect() {
+    public void testNetworkConnect() {
 
         //
         Resolver resolver = new LocalResolverImpl();
@@ -34,7 +34,7 @@ public class TestResolver_IT {
     }
 
     @Test
-    public void testOceanConnectDoubleRegistration() {
+    public void testNetworkConnectDoubleRegistration() {
         Resolver resolver = new LocalResolverImpl();
         DID surferDID = DID.createRandom();
         Map<String, Object> ddo = new HashMap<>();

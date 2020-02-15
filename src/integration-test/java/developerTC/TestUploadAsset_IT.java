@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * As a developer working with an Ocean marketplace,
+ * As a developer working with an Network marketplace,
  * I need a way to upload my asset with a service agreement
  */
 public class TestUploadAsset_IT {

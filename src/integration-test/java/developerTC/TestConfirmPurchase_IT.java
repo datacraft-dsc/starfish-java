@@ -22,7 +22,7 @@ import static sg.dex.starfish.constant.Constant.*;
 
 
 /**
- * "As a developer building a service provider Agent for Ocean,
+ * "As a developer building a service provider Agent for Network,
  * I need a way to confirm if an Asset has been successfully purchased so that
  * I can determine whether to serve the asset to a given requestor
  * "
