@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * As a developer building client code to interact with an Ocean marketplace,
+ * As a developer building client code to interact with an Digital Supply line marketplace,
  * I need a way to search available asset listings
  */
 @Disabled

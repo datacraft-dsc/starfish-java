@@ -35,7 +35,7 @@ import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
 
 
 /**
- * As a developer working with Ocean, I need a way to register a new asset with Ocean
+ * As a developer working with Data Supply lines, I need a way to register a new asset with Ocean
  */
 public class TestAssetRegistration_IT {
 

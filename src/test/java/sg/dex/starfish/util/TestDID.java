@@ -24,8 +24,8 @@ public class TestDID {
     @Test
     public void testRoundTrips() {
         testRoundTrip("did:bar:foo");
-        testRoundTrip("did:op:1234/5678#foo");
-        testRoundTrip("did:op:1234#foo");
+        testRoundTrip("did:de:1234/5678#foo");
+        testRoundTrip("did:dep:1234#foo");
     }
 
     @Test

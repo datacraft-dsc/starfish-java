@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
- * "As a developer working with Ocean,
+ * "As a developer working with Data Supply Lines,
  * I need a way to purchase an Asset for which
  * I have reviewed and agreed to the service agreement offered in a relevant Asset Listing
  * "

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * As a developer managing a Ocean Agent,
+ * As a developer managing a Network Agent,
  * I need to be able to update service endpoints for my Agent
  */
 public class TestAgentEndpointUpdate_IT {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 
 /**
- * As a publisher working for Ocean,
+ * As a publisher working for Data Supply Lines,
  * I want to publish a new asset (as a new version of an existing asset), so that consumers can purchase the latest version
  */
 @Disabled

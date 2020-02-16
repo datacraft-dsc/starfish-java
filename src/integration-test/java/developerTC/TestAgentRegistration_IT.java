@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * As a developer building or managing an Ocean Agent,
+ * As a developer building or managing an Network Agent,
  * I need to be able to register my Agent on the network and obtain an Agent ID
  */
 public class TestAgentRegistration_IT {
