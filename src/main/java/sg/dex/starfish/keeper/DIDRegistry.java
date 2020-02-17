@@ -20,7 +20,6 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.RemoteCall;
-import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.BaseEventResponse;
 import org.web3j.protocol.core.methods.response.Log;
@@ -114,7 +113,7 @@ public class DIDRegistry extends Contract {
         return dIDRegisteredEventFlowable(filter);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> initialize() {
+    public RemoteCall<TransactionReceipt> initialize() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
                 FUNC_INITIALIZE, 
                 Arrays.<Type>asList(), 
@@ -122,7 +121,7 @@ public class DIDRegistry extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> registerDID(byte[] _did, String _value) {
+    public RemoteCall<TransactionReceipt> registerDID(byte[] _did, String _value) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
                 FUNC_REGISTERDID, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), 
@@ -131,7 +130,7 @@ public class DIDRegistry extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<BigInteger> getBlockNumberUpdated(byte[] _did) {
+    public RemoteCall<BigInteger> getBlockNumberUpdated(byte[] _did) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
