@@ -1,6 +1,6 @@
 package sg.dex.starfish.impl.squid;
 
-import com.oceanprotocol.keeper.contracts.DIDRegistry;
+import sg.dex.starfish.keeper.DIDRegistry;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
@@ -21,13 +21,11 @@ import sg.dex.starfish.keeper.DexConfig;
 import sg.dex.starfish.keeper.DexConfigFactory;
 import sg.dex.starfish.keeper.DexTransactionManager;
 import sg.dex.starfish.util.DID;
-import sg.dex.starfish.util.Hex;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DexResolver implements Resolver {
     private DIDRegistry contract;
@@ -92,12 +90,11 @@ public class DexResolver implements Resolver {
         }
 
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDATTRIBUTEREGISTERED_EVENT));
+        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDREGISTERED_EVENT));
         String didTopic = "0x" + didHash;
         filter.addOptionalTopics(didTopic);
-
-        Flowable<DIDRegistry.DIDAttributeRegisteredEventResponse> floable = contract.dIDAttributeRegisteredEventFlowable(filter);
-        ArrayList<DIDRegistry.DIDAttributeRegisteredEventResponse> outcome = new ArrayList<>();
+        Flowable<DIDRegistry.DIDRegisteredEventResponse> floable = contract.dIDRegisteredEventFlowable(filter);
+        ArrayList<DIDRegistry.DIDRegisteredEventResponse> outcome = new ArrayList<>();
         floable.subscribe(log -> {
             outcome.add(log);
         });
@@ -107,14 +104,10 @@ public class DexResolver implements Resolver {
 
     @Override
     public void registerDID(DID did, String ddo) throws ResolverException {
-        String checksum = "0x0";
-
         TransactionReceipt receipt = null;
         try {
-            receipt = contract.registerAttribute(
-                    Numeric.hexStringToByteArray(did.getID()),
-                    Numeric.hexStringToByteArray(Hex.toZeroPaddedHexNoPrefix(checksum)),
-                    Arrays.asList(config.getMainAccountAddress()), ddo).send();
+            receipt = contract.registerDID(
+                    Numeric.hexStringToByteArray(did.getID()), ddo).send();
         } catch (IOException e) {
             throw new ResolverException(e);
         } catch (CipherException e) {
