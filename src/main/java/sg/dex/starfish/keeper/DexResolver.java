@@ -1,6 +1,5 @@
-package sg.dex.starfish.impl.squid;
+package sg.dex.starfish.keeper;
 
-import sg.dex.starfish.keeper.DIDRegistry;
 import io.reactivex.Flowable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.crypto.CipherException;
@@ -17,9 +16,6 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.exception.ResolverException;
-import sg.dex.starfish.keeper.DexConfig;
-import sg.dex.starfish.keeper.DexConfigFactory;
-import sg.dex.starfish.keeper.DexTransactionManager;
 import sg.dex.starfish.util.DID;
 
 import java.io.IOException;

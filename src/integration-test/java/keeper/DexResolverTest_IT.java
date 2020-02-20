@@ -8,7 +8,7 @@ import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.squid.DexResolver;
+import sg.dex.starfish.keeper.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;

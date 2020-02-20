@@ -1,8 +1,10 @@
-package sg.dex.starfish.impl.squid;
+package sg.dex.starfish.keeper;
 
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.impl.squid.SquidResolverImpl;
+import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
 
 import java.io.IOException;
