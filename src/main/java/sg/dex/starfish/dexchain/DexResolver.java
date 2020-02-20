@@ -47,7 +47,13 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static Resolver create() throws IOException {
-         return create("dex_chain.properties");
+        DexConfig dexConfig = DexChain.getInstance().getDexConfig();
+        DIDRegistry contract = DIDRegistry.load(
+               dexConfig.getDidRegistryAddress(),
+               DexChain.getInstance().getWeb3j(),
+               DexChain.getInstance().getTransactionManager(),
+               DexChain.getInstance().getContractGasProvider());
+        return new DexResolver(contract, dexConfig);
     }
 
     /**
