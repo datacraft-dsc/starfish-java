@@ -3,6 +3,7 @@ sg.dex.starfish
 sg.dex.starfish.cli
 sg.dex.starfish.constant
 sg.dex.starfish.dexchain
+sg.dex.starfish.dexchain.impl
 sg.dex.starfish.exception
 sg.dex.starfish.impl
 sg.dex.starfish.impl.file

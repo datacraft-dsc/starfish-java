@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexTransactionReceiptProcessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain.impl</a> &gt; <span class="el_source">DexTransactionReceiptProcessor.java</span></div><h1>DexTransactionReceiptProcessor.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain.impl;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
+import org.web3j.protocol.core.methods.response.Log;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.exceptions.TransactionException;
+import org.web3j.tx.response.TransactionReceiptProcessor;
+
+import java.io.IOException;
+import java.util.Optional;
+
+public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor {
+<span class="fc" id="L16">    private static final Logger log = LogManager.getLogger(com.oceanprotocol.common.web3.parity.ExtendedTransactionReceiptProcessor.class);</span>
+    private final long sleepDuration;
+    private final int attempts;
+    private final Web3j web3j;
+
+    public DexTransactionReceiptProcessor(Web3j web3j, long sleepDuration, int attempts) {
+<span class="fc" id="L22">        super(web3j);</span>
+<span class="fc" id="L23">        this.sleepDuration = sleepDuration;</span>
+<span class="fc" id="L24">        this.attempts = attempts;</span>
+<span class="fc" id="L25">        this.web3j = web3j;</span>
+<span class="fc" id="L26">    }</span>
+
+    public TransactionReceipt waitForTransactionReceipt(String transactionHash) throws IOException, TransactionException {
+<span class="fc" id="L29">        return this.getTransactionReceipt(transactionHash, this.sleepDuration, this.attempts);</span>
+    }
+
+    Optional&lt;TransactionReceipt&gt; sendTransactionReceiptRequest(String transactionHash) throws IOException, TransactionException {
+<span class="fc" id="L33">        EthGetTransactionReceipt transactionReceipt = (EthGetTransactionReceipt)this.web3j.ethGetTransactionReceipt(transactionHash).send();</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (transactionReceipt.hasError()) {</span>
+<span class="nc" id="L35">            throw new TransactionException(&quot;Error processing request: &quot; + transactionReceipt.getError().getMessage());</span>
+        } else {
+<span class="fc" id="L37">            return transactionReceipt.getTransactionReceipt();</span>
+        }
+    }
+
+    private Boolean keepWaiting(Optional&lt;TransactionReceipt&gt; receiptOptional) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (!receiptOptional.isPresent()) {</span>
+<span class="fc" id="L43">            return true;</span>
+        } else {
+<span class="fc" id="L45">            TransactionReceipt receipt = (TransactionReceipt)receiptOptional.get();</span>
+<span class="fc" id="L46">            Optional&lt;Log&gt; optionalLog = receipt.getLogs().stream().filter((log) -&gt; {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                return !log.getType().equalsIgnoreCase(&quot;mined&quot;);</span>
+<span class="fc" id="L48">            }).findFirst();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            if (optionalLog.isPresent()) {</span>
+<span class="fc" id="L50">                log.debug(&quot;Not mined transaction receipt. Waiting until transaction get mined...&quot;);</span>
+<span class="fc" id="L51">                return true;</span>
+            } else {
+<span class="fc" id="L53">                return false;</span>
+            }
+        }
+    }
+
+    private TransactionReceipt getTransactionReceipt(String transactionHash, long sleepDuration, int attempts) throws IOException, TransactionException {
+<span class="fc" id="L59">        Optional&lt;TransactionReceipt&gt; receiptOptional = this.sendTransactionReceiptRequest(transactionHash);</span>
+
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        for(int i = 0; i &lt; attempts; ++i) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (!this.keepWaiting(receiptOptional)) {</span>
+<span class="fc" id="L63">                return (TransactionReceipt)receiptOptional.get();</span>
+            }
+
+            try {
+<span class="fc" id="L67">                Thread.sleep(sleepDuration);</span>
+<span class="nc" id="L68">            } catch (InterruptedException var8) {</span>
+<span class="nc" id="L69">                throw new TransactionException(var8);</span>
+<span class="fc" id="L70">            }</span>
+
+<span class="fc" id="L72">            receiptOptional = this.sendTransactionReceiptRequest(transactionHash);</span>
+        }
+
+<span class="nc" id="L75">        throw new TransactionException(&quot;Transaction receipt was not generated after &quot; + sleepDuration * (long)attempts / 1000L + &quot; seconds for transaction: &quot; + transactionHash, transactionHash);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

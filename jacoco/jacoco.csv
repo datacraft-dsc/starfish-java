@@ -8,41 +8,41 @@ Starfish - client library for data ecosystems,sg.dex.starfish.impl.memory,Memory
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.memory,MemoryAsset,105,142,16,8,22,28,17,11,7,9
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.memory,MemoryPurchase,67,0,2,0,12,0,9,0,8,0
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.memory,MemoryListing,70,0,2,0,15,0,11,0,10,0
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.DIDRegisteredEventResponse,0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DexTransactionManager,6,103,3,3,1,21,3,6,0,6
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new Function() {...},0,66,0,0,0,10,0,2,0,2
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DexTransactionReceiptProcessor,42,103,2,10,4,27,2,11,0,7
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase.TokenSentEventResponse,0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry,198,127,2,0,34,17,16,6,15,6
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new Function() {...},0,57,0,0,0,9,0,2,0,2
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DirectPurchase,214,118,2,0,35,13,16,5,15,5
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain.impl,DIDRegistry.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
 Starfish - client library for data ecosystems,sg.dex.starfish,Resolver,2,13,1,1,0,4,1,1,0,1
 Starfish - client library for data ecosystems,sg.dex.starfish,DataAsset,17,50,3,5,4,11,5,4,2,3
 Starfish - client library for data ecosystems,sg.dex.starfish,Operation,77,0,10,0,16,0,10,0,5,0
 Starfish - client library for data ecosystems,sg.dex.starfish,Asset,42,30,0,2,6,7,4,2,4,1
 Starfish - client library for data ecosystems,sg.dex.starfish,Bundle,27,0,0,0,5,0,3,0,3,0
 Starfish - client library for data ecosystems,sg.dex.starfish,Job,67,0,2,0,19,0,11,0,10,0
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new Function() {...},0,57,0,0,0,9,0,2,0,2
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new TypeReference() {...},0,6,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.TokenSentEventResponse,0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfig,0,107,0,0,0,40,0,27,0,27
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry,198,127,2,0,34,17,16,6,15,6
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new Function() {...},0,66,0,0,0,10,0,2,0,2
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new TypeReference() {...},0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase,214,118,2,0,35,13,16,5,15,5
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchase.new TypeReference() {...},0,4,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,UniversalResolver,73,0,8,0,18,0,9,0,5,0
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexTransactionReceiptProcessor,42,103,2,10,4,27,2,11,0,7
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexResolver,34,169,1,3,12,36,1,7,0,6
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexTransactionManager,6,103,3,3,1,21,3,6,0,6
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DIDRegistry.DIDRegisteredEventResponse,0,3,0,0,0,1,0,1,0,1
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfigFactory,17,183,2,2,5,31,3,3,1,3
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchaseAdapter,43,196,4,4,14,44,4,6,0,6
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AAgent,29,34,3,3,4,11,4,5,2,4
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AListing,3,0,0,0,1,0,1,0,1,0
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AAccount,18,91,1,3,5,20,3,6,2,5
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AIdentity,25,0,0,0,8,0,4,0,4,0
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AEVMAccount,13,0,0,0,4,0,2,0,2,0
 Starfish - client library for data ecosystems,sg.dex.starfish.impl,AAsset,50,24,2,0,9,8,4,5,3,5
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfig,0,107,0,0,0,40,0,27,0,27
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,UniversalResolver,73,0,8,0,18,0,9,0,5,0
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexResolver,34,169,1,3,12,36,1,7,0,6
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfigFactory,17,183,2,2,5,31,3,3,1,3
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchaseAdapter,43,196,4,4,14,44,4,6,0,6
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.file,FileAsset,45,54,5,1,6,14,4,8,1,8
 Starfish - client library for data ecosystems,sg.dex.crypto,Hash,34,65,0,2,8,16,6,8,6,7
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.resource,URIAsset,111,59,5,3,22,13,10,4,7,3

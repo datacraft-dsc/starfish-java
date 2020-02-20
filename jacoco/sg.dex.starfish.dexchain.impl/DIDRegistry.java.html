@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DIDRegistry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain.impl</a> &gt; <span class="el_source">DIDRegistry.java</span></div><h1>DIDRegistry.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain.impl;
+
+import io.reactivex.Flowable;
+import io.reactivex.functions.Function;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import org.web3j.abi.EventEncoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Event;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.Utf8String;
+import org.web3j.abi.datatypes.generated.Bytes32;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.BaseEventResponse;
+import org.web3j.protocol.core.methods.response.Log;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.Contract;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+
+/**
+ * &lt;p&gt;Auto generated code.
+ * &lt;p&gt;&lt;strong&gt;Do not modify!&lt;/strong&gt;
+ * &lt;p&gt;Please use the &lt;a href=&quot;https://docs.web3j.io/command_line.html&quot;&gt;web3j command line tools&lt;/a&gt;,
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * &lt;a href=&quot;https://github.com/web3j/web3j/tree/master/codegen&quot;&gt;codegen module&lt;/a&gt; to update.
+ *
+ * &lt;p&gt;Generated with web3j version 4.5.14.
+ */
+@SuppressWarnings(&quot;rawtypes&quot;)
+public class DIDRegistry extends Contract {
+    public static final String BINARY = &quot;0x608060405234801561001057600080fd5b50610716806100206000396000f3fe608060405234801561001057600080fd5b506004361061005e576000357c010000000000000000000000000000000000000000000000000000000090048063331daa99146100635780638129fc1c1461013c578063bbc1dede14610146575b600080fd5b6101266004803603604081101561007957600080fd5b8101908080359060200190929190803590602001906401000000008111156100a057600080fd5b8201836020820111156100b257600080fd5b803590602001918460018302840111640100000000831117156100d457600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610188565b6040518082815260200191505060405180910390f35b61014461055c565b005b6101726004803603602081101561015c57600080fd5b810190808035906020019092919050505061065b565b6040518082815260200191505060405180910390f35b60008073ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16148061025b57503373ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16145b6102b0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603081526020018061068d6030913960400191505060405180910390fd5b61080082511115610329576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260128152602001807f496e76616c69642076616c75652073697a65000000000000000000000000000081525060200191505060405180910390fd5b60006033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156103c95733905060348490806001815401808255809150509060018203906000526020600020016000909192909190915055505b60405180604001604052808273ffffffffffffffffffffffffffffffffffffffff168152602001438152506033600086815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101559050506033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16847f46d513bf72ee94d266c35268aec30459b2e5cc5418347762561e8f3d3055000e85436040518080602001838152602001828103825284818151815260200191508051906020019080838360005b838110156105125780820151818401526020810190506104f7565b50505050905090810190601f16801561053f5780820380516001836020036101000a031916815260200191505b50935050505060405180910390a360348054905091505092915050565b600060019054906101000a900460ff168061057b575061057a61067b565b5b8061059257506000809054906101000a900460ff16155b6105e7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602e8152602001806106bd602e913960400191505060405180910390fd5b60008060019054906101000a900460ff161590508015610637576001600060016101000a81548160ff02191690831515021790555060016000806101000a81548160ff0219169083151502179055505b80156106585760008060016101000a81548160ff0219169083151502179055505b50565b600060336000838152602001908152602001600020600101549050919050565b600080303b9050600081149150509056fe41747472696275746573206d75737420626520726567697374657265642062792074686520444944206f776e6572732e436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a165627a7a723058205847202238792444a6f3d5610a7b4e2fcbeefc65c5d0a1651af2ae7751a5e6970029&quot;;
+
+    public static final String FUNC_INITIALIZE = &quot;initialize&quot;;
+
+    public static final String FUNC_REGISTERDID = &quot;registerDID&quot;;
+
+    public static final String FUNC_GETBLOCKNUMBERUPDATED = &quot;getBlockNumberUpdated&quot;;
+
+<span class="fc" id="L50">    public static final Event DIDREGISTERED_EVENT = new Event(&quot;DIDRegistered&quot;, </span>
+<span class="fc" id="L51">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Utf8String&gt;() {}, new TypeReference&lt;Uint256&gt;() {}));</span>
+    ;
+
+    protected static final HashMap&lt;String, String&gt; _addresses;
+
+    static {
+<span class="fc" id="L57">        _addresses = new HashMap&lt;String, String&gt;();</span>
+<span class="fc" id="L58">        _addresses.put(&quot;8995&quot;, &quot;0x0640B8c602bd466FB2F5C5C155e94dE50655bc39&quot;);</span>
+<span class="fc" id="L59">    }</span>
+
+    @Deprecated
+    protected DIDRegistry(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L63">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L64">    }</span>
+
+    protected DIDRegistry(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L67">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L68">    }</span>
+
+    @Deprecated
+    protected DIDRegistry(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L72">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L73">    }</span>
+
+    protected DIDRegistry(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="fc" id="L76">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="fc" id="L77">    }</span>
+
+    public List&lt;DIDRegisteredEventResponse&gt; getDIDRegisteredEvents(TransactionReceipt transactionReceipt) {
+<span class="nc" id="L80">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(DIDREGISTERED_EVENT, transactionReceipt);</span>
+<span class="nc" id="L81">        ArrayList&lt;DIDRegisteredEventResponse&gt; responses = new ArrayList&lt;DIDRegisteredEventResponse&gt;(valueList.size());</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
+<span class="nc" id="L83">            DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
+<span class="nc" id="L84">            typedResponse.log = eventValues.getLog();</span>
+<span class="nc" id="L85">            typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L86">            typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L87">            typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L88">            typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L89">            responses.add(typedResponse);</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">        return responses;</span>
+    }
+
+    public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(EthFilter filter) {
+<span class="fc" id="L95">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, DIDRegisteredEventResponse&gt;() {</span>
+            @Override
+            public DIDRegisteredEventResponse apply(Log log) {
+<span class="fc" id="L98">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DIDREGISTERED_EVENT, log);</span>
+<span class="fc" id="L99">                DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
+<span class="fc" id="L100">                typedResponse.log = log;</span>
+<span class="fc" id="L101">                typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L102">                typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L103">                typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L104">                typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L105">                return typedResponse;</span>
+            }
+        });
+    }
+
+    public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+<span class="nc" id="L111">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
+<span class="nc" id="L112">        filter.addSingleTopic(EventEncoder.encode(DIDREGISTERED_EVENT));</span>
+<span class="nc" id="L113">        return dIDRegisteredEventFlowable(filter);</span>
+    }
+
+    public RemoteCall&lt;TransactionReceipt&gt; initialize() {
+<span class="nc" id="L117">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_INITIALIZE, 
+<span class="nc" id="L119">                Arrays.&lt;Type&gt;asList(), </span>
+<span class="nc" id="L120">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="nc" id="L121">        return executeRemoteCallTransaction(function);</span>
+    }
+
+    public RemoteCall&lt;TransactionReceipt&gt; registerDID(byte[] _did, String _value) {
+<span class="fc" id="L125">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_REGISTERDID, 
+<span class="fc" id="L127">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), </span>
+                new org.web3j.abi.datatypes.Utf8String(_value)), 
+<span class="fc" id="L129">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="fc" id="L130">        return executeRemoteCallTransaction(function);</span>
+    }
+
+    public RemoteCall&lt;BigInteger&gt; getBlockNumberUpdated(byte[] _did) {
+<span class="fc" id="L134">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, </span>
+<span class="fc" id="L135">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), </span>
+<span class="fc" id="L136">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
+<span class="fc" id="L137">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
+    }
+
+    @Deprecated
+    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L142">        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+    }
+
+    @Deprecated
+    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L147">        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+    }
+
+    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L151">        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);</span>
+    }
+
+    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="fc" id="L155">        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);</span>
+    }
+
+    public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L159">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L164">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L168">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L173">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    protected String getStaticDeployedAddress(String networkId) {
+<span class="nc" id="L177">        return _addresses.get(networkId);</span>
+    }
+
+    public static String getPreviouslyDeployedAddress(String networkId) {
+<span class="nc" id="L181">        return _addresses.get(networkId);</span>
+    }
+
+<span class="fc" id="L184">    public static class DIDRegisteredEventResponse extends BaseEventResponse {</span>
+        public byte[] _did;
+
+        public String _owner;
+
+        public String _value;
+
+        public BigInteger _blockNumberUpdated;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

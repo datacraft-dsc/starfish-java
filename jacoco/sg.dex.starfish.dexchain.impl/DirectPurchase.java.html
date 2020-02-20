@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectPurchase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain.impl</a> &gt; <span class="el_source">DirectPurchase.java</span></div><h1>DirectPurchase.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain.impl;
+
+import io.reactivex.Flowable;
+import io.reactivex.functions.Function;
+import org.web3j.abi.EventEncoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Event;
+import org.web3j.abi.datatypes.generated.Bytes32;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.BaseEventResponse;
+import org.web3j.protocol.core.methods.response.Log;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.Contract;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+
+import java.math.BigInteger;
+import java.util.*;
+
+/**
+ * &lt;p&gt;Auto generated code.
+ * &lt;p&gt;&lt;strong&gt;Do not modify!&lt;/strong&gt;
+ * &lt;p&gt;Please use the &lt;a href=&quot;https://docs.web3j.io/command_line.html&quot;&gt;web3j command line tools&lt;/a&gt;,
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
+ * &lt;a href=&quot;https://github.com/web3j/web3j/tree/master/codegen&quot;&gt;codegen module&lt;/a&gt; to update.
+ *
+ * &lt;p&gt;Generated with web3j version 4.5.0.
+ */
+public class DirectPurchase extends Contract {
+    public static final String FUNC_INITIALIZE = &quot;initialize&quot;;
+    public static final String FUNC_SENDTOKENANDLOG = &quot;sendTokenAndLog&quot;;
+<span class="fc" id="L38">    public static final Event TOKENSENT_EVENT = new Event(&quot;TokenSent&quot;,</span>
+<span class="fc" id="L39">            Arrays.asList(new TypeReference&lt;Address&gt;(true) {</span>
+<span class="fc" id="L40">            }, new TypeReference&lt;Address&gt;(true) {</span>
+<span class="fc" id="L41">            }, new TypeReference&lt;Uint256&gt;() {</span>
+<span class="fc" id="L42">            }, new TypeReference&lt;Bytes32&gt;() {</span>
+<span class="fc" id="L43">            }, new TypeReference&lt;Bytes32&gt;(true) {</span>
+            }));
+    protected static final HashMap&lt;String, String&gt; _addresses;
+    private static final String BINARY = &quot;0x608060405234801561001057600080fd5b5061041a806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063026a0ab21461003b578063c4d66de81461009d575b600080fd5b61009b6004803603608081101561005157600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291908035906020019092919080359060200190929190803590602001909291905050506100e1565b005b6100df600480360360208110156100b357600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061026e565b005b603360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd3386866040518463ffffffff1660e01b8152600401808473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019350505050602060405180830381600087803b1580156101be57600080fd5b505af11580156101d2573d6000803e3d6000fd5b505050506040513d60208110156101e857600080fd5b810190808051906020019092919050505050808473ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167f93534e11db56134f1ef4a5ce6e165fdd6d7b546f083c50967d27f870be7199658686604051808381526020018281526020019250505060405180910390a450505050565b600060019054906101000a900460ff168061028d575061028c6103af565b5b806102a457506000809054906101000a900460ff16155b6102f9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602e8152602001806103c1602e913960400191505060405180910390fd5b60008060019054906101000a900460ff161590508015610349576001600060016101000a81548160ff02191690831515021790555060016000806101000a81548160ff0219169083151502179055505b81603360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080156103ab5760008060016101000a81548160ff0219169083151502179055505b5050565b600080303b9050600081149150509056fe436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a165627a7a72305820a4e9621e552eae146f4ee2eeb0f991b9221439a55073e7d7584da7b6db9ba65b0029&quot;;
+
+    static {
+<span class="fc" id="L49">        _addresses = new HashMap&lt;String, String&gt;();</span>
+<span class="fc" id="L50">        _addresses.put(&quot;8996&quot;, &quot;0xc0C528855f27aA3FbfE35CedE49AC37f3f881934&quot;);</span>
+<span class="fc" id="L51">    }</span>
+
+    @Deprecated
+    protected DirectPurchase(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L55">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L56">    }</span>
+
+    protected DirectPurchase(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L59">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L60">    }</span>
+
+    @Deprecated
+    protected DirectPurchase(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L64">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L65">    }</span>
+
+    protected DirectPurchase(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="fc" id="L68">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="fc" id="L69">    }</span>
+
+    @Deprecated
+    public static DirectPurchase load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L73">        return new DirectPurchase(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+    }
+
+    @Deprecated
+    public static DirectPurchase load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L78">        return new DirectPurchase(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+    }
+
+    public static DirectPurchase load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L82">        return new DirectPurchase(contractAddress, web3j, credentials, contractGasProvider);</span>
+    }
+
+    public static DirectPurchase load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="fc" id="L86">        return new DirectPurchase(contractAddress, web3j, transactionManager, contractGasProvider);</span>
+    }
+
+    public static RemoteCall&lt;DirectPurchase&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L90">        return deployRemoteCall(DirectPurchase.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;DirectPurchase&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L95">        return deployRemoteCall(DirectPurchase.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    public static RemoteCall&lt;DirectPurchase&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L99">        return deployRemoteCall(DirectPurchase.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;DirectPurchase&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L104">        return deployRemoteCall(DirectPurchase.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    public static String getPreviouslyDeployedAddress(String networkId) {
+<span class="nc" id="L108">        return _addresses.get(networkId);</span>
+    }
+
+    public List&lt;TokenSentEventResponse&gt; getTokenSentEvents(TransactionReceipt transactionReceipt) {
+<span class="nc" id="L112">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(TOKENSENT_EVENT, transactionReceipt);</span>
+<span class="nc" id="L113">        ArrayList&lt;TokenSentEventResponse&gt; responses = new ArrayList&lt;TokenSentEventResponse&gt;(valueList.size());</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
+<span class="nc" id="L115">            TokenSentEventResponse typedResponse = new TokenSentEventResponse();</span>
+<span class="nc" id="L116">            typedResponse.log = eventValues.getLog();</span>
+<span class="nc" id="L117">            typedResponse._from = (String) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L118">            typedResponse._to = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L119">            typedResponse._reference2 = (byte[]) eventValues.getIndexedValues().get(2).getValue();</span>
+<span class="nc" id="L120">            typedResponse._amount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L121">            typedResponse._reference1 = (byte[]) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L122">            responses.add(typedResponse);</span>
+<span class="nc" id="L123">        }</span>
+<span class="nc" id="L124">        return responses;</span>
+    }
+
+    public Flowable&lt;TokenSentEventResponse&gt; tokenSentEventFlowable(EthFilter filter) {
+<span class="fc" id="L128">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, TokenSentEventResponse&gt;() {</span>
+            @Override
+            public TokenSentEventResponse apply(Log log) {
+<span class="fc" id="L131">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TOKENSENT_EVENT, log);</span>
+<span class="fc" id="L132">                TokenSentEventResponse typedResponse = new TokenSentEventResponse();</span>
+<span class="fc" id="L133">                typedResponse.log = log;</span>
+<span class="fc" id="L134">                typedResponse._from = (String) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L135">                typedResponse._to = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L136">                typedResponse._reference2 = (byte[]) eventValues.getIndexedValues().get(2).getValue();</span>
+<span class="fc" id="L137">                typedResponse._amount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L138">                typedResponse._reference1 = (byte[]) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L139">                return typedResponse;</span>
+            }
+        });
+    }
+
+    public Flowable&lt;TokenSentEventResponse&gt; tokenSentEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+<span class="nc" id="L145">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
+<span class="nc" id="L146">        filter.addSingleTopic(EventEncoder.encode(TOKENSENT_EVENT));</span>
+<span class="nc" id="L147">        return tokenSentEventFlowable(filter);</span>
+    }
+
+    public RemoteCall&lt;TransactionReceipt&gt; initialize(String _token) {
+<span class="nc" id="L151">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_INITIALIZE,
+<span class="nc" id="L153">                Arrays.asList(new org.web3j.abi.datatypes.Address(_token)),</span>
+<span class="nc" id="L154">                Collections.emptyList());</span>
+<span class="nc" id="L155">        return executeRemoteCallTransaction(function);</span>
+    }
+
+    public RemoteCall&lt;TransactionReceipt&gt; sendTokenAndLog(String to, BigInteger amount, byte[] reference1, byte[] reference2) {
+<span class="fc" id="L159">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_SENDTOKENANDLOG,
+<span class="fc" id="L161">                Arrays.asList(new org.web3j.abi.datatypes.Address(to),</span>
+                        new org.web3j.abi.datatypes.generated.Uint256(amount),
+                        new org.web3j.abi.datatypes.generated.Bytes32(reference1),
+                        new org.web3j.abi.datatypes.generated.Bytes32(reference2)),
+<span class="fc" id="L165">                Collections.emptyList());</span>
+<span class="fc" id="L166">        return executeRemoteCallTransaction(function);</span>
+    }
+
+    protected String getStaticDeployedAddress(String networkId) {
+<span class="nc" id="L170">        return _addresses.get(networkId);</span>
+    }
+
+<span class="fc" id="L173">    public static class TokenSentEventResponse extends BaseEventResponse {</span>
+        public String _from;
+
+        public String _to;
+
+        public byte[] _reference2;
+
+        public BigInteger _amount;
+
+        public byte[] _reference1;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
