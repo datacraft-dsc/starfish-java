@@ -1,4 +1,4 @@
-package sg.dex.starfish.dexchain;
+package sg.dex.starfish.dexchain.impl;
 
 import java.io.IOException;
 import java.math.BigInteger;

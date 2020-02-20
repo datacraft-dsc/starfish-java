@@ -15,6 +15,8 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
+import sg.dex.starfish.dexchain.impl.DIDRegistry;
+import sg.dex.starfish.dexchain.impl.DexTransactionManager;
 import sg.dex.starfish.exception.ResolverException;
 import sg.dex.starfish.util.DID;
 

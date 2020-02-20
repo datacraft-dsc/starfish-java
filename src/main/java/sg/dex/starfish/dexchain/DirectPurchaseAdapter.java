@@ -17,6 +17,8 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 import org.web3j.utils.Numeric;
+import sg.dex.starfish.dexchain.impl.DexTransactionManager;
+import sg.dex.starfish.dexchain.impl.DirectPurchase;
 import sg.dex.starfish.util.Hex;
 
 import java.io.IOException;
