@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexChain.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain</a> &gt; <span class="el_source">DexChain.java</span></div><h1>DexChain.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain;
+
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+import sg.dex.starfish.dexchain.impl.DexTransactionManager;
+
+import java.io.IOException;
+
+public class DexChain {
+<span class="fc" id="L16">    private static DexChain instance = null;</span>
+
+    private Web3j web3;
+    private TransactionManager txManager;
+    private ContractGasProvider gasProvider;
+    private DexConfig dexConfig;
+    
+    private DexChain()
+<span class="fc" id="L24">    {</span>
+<span class="fc" id="L25">        dexConfig = DexConfigFactory.getDexConfig(&quot;dex_chain.properties&quot;);</span>
+
+<span class="fc" id="L27">        Credentials credentials = null;</span>
+        try {
+<span class="fc" id="L29">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="nc" id="L30">        } catch (CipherException | IOException e) {</span>
+<span class="nc" id="L31">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
+<span class="nc" id="L32">            e.printStackTrace();</span>
+<span class="fc" id="L33">        }</span>
+
+<span class="fc" id="L35">        web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L36">        txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L37">        gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+<span class="fc" id="L38">    }</span>
+
+    public static DexChain getInstance()
+    {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (instance == null)</span>
+<span class="fc" id="L43">            instance = new DexChain();</span>
+
+<span class="fc" id="L45">        return instance;</span>
+    }
+
+    public Web3j getWeb3j() {
+<span class="fc" id="L49">        return web3;</span>
+    }
+
+    public TransactionManager getTransactionManager() {
+<span class="fc" id="L53">        return txManager;</span>
+    }
+
+    public ContractGasProvider getContractGasProvider() {
+<span class="fc" id="L57">        return gasProvider;</span>
+    }
+
+    public DexConfig getDexConfig() {
+<span class="fc" id="L61">        return dexConfig;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
