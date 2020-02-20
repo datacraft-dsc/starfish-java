@@ -21,7 +21,7 @@ import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.keeper.DexResolver;
+import sg.dex.starfish.dexchain.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
 

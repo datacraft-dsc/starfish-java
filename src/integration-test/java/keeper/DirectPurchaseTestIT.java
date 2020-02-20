@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import sg.dex.starfish.impl.squid.SquidService;
-import sg.dex.starfish.keeper.DexConfig;
-import sg.dex.starfish.keeper.DexConfigFactory;
-import sg.dex.starfish.keeper.DirectPurchaseAdapter;
+import sg.dex.starfish.dexchain.DexConfig;
+import sg.dex.starfish.dexchain.DexConfigFactory;
+import sg.dex.starfish.dexchain.DirectPurchaseAdapter;
 
 import java.io.IOException;
 import java.math.BigInteger;

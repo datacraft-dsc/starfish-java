@@ -1,4 +1,4 @@
-package sg.dex.starfish.keeper;
+package sg.dex.starfish.dexchain;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
@@ -6,7 +6,6 @@ import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Event;
-import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Credentials;
