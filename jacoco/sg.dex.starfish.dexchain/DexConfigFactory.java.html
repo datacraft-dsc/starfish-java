@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexConfigFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain</a> &gt; <span class="el_source">DexConfigFactory.java</span></div><h1>DexConfigFactory.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain;
+
+import org.web3j.tx.TransactionManager;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.Properties;
+
+/**
+ * Factory to get instances of DexConfig
+ */
+<span class="nc" id="L16">public class DexConfigFactory {</span>
+
+
+    private static final String DEFAULT_KEEPER_URL = &quot;http://localhost:8545&quot;;
+<span class="fc" id="L20">    private static final BigInteger DEFAULT_KEEPER_GAS_LIMIT = BigInteger.valueOf(4712388l);</span>
+<span class="fc" id="L21">    private static final BigInteger DEFAULT_KEEPER_GAS_PRICE = BigInteger.valueOf(100000000000l);</span>
+
+
+    /**
+     * Creates an DexConfig object from a set of properties
+     *
+     * @param String fileName configuration file
+     * @return an DexConfig value with all the values set
+     */
+    public static DexConfig getDexConfig(String fileName) {
+
+<span class="fc" id="L32">        Properties properties = getProperties(fileName);</span>
+<span class="fc" id="L33">        DexConfig dexConfig = new DexConfig();</span>
+
+<span class="fc" id="L35">        dexConfig.setKeeperUrl((String) properties.getOrDefault(DexConfig.KEEPER_URL, DEFAULT_KEEPER_URL));</span>
+<span class="fc" id="L36">        dexConfig.setKeeperGasLimit(new BigInteger((String) properties.getOrDefault(dexConfig.KEEPER_GAS_LIMIT, DEFAULT_KEEPER_GAS_LIMIT.toString())));</span>
+<span class="fc" id="L37">        dexConfig.setKeeperGasPrice(new BigInteger((String) properties.getOrDefault(dexConfig.KEEPER_GAS_PRICE, DEFAULT_KEEPER_GAS_PRICE.toString())));</span>
+<span class="fc" id="L38">        dexConfig.setKeeperTxAttempts(Integer.parseInt(</span>
+<span class="fc" id="L39">                (String) properties.getOrDefault(</span>
+<span class="fc" id="L40">                        DexConfig.KEEPER_TX_ATTEMPTS, String.valueOf(TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH))</span>
+        ));
+<span class="fc" id="L42">        dexConfig.setKeeperTxSleepDuration(</span>
+<span class="fc" id="L43">                Long.parseLong(</span>
+<span class="fc" id="L44">                        (String) properties.getOrDefault(DexConfig.KEEPER_TX_SLEEPDURATION, String.valueOf(TransactionManager.DEFAULT_POLLING_FREQUENCY))</span>
+                ));
+
+<span class="fc" id="L47">        dexConfig.setDidRegistryAddress((String) properties.getOrDefault(dexConfig.DID_REGISTRY_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L48">        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L49">        dexConfig.setTokenAddress((String) properties.getOrDefault(dexConfig.TOKEN_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L50">        dexConfig.setMainAccountAddress((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L51">        dexConfig.setMainAccountPassword((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_PASSWORD, &quot;&quot;));</span>
+<span class="fc" id="L52">        dexConfig.setParityAccountAddress((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L53">        dexConfig.setParityAccountPassword((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_PASSWORD, &quot;&quot;));</span>
+
+<span class="fc" id="L55">        dexConfig.setMainAccountCredentialsFile((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_CREDENTIALS_FILE, &quot;&quot;));</span>
+
+<span class="fc" id="L57">        return dexConfig;</span>
+
+    }
+
+    private static Properties getProperties(String fileName) {
+        File file;
+
+<span class="fc" id="L64">        URL resource = DexConfigFactory.class.getClassLoader().getResource(fileName);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (resource == null) {</span>
+<span class="nc" id="L66">            file =  new File(fileName);</span>
+        } else {
+<span class="fc" id="L68">            file = new File(resource.getFile());</span>
+        }
+
+<span class="fc" id="L71">        Properties prop = new Properties();</span>
+
+<span class="fc" id="L73">        try (InputStream input = new FileInputStream(file.getPath())) {</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            if (input == null) {</span>
+<span class="nc" id="L76">                throw new IOException(&quot;properties files is missing&quot;);</span>
+            }
+
+<span class="fc" id="L79">            prop.load(input);</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            e.printStackTrace();</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">        return prop;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

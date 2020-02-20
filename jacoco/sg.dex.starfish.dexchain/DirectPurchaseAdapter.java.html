@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectPurchaseAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain</a> &gt; <span class="el_source">DirectPurchaseAdapter.java</span></div><h1>DirectPurchaseAdapter.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain;
+
+import com.oceanprotocol.keeper.contracts.OceanToken;
+import io.reactivex.Flowable;
+import org.web3j.abi.EventEncoder;
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.Keys;
+import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+import org.web3j.utils.Numeric;
+import sg.dex.starfish.util.Hex;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+
+/**
+ * Direct purchase adapter.
+ * &lt;p&gt;
+ * It provides direct purchase functionality
+ * &lt;/p&gt;
+ *
+ * @author Ilya Bukalov
+ */
+public final class DirectPurchaseAdapter {
+    private DirectPurchase directPurchase;
+    private OceanToken oceanToken;
+
+    /**
+     * Create DirectPurchaseAdapter
+     *
+     * @param directPurchase contract
+     * @param oceanToken   contract
+     */
+<span class="fc" id="L44">    private DirectPurchaseAdapter(DirectPurchase directPurchase, OceanToken oceanToken) {</span>
+<span class="fc" id="L45">        this.directPurchase = directPurchase;</span>
+<span class="fc" id="L46">        this.oceanToken = oceanToken;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Creates a DirectPurchaseAdapter
+     *
+     * @param  DexConfig config
+     * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
+     * @throws IOException
+     */
+    public static DirectPurchaseAdapter create(DexConfig dexConfig) throws IOException {
+        // getting properties
+
+<span class="fc" id="L59">        String directPurchaseAddress = dexConfig.getDirectPurchaseAddress();</span>
+<span class="fc" id="L60">        String oceanTokenAddress = dexConfig.getTokenAddress();</span>
+
+<span class="fc" id="L62">        Credentials credentials = null;</span>
+        try {
+<span class="fc" id="L64">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="nc" id="L65">        } catch (CipherException e) {</span>
+<span class="nc" id="L66">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
+<span class="nc" id="L67">            e.printStackTrace();</span>
+<span class="fc" id="L68">        }</span>
+
+<span class="fc" id="L70">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L71">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L72">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+
+        // loading contract instances
+<span class="fc" id="L75">        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress,  web3, txManager, gasProvider);</span>
+<span class="fc" id="L76">        OceanToken oceanToken = OceanToken.load(oceanTokenAddress,  web3, txManager, gasProvider);</span>
+<span class="fc" id="L77">        return new DirectPurchaseAdapter(directPurchase, oceanToken);</span>
+    }
+
+    /**
+     * Sends tokens and log this transaction in blockchain.
+     *
+     * @param to         The publisher address who is paid for asset
+     * @param amount     The amount of tokens being transferred
+     * @param reference1 32 byte identifier (agent id)
+     * @param reference2 Unique 32 byte identifier of asset
+     * @return TransactionReceipt Ethereum transaction receipt.
+     */
+    public TransactionReceipt sendTokenAndLog(String to, BigInteger amount, String reference1, String reference2) {
+<span class="fc" id="L90">        TransactionReceipt receipt = null;</span>
+<span class="fc" id="L91">        boolean tokenApproved = tokenApprove(directPurchase.getContractAddress(), amount.toString());</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (tokenApproved) {</span>
+            try {
+<span class="fc" id="L94">                byte[] ref1 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference1));</span>
+<span class="fc" id="L95">                byte[] ref2 = Numeric.hexStringToByteArray(Hex.toZeroPaddedHex(reference2));</span>
+<span class="fc" id="L96">                receipt = directPurchase.sendTokenAndLog(to, amount, ref1, ref2).send();</span>
+<span class="nc" id="L97">            } catch (Exception e) {</span>
+<span class="nc" id="L98">                e.printStackTrace();</span>
+<span class="nc" id="L99">                return receipt;</span>
+<span class="fc" id="L100">            }</span>
+<span class="fc" id="L101">            return receipt;</span>
+        }
+<span class="nc" id="L103">        return receipt;</span>
+    }
+
+    /**
+     * Returns whether the transaction is successful
+     *
+     * @param spenderAddress The address who will be allowed to spend tokens of signer
+     * @param price          Amount of tokens to spend
+     * @return boolean
+     */
+    public boolean tokenApprove(String spenderAddress, String price) {
+<span class="fc" id="L114">        String checksumAddress = Keys.toChecksumAddress(spenderAddress);</span>
+
+        try {
+
+<span class="fc" id="L118">            TransactionReceipt receipt = oceanToken.approve(</span>
+                    checksumAddress,
+                    new BigInteger(price)
+<span class="fc" id="L121">            ).send();</span>
+
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (!receipt.getStatus().equals(&quot;0x1&quot;)) {</span>
+<span class="nc" id="L124">                System.err.println(&quot;The Status received is not valid executing Token Approve: &quot; + receipt.getStatus());</span>
+<span class="nc" id="L125">                return false;</span>
+            }
+
+<span class="fc" id="L128">            return true;</span>
+
+<span class="nc" id="L130">        } catch (Exception e) {</span>
+<span class="nc" id="L131">            System.err.println(&quot;Error executing Token Approve &quot; + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L132">            return false;</span>
+        }
+    }
+
+    /**
+     * Check whether purchase is done
+     *
+     * @param purchaser_address The address who paid for asset
+     * @param publisher_address The address who was paid for asset
+     * @param amount            Token amount to check
+     * @param reference         Unique 32 byte identifier of asset
+     * @return boolean          Result
+     */
+    public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference) {
+<span class="fc" id="L146">        String purchaser_padded = Hex.toZeroPaddedHex(purchaser_address);</span>
+<span class="fc" id="L147">        String publisher_padded = Hex.toZeroPaddedHex(publisher_address);</span>
+<span class="fc" id="L148">        String reference_padded = Hex.toZeroPaddedHex(reference);</span>
+<span class="fc" id="L149">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());</span>
+
+<span class="fc" id="L151">        filter.addSingleTopic(EventEncoder.encode(DirectPurchase.TOKENSENT_EVENT));</span>
+        // addOptionalTopic does not work for some reason.
+<span class="fc" id="L153">        filter.addSingleTopic(purchaser_padded);</span>
+<span class="fc" id="L154">        filter.addSingleTopic(publisher_padded);</span>
+<span class="fc" id="L155">        filter.addSingleTopic(reference_padded);</span>
+
+<span class="fc" id="L157">        Flowable&lt;DirectPurchase.TokenSentEventResponse&gt; floable = directPurchase.tokenSentEventFlowable(filter);</span>
+<span class="fc" id="L158">        ArrayList&lt;DirectPurchase.TokenSentEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L159">        floable.subscribe(log -&gt; {</span>
+<span class="fc" id="L160">            outcome.add(log);</span>
+<span class="fc" id="L161">        });</span>
+
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        for (DirectPurchase.TokenSentEventResponse obj : outcome) {</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (obj._amount.equals(amount))</span>
+<span class="fc" id="L165">                return true;</span>
+<span class="nc" id="L166">        }</span>
+<span class="nc" id="L167">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
