@@ -47,7 +47,7 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static Resolver create() throws IOException {
-         return create("resolver_default.properties");
+         return create("dex_chain.properties");
     }
 
     /**
