@@ -402,7 +402,6 @@
 					<excludes>
 						<exclude>**/remote/*.*</exclude>
 						<exclude>**/squid/*.*</exclude>
-						<exclude>**/keeper/*.*</exclude>
 						<exclude>**/cli/*.*</exclude>
 						<exclude>**/constant/*.*</exclude>
 					</excludes>
