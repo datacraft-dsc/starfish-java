@@ -12,6 +12,14 @@ import sg.dex.starfish.dexchain.impl.DexTransactionManager;
 
 import java.io.IOException;
 
+/**
+ * DexChain.
+ * <p>
+ * It provides chain initialization.
+ * </p>
+ *
+ * @author Ilya Bukalov
+ */
 public class DexChain {
     private static DexChain instance = null;
 
@@ -19,7 +27,11 @@ public class DexChain {
     private TransactionManager txManager;
     private ContractGasProvider gasProvider;
     private DexConfig dexConfig;
-    
+
+    /**
+     * Create DexChain.
+     * Uses default chain configuration.
+     */
     private DexChain()
     {
         dexConfig = DexConfigFactory.getDexConfig("dex_chain.properties");
@@ -37,6 +49,11 @@ public class DexChain {
         gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());
     }
 
+    /**
+     * Creates and returns singleton DexChain
+     *
+     * @return singleton of DexChain
+     */
     public static DexChain getInstance()
     {
         if (instance == null)
