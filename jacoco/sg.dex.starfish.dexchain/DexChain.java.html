@@ -12,53 +12,70 @@ import sg.dex.starfish.dexchain.impl.DexTransactionManager;
 
 import java.io.IOException;
 
+/**
+ * DexChain.
+ * &lt;p&gt;
+ * It provides chain initialization.
+ * &lt;/p&gt;
+ *
+ * @author Ilya Bukalov
+ */
 public class DexChain {
-<span class="fc" id="L16">    private static DexChain instance = null;</span>
+<span class="fc" id="L24">    private static DexChain instance = null;</span>
 
     private Web3j web3;
     private TransactionManager txManager;
     private ContractGasProvider gasProvider;
     private DexConfig dexConfig;
-    
+
+    /**
+     * Create DexChain.
+     * Uses default chain configuration.
+     */
     private DexChain()
-<span class="fc" id="L24">    {</span>
-<span class="fc" id="L25">        dexConfig = DexConfigFactory.getDexConfig(&quot;dex_chain.properties&quot;);</span>
+<span class="fc" id="L36">    {</span>
+<span class="fc" id="L37">        dexConfig = DexConfigFactory.getDexConfig(&quot;dex_chain.properties&quot;);</span>
 
-<span class="fc" id="L27">        Credentials credentials = null;</span>
+<span class="fc" id="L39">        Credentials credentials = null;</span>
         try {
-<span class="fc" id="L29">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
-<span class="nc" id="L30">        } catch (CipherException | IOException e) {</span>
-<span class="nc" id="L31">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
-<span class="nc" id="L32">            e.printStackTrace();</span>
-<span class="fc" id="L33">        }</span>
+<span class="fc" id="L41">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="nc" id="L42">        } catch (CipherException | IOException e) {</span>
+<span class="nc" id="L43">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
+<span class="nc" id="L44">            e.printStackTrace();</span>
+<span class="fc" id="L45">        }</span>
 
-<span class="fc" id="L35">        web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
-<span class="fc" id="L36">        txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
-<span class="fc" id="L37">        gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L47">        web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L48">        txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L49">        gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+<span class="fc" id="L50">    }</span>
 
+    /**
+     * Creates and returns singleton DexChain
+     *
+     * @return singleton of DexChain
+     */
     public static DexChain getInstance()
     {
-<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (instance == null)</span>
-<span class="fc" id="L43">            instance = new DexChain();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (instance == null)</span>
+<span class="fc" id="L60">            instance = new DexChain();</span>
 
-<span class="fc" id="L45">        return instance;</span>
+<span class="fc" id="L62">        return instance;</span>
     }
 
     public Web3j getWeb3j() {
-<span class="fc" id="L49">        return web3;</span>
+<span class="fc" id="L66">        return web3;</span>
     }
 
     public TransactionManager getTransactionManager() {
-<span class="fc" id="L53">        return txManager;</span>
+<span class="fc" id="L70">        return txManager;</span>
     }
 
     public ContractGasProvider getContractGasProvider() {
-<span class="fc" id="L57">        return gasProvider;</span>
+<span class="fc" id="L74">        return gasProvider;</span>
     }
 
     public DexConfig getDexConfig() {
-<span class="fc" id="L61">        return dexConfig;</span>
+<span class="fc" id="L78">        return dexConfig;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
