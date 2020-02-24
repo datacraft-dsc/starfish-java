@@ -8,7 +8,6 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class TestAgentRegistration_IT {
     @Test
-    public void testRegistration() throws IOException {
+    public void testRegistration() {
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
         services.add(Utils.mapOf(

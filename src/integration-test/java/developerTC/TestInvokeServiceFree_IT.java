@@ -45,7 +45,7 @@ public class TestInvokeServiceFree_IT {
 
 
     @BeforeEach
-    public void setUp() throws IOException {
+    public void setUp() {
         // resolver=DexResolver.create("application_resolver.properties");
         resolver = new LocalResolverImpl();
         // surfer should be running

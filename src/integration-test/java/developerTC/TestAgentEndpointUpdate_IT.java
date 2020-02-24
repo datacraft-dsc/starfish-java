@@ -38,7 +38,7 @@ public class TestAgentEndpointUpdate_IT {
         assertNull(remoteAgent.getAuthEndpoint());
     }
 
-    private RemoteAgent createRemoteAgent(String host) throws IOException {
+    private RemoteAgent createRemoteAgent(String host) {
 
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();

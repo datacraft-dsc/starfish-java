@@ -54,12 +54,7 @@ public class AgentService {
         String port_invoke = properties.getProperty("koi.port");
 
         invokeUrl = ip_invoke + ":" + port_invoke;
-        Resolver resolver = null;
-        try {
-            resolver = DexResolver.create();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Resolver resolver = DexResolver.create();
         DID didSurfer = DID.createRandom();
         DID didInvoke = DID.createRandom();
 

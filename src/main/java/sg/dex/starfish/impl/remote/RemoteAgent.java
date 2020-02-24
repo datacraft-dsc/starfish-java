@@ -74,7 +74,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param account RemoteAccount for this agent
      * @return RemoteAgent
      */
-    private static RemoteAgent create(String url, RemoteAccount account) throws URISyntaxException, IOException {
+    private static RemoteAgent create(String url, RemoteAccount account) throws URISyntaxException {
 
         if (url == null) throw new IllegalArgumentException("URL  cannot be null ");
         if (account == null) throw new IllegalArgumentException("Account cannot be null ");
@@ -176,7 +176,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param acc remote account that need to be updated in remote Agent
      * @return New Remote Agent Instance
      */
-    public static RemoteAgent connect(DID did, RemoteAccount acc) throws IOException {
+    public static RemoteAgent connect(DID did, RemoteAccount acc) {
         if (null == did || null == acc) {
             throw new IllegalArgumentException("Missing Argument , Either DID or Account is null");
         }

@@ -11,7 +11,6 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,7 @@ public class TestRemoteAgentTest_IT {
     }
 
     @Test
-    public void testCreatRemoteAgent_WithCredential() throws IOException {
+    public void testCreatRemoteAgent_WithCredential() {
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
@@ -61,7 +60,7 @@ public class TestRemoteAgentTest_IT {
     }
 
     @Test
-    public void testCreatRemoteAgent_WithToken() throws IOException {
+    public void testCreatRemoteAgent_WithToken() {
         DID did = DID.createRandom();
 
         Resolver resolver = DexResolver.create();
@@ -92,7 +91,7 @@ public class TestRemoteAgentTest_IT {
     }
 
     @Test
-    public void testCreatRemoteAccount_WithUsernamePassword() throws IOException {
+    public void testCreatRemoteAccount_WithUsernamePassword() {
 
         DID did = DID.createRandom();
 
@@ -111,7 +110,7 @@ public class TestRemoteAgentTest_IT {
     }
 
     @Test
-    public void testCreatRemoteAccount_WithWrongUsernamePassword() throws IOException {
+    public void testCreatRemoteAccount_WithWrongUsernamePassword() {
 
         DID did = DID.createRandom();
 

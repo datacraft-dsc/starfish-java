@@ -7,8 +7,6 @@ import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
 
-import java.io.IOException;
-
 /**
  * Class encapsulating all possible resolvers
  * and automatically deciding which one to choose.
@@ -35,9 +33,8 @@ public class UniversalResolver implements Resolver {
      *
      * @param squidConfigFile squidConfigFile. Squid config file which is used to initialize Squid Resolver.
      * @return UniversalResolver The newly created UniversalResolver
-     * @throws IOException
      */
-    public static UniversalResolver create(String squidConfigFile) throws IOException {
+    public static UniversalResolver create(String squidConfigFile) {
         SquidService squidService = SquidService.create(squidConfigFile);
         return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));
     }
@@ -46,9 +43,8 @@ public class UniversalResolver implements Resolver {
      * Creates UniversalResolver
      *
      * @return UniversalResolver The newly created UniversalResolver
-     * @throws IOException
      */
-    public static UniversalResolver create() throws IOException {
+    public static UniversalResolver create() {
         return new UniversalResolver(DexResolver.create(), null);
     }
 
