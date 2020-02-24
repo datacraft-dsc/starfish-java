@@ -7,8 +7,6 @@ import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
 
-import java.io.IOException;
-
 /**
  * Class encapsulating all possible resolvers
  * and automatically deciding which one to choose.
@@ -25,55 +23,53 @@ public class UniversalResolver implements Resolver {
      * @param dexResolver       dexResolver
      * @param squidResolverImpl squidResolverImpl
      */
-<span class="nc" id="L28">    private UniversalResolver(Resolver dexResolver, Resolver squidResolverImpl) {</span>
-<span class="nc" id="L29">        this.dexResolver = dexResolver;</span>
-<span class="nc" id="L30">        this.squidResolverImpl = squidResolverImpl;</span>
-<span class="nc" id="L31">    }</span>
+<span class="nc" id="L26">    private UniversalResolver(Resolver dexResolver, Resolver squidResolverImpl) {</span>
+<span class="nc" id="L27">        this.dexResolver = dexResolver;</span>
+<span class="nc" id="L28">        this.squidResolverImpl = squidResolverImpl;</span>
+<span class="nc" id="L29">    }</span>
 
     /**
      * Creates UniversalResolver
      *
      * @param squidConfigFile squidConfigFile. Squid config file which is used to initialize Squid Resolver.
      * @return UniversalResolver The newly created UniversalResolver
-     * @throws IOException
      */
-    public static UniversalResolver create(String squidConfigFile) throws IOException {
-<span class="nc" id="L41">        SquidService squidService = SquidService.create(squidConfigFile);</span>
-<span class="nc" id="L42">        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));</span>
+    public static UniversalResolver create(String squidConfigFile) {
+<span class="nc" id="L38">        SquidService squidService = SquidService.create(squidConfigFile);</span>
+<span class="nc" id="L39">        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));</span>
     }
 
     /**
      * Creates UniversalResolver
      *
      * @return UniversalResolver The newly created UniversalResolver
-     * @throws IOException
      */
-    public static UniversalResolver create() throws IOException {
-<span class="nc" id="L52">        return new UniversalResolver(DexResolver.create(), null);</span>
+    public static UniversalResolver create() {
+<span class="nc" id="L48">        return new UniversalResolver(DexResolver.create(), null);</span>
     }
 
     @Override
     public String getDDOString(DID did) throws ResolverException {
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
-<span class="nc" id="L58">            return this.dexResolver.getDDOString(did);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
+<span class="nc" id="L54">            return this.dexResolver.getDDOString(did);</span>
         } else {
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
-<span class="nc" id="L61">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
+<span class="nc" id="L57">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
             }
-<span class="nc" id="L63">            return this.squidResolverImpl.getDDOString(did);</span>
+<span class="nc" id="L59">            return this.squidResolverImpl.getDDOString(did);</span>
         }
     }
 
     @Override
     public void registerDID(DID did, String ddo) throws ResolverException {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
-<span class="nc" id="L70">            this.dexResolver.registerDID(did, ddo);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
+<span class="nc" id="L66">            this.dexResolver.registerDID(did, ddo);</span>
         } else {
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
-<span class="nc" id="L73">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
+<span class="nc" id="L69">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
             }
-<span class="nc" id="L75">            this.squidResolverImpl.registerDID(did, ddo);</span>
+<span class="nc" id="L71">            this.squidResolverImpl.registerDID(did, ddo);</span>
         }
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L73">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

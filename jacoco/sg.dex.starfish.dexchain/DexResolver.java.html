@@ -44,16 +44,15 @@ public class DexResolver implements Resolver {
      * Creates default DexResolver
      *
      * @return DexResolver The newly created DexResolver
-     * @throws IOException
      */
-    public static Resolver create() throws IOException {
-<span class="fc" id="L50">        DexConfig dexConfig = DexChain.getInstance().getDexConfig();</span>
-<span class="fc" id="L51">        DIDRegistry contract = DIDRegistry.load(</span>
-<span class="fc" id="L52">               dexConfig.getDidRegistryAddress(),</span>
-<span class="fc" id="L53">               DexChain.getInstance().getWeb3j(),</span>
-<span class="fc" id="L54">               DexChain.getInstance().getTransactionManager(),</span>
-<span class="fc" id="L55">               DexChain.getInstance().getContractGasProvider());</span>
-<span class="fc" id="L56">        return new DexResolver(contract, dexConfig);</span>
+    public static Resolver create() {
+<span class="fc" id="L49">        DexConfig dexConfig = DexChain.getInstance().getDexConfig();</span>
+<span class="fc" id="L50">        DIDRegistry contract = DIDRegistry.load(</span>
+<span class="fc" id="L51">               dexConfig.getDidRegistryAddress(),</span>
+<span class="fc" id="L52">               DexChain.getInstance().getWeb3j(),</span>
+<span class="fc" id="L53">               DexChain.getInstance().getTransactionManager(),</span>
+<span class="fc" id="L54">               DexChain.getInstance().getContractGasProvider());</span>
+<span class="fc" id="L55">        return new DexResolver(contract, dexConfig);</span>
     }
 
     /**
@@ -64,64 +63,64 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static DexResolver create(String configFile) throws IOException {
-<span class="fc" id="L67">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
+<span class="fc" id="L66">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
 
-<span class="fc" id="L69">        Credentials credentials = null;</span>
+<span class="fc" id="L68">        Credentials credentials = null;</span>
         try {
-<span class="fc" id="L71">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
-<span class="nc" id="L72">        } catch (CipherException e) {</span>
-<span class="nc" id="L73">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
-<span class="nc" id="L74">            e.printStackTrace();</span>
-<span class="fc" id="L75">        }</span>
+<span class="fc" id="L70">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="nc" id="L71">        } catch (CipherException e) {</span>
+<span class="nc" id="L72">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
+<span class="nc" id="L73">            e.printStackTrace();</span>
+<span class="fc" id="L74">        }</span>
 
-<span class="fc" id="L77">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
-<span class="fc" id="L78">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
-<span class="fc" id="L79">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
-<span class="fc" id="L80">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
-<span class="fc" id="L81">        return new DexResolver(contract, dexConfig);</span>
+<span class="fc" id="L76">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L77">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L78">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+<span class="fc" id="L79">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
+<span class="fc" id="L80">        return new DexResolver(contract, dexConfig);</span>
     }
 
     @Override
     public String getDDOString(DID did) throws ResolverException {
-<span class="fc" id="L86">        String didHash = did.getID();</span>
-<span class="fc" id="L87">        BigInteger blockNumber = BigInteger.valueOf(0);</span>
+<span class="fc" id="L85">        String didHash = did.getID();</span>
+<span class="fc" id="L86">        BigInteger blockNumber = BigInteger.valueOf(0);</span>
         try {
-<span class="fc" id="L89">            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();</span>
-<span class="nc" id="L90">        } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L91">            throw new ResolverException(e);</span>
-<span class="nc" id="L92">        } catch (Exception e) {</span>
-<span class="nc" id="L93">            throw new ResolverException(e);</span>
-<span class="fc" id="L94">        }</span>
+<span class="fc" id="L88">            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();</span>
+<span class="nc" id="L89">        } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L90">            throw new ResolverException(e);</span>
+<span class="nc" id="L91">        } catch (Exception e) {</span>
+<span class="nc" id="L92">            throw new ResolverException(e);</span>
+<span class="fc" id="L93">        }</span>
 
-<span class="fc" id="L96">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());</span>
-<span class="fc" id="L97">        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDREGISTERED_EVENT));</span>
-<span class="fc" id="L98">        String didTopic = &quot;0x&quot; + didHash;</span>
-<span class="fc" id="L99">        filter.addOptionalTopics(didTopic);</span>
-<span class="fc" id="L100">        Flowable&lt;DIDRegistry.DIDRegisteredEventResponse&gt; floable = contract.dIDRegisteredEventFlowable(filter);</span>
-<span class="fc" id="L101">        ArrayList&lt;DIDRegistry.DIDRegisteredEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L102">        floable.subscribe(log -&gt; {</span>
-<span class="fc" id="L103">            outcome.add(log);</span>
-<span class="fc" id="L104">        });</span>
+<span class="fc" id="L95">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());</span>
+<span class="fc" id="L96">        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDREGISTERED_EVENT));</span>
+<span class="fc" id="L97">        String didTopic = &quot;0x&quot; + didHash;</span>
+<span class="fc" id="L98">        filter.addOptionalTopics(didTopic);</span>
+<span class="fc" id="L99">        Flowable&lt;DIDRegistry.DIDRegisteredEventResponse&gt; floable = contract.dIDRegisteredEventFlowable(filter);</span>
+<span class="fc" id="L100">        ArrayList&lt;DIDRegistry.DIDRegisteredEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L101">        floable.subscribe(log -&gt; {</span>
+<span class="fc" id="L102">            outcome.add(log);</span>
+<span class="fc" id="L103">        });</span>
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        return outcome.size() == 1 ? outcome.get(0)._value : null;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        return outcome.size() == 1 ? outcome.get(0)._value : null;</span>
     }
 
     @Override
     public void registerDID(DID did, String ddo) throws ResolverException {
-<span class="fc" id="L111">        TransactionReceipt receipt = null;</span>
+<span class="fc" id="L110">        TransactionReceipt receipt = null;</span>
         try {
-<span class="fc" id="L113">            receipt = contract.registerDID(</span>
-<span class="fc" id="L114">                    Numeric.hexStringToByteArray(did.getID()), ddo).send();</span>
-<span class="nc" id="L115">        } catch (IOException e) {</span>
-<span class="nc" id="L116">            throw new ResolverException(e);</span>
-<span class="nc" id="L117">        } catch (CipherException e) {</span>
-<span class="nc" id="L118">            throw new ResolverException(e);</span>
-<span class="fc" id="L119">        } catch (Exception e) {</span>
-<span class="fc" id="L120">            throw new ResolverException(e);</span>
-<span class="fc" id="L121">        }</span>
+<span class="fc" id="L112">            receipt = contract.registerDID(</span>
+<span class="fc" id="L113">                    Numeric.hexStringToByteArray(did.getID()), ddo).send();</span>
+<span class="nc" id="L114">        } catch (IOException e) {</span>
+<span class="nc" id="L115">            throw new ResolverException(e);</span>
+<span class="nc" id="L116">        } catch (CipherException e) {</span>
+<span class="nc" id="L117">            throw new ResolverException(e);</span>
+<span class="fc" id="L118">        } catch (Exception e) {</span>
+<span class="fc" id="L119">            throw new ResolverException(e);</span>
+<span class="fc" id="L120">        }</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
-<span class="nc" id="L124">            throw new ResolverException();</span>
-<span class="fc" id="L125">    }</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
+<span class="nc" id="L123">            throw new ResolverException();</span>
+<span class="fc" id="L124">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
