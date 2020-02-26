@@ -8,7 +8,7 @@ import com.oceanprotocol.squid.manager.OceanManager;
 import com.oceanprotocol.squid.models.DDO;
 import org.web3j.crypto.CipherException;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.Hex;
 
@@ -31,7 +31,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
         try {
             com.oceanprotocol.squid.models.DID squidDID = new com.oceanprotocol.squid.models.DID(did.toString());
             OceanManager oceanManager = squidService.getResolverManager();
@@ -40,7 +40,7 @@ public class SquidResolverImpl implements Resolver {
                 return ddo.toJson();
             }
         } catch (EthereumException | DDOException | DIDFormatException | IOException | CipherException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         }
         return null;
 
@@ -60,7 +60,7 @@ public class SquidResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddo) throws ResolverException {
+    public void registerDID(DID did, String ddo) throws DexChainException {
         installLocalDDO(did, ddo);
 
         try {
@@ -70,13 +70,13 @@ public class SquidResolverImpl implements Resolver {
                             Hex.toZeroPaddedHexNoPrefix("0"), Arrays.asList(squidService.getProvider()));
 
         } catch (DIDRegisterException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (IOException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (CipherException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (DIDFormatException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         }
     }
 

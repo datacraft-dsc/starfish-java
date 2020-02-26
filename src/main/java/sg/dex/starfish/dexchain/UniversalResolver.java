@@ -2,7 +2,7 @@ package sg.dex.starfish.dexchain;
 
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
@@ -49,24 +49,24 @@ public class UniversalResolver implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
         if (did.getMethod() == Constant.DID_METHOD) {
             return this.dexResolver.getDDOString(did);
         } else {
             if (squidResolverImpl == null) {
-                throw new ResolverException("Config for Ocean Protocol type of DID must be provided");
+                throw new DexChainException("Config for Ocean Protocol type of DID must be provided");
             }
             return this.squidResolverImpl.getDDOString(did);
         }
     }
 
     @Override
-    public void registerDID(DID did, String ddo) throws ResolverException {
+    public void registerDID(DID did, String ddo) throws DexChainException {
         if (did.getMethod() == Constant.DID_METHOD) {
             this.dexResolver.registerDID(did, ddo);
         } else {
             if (squidResolverImpl == null) {
-                throw new ResolverException("Config for Ocean Protocol type of DID must be provided");
+                throw new DexChainException("Config for Ocean Protocol type of DID must be provided");
             }
             this.squidResolverImpl.registerDID(did, ddo);
         }
