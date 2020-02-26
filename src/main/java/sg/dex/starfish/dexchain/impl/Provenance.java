@@ -110,7 +110,7 @@ public class Provenance extends Contract {
         return assetRegisteredEventFlowable(filter);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> initialize() {
+    public RemoteCall<TransactionReceipt> initialize() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
                 FUNC_INITIALIZE, 
                 Arrays.<Type>asList(), 
@@ -118,7 +118,7 @@ public class Provenance extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> registerDID(byte[] _assetId) {
+    public RemoteCall<TransactionReceipt> registerDID(byte[] _assetId) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
                 FUNC_REGISTERDID, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), 
@@ -126,7 +126,7 @@ public class Provenance extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<BigInteger> getBlockNumber(byte[] _assetId) {
+    public RemoteCall<BigInteger> getBlockNumber(byte[] _assetId) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBER, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
