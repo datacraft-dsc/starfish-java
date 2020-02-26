@@ -1,4 +1,4 @@
-package sg.dex.starfish.dexchain;
+package sg.dex.starfish.dexchain.impl;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
@@ -19,7 +19,6 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.RemoteCall;
-import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.BaseEventResponse;
 import org.web3j.protocol.core.methods.response.Log;
