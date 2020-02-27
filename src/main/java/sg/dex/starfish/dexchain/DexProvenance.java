@@ -18,6 +18,11 @@ public class DexProvenance {
     private Provenance contract;
     private DexConfig config;
 
+    public static class DexProvenanceResult {
+        public String user;
+        java.sql.Timestamp timeStamp;
+    }
+
     /**
      * Creates default DexProvenance
      * @return DexProvenance The newly created DexProvenance
@@ -68,9 +73,10 @@ public class DexProvenance {
      * Get asset provenance
      *
      * @param String assetId
+     * @return Array of DexProvenanceResult. Results of all records related to given asset
      * @throws DexChainException
      */
-    public void getAssetProvenance(String assetId) throws DexChainException {
+    public ArrayList<DexProvenanceResult> getAssetProvenance(String assetId) throws DexChainException {
         BigInteger blockNumber;
         try {
             blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();
@@ -85,14 +91,13 @@ public class DexProvenance {
         String didTopic = "0x" + assetId;
         filter.addOptionalTopics(didTopic);
         Flowable<Provenance.AssetRegisteredEventResponse> floable = contract.assetRegisteredEventFlowable(filter);
-        ArrayList<Provenance.AssetRegisteredEventResponse> outcome = new ArrayList<>();
+        ArrayList<DexProvenanceResult> outcome = new ArrayList<>();
         floable.subscribe(log -> {
-            outcome.add(log);
+            DexProvenanceResult newResult = new DexProvenanceResult();
+            newResult.timeStamp = new java.sql.Timestamp(log._timestamp.longValue());
+            newResult.user = log._user;
+            outcome.add(newResult);
         });
-
-        for ( Provenance.AssetRegisteredEventResponse obj:outcome) {
-            java.sql.Timestamp timeStamp = new java.sql.Timestamp(obj._timestamp.longValue());
-            System.out.println(timeStamp.toString());
-        }
+        return  outcome;
     }
 }
