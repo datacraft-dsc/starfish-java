@@ -30,4 +30,11 @@ public class ProvenanceTest {
         ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
         assertTrue(results.size() == 2);
     }
+
+    @Test
+    public void testCheckNonExisting()  {
+        DID assetId = DID.createRandom();
+        ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
+        assertTrue(results.size() == 0);
+    }
 }
