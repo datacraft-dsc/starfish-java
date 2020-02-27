@@ -13,6 +13,14 @@ import sg.dex.starfish.exception.DexChainException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/**
+ * Dex Provenance
+ * <p>
+ * It provides interface for registering assets on chain and getting their provenance.
+ * </p>
+ *
+ * @author Ilya Bukalov
+ */
 public class DexProvenance {
     private Provenance contract;
     private DexConfig config;
@@ -48,7 +56,7 @@ public class DexProvenance {
     }
 
     /**
-     * Register asset
+     * Register asset on chain.
      *
      * @param String assetId
      * @throws DexChainException
@@ -69,7 +77,7 @@ public class DexProvenance {
     }
 
     /**
-     * Get asset provenance
+     * Get asset provenance from chain.
      *
      * @param String assetId
      * @return Array of DexProvenanceResult. Results of all records related to given asset
