@@ -95,7 +95,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;params&quot;);</span>
+<span class="nc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;inputs&quot;);</span>
     }
 
     /**
