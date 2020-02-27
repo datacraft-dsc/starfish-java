@@ -10,7 +10,6 @@ import org.web3j.utils.Numeric;
 import sg.dex.starfish.dexchain.impl.Provenance;
 import sg.dex.starfish.exception.DexChainException;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class DexProvenance {
 
     public static class DexProvenanceResult {
         public String user;
-        java.sql.Timestamp timeStamp;
+        java.util.Date timeStamp;
     }
 
     /**
@@ -80,8 +79,6 @@ public class DexProvenance {
         BigInteger blockNumber;
         try {
             blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();
-        } catch (UnsupportedEncodingException e) {
-            throw new DexChainException(e);
         } catch (Exception e) {
             throw new DexChainException(e);
         }
@@ -94,7 +91,7 @@ public class DexProvenance {
         ArrayList<DexProvenanceResult> outcome = new ArrayList<>();
         floable.subscribe(log -> {
             DexProvenanceResult newResult = new DexProvenanceResult();
-            newResult.timeStamp = new java.sql.Timestamp(log._timestamp.longValue());
+            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);
             newResult.user = log._user;
             outcome.add(newResult);
         });
