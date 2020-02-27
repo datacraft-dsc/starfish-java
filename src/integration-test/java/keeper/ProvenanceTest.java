@@ -3,19 +3,31 @@ package keeper;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.dexchain.DexProvenance;
 import sg.dex.starfish.util.DID;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProvenanceTest {
     private DexProvenance provenance;
-    private DID assetId;
 
     public ProvenanceTest() {
         provenance = DexProvenance.create();
-        assetId = DID.createRandom();
     }
 
     @Test
-    public void testRegisterAsset()  {
+    public void testRegisterAssetOne()  {
+        DID assetId = DID.createRandom();
         provenance.registerAsset(assetId.getID());
-        provenance.getAssetProvenance(assetId.getID());
+        ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
+        assertTrue(results.size() == 1);
+    }
+
+    @Test
+    public void testRegisterAssetTwo()  {
+        DID assetId = DID.createRandom();
+        provenance.registerAsset(assetId.getID());
+        provenance.registerAsset(assetId.getID());
+        ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
+        assertTrue(results.size() == 2);
     }
 }
