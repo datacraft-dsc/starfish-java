@@ -32,12 +32,12 @@ public class DexChain {
      * Create DexChain.
      * Uses default chain configuration.
      */
-    private DexChain()
-    {
-        dexConfig = DexConfigFactory.getDexConfig("dex_chain.properties");
-
+    private DexChain()  {
         Credentials credentials = null;
         try {
+        dexConfig = DexConfigFactory.getDexConfig("dex_chain.properties");
+
+
             credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());
         } catch (CipherException | IOException e) {
             System.err.println("Wrong credential file or its password");
