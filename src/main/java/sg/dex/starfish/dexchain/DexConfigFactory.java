@@ -2,12 +2,9 @@ package sg.dex.starfish.dexchain;
 
 import org.web3j.tx.TransactionManager;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -24,10 +21,10 @@ public class DexConfigFactory {
     /**
      * Creates an DexConfig object from a set of properties
      *
-     * @param String fileName configuration file
+     * @param fileName fileName configuration file
      * @return an DexConfig value with all the values set
      */
-    public static DexConfig getDexConfig(String fileName) {
+    public static DexConfig getDexConfig(String fileName) throws IOException {
 
         Properties properties = getProperties(fileName);
         DexConfig dexConfig = new DexConfig();
@@ -58,28 +55,21 @@ public class DexConfigFactory {
 
     }
 
-    private static Properties getProperties(String fileName) {
-        File file;
-
-        URL resource = DexConfigFactory.class.getClassLoader().getResource(fileName);
-        if (resource == null) {
-            file =  new File(fileName);
-        } else {
-            file = new File(resource.getFile());
-        }
-
+    private static Properties getProperties(String fileName) throws IOException {
         Properties prop = new Properties();
 
-        try (InputStream input = new FileInputStream(file.getPath())) {
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
 
-            if (input == null) {
-                throw new IOException("properties files is missing");
+            if (inputStream == null) {
+
+                inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
+            } else if (inputStream == null) {
+                throw new IOException("Resource file: " + fileName + "not found ");
             }
 
-            prop.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            prop.load(inputStream);
+
+
         return prop;
     }
 }
