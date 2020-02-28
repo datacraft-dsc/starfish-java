@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalResolverImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.memory</a> &gt; <span class="el_source">LocalResolverImpl.java</span></div><h1>LocalResolverImpl.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -24,7 +24,7 @@ public class LocalResolverImpl implements Resolver {
 <span class="fc" id="L24">    }</span>
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
         // remove path to get DDO for basic did
 <span class="fc" id="L29">        did = did.withoutPath();</span>
 <span class="fc" id="L30">        String localDDO = ddoCache.get(did);</span>
@@ -37,7 +37,7 @@ public class LocalResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddoString) throws ResolverException {
+    public void registerDID(DID did, String ddoString) throws DexChainException {
 <span class="fc" id="L41">        installLocalDDO(did, ddoString);</span>
 <span class="fc" id="L42">    }</span>
 

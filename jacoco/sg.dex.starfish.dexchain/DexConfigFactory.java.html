@@ -42,35 +42,36 @@ import java.util.Properties;
                 ));
 
 <span class="fc" id="L44">        dexConfig.setDidRegistryAddress((String) properties.getOrDefault(dexConfig.DID_REGISTRY_ADDRESS, &quot;&quot;));</span>
-<span class="fc" id="L45">        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, &quot;&quot;));</span>
-<span class="fc" id="L46">        dexConfig.setTokenAddress((String) properties.getOrDefault(dexConfig.TOKEN_ADDRESS, &quot;&quot;));</span>
-<span class="fc" id="L47">        dexConfig.setMainAccountAddress((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_ADDRESS, &quot;&quot;));</span>
-<span class="fc" id="L48">        dexConfig.setMainAccountPassword((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_PASSWORD, &quot;&quot;));</span>
-<span class="fc" id="L49">        dexConfig.setParityAccountAddress((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_ADDRESS, &quot;&quot;));</span>
-<span class="fc" id="L50">        dexConfig.setParityAccountPassword((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_PASSWORD, &quot;&quot;));</span>
+<span class="fc" id="L45">        dexConfig.setProvenanceAddress((String) properties.getOrDefault(dexConfig.PROVENANCE_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L46">        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L47">        dexConfig.setTokenAddress((String) properties.getOrDefault(dexConfig.TOKEN_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L48">        dexConfig.setMainAccountAddress((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L49">        dexConfig.setMainAccountPassword((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_PASSWORD, &quot;&quot;));</span>
+<span class="fc" id="L50">        dexConfig.setParityAccountAddress((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_ADDRESS, &quot;&quot;));</span>
+<span class="fc" id="L51">        dexConfig.setParityAccountPassword((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_PASSWORD, &quot;&quot;));</span>
 
-<span class="fc" id="L52">        dexConfig.setMainAccountCredentialsFile((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_CREDENTIALS_FILE, &quot;&quot;));</span>
+<span class="fc" id="L53">        dexConfig.setMainAccountCredentialsFile((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_CREDENTIALS_FILE, &quot;&quot;));</span>
 
-<span class="fc" id="L54">        return dexConfig;</span>
+<span class="fc" id="L55">        return dexConfig;</span>
 
     }
 
     private static Properties getProperties(String fileName) throws IOException {
-<span class="fc" id="L59">        Properties prop = new Properties();</span>
+<span class="fc" id="L60">        Properties prop = new Properties();</span>
 
-<span class="fc" id="L61">            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);</span>
+<span class="fc" id="L62">            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);</span>
 
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            if (inputStream == null) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (inputStream == null) {</span>
 
-<span class="nc" id="L65">                inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            } else if (inputStream == null) {</span>
-<span class="nc" id="L67">                throw new IOException(&quot;Resource file: &quot; + fileName + &quot;not found &quot;);</span>
+<span class="nc" id="L66">                inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">            } else if (inputStream == null) {</span>
+<span class="nc" id="L68">                throw new IOException(&quot;Resource file: &quot; + fileName + &quot;not found &quot;);</span>
             }
 
-<span class="fc" id="L70">            prop.load(inputStream);</span>
+<span class="fc" id="L71">            prop.load(inputStream);</span>
 
 
-<span class="fc" id="L73">        return prop;</span>
+<span class="fc" id="L74">        return prop;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

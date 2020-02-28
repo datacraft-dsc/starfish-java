@@ -2,7 +2,7 @@
 
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.impl.squid.SquidResolverImpl;
 import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
@@ -49,24 +49,24 @@ public class UniversalResolver implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
 <span class="nc bnc" id="L53" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
 <span class="nc" id="L54">            return this.dexResolver.getDDOString(did);</span>
         } else {
 <span class="nc bnc" id="L56" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
-<span class="nc" id="L57">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
+<span class="nc" id="L57">                throw new DexChainException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
             }
 <span class="nc" id="L59">            return this.squidResolverImpl.getDDOString(did);</span>
         }
     }
 
     @Override
-    public void registerDID(DID did, String ddo) throws ResolverException {
+    public void registerDID(DID did, String ddo) throws DexChainException {
 <span class="nc bnc" id="L65" title="All 2 branches missed.">        if (did.getMethod() == Constant.DID_METHOD) {</span>
 <span class="nc" id="L66">            this.dexResolver.registerDID(did, ddo);</span>
         } else {
 <span class="nc bnc" id="L68" title="All 2 branches missed.">            if (squidResolverImpl == null) {</span>
-<span class="nc" id="L69">                throw new ResolverException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
+<span class="nc" id="L69">                throw new DexChainException(&quot;Config for Ocean Protocol type of DID must be provided&quot;);</span>
             }
 <span class="nc" id="L71">            this.squidResolverImpl.registerDID(did, ddo);</span>
         }

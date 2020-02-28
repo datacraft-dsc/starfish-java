@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexProvenance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain</a> &gt; <span class="el_source">DexProvenance.java</span></div><h1>DexProvenance.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain;
+
+import io.reactivex.Flowable;
+import org.web3j.abi.EventEncoder;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.utils.Numeric;
+import sg.dex.starfish.dexchain.impl.Provenance;
+import sg.dex.starfish.exception.DexChainException;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+
+/**
+ * Dex Provenance
+ * &lt;p&gt;
+ * It provides interface for registering assets on chain and getting their provenance.
+ * &lt;/p&gt;
+ *
+ * @author Ilya Bukalov
+ */
+public class DexProvenance {
+    private Provenance contract;
+    private DexConfig config;
+
+<span class="nc" id="L28">    public static class DexProvenanceResult {</span>
+        public String user;
+        java.util.Date timeStamp;
+    }
+
+    /**
+     * Creates default DexProvenance
+     * @return DexProvenance The newly created DexProvenance
+     */
+    public static DexProvenance create() {
+<span class="nc" id="L38">        DexConfig dexConfig = DexChain.getInstance().getDexConfig();</span>
+<span class="nc" id="L39">        Provenance contract = Provenance.load(</span>
+<span class="nc" id="L40">                dexConfig.getProvenanceAddress(),</span>
+<span class="nc" id="L41">                DexChain.getInstance().getWeb3j(),</span>
+<span class="nc" id="L42">                DexChain.getInstance().getTransactionManager(),</span>
+<span class="nc" id="L43">                DexChain.getInstance().getContractGasProvider());</span>
+<span class="nc" id="L44">        return new DexProvenance(contract, dexConfig);</span>
+    }
+
+    /**
+     * Create DexProvenance
+     *
+     * @param contract contract
+     * @param config   config
+     */
+<span class="nc" id="L53">    private DexProvenance(Provenance contract, DexConfig config) {</span>
+<span class="nc" id="L54">        this.contract = contract;</span>
+<span class="nc" id="L55">        this.config = config;</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Register asset on chain.
+     *
+     * @param String assetId
+     * @throws DexChainException
+     */
+    public void registerAsset(String assetId) throws DexChainException{
+<span class="nc" id="L65">        TransactionReceipt receipt = null;</span>
+
+        try {
+<span class="nc" id="L68">            receipt = contract.registerAsset(</span>
+<span class="nc" id="L69">                    Numeric.hexStringToByteArray(assetId)).send();</span>
+<span class="nc" id="L70">        } catch (Exception e) {</span>
+<span class="nc" id="L71">            e.printStackTrace();</span>
+<span class="nc" id="L72">            throw new DexChainException(e);</span>
+<span class="nc" id="L73">        }</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
+<span class="nc" id="L76">            throw new DexChainException();</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * Get asset provenance from chain.
+     *
+     * @param String assetId
+     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     * @throws DexChainException
+     */
+    public ArrayList&lt;DexProvenanceResult&gt; getAssetProvenance(String assetId) throws DexChainException {
+        BigInteger blockNumber;
+        try {
+<span class="nc" id="L89">            blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();</span>
+<span class="nc" id="L90">        } catch (Exception e) {</span>
+<span class="nc" id="L91">            throw new DexChainException(e);</span>
+<span class="nc" id="L92">        }</span>
+
+<span class="nc" id="L94">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameterName.LATEST, contract.getContractAddress());</span>
+<span class="nc" id="L95">        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));</span>
+<span class="nc" id="L96">        String didTopic = &quot;0x&quot; + assetId;</span>
+<span class="nc" id="L97">        filter.addOptionalTopics(didTopic);</span>
+<span class="nc" id="L98">        Flowable&lt;Provenance.AssetRegisteredEventResponse&gt; floable = contract.assetRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L99">        ArrayList&lt;DexProvenanceResult&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L100">        floable.subscribe(log -&gt; {</span>
+<span class="nc" id="L101">            DexProvenanceResult newResult = new DexProvenanceResult();</span>
+<span class="nc" id="L102">            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);</span>
+<span class="nc" id="L103">            newResult.user = log._user;</span>
+<span class="nc" id="L104">            outcome.add(newResult);</span>
+<span class="nc" id="L105">        });</span>
+<span class="nc" id="L106">        return  outcome;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
