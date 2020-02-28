@@ -42,3 +42,4 @@ secrets.yml
 /jssecacerts
 /release.properties
 /pom.xml.releaseBackup
+.vscode/
