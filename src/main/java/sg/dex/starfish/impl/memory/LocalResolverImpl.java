@@ -1,7 +1,7 @@
 package sg.dex.starfish.impl.memory;
 
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 
@@ -24,7 +24,7 @@ public class LocalResolverImpl implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
         // remove path to get DDO for basic did
         did = did.withoutPath();
         String localDDO = ddoCache.get(did);
@@ -37,7 +37,7 @@ public class LocalResolverImpl implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddoString) throws ResolverException {
+    public void registerDID(DID did, String ddoString) throws DexChainException {
         installLocalDDO(did, ddoString);
     }
 

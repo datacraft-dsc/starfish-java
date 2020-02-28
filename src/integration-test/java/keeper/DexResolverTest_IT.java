@@ -4,7 +4,7 @@ import developerTC.AgentService;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -61,7 +61,7 @@ public class DexResolverTest_IT {
         resolver1.registerDID(did, valueSet);
         String val = resolver2.getDDOString(did);
         assertTrue(val.equals(valueSet));
-        assertThrows(ResolverException.class, () -> {
+        assertThrows(DexChainException.class, () -> {
             resolver2.registerDID(did, valueUpdate);
         });
 

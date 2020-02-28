@@ -42,6 +42,7 @@ public class DexConfigFactory {
                 ));
 
         dexConfig.setDidRegistryAddress((String) properties.getOrDefault(dexConfig.DID_REGISTRY_ADDRESS, ""));
+        dexConfig.setProvenanceAddress((String) properties.getOrDefault(dexConfig.PROVENANCE_ADDRESS, ""));
         dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, ""));
         dexConfig.setTokenAddress((String) properties.getOrDefault(dexConfig.TOKEN_ADDRESS, ""));
         dexConfig.setMainAccountAddress((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_ADDRESS, ""));

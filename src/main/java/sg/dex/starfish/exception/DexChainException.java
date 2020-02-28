@@ -5,24 +5,24 @@ package sg.dex.starfish.exception;
  *
  * @author Ilia
  */
-public class ResolverException extends RuntimeException {
+public class DexChainException extends RuntimeException {
     /**
      * API to create Resolver Exception instance
      *
      * @param e Throwable
      */
-    public ResolverException(Throwable e) {
+    public DexChainException(Throwable e) {
         super(e);
     }
 
     /**
      * API to create Resolver Exception instance
      */
-    public ResolverException() {
+    public DexChainException() {
         super();
     }
 
-    public ResolverException(String message) {
+    public DexChainException(String message) {
         super(message);
     }
 }

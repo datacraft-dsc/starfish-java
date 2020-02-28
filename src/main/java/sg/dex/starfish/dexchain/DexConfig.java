@@ -18,6 +18,7 @@ public class DexConfig {
     public static final String PARITY_ACCOUNT_PASSWORD = "account.parity.password";
     public static final String MAIN_ACCOUNT_CREDENTIALS_FILE = "account.main.credentialsFile";
     public static final String DID_REGISTRY_ADDRESS = "contract.DIDRegistry.address";
+    public static final String PROVENANCE_ADDRESS = "contract.Provenance.address";
     public static final String DIRECT_PURCHASE_ADDRESS = "contract.DirectPurchase.address";
     public static final String TOKEN_ADDRESS = "contract.OceanToken.address";
 
@@ -32,6 +33,7 @@ public class DexConfig {
     private String parityAccountPassword;
     private String mainAccountCredentialsFile;
     private String didRegistryAddress;
+    private String provenanceAddress;
     private String directPurchaseAddress;
     private String tokenAddress;
 
@@ -91,6 +93,15 @@ public class DexConfig {
     public DexConfig setDidRegistryAddress(String address) {
         this.didRegistryAddress = address;
         return this;
+    }
+
+    public DexConfig setProvenanceAddress(String address) {
+        this.provenanceAddress = address;
+        return this;
+    }
+
+    public String getProvenanceAddress() {
+        return provenanceAddress;
     }
 
     public DexConfig setDirectPurchaseAddress(String address) {

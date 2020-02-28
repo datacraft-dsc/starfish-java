@@ -17,7 +17,7 @@ import org.web3j.utils.Numeric;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.dexchain.impl.DIDRegistry;
 import sg.dex.starfish.dexchain.impl.DexTransactionManager;
-import sg.dex.starfish.exception.ResolverException;
+import sg.dex.starfish.exception.DexChainException;
 import sg.dex.starfish.util.DID;
 
 import java.io.IOException;
@@ -81,15 +81,15 @@ public class DexResolver implements Resolver {
     }
 
     @Override
-    public String getDDOString(DID did) throws ResolverException {
+    public String getDDOString(DID did) throws DexChainException {
         String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
             blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();
         } catch (UnsupportedEncodingException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (Exception e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         }
 
         EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());
@@ -106,20 +106,20 @@ public class DexResolver implements Resolver {
     }
 
     @Override
-    public void registerDID(DID did, String ddo) throws ResolverException {
+    public void registerDID(DID did, String ddo) throws DexChainException {
         TransactionReceipt receipt = null;
         try {
             receipt = contract.registerDID(
                     Numeric.hexStringToByteArray(did.getID()), ddo).send();
         } catch (IOException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (CipherException e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         } catch (Exception e) {
-            throw new ResolverException(e);
+            throw new DexChainException(e);
         }
 
         if (!receipt.getStatus().equals("0x1"))
-            throw new ResolverException();
+            throw new DexChainException();
     }
 }
