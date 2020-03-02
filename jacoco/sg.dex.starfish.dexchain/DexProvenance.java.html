@@ -9,6 +9,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.utils.Numeric;
 import sg.dex.starfish.dexchain.impl.Provenance;
 import sg.dex.starfish.exception.DexChainException;
+import sg.dex.starfish.util.Hex;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class DexProvenance {
     private Provenance contract;
     private DexConfig config;
 
-<span class="nc" id="L28">    public static class DexProvenanceResult {</span>
+<span class="nc" id="L29">    public static class DexProvenanceResult {</span>
         public String user;
         java.util.Date timeStamp;
     }
@@ -35,13 +36,13 @@ public class DexProvenance {
      * @return DexProvenance The newly created DexProvenance
      */
     public static DexProvenance create() {
-<span class="nc" id="L38">        DexConfig dexConfig = DexChain.getInstance().getDexConfig();</span>
-<span class="nc" id="L39">        Provenance contract = Provenance.load(</span>
-<span class="nc" id="L40">                dexConfig.getProvenanceAddress(),</span>
-<span class="nc" id="L41">                DexChain.getInstance().getWeb3j(),</span>
-<span class="nc" id="L42">                DexChain.getInstance().getTransactionManager(),</span>
-<span class="nc" id="L43">                DexChain.getInstance().getContractGasProvider());</span>
-<span class="nc" id="L44">        return new DexProvenance(contract, dexConfig);</span>
+<span class="nc" id="L39">        DexConfig dexConfig = DexChain.getInstance().getDexConfig();</span>
+<span class="nc" id="L40">        Provenance contract = Provenance.load(</span>
+<span class="nc" id="L41">                dexConfig.getProvenanceAddress(),</span>
+<span class="nc" id="L42">                DexChain.getInstance().getWeb3j(),</span>
+<span class="nc" id="L43">                DexChain.getInstance().getTransactionManager(),</span>
+<span class="nc" id="L44">                DexChain.getInstance().getContractGasProvider());</span>
+<span class="nc" id="L45">        return new DexProvenance(contract, dexConfig);</span>
     }
 
     /**
@@ -50,10 +51,10 @@ public class DexProvenance {
      * @param contract contract
      * @param config   config
      */
-<span class="nc" id="L53">    private DexProvenance(Provenance contract, DexConfig config) {</span>
-<span class="nc" id="L54">        this.contract = contract;</span>
-<span class="nc" id="L55">        this.config = config;</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L54">    private DexProvenance(Provenance contract, DexConfig config) {</span>
+<span class="nc" id="L55">        this.contract = contract;</span>
+<span class="nc" id="L56">        this.config = config;</span>
+<span class="nc" id="L57">    }</span>
 
     /**
      * Register asset on chain.
@@ -62,19 +63,19 @@ public class DexProvenance {
      * @throws DexChainException
      */
     public void registerAsset(String assetId) throws DexChainException{
-<span class="nc" id="L65">        TransactionReceipt receipt = null;</span>
+<span class="nc" id="L66">        TransactionReceipt receipt = null;</span>
 
         try {
-<span class="nc" id="L68">            receipt = contract.registerAsset(</span>
-<span class="nc" id="L69">                    Numeric.hexStringToByteArray(assetId)).send();</span>
-<span class="nc" id="L70">        } catch (Exception e) {</span>
-<span class="nc" id="L71">            e.printStackTrace();</span>
-<span class="nc" id="L72">            throw new DexChainException(e);</span>
-<span class="nc" id="L73">        }</span>
+<span class="nc" id="L69">            receipt = contract.registerAsset(</span>
+<span class="nc" id="L70">                    Numeric.hexStringToByteArray(assetId)).send();</span>
+<span class="nc" id="L71">        } catch (Exception e) {</span>
+<span class="nc" id="L72">            e.printStackTrace();</span>
+<span class="nc" id="L73">            throw new DexChainException(e);</span>
+<span class="nc" id="L74">        }</span>
 
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
-<span class="nc" id="L76">            throw new DexChainException();</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
+<span class="nc" id="L77">            throw new DexChainException();</span>
+<span class="nc" id="L78">    }</span>
 
     /**
      * Get asset provenance from chain.
@@ -86,24 +87,81 @@ public class DexProvenance {
     public ArrayList&lt;DexProvenanceResult&gt; getAssetProvenance(String assetId) throws DexChainException {
         BigInteger blockNumber;
         try {
-<span class="nc" id="L89">            blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();</span>
-<span class="nc" id="L90">        } catch (Exception e) {</span>
-<span class="nc" id="L91">            throw new DexChainException(e);</span>
-<span class="nc" id="L92">        }</span>
+<span class="nc" id="L90">            blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();</span>
+<span class="nc" id="L91">        } catch (Exception e) {</span>
+<span class="nc" id="L92">            throw new DexChainException(e);</span>
+<span class="nc" id="L93">        }</span>
 
-<span class="nc" id="L94">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameterName.LATEST, contract.getContractAddress());</span>
-<span class="nc" id="L95">        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));</span>
-<span class="nc" id="L96">        String didTopic = &quot;0x&quot; + assetId;</span>
-<span class="nc" id="L97">        filter.addOptionalTopics(didTopic);</span>
-<span class="nc" id="L98">        Flowable&lt;Provenance.AssetRegisteredEventResponse&gt; floable = contract.assetRegisteredEventFlowable(filter);</span>
-<span class="nc" id="L99">        ArrayList&lt;DexProvenanceResult&gt; outcome = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L100">        floable.subscribe(log -&gt; {</span>
-<span class="nc" id="L101">            DexProvenanceResult newResult = new DexProvenanceResult();</span>
-<span class="nc" id="L102">            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);</span>
-<span class="nc" id="L103">            newResult.user = log._user;</span>
-<span class="nc" id="L104">            outcome.add(newResult);</span>
-<span class="nc" id="L105">        });</span>
-<span class="nc" id="L106">        return  outcome;</span>
+<span class="nc" id="L95">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameterName.LATEST, contract.getContractAddress());</span>
+<span class="nc" id="L96">        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));</span>
+<span class="nc" id="L97">        String didTopic = &quot;0x&quot; + assetId;</span>
+<span class="nc" id="L98">        filter.addOptionalTopics(didTopic);</span>
+<span class="nc" id="L99">        Flowable&lt;Provenance.AssetRegisteredEventResponse&gt; floable = contract.assetRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L100">        ArrayList&lt;DexProvenanceResult&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L101">        floable.subscribe(log -&gt; {</span>
+<span class="nc" id="L102">            DexProvenanceResult newResult = new DexProvenanceResult();</span>
+<span class="nc" id="L103">            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);</span>
+<span class="nc" id="L104">            newResult.user = log._user;</span>
+<span class="nc" id="L105">            outcome.add(newResult);</span>
+<span class="nc" id="L106">        });</span>
+<span class="nc" id="L107">        return  outcome;</span>
+    }
+
+    /**
+     * Search asset provenance from chain by user and assetId
+     *
+     * @param String user
+     * @param String assetId
+     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     * @throws DexChainException
+     */
+    public ArrayList&lt;DexProvenanceResult&gt; getAssetProvenance(String assetId, String user) throws DexChainException {
+        BigInteger blockNumber;
+        try {
+<span class="nc" id="L121">            blockNumber = contract.getBlockNumber(Numeric.hexStringToByteArray(assetId)).send();</span>
+<span class="nc" id="L122">        } catch (Exception e) {</span>
+<span class="nc" id="L123">            throw new DexChainException(e);</span>
+<span class="nc" id="L124">        }</span>
+
+<span class="nc" id="L126">        String user_padded = Hex.toZeroPaddedHex(user);</span>
+<span class="nc" id="L127">        String assetId_padded = Hex.toZeroPaddedHex(assetId);</span>
+
+<span class="nc" id="L129">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameterName.LATEST, contract.getContractAddress());</span>
+<span class="nc" id="L130">        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));</span>
+<span class="nc" id="L131">        filter.addSingleTopic(assetId_padded);</span>
+<span class="nc" id="L132">        filter.addSingleTopic(user_padded);</span>
+<span class="nc" id="L133">        Flowable&lt;Provenance.AssetRegisteredEventResponse&gt; floable = contract.assetRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L134">        ArrayList&lt;DexProvenanceResult&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L135">        floable.subscribe(log -&gt; {</span>
+<span class="nc" id="L136">            DexProvenanceResult newResult = new DexProvenanceResult();</span>
+<span class="nc" id="L137">            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);</span>
+<span class="nc" id="L138">            newResult.user = log._user;</span>
+<span class="nc" id="L139">            outcome.add(newResult);</span>
+<span class="nc" id="L140">        });</span>
+<span class="nc" id="L141">        return  outcome;</span>
+    }
+
+    /**
+     * Search asset provenance from chain by user
+     *
+     * @param String user
+     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     */
+    public ArrayList&lt;DexProvenanceResult&gt; getAssetProvenanceByUser(String user) {
+<span class="nc" id="L151">        String user_padded = Hex.toZeroPaddedHex(user);</span>
+<span class="nc" id="L152">        EthFilter filter = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, contract.getContractAddress());</span>
+<span class="nc" id="L153">        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));</span>
+<span class="nc" id="L154">        filter.addNullTopic();</span>
+<span class="nc" id="L155">        filter.addSingleTopic(user_padded);</span>
+<span class="nc" id="L156">        Flowable&lt;Provenance.AssetRegisteredEventResponse&gt; floable = contract.assetRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L157">        ArrayList&lt;DexProvenanceResult&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L158">        floable.subscribe(log -&gt; {</span>
+<span class="nc" id="L159">            DexProvenanceResult newResult = new DexProvenanceResult();</span>
+<span class="nc" id="L160">            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);</span>
+<span class="nc" id="L161">            newResult.user = log._user;</span>
+<span class="nc" id="L162">            outcome.add(newResult);</span>
+<span class="nc" id="L163">        });</span>
+<span class="nc" id="L164">        return  outcome;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
