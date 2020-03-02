@@ -140,4 +140,27 @@ public class DexProvenance {
         });
         return  outcome;
     }
+
+    /**
+     * Search asset provenance from chain by user
+     *
+     * @param String user
+     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     */
+    public ArrayList<DexProvenanceResult> getAssetProvenanceByUser(String user) {
+        String user_padded = Hex.toZeroPaddedHex(user);
+        EthFilter filter = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, contract.getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(Provenance.ASSETREGISTERED_EVENT));
+        filter.addNullTopic();
+        filter.addSingleTopic(user_padded);
+        Flowable<Provenance.AssetRegisteredEventResponse> floable = contract.assetRegisteredEventFlowable(filter);
+        ArrayList<DexProvenanceResult> outcome = new ArrayList<>();
+        floable.subscribe(log -> {
+            DexProvenanceResult newResult = new DexProvenanceResult();
+            newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);
+            newResult.user = log._user;
+            outcome.add(newResult);
+        });
+        return  outcome;
+    }
 }
