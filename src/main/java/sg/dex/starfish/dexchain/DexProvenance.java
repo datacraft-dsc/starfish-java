@@ -28,6 +28,7 @@ public class DexProvenance {
 
     public static class DexProvenanceResult {
         public String user;
+        public String assetId;
         java.util.Date timeStamp;
     }
 
@@ -102,6 +103,7 @@ public class DexProvenance {
             DexProvenanceResult newResult = new DexProvenanceResult();
             newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);
             newResult.user = log._user;
+            newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
         return  outcome;
@@ -136,6 +138,7 @@ public class DexProvenance {
             DexProvenanceResult newResult = new DexProvenanceResult();
             newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);
             newResult.user = log._user;
+            newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
         return  outcome;
@@ -159,6 +162,7 @@ public class DexProvenance {
             DexProvenanceResult newResult = new DexProvenanceResult();
             newResult.timeStamp = new java.util.Date(log._timestamp.longValue() * 1000);
             newResult.user = log._user;
+            newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
         return  outcome;
