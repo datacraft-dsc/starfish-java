@@ -1,6 +1,5 @@
 package sg.dex.starfish.util;
 
-import org.apache.commons.httpclient.RedirectException;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.exception.StarfishValidationException;
@@ -64,6 +63,7 @@ public class Params {
                 Asset a = (Asset) params.get(paramName);
                 Map<String, Object> value = a.getParamValue();
                 result.put(paramName, value);
+
             } else if (type.equals("json")) {
 
                 if (null != params) {
@@ -86,15 +86,13 @@ public class Params {
      * Eg: if the result of the response is type Json ,then it type caste the response to Json
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
-     * @param operation instance reference
+     * @param paramSpec instance reference
      * @param response  response received from the Invoke call
      * @return formatted map of the response received
      */
-    public static Map<String, Object> formatResponse(Operation operation, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
+    public static Map<String, Object> formatResponse(Map<String, Object> paramSpec, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
-        @SuppressWarnings("unchecked")
-        Map<String, Object> paramSpec = (Map<String, Object>) operation.getOperationSpec().get("results");
 
         for (Map.Entry<String, Object> me : paramSpec.entrySet()) {
             String paramName = me.getKey();
@@ -120,10 +118,38 @@ public class Params {
         return result;
 
     }
+    public static Map<String, Object> formatResponse(Map<String, Object> paramSpec, Map<String, Object> response) {
 
-    private static Object getAsset(Object di, RemoteAccount remoteAccount) throws IOException {
+        HashMap<String, Object> result = new HashMap<>(response.size());
+
+        for (Map.Entry<String, Object> me : paramSpec.entrySet()) {
+            String paramName = me.getKey();
+            Map<String, Object> spec = (Map<String, Object>) me.getValue();
+            String type = (String) spec.get("type");
+            if (response.containsKey(paramName)) {
+                if (type.equals("asset")) {
+
+                    Map<String, Object> didMap = (Map<String, Object>) response.get(paramName);
+                    String userName =((Map<String, Object>)didMap.get("auth")).get("username").toString();
+                    String password =((Map<String, Object>)didMap.get("auth")).get("password").toString();
+
+                    result.put(paramName, getAsset(didMap.get("did"), RemoteAccount.create(userName,password)));
+                } else if (type.equals("json")) {
+                    result.put(paramName, response.get(paramName));
+                } else {
+                    throw new StarfishValidationException("Invalid type of Input. Accepted Input: " +
+                            "Asset or Json. Input given: " + type);
+                }
+
+            }
+
+        }
+        return result;
+
+    }
+    private static Object getAsset(Object di, RemoteAccount remoteAccount)  {
         if (di == null) {
-            throw new RedirectException("DID is null");
+            throw new StarfishValidationException("DID is null");
         }
         String didS = (String) di;
         DID did = DID.parse(didS);
@@ -139,7 +165,7 @@ public class Params {
      * @return Asset
      * @throws IOException
      */
-    public static Asset getAssetByDID(DID did, RemoteAccount remoteAccount) throws IOException {
+    public static Asset getAssetByDID(DID did, RemoteAccount remoteAccount) {
         DID agentDID = did.withoutPath();
         String path = did.getPath();
         RemoteAgent remoteAgent = RemoteAgent.connect(agentDID, remoteAccount);

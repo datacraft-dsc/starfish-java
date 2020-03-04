@@ -241,11 +241,5 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
 
-    @Override
-    public Job getJob(String jobID) {
-        // TODO Consider caching Jobs? Or just return null
-        return null;
-    }
-
 
 }

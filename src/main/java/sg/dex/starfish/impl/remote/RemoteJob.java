@@ -4,6 +4,7 @@ import sg.dex.starfish.Job;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.util.Params;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -19,10 +20,13 @@ public class RemoteJob implements Job {
     private final String jobID;
     private String status = SCHEDULED;
     private Map<String, Object> result = null;
+    private Map<String, Object> paramSpec = null;
 
-    private RemoteJob(RemoteAgent agent, String jobID) {
+
+    private RemoteJob(RemoteAgent agent, Map<String, Object> paramSpec,String jobID) {
         this.agent = agent;
         this.jobID = jobID;
+        this.paramSpec=paramSpec;
     }
 
     /**
@@ -34,8 +38,8 @@ public class RemoteJob implements Job {
      * @param jobID
      * @return
      */
-    public static RemoteJob create(RemoteAgent agent2, String jobID) {
-        return new RemoteJob(agent2, jobID);
+    public static RemoteJob create(RemoteAgent agent2, Map<String, Object> paramSpec,String jobID) {
+        return new RemoteJob(agent2, paramSpec, jobID);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class RemoteJob implements Job {
 
         if (newStatus.equals(SUCCEEDED)) {
 
-            Map<String, Object> res = (Map<String, Object>) response.get(Constant.RESULTS);
+            Map<String, Object> res = (Map<String, Object>) response.get(Constant.OUTPUTS);
             if (res == null) throw new RemoteException("No result map in job id " + jobID + " result: " + response);
             // store result and success status
             result = res;
@@ -100,7 +104,7 @@ public class RemoteJob implements Job {
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
-                return a;
+                return Params.formatResponse(paramSpec,a);
             }
             try {
                 Thread.sleep(sleepTime);
