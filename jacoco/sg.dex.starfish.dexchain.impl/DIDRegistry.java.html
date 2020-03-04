@@ -39,7 +39,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  */
 @SuppressWarnings(&quot;rawtypes&quot;)
 public class DIDRegistry extends Contract {
-    public static final String BINARY = &quot;0x608060405234801561001057600080fd5b50610716806100206000396000f3fe608060405234801561001057600080fd5b506004361061005e576000357c010000000000000000000000000000000000000000000000000000000090048063331daa99146100635780638129fc1c1461013c578063bbc1dede14610146575b600080fd5b6101266004803603604081101561007957600080fd5b8101908080359060200190929190803590602001906401000000008111156100a057600080fd5b8201836020820111156100b257600080fd5b803590602001918460018302840111640100000000831117156100d457600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610188565b6040518082815260200191505060405180910390f35b61014461055c565b005b6101726004803603602081101561015c57600080fd5b810190808035906020019092919050505061065b565b6040518082815260200191505060405180910390f35b60008073ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16148061025b57503373ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16145b6102b0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603081526020018061068d6030913960400191505060405180910390fd5b61080082511115610329576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260128152602001807f496e76616c69642076616c75652073697a65000000000000000000000000000081525060200191505060405180910390fd5b60006033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156103c95733905060348490806001815401808255809150509060018203906000526020600020016000909192909190915055505b60405180604001604052808273ffffffffffffffffffffffffffffffffffffffff168152602001438152506033600086815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101559050506033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16847f46d513bf72ee94d266c35268aec30459b2e5cc5418347762561e8f3d3055000e85436040518080602001838152602001828103825284818151815260200191508051906020019080838360005b838110156105125780820151818401526020810190506104f7565b50505050905090810190601f16801561053f5780820380516001836020036101000a031916815260200191505b50935050505060405180910390a360348054905091505092915050565b600060019054906101000a900460ff168061057b575061057a61067b565b5b8061059257506000809054906101000a900460ff16155b6105e7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602e8152602001806106bd602e913960400191505060405180910390fd5b60008060019054906101000a900460ff161590508015610637576001600060016101000a81548160ff02191690831515021790555060016000806101000a81548160ff0219169083151502179055505b80156106585760008060016101000a81548160ff0219169083151502179055505b50565b600060336000838152602001908152602001600020600101549050919050565b600080303b9050600081149150509056fe41747472696275746573206d75737420626520726567697374657265642062792074686520444944206f776e6572732e436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a165627a7a723058205847202238792444a6f3d5610a7b4e2fcbeefc65c5d0a1651af2ae7751a5e6970029&quot;;
+    public static final String BINARY = &quot;0x608060405234801561001057600080fd5b5061071e806100206000396000f3fe608060405234801561001057600080fd5b506004361061005e576000357c010000000000000000000000000000000000000000000000000000000090048063331daa99146100635780638129fc1c1461013c578063bbc1dede14610146575b600080fd5b6101266004803603604081101561007957600080fd5b8101908080359060200190929190803590602001906401000000008111156100a057600080fd5b8201836020820111156100b257600080fd5b803590602001918460018302840111640100000000831117156100d457600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290505050610188565b6040518082815260200191505060405180910390f35b610144610564565b005b6101726004803603602081101561015c57600080fd5b8101908080359060200190929190505050610663565b6040518082815260200191505060405180910390f35b60008073ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16148061025b57503373ffffffffffffffffffffffffffffffffffffffff166033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16145b6102b0576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260308152602001806106956030913960400191505060405180910390fd5b61080082511115610329576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260128152602001807f496e76616c69642076616c75652073697a65000000000000000000000000000081525060200191505060405180910390fd5b60006033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156103c95733905060348490806001815401808255809150509060018203906000526020600020016000909192909190915055505b60405180604001604052808273ffffffffffffffffffffffffffffffffffffffff168152602001438152506033600086815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101559050506033600085815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16847fd249d46c05fa2d9983ee4d99bf117a4072ab968cbd1cd64f6aac599e928282b38543426040518080602001848152602001838152602001828103825285818151815260200191508051906020019080838360005b838110156105195780820151818401526020810190506104fe565b50505050905090810190601f1680156105465780820380516001836020036101000a031916815260200191505b5094505050505060405180910390a360348054905091505092915050565b600060019054906101000a900460ff16806105835750610582610683565b5b8061059a57506000809054906101000a900460ff16155b6105ef576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602e8152602001806106c5602e913960400191505060405180910390fd5b60008060019054906101000a900460ff16159050801561063f576001600060016101000a81548160ff02191690831515021790555060016000806101000a81548160ff0219169083151502179055505b80156106605760008060016101000a81548160ff0219169083151502179055505b50565b600060336000838152602001908152602001600020600101549050919050565b600080303b9050600081149150509056fe41747472696275746573206d75737420626520726567697374657265642062792074686520444944206f776e6572732e436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a165627a7a72305820f568b33717adfa906fb1adbdd93c798711e9fbbc16e70263355709222646e9e10029&quot;;
 
     public static final String FUNC_INITIALIZE = &quot;initialize&quot;;
 
@@ -48,7 +48,7 @@ public class DIDRegistry extends Contract {
     public static final String FUNC_GETBLOCKNUMBERUPDATED = &quot;getBlockNumberUpdated&quot;;
 
 <span class="fc" id="L50">    public static final Event DIDREGISTERED_EVENT = new Event(&quot;DIDRegistered&quot;, </span>
-<span class="fc" id="L51">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Utf8String&gt;() {}, new TypeReference&lt;Uint256&gt;() {}));</span>
+<span class="fc" id="L51">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Utf8String&gt;() {}, new TypeReference&lt;Uint256&gt;() {}, new TypeReference&lt;Uint256&gt;() {}));</span>
     ;
 
     protected static final HashMap&lt;String, String&gt; _addresses;
@@ -86,102 +86,104 @@ public class DIDRegistry extends Contract {
 <span class="nc" id="L86">            typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
 <span class="nc" id="L87">            typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
 <span class="nc" id="L88">            typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
-<span class="nc" id="L89">            responses.add(typedResponse);</span>
-<span class="nc" id="L90">        }</span>
-<span class="nc" id="L91">        return responses;</span>
+<span class="nc" id="L89">            typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
+<span class="nc" id="L90">            responses.add(typedResponse);</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">        return responses;</span>
     }
 
     public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(EthFilter filter) {
-<span class="fc" id="L95">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, DIDRegisteredEventResponse&gt;() {</span>
+<span class="fc" id="L96">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, DIDRegisteredEventResponse&gt;() {</span>
             @Override
             public DIDRegisteredEventResponse apply(Log log) {
-<span class="fc" id="L98">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DIDREGISTERED_EVENT, log);</span>
-<span class="fc" id="L99">                DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
-<span class="fc" id="L100">                typedResponse.log = log;</span>
-<span class="fc" id="L101">                typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
-<span class="fc" id="L102">                typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
-<span class="fc" id="L103">                typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
-<span class="fc" id="L104">                typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
-<span class="fc" id="L105">                return typedResponse;</span>
+<span class="fc" id="L99">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DIDREGISTERED_EVENT, log);</span>
+<span class="fc" id="L100">                DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
+<span class="fc" id="L101">                typedResponse.log = log;</span>
+<span class="fc" id="L102">                typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L103">                typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L104">                typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L105">                typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L106">                typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
+<span class="fc" id="L107">                return typedResponse;</span>
             }
         });
     }
 
     public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-<span class="nc" id="L111">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
-<span class="nc" id="L112">        filter.addSingleTopic(EventEncoder.encode(DIDREGISTERED_EVENT));</span>
-<span class="nc" id="L113">        return dIDRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L113">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
+<span class="nc" id="L114">        filter.addSingleTopic(EventEncoder.encode(DIDREGISTERED_EVENT));</span>
+<span class="nc" id="L115">        return dIDRegisteredEventFlowable(filter);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; initialize() {
-<span class="nc" id="L117">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+<span class="nc" id="L119">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
                 FUNC_INITIALIZE, 
-<span class="nc" id="L119">                Arrays.&lt;Type&gt;asList(), </span>
-<span class="nc" id="L120">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="nc" id="L121">        return executeRemoteCallTransaction(function);</span>
+<span class="nc" id="L121">                Arrays.&lt;Type&gt;asList(), </span>
+<span class="nc" id="L122">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="nc" id="L123">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; registerDID(byte[] _did, String _value) {
-<span class="fc" id="L125">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+<span class="fc" id="L127">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
                 FUNC_REGISTERDID, 
-<span class="fc" id="L127">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), </span>
+<span class="fc" id="L129">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), </span>
                 new org.web3j.abi.datatypes.Utf8String(_value)), 
-<span class="fc" id="L129">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="fc" id="L130">        return executeRemoteCallTransaction(function);</span>
+<span class="fc" id="L131">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="fc" id="L132">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;BigInteger&gt; getBlockNumberUpdated(byte[] _did) {
-<span class="fc" id="L134">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, </span>
-<span class="fc" id="L135">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), </span>
-<span class="fc" id="L136">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
-<span class="fc" id="L137">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
+<span class="fc" id="L136">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, </span>
+<span class="fc" id="L137">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), </span>
+<span class="fc" id="L138">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
+<span class="fc" id="L139">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
     }
 
     @Deprecated
     public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L142">        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L144">        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
     }
 
     @Deprecated
     public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L147">        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L149">        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
     }
 
     public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L151">        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L153">        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);</span>
     }
 
     public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="fc" id="L155">        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="fc" id="L157">        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);</span>
     }
 
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L159">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L161">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
     }
 
     @Deprecated
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L164">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L166">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
     }
 
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L168">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L170">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
     }
 
     @Deprecated
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L173">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L175">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
     }
 
     protected String getStaticDeployedAddress(String networkId) {
-<span class="nc" id="L177">        return _addresses.get(networkId);</span>
+<span class="nc" id="L179">        return _addresses.get(networkId);</span>
     }
 
     public static String getPreviouslyDeployedAddress(String networkId) {
-<span class="nc" id="L181">        return _addresses.get(networkId);</span>
+<span class="nc" id="L183">        return _addresses.get(networkId);</span>
     }
 
-<span class="fc" id="L184">    public static class DIDRegisteredEventResponse extends BaseEventResponse {</span>
+<span class="fc" id="L186">    public static class DIDRegisteredEventResponse extends BaseEventResponse {</span>
         public byte[] _did;
 
         public String _owner;
@@ -189,6 +191,8 @@ public class DIDRegistry extends Contract {
         public String _value;
 
         public BigInteger _blockNumberUpdated;
+
+        public BigInteger _timestamp;
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
