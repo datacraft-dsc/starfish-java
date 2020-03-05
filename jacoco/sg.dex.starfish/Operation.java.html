@@ -82,7 +82,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="nc" id="L85">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
+<span class="fc" id="L85">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
     }
 
     /**
@@ -95,7 +95,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="nc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;inputs&quot;);</span>
+<span class="fc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;inputs&quot;);</span>
     }
 
     /**
@@ -104,25 +104,25 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default List&lt;String&gt; getOperationModes() {
-<span class="nc" id="L107">        Map&lt;String, Object&gt; operationData = getOperationSpec();</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (operationData == null) {</span>
+<span class="fc" id="L107">        Map&lt;String, Object&gt; operationData = getOperationSpec();</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (operationData == null) {</span>
 <span class="nc" id="L109">            throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
         }
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (operationData.get(MODES) == null) {</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (operationData.get(MODES) == null) {</span>
             // return default list (all supported modes) as per DEP6
 <span class="nc" id="L114">            return List.of(SYNC, ASYNC);</span>
         }
-<span class="nc" id="L116">        List&lt;String&gt; modeLst = (List&lt;String&gt;) operationData.get(MODES);</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (String mode : modeLst) {</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (mode.equals(SYNC) ||</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">                    mode.equals(ASYNC)) {</span>
+<span class="fc" id="L116">        List&lt;String&gt; modeLst = (List&lt;String&gt;) operationData.get(MODES);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (String mode : modeLst) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (mode.equals(SYNC) ||</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                    mode.equals(ASYNC)) {</span>
             } else {
 <span class="nc" id="L121">                throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot; + mode);</span>
             }
-<span class="nc" id="L123">        }</span>
+<span class="fc" id="L123">        }</span>
 
-<span class="nc" id="L125">        return modeLst;</span>
+<span class="fc" id="L125">        return modeLst;</span>
     }
 
 }
