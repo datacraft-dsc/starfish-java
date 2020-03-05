@@ -22,7 +22,7 @@ public class TestOperation_IT {
 
     private RemoteAgent remoteAgent;
 
-    private String increment_4="7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65";
+    private String increment_4="b158f208561d7da5d5e8d90b5e6a7b621cbd7a4f1b511554c6cd5d6b3dda3d07";
     private String increment_1="7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65";
     private String increment_2="7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65";
     private String increment_3="7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65";
@@ -31,7 +31,8 @@ public class TestOperation_IT {
     @BeforeEach
     void init() throws IOException, URISyntaxException {
         RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
-        remoteAgent = RemoteAgent.connect("http://localhost:3030", remoteAccount);
+        //remoteAgent = RemoteAgent.connect("http://localhost:3030", remoteAccount);
+        remoteAgent = RemoteAgent.connect("http://52.230.82.125:3030", remoteAccount);
     }
 
 
@@ -41,14 +42,14 @@ public class TestOperation_IT {
     }
 
     @Test
-    public void testIncrement4_Async() {
+    public void testIncrement4_Async()  {
         String data = "4";
-
         Asset asset = MemoryAsset.create(data.getBytes());
+
+        //Operation remoteOperation = remoteAgent.getAsset("7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65");
+        Operation remoteOperation = remoteAgent.getAsset(increment_4);
+
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
-
-        Operation remoteOperation = remoteAgent.getAsset("7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65");
-
         RemoteDataAsset remoteDataAsset1 = remoteAgent.getAsset(remoteDataAsset.getAssetID());
 
         Map<String, Object> inputMap = new HashMap<>();
@@ -71,6 +72,7 @@ public class TestOperation_IT {
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
         Operation remoteOperation = remoteAgent.getAsset("7db5b843410b1bc54aa958dd1140154d83bfdc430965788228119a2d311a6c65");
+        //Operation remoteOperation = remoteAgent.getAsset("b158f208561d7da5d5e8d90b5e6a7b621cbd7a4f1b511554c6cd5d6b3dda3d07");
 
         RemoteDataAsset remoteDataAsset1 = remoteAgent.getAsset(remoteDataAsset.getAssetID());
 
