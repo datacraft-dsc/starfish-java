@@ -63,21 +63,21 @@ public class DexResolver implements Resolver {
      * @throws IOException
      */
     public static DexResolver create(String configFile) throws IOException {
-<span class="nc" id="L66">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
+<span class="fc" id="L66">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
 
-<span class="nc" id="L68">        Credentials credentials = null;</span>
+<span class="fc" id="L68">        Credentials credentials = null;</span>
         try {
-<span class="nc" id="L70">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="fc" id="L70">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
 <span class="nc" id="L71">        } catch (CipherException e) {</span>
 <span class="nc" id="L72">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
 <span class="nc" id="L73">            e.printStackTrace();</span>
-<span class="nc" id="L74">        }</span>
+<span class="fc" id="L74">        }</span>
 
-<span class="nc" id="L76">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
-<span class="nc" id="L77">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
-<span class="nc" id="L78">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
-<span class="nc" id="L79">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
-<span class="nc" id="L80">        return new DexResolver(contract, dexConfig);</span>
+<span class="fc" id="L76">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L77">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L78">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+<span class="fc" id="L79">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
+<span class="fc" id="L80">        return new DexResolver(contract, dexConfig);</span>
     }
 
     @Override
@@ -102,7 +102,7 @@ public class DexResolver implements Resolver {
 <span class="fc" id="L102">            outcome.add(log);</span>
 <span class="fc" id="L103">        });</span>
 
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        return outcome.size() == 1 ? outcome.get(0)._value : null;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        return outcome.size() == 1 ? outcome.get(0)._value : null;</span>
     }
 
     @Override
@@ -115,8 +115,8 @@ public class DexResolver implements Resolver {
 <span class="nc" id="L115">            throw new DexChainException(e);</span>
 <span class="nc" id="L116">        } catch (CipherException e) {</span>
 <span class="nc" id="L117">            throw new DexChainException(e);</span>
-<span class="nc" id="L118">        } catch (Exception e) {</span>
-<span class="nc" id="L119">            throw new DexChainException(e);</span>
+<span class="fc" id="L118">        } catch (Exception e) {</span>
+<span class="fc" id="L119">            throw new DexChainException(e);</span>
 <span class="fc" id="L120">        }</span>
 
 <span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
