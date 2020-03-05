@@ -1,7 +1,6 @@
 package keeper;
 
 import developerTC.AgentService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Resolver;
@@ -22,7 +21,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 public class DexResolverTest_IT {
     private DexResolver resolver1;
     private DexResolver resolver2;
