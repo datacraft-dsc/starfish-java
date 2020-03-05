@@ -3,6 +3,7 @@ package developerTC;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
+@Disabled
 public class TestOperation_IT {
 
     private RemoteAgent remoteAgent;
