@@ -61,7 +61,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
         }
         Map<String, Object> response = agent.invokeResult(this, params);
         try {
-            return Params.formatResponse(this, response, agent.getAccount());
+            return Params.formatResponse(this.getParamsSpec(), response, agent.getAccount());
         } catch (IOException e) {
             throw new RemoteException("Error in creating the Result");
         }

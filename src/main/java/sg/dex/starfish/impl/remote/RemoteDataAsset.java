@@ -87,8 +87,13 @@ public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
     @Override
     public Map<String, Object> getParamValue() {
         Map<String, Object> o = new HashMap<>();
+
         // pass the asset ID, i.e. hash of content
-        o.put(Constant.DID, getAssetID());
+        o.put(Constant.DID, this.getDID().toString());
+        Map<String, Object> authMap = new HashMap<>();
+        //authMap.put("token","dec75dc8008fd851f16d740aa57bdd5d18ae95ef8aea76b5003c70d51879dac1");
+        authMap.put("token",remoteAgent.getAccount().getUserDataMap().get("token"));
+        o.put("auth",authMap);
         return o;
     }
 

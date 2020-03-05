@@ -103,7 +103,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
-    private static Job createSuccessJob(RemoteAgent agent, HttpResponse response) {
+    private static Job createSuccessJob(RemoteAgent agent, Map<String,Object> paramsSpecs,HttpResponse response) {
         HttpEntity entity = response.getEntity();
         if (entity == null) throw new RemoteException("Invoke failed: no response body");
         try {
@@ -122,14 +122,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 if (body.startsWith("{")) {
                     // interpret as a JSON map, should contain jobid
                     Map<String, Object> json = JSON.parse(body);
-                    jobID = (String) json.get("jobid");
+
+                    jobID =  json.get("job-id") != null?json.get("job-id").toString():null;
+                    ;
                     if (jobID == null) throw new RemoteException("Invoke failed: no jobid in body: " + body);
                 } else {
                     // interpret as a raw job ID
                     jobID = body;
                 }
             }
-            return RemoteJob.create(agent, jobID);
+            return RemoteJob.create(agent, paramsSpecs,jobID);
         } catch (Exception e) {
             throw Utils.sneakyThrow(e);
         }
@@ -144,11 +146,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @throws IllegalArgumentException for a bad invoke request
      * @throws RuntimeException         for protocol errors
      */
-    private static Job createJob(RemoteAgent agent, HttpResponse response) {
+    private static Job createJob(RemoteAgent agent, Map<String,Object> paramsSpecs,HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
         if ((statusCode == 201) || (statusCode == 200)) {
-            return RemoteAgent.createSuccessJob(agent, response);
+            return RemoteAgent.createSuccessJob(agent,paramsSpecs, response);
         }
         String reason = statusLine.getReasonPhrase();
         if ((statusCode) == 400) {
@@ -833,6 +835,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
         addAuthHeaders(httppost);
         String paramJSON = JSON.toPrettyString(requestMap);
+
         StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
         CloseableHttpResponse response;
@@ -840,7 +843,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             response = httpclient.execute(httppost);
 
             try {
-                return RemoteAgent.createJob(this, response);
+                return RemoteAgent.createJob(this,operation.getParamsSpec(), response);
             } finally {
                 response.close();
             }
@@ -876,7 +879,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             response = httpclient.execute(httppost);
 
             try {
-                return RemoteAgent.createJob(this, response);
+                return RemoteAgent.createJob(this,operation.getParamsSpec(), response);
             } finally {
                 response.close();
             }
@@ -920,7 +923,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
-                    Map<String, Object> res = (Map<String, Object>) JSON.toMap(body).get(Constant.RESULTS);
+                    Map<String, Object> res = (Map<String, Object>) JSON.toMap(body).get(Constant.OUTPUTS);
                     return res;
                 } else {
                     throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
@@ -1318,12 +1321,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     private void updateAccountData(String token) {
         account.getUserDataMap().put(TOKEN, token);
-    }
-
-    @Override
-    public Job getJob(String jobID) {
-        // TODO: should poll for job status / existence?
-        return RemoteJob.create(this, jobID);
     }
 
     /**
