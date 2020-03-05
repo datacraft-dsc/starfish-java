@@ -58,13 +58,13 @@ public class Params {
      */
     private static void prepareResult(Map<String, Object> params, HashMap<String, Object> result, String paramName, String type) {
         try {
-            if (type.equals("asset")) {
+            if (type.equalsIgnoreCase("asset")) {
                 // validate if input is type asset or not
                 Asset a = (Asset) params.get(paramName);
                 Map<String, Object> value = a.getParamValue();
                 result.put(paramName, value);
 
-            } else if (type.equals("json")) {
+            } else if (type.equalsIgnoreCase("json")) {
 
                 if (null != params) {
                     //JSON.parse(params.toString());
@@ -86,15 +86,16 @@ public class Params {
      * Eg: if the result of the response is type Json ,then it type caste the response to Json
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
-     * @param paramSpec instance reference
+     * @param operationSpecs instance reference
      * @param response  response received from the Invoke call
      * @return formatted map of the response received
      */
-    public static Map<String, Object> formatResponse(Map<String, Object> paramSpec, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
+    public static Map<String, Object> formatResponse(Map<String, Object> operationSpecs, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
+        Map<String, Object> outputsSpecs = (Map<String, Object>)operationSpecs.get("outputs");
 
-        for (Map.Entry<String, Object> me : paramSpec.entrySet()) {
+        for (Map.Entry<String, Object> me : outputsSpecs.entrySet()) {
             String paramName = me.getKey();
             @SuppressWarnings("unchecked")
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
@@ -118,11 +119,12 @@ public class Params {
         return result;
 
     }
-    public static Map<String, Object> formatResponse(Map<String, Object> paramSpec, Map<String, Object> response) {
+    public static Map<String, Object> formatResponse(Map<String, Object> operationSpecs, Map<String, Object> response) {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
+        Map<String, Object> outputsSpecs = (Map<String, Object>)operationSpecs.get("outputs");
 
-        for (Map.Entry<String, Object> me : paramSpec.entrySet()) {
+        for (Map.Entry<String, Object> me : outputsSpecs.entrySet()) {
             String paramName = me.getKey();
             Map<String, Object> spec = (Map<String, Object>) me.getValue();
             String type = (String) spec.get("type");
