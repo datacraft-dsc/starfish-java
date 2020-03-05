@@ -32,7 +32,7 @@ public class TestStatusAPI_IT {
     public void testStatus() {
         Map<String, Object> result = remoteAgent.getStatus();
 
-        assertEquals("Surfer", result.get("name"));
+        assertEquals("Surfer-IT", result.get("name"));
         assertTrue(result.get("description").toString().contains("Data Ecosystem Agent"));
 
     }
