@@ -1409,4 +1409,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     public RemoteAccount getAccount() {
         return account;
     }
+
+    @Override
+    public Job getJob(String jobID) {
+        // TODO: should poll for job status / existence?
+        // TODO: fix this
+        return null;
+        //return RemoteJob.create(this, jobID);
+    }
 }
