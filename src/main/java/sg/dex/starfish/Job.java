@@ -219,4 +219,5 @@ public interface Job extends Future<Map<String, Object>> {
     default boolean isCancelled() {
         return getStatus().equals(Constant.CANCELLED);
     }
+
 }

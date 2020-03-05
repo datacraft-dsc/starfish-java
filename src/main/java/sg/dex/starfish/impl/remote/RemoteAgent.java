@@ -879,7 +879,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             response = httpclient.execute(httppost);
 
             try {
-                return RemoteAgent.createJob(this,operation.getParamsSpec(), response);
+                return RemoteAgent.createJob(this,operation.getOperationSpec(), response);
             } finally {
                 response.close();
             }
@@ -924,7 +924,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                 if (statusLine.getStatusCode() == 200) {
                     String body = Utils.stringFromStream(response.getEntity().getContent());
                     Map<String, Object> res = (Map<String, Object>) JSON.toMap(body).get(Constant.OUTPUTS);
-                    return res;
+                    return Params.formatResponse(operation.getOperationSpec(),res);
                 } else {
                     throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
                 }

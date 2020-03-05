@@ -29,6 +29,7 @@ public class RemoteJob implements Job {
         this.paramSpec=paramSpec;
     }
 
+
     /**
      * Creates a RemoteJob representing a Job on a given RemoteAgent.
      * <p>
@@ -41,7 +42,6 @@ public class RemoteJob implements Job {
     public static RemoteJob create(RemoteAgent agent2, Map<String, Object> paramSpec,String jobID) {
         return new RemoteJob(agent2, paramSpec, jobID);
     }
-
     @Override
     public boolean isDone() {
         return status.equals(SUCCEEDED) || status.equals(FAILED) || (status.equals(CANCELLED));
