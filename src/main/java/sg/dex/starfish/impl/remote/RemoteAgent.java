@@ -19,9 +19,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
 import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
+import sg.dex.starfish.dexchain.DexResolver;
 import sg.dex.starfish.exception.*;
 import sg.dex.starfish.impl.AAgent;
-import sg.dex.starfish.dexchain.DexResolver;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.*;
 
