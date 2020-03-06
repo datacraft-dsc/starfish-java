@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexTransactionManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain.impl</a> &gt; <span class="el_source">DexTransactionManager.java</span></div><h1>DexTransactionManager.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain.impl;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
@@ -14,7 +13,9 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.exceptions.TxHashMismatchException;
 import org.web3j.utils.Numeric;
 import org.web3j.utils.TxHashVerifier;
-import org.web3j.protocol.Web3j;
+
+import java.io.IOException;
+import java.math.BigInteger;
 
 
 public class DexTransactionManager extends TransactionManager {
@@ -23,45 +24,45 @@ public class DexTransactionManager extends TransactionManager {
     protected TxHashVerifier txHashVerifier;
 
     public DexTransactionManager(Web3j web3j, Credentials credentials, int attempts, long sleepDuration) {
-<span class="fc" id="L26">        super(new DexTransactionReceiptProcessor(web3j, sleepDuration, attempts), credentials.getAddress());</span>
-<span class="fc" id="L27">        this.txHashVerifier = new TxHashVerifier();</span>
-<span class="fc" id="L28">        this.web3j = web3j;</span>
-<span class="fc" id="L29">        this.credentials = credentials;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L27">        super(new DexTransactionReceiptProcessor(web3j, sleepDuration, attempts), credentials.getAddress());</span>
+<span class="fc" id="L28">        this.txHashVerifier = new TxHashVerifier();</span>
+<span class="fc" id="L29">        this.web3j = web3j;</span>
+<span class="fc" id="L30">        this.credentials = credentials;</span>
+<span class="fc" id="L31">    }</span>
 
     protected BigInteger getNonce() throws IOException {
-<span class="fc" id="L33">        EthGetTransactionCount ethGetTransactionCount = (EthGetTransactionCount)this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();</span>
-<span class="fc" id="L34">        return ethGetTransactionCount.getTransactionCount();</span>
+<span class="fc" id="L34">        EthGetTransactionCount ethGetTransactionCount = (EthGetTransactionCount)this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();</span>
+<span class="fc" id="L35">        return ethGetTransactionCount.getTransactionCount();</span>
     }
 
     protected BigInteger getEstimatedGas(String to, String data) throws IOException {
-<span class="fc" id="L38">        BigInteger gas = ((EthBlock)this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()).getBlock().getGasLimit();</span>
-<span class="fc" id="L39">        return gas;</span>
+<span class="fc" id="L39">        BigInteger gas = ((EthBlock)this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()).getBlock().getGasLimit();</span>
+<span class="fc" id="L40">        return gas;</span>
     }
 
     public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value) throws IOException {
-<span class="fc" id="L43">        BigInteger nonce = this.getNonce();</span>
-<span class="fc" id="L44">        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, this.getEstimatedGas(to, data), gasLimit, to, value, data);</span>
-<span class="fc" id="L45">        return this.signAndSend(rawTransaction);</span>
+<span class="fc" id="L44">        BigInteger nonce = this.getNonce();</span>
+<span class="fc" id="L45">        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, this.getEstimatedGas(to, data), gasLimit, to, value, data);</span>
+<span class="fc" id="L46">        return this.signAndSend(rawTransaction);</span>
     }
 
     public String sign(RawTransaction rawTransaction) {
-<span class="fc" id="L49">        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, this.credentials);</span>
-<span class="fc" id="L50">        return Numeric.toHexString(signedMessage);</span>
+<span class="fc" id="L50">        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, this.credentials);</span>
+<span class="fc" id="L51">        return Numeric.toHexString(signedMessage);</span>
     }
 
     public EthSendTransaction signAndSend(RawTransaction rawTransaction) throws IOException {
-<span class="fc" id="L54">        String hexValue = this.sign(rawTransaction);</span>
-<span class="fc" id="L55">        EthSendTransaction ethSendTransaction = (EthSendTransaction)this.web3j.ethSendRawTransaction(hexValue).send();</span>
-<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        if (ethSendTransaction != null &amp;&amp; !ethSendTransaction.hasError()) {</span>
-<span class="fc" id="L57">            String txHashLocal = Hash.sha3(hexValue);</span>
-<span class="fc" id="L58">            String txHashRemote = ethSendTransaction.getTransactionHash();</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">            if (!this.txHashVerifier.verify(txHashLocal, txHashRemote)) {</span>
-<span class="nc" id="L60">                throw new TxHashMismatchException(txHashLocal, txHashRemote);</span>
+<span class="fc" id="L55">        String hexValue = this.sign(rawTransaction);</span>
+<span class="fc" id="L56">        EthSendTransaction ethSendTransaction = (EthSendTransaction)this.web3j.ethSendRawTransaction(hexValue).send();</span>
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        if (ethSendTransaction != null &amp;&amp; !ethSendTransaction.hasError()) {</span>
+<span class="fc" id="L58">            String txHashLocal = Hash.sha3(hexValue);</span>
+<span class="fc" id="L59">            String txHashRemote = ethSendTransaction.getTransactionHash();</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            if (!this.txHashVerifier.verify(txHashLocal, txHashRemote)) {</span>
+<span class="nc" id="L61">                throw new TxHashMismatchException(txHashLocal, txHashRemote);</span>
             }
         }
 
-<span class="fc" id="L64">        return ethSendTransaction;</span>
+<span class="fc" id="L65">        return ethSendTransaction;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

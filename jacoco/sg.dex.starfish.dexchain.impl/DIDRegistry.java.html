@@ -2,12 +2,6 @@
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
@@ -28,6 +22,9 @@ import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
+import java.math.BigInteger;
+import java.util.*;
+
 /**
  * &lt;p&gt;Auto generated code.
  * &lt;p&gt;&lt;strong&gt;Do not modify!&lt;/strong&gt;
@@ -47,143 +44,143 @@ public class DIDRegistry extends Contract {
 
     public static final String FUNC_GETBLOCKNUMBERUPDATED = &quot;getBlockNumberUpdated&quot;;
 
-<span class="fc" id="L50">    public static final Event DIDREGISTERED_EVENT = new Event(&quot;DIDRegistered&quot;, </span>
-<span class="fc" id="L51">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Utf8String&gt;() {}, new TypeReference&lt;Uint256&gt;() {}, new TypeReference&lt;Uint256&gt;() {}));</span>
+<span class="fc" id="L47">    public static final Event DIDREGISTERED_EVENT = new Event(&quot;DIDRegistered&quot;, </span>
+<span class="fc" id="L48">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Utf8String&gt;() {}, new TypeReference&lt;Uint256&gt;() {}, new TypeReference&lt;Uint256&gt;() {}));</span>
     ;
 
     protected static final HashMap&lt;String, String&gt; _addresses;
 
     static {
-<span class="fc" id="L57">        _addresses = new HashMap&lt;String, String&gt;();</span>
-<span class="fc" id="L58">        _addresses.put(&quot;8995&quot;, &quot;0x0640B8c602bd466FB2F5C5C155e94dE50655bc39&quot;);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L54">        _addresses = new HashMap&lt;String, String&gt;();</span>
+<span class="fc" id="L55">        _addresses.put(&quot;8995&quot;, &quot;0x0640B8c602bd466FB2F5C5C155e94dE50655bc39&quot;);</span>
+<span class="fc" id="L56">    }</span>
 
     @Deprecated
     protected DIDRegistry(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L63">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L60">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L61">    }</span>
 
     protected DIDRegistry(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L67">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L64">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L65">    }</span>
 
     @Deprecated
     protected DIDRegistry(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L72">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L69">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L70">    }</span>
 
     protected DIDRegistry(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="fc" id="L76">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L73">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="fc" id="L74">    }</span>
 
     public List&lt;DIDRegisteredEventResponse&gt; getDIDRegisteredEvents(TransactionReceipt transactionReceipt) {
-<span class="nc" id="L80">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(DIDREGISTERED_EVENT, transactionReceipt);</span>
-<span class="nc" id="L81">        ArrayList&lt;DIDRegisteredEventResponse&gt; responses = new ArrayList&lt;DIDRegisteredEventResponse&gt;(valueList.size());</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
-<span class="nc" id="L83">            DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
-<span class="nc" id="L84">            typedResponse.log = eventValues.getLog();</span>
-<span class="nc" id="L85">            typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L86">            typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
-<span class="nc" id="L87">            typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L88">            typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
-<span class="nc" id="L89">            typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
-<span class="nc" id="L90">            responses.add(typedResponse);</span>
-<span class="nc" id="L91">        }</span>
-<span class="nc" id="L92">        return responses;</span>
+<span class="nc" id="L77">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(DIDREGISTERED_EVENT, transactionReceipt);</span>
+<span class="nc" id="L78">        ArrayList&lt;DIDRegisteredEventResponse&gt; responses = new ArrayList&lt;DIDRegisteredEventResponse&gt;(valueList.size());</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
+<span class="nc" id="L80">            DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
+<span class="nc" id="L81">            typedResponse.log = eventValues.getLog();</span>
+<span class="nc" id="L82">            typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L83">            typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L84">            typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L85">            typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L86">            typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
+<span class="nc" id="L87">            responses.add(typedResponse);</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">        return responses;</span>
     }
 
     public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(EthFilter filter) {
-<span class="fc" id="L96">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, DIDRegisteredEventResponse&gt;() {</span>
+<span class="fc" id="L93">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, DIDRegisteredEventResponse&gt;() {</span>
             @Override
             public DIDRegisteredEventResponse apply(Log log) {
-<span class="fc" id="L99">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DIDREGISTERED_EVENT, log);</span>
-<span class="fc" id="L100">                DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
-<span class="fc" id="L101">                typedResponse.log = log;</span>
-<span class="fc" id="L102">                typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
-<span class="fc" id="L103">                typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
-<span class="fc" id="L104">                typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
-<span class="fc" id="L105">                typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
-<span class="fc" id="L106">                typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
-<span class="fc" id="L107">                return typedResponse;</span>
+<span class="fc" id="L96">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(DIDREGISTERED_EVENT, log);</span>
+<span class="fc" id="L97">                DIDRegisteredEventResponse typedResponse = new DIDRegisteredEventResponse();</span>
+<span class="fc" id="L98">                typedResponse.log = log;</span>
+<span class="fc" id="L99">                typedResponse._did = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L100">                typedResponse._owner = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L101">                typedResponse._value = (String) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="fc" id="L102">                typedResponse._blockNumberUpdated = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();</span>
+<span class="fc" id="L103">                typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();</span>
+<span class="fc" id="L104">                return typedResponse;</span>
             }
         });
     }
 
     public Flowable&lt;DIDRegisteredEventResponse&gt; dIDRegisteredEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-<span class="nc" id="L113">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
-<span class="nc" id="L114">        filter.addSingleTopic(EventEncoder.encode(DIDREGISTERED_EVENT));</span>
-<span class="nc" id="L115">        return dIDRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L110">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
+<span class="nc" id="L111">        filter.addSingleTopic(EventEncoder.encode(DIDREGISTERED_EVENT));</span>
+<span class="nc" id="L112">        return dIDRegisteredEventFlowable(filter);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; initialize() {
-<span class="nc" id="L119">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+<span class="nc" id="L116">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
                 FUNC_INITIALIZE, 
-<span class="nc" id="L121">                Arrays.&lt;Type&gt;asList(), </span>
-<span class="nc" id="L122">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="nc" id="L123">        return executeRemoteCallTransaction(function);</span>
+<span class="nc" id="L118">                Arrays.&lt;Type&gt;asList(), </span>
+<span class="nc" id="L119">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="nc" id="L120">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; registerDID(byte[] _did, String _value) {
-<span class="fc" id="L127">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+<span class="fc" id="L124">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
                 FUNC_REGISTERDID, 
-<span class="fc" id="L129">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), </span>
+<span class="fc" id="L126">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), </span>
                 new org.web3j.abi.datatypes.Utf8String(_value)), 
-<span class="fc" id="L131">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="fc" id="L132">        return executeRemoteCallTransaction(function);</span>
+<span class="fc" id="L128">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
+<span class="fc" id="L129">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;BigInteger&gt; getBlockNumberUpdated(byte[] _did) {
-<span class="fc" id="L136">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, </span>
-<span class="fc" id="L137">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), </span>
-<span class="fc" id="L138">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
-<span class="fc" id="L139">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
+<span class="fc" id="L133">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, </span>
+<span class="fc" id="L134">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), </span>
+<span class="fc" id="L135">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
+<span class="fc" id="L136">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
     }
 
     @Deprecated
     public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L144">        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L141">        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
     }
 
     @Deprecated
     public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L149">        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L146">        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
     }
 
     public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L153">        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L150">        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);</span>
     }
 
     public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="fc" id="L157">        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="fc" id="L154">        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);</span>
     }
 
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L161">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L158">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
     }
 
     @Deprecated
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L166">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L163">        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
     }
 
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L170">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L167">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
     }
 
     @Deprecated
     public static RemoteCall&lt;DIDRegistry&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L175">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L172">        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
     }
 
     protected String getStaticDeployedAddress(String networkId) {
-<span class="nc" id="L179">        return _addresses.get(networkId);</span>
+<span class="nc" id="L176">        return _addresses.get(networkId);</span>
     }
 
     public static String getPreviouslyDeployedAddress(String networkId) {
-<span class="nc" id="L183">        return _addresses.get(networkId);</span>
+<span class="nc" id="L180">        return _addresses.get(networkId);</span>
     }
 
-<span class="fc" id="L186">    public static class DIDRegisteredEventResponse extends BaseEventResponse {</span>
+<span class="fc" id="L183">    public static class DIDRegisteredEventResponse extends BaseEventResponse {</span>
         public byte[] _did;
 
         public String _owner;
