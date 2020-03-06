@@ -1,11 +1,10 @@
 package sg.dex.starfish.dexchain.impl;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
@@ -14,7 +13,9 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.exceptions.TxHashMismatchException;
 import org.web3j.utils.Numeric;
 import org.web3j.utils.TxHashVerifier;
-import org.web3j.protocol.Web3j;
+
+import java.io.IOException;
+import java.math.BigInteger;
 
 
 public class DexTransactionManager extends TransactionManager {

@@ -6,10 +6,10 @@ import com.oceanprotocol.squid.models.Account;
 import org.junit.jupiter.api.Test;
 import org.web3j.crypto.CipherException;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.dexchain.DexConfig;
 import sg.dex.starfish.dexchain.DexConfigFactory;
 import sg.dex.starfish.dexchain.DirectPurchaseAdapter;
+import sg.dex.starfish.impl.squid.SquidService;
 
 import java.io.IOException;
 import java.math.BigInteger;
