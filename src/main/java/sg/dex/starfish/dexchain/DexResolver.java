@@ -23,7 +23,9 @@ import sg.dex.starfish.util.DID;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DexResolver implements Resolver {
     private DIDRegistry contract;
@@ -82,6 +84,18 @@ public class DexResolver implements Resolver {
 
     @Override
     public String getDDOString(DID did) throws DexChainException {
+        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);
+        return result != null ? result._value : null;
+    }
+
+    public String getDDOTimestamp(DID did, Date date) throws DexChainException {
+        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);
+        if(result != null)
+            date.setTime(result._timestamp.longValue() * 1000);
+        return result != null ? result._value : null;
+    }
+
+    private DIDRegistry.DIDRegisteredEventResponse getDDOInternal(DID did) throws DexChainException {
         String didHash = did.getID();
         BigInteger blockNumber = BigInteger.valueOf(0);
         try {
@@ -101,8 +115,7 @@ public class DexResolver implements Resolver {
         floable.subscribe(log -> {
             outcome.add(log);
         });
-
-        return outcome.size() == 1 ? outcome.get(0)._value : null;
+        return outcome.size() == 1 ? outcome.get(0) : null;
     }
 
     @Override
