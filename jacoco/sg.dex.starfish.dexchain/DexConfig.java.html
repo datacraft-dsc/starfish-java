@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DexConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.dexchain</a> &gt; <span class="el_source">DexConfig.java</span></div><h1>DexConfig.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.dexchain;
 
+import org.apache.logging.log4j.util.Strings;
+
 import java.math.BigInteger;
 
 /**
  * Class that keeps all the configurations to initialize the API
  */
-<span class="fc" id="L8">public class DexConfig {</span>
+<span class="fc" id="L10">public class DexConfig {</span>
 
     public static final String KEEPER_URL = &quot;keeper.url&quot;;
     public static final String KEEPER_GAS_LIMIT = &quot;keeper.gasLimit&quot;;
@@ -38,129 +40,132 @@ import java.math.BigInteger;
     private String tokenAddress;
 
     public String getKeeperUrl() {
-<span class="fc" id="L41">        return keeperUrl;</span>
+<span class="fc" id="L43">        return keeperUrl;</span>
     }
 
     public DexConfig setKeeperUrl(String keeperUrl) {
-<span class="fc" id="L45">        this.keeperUrl = keeperUrl;</span>
-<span class="fc" id="L46">        return this;</span>
+<span class="fc" id="L47">        this.keeperUrl = keeperUrl;</span>
+<span class="fc" id="L48">        return this;</span>
     }
 
     public BigInteger getKeeperGasLimit() {
-<span class="fc" id="L50">        return keeperGasLimit;</span>
+<span class="fc" id="L52">        return keeperGasLimit;</span>
     }
 
     public DexConfig setKeeperGasLimit(BigInteger keeperGasLimit) {
-<span class="fc" id="L54">        this.keeperGasLimit = keeperGasLimit;</span>
-<span class="fc" id="L55">        return this;</span>
+<span class="fc" id="L56">        this.keeperGasLimit = keeperGasLimit;</span>
+<span class="fc" id="L57">        return this;</span>
     }
 
     public BigInteger getKeeperGasPrice() {
-<span class="fc" id="L59">        return keeperGasPrice;</span>
+<span class="fc" id="L61">        return keeperGasPrice;</span>
     }
 
     public DexConfig setKeeperGasPrice(BigInteger keeperGasPrice) {
-<span class="fc" id="L63">        this.keeperGasPrice = keeperGasPrice;</span>
-<span class="fc" id="L64">        return this;</span>
+<span class="fc" id="L65">        this.keeperGasPrice = keeperGasPrice;</span>
+<span class="fc" id="L66">        return this;</span>
     }
 
     public int getKeeperTxAttempts() {
-<span class="fc" id="L68">        return keeperTxAttempts;</span>
+<span class="fc" id="L70">        return keeperTxAttempts;</span>
     }
 
     public DexConfig setKeeperTxAttempts(int keeperTxAttempts) {
-<span class="fc" id="L72">        this.keeperTxAttempts = keeperTxAttempts;</span>
-<span class="fc" id="L73">        return this;</span>
+<span class="fc" id="L74">        this.keeperTxAttempts = keeperTxAttempts;</span>
+<span class="fc" id="L75">        return this;</span>
     }
 
     public long getKeeperTxSleepDuration() {
-<span class="fc" id="L77">        return keeperTxSleepDuration;</span>
+<span class="fc" id="L79">        return keeperTxSleepDuration;</span>
     }
 
     public DexConfig setKeeperTxSleepDuration(long keeperTxSleepDuration) {
-<span class="fc" id="L81">        this.keeperTxSleepDuration = keeperTxSleepDuration;</span>
-<span class="fc" id="L82">        return this;</span>
+<span class="fc" id="L83">        this.keeperTxSleepDuration = keeperTxSleepDuration;</span>
+<span class="fc" id="L84">        return this;</span>
     }
 
     public String getDidRegistryAddress() {
-<span class="fc" id="L86">        return didRegistryAddress;</span>
+<span class="fc" id="L88">        return didRegistryAddress;</span>
     }
 
     public String getDirectPurchaseAddress() {
-<span class="fc" id="L90">        return directPurchaseAddress;</span>
+<span class="fc" id="L92">        return directPurchaseAddress;</span>
     }
 
     public DexConfig setDidRegistryAddress(String address) {
-<span class="fc" id="L94">        this.didRegistryAddress = address;</span>
-<span class="fc" id="L95">        return this;</span>
+<span class="fc" id="L96">        this.didRegistryAddress = address;</span>
+<span class="fc" id="L97">        return this;</span>
     }
 
     public DexConfig setProvenanceAddress(String address) {
-<span class="fc" id="L99">        this.provenanceAddress = address;</span>
-<span class="fc" id="L100">        return this;</span>
+<span class="fc" id="L101">        this.provenanceAddress = address;</span>
+<span class="fc" id="L102">        return this;</span>
     }
 
     public String getProvenanceAddress() {
-<span class="nc" id="L104">        return provenanceAddress;</span>
+<span class="nc" id="L106">        return provenanceAddress;</span>
     }
 
     public DexConfig setDirectPurchaseAddress(String address) {
-<span class="fc" id="L108">        this.directPurchaseAddress = address;</span>
-<span class="fc" id="L109">        return this;</span>
+<span class="fc" id="L110">        this.directPurchaseAddress = address;</span>
+<span class="fc" id="L111">        return this;</span>
     }
 
     public String getMainAccountAddress() {
-<span class="fc" id="L113">        return mainAccountAddress;</span>
+<span class="fc" id="L115">        return mainAccountAddress;</span>
     }
 
     public DexConfig setMainAccountAddress(String mainAccountAddress) {
-<span class="fc" id="L117">        this.mainAccountAddress = mainAccountAddress;</span>
-<span class="fc" id="L118">        return this;</span>
+<span class="fc" id="L119">        this.mainAccountAddress = mainAccountAddress;</span>
+<span class="fc" id="L120">        return this;</span>
     }
 
     public String getParityAccountAddress() {
-<span class="fc" id="L122">        return parityAccountAddress;</span>
+<span class="fc" id="L124">        return parityAccountAddress;</span>
     }
 
     public DexConfig setParityAccountAddress(String parityAccountAddress) {
-<span class="fc" id="L126">        this.parityAccountAddress = parityAccountAddress;</span>
-<span class="fc" id="L127">        return this;</span>
+<span class="fc" id="L128">        this.parityAccountAddress = parityAccountAddress;</span>
+<span class="fc" id="L129">        return this;</span>
     }
 
     public String getMainAccountPassword() {
-<span class="fc" id="L131">        return mainAccountPassword;</span>
+<span class="fc" id="L133">        return mainAccountPassword;</span>
     }
 
     public DexConfig setMainAccountPassword(String mainAccountPassword) {
-<span class="fc" id="L135">        this.mainAccountPassword = mainAccountPassword;</span>
-<span class="fc" id="L136">        return this;</span>
+<span class="fc" id="L137">        this.mainAccountPassword = mainAccountPassword;</span>
+<span class="fc" id="L138">        return this;</span>
     }
 
     public String getParityAccountPassword() {
-<span class="fc" id="L140">        return parityAccountPassword;</span>
+<span class="fc" id="L142">        return parityAccountPassword;</span>
     }
 
     public DexConfig setParityAccountPassword(String parityAccountPassword) {
-<span class="fc" id="L144">        this.parityAccountPassword = parityAccountPassword;</span>
-<span class="fc" id="L145">        return this;</span>
+<span class="fc" id="L146">        this.parityAccountPassword = parityAccountPassword;</span>
+<span class="fc" id="L147">        return this;</span>
     }
 
     public String getMainAccountCredentialsFile() {
-<span class="fc" id="L149">        return mainAccountCredentialsFile;</span>
+<span class="fc" id="L151">        return mainAccountCredentialsFile;</span>
     }
 
     public DexConfig setMainAccountCredentialsFile(String mainAccountCredentialsFile) {
-<span class="fc" id="L153">        this.mainAccountCredentialsFile = mainAccountCredentialsFile;</span>
-<span class="fc" id="L154">        return this;</span>
+<span class="fc" id="L155">        this.mainAccountCredentialsFile = mainAccountCredentialsFile;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if(Strings.isBlank(mainAccountCredentialsFile)){</span>
+<span class="fc" id="L157">            this.mainAccountCredentialsFile=DexConfigFactory.getDefaultCredential().getAbsolutePath();</span>
+        }
+<span class="fc" id="L159">        return this;</span>
     }
 
     public String getTokenAddress() {
-<span class="fc" id="L158">        return tokenAddress;</span>
+<span class="fc" id="L163">        return tokenAddress;</span>
     }
 
     public DexConfig setTokenAddress(String tokenAddress) {
-<span class="fc" id="L162">        this.tokenAddress = tokenAddress;</span>
-<span class="fc" id="L163">        return this;</span>
+<span class="fc" id="L167">        this.tokenAddress = tokenAddress;</span>
+<span class="fc" id="L168">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
