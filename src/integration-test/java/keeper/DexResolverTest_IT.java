@@ -14,10 +14,7 @@ import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +44,15 @@ public class DexResolverTest_IT {
         resolver1.registerDID(did, valueUpdate);
         val = resolver1.getDDOString(did);
         assertTrue(val.equals(valueUpdate));
+    }
+
+    @Test
+    public void testResolveTimeStamp() {
+        Date date = new Date();
+        Date newDate = (Date) date.clone();
+        resolver1.registerDID(did, valueSet);
+        String val = resolver1.getDDOTimestamp(did, newDate);
+        assertTrue(newDate.compareTo(date) >= 0);
     }
 
     @Test
