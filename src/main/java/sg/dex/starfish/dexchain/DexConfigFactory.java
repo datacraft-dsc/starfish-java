@@ -1,11 +1,13 @@
 package sg.dex.starfish.dexchain;
 
+import org.apache.commons.io.FileUtils;
 import org.web3j.tx.TransactionManager;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Factory to get instances of DexConfig
@@ -72,5 +74,22 @@ public class DexConfigFactory {
 
 
         return prop;
+    }
+    public static File getDefaultCredential()  {
+
+        File file = new File("account_credential_default.json");
+
+        // TODO optimize this logic
+        try {
+            try (InputStream inputStream = DexConfigFactory.class.getResourceAsStream("/account_credential_default.json");
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                String contents = reader.lines()
+                        .collect(Collectors.joining(System.lineSeparator()));
+                FileUtils.writeStringToFile(file,contents, Charset.defaultCharset());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }
