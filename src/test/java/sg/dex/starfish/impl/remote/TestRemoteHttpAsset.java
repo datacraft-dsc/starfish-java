@@ -38,7 +38,7 @@ public class TestRemoteHttpAsset {
         assertEquals(contentLength,"30");
 
     }
-    @Test
+
     public void testURLConnection_Auth() throws URISyntaxException {
 
         String headerKey = AUTH.WWW_AUTH_RESP;
