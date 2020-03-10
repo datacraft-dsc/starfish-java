@@ -24,5 +24,26 @@ public class TestRemoteHttpAsset {
         assertNotNull(asset.getContent());
         assertNotNull(asset.getAssetID());
     }
+    @Test
+    public void testURLConnection_1() throws URISyntaxException {
 
+        URIAsset uriAsset = URIAsset.create(new URI("http://httpbin.org/ip"));
+
+        String contentType =uriAsset.getMetadata().get(Constant.CONTENT_TYPE).toString();
+        String contentLength =uriAsset.getMetadata().get(Constant.CONTENT_LENGTH).toString();
+        assertEquals(contentType,"application/json");
+        assertEquals(contentLength,"30");
+
+    }
+    @Test
+    public void testURLConnection_Auth() throws URISyntaxException {
+
+        URIAsset uriAsset = URIAsset.create(new URI("http://localhost:3030/"));
+
+        String contentType =uriAsset.getMetadata().get(Constant.CONTENT_TYPE).toString();
+        String contentLength =uriAsset.getMetadata().get(Constant.CONTENT_LENGTH).toString();
+        assertEquals(contentType,"text/html; charset=utf-8");
+        assertEquals(contentLength,"10813");
+
+    }
 }
