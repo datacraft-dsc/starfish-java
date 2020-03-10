@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>URIAsset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Starfish - client library for data ecosystems</a> &gt; <a href="index.source.html" class="el_package">sg.dex.starfish.impl.resource</a> &gt; <span class="el_source">URIAsset.java</span></div><h1>URIAsset.java</h1><pre class="source lang-java linenums">package sg.dex.starfish.impl.resource;
 
+import org.apache.http.Header;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -7,20 +8,20 @@ import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.DataAsset;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.AuthorizationException;
-import sg.dex.starfish.exception.GenericException;
-import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StorageException;
 import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
 import sg.dex.starfish.util.JSON;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
+import static sg.dex.starfish.constant.Constant.CONTENT_LENGTH;
+import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
 
 /**
  * A specialised asset class that references data at a given URI.
@@ -30,11 +31,14 @@ import java.util.Map;
 public class URIAsset extends AAsset implements DataAsset {
 
     private final URI uri;
+    private final CloseableHttpResponse response;
 
-    protected URIAsset(URI uri, String meta) {
-<span class="fc" id="L35">        super(meta);</span>
-<span class="fc" id="L36">        this.uri = uri;</span>
-<span class="fc" id="L37">    }</span>
+    protected URIAsset(URI uri,CloseableHttpResponse response, String meta) {
+<span class="fc" id="L37">        super(meta);</span>
+<span class="fc" id="L38">        this.uri = uri;</span>
+<span class="fc" id="L39">        this.response= response;</span>
+
+<span class="fc" id="L41">    }</span>
 
     /**
      * Creates a HTTP asset using the given URI and metadata
@@ -43,7 +47,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-<span class="nc" id="L46">        return new URIAsset(uri, metaString);</span>
+<span class="nc" id="L50">        return new URIAsset(uri,getResponse(uri,null), metaString);</span>
     }
 
     /**
@@ -53,7 +57,16 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-<span class="nc" id="L56">        return create(uri, JSON.toPrettyString(buildMetaData(null)));</span>
+<span class="nc" id="L60">        return create(uri, JSON.toPrettyString(buildMetaData(uri, null,null)));</span>
+    }
+    /**
+     * Creates a HTTP asset using the given URI.
+     *
+     * @param uri of the resource
+     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     */
+    public static URIAsset create(URI uri,Map&lt;String, String&gt; auth,Map&lt;String, Object&gt; metaData) {
+<span class="nc" id="L69">        return create(uri, JSON.toPrettyString(buildMetaData(uri, auth,metaData)));</span>
     }
 
     /**
@@ -66,7 +79,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map&lt;String, Object&gt; metaData) {
-<span class="fc" id="L69">        return new URIAsset(uri, JSON.toPrettyString(buildMetaData(metaData)));</span>
+<span class="fc" id="L82">        return new URIAsset(uri, getResponse(uri,null),JSON.toPrettyString(buildMetaData(uri,null, metaData)));</span>
     }
 
     /**
@@ -77,21 +90,49 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map&lt;String, Object&gt; buildMetaData(Map&lt;String, Object&gt; metaData) {
+    private static Map&lt;String, Object&gt; buildMetaData(URI uri, Map&lt;String, String&gt; auth,Map&lt;String, Object&gt; metaData) {
 
-<span class="fc" id="L82">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L83">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
-<span class="fc" id="L84">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
-<span class="fc" id="L85">        ob.put(Constant.CONTENT_TYPE, &quot;application/octet-stream&quot;);</span>
+<span class="fc" id="L95">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L96">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L97">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
+<span class="fc" id="L98">        CloseableHttpResponse response = getResponse(uri,auth);</span>
+<span class="fc" id="L99">        Header[] headers = response.getAllHeaders();</span>
 
+<span class="fc" id="L101">        ob.put(CONTENT_TYPE, getHeaderValue(CONTENT_TYPE, headers));</span>
+<span class="fc" id="L102">        ob.put(CONTENT_LENGTH, getHeaderValue(CONTENT_LENGTH, headers));</span>
 
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (metaData != null) {</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (metaData != null) {</span>
 
-<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
-<span class="fc" id="L91">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L92">            }</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
+<span class="fc" id="L107">                ob.put(me.getKey(), me.getValue());</span>
+<span class="fc" id="L108">            }</span>
         }
-<span class="fc" id="L94">        return ob;</span>
+<span class="fc" id="L110">        return ob;</span>
+    }
+
+    private static CloseableHttpResponse getResponse(URI uri,Map&lt;String, String&gt; header) {
+<span class="fc" id="L114">        HttpGet httpget = new HttpGet(uri);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if(header != null){</span>
+<span class="nc" id="L116">            addHeader(httpget,header);</span>
+        }
+<span class="fc" id="L118">        return HTTP.execute(httpget);</span>
+
+    }
+
+    private static void addHeader(HttpGet httpget,Map&lt;String, String&gt; header) {
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry : header.entrySet()) {</span>
+<span class="nc" id="L124">            httpget.addHeader(entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L125">        }</span>
+
+<span class="nc" id="L127">    }</span>
+
+    private static String getHeaderValue(String headerName, Header[] headers) {
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        for (int i = 0; i &lt; headers.length; i++) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (headers[i].getName().equalsIgnoreCase(headerName)) {</span>
+<span class="fc" id="L132">                return headers[i].getValue();</span>
+            }
+        }
+<span class="nc" id="L135">        return &quot;&quot;;</span>
     }
 
 
@@ -104,24 +145,13 @@ public class URIAsset extends AAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-<span class="nc" id="L107">        HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc" id="L108">        CloseableHttpResponse response = null;</span>
-        try {
-<span class="nc" id="L110">            response = HTTP.execute(httpget);</span>
-<span class="nc" id="L111">            StatusLine statusLine = response.getStatusLine();</span>
-<span class="nc" id="L112">            int statusCode = statusLine.getStatusCode();</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (statusCode == 404) {</span>
-<span class="nc" id="L114">                throw new RemoteException(&quot;Asset ID not found at: &quot; + uri);</span>
-            }
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (statusCode == 200) {</span>
-<span class="nc" id="L117">                InputStream inputStream = HTTP.getContent(response);</span>
-<span class="nc" id="L118">                return inputStream;</span>
-            } else {
-<span class="nc" id="L120">                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());</span>
-            }
-<span class="nc" id="L122">        } catch (IOException e) {</span>
-<span class="nc" id="L123">            throw new RemoteException(&quot; Getting Remote Asset content failed: &quot;, e);</span>
+<span class="nc" id="L148">        StatusLine statusLine = response.getStatusLine();</span>
+<span class="nc" id="L149">        int statusCode = statusLine.getStatusCode();</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (statusCode == 200) {</span>
+<span class="nc" id="L151">            InputStream inputStream = HTTP.getContent(response);</span>
+<span class="nc" id="L152">            return inputStream;</span>
         }
+<span class="nc" id="L154">        return null;</span>
 
     }
 
@@ -132,27 +162,17 @@ public class URIAsset extends AAsset implements DataAsset {
      */
     @Override
     public long getContentSize() {
-        try {
-<span class="nc" id="L136">            return getContentStream().available();</span>
-<span class="nc" id="L137">        } catch (IOException e) {</span>
-<span class="nc" id="L138">            throw new GenericException(</span>
-<span class="nc" id="L139">                    &quot;Exception occurred  for asset id :&quot; + getAssetID() + &quot; while finding getting the Content size :&quot;,</span>
-                    e);
-        }
+<span class="nc" id="L165">        return (Long) this.getMetadata().get(CONTENT_LENGTH);</span>
     }
 
     @Override
     public DID getDID() {
-<span class="nc" id="L146">        throw new UnsupportedOperationException(&quot;Can't get DID for asset of type &quot; + this.getClass());</span>
-    }
-
-    public URI getSource() {
-<span class="nc" id="L150">        return uri;</span>
+<span class="nc" id="L170">        throw new UnsupportedOperationException(&quot;Can't get DID for asset of type &quot; + this.getClass());</span>
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="nc" id="L155">        return create(uri, newMeta);</span>
+<span class="nc" id="L175">        return create(uri, newMeta);</span>
     }
 
 }
