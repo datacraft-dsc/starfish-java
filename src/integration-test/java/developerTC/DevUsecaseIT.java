@@ -21,7 +21,6 @@ import org.junit.runner.RunWith;
         TestUnPublishListing_IT.class,
         TestSearchAssetListing_IT.class,
         TestViewAssetListing_IT.class,
-        TestQueryProvenance_IT.class,
         TestAccessBundleAsset_IT.class,
         TestPurchaseAsset_IT.class,
         TestConfirmPurchase_IT.class,
