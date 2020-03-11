@@ -1,6 +1,8 @@
 package developerTC;
 
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with an Ocean marketplace,
@@ -27,10 +28,14 @@ public class TestUnPublishListing_IT {
 
     private RemoteAgent remoteAgent;
 
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
+
     @BeforeEach
     public void setUp() {
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
 

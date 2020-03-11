@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
@@ -20,7 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TestAccessBundleAsset_IT {
 
+
     private RemoteAgent remoteAgent = AgentService.getRemoteAgent();
+
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     private Map<String, Asset> getAssetMap() {
         // creating assets

@@ -1,6 +1,8 @@
 package developerTC;
 
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,21 +19,26 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
 //@Disabled
 public class TestOperation_IT {
 
     private RemoteAgent remoteAgent;
 
     //input asset output asset
-    private String increment_4="b158f208561d7da5d5e8d90b5e6a7b621cbd7a4f1b511554c6cd5d6b3dda3d07";
+    private String increment_4 = "b158f208561d7da5d5e8d90b5e6a7b621cbd7a4f1b511554c6cd5d6b3dda3d07";
     //input json output json
-    private String increment_1="2e80ae58bb837ec236535f2ef097d185d859222e00a7a910bbd1464a5ed50fec";
+    private String increment_1 = "2e80ae58bb837ec236535f2ef097d185d859222e00a7a910bbd1464a5ed50fec";
 
     //input asset output json
-    private String increment_2="045b5fa81e06a904a5f8ae3bf7cc6c976d20a6caf5dd9acfda2a6dac5f7f7275";
+    private String increment_2 = "045b5fa81e06a904a5f8ae3bf7cc6c976d20a6caf5dd9acfda2a6dac5f7f7275";
     // input json output Asset
-    private String increment_3="618b62eceba2641986fafa0da86167821f29ed947753a0c97a1317ae2d60b5b5";
+    private String increment_3 = "618b62eceba2641986fafa0da86167821f29ed947753a0c97a1317ae2d60b5b5";
 
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @BeforeEach
     void init() throws IOException, URISyntaxException {
@@ -42,7 +49,7 @@ public class TestOperation_IT {
 
 
     @Test
-    public void testIncrement_Async()  {
+    public void testIncrement_Async() {
         Operation remoteOperation = remoteAgent.getAsset(increment_1);
 
         Map<String, Object> inputMap = new HashMap<>();
@@ -50,11 +57,12 @@ public class TestOperation_IT {
         Job job = remoteOperation.invokeAsync(inputMap);
         Map<String, Object> remoteAsset = job.getResult(10000);
 
-        Object resutl= remoteAsset.get("n");
+        Object resutl = remoteAsset.get("n");
         Assertions.assertEquals(resutl.toString(), "17");
     }
+
     @Test
-    public void testIncrement_sync()  {
+    public void testIncrement_sync() {
         Operation remoteOperation = remoteAgent.getAsset(increment_1);
 
         Map<String, Object> inputMap = new HashMap<>();
@@ -62,8 +70,9 @@ public class TestOperation_IT {
         Map<String, Object> result = remoteOperation.invokeResult(inputMap);
         Assertions.assertEquals(result.get("n").toString(), "17");
     }
+
     @Test
-    public void testIncrement2_Async()  {
+    public void testIncrement2_Async() {
 
         String data = "10";
         Asset asset = MemoryAsset.create(data.getBytes());
@@ -80,8 +89,9 @@ public class TestOperation_IT {
 
         Assertions.assertEquals(resultMap.get("n").toString(), "11");
     }
+
     @Test
-    public void testIncrement2_sync()  {
+    public void testIncrement2_sync() {
         String data = "10";
         Asset asset = MemoryAsset.create(data.getBytes());
 
@@ -95,8 +105,9 @@ public class TestOperation_IT {
         Map<String, Object> result = remoteOperation.invokeResult(inputMap);
         Assertions.assertEquals(result.get("n").toString(), "11");
     }
+
     @Test
-    public void testIncrement4_Async()  {
+    public void testIncrement4_Async() {
         String data = "4";
         Asset asset = MemoryAsset.create(data.getBytes());
 
@@ -141,7 +152,7 @@ public class TestOperation_IT {
     }
 
     @Test
-    public void testIncrement3_Async()  {
+    public void testIncrement3_Async() {
         Operation remoteOperation = remoteAgent.getAsset(increment_3);
 
         Map<String, Object> inputMap = new HashMap<>();
@@ -153,8 +164,9 @@ public class TestOperation_IT {
         String result = Utils.stringFromStream(assetRes.getContentStream());
         Assertions.assertEquals(result, "17");
     }
+
     @Test
-    public void testIncrement3_sync()  {
+    public void testIncrement3_sync() {
         Operation remoteOperation = remoteAgent.getAsset(increment_3);
 
         Map<String, Object> inputMap = new HashMap<>();

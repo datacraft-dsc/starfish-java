@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -25,6 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestQueryProvenance_IT {
 
     private static RemoteAgent remoteAgent = AgentService.getRemoteAgent();
+
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @Test
     public void testProvenance() throws URISyntaxException {

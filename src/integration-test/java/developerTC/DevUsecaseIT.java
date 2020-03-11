@@ -1,6 +1,8 @@
 package developerTC;
 
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.runner.RunWith;
@@ -30,7 +32,12 @@ import org.junit.runner.RunWith;
 
 
 })
+
 public class DevUsecaseIT {
 
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
 }
