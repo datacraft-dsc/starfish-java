@@ -34,11 +34,11 @@ public class URIAsset extends AAsset implements DataAsset {
     private final CloseableHttpResponse response;
 
     protected URIAsset(URI uri,CloseableHttpResponse response, String meta) {
-<span class="fc" id="L37">        super(meta);</span>
-<span class="fc" id="L38">        this.uri = uri;</span>
-<span class="fc" id="L39">        this.response= response;</span>
+<span class="nc" id="L37">        super(meta);</span>
+<span class="nc" id="L38">        this.uri = uri;</span>
+<span class="nc" id="L39">        this.response= response;</span>
 
-<span class="fc" id="L41">    }</span>
+<span class="nc" id="L41">    }</span>
 
     /**
      * Creates a HTTP asset using the given URI and metadata
@@ -79,7 +79,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map&lt;String, Object&gt; metaData) {
-<span class="fc" id="L82">        return new URIAsset(uri, getResponse(uri,null),JSON.toPrettyString(buildMetaData(uri,null, metaData)));</span>
+<span class="nc" id="L82">        return new URIAsset(uri, getResponse(uri,null),JSON.toPrettyString(buildMetaData(uri,null, metaData)));</span>
     }
 
     /**
@@ -92,30 +92,30 @@ public class URIAsset extends AAsset implements DataAsset {
      */
     private static Map&lt;String, Object&gt; buildMetaData(URI uri, Map&lt;String, String&gt; auth,Map&lt;String, Object&gt; metaData) {
 
-<span class="fc" id="L95">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L96">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
-<span class="fc" id="L97">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
-<span class="fc" id="L98">        CloseableHttpResponse response = getResponse(uri,auth);</span>
-<span class="fc" id="L99">        Header[] headers = response.getAllHeaders();</span>
+<span class="nc" id="L95">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L96">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
+<span class="nc" id="L97">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
+<span class="nc" id="L98">        CloseableHttpResponse response = getResponse(uri,auth);</span>
+<span class="nc" id="L99">        Header[] headers = response.getAllHeaders();</span>
 
-<span class="fc" id="L101">        ob.put(CONTENT_TYPE, getHeaderValue(CONTENT_TYPE, headers));</span>
-<span class="fc" id="L102">        ob.put(CONTENT_LENGTH, getHeaderValue(CONTENT_LENGTH, headers));</span>
+<span class="nc" id="L101">        ob.put(CONTENT_TYPE, getHeaderValue(CONTENT_TYPE, headers));</span>
+<span class="nc" id="L102">        ob.put(CONTENT_LENGTH, getHeaderValue(CONTENT_LENGTH, headers));</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (metaData != null) {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (metaData != null) {</span>
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
-<span class="fc" id="L107">                ob.put(me.getKey(), me.getValue());</span>
-<span class="fc" id="L108">            }</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaData.entrySet()) {</span>
+<span class="nc" id="L107">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L108">            }</span>
         }
-<span class="fc" id="L110">        return ob;</span>
+<span class="nc" id="L110">        return ob;</span>
     }
 
     private static CloseableHttpResponse getResponse(URI uri,Map&lt;String, String&gt; header) {
-<span class="fc" id="L114">        HttpGet httpget = new HttpGet(uri);</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if(header != null){</span>
+<span class="nc" id="L114">        HttpGet httpget = new HttpGet(uri);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if(header != null){</span>
 <span class="nc" id="L116">            addHeader(httpget,header);</span>
         }
-<span class="fc" id="L118">        return HTTP.execute(httpget);</span>
+<span class="nc" id="L118">        return HTTP.execute(httpget);</span>
 
     }
 
@@ -127,9 +127,9 @@ public class URIAsset extends AAsset implements DataAsset {
 <span class="nc" id="L127">    }</span>
 
     private static String getHeaderValue(String headerName, Header[] headers) {
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        for (int i = 0; i &lt; headers.length; i++) {</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (headers[i].getName().equalsIgnoreCase(headerName)) {</span>
-<span class="fc" id="L132">                return headers[i].getValue();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (int i = 0; i &lt; headers.length; i++) {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            if (headers[i].getName().equalsIgnoreCase(headerName)) {</span>
+<span class="nc" id="L132">                return headers[i].getValue();</span>
             }
         }
 <span class="nc" id="L135">        return &quot;&quot;;</span>

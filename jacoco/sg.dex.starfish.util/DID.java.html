@@ -135,27 +135,27 @@ public class DID {
     }
 
     private String createString() {
-<span class="fc" id="L138">        StringBuffer sb = new StringBuffer();</span>
-<span class="fc" id="L139">        sb.append(&quot;did&quot;);</span>
-<span class="fc" id="L140">        sb.append(':');</span>
-<span class="fc" id="L141">        sb.append(method);</span>
-<span class="fc" id="L142">        sb.append(':');</span>
-<span class="fc" id="L143">        sb.append(id);</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (path != null) {</span>
-<span class="fc" id="L145">            sb.append('/');</span>
-<span class="fc" id="L146">            sb.append(path);</span>
+<span class="nc" id="L138">        StringBuffer sb = new StringBuffer();</span>
+<span class="nc" id="L139">        sb.append(&quot;did&quot;);</span>
+<span class="nc" id="L140">        sb.append(':');</span>
+<span class="nc" id="L141">        sb.append(method);</span>
+<span class="nc" id="L142">        sb.append(':');</span>
+<span class="nc" id="L143">        sb.append(id);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (path != null) {</span>
+<span class="nc" id="L145">            sb.append('/');</span>
+<span class="nc" id="L146">            sb.append(path);</span>
         }
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (fragment != null) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (fragment != null) {</span>
 <span class="nc" id="L149">            sb.append('#');</span>
 <span class="nc" id="L150">            sb.append(fragment);</span>
         }
 
-<span class="fc" id="L153">        return sb.toString();</span>
+<span class="nc" id="L153">        return sb.toString();</span>
     }
 
     @Override
     public String toString() {
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (fullString == null) fullString = createString();</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if (fullString == null) fullString = createString();</span>
 <span class="fc" id="L159">        return fullString;</span>
     }
 
