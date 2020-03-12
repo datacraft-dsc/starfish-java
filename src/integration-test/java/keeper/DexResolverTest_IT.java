@@ -82,13 +82,10 @@ public class DexResolverTest_IT {
         RemoteAccount remoteAccount = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         // Creating ddo string
         String surferURL = AgentService.getSurferUrl();
-        String invokeURL = AgentService.getInvokeUrl();
         Map<String, Object> ddo = new HashMap<>();
         List<Map<String, Object>> services = new ArrayList<>();
 
-        services.add(Utils.mapOf(
-                "type", "DEP.Invoke.v1",
-                "serviceEndpoint", invokeURL + "/api/v1"));
+
         services.add(Utils.mapOf(
                 "type", "DEP.Meta.v1",
                 "serviceEndpoint", surferURL + "/api/v1/meta"));

@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.dexchain.DexResolver;
@@ -22,6 +24,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * I need to be able to register my Agent on the network and obtain an Agent ID
  */
 public class TestAgentRegistration_IT {
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
+
     @Test
     public void testRegistration() {
         Map<String, Object> ddo = new HashMap<>();

@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.DataAsset;
@@ -23,6 +25,11 @@ public class TestMetaDataAccess_IT {
 
     private static String METADATA_JSON_CONTENT;
     private RemoteAgent remoteAgent;
+
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @BeforeEach
     public void setup() throws IOException {

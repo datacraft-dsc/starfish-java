@@ -2,6 +2,8 @@ package developerTC;
 
 
 import org.json.JSONException;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,10 @@ public class TestInvokeServiceFree_IT {
     private Resolver resolver;
     private RemoteAccount remoteAccount;
 
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @BeforeEach
     public void setUp() {

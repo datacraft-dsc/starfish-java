@@ -11,8 +11,7 @@ import sg.dex.starfish.util.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
@@ -24,11 +23,8 @@ import java.util.*;
 public class AgentService {
 
     private static RemoteAgent surfer;
-    private static RemoteAgent invokeAgent;
 
     private static String surferUrl;
-
-    private static String invokeUrl;
 
     private static String socketTimeout;
     private static String username;
@@ -49,22 +45,14 @@ public class AgentService {
         username = properties.getProperty("surfer.username");
         password = properties.getProperty("surfer.password");
 
-
-        String ip_invoke = properties.getProperty("koi.host");
-        String port_invoke = properties.getProperty("koi.port");
-
-        invokeUrl = ip_invoke + ":" + port_invoke;
         Resolver resolver = DexResolver.create();
         DID didSurfer = DID.createRandom();
-        DID didInvoke = DID.createRandom();
 
         resolver.registerDID(didSurfer, getDDO(surferUrl));
-        resolver.registerDID(didInvoke, getDDO(invokeUrl));
 
         remoteAccount = RemoteAccount.create(username, password);
 
         surfer = RemoteAgent.connect(resolver, didSurfer, remoteAccount);
-        invokeAgent = RemoteAgent.connect(resolver, didInvoke, remoteAccount);
 
     }
 
@@ -79,7 +67,7 @@ public class AgentService {
                 "serviceEndpoint", host + "/api/v1/assets"));
         services.add(Utils.mapOf(
                 "type", "DEP.Invoke.v1",
-                "serviceEndpoint", host+"/api/v1/invoke"));
+                "serviceEndpoint", host + "/api/v1/invoke"));
         services.add(Utils.mapOf(
                 "type", "DEP.Auth.v1",
                 "serviceEndpoint", host + "/api/v1/auth"));
@@ -103,10 +91,6 @@ public class AgentService {
         return surferUrl;
     }
 
-    public static String getInvokeUrl() {
-        return invokeUrl;
-    }
-
 
     public static int getSocketTimeout() {
         return Integer.parseInt(socketTimeout);
@@ -125,29 +109,6 @@ public class AgentService {
         return properties;
     }
 
-
-    private static String getInvokeDDO(String host, Resolver resolver) {
-        Map<String, Object> ddo = new HashMap<>();
-        List<Map<String, Object>> services = new ArrayList<>();
-
-        services.add(Utils.mapOf(
-                "type", "DEP.Invoke.v1",
-                "serviceEndpoint", host));
-        services.add(Utils.mapOf(
-                "type", "DEP.Meta.v1",
-                "serviceEndpoint", host + "/api/v1/meta"));
-        services.add(Utils.mapOf(
-                "type", "DEP.Storage.v1",
-                "serviceEndpoint", host + "/api/v1/assets"));
-        services.add(Utils.mapOf(
-                "type", "DEP.Auth.v1",
-                "serviceEndpoint", host + "/api/v1/auth"));
-        ddo.put("service", services);
-        return JSON.toPrettyString(ddo);
-
-
-    }
-
     /**
      * Gets the surfer remote agent for testing purposes
      *
@@ -158,34 +119,24 @@ public class AgentService {
 
     }
 
-    public static boolean isServerReachable(String uri) {
+    public static boolean getAgentStatus(String url) {
 
+        int code = 200;
         try {
-            int timeOut = AgentService.getSocketTimeout();
-            URL url = new URL(uri);
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(url.getHost(), url.getPort()), timeOut);
-            socket.close();
-            return true;
-        } catch (Exception e) {
+            URL siteURL = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(3000);
+            connection.connect();
 
+            code = connection.getResponseCode();
+            return code == 200;
+        } catch (Exception e) {
             return false;
+
         }
     }
 
-    /**
-     * Gets the koi remote agent for testing purposes
-     *
-     * @return The RemoteAgent, or null if not up
-     */
-    public static RemoteAgent getInvoke() {
-        return invokeAgent;
-
-    }
-
-    public static boolean checkSurfer() {
-        return isServerReachable(surferUrl);
-    }
 
     public static RemoteAccount getRemoteAccount() {
         return remoteAccount;

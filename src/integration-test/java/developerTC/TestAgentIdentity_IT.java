@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -20,6 +22,11 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public class TestAgentIdentity_IT {
 
     private RemoteAgent remoteAgent;
+
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @BeforeEach
     public void setup() {

@@ -1,5 +1,7 @@
 package developerTC;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,11 @@ public class TestPurchaseAsset_IT {
     ARemoteAsset remoteAsset;
     RemoteAgent remoteAgent;
     Listing listing;
+
+    @BeforeClass
+    public static void beforeClassMethod() {
+        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    }
 
     @BeforeEach
     public void setUp() {
