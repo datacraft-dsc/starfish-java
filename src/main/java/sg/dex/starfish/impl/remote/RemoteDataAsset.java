@@ -49,30 +49,30 @@ public class RemoteDataAsset extends ARemoteAsset implements DataAsset {
         return true;
     }
 
-    /**
-     * Gets raw data corresponding to this Asset
-     *
-     * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException       if unable to load the Asset
-     */
-    @Override
-    public InputStream getContentStream() {
-        URI uri = remoteAgent.getStorageURI(getAssetID());
-        HttpGet httpget = new HttpGet(uri);
-        remoteAgent.addAuthHeaders(httpget);
-        HttpResponse response = HTTP.execute(httpget);
-        StatusLine statusLine = response.getStatusLine();
-        int statusCode = statusLine.getStatusCode();
-        if (statusCode == 404) {
-            throw new RemoteException("Asset with asset ID " + this.getAssetID() + "is not uploaded on  agent :DID " + remoteAgent.getDID() + "URL failed " + uri);
-        }
-        if (statusCode == 200) {
-            return HTTP.getContent(response);
-        }
-        throw new RemoteException("Asset ID not found at for Asset : " + getAssetID() + " URI: " + uri);
-
-    }
+//    /**
+//     * Gets raw data corresponding to this Asset
+//     *
+//     * @return An input stream allowing consumption of the asset data
+//     * @throws AuthorizationException if requestor does not have access permission
+//     * @throws StorageException       if unable to load the Asset
+//     */
+//    @Override
+//    public InputStream getContentStream() {
+//        URI uri = remoteAgent.getStorageURI(getAssetID());
+//        HttpGet httpget = new HttpGet(uri);
+//        remoteAgent.addAuthHeaders(httpget);
+//        HttpResponse response = HTTP.execute(httpget);
+//        StatusLine statusLine = response.getStatusLine();
+//        int statusCode = statusLine.getStatusCode();
+//        if (statusCode == 404) {
+//            throw new RemoteException("Asset with asset ID " + this.getAssetID() + "is not uploaded on  agent :DID " + remoteAgent.getDID() + "URL failed " + uri);
+//        }
+//        if (statusCode == 200) {
+//            return HTTP.getContent(response);
+//        }
+//        throw new RemoteException("Asset ID not found at for Asset : " + getAssetID() + " URI: " + uri);
+//
+//    }
 
 
     @Override

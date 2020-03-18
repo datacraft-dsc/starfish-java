@@ -7,6 +7,8 @@ public class Constant {
     //-----GENERAL---------------------
     public static final String CONTENT_HASH = "contentHash";
     public static final String TYPE = "type";
+    public static final String CLASS = "class";
+    public static final String ORCHESTRATION = "orchestration";
     public static final String DATE_CREATED = "dateCreated";
     public static final String SIZE = "size";
     public static final String CONTENT_TYPE = "Content-Type";
