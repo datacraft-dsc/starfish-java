@@ -62,12 +62,10 @@ public class TestAgentRegistration_IT {
 
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID, AgentService.getRemoteAccount());
-        assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
         assertEquals(remoteAgent.getDID().getMethod(), "dep");
         assertEquals(remoteAgent.getDID().getScheme(), "did");
-        assumeTrue(null != remoteAgent.getDDO());
     }
 
     @Test

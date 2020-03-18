@@ -38,7 +38,6 @@ public class TestAssetIdentity_IT {
     public void setup() {
         // Initialize Remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test

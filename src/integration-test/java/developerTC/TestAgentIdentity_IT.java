@@ -3,10 +3,13 @@ package developerTC;
 import org.junit.jupiter.api.*;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.util.DID;
+import sg.dex.starfish.util.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -30,7 +33,6 @@ public class TestAgentIdentity_IT {
     public void setup() {
 
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test
@@ -44,17 +46,40 @@ public class TestAgentIdentity_IT {
 
     @Test
     public void testDDOFormat() {
+
+        List<Map<String, Object>> actualServiceList = new ArrayList<>();
+        String host = AgentService.getSurferUrl();
+
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Meta.v1",
+                "serviceEndpoint", host + "/api/v1/meta"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Storage.v1",
+                "serviceEndpoint", host + "/api/v1/assets"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Invoke.v1",
+                "serviceEndpoint", host + "/api/v1/invoke"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Auth.v1",
+                "serviceEndpoint", host + "/api/v1/auth"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Market.v1",
+                "serviceEndpoint", host + "/api/v1/market"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.Status",
+                "serviceEndpoint", host + "/api/status"));
+        actualServiceList.add(Utils.mapOf(
+                "type", "DEP.DDO",
+                "serviceEndpoint", host + "/api/ddo"));
+
+
         // getting the DDo of the Agent
         Map<String, Object> ddo = remoteAgent.getDDO();
 
-        List<Map<String, Object>> services = (List<Map<String, Object>>) ddo.get("service");
+        List<Map<String, Object>> expectedServiceList = (List<Map<String, Object>>) ddo.get("service");
 
+        Assertions.assertEquals(actualServiceList, expectedServiceList);
 
-        assumeTrue(null != services);
-        assertTrue(remoteAgent.getMetaEndpoint().contains("/api/v1/meta"));
-        assertTrue(remoteAgent.getMarketEndpoint().contains("/api/v1/market"));
 
     }
-
-
 }

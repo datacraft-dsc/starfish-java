@@ -36,7 +36,6 @@ public class TestMetaDataAccess_IT {
         remoteAgent = AgentService.getRemoteAgent();
         String METADATA_JSON_SAMPLE = "src/integration-test/resources/assets/test_metadata.json";
         METADATA_JSON_CONTENT = new String(Files.readAllBytes(Paths.get(METADATA_JSON_SAMPLE)));
-        assumeTrue(null != remoteAgent);
 
     }
 

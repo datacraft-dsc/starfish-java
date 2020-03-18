@@ -31,7 +31,6 @@ public class TestProvUtil_IT {
     @BeforeEach
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test

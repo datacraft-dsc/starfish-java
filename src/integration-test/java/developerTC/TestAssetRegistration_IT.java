@@ -47,7 +47,6 @@ public class TestAssetRegistration_IT {
     @BeforeEach
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
 
     }
 

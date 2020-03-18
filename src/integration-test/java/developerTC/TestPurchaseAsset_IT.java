@@ -53,9 +53,6 @@ public class TestPurchaseAsset_IT {
         data2.put("status", "published");
         listing = remoteAgent.updateListing(data2);
 
-        assumeTrue(null != remoteAgent);
-        assumeTrue(null != listing);
-        assumeTrue(null != remoteAsset);
     }
 
 

@@ -51,12 +51,6 @@ public class TestAccessBundleAsset_IT {
         return assetBundle;
     }
 
-//    @BeforeAll
-//    @DisplayName("Verify Surfer is running")
-//    public static void verifySurfer(){
-//        Assumptions.assumeTrue(AgentService.checkSurfer());
-//        System.exit(1);
-//    }
 
     /**
      * Create Remote bundle of 2 sub-asset

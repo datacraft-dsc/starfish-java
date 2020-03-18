@@ -30,7 +30,6 @@ public class TestAssetDownload_IT {
     public void setUp() {
         // create remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test
