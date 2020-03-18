@@ -13,10 +13,8 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
-import sg.dex.starfish.impl.remote.RemoteAgent;
-import sg.dex.starfish.impl.remote.RemoteBundle;
-import sg.dex.starfish.impl.remote.RemoteDataAsset;
-import sg.dex.starfish.impl.remote.RemoteOperation;
+import sg.dex.starfish.impl.operations.TestMemoryOperations;
+import sg.dex.starfish.impl.remote.*;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.Hex;
 import sg.dex.starfish.util.JSON;
@@ -31,9 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static sg.dex.starfish.constant.Constant.CONTENT_HASH;
+import static sg.dex.starfish.constant.Constant.*;
 
 
 /**
@@ -191,6 +190,25 @@ public class TestAssetRegistration_IT {
 
         Assertions.assertEquals(operationAsset.getAssetID(), remoteOperationAsset.getDID().getPath());
         Assertions.assertEquals(remoteAgent.getDID().getID(), remoteOperationAsset.getDID().getID());
+    }
+
+
+
+    @Test
+    public void testOperationRegistrationOrchestration() {
+
+
+        Map<String, Object> addtionalMetadata= new HashMap<>();
+        addtionalMetadata.put(Constant.CLASS,ORCHESTRATION);
+        addtionalMetadata.put(Constant.TYPE,OPERATION);
+        String content ="this is Orchestration test";
+        Asset a=MemoryAsset.create(content.getBytes(),addtionalMetadata);
+
+         ARemoteAsset remoteOperation1 = remoteAgent.uploadAsset(a);
+
+        Assertions.assertEquals(remoteOperation1.getAssetID(), a.getAssetID());
+        assertEquals(Utils.stringFromStream(remoteOperation1.getContentStream()),content);
+
     }
 
 }

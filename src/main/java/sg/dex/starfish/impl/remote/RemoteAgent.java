@@ -554,7 +554,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {
             throw new UnsupportedOperationException(
                     "Bundle don`t have content,so cannot be upload " + asset.getMetadata());
-        } else if (asset.getMetadata().get(TYPE).equals(OPERATION)) {
+        } else if (asset.getMetadata().get(TYPE).equals(OPERATION)
+         && !asset.getMetadata().get(CLASS).equals(ORCHESTRATION) ) {
+
             return;
         }
 
