@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 /**
@@ -38,7 +37,6 @@ public class TestAssetIdentity_IT {
     public void setup() {
         // Initialize Remote Agent
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test

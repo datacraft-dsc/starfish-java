@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.*;
 
 
@@ -47,7 +46,6 @@ public class TestAssetRegistration_IT {
     @BeforeEach
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
 
     }
 

@@ -18,7 +18,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer building or managing an Network Agent,
@@ -62,12 +61,10 @@ public class TestAgentRegistration_IT {
 
         // creating a Remote agent instance for given Ocean and DID
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, surferDID, AgentService.getRemoteAccount());
-        assumeTrue(null != remoteAgent);
         assertEquals(remoteAgent.getDID(), surferDID);
         // verify the DID format
         assertEquals(remoteAgent.getDID().getMethod(), "dep");
         assertEquals(remoteAgent.getDID().getScheme(), "did");
-        assumeTrue(null != remoteAgent.getDDO());
     }
 
     @Test

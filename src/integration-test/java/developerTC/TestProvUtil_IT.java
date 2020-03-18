@@ -15,7 +15,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestProvUtil_IT {
 
@@ -31,7 +30,6 @@ public class TestProvUtil_IT {
     @BeforeEach
     public void setup() {
         remoteAgent = AgentService.getRemoteAgent();
-        assumeTrue(null != remoteAgent);
     }
 
     @Test

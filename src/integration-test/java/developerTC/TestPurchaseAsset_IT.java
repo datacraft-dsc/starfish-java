@@ -14,7 +14,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
@@ -53,9 +52,6 @@ public class TestPurchaseAsset_IT {
         data2.put("status", "published");
         listing = remoteAgent.updateListing(data2);
 
-        assumeTrue(null != remoteAgent);
-        assumeTrue(null != listing);
-        assumeTrue(null != remoteAsset);
     }
 
 
