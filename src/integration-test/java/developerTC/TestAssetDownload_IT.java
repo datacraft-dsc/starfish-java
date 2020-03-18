@@ -9,7 +9,6 @@ import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.Utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * As a developer working with Data Supply line,
