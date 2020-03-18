@@ -1,8 +1,11 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
 import sg.dex.starfish.constant.Constant;
@@ -20,14 +23,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * As a developer working with asset bundles, I need a way to get a sub-asset
  */
+@RunWith(JUnitPlatform.class)
 public class TestAccessBundleAsset_IT {
 
 
     private RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 
-    @BeforeClass
-    public static void beforeClassMethod() {
-        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    @BeforeAll
+    @DisplayName("Check if RemoteAgent is up!!")
+    public static void init() {
+        Assumptions.assumeTrue(ConnectionStatus.checkAgentStatus(), "Agent :" + AgentService.getSurferUrl() + "is not running. is down");
     }
 
     private Map<String, Asset> getAssetMap() {

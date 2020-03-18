@@ -1,10 +1,6 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Bundle;
@@ -13,7 +9,6 @@ import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.impl.file.FileAsset;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.memory.MemoryBundle;
-import sg.dex.starfish.impl.operations.TestMemoryOperations;
 import sg.dex.starfish.impl.remote.*;
 import sg.dex.starfish.impl.resource.ResourceAsset;
 import sg.dex.starfish.util.Hex;
@@ -42,10 +37,12 @@ public class TestAssetRegistration_IT {
 
     private RemoteAgent remoteAgent;
 
-    @BeforeClass
-    public static void beforeClassMethod() {
-        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    @BeforeAll
+    @DisplayName("Check if RemoteAgent is up!!")
+    public static void init() {
+        Assumptions.assumeTrue(ConnectionStatus.checkAgentStatus(), "Agent :" + AgentService.getSurferUrl() + "is not running. is down");
     }
+
 
     @BeforeEach
     public void setup() {
@@ -193,21 +190,20 @@ public class TestAssetRegistration_IT {
     }
 
 
-
     @Test
     public void testOperationRegistrationOrchestration() {
 
 
-        Map<String, Object> addtionalMetadata= new HashMap<>();
-        addtionalMetadata.put(Constant.CLASS,ORCHESTRATION);
-        addtionalMetadata.put(Constant.TYPE,OPERATION);
-        String content ="this is Orchestration test";
-        Asset a=MemoryAsset.create(content.getBytes(),addtionalMetadata);
+        Map<String, Object> addtionalMetadata = new HashMap<>();
+        addtionalMetadata.put(Constant.CLASS, ORCHESTRATION);
+        addtionalMetadata.put(Constant.TYPE, OPERATION);
+        String content = "this is Orchestration test";
+        Asset a = MemoryAsset.create(content.getBytes(), addtionalMetadata);
 
-         ARemoteAsset remoteOperation1 = remoteAgent.uploadAsset(a);
+        ARemoteAsset remoteOperation1 = remoteAgent.uploadAsset(a);
 
         Assertions.assertEquals(remoteOperation1.getAssetID(), a.getAssetID());
-        assertEquals(Utils.stringFromStream(remoteOperation1.getContentStream()),content);
+        assertEquals(Utils.stringFromStream(remoteOperation1.getContentStream()), content);
 
     }
 
