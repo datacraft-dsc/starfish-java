@@ -18,7 +18,7 @@ public class ProvenanceTest {
     }
 
     @Test
-    public void testRegisterAssetOne()  {
+    public void testRegisterAssetOne() {
         DID assetId = DID.createRandom();
         provenance.registerAsset(assetId.getID());
         ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
@@ -26,7 +26,7 @@ public class ProvenanceTest {
     }
 
     @Test
-    public void testRegisterAssetTwo()  {
+    public void testRegisterAssetTwo() {
         DID assetId = DID.createRandom();
         provenance.registerAsset(assetId.getID());
         provenance.registerAsset(assetId.getID());
@@ -35,14 +35,14 @@ public class ProvenanceTest {
     }
 
     @Test
-    public void testCheckNonExisting()  {
+    public void testCheckNonExisting() {
         DID assetId = DID.createRandom();
         ArrayList<DexProvenance.DexProvenanceResult> results = provenance.getAssetProvenance(assetId.getID());
         assertTrue(results.size() == 0);
     }
 
     @Test
-    public void testRegisterAssetSearchByUserAndAssetId()  {
+    public void testRegisterAssetSearchByUserAndAssetId() {
         DID assetId = DID.createRandom();
         provenance.registerAsset(assetId.getID());
         DexConfig dexConfig = DexChain.getInstance().getDexConfig();
@@ -51,7 +51,7 @@ public class ProvenanceTest {
     }
 
     @Test
-    public void testRegisterAssetSearchByUser()  {
+    public void testRegisterAssetSearchByUser() {
         DID assetId = DID.createRandom();
         provenance.registerAsset(assetId.getID());
         DexConfig dexConfig = DexChain.getInstance().getDexConfig();

@@ -1,10 +1,6 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Listing;
 import sg.dex.starfish.exception.RemoteException;
@@ -27,9 +23,10 @@ public class TestSearchAssetListing_IT {
 
     private RemoteAgent remoteAgent;
 
-    @BeforeClass
-    public static void beforeClassMethod() {
-        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    @BeforeAll
+    @DisplayName("Check if RemoteAgent is up!!")
+    public static void init() {
+        Assumptions.assumeTrue(ConnectionStatus.checkAgentStatus(), "Agent :" + AgentService.getSurferUrl() + "is not running. is down");
     }
 
     @BeforeEach

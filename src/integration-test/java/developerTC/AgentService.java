@@ -1,6 +1,5 @@
 package developerTC;
 
-import org.junit.platform.commons.util.StringUtils;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.dexchain.DexResolver;
 import sg.dex.starfish.impl.remote.RemoteAccount;
@@ -9,8 +8,6 @@ import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.JSON;
 import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -24,9 +21,6 @@ public class AgentService {
 
     private static RemoteAgent surfer;
 
-    private static String surferUrl;
-
-    private static String socketTimeout;
     private static String username;
     private static String password;
 
@@ -35,12 +29,8 @@ public class AgentService {
 
 
     static {
-        Properties properties = getProperties();
-        String ip = properties.getProperty("surfer.host");
-        String port = properties.getProperty("surfer.port");
-        surferUrl = (StringUtils.isBlank(port)) ? ip : (ip + ":" + port);
-        socketTimeout = properties.getProperty("socket.timeout");
 
+        Properties properties = ConnectionStatus.getProperties();
         //username and password
         username = properties.getProperty("surfer.username");
         password = properties.getProperty("surfer.password");
@@ -48,7 +38,7 @@ public class AgentService {
         Resolver resolver = DexResolver.create();
         DID didSurfer = DID.createRandom();
 
-        resolver.registerDID(didSurfer, getDDO(surferUrl));
+        resolver.registerDID(didSurfer, getDDO(ConnectionStatus.getSurferUrl()));
 
         remoteAccount = RemoteAccount.create(username, password);
 
@@ -87,28 +77,6 @@ public class AgentService {
 
     }
 
-    public static String getSurferUrl() {
-        return surferUrl;
-    }
-
-
-    public static int getSocketTimeout() {
-        return Integer.parseInt(socketTimeout);
-    }
-
-    private static Properties getProperties() {
-        Properties properties = new Properties();
-        try {
-            try (InputStream is = AgentService.class.getClassLoader()
-                    .getResourceAsStream("application_test.properties")) {
-                properties.load(is);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
-
     /**
      * Gets the surfer remote agent for testing purposes
      *
@@ -116,6 +84,11 @@ public class AgentService {
      */
     public static RemoteAgent getRemoteAgent() {
         return surfer;
+
+    }
+
+    public static String getSurferUrl() {
+        return ConnectionStatus.getSurferUrl();
 
     }
 

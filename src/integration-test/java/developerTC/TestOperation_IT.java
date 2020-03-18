@@ -1,23 +1,15 @@
 package developerTC;
 
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
 import sg.dex.starfish.impl.memory.MemoryAsset;
-import sg.dex.starfish.impl.remote.RemoteAccount;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
 import sg.dex.starfish.util.Utils;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,16 +28,15 @@ public class TestOperation_IT {
     // input json output Asset
     private String increment_3 = "618b62eceba2641986fafa0da86167821f29ed947753a0c97a1317ae2d60b5b5";
 
-    @BeforeClass
-    public static void beforeClassMethod() {
-        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    @BeforeAll
+    @DisplayName("Check if RemoteAgent is up!!")
+    public static void init() {
+        Assumptions.assumeTrue(ConnectionStatus.checkAgentStatus(), "Agent :" + AgentService.getSurferUrl() + "is not running. is down");
     }
 
+
     @BeforeEach
-    void init() throws IOException, URISyntaxException {
-        RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
-        //remoteAgent = RemoteAgent.connect("http://localhost:3030", remoteAccount);
-       // remoteAgent = RemoteAgent.connect("http://52.230.82.125:3030", remoteAccount);
+    void initialize() {
         remoteAgent = AgentService.getRemoteAgent();
     }
 

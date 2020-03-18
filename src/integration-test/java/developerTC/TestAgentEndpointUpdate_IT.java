@@ -1,7 +1,8 @@
 package developerTC;
 
-import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.dexchain.DexResolver;
@@ -25,10 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TestAgentEndpointUpdate_IT {
 
-    @BeforeClass
-    public static void beforeClassMethod() {
-        Assume.assumeTrue(AgentService.getAgentStatus(AgentService.getSurferUrl()));
+    @BeforeAll
+    @DisplayName("Check if RemoteAgent is up!!")
+    public static void init() {
+        Assumptions.assumeTrue(ConnectionStatus.checkAgentStatus(), "Agent :" + AgentService.getSurferUrl() + "is not running. is down");
     }
+
 
     @Test
     public void testServiceEndPoint() throws IOException {
