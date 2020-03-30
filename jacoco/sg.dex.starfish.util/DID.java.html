@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class DID {
     private static final String METHOD_REGEX = &quot;([a-z]+)&quot;;
-    private static final String ID_REGEX = &quot;([a-zA-z0-9\\\\d._]+)?&quot;;
+    private static final String ID_REGEX = &quot;([a-fA-F0-9]{1,64})?&quot;;
     private static final String PATH_REGEX = &quot;(?:/([a-z0-9\\-._~%!$&amp;'()*+,;=:@/]*))?&quot;;
     private static final String FRAGMENT_REGEX = &quot;(?:#(.*))?&quot;;
 <span class="fc" id="L20">    private static final Pattern DID_PATTERN = Pattern.compile(&quot;did:&quot; + METHOD_REGEX + &quot;:&quot; + ID_REGEX + PATH_REGEX + FRAGMENT_REGEX + &quot;$&quot;);</span>
