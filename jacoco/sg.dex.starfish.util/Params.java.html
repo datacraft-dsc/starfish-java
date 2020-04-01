@@ -58,11 +58,11 @@ import java.util.Map;
      */
     private static void prepareResult(Map&lt;String, Object&gt; params, HashMap&lt;String, Object&gt; result, String paramName, String type) {
         try {
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">            if (type.equalsIgnoreCase(&quot;asset&quot;)) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (type.equalsIgnoreCase(&quot;asset&quot;)) {</span>
                 // validate if input is type asset or not
-<span class="nc" id="L63">                Asset a = (Asset) params.get(paramName);</span>
-<span class="nc" id="L64">                Map&lt;String, Object&gt; value = a.getParamValue();</span>
-<span class="nc" id="L65">                result.put(paramName, value);</span>
+<span class="fc" id="L63">                Asset a = (Asset) params.get(paramName);</span>
+<span class="fc" id="L64">                Map&lt;String, Object&gt; value = a.getParamValue();</span>
+<span class="fc" id="L65">                result.put(paramName, value);</span>
 
 <span class="pc bpc" id="L67" title="1 of 2 branches missed.">            } else if (type.equalsIgnoreCase(&quot;json&quot;)) {</span>
 

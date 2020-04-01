@@ -65,11 +65,11 @@ Starfish - client library for data ecosystems,sg.dex.starfish.exception,DexChain
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,AuthorizationException,9,0,0,0,4,0,2,0,2,0
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,StarfishValidationException,5,4,0,0,2,2,1,1,1,1
 Starfish - client library for data ecosystems,sg.dex.starfish.exception,StorageException,5,0,0,0,2,0,1,0,1,0
-Starfish - client library for data ecosystems,sg.dex.starfish.util,Params,320,196,37,15,56,43,27,8,4,5
+Starfish - client library for data ecosystems,sg.dex.starfish.util,Params,306,210,36,16,53,46,26,9,4,5
 Starfish - client library for data ecosystems,sg.dex.starfish.util,JSONObjectCache,18,36,0,2,3,7,1,3,1,2
 Starfish - client library for data ecosystems,sg.dex.starfish.util,ProvUtil,10,642,1,7,3,116,3,21,2,18
 Starfish - client library for data ecosystems,sg.dex.starfish.util,Hex,153,74,20,6,20,11,16,6,5,4
-Starfish - client library for data ecosystems,sg.dex.starfish.util,DID,99,203,13,11,17,46,14,17,3,16
+Starfish - client library for data ecosystems,sg.dex.starfish.util,DID,51,251,10,14,6,57,12,19,2,17
 Starfish - client library for data ecosystems,sg.dex.starfish.util,HTTP,100,57,2,0,23,18,3,6,2,6
 Starfish - client library for data ecosystems,sg.dex.starfish.util,ProvUtil.AgentIdType,0,24,0,0,0,2,0,1,0,1
 Starfish - client library for data ecosystems,sg.dex.starfish.util,JSON,40,210,0,14,7,54,1,14,1,7
