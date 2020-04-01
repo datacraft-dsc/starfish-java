@@ -13,7 +13,6 @@ import sg.dex.starfish.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Disabled
 public class TestOperation_IT {
 
     private RemoteAgent remoteAgent;
@@ -64,7 +63,6 @@ public class TestOperation_IT {
         Assertions.assertEquals(result.get("n").toString(), "17");
     }
 
-    @Disabled
     @Test
     public void testIncrement2_Async() {
 
@@ -84,7 +82,6 @@ public class TestOperation_IT {
         Assertions.assertEquals(resultMap.get("n").toString(), "11");
     }
 
-    @Disabled
     @Test
     public void testIncrement2_sync() {
         String data = "10";
@@ -101,7 +98,6 @@ public class TestOperation_IT {
         Assertions.assertEquals(result.get("n").toString(), "11");
     }
 
-    @Disabled
     @Test
     public void testIncrement4_Async() {
         String data = "4";
@@ -125,7 +121,6 @@ public class TestOperation_IT {
 
     }
 
-    @Disabled
     @Test
     public void testIncrement4_Sync() {
         String data = "4";
