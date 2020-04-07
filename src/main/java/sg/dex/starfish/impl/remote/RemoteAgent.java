@@ -722,7 +722,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     Map<String, Object> result = JSON.toMap(body);
                     return result;
                 } else {
-                    // return null if request failed for any reason (e.g. network down)
                     return null;
                 }
             } finally {
