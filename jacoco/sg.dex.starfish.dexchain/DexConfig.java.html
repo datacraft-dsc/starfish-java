@@ -88,17 +88,17 @@ import java.math.BigInteger;
 <span class="fc" id="L88">        return didRegistryAddress;</span>
     }
 
-    public String getDirectPurchaseAddress() {
-<span class="fc" id="L92">        return directPurchaseAddress;</span>
-    }
-
     public DexConfig setDidRegistryAddress(String address) {
-<span class="fc" id="L96">        this.didRegistryAddress = address;</span>
-<span class="fc" id="L97">        return this;</span>
+<span class="fc" id="L92">        this.didRegistryAddress = address;</span>
+<span class="fc" id="L93">        return this;</span>
     }
 
-    public DexConfig setProvenanceAddress(String address) {
-<span class="fc" id="L101">        this.provenanceAddress = address;</span>
+    public String getDirectPurchaseAddress() {
+<span class="fc" id="L97">        return directPurchaseAddress;</span>
+    }
+
+    public DexConfig setDirectPurchaseAddress(String address) {
+<span class="fc" id="L101">        this.directPurchaseAddress = address;</span>
 <span class="fc" id="L102">        return this;</span>
     }
 
@@ -106,8 +106,8 @@ import java.math.BigInteger;
 <span class="nc" id="L106">        return provenanceAddress;</span>
     }
 
-    public DexConfig setDirectPurchaseAddress(String address) {
-<span class="fc" id="L110">        this.directPurchaseAddress = address;</span>
+    public DexConfig setProvenanceAddress(String address) {
+<span class="fc" id="L110">        this.provenanceAddress = address;</span>
 <span class="fc" id="L111">        return this;</span>
     }
 
@@ -153,8 +153,8 @@ import java.math.BigInteger;
 
     public DexConfig setMainAccountCredentialsFile(String mainAccountCredentialsFile) {
 <span class="fc" id="L155">        this.mainAccountCredentialsFile = mainAccountCredentialsFile;</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        if(Strings.isBlank(mainAccountCredentialsFile)){</span>
-<span class="fc" id="L157">            this.mainAccountCredentialsFile=DexConfigFactory.getDefaultCredential().getAbsolutePath();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (Strings.isBlank(mainAccountCredentialsFile)) {</span>
+<span class="fc" id="L157">            this.mainAccountCredentialsFile = DexConfigFactory.getDefaultCredential().getAbsolutePath();</span>
         }
 <span class="fc" id="L159">        return this;</span>
     }

@@ -31,12 +31,12 @@ public class DexTransactionManager extends TransactionManager {
 <span class="fc" id="L31">    }</span>
 
     protected BigInteger getNonce() throws IOException {
-<span class="fc" id="L34">        EthGetTransactionCount ethGetTransactionCount = (EthGetTransactionCount)this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();</span>
+<span class="fc" id="L34">        EthGetTransactionCount ethGetTransactionCount = this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();</span>
 <span class="fc" id="L35">        return ethGetTransactionCount.getTransactionCount();</span>
     }
 
     protected BigInteger getEstimatedGas(String to, String data) throws IOException {
-<span class="fc" id="L39">        BigInteger gas = ((EthBlock)this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()).getBlock().getGasLimit();</span>
+<span class="fc" id="L39">        BigInteger gas = this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send().getBlock().getGasLimit();</span>
 <span class="fc" id="L40">        return gas;</span>
     }
 
@@ -53,7 +53,7 @@ public class DexTransactionManager extends TransactionManager {
 
     public EthSendTransaction signAndSend(RawTransaction rawTransaction) throws IOException {
 <span class="fc" id="L55">        String hexValue = this.sign(rawTransaction);</span>
-<span class="fc" id="L56">        EthSendTransaction ethSendTransaction = (EthSendTransaction)this.web3j.ethSendRawTransaction(hexValue).send();</span>
+<span class="fc" id="L56">        EthSendTransaction ethSendTransaction = this.web3j.ethSendRawTransaction(hexValue).send();</span>
 <span class="pc bpc" id="L57" title="2 of 4 branches missed.">        if (ethSendTransaction != null &amp;&amp; !ethSendTransaction.hasError()) {</span>
 <span class="fc" id="L58">            String txHashLocal = Hash.sha3(hexValue);</span>
 <span class="fc" id="L59">            String txHashRemote = ethSendTransaction.getTransactionHash();</span>

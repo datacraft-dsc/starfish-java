@@ -28,7 +28,7 @@ import java.util.*;
  * &lt;p&gt;Auto generated code.
  * &lt;p&gt;&lt;strong&gt;Do not modify!&lt;/strong&gt;
  * &lt;p&gt;Please use the &lt;a href=&quot;https://docs.web3j.io/command_line.html&quot;&gt;web3j command line tools&lt;/a&gt;,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * &lt;a href=&quot;https://github.com/web3j/web3j/tree/master/codegen&quot;&gt;codegen module&lt;/a&gt; to update.
  *
  * &lt;p&gt;Generated with web3j version 4.5.14.
@@ -43,137 +43,140 @@ public class Provenance extends Contract {
 
     public static final String FUNC_GETBLOCKNUMBER = &quot;getBlockNumber&quot;;
 
-<span class="nc" id="L46">    public static final Event ASSETREGISTERED_EVENT = new Event(&quot;AssetRegistered&quot;, </span>
-<span class="nc" id="L47">            Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Bytes32&gt;(true) {}, new TypeReference&lt;Address&gt;(true) {}, new TypeReference&lt;Uint256&gt;() {}));</span>
-    ;
+<span class="nc" id="L46">    public static final Event ASSETREGISTERED_EVENT = new Event(&quot;AssetRegistered&quot;,</span>
+<span class="nc" id="L47">            Arrays.asList(new TypeReference&lt;Bytes32&gt;(true) {</span>
+<span class="nc" id="L48">            }, new TypeReference&lt;Address&gt;(true) {</span>
+<span class="nc" id="L49">            }, new TypeReference&lt;Uint256&gt;() {</span>
+            }));
 
     protected static final HashMap&lt;String, String&gt; _addresses;
 
     static {
-<span class="nc" id="L53">        _addresses = new HashMap&lt;String, String&gt;();</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L55">        _addresses = new HashMap&lt;String, String&gt;();</span>
+<span class="nc" id="L56">    }</span>
 
     @Deprecated
     protected Provenance(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L58">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L60">        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+<span class="nc" id="L61">    }</span>
 
     protected Provenance(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L62">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L64">        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);</span>
+<span class="nc" id="L65">    }</span>
 
     @Deprecated
     protected Provenance(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L67">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L69">        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+<span class="nc" id="L70">    }</span>
 
     protected Provenance(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L71">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L73">        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);</span>
+<span class="nc" id="L74">    }</span>
+
+    @Deprecated
+    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L78">        return new Provenance(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
+    }
+
+    @Deprecated
+    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L83">        return new Provenance(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
+    }
+
+    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L87">        return new Provenance(contractAddress, web3j, credentials, contractGasProvider);</span>
+    }
+
+    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L91">        return new Provenance(contractAddress, web3j, transactionManager, contractGasProvider);</span>
+    }
+
+    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L95">        return deployRemoteCall(Provenance.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L100">        return deployRemoteCall(Provenance.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+<span class="nc" id="L104">        return deployRemoteCall(Provenance.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
+    }
+
+    @Deprecated
+    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+<span class="nc" id="L109">        return deployRemoteCall(Provenance.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+    }
+
+    public static String getPreviouslyDeployedAddress(String networkId) {
+<span class="nc" id="L113">        return _addresses.get(networkId);</span>
+    }
 
     public List&lt;AssetRegisteredEventResponse&gt; getAssetRegisteredEvents(TransactionReceipt transactionReceipt) {
-<span class="nc" id="L75">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(ASSETREGISTERED_EVENT, transactionReceipt);</span>
-<span class="nc" id="L76">        ArrayList&lt;AssetRegisteredEventResponse&gt; responses = new ArrayList&lt;AssetRegisteredEventResponse&gt;(valueList.size());</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
-<span class="nc" id="L78">            AssetRegisteredEventResponse typedResponse = new AssetRegisteredEventResponse();</span>
-<span class="nc" id="L79">            typedResponse.log = eventValues.getLog();</span>
-<span class="nc" id="L80">            typedResponse._assetID = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L81">            typedResponse._user = (String) eventValues.getIndexedValues().get(1).getValue();</span>
-<span class="nc" id="L82">            typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L83">            responses.add(typedResponse);</span>
-<span class="nc" id="L84">        }</span>
-<span class="nc" id="L85">        return responses;</span>
+<span class="nc" id="L117">        List&lt;Contract.EventValuesWithLog&gt; valueList = extractEventParametersWithLog(ASSETREGISTERED_EVENT, transactionReceipt);</span>
+<span class="nc" id="L118">        ArrayList&lt;AssetRegisteredEventResponse&gt; responses = new ArrayList&lt;AssetRegisteredEventResponse&gt;(valueList.size());</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (Contract.EventValuesWithLog eventValues : valueList) {</span>
+<span class="nc" id="L120">            AssetRegisteredEventResponse typedResponse = new AssetRegisteredEventResponse();</span>
+<span class="nc" id="L121">            typedResponse.log = eventValues.getLog();</span>
+<span class="nc" id="L122">            typedResponse._assetID = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L123">            typedResponse._user = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L124">            typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L125">            responses.add(typedResponse);</span>
+<span class="nc" id="L126">        }</span>
+<span class="nc" id="L127">        return responses;</span>
     }
 
     public Flowable&lt;AssetRegisteredEventResponse&gt; assetRegisteredEventFlowable(EthFilter filter) {
-<span class="nc" id="L89">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, AssetRegisteredEventResponse&gt;() {</span>
+<span class="nc" id="L131">        return web3j.ethLogFlowable(filter).map(new Function&lt;Log, AssetRegisteredEventResponse&gt;() {</span>
             @Override
             public AssetRegisteredEventResponse apply(Log log) {
-<span class="nc" id="L92">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ASSETREGISTERED_EVENT, log);</span>
-<span class="nc" id="L93">                AssetRegisteredEventResponse typedResponse = new AssetRegisteredEventResponse();</span>
-<span class="nc" id="L94">                typedResponse.log = log;</span>
-<span class="nc" id="L95">                typedResponse._assetID = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L96">                typedResponse._user = (String) eventValues.getIndexedValues().get(1).getValue();</span>
-<span class="nc" id="L97">                typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
-<span class="nc" id="L98">                return typedResponse;</span>
+<span class="nc" id="L134">                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(ASSETREGISTERED_EVENT, log);</span>
+<span class="nc" id="L135">                AssetRegisteredEventResponse typedResponse = new AssetRegisteredEventResponse();</span>
+<span class="nc" id="L136">                typedResponse.log = log;</span>
+<span class="nc" id="L137">                typedResponse._assetID = (byte[]) eventValues.getIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L138">                typedResponse._user = (String) eventValues.getIndexedValues().get(1).getValue();</span>
+<span class="nc" id="L139">                typedResponse._timestamp = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();</span>
+<span class="nc" id="L140">                return typedResponse;</span>
             }
         });
     }
 
     public Flowable&lt;AssetRegisteredEventResponse&gt; assetRegisteredEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-<span class="nc" id="L104">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
-<span class="nc" id="L105">        filter.addSingleTopic(EventEncoder.encode(ASSETREGISTERED_EVENT));</span>
-<span class="nc" id="L106">        return assetRegisteredEventFlowable(filter);</span>
+<span class="nc" id="L146">        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());</span>
+<span class="nc" id="L147">        filter.addSingleTopic(EventEncoder.encode(ASSETREGISTERED_EVENT));</span>
+<span class="nc" id="L148">        return assetRegisteredEventFlowable(filter);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; initialize() {
-<span class="nc" id="L110">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
-                FUNC_INITIALIZE, 
-<span class="nc" id="L112">                Arrays.&lt;Type&gt;asList(), </span>
-<span class="nc" id="L113">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="nc" id="L114">        return executeRemoteCallTransaction(function);</span>
+<span class="nc" id="L152">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_INITIALIZE,
+<span class="nc" id="L154">                Arrays.asList(),</span>
+<span class="nc" id="L155">                Collections.emptyList());</span>
+<span class="nc" id="L156">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;TransactionReceipt&gt; registerAsset(byte[] _assetId) {
-<span class="nc" id="L118">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
-                FUNC_REGISTERASSET, 
-<span class="nc" id="L120">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), </span>
-<span class="nc" id="L121">                Collections.&lt;TypeReference&lt;?&gt;&gt;emptyList());</span>
-<span class="nc" id="L122">        return executeRemoteCallTransaction(function);</span>
+<span class="nc" id="L160">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(</span>
+                FUNC_REGISTERASSET,
+<span class="nc" id="L162">                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)),</span>
+<span class="nc" id="L163">                Collections.emptyList());</span>
+<span class="nc" id="L164">        return executeRemoteCallTransaction(function);</span>
     }
 
     public RemoteCall&lt;BigInteger&gt; getBlockNumber(byte[] _assetId) {
-<span class="nc" id="L126">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBER, </span>
-<span class="nc" id="L127">                Arrays.&lt;Type&gt;asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), </span>
-<span class="nc" id="L128">                Arrays.&lt;TypeReference&lt;?&gt;&gt;asList(new TypeReference&lt;Uint256&gt;() {}));</span>
-<span class="nc" id="L129">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
-    }
-
-    @Deprecated
-    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L134">        return new Provenance(contractAddress, web3j, credentials, gasPrice, gasLimit);</span>
-    }
-
-    @Deprecated
-    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L139">        return new Provenance(contractAddress, web3j, transactionManager, gasPrice, gasLimit);</span>
-    }
-
-    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L143">        return new Provenance(contractAddress, web3j, credentials, contractGasProvider);</span>
-    }
-
-    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L147">        return new Provenance(contractAddress, web3j, transactionManager, contractGasProvider);</span>
-    }
-
-    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L151">        return deployRemoteCall(Provenance.class, web3j, credentials, contractGasProvider, BINARY, &quot;&quot;);</span>
-    }
-
-    @Deprecated
-    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L156">        return deployRemoteCall(Provenance.class, web3j, credentials, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
-    }
-
-    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-<span class="nc" id="L160">        return deployRemoteCall(Provenance.class, web3j, transactionManager, contractGasProvider, BINARY, &quot;&quot;);</span>
-    }
-
-    @Deprecated
-    public static RemoteCall&lt;Provenance&gt; deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-<span class="nc" id="L165">        return deployRemoteCall(Provenance.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, &quot;&quot;);</span>
+<span class="nc" id="L168">        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBER,</span>
+<span class="nc" id="L169">                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)),</span>
+<span class="nc" id="L170">                Arrays.asList(new TypeReference&lt;Uint256&gt;() {</span>
+                }));
+<span class="nc" id="L172">        return executeRemoteCallSingleValueReturn(function, BigInteger.class);</span>
     }
 
     protected String getStaticDeployedAddress(String networkId) {
-<span class="nc" id="L169">        return _addresses.get(networkId);</span>
+<span class="nc" id="L176">        return _addresses.get(networkId);</span>
     }
 
-    public static String getPreviouslyDeployedAddress(String networkId) {
-<span class="nc" id="L173">        return _addresses.get(networkId);</span>
-    }
-
-<span class="nc" id="L176">    public static class AssetRegisteredEventResponse extends BaseEventResponse {</span>
+<span class="nc" id="L179">    public static class AssetRegisteredEventResponse extends BaseEventResponse {</span>
         public byte[] _assetID;
 
         public String _user;

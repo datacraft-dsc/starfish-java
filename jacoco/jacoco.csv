@@ -52,7 +52,7 @@ Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexProven
 Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,UniversalResolver,73,0,8,0,18,0,9,0,5,0
 Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexResolver,35,214,3,7,12,48,3,10,0,8
 Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexChain,6,77,0,2,3,17,0,8,0,7
-Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfigFactory,25,211,2,2,5,37,3,4,1,4
+Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DexConfigFactory,25,189,2,2,5,37,3,4,1,4
 Starfish - client library for data ecosystems,sg.dex.starfish.dexchain,DirectPurchaseAdapter,43,196,4,4,14,44,4,6,0,6
 Starfish - client library for data ecosystems,sg.dex.starfish.impl.file,FileAsset,45,54,5,1,6,14,4,8,1,8
 Starfish - client library for data ecosystems,sg.dex.crypto,Hash,34,65,0,2,8,16,6,8,6,7

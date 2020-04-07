@@ -27,8 +27,8 @@ import java.util.Map;
     @SuppressWarnings(&quot;unchecked&quot;)
     public
     static Map&lt;String, Object&gt; formatParams(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        if(null == params){</span>
-<span class="fc" id="L31">            throw  new IllegalArgumentException(&quot;Input parameter cannot be null&quot;);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (null == params) {</span>
+<span class="fc" id="L31">            throw new IllegalArgumentException(&quot;Input parameter cannot be null&quot;);</span>
         }
 <span class="fc" id="L33">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(params.size());</span>
 <span class="fc" id="L34">        Map&lt;String, Object&gt; paramSpec = operation.getParamsSpec();</span>
@@ -90,13 +90,13 @@ import java.util.Map;
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
      * @param operationSpecs instance reference
-     * @param response  response received from the Invoke call
+     * @param response       response received from the Invoke call
      * @return formatted map of the response received
      */
     public static Map&lt;String, Object&gt; formatResponse(Map&lt;String, Object&gt; operationSpecs, Map&lt;String, Object&gt; response, RemoteAccount remoteAccount) throws IOException {
 
 <span class="nc" id="L98">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(response.size());</span>
-<span class="nc" id="L99">        Map&lt;String, Object&gt; outputsSpecs = (Map&lt;String, Object&gt;)operationSpecs.get(&quot;outputs&quot;);</span>
+<span class="nc" id="L99">        Map&lt;String, Object&gt; outputsSpecs = (Map&lt;String, Object&gt;) operationSpecs.get(&quot;outputs&quot;);</span>
 
 <span class="nc bnc" id="L101" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; me : outputsSpecs.entrySet()) {</span>
 <span class="nc" id="L102">            String paramName = me.getKey();</span>
@@ -122,43 +122,45 @@ import java.util.Map;
 <span class="nc" id="L122">        return result;</span>
 
     }
+
     public static Map&lt;String, Object&gt; formatResponse(Map&lt;String, Object&gt; operationSpecs, Map&lt;String, Object&gt; response) {
 
-<span class="fc" id="L127">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(response.size());</span>
-<span class="fc" id="L128">        Map&lt;String, Object&gt; outputsSpecs = (Map&lt;String, Object&gt;)operationSpecs.get(&quot;outputs&quot;);</span>
+<span class="fc" id="L128">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(response.size());</span>
+<span class="fc" id="L129">        Map&lt;String, Object&gt; outputsSpecs = (Map&lt;String, Object&gt;) operationSpecs.get(&quot;outputs&quot;);</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; me : outputsSpecs.entrySet()) {</span>
-<span class="fc" id="L131">            String paramName = me.getKey();</span>
-<span class="fc" id="L132">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
-<span class="fc" id="L133">            String type = (String) spec.get(&quot;type&quot;);</span>
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            if (response.containsKey(paramName)) {</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">                if (type.equals(&quot;asset&quot;)) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; me : outputsSpecs.entrySet()) {</span>
+<span class="fc" id="L132">            String paramName = me.getKey();</span>
+<span class="fc" id="L133">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
+<span class="fc" id="L134">            String type = (String) spec.get(&quot;type&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">            if (response.containsKey(paramName)) {</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                if (type.equals(&quot;asset&quot;)) {</span>
 
-<span class="fc" id="L137">                    Map&lt;String, Object&gt; didMap = (Map&lt;String, Object&gt;) response.get(paramName);</span>
-<span class="fc" id="L138">                    String userName =((Map&lt;String, Object&gt;)didMap.get(&quot;auth&quot;)).get(&quot;username&quot;).toString();</span>
-<span class="fc" id="L139">                    String password =((Map&lt;String, Object&gt;)didMap.get(&quot;auth&quot;)).get(&quot;password&quot;).toString();</span>
+<span class="fc" id="L138">                    Map&lt;String, Object&gt; didMap = (Map&lt;String, Object&gt;) response.get(paramName);</span>
+<span class="fc" id="L139">                    String userName = ((Map&lt;String, Object&gt;) didMap.get(&quot;auth&quot;)).get(&quot;username&quot;).toString();</span>
+<span class="fc" id="L140">                    String password = ((Map&lt;String, Object&gt;) didMap.get(&quot;auth&quot;)).get(&quot;password&quot;).toString();</span>
 
-<span class="fc" id="L141">                    result.put(paramName, getAsset(didMap.get(&quot;did&quot;), RemoteAccount.create(userName,password)));</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                } else if (type.equals(&quot;json&quot;)) {</span>
-<span class="fc" id="L143">                    result.put(paramName, response.get(paramName));</span>
+<span class="fc" id="L142">                    result.put(paramName, getAsset(didMap.get(&quot;did&quot;), RemoteAccount.create(userName, password)));</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">                } else if (type.equals(&quot;json&quot;)) {</span>
+<span class="fc" id="L144">                    result.put(paramName, response.get(paramName));</span>
                 } else {
-<span class="nc" id="L145">                    throw new StarfishValidationException(&quot;Invalid type of Input. Accepted Input: &quot; +</span>
+<span class="nc" id="L146">                    throw new StarfishValidationException(&quot;Invalid type of Input. Accepted Input: &quot; +</span>
                             &quot;Asset or Json. Input given: &quot; + type);
                 }
 
             }
 
-<span class="fc" id="L151">        }</span>
-<span class="fc" id="L152">        return result;</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">        return result;</span>
 
     }
-    private static Object getAsset(Object di, RemoteAccount remoteAccount)  {
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (di == null) {</span>
-<span class="nc" id="L157">            throw new StarfishValidationException(&quot;DID is null&quot;);</span>
+
+    private static Object getAsset(Object di, RemoteAccount remoteAccount) {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if (di == null) {</span>
+<span class="nc" id="L159">            throw new StarfishValidationException(&quot;DID is null&quot;);</span>
         }
-<span class="fc" id="L159">        String didS = (String) di;</span>
-<span class="fc" id="L160">        DID did = DID.parse(didS);</span>
-<span class="fc" id="L161">        return getAssetByDID(did, remoteAccount);</span>
+<span class="fc" id="L161">        String didS = (String) di;</span>
+<span class="fc" id="L162">        DID did = DID.parse(didS);</span>
+<span class="fc" id="L163">        return getAssetByDID(did, remoteAccount);</span>
 
     }
 
@@ -171,11 +173,11 @@ import java.util.Map;
      * @throws IOException
      */
     public static Asset getAssetByDID(DID did, RemoteAccount remoteAccount) {
-<span class="fc" id="L174">        DID agentDID = did.withoutPath();</span>
-<span class="fc" id="L175">        String path = did.getPath();</span>
-<span class="fc" id="L176">        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID, remoteAccount);</span>
-<span class="fc" id="L177">        Asset asset = remoteAgent.getAsset(path);</span>
-<span class="fc" id="L178">        return asset;</span>
+<span class="fc" id="L176">        DID agentDID = did.withoutPath();</span>
+<span class="fc" id="L177">        String path = did.getPath();</span>
+<span class="fc" id="L178">        RemoteAgent remoteAgent = RemoteAgent.connect(agentDID, remoteAccount);</span>
+<span class="fc" id="L179">        Asset asset = remoteAgent.getAsset(path);</span>
+<span class="fc" id="L180">        return asset;</span>
     }
 
     /**
@@ -190,26 +192,26 @@ import java.util.Map;
     @SuppressWarnings(&quot;unchecked&quot;)
     public
     static Map&lt;String, Object&gt; formatParams(Operation operation, Object... params) {
-<span class="nc" id="L193">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(params.length);</span>
-<span class="nc" id="L194">        Map&lt;String, Object&gt; paramSpec = operation.getParamsSpec();</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; me : paramSpec.entrySet()) {</span>
-<span class="nc" id="L196">            String paramName = me.getKey();</span>
-<span class="nc" id="L197">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
+<span class="nc" id="L195">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(params.length);</span>
+<span class="nc" id="L196">        Map&lt;String, Object&gt; paramSpec = operation.getParamsSpec();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; me : paramSpec.entrySet()) {</span>
+<span class="nc" id="L198">            String paramName = me.getKey();</span>
+<span class="nc" id="L199">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
             // String type=(String) spec.get(&quot;type&quot;);
-<span class="nc" id="L199">            Object positionObj = spec.get(&quot;position&quot;);</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">            int pos = (positionObj != null) ? Utils.coerceInt(positionObj) : -1;</span>
-<span class="nc" id="L201">            boolean required = Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
-<span class="nc bnc" id="L202" title="All 4 branches missed.">            if ((pos &gt;= 0) &amp;&amp; (pos &lt; params.length)) {</span>
+<span class="nc" id="L201">            Object positionObj = spec.get(&quot;position&quot;);</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">            int pos = (positionObj != null) ? Utils.coerceInt(positionObj) : -1;</span>
+<span class="nc" id="L203">            boolean required = Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
+<span class="nc bnc" id="L204" title="All 4 branches missed.">            if ((pos &gt;= 0) &amp;&amp; (pos &lt; params.length)) {</span>
                 // TODO: Handle non-asset parameters?
-<span class="nc" id="L204">                Asset a = (Asset) params[pos];</span>
-<span class="nc" id="L205">                Map&lt;String, Object&gt; value = a.getParamValue();</span>
-<span class="nc" id="L206">                result.put(paramName, value);</span>
+<span class="nc" id="L206">                Asset a = (Asset) params[pos];</span>
+<span class="nc" id="L207">                Map&lt;String, Object&gt; value = a.getParamValue();</span>
+<span class="nc" id="L208">                result.put(paramName, value);</span>
             }
-<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (required) {</span>
-<span class="nc" id="L209">                throw new IllegalArgumentException(&quot;Parameter &quot; + paramName + &quot; is required but not supplied&quot;);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            if (required) {</span>
+<span class="nc" id="L211">                throw new IllegalArgumentException(&quot;Parameter &quot; + paramName + &quot; is required but not supplied&quot;);</span>
             }
-<span class="nc" id="L211">        }</span>
-<span class="nc" id="L212">        return result;</span>
+<span class="nc" id="L213">        }</span>
+<span class="nc" id="L214">        return result;</span>
     }
 
     /**
@@ -224,23 +226,23 @@ import java.util.Map;
     @SuppressWarnings(&quot;unchecked&quot;)
     public
     static Map&lt;String, Object&gt; namedParams(Operation operation, Object... params) {
-<span class="nc" id="L227">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(params.length);</span>
-<span class="nc" id="L228">        Map&lt;String, Object&gt; paramSpec = operation.getParamsSpec();</span>
-<span class="nc bnc" id="L229" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; me : paramSpec.entrySet()) {</span>
-<span class="nc" id="L230">            String paramName = me.getKey();</span>
-<span class="nc" id="L231">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
-<span class="nc" id="L232">            Object positionObj = spec.get(&quot;position&quot;);</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">            int pos = (positionObj != null) ? Utils.coerceInt(positionObj) : -1;</span>
-<span class="nc" id="L234">            boolean required = Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
-<span class="nc bnc" id="L235" title="All 4 branches missed.">            if ((pos &gt;= 0) &amp;&amp; (pos &lt; params.length)) {</span>
+<span class="nc" id="L229">        HashMap&lt;String, Object&gt; result = new HashMap&lt;&gt;(params.length);</span>
+<span class="nc" id="L230">        Map&lt;String, Object&gt; paramSpec = operation.getParamsSpec();</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        for (Map.Entry&lt;String, Object&gt; me : paramSpec.entrySet()) {</span>
+<span class="nc" id="L232">            String paramName = me.getKey();</span>
+<span class="nc" id="L233">            Map&lt;String, Object&gt; spec = (Map&lt;String, Object&gt;) me.getValue();</span>
+<span class="nc" id="L234">            Object positionObj = spec.get(&quot;position&quot;);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">            int pos = (positionObj != null) ? Utils.coerceInt(positionObj) : -1;</span>
+<span class="nc" id="L236">            boolean required = Utils.coerceBoolean(spec.get(&quot;required&quot;));</span>
+<span class="nc bnc" id="L237" title="All 4 branches missed.">            if ((pos &gt;= 0) &amp;&amp; (pos &lt; params.length)) {</span>
                 // TODO: handle non-asset parameters&gt;
-<span class="nc" id="L237">                Asset a = (Asset) params[pos];</span>
-<span class="nc" id="L238">                result.put(paramName, a);</span>
-<span class="nc bnc" id="L239" title="All 2 branches missed.">            } else if (required) {</span>
-<span class="nc" id="L240">                throw new IllegalArgumentException(&quot;Parameter &quot; + paramName + &quot; is required but not supplied&quot;);</span>
+<span class="nc" id="L239">                Asset a = (Asset) params[pos];</span>
+<span class="nc" id="L240">                result.put(paramName, a);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            } else if (required) {</span>
+<span class="nc" id="L242">                throw new IllegalArgumentException(&quot;Parameter &quot; + paramName + &quot; is required but not supplied&quot;);</span>
             }
-<span class="nc" id="L242">        }</span>
-<span class="nc" id="L243">        return result;</span>
+<span class="nc" id="L244">        }</span>
+<span class="nc" id="L245">        return result;</span>
     }
 
 

@@ -90,12 +90,35 @@ public class DID {
     }
 
     /**
+     * Creates a random DEP-compliant DID as a string, of the format:
+     * &lt;p&gt;
+     * &quot;did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563&quot;
+     *
+     * @return A valid DID represented as a string
+     */
+    public static String createRandomString() {
+<span class="fc" id="L100">        SecureRandom sr = new SecureRandom();</span>
+<span class="fc" id="L101">        byte[] bytes = new byte[Utils.DID_LENGTH];</span>
+<span class="fc" id="L102">        sr.nextBytes(bytes);</span>
+<span class="fc" id="L103">        return Constant.DID + &quot;:&quot; + Constant.DID_METHOD + &quot;:&quot; + Hex.toString(bytes);</span>
+    }
+
+    /**
+     * Creates a random DEP-compliant DID
+     *
+     * @return The created DID
+     */
+    public static DID createRandom() {
+<span class="fc" id="L112">        return parse(DID.createRandomString());</span>
+    }
+
+    /**
      * Gets the DID scheme for this DID
      *
      * @return String The DID scheme, always defined as &quot;did&quot;
      */
     public String getScheme() {
-<span class="fc" id="L98">        return &quot;did&quot;;</span>
+<span class="fc" id="L121">        return &quot;did&quot;;</span>
     }
 
     /**
@@ -104,7 +127,7 @@ public class DID {
      * @return String The DID method, e.g. &quot;dep&quot;
      */
     public String getMethod() {
-<span class="fc" id="L107">        return method;</span>
+<span class="fc" id="L130">        return method;</span>
     }
 
     /**
@@ -113,7 +136,7 @@ public class DID {
      * @return String The DID idstring, e.g. &quot;2ee8d7d4dd764bc96e8f1c762b1ca4ff54688b22aeb851378aa9a543290bcbd9&quot;
      */
     public String getID() {
-<span class="fc" id="L116">        return id;</span>
+<span class="fc" id="L139">        return id;</span>
     }
 
     /**
@@ -122,7 +145,7 @@ public class DID {
      * @return String The DID path, or null if there is no path specified
      */
     public String getPath() {
-<span class="fc" id="L125">        return path;</span>
+<span class="fc" id="L148">        return path;</span>
     }
 
     /**
@@ -131,38 +154,38 @@ public class DID {
      * @return String The DID fragment, or null if there is no fragment specified
      */
     public String getFragment() {
-<span class="nc" id="L134">        return fragment;</span>
+<span class="nc" id="L157">        return fragment;</span>
     }
 
     private String createString() {
-<span class="fc" id="L138">        StringBuffer sb = new StringBuffer();</span>
-<span class="fc" id="L139">        sb.append(&quot;did&quot;);</span>
-<span class="fc" id="L140">        sb.append(':');</span>
-<span class="fc" id="L141">        sb.append(method);</span>
-<span class="fc" id="L142">        sb.append(':');</span>
-<span class="fc" id="L143">        sb.append(id);</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (path != null) {</span>
-<span class="fc" id="L145">            sb.append('/');</span>
-<span class="fc" id="L146">            sb.append(path);</span>
+<span class="fc" id="L161">        StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L162">        sb.append(&quot;did&quot;);</span>
+<span class="fc" id="L163">        sb.append(':');</span>
+<span class="fc" id="L164">        sb.append(method);</span>
+<span class="fc" id="L165">        sb.append(':');</span>
+<span class="fc" id="L166">        sb.append(id);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if (path != null) {</span>
+<span class="fc" id="L168">            sb.append('/');</span>
+<span class="fc" id="L169">            sb.append(path);</span>
         }
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (fragment != null) {</span>
-<span class="nc" id="L149">            sb.append('#');</span>
-<span class="nc" id="L150">            sb.append(fragment);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (fragment != null) {</span>
+<span class="nc" id="L172">            sb.append('#');</span>
+<span class="nc" id="L173">            sb.append(fragment);</span>
         }
 
-<span class="fc" id="L153">        return sb.toString();</span>
+<span class="fc" id="L176">        return sb.toString();</span>
     }
 
     @Override
     public String toString() {
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (fullString == null) fullString = createString();</span>
-<span class="fc" id="L159">        return fullString;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (fullString == null) fullString = createString();</span>
+<span class="fc" id="L182">        return fullString;</span>
     }
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (!(o instanceof DID)) return false;</span>
-<span class="fc" id="L165">        return equals((DID) o);</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (!(o instanceof DID)) return false;</span>
+<span class="fc" id="L188">        return equals((DID) o);</span>
     }
 
     /**
@@ -172,20 +195,20 @@ public class DID {
      * @return boolean true if this DID equals the DID argument, false otherwise
      */
     public boolean equals(DID d) {
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (!method.equals(d.method)) return false;</span>
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (!id.equals(d.id)) return false;</span>
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (!Utils.equals(path, d.path)) return false;</span>
-<span class="fc" id="L178">        return Utils.equals(fragment, d.fragment);</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (!method.equals(d.method)) return false;</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (!id.equals(d.id)) return false;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (!Utils.equals(path, d.path)) return false;</span>
+<span class="fc" id="L201">        return Utils.equals(fragment, d.fragment);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L183">        int h = 0;</span>
-<span class="fc" id="L184">        h += method.hashCode();</span>
-<span class="fc" id="L185">        h += 13 * id.hashCode();</span>
-<span class="fc" id="L186">        h += 53 * Utils.hashCode(path);</span>
-<span class="fc" id="L187">        h += 101 * Utils.hashCode(fragment);</span>
-<span class="fc" id="L188">        return h;</span>
+<span class="fc" id="L206">        int h = 0;</span>
+<span class="fc" id="L207">        h += method.hashCode();</span>
+<span class="fc" id="L208">        h += 13 * id.hashCode();</span>
+<span class="fc" id="L209">        h += 53 * Utils.hashCode(path);</span>
+<span class="fc" id="L210">        h += 101 * Utils.hashCode(fragment);</span>
+<span class="fc" id="L211">        return h;</span>
     }
 
     /**
@@ -195,30 +218,7 @@ public class DID {
      * @return DID The updated DID with the specified path argument
      */
     public DID withPath(String path) {
-<span class="fc" id="L198">        return DID.create(method, id, path, fragment);</span>
-    }
-
-    /**
-     * Creates a random DEP-compliant DID as a string, of the format:
-     * &lt;p&gt;
-     * &quot;did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563&quot;
-     *
-     * @return A valid DID represented as a string
-     */
-    public static String createRandomString() {
-<span class="fc" id="L209">        SecureRandom sr = new SecureRandom();</span>
-<span class="fc" id="L210">        byte[] bytes = new byte[Utils.DID_LENGTH];</span>
-<span class="fc" id="L211">        sr.nextBytes(bytes);</span>
-<span class="fc" id="L212">        return Constant.DID+&quot;:&quot; + Constant.DID_METHOD + &quot;:&quot; + Hex.toString(bytes);</span>
-    }
-
-    /**
-     * Creates a random DEP-compliant DID
-     *
-     * @return The created DID
-     */
-    public static DID createRandom() {
-<span class="fc" id="L221">        return parse(DID.createRandomString());</span>
+<span class="fc" id="L221">        return DID.create(method, id, path, fragment);</span>
     }
 
     /**

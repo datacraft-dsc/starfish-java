@@ -41,7 +41,7 @@ public final class DirectPurchaseAdapter {
      * Create DirectPurchaseAdapter
      *
      * @param directPurchase contract
-     * @param oceanToken   contract
+     * @param oceanToken     contract
      */
 <span class="fc" id="L46">    private DirectPurchaseAdapter(DirectPurchase directPurchase, OceanToken oceanToken) {</span>
 <span class="fc" id="L47">        this.directPurchase = directPurchase;</span>
@@ -51,7 +51,7 @@ public final class DirectPurchaseAdapter {
     /**
      * Creates a DirectPurchaseAdapter
      *
-     * @param  DexConfig config
+     * @param DexConfig config
      * @return DirectPurchaseAdapter The newly created DirectPurchaseAdapter
      * @throws IOException
      */
@@ -74,8 +74,8 @@ public final class DirectPurchaseAdapter {
 <span class="fc" id="L74">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
 
         // loading contract instances
-<span class="fc" id="L77">        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress,  web3, txManager, gasProvider);</span>
-<span class="fc" id="L78">        OceanToken oceanToken = OceanToken.load(oceanTokenAddress,  web3, txManager, gasProvider);</span>
+<span class="fc" id="L77">        DirectPurchase directPurchase = DirectPurchase.load(directPurchaseAddress, web3, txManager, gasProvider);</span>
+<span class="fc" id="L78">        OceanToken oceanToken = OceanToken.load(oceanTokenAddress, web3, txManager, gasProvider);</span>
 <span class="fc" id="L79">        return new DirectPurchaseAdapter(directPurchase, oceanToken);</span>
     }
 

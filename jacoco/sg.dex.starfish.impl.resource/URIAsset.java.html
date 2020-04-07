@@ -2,7 +2,6 @@
 
 import org.apache.http.Header;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.DataAsset;
@@ -33,12 +32,12 @@ public class URIAsset extends AAsset implements DataAsset {
     private final URI uri;
     private final CloseableHttpResponse response;
 
-    protected URIAsset(URI uri,CloseableHttpResponse response, String meta) {
-<span class="nc" id="L37">        super(meta);</span>
-<span class="nc" id="L38">        this.uri = uri;</span>
-<span class="nc" id="L39">        this.response= response;</span>
+    protected URIAsset(URI uri, CloseableHttpResponse response, String meta) {
+<span class="nc" id="L36">        super(meta);</span>
+<span class="nc" id="L37">        this.uri = uri;</span>
+<span class="nc" id="L38">        this.response = response;</span>
 
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L40">    }</span>
 
     /**
      * Creates a HTTP asset using the given URI and metadata
@@ -47,7 +46,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-<span class="nc" id="L50">        return new URIAsset(uri,getResponse(uri,null), metaString);</span>
+<span class="nc" id="L49">        return new URIAsset(uri, getResponse(uri, null), metaString);</span>
     }
 
     /**
@@ -57,16 +56,17 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-<span class="nc" id="L60">        return create(uri, JSON.toPrettyString(buildMetaData(uri, null,null)));</span>
+<span class="nc" id="L59">        return create(uri, JSON.toPrettyString(buildMetaData(uri, null, null)));</span>
     }
+
     /**
      * Creates a HTTP asset using the given URI.
      *
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static URIAsset create(URI uri,Map&lt;String, String&gt; auth,Map&lt;String, Object&gt; metaData) {
-<span class="nc" id="L69">        return create(uri, JSON.toPrettyString(buildMetaData(uri, auth,metaData)));</span>
+    public static URIAsset create(URI uri, Map&lt;String, String&gt; auth, Map&lt;String, Object&gt; metaData) {
+<span class="nc" id="L69">        return create(uri, JSON.toPrettyString(buildMetaData(uri, auth, metaData)));</span>
     }
 
     /**
@@ -79,7 +79,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map&lt;String, Object&gt; metaData) {
-<span class="nc" id="L82">        return new URIAsset(uri, getResponse(uri,null),JSON.toPrettyString(buildMetaData(uri,null, metaData)));</span>
+<span class="nc" id="L82">        return new URIAsset(uri, getResponse(uri, null), JSON.toPrettyString(buildMetaData(uri, null, metaData)));</span>
     }
 
     /**
@@ -90,12 +90,12 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map&lt;String, Object&gt; buildMetaData(URI uri, Map&lt;String, String&gt; auth,Map&lt;String, Object&gt; metaData) {
+    private static Map&lt;String, Object&gt; buildMetaData(URI uri, Map&lt;String, String&gt; auth, Map&lt;String, Object&gt; metaData) {
 
 <span class="nc" id="L95">        Map&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
 <span class="nc" id="L96">        ob.put(Constant.DATE_CREATED, Instant.now().toString());</span>
 <span class="nc" id="L97">        ob.put(Constant.TYPE, Constant.DATA_SET);</span>
-<span class="nc" id="L98">        CloseableHttpResponse response = getResponse(uri,auth);</span>
+<span class="nc" id="L98">        CloseableHttpResponse response = getResponse(uri, auth);</span>
 <span class="nc" id="L99">        Header[] headers = response.getAllHeaders();</span>
 
 <span class="nc" id="L101">        ob.put(CONTENT_TYPE, getHeaderValue(CONTENT_TYPE, headers));</span>
@@ -110,16 +110,16 @@ public class URIAsset extends AAsset implements DataAsset {
 <span class="nc" id="L110">        return ob;</span>
     }
 
-    private static CloseableHttpResponse getResponse(URI uri,Map&lt;String, String&gt; header) {
+    private static CloseableHttpResponse getResponse(URI uri, Map&lt;String, String&gt; header) {
 <span class="nc" id="L114">        HttpGet httpget = new HttpGet(uri);</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        if(header != null){</span>
-<span class="nc" id="L116">            addHeader(httpget,header);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (header != null) {</span>
+<span class="nc" id="L116">            addHeader(httpget, header);</span>
         }
 <span class="nc" id="L118">        return HTTP.execute(httpget);</span>
 
     }
 
-    private static void addHeader(HttpGet httpget,Map&lt;String, String&gt; header) {
+    private static void addHeader(HttpGet httpget, Map&lt;String, String&gt; header) {
 <span class="nc bnc" id="L123" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry : header.entrySet()) {</span>
 <span class="nc" id="L124">            httpget.addHeader(entry.getKey(), entry.getValue());</span>
 <span class="nc" id="L125">        }</span>

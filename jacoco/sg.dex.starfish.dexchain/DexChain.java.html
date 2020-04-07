@@ -32,10 +32,10 @@ public class DexChain {
      * Create DexChain.
      * Uses default chain configuration.
      */
-<span class="fc" id="L35">    private DexChain()  {</span>
+<span class="fc" id="L35">    private DexChain() {</span>
 <span class="fc" id="L36">        Credentials credentials = null;</span>
         try {
-<span class="fc" id="L38">        dexConfig = DexConfigFactory.getDexConfig(&quot;dex_chain.properties&quot;);</span>
+<span class="fc" id="L38">            dexConfig = DexConfigFactory.getDexConfig(&quot;dex_chain.properties&quot;);</span>
 
 
 <span class="fc" id="L41">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
@@ -54,28 +54,27 @@ public class DexChain {
      *
      * @return singleton of DexChain
      */
-    public static DexChain getInstance()
-    {
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (instance == null)</span>
-<span class="fc" id="L60">            instance = new DexChain();</span>
+    public static DexChain getInstance() {
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (instance == null)</span>
+<span class="fc" id="L59">            instance = new DexChain();</span>
 
-<span class="fc" id="L62">        return instance;</span>
+<span class="fc" id="L61">        return instance;</span>
     }
 
     public Web3j getWeb3j() {
-<span class="fc" id="L66">        return web3;</span>
+<span class="fc" id="L65">        return web3;</span>
     }
 
     public TransactionManager getTransactionManager() {
-<span class="fc" id="L70">        return txManager;</span>
+<span class="fc" id="L69">        return txManager;</span>
     }
 
     public ContractGasProvider getContractGasProvider() {
-<span class="fc" id="L74">        return gasProvider;</span>
+<span class="fc" id="L73">        return gasProvider;</span>
     }
 
     public DexConfig getDexConfig() {
-<span class="fc" id="L78">        return dexConfig;</span>
+<span class="fc" id="L77">        return dexConfig;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

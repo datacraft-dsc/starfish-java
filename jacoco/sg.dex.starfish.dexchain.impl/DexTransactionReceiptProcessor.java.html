@@ -30,7 +30,7 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
     }
 
     Optional&lt;TransactionReceipt&gt; sendTransactionReceiptRequest(String transactionHash) throws IOException, TransactionException {
-<span class="fc" id="L33">        EthGetTransactionReceipt transactionReceipt = (EthGetTransactionReceipt)this.web3j.ethGetTransactionReceipt(transactionHash).send();</span>
+<span class="fc" id="L33">        EthGetTransactionReceipt transactionReceipt = this.web3j.ethGetTransactionReceipt(transactionHash).send();</span>
 <span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (transactionReceipt.hasError()) {</span>
 <span class="nc" id="L35">            throw new TransactionException(&quot;Error processing request: &quot; + transactionReceipt.getError().getMessage());</span>
         } else {
@@ -42,7 +42,7 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
 <span class="fc bfc" id="L42" title="All 2 branches covered.">        if (!receiptOptional.isPresent()) {</span>
 <span class="fc" id="L43">            return true;</span>
         } else {
-<span class="fc" id="L45">            TransactionReceipt receipt = (TransactionReceipt)receiptOptional.get();</span>
+<span class="fc" id="L45">            TransactionReceipt receipt = receiptOptional.get();</span>
 <span class="fc" id="L46">            Optional&lt;Log&gt; optionalLog = receipt.getLogs().stream().filter((log) -&gt; {</span>
 <span class="fc bfc" id="L47" title="All 2 branches covered.">                return !log.getType().equalsIgnoreCase(&quot;mined&quot;);</span>
 <span class="fc" id="L48">            }).findFirst();</span>
@@ -58,9 +58,9 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
     private TransactionReceipt getTransactionReceipt(String transactionHash, long sleepDuration, int attempts) throws IOException, TransactionException {
 <span class="fc" id="L59">        Optional&lt;TransactionReceipt&gt; receiptOptional = this.sendTransactionReceiptRequest(transactionHash);</span>
 
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        for(int i = 0; i &lt; attempts; ++i) {</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        for (int i = 0; i &lt; attempts; ++i) {</span>
 <span class="fc bfc" id="L62" title="All 2 branches covered.">            if (!this.keepWaiting(receiptOptional)) {</span>
-<span class="fc" id="L63">                return (TransactionReceipt)receiptOptional.get();</span>
+<span class="fc" id="L63">                return receiptOptional.get();</span>
             }
 
             try {
@@ -72,7 +72,7 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
 <span class="fc" id="L72">            receiptOptional = this.sendTransactionReceiptRequest(transactionHash);</span>
         }
 
-<span class="nc" id="L75">        throw new TransactionException(&quot;Transaction receipt was not generated after &quot; + sleepDuration * (long)attempts / 1000L + &quot; seconds for transaction: &quot; + transactionHash, transactionHash);</span>
+<span class="nc" id="L75">        throw new TransactionException(&quot;Transaction receipt was not generated after &quot; + sleepDuration * (long) attempts / 1000L + &quot; seconds for transaction: &quot; + transactionHash, transactionHash);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
