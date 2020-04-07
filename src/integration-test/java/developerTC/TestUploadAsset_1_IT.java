@@ -2,7 +2,6 @@ package developerTC;
 
 import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -12,7 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * As a developer wishing to make an asset available for download,
@@ -53,11 +53,11 @@ public class TestUploadAsset_1_IT {
 
     @Test
     public void testNullUpload() {
-        try {
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             remoteAgent.uploadAsset(null);
-        } catch (StarfishValidationException e) {
-            assertTrue(e.getMessage().contains("Asset cannot be null"));
-        }
+        });
+
     }
 
     @Test
@@ -71,16 +71,6 @@ public class TestUploadAsset_1_IT {
         assertEquals(aRemoteAsset1.getAssetID(), memoryAsset.getAssetID());
         assertEquals(aRemoteAsset1.getAssetID(), aRemoteAsset.getAssetID());
 
-    }
-
-    @Test
-    public void testNullRegister() {
-        try {
-            String testNull = null;
-            remoteAgent.registerAsset(testNull);
-        } catch (StarfishValidationException e) {
-            assertTrue(e.getMessage().contains("Asset metadata cannot be null"));
-        }
     }
 
 
