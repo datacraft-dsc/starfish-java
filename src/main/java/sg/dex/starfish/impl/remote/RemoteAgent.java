@@ -1,5 +1,6 @@
 package sg.dex.starfish.impl.remote;
 
+import org.apache.commons.httpclient.HttpException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -7,10 +8,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.auth.AUTH;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
@@ -103,7 +101,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return Job for this request
      * @throws RuntimeException for protocol errors
      */
-    private static Job createSuccessJob(RemoteAgent agent, Map<String,Object> paramsSpecs,HttpResponse response) {
+    private static Job createSuccessJob(RemoteAgent agent, Map<String, Object> paramsSpecs, HttpResponse response) {
         HttpEntity entity = response.getEntity();
         if (entity == null) throw new RemoteException("Invoke failed: no response body");
         try {
@@ -123,7 +121,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     // interpret as a JSON map, should contain jobid
                     Map<String, Object> json = JSON.parse(body);
 
-                    jobID =  json.get("job-id") != null?json.get("job-id").toString():null;
+                    jobID = json.get("job-id") != null ? json.get("job-id").toString() : null;
                     ;
                     if (jobID == null) throw new RemoteException("Invoke failed: no jobid in body: " + body);
                 } else {
@@ -131,7 +129,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     jobID = body;
                 }
             }
-            return RemoteJob.create(agent, paramsSpecs,jobID);
+            return RemoteJob.create(agent, paramsSpecs, jobID);
         } catch (Exception e) {
             throw Utils.sneakyThrow(e);
         }
@@ -146,11 +144,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @throws IllegalArgumentException for a bad invoke request
      * @throws RuntimeException         for protocol errors
      */
-    private static Job createJob(RemoteAgent agent, Map<String,Object> paramsSpecs,HttpResponse response) {
+    private static Job createJob(RemoteAgent agent, Map<String, Object> paramsSpecs, HttpResponse response) {
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
         if ((statusCode == 201) || (statusCode == 200)) {
-            return RemoteAgent.createSuccessJob(agent,paramsSpecs, response);
+            return RemoteAgent.createSuccessJob(agent, paramsSpecs, response);
         }
         String reason = statusLine.getReasonPhrase();
         if ((statusCode) == 400) {
@@ -429,34 +427,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         URI uri = getMetaURI(id);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
-        CloseableHttpResponse response;
-        try {
-            response = HTTP.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + uri);
-                } else if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    Map<String, Object> metaMap = JSON.toMap(body);
-                    R a = getRemoteAsset(body, metaMap);
-                    String rid = a.getAssetID();
-                    if (!rid.equals(id)) {
-                        throw new StarfishValidationException(
-                                "Expected asset ID: " + id + " but got metadata with hash: " + rid);
-                    }
-                    return a;
-                } else {
-
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new JobFailedException(" Getting asset by ID failed for asset ID :" + id, e);
+        String body = Utils.stringFromStream(getHTTPResponseAsStream(httpget));
+        Map<String, Object> metaMap = JSON.toMap(body);
+        R a = getRemoteAsset(body, metaMap);
+        String rid = a.getAssetID();
+        if (!rid.equals(id)) {
+            throw new StarfishValidationException(
+                    "Expected asset ID: " + id + " but got metadata with hash: " + rid);
         }
+        return a;
+
     }
 
     /**
@@ -492,14 +472,19 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         URI uri = getMetaURI(assetId);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
-        CloseableHttpResponse response = HTTP.execute(httpget);
+
         try {
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            return statusCode == 200;
+            HttpResponse httpResponse = getHttpResponse(httpget);
+            if(200 == httpResponse.getStatusLine().getStatusCode()){
+                return true;
+            }
+        }  catch (IOException e) {
+            throw new RemoteException("Fatal transport error: ", e);
         } finally {
-            HTTP.close(response);
+            // Release the connection.
+            httpget.releaseConnection();
         }
+        return false;
     }
 
     /**
@@ -555,7 +540,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             throw new UnsupportedOperationException(
                     "Bundle don`t have content,so cannot be upload " + asset.getMetadata());
         } else if (asset.getMetadata().get(TYPE).equals(OPERATION)
-         && !asset.getMetadata().get(CLASS).equals(ORCHESTRATION) ) {
+                && !asset.getMetadata().get(CLASS).equals(ORCHESTRATION)) {
 
             return;
         }
@@ -790,6 +775,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
+
+        getHTTPResponseAsStream(httpget);
         CloseableHttpResponse response;
         try {
             response = httpclient.execute(httpget);
@@ -831,7 +818,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
 
     private Job invokeImpl(Operation operation, Map<String, Object> requestMap) {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
 
         String assetID = operation.getAssetID();
         HttpPost httppost = new HttpPost(getInvokeAsyncURI(assetID));
@@ -840,22 +826,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         StringEntity entity = new StringEntity(paramJSON, ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
-        CloseableHttpResponse response;
         try {
-            response = httpclient.execute(httppost);
-
-            try {
-                return RemoteAgent.createJob(this,operation.getParamsSpec(), response);
-            } finally {
-                response.close();
-            }
-        } catch (ClientProtocolException e) {
-            throw new JobFailedException(
-                    " Client Protocol Exception for asset ID: " + assetID + "params :" + paramJSON,
-                    e);
-        } catch (IOException e) {
+            CloseableHttpResponse response = getHttpResponse(httppost);
+            return RemoteAgent.createJob(this, operation.getParamsSpec(), response);
+        }
+             catch (IOException e) {
             throw new JobFailedException(
                     " IOException occurred  for asset ID: " + assetID + "params :" + paramJSON, e);
+        }
+        finally {
+            httppost.releaseConnection();
         }
     }
 
@@ -876,22 +856,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         addAuthHeaders(httppost);
         StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
-        CloseableHttpResponse response;
         try {
-            response = httpclient.execute(httppost);
+            CloseableHttpResponse response = getHttpResponse(httppost);
+            return RemoteAgent.createJob(this, operation.getOperationSpec(), response);
 
-            try {
-                return RemoteAgent.createJob(this,operation.getOperationSpec(), response);
-            } finally {
-                response.close();
-            }
-        } catch (ClientProtocolException e) {
-            throw new JobFailedException(
-                    " Client Protocol operation : " + operation.toString() + "params :" + JSON.toPrettyString(params),
-                    e);
+
         } catch (IOException e) {
             throw new JobFailedException(" IOException occurred  operation : " + operation.toString() + "params :"
                     + JSON.toPrettyString(params), e);
+        }
+        finally {
+            httppost.releaseConnection();
         }
     }
 
@@ -911,32 +886,42 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         URI uri = getInvokeSyncURI(operation.getAssetID());
         HttpPost httppost = new HttpPost(uri);
         addAuthHeaders(httppost);
         // TODO if params is a map of asset then form proper entity
         StringEntity entity = new StringEntity(JSON.toPrettyString(paramValueMap), ContentType.APPLICATION_JSON);
         httppost.setEntity(entity);
-        CloseableHttpResponse response;
+        String body = Utils.stringFromStream(getHTTPResponseAsStream(httppost));
+        Map<String, Object> res = (Map<String, Object>) JSON.toMap(body).get(Constant.OUTPUTS);
+        return Params.formatResponse(operation.getOperationSpec(), res);
+
+    }
+
+    private InputStream getHTTPResponseAsStream(HttpRequestBase requestBase) {
         try {
-            response = httpclient.execute(httppost);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                if (statusLine.getStatusCode() == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    Map<String, Object> res = (Map<String, Object>) JSON.toMap(body).get(Constant.OUTPUTS);
-                    return Params.formatResponse(operation.getOperationSpec(),res);
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
+            CloseableHttpResponse response = getHttpResponse(requestBase);
+            StatusLine statusLine = response.getStatusLine();
+
+            if (statusLine.getStatusCode() != 200) {
+                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
             }
+            return response.getEntity().getContent();
+
+
+        } catch (HttpException e) {
+            throw new RemoteException("Fatal protocol violation: " + e.getCause(), e);
         } catch (IOException e) {
-            throw new JobFailedException(" Job invocation failed for operation : " + operation.toString() + "params :"
-                    + JSON.toPrettyString(params), e);
+            throw new RemoteException("Fatal transport error: ", e);
+        } finally {
+            // Release the connection.
+            requestBase.releaseConnection();
         }
+    }
+
+    private CloseableHttpResponse getHttpResponse(HttpRequestBase requestBase) throws IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        return httpclient.execute(requestBase);
     }
 
     /**
@@ -949,31 +934,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         URI uri = getMarketURI(marketAgentUrl);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
-        CloseableHttpResponse response;
         List<Map<String, Object>> result;
+        String body = Utils.stringFromStream(getHTTPResponseAsStream(httpget));
+        result = JSON.parse(body);
+        return result;
 
-        try {
-            response = HTTP.execute(httpget);
-
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Listing ID not found for at: " + statusCode);
-                } else if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    result = JSON.parse(body);
-
-                    return result;
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting market data failed  :", e);
-        }
     }
 
     /**
@@ -992,25 +957,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         httpPost.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));
 
-        CloseableHttpResponse response = null;
-        try {
-            response = httpclient.execute(httpPost);
-            try {
-
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    return body;
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Create Market Instance failed:  :", e);
-        }
+        return Utils.stringFromStream(getHTTPResponseAsStream(httpPost));
     }
 
     /**
@@ -1023,29 +970,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private String getMarketMetaData(String marketAgentUrl) {
         HttpGet httpget = new HttpGet(getMarketURI(marketAgentUrl));
         addAuthHeaders(httpget);
-        try {
-            CloseableHttpResponse response = HTTP.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + statusCode);
-                } else if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    return body;
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting market Data failed:  :", e);
-        }
+        return Utils.stringFromStream(getHTTPResponseAsStream(httpget));
     }
 
     private String updateMarketMetaData(Map<String, Object> listingData, String marketAgentUrl) {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPut put = new HttpPut(getMarketURI(marketAgentUrl));
 
         addAuthHeaders(put);
@@ -1053,24 +981,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         put.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));
 
-        CloseableHttpResponse response = null;
-        try {
-            response = httpclient.execute(put);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(HTTP.getContent(response));
-                    return body;
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Updating market data failed:  :", e);
-        }
+        return Utils.stringFromStream(getHTTPResponseAsStream(put));
     }
 
     /**
@@ -1292,27 +1203,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         URI uri = getStorageURI(assetId);
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
-        CloseableHttpResponse response;
-        try {
-            response = HTTP.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for assetID :" + assetId + "and uri is : " + uri);
-                }
-                if (statusCode == 200) {
-                    InputStream inputStream = HTTP.getContent(response);
-                    return inputStream;
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting Remote Asset content failed: ", e);
-        }
+        return getHTTPResponseAsStream(httpget);
 
     }
 
@@ -1334,32 +1225,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public Map<String, Object> getStatus() {
         URI uri = getStatusUri();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(uri);
         addAuthHeaders(httpget);
-        CloseableHttpResponse response;
-        try {
-            response = httpclient.execute(httpget);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    if (body.isEmpty()) {
-                        throw new RemoteException("No Content in the response for :" + uri);
-                    }
-                    Map<String, Object> result = JSON.toMap(body);
-                    return result;
-                } else {
-                    return null;
-                }
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException(" Getting Remote Agent status failed: ", e);
+        String body = Utils.stringFromStream(getHTTPResponseAsStream(httpget));
+        if (body.isEmpty()) {
+            throw new RemoteException("No Content in the response for :" + uri);
         }
+        Map<String, Object> result = JSON.toMap(body);
+        return result;
+
     }
 
     /**

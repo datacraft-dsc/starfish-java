@@ -27,6 +27,9 @@ public class Params {
     @SuppressWarnings("unchecked")
     public
     static Map<String, Object> formatParams(Operation operation, Map<String, Object> params) {
+        if(null == params){
+            throw  new IllegalArgumentException("Input parameter cannot be null");
+        }
         HashMap<String, Object> result = new HashMap<>(params.size());
         Map<String, Object> paramSpec = operation.getParamsSpec();
         for (Map.Entry<String, Object> me : paramSpec.entrySet()) {

@@ -1,10 +1,14 @@
 package developerTC;
 
 
+import com.google.api.client.http.HttpResponseException;
 import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
+import sg.dex.starfish.exception.JobFailedException;
+import sg.dex.starfish.exception.RemoteException;
+import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
 import sg.dex.starfish.impl.remote.RemoteDataAsset;
@@ -61,6 +65,73 @@ public class TestOperation_IT {
         inputMap.put("n", 16);
         Map<String, Object> result = remoteOperation.invokeResult(inputMap);
         Assertions.assertEquals(result.get("n").toString(), "17");
+    }
+    @Test
+    public void testIncrement_InvalidInput() {
+        Operation remoteOperation = remoteAgent.getAsset(increment_1);
+
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("55", 16);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            remoteOperation.invokeResult(inputMap);
+        });
+    }
+    @Test
+    public void testIncrement_NullInput() {
+        Operation remoteOperation = remoteAgent.getAsset(increment_1);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+             remoteOperation.invokeResult(null);
+        });
+    }
+
+    @Test
+    public void testIncrement_Operation_Not_Exist() {
+        Operation remoteOperation = remoteAgent.getAsset(increment_1+"Invlaid");
+
+        Assertions.assertThrows(RemoteException.class, () -> {
+            remoteOperation.invokeResult(null);
+        });
+    }
+
+    @Test
+    public void testIncrement_sync_MultipleInput() {
+        Operation remoteOperation = remoteAgent.getAsset(increment_1);
+
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("n", 16);
+        inputMap.put("b", 16);
+        Map<String, Object> result = remoteOperation.invokeResult(inputMap);
+        Assertions.assertEquals(result.get("n").toString(), "17");
+    }
+
+    @Test
+    public void testIncrement_sync_InvalidValue() {
+        Operation remoteOperation = remoteAgent.getAsset(increment_1);
+
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("n", "thesttt");
+
+        Assertions.assertThrows(RemoteException.class, () -> {
+            remoteOperation.invokeResult(inputMap);
+        });
+    }
+
+    @Test
+    public void testIncrement_sync_InvlaidValue_1(){
+        String data = "4";
+        Asset asset = MemoryAsset.create(data.getBytes());
+
+        Operation remoteOperation = remoteAgent.getAsset(increment_1);
+
+        RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
+        RemoteDataAsset remoteDataAsset1 = remoteAgent.getAsset(remoteDataAsset.getAssetID());
+
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("n", remoteDataAsset1);
+        Assertions.assertThrows(StarfishValidationException.class, () -> {
+            remoteOperation.invokeResult(inputMap);
+        });
     }
 
     @Test
