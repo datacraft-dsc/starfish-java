@@ -86,15 +86,6 @@ public class TestOperation_IT {
     }
 
     @Test
-    public void testIncrement_Operation_Not_Exist() {
-        Operation remoteOperation = remoteAgent.getAsset(increment_1+"Invlaid");
-
-        Assertions.assertThrows(RemoteException.class, () -> {
-            remoteOperation.invokeResult(null);
-        });
-    }
-
-    @Test
     public void testIncrement_sync_MultipleInput() {
         Operation remoteOperation = remoteAgent.getAsset(increment_1);
 
