@@ -29,7 +29,7 @@ import java.util.*;
  * <p>Auto generated code.
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
  * <p>Generated with web3j version 4.5.14.
@@ -44,9 +44,13 @@ public class DIDRegistry extends Contract {
 
     public static final String FUNC_GETBLOCKNUMBERUPDATED = "getBlockNumberUpdated";
 
-    public static final Event DIDREGISTERED_EVENT = new Event("DIDRegistered", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
-    ;
+    public static final Event DIDREGISTERED_EVENT = new Event("DIDRegistered",
+            Arrays.asList(new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Utf8String>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }));
 
     protected static final HashMap<String, String> _addresses;
 
@@ -71,6 +75,46 @@ public class DIDRegistry extends Contract {
 
     protected DIDRegistry(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    @Deprecated
+    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);
+    }
+
+    @Deprecated
+    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+    }
+
+    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);
+    }
+
+    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static String getPreviouslyDeployedAddress(String networkId) {
+        return _addresses.get(networkId);
     }
 
     public List<DIDRegisteredEventResponse> getDIDRegisteredEvents(TransactionReceipt transactionReceipt) {
@@ -114,69 +158,30 @@ public class DIDRegistry extends Contract {
 
     public RemoteCall<TransactionReceipt> initialize() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_INITIALIZE, 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
+                FUNC_INITIALIZE,
+                Arrays.asList(),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> registerDID(byte[] _did, String _value) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_REGISTERDID, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_did), 
-                new org.web3j.abi.datatypes.Utf8String(_value)), 
-                Collections.<TypeReference<?>>emptyList());
+                FUNC_REGISTERDID,
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_did),
+                        new org.web3j.abi.datatypes.Utf8String(_value)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<BigInteger> getBlockNumberUpdated(byte[] _did) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBERUPDATED,
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_did)),
+                Arrays.asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    @Deprecated
-    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return new DIDRegistry(contractAddress, web3j, credentials, gasPrice, gasLimit);
-    }
-
-    @Deprecated
-    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return new DIDRegistry(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-    }
-
-    public static DIDRegistry load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return new DIDRegistry(contractAddress, web3j, credentials, contractGasProvider);
-    }
-
-    public static DIDRegistry load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return new DIDRegistry(contractAddress, web3j, transactionManager, contractGasProvider);
-    }
-
-    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(DIDRegistry.class, web3j, credentials, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(DIDRegistry.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
-    }
-
-    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<DIDRegistry> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(DIDRegistry.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
-    }
-
     protected String getStaticDeployedAddress(String networkId) {
-        return _addresses.get(networkId);
-    }
-
-    public static String getPreviouslyDeployedAddress(String networkId) {
         return _addresses.get(networkId);
     }
 

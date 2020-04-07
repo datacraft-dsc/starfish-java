@@ -56,7 +56,7 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
         if (!modes.contains(SYNC)) {
             throw new IllegalArgumentException("This operation does not support sync invoke.");
         }
-       return agent.invokeResult(this, params);
+        return agent.invokeResult(this, params);
 
 
     }

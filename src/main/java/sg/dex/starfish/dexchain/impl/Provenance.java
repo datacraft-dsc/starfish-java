@@ -28,7 +28,7 @@ import java.util.*;
  * <p>Auto generated code.
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
  * <p>Generated with web3j version 4.5.14.
@@ -43,9 +43,11 @@ public class Provenance extends Contract {
 
     public static final String FUNC_GETBLOCKNUMBER = "getBlockNumber";
 
-    public static final Event ASSETREGISTERED_EVENT = new Event("AssetRegistered", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}));
-    ;
+    public static final Event ASSETREGISTERED_EVENT = new Event("AssetRegistered",
+            Arrays.asList(new TypeReference<Bytes32>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>() {
+            }));
 
     protected static final HashMap<String, String> _addresses;
 
@@ -69,6 +71,46 @@ public class Provenance extends Contract {
 
     protected Provenance(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    @Deprecated
+    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return new Provenance(contractAddress, web3j, credentials, gasPrice, gasLimit);
+    }
+
+    @Deprecated
+    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return new Provenance(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+    }
+
+    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return new Provenance(contractAddress, web3j, credentials, contractGasProvider);
+    }
+
+    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return new Provenance(contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static RemoteCall<Provenance> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(Provenance.class, web3j, credentials, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<Provenance> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(Provenance.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static RemoteCall<Provenance> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(Provenance.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<Provenance> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(Provenance.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static String getPreviouslyDeployedAddress(String networkId) {
+        return _addresses.get(networkId);
     }
 
     public List<AssetRegisteredEventResponse> getAssetRegisteredEvents(TransactionReceipt transactionReceipt) {
@@ -108,68 +150,29 @@ public class Provenance extends Contract {
 
     public RemoteCall<TransactionReceipt> initialize() {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_INITIALIZE, 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
+                FUNC_INITIALIZE,
+                Arrays.asList(),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> registerAsset(byte[] _assetId) {
         final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
-                FUNC_REGISTERASSET, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), 
-                Collections.<TypeReference<?>>emptyList());
+                FUNC_REGISTERASSET,
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<BigInteger> getBlockNumber(byte[] _assetId) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBER, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETBLOCKNUMBER,
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Bytes32(_assetId)),
+                Arrays.asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    @Deprecated
-    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return new Provenance(contractAddress, web3j, credentials, gasPrice, gasLimit);
-    }
-
-    @Deprecated
-    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return new Provenance(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
-    }
-
-    public static Provenance load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return new Provenance(contractAddress, web3j, credentials, contractGasProvider);
-    }
-
-    public static Provenance load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return new Provenance(contractAddress, web3j, transactionManager, contractGasProvider);
-    }
-
-    public static RemoteCall<Provenance> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(Provenance.class, web3j, credentials, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<Provenance> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(Provenance.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
-    }
-
-    public static RemoteCall<Provenance> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(Provenance.class, web3j, transactionManager, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<Provenance> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(Provenance.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
-    }
-
     protected String getStaticDeployedAddress(String networkId) {
-        return _addresses.get(networkId);
-    }
-
-    public static String getPreviouslyDeployedAddress(String networkId) {
         return _addresses.get(networkId);
     }
 

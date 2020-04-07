@@ -1,12 +1,10 @@
 package developerTC;
 
 
-import com.google.api.client.http.HttpResponseException;
 import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
 import sg.dex.starfish.Job;
 import sg.dex.starfish.Operation;
-import sg.dex.starfish.exception.JobFailedException;
 import sg.dex.starfish.exception.RemoteException;
 import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
@@ -66,6 +64,7 @@ public class TestOperation_IT {
         Map<String, Object> result = remoteOperation.invokeResult(inputMap);
         Assertions.assertEquals(result.get("n").toString(), "17");
     }
+
     @Test
     public void testIncrement_InvalidInput() {
         Operation remoteOperation = remoteAgent.getAsset(increment_1);
@@ -76,12 +75,13 @@ public class TestOperation_IT {
             remoteOperation.invokeResult(inputMap);
         });
     }
+
     @Test
     public void testIncrement_NullInput() {
         Operation remoteOperation = remoteAgent.getAsset(increment_1);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-             remoteOperation.invokeResult(null);
+            remoteOperation.invokeResult(null);
         });
     }
 
@@ -109,7 +109,7 @@ public class TestOperation_IT {
     }
 
     @Test
-    public void testIncrement_sync_InvlaidValue_1(){
+    public void testIncrement_sync_InvlaidValue_1() {
         String data = "4";
         Asset asset = MemoryAsset.create(data.getBytes());
 

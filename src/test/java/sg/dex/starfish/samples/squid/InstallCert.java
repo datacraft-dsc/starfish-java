@@ -51,7 +51,7 @@ import java.security.cert.X509Certificate;
  */
 public class InstallCert {
 
-    private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
+    private static final char[] HEXDIGITS = "0123456789abcdef" .toCharArray();
 
     public static void main(String[] args) throws Exception {
         install("nile.dev-ocean.com");

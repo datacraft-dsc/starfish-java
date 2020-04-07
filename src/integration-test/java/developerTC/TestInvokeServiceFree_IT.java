@@ -240,7 +240,7 @@ public class TestInvokeServiceFree_IT {
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
-        MemoryAsset memoryAsset = MemoryAsset.create("test_Async".getBytes());
+        MemoryAsset memoryAsset = MemoryAsset.create("test_Async" .getBytes());
         RemoteDataAsset remoteDataAsset = agentI.uploadAsset(memoryAsset);
         metaMap.put("to-hash", remoteDataAsset);
 
@@ -284,7 +284,7 @@ public class TestInvokeServiceFree_IT {
 
         // input to the operation
         Map<String, Object> metaMap = new HashMap<>();
-        MemoryAsset memoryAsset = MemoryAsset.create("test_Async".getBytes());
+        MemoryAsset memoryAsset = MemoryAsset.create("test_Async" .getBytes());
         RemoteDataAsset remoteDataAsset = agentI.uploadAsset(memoryAsset);
         metaMap.put("to-hash", remoteDataAsset);
 

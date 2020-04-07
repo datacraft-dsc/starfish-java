@@ -6,7 +6,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AUTH;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
@@ -122,7 +121,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     Map<String, Object> json = JSON.parse(body);
 
                     jobID = json.get("job-id") != null ? json.get("job-id").toString() : null;
-                    ;
                     if (jobID == null) throw new RemoteException("Invoke failed: no jobid in body: " + body);
                 } else {
                     // interpret as a raw job ID
@@ -475,10 +473,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         try {
             HttpResponse httpResponse = getHttpResponse(httpget);
-            if(200 == httpResponse.getStatusLine().getStatusCode()){
+            if (200 == httpResponse.getStatusLine().getStatusCode()) {
                 return true;
             }
-        }  catch (IOException e) {
+        } catch (IOException e) {
             throw new RemoteException("Fatal transport error: ", e);
         } finally {
             // Release the connection.
@@ -829,12 +827,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         try {
             CloseableHttpResponse response = getHttpResponse(httppost);
             return RemoteAgent.createJob(this, operation.getParamsSpec(), response);
-        }
-             catch (IOException e) {
+        } catch (IOException e) {
             throw new JobFailedException(
                     " IOException occurred  for asset ID: " + assetID + "params :" + paramJSON, e);
-        }
-        finally {
+        } finally {
             httppost.releaseConnection();
         }
     }
@@ -864,8 +860,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         } catch (IOException e) {
             throw new JobFailedException(" IOException occurred  operation : " + operation.toString() + "params :"
                     + JSON.toPrettyString(params), e);
-        }
-        finally {
+        } finally {
             httppost.releaseConnection();
         }
     }

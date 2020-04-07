@@ -26,14 +26,20 @@ public class DexProvenance {
     private Provenance contract;
     private DexConfig config;
 
-    public static class DexProvenanceResult {
-        public String user;
-        public String assetId;
-        java.util.Date timeStamp;
+    /**
+     * Create DexProvenance
+     *
+     * @param contract contract
+     * @param config   config
+     */
+    private DexProvenance(Provenance contract, DexConfig config) {
+        this.contract = contract;
+        this.config = config;
     }
 
     /**
      * Creates default DexProvenance
+     *
      * @return DexProvenance The newly created DexProvenance
      */
     public static DexProvenance create() {
@@ -47,23 +53,12 @@ public class DexProvenance {
     }
 
     /**
-     * Create DexProvenance
-     *
-     * @param contract contract
-     * @param config   config
-     */
-    private DexProvenance(Provenance contract, DexConfig config) {
-        this.contract = contract;
-        this.config = config;
-    }
-
-    /**
      * Register asset on chain.
      *
      * @param String assetId
      * @throws DexChainException
      */
-    public void registerAsset(String assetId) throws DexChainException{
+    public void registerAsset(String assetId) throws DexChainException {
         TransactionReceipt receipt = null;
 
         try {
@@ -106,7 +101,7 @@ public class DexProvenance {
             newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
-        return  outcome;
+        return outcome;
     }
 
     /**
@@ -141,7 +136,7 @@ public class DexProvenance {
             newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
-        return  outcome;
+        return outcome;
     }
 
     /**
@@ -165,6 +160,12 @@ public class DexProvenance {
             newResult.assetId = Numeric.toHexStringWithPrefix(Numeric.toBigInt(log._assetID));
             outcome.add(newResult);
         });
-        return  outcome;
+        return outcome;
+    }
+
+    public static class DexProvenanceResult {
+        public String user;
+        public String assetId;
+        java.util.Date timeStamp;
     }
 }

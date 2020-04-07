@@ -23,10 +23,10 @@ public class RemoteJob implements Job {
     private Map<String, Object> paramSpec = null;
 
 
-    private RemoteJob(RemoteAgent agent, Map<String, Object> paramSpec,String jobID) {
+    private RemoteJob(RemoteAgent agent, Map<String, Object> paramSpec, String jobID) {
         this.agent = agent;
         this.jobID = jobID;
-        this.paramSpec=paramSpec;
+        this.paramSpec = paramSpec;
     }
 
 
@@ -39,9 +39,10 @@ public class RemoteJob implements Job {
      * @param jobID
      * @return
      */
-    public static RemoteJob create(RemoteAgent agent2, Map<String, Object> paramSpec,String jobID) {
+    public static RemoteJob create(RemoteAgent agent2, Map<String, Object> paramSpec, String jobID) {
         return new RemoteJob(agent2, paramSpec, jobID);
     }
+
     @Override
     public boolean isDone() {
         return status.equals(SUCCEEDED) || status.equals(FAILED) || (status.equals(CANCELLED));
@@ -104,7 +105,7 @@ public class RemoteJob implements Job {
         while (System.currentTimeMillis() < start + timeoutMillis) {
             Map<String, Object> a = pollResult();
             if (a != null) {
-                return Params.formatResponse(paramSpec,a);
+                return Params.formatResponse(paramSpec, a);
             }
             try {
                 Thread.sleep(sleepTime);

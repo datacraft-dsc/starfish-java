@@ -88,17 +88,17 @@ public class DexConfig {
         return didRegistryAddress;
     }
 
-    public String getDirectPurchaseAddress() {
-        return directPurchaseAddress;
-    }
-
     public DexConfig setDidRegistryAddress(String address) {
         this.didRegistryAddress = address;
         return this;
     }
 
-    public DexConfig setProvenanceAddress(String address) {
-        this.provenanceAddress = address;
+    public String getDirectPurchaseAddress() {
+        return directPurchaseAddress;
+    }
+
+    public DexConfig setDirectPurchaseAddress(String address) {
+        this.directPurchaseAddress = address;
         return this;
     }
 
@@ -106,8 +106,8 @@ public class DexConfig {
         return provenanceAddress;
     }
 
-    public DexConfig setDirectPurchaseAddress(String address) {
-        this.directPurchaseAddress = address;
+    public DexConfig setProvenanceAddress(String address) {
+        this.provenanceAddress = address;
         return this;
     }
 
@@ -153,8 +153,8 @@ public class DexConfig {
 
     public DexConfig setMainAccountCredentialsFile(String mainAccountCredentialsFile) {
         this.mainAccountCredentialsFile = mainAccountCredentialsFile;
-        if(Strings.isBlank(mainAccountCredentialsFile)){
-            this.mainAccountCredentialsFile=DexConfigFactory.getDefaultCredential().getAbsolutePath();
+        if (Strings.isBlank(mainAccountCredentialsFile)) {
+            this.mainAccountCredentialsFile = DexConfigFactory.getDefaultCredential().getAbsolutePath();
         }
         return this;
     }

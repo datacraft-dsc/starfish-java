@@ -37,8 +37,7 @@ public abstract class ARemoteAsset extends AAsset {
 
     @Override
     public InputStream getContentStream() {
-        if(validateAssetType())
-        {
+        if (validateAssetType()) {
             URI uri = agent.getStorageURI(getAssetID());
             HttpGet httpget = new HttpGet(uri);
             agent.addAuthHeaders(httpget);
@@ -57,17 +56,15 @@ public abstract class ARemoteAsset extends AAsset {
 
     /**
      * This method is added to support Orchestration
+     *
      * @return
      */
-    private boolean validateAssetType(){
+    private boolean validateAssetType() {
 
-        Object type= this.getMetadata().get(Constant.TYPE);
+        Object type = this.getMetadata().get(Constant.TYPE);
 
-        if(type.equals(DATA_SET)
-         || (type.equals(OPERATION) &&
-                this.getMetadata().get(Constant.CLASS).equals(ORCHESTRATION))){
-            return true;
-        }
-        return false;
+        return type.equals(DATA_SET)
+                || (type.equals(OPERATION) &&
+                this.getMetadata().get(Constant.CLASS).equals(ORCHESTRATION));
     }
 }

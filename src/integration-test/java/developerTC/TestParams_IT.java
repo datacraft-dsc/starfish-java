@@ -24,7 +24,7 @@ public class TestParams_IT {
     public void testAssetByDID() {
         RemoteAgent remoteAgent = AgentService.getRemoteAgent();
 
-        Asset asset = MemoryAsset.create("test".getBytes());
+        Asset asset = MemoryAsset.create("test" .getBytes());
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
         Asset asset1 = Params.getAssetByDID(remoteDataAsset.getDID(), remoteAgent.getAccount());

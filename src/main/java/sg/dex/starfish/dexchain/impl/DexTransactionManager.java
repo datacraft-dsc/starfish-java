@@ -31,12 +31,12 @@ public class DexTransactionManager extends TransactionManager {
     }
 
     protected BigInteger getNonce() throws IOException {
-        EthGetTransactionCount ethGetTransactionCount = (EthGetTransactionCount)this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();
+        EthGetTransactionCount ethGetTransactionCount = this.web3j.ethGetTransactionCount(this.credentials.getAddress(), DefaultBlockParameterName.PENDING).send();
         return ethGetTransactionCount.getTransactionCount();
     }
 
     protected BigInteger getEstimatedGas(String to, String data) throws IOException {
-        BigInteger gas = ((EthBlock)this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()).getBlock().getGasLimit();
+        BigInteger gas = this.web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send().getBlock().getGasLimit();
         return gas;
     }
 
@@ -53,7 +53,7 @@ public class DexTransactionManager extends TransactionManager {
 
     public EthSendTransaction signAndSend(RawTransaction rawTransaction) throws IOException {
         String hexValue = this.sign(rawTransaction);
-        EthSendTransaction ethSendTransaction = (EthSendTransaction)this.web3j.ethSendRawTransaction(hexValue).send();
+        EthSendTransaction ethSendTransaction = this.web3j.ethSendRawTransaction(hexValue).send();
         if (ethSendTransaction != null && !ethSendTransaction.hasError()) {
             String txHashLocal = Hash.sha3(hexValue);
             String txHashRemote = ethSendTransaction.getTransactionHash();

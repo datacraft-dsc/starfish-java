@@ -90,6 +90,29 @@ public class DID {
     }
 
     /**
+     * Creates a random DEP-compliant DID as a string, of the format:
+     * <p>
+     * "did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
+     *
+     * @return A valid DID represented as a string
+     */
+    public static String createRandomString() {
+        SecureRandom sr = new SecureRandom();
+        byte[] bytes = new byte[Utils.DID_LENGTH];
+        sr.nextBytes(bytes);
+        return Constant.DID + ":" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
+    }
+
+    /**
+     * Creates a random DEP-compliant DID
+     *
+     * @return The created DID
+     */
+    public static DID createRandom() {
+        return parse(DID.createRandomString());
+    }
+
+    /**
      * Gets the DID scheme for this DID
      *
      * @return String The DID scheme, always defined as "did"
@@ -196,29 +219,6 @@ public class DID {
      */
     public DID withPath(String path) {
         return DID.create(method, id, path, fragment);
-    }
-
-    /**
-     * Creates a random DEP-compliant DID as a string, of the format:
-     * <p>
-     * "did:dep:a1019172af9ae4d6cb32b52193cae1e3d61c0bcf36f0ba1cd30bf82d6e446563"
-     *
-     * @return A valid DID represented as a string
-     */
-    public static String createRandomString() {
-        SecureRandom sr = new SecureRandom();
-        byte[] bytes = new byte[Utils.DID_LENGTH];
-        sr.nextBytes(bytes);
-        return Constant.DID+":" + Constant.DID_METHOD + ":" + Hex.toString(bytes);
-    }
-
-    /**
-     * Creates a random DEP-compliant DID
-     *
-     * @return The created DID
-     */
-    public static DID createRandom() {
-        return parse(DID.createRandomString());
     }
 
     /**
