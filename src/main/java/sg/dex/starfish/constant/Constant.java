@@ -31,6 +31,7 @@ public class Constant {
     public static final String OCTET_STREAM = "application/octet-stream";
     public static final String FILE = "file";
     public static final String PROVENANCE = "provenance";
+    public static final String SERVICE = "service";
 
     //-----JOB  -------
 
@@ -88,7 +89,6 @@ public class Constant {
     public static final Object DEFAULT_PRICE = 5;
 
     //----------DDO Endpoints---------------------------------
-    public static final String SERVICE = "service";
     public static final String SERVICE_ENDPOINT = "serviceEndpoint";
     public static final String ENDPOINT_STORAGE = "DEP.Storage.v1";
     public static final String ENDPOINT_META = "DEP.Meta.v1";

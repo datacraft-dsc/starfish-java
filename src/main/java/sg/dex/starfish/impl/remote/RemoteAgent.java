@@ -14,6 +14,7 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.CharArrayBuffer;
+import sg.dex.crypto.Hash;
 import sg.dex.starfish.*;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.dexchain.DexResolver;
@@ -73,16 +74,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     private static RemoteAgent create(String url, RemoteAccount account) throws URISyntaxException {
 
-        if (url == null) throw new IllegalArgumentException("URL  cannot be null ");
-        if (account == null) throw new IllegalArgumentException("Account cannot be null ");
-
         Map<String, Object> result = getDDOByURL(url, account);
         Map<String, Object> serviceMap = new HashMap<>();
 
-        serviceMap.put("service", result.get("service"));
-        String didString = result.get("id").toString();
+        serviceMap.put(SERVICE, result.get(SERVICE));
+        String didString = result.get(ID).toString();
 
-        //DID did1=sg.dex.starfish.util.DID.create("op",did,null,null);
         DID did = sg.dex.starfish.util.DID.parse(didString);
 
         Resolver resolver = DexResolver.create();
@@ -121,7 +118,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                     Map<String, Object> json = JSON.parse(body);
 
                     jobID = json.get("job-id") != null ? json.get("job-id").toString() : null;
-                    if (jobID == null) throw new RemoteException("Invoke failed: no jobid in body: " + body);
+                    if (jobID == null) throw new RemoteException("Invoke failed: no job-id in body: " + body);
                 } else {
                     // interpret as a raw job ID
                     jobID = body;
@@ -143,16 +140,15 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @throws RuntimeException         for protocol errors
      */
     private static Job createJob(RemoteAgent agent, Map<String, Object> paramsSpecs, HttpResponse response) {
+
         StatusLine statusLine = response.getStatusLine();
         int statusCode = statusLine.getStatusCode();
         if ((statusCode == 201) || (statusCode == 200)) {
             return RemoteAgent.createSuccessJob(agent, paramsSpecs, response);
         }
-        String reason = statusLine.getReasonPhrase();
-        if ((statusCode) == 400) {
-            throw new IllegalArgumentException("Bad invoke request: " + reason);
-        }
-        throw new Error("Unexpected server respose: " + statusCode);
+
+        throw new RemoteException("Job creation failed" + statusLine.getReasonPhrase());
+
     }
 
     /**
@@ -190,6 +186,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return New Remote Agent Instance
      */
     public static RemoteAgent connect(String url, RemoteAccount acc) throws URISyntaxException, IOException {
+        if (url == null) throw new IllegalArgumentException("URL  cannot be null ");
+        if (acc == null) throw new IllegalArgumentException("Account cannot be null ");
         return create(url, acc);
     }
 
@@ -201,39 +199,35 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return JSON
      */
     private static Map<String, Object> getDDOByURL(String url, Account account) throws URISyntaxException {
-        URI uri;
-        if (url.contains(Constant.DDO_PATH)) {
-            uri = new URI(url);
-        } else {
-            uri = new URI(url + Constant.DDO_PATH);
-        }
+        URI uri = (url.contains(Constant.DDO_PATH)) ?
+                new URI(url) :
+                new URI(url + Constant.DDO_PATH);
+
 
         HttpGet httpget = new HttpGet(uri);
 
         String username = account.getCredentials().get(USER_NAME).toString();
         String password = account.getCredentials().get(PASSWORD).toString();
-
-        CloseableHttpResponse response;
         try {
-            response = HTTP.executeWithAuth(httpget, username, password);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
+            CloseableHttpResponse response;
 
-                if (statusCode == 200) {
-                    String body = Utils.stringFromStream(response.getEntity().getContent());
-                    if (body.isEmpty()) {
-                        throw new RemoteException("No Content in the response for :" + uri.toString());
-                    }
-                    return JSON.toMap(body);
-                } else {
-                    return null;
-                }
-            } finally {
-                response.close();
+            response = HTTP.executeWithAuth(httpget, username, password);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() != 200) {
+                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
             }
+            String body = Utils.stringFromStream(response.getEntity().getContent());
+            if (body.isEmpty()) {
+                throw new RemoteException("No Content in the response for :" + uri.getPath());
+            }
+            return JSON.toMap(body);
+        } catch (HttpException e) {
+            throw new RemoteException("Fatal protocol violation: " + e.getCause(), e);
         } catch (IOException e) {
-            throw new RemoteException(" Getting Remote Agent DDO failed: ", e);
+            throw new RemoteException("Fatal transport error: ", e);
+        } finally {
+            // Release the connection.
+            httpget.releaseConnection();
         }
     }
 
@@ -264,12 +258,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         return new RemoteAgent(resolver, did, null);
     }
 
-    private <R extends Asset> R registerBundle(Asset a) {
-        Bundle remoteBundle = (Bundle) a;
+    private <R extends Asset> R registerBundle(Bundle bundle) {
 
         Map<String, Asset> resultAsset = new HashMap<>();
         // getting all sub asset
-        Map<String, Asset> allSubAsset = remoteBundle.getAll();
+        Map<String, Asset> allSubAsset = bundle.getAll();
         for (String name : allSubAsset.keySet()) {
             Asset subAsset = allSubAsset.get(name);
             // registering each sub asset
@@ -277,20 +270,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
         // registering bundle itself
 
-        return registerAsset(a.getMetadataString());
+        return registerAsset(bundle.getMetadataString());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R extends Asset> R registerAsset(Asset a) {
-        if (null == a) {
-            // TODO: should be IllegalArgumentException?
-            throw new StarfishValidationException("Asset cannot be null");
+    public <R extends Asset> R registerAsset(Asset asset) {
+        if (null == asset) {
+            throw new IllegalArgumentException("Asset cannot be null ");
+        } else if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {
+            return (R) registerBundle((Bundle) asset);
         }
-        if (a.getMetadata().get(TYPE).equals(BUNDLE)) {
-            return (R) registerBundle(a);
-        }
-        return registerAsset(a.getMetadataString());
+        return registerAsset(asset.getMetadataString());
     }
 
     @Override
@@ -300,59 +291,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
 
         URI uri = getMetaURI();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(uri);
         addAuthHeaders(httpPost);
         httpPost.setEntity(HTTP.textEntity(metaString));
-        return createRemoteAsset(metaString, httpclient, httpPost);
-    }
-
-    /**
-     * This method to get the Remote Asset
-     *
-     * @param metaString metaString
-     * @param httpclient httpclient
-     * @param httpPost   httpPost
-     * @return instance of remote Asset
-     */
-    private <R extends Asset> R createRemoteAsset(String metaString, CloseableHttpClient httpclient,
-                                                  HttpPost httpPost) {
-        CloseableHttpResponse response;
-        try {
-            response = httpclient.execute(httpPost);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 404) {
-                    throw new RemoteException("Asset ID not found for at: " + httpPost.getURI());
-                }
-                if (statusCode == 200) {
-                    return createAsset(metaString);
-                }
-                throw new HttpResponseException(statusCode, statusLine.getReasonPhrase());
-            } finally {
-                response.close();
-            }
-        } catch (IOException e) {
-            throw new RemoteException("Getting remote asset failed :", e);
+        String remoteAssetID = Utils.stringFromStream(getHTTPResponseAsStream(httpPost));
+        String assetID = Hash.sha3_256String(metaString);
+        if (!assetID.equals(assetID)) {
+            throw new StarfishValidationException("Remote Asset ID " + remoteAssetID +
+                    "is not match with given Asset ID" + assetID);
         }
+        return (R) getAsset(assetID);
     }
 
-    @SuppressWarnings("unchecked")
-    private <R extends Asset> R createAsset(String metaString) {
-        String type = (String) JSON.toMap(metaString).get(TYPE);
-        switch (type) {
-            case DATA_SET:
-                return (R) RemoteDataAsset.create(this, metaString);
-            case BUNDLE:
-                return (R) RemoteBundle.create(this, metaString);
-            case OPERATION:
-                return (R) RemoteOperation.create(this, metaString);
-            default:
-                throw new RemoteException("Remote Asset type is invalid");
-        }
-
-    }
 
     /**
      * This method to add header to the HTTP request.
@@ -493,7 +443,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * causes: - The agent does not support uploads of this asset type / size - The
      * data for the asset cannot be accessed by the agent
      *
-     * @param a Asset to upload
+     * @param asset Asset to upload
      * @return Asset An asset stored on the agent if the upload is successful
      * @throws AuthorizationException if requestor does not have upload permission
      * @throws StorageException       if there is an error in uploading the Asset
@@ -502,25 +452,21 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <R extends Asset> R uploadAsset(Asset a) {
-        if (null == a) {
-            throw new StarfishValidationException("Asset cannot be null");
+    public <R extends Asset> R uploadAsset(Asset asset) {
+        if (null == asset) {
+            throw new IllegalArgumentException("Asset cannot be null");
         }
-        Asset remoteAsset;
-
         // asset already registered then only upload
-        if (isAssetRegistered(a.getAssetID())) {
-
-            remoteAsset = getAsset(a.getAssetID());
-            uploadAssetContent(a);
+        if (isAssetRegistered(asset.getAssetID())) {
+            uploadAssetContent(asset);
         }
         // if asset is not registered then registered and upload
         else {
-            remoteAsset = registerAsset(a);
-            uploadAssetContent(a);
+            registerAsset(asset);
+            uploadAssetContent(asset);
         }
 
-        return (R) remoteAsset;
+        return (R) getAsset(asset.getAssetID());
     }
 
     /**
@@ -557,30 +503,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         post.setEntity(entity);
 
-        CloseableHttpResponse response;
+
         try {
-            response = httpclient.execute(post);
-            try {
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 201) {
-                    return;
-                }
-                if (statusCode == 404) {
-                    throw new RemoteException(
-                            "server could not find what was requested or it was configured not to fulfill the request."
-                                    + uri);
-                } else if (statusCode == 500) {
-                    throw new GenericException("Internal Server Error : " + statusLine);
-                } else {
-                    throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                }
-            } finally {
-                response.close();
+            HttpResponse httpResponse = getHttpResponse(post);
+            if (httpResponse.getStatusLine().getStatusCode() == 201) {
+                return;
             }
         } catch (IOException e) {
             throw new RemoteException(" Upload asset Content failed for asset id : " + asset.getAssetID(), e);
         }
+        throw new RemoteException(" Upload asset Content failed for asset id : " + asset.getAssetID());
     }
 
     /**
@@ -1275,7 +1207,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * This method is used to get the remote account associated with the Remote Agent
      *
-     * @return remoteAgent instacne
+     * @return remoteAgent instance
      */
     public RemoteAccount getAccount() {
         return account;
@@ -1283,9 +1215,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     @Override
     public Job getJob(String jobID) {
-        // TODO: should poll for job status / existence?
-        // TODO: fix this
         return null;
-        //return RemoteJob.create(this, jobID);
     }
 }
