@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class TestRemoteAgentTest_IT {
 
 
@@ -51,11 +49,9 @@ public class TestRemoteAgentTest_IT {
 
         RemoteAccount remoteAccount = RemoteAccount.create(Utils.createRandomHexString(32), credentialMap);
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
-        try {
+        Assertions.assertThrows(RemoteException.class, () -> {
             remoteAgent.getAsset("1234");
-        } catch (RemoteException e) {
-            Assertions.assertTrue(e.getMessage().contains("Asset ID not found "));
-        }
+        });
 
     }
 
@@ -82,11 +78,9 @@ public class TestRemoteAgentTest_IT {
         RemoteAccount remoteAccount1 = RemoteAccount.create(token);
         // creating Agent 2
         RemoteAgent remoteAgent1 = RemoteAgent.connect(resolver, did, remoteAccount1);
-        try {
+        Assertions.assertThrows(RemoteException.class, () -> {
             remoteAgent1.getAsset("1234");
-        } catch (RemoteException e) {
-            assertTrue(e.getMessage().contains("Asset ID not found "));
-        }
+        });
 
     }
 
@@ -100,12 +94,9 @@ public class TestRemoteAgentTest_IT {
 
         RemoteAccount remoteAccount = RemoteAccount.create("Aladdin", "OpenSesame");
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
-        try {
+        Assertions.assertThrows(RemoteException.class, () -> {
             remoteAgent.getAsset("1234");
-        } catch (RemoteException e) {
-            // just o validate the auth is successful
-            Assertions.assertTrue(e.getMessage().contains("Asset ID not found "));
-        }
+        });
 
     }
 
@@ -119,12 +110,10 @@ public class TestRemoteAgentTest_IT {
 
         RemoteAccount remoteAccount = RemoteAccount.create("WrongUser", "WrongPassword");
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
-        try {
+        Assertions.assertThrows(RemoteException.class, () -> {
             remoteAgent.getAsset("1234");
-        } catch (RemoteException e) {
-            // just o validate the auth is successful
-            Assertions.assertTrue(e.getMessage().contains("Create token failed for account"));
-        }
+        });
+
 
     }
 
