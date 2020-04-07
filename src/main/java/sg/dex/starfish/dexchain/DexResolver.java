@@ -23,7 +23,6 @@ import sg.dex.starfish.util.DID;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -34,8 +33,8 @@ public class DexResolver implements Resolver {
     /**
      * Create DexResolver
      *
-     * @param contract     contract
-     * @param config    config
+     * @param contract contract
+     * @param config   config
      */
     private DexResolver(DIDRegistry contract, DexConfig config) {
         this.contract = contract;
@@ -50,10 +49,10 @@ public class DexResolver implements Resolver {
     public static Resolver create() {
         DexConfig dexConfig = DexChain.getInstance().getDexConfig();
         DIDRegistry contract = DIDRegistry.load(
-               dexConfig.getDidRegistryAddress(),
-               DexChain.getInstance().getWeb3j(),
-               DexChain.getInstance().getTransactionManager(),
-               DexChain.getInstance().getContractGasProvider());
+                dexConfig.getDidRegistryAddress(),
+                DexChain.getInstance().getWeb3j(),
+                DexChain.getInstance().getTransactionManager(),
+                DexChain.getInstance().getContractGasProvider());
         return new DexResolver(contract, dexConfig);
     }
 
@@ -90,7 +89,7 @@ public class DexResolver implements Resolver {
 
     public String getDDOTimestamp(DID did, Date date) throws DexChainException {
         DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);
-        if(result != null)
+        if (result != null)
             date.setTime(result._timestamp.longValue() * 1000);
         return result != null ? result._value : null;
     }

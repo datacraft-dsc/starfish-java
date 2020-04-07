@@ -27,8 +27,8 @@ public class Params {
     @SuppressWarnings("unchecked")
     public
     static Map<String, Object> formatParams(Operation operation, Map<String, Object> params) {
-        if(null == params){
-            throw  new IllegalArgumentException("Input parameter cannot be null");
+        if (null == params) {
+            throw new IllegalArgumentException("Input parameter cannot be null");
         }
         HashMap<String, Object> result = new HashMap<>(params.size());
         Map<String, Object> paramSpec = operation.getParamsSpec();
@@ -90,13 +90,13 @@ public class Params {
      * if the result of the response is type asset, then it ype caste the response map to asset.
      *
      * @param operationSpecs instance reference
-     * @param response  response received from the Invoke call
+     * @param response       response received from the Invoke call
      * @return formatted map of the response received
      */
     public static Map<String, Object> formatResponse(Map<String, Object> operationSpecs, Map<String, Object> response, RemoteAccount remoteAccount) throws IOException {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
-        Map<String, Object> outputsSpecs = (Map<String, Object>)operationSpecs.get("outputs");
+        Map<String, Object> outputsSpecs = (Map<String, Object>) operationSpecs.get("outputs");
 
         for (Map.Entry<String, Object> me : outputsSpecs.entrySet()) {
             String paramName = me.getKey();
@@ -122,10 +122,11 @@ public class Params {
         return result;
 
     }
+
     public static Map<String, Object> formatResponse(Map<String, Object> operationSpecs, Map<String, Object> response) {
 
         HashMap<String, Object> result = new HashMap<>(response.size());
-        Map<String, Object> outputsSpecs = (Map<String, Object>)operationSpecs.get("outputs");
+        Map<String, Object> outputsSpecs = (Map<String, Object>) operationSpecs.get("outputs");
 
         for (Map.Entry<String, Object> me : outputsSpecs.entrySet()) {
             String paramName = me.getKey();
@@ -135,10 +136,10 @@ public class Params {
                 if (type.equals("asset")) {
 
                     Map<String, Object> didMap = (Map<String, Object>) response.get(paramName);
-                    String userName =((Map<String, Object>)didMap.get("auth")).get("username").toString();
-                    String password =((Map<String, Object>)didMap.get("auth")).get("password").toString();
+                    String userName = ((Map<String, Object>) didMap.get("auth")).get("username").toString();
+                    String password = ((Map<String, Object>) didMap.get("auth")).get("password").toString();
 
-                    result.put(paramName, getAsset(didMap.get("did"), RemoteAccount.create(userName,password)));
+                    result.put(paramName, getAsset(didMap.get("did"), RemoteAccount.create(userName, password)));
                 } else if (type.equals("json")) {
                     result.put(paramName, response.get(paramName));
                 } else {
@@ -152,7 +153,8 @@ public class Params {
         return result;
 
     }
-    private static Object getAsset(Object di, RemoteAccount remoteAccount)  {
+
+    private static Object getAsset(Object di, RemoteAccount remoteAccount) {
         if (di == null) {
             throw new StarfishValidationException("DID is null");
         }

@@ -32,10 +32,10 @@ public class DexChain {
      * Create DexChain.
      * Uses default chain configuration.
      */
-    private DexChain()  {
+    private DexChain() {
         Credentials credentials = null;
         try {
-        dexConfig = DexConfigFactory.getDexConfig("dex_chain.properties");
+            dexConfig = DexConfigFactory.getDexConfig("dex_chain.properties");
 
 
             credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());
@@ -54,8 +54,7 @@ public class DexChain {
      *
      * @return singleton of DexChain
      */
-    public static DexChain getInstance()
-    {
+    public static DexChain getInstance() {
         if (instance == null)
             instance = new DexChain();
 

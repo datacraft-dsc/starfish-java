@@ -24,6 +24,7 @@ public final class SquidService {
     private final Properties properties;
     private final OceanConfig oceanConfig;
     private final OceanInitializationHelper oceanInitializationHelper;
+
     private SquidService(String fileName) {
         properties = getProperties(fileName);
         oceanConfig = OceanConfigFactory.getOceanConfig(properties);

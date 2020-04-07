@@ -30,7 +30,7 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
     }
 
     Optional<TransactionReceipt> sendTransactionReceiptRequest(String transactionHash) throws IOException, TransactionException {
-        EthGetTransactionReceipt transactionReceipt = (EthGetTransactionReceipt)this.web3j.ethGetTransactionReceipt(transactionHash).send();
+        EthGetTransactionReceipt transactionReceipt = this.web3j.ethGetTransactionReceipt(transactionHash).send();
         if (transactionReceipt.hasError()) {
             throw new TransactionException("Error processing request: " + transactionReceipt.getError().getMessage());
         } else {
@@ -42,7 +42,7 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
         if (!receiptOptional.isPresent()) {
             return true;
         } else {
-            TransactionReceipt receipt = (TransactionReceipt)receiptOptional.get();
+            TransactionReceipt receipt = receiptOptional.get();
             Optional<Log> optionalLog = receipt.getLogs().stream().filter((log) -> {
                 return !log.getType().equalsIgnoreCase("mined");
             }).findFirst();
@@ -58,9 +58,9 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
     private TransactionReceipt getTransactionReceipt(String transactionHash, long sleepDuration, int attempts) throws IOException, TransactionException {
         Optional<TransactionReceipt> receiptOptional = this.sendTransactionReceiptRequest(transactionHash);
 
-        for(int i = 0; i < attempts; ++i) {
+        for (int i = 0; i < attempts; ++i) {
             if (!this.keepWaiting(receiptOptional)) {
-                return (TransactionReceipt)receiptOptional.get();
+                return receiptOptional.get();
             }
 
             try {
@@ -72,6 +72,6 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
             receiptOptional = this.sendTransactionReceiptRequest(transactionHash);
         }
 
-        throw new TransactionException("Transaction receipt was not generated after " + sleepDuration * (long)attempts / 1000L + " seconds for transaction: " + transactionHash, transactionHash);
+        throw new TransactionException("Transaction receipt was not generated after " + sleepDuration * (long) attempts / 1000L + " seconds for transaction: " + transactionHash, transactionHash);
     }
 }

@@ -3,7 +3,7 @@ package sg.dex.starfish.impl;
 import java.util.HashMap;
 
 /**
- * Class representing an Ethereum Account 
+ * Class representing an Ethereum Account
  *
  * @author Tom
  */

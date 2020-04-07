@@ -40,7 +40,7 @@ public class DataExample {
 
         System.out.println("Create an Asset and verify the registration");
 
-        Asset asset = MemoryAsset.create("test creation of agent by URL ".getBytes());
+        Asset asset = MemoryAsset.create("test creation of agent by URL " .getBytes());
         RemoteDataAsset remoteDataAsset = remoteAgent.uploadAsset(asset);
 
         System.in.read();
@@ -55,7 +55,7 @@ public class DataExample {
         defaultResolver.registerDID(getSurferDid(), AgentFactory.getDdo(surferURL));
 
         Agent surfer = RemoteAgent.connect(defaultResolver, getSurferDid(), remoteAccount);
-        Asset asset = MemoryAsset.create("test".getBytes());
+        Asset asset = MemoryAsset.create("test" .getBytes());
         RemoteDataAsset remoteDataAsset = surfer.registerAsset(asset);
         System.out.println("Asset ID :" + asset.getAssetID());
         DID did = remoteDataAsset.getDID();
@@ -66,7 +66,7 @@ public class DataExample {
     void createRemoteAgent_WithDID() throws IOException, URISyntaxException {
 
         Agent surfer = RemoteAgent.connect(getSurferDid(), remoteAccount);
-        Asset asset = MemoryAsset.create("test".getBytes());
+        Asset asset = MemoryAsset.create("test" .getBytes());
         RemoteDataAsset remoteDataAsset = surfer.registerAsset(asset);
         System.out.println("Asset ID" + asset.getAssetID());
         System.out.println("Registered Asset ID" + remoteDataAsset.getAssetID());

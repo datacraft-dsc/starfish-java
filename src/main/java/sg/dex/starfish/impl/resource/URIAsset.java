@@ -2,7 +2,6 @@ package sg.dex.starfish.impl.resource;
 
 import org.apache.http.Header;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.DataAsset;
@@ -33,10 +32,10 @@ public class URIAsset extends AAsset implements DataAsset {
     private final URI uri;
     private final CloseableHttpResponse response;
 
-    protected URIAsset(URI uri,CloseableHttpResponse response, String meta) {
+    protected URIAsset(URI uri, CloseableHttpResponse response, String meta) {
         super(meta);
         this.uri = uri;
-        this.response= response;
+        this.response = response;
 
     }
 
@@ -47,7 +46,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
-        return new URIAsset(uri,getResponse(uri,null), metaString);
+        return new URIAsset(uri, getResponse(uri, null), metaString);
     }
 
     /**
@@ -57,16 +56,17 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
-        return create(uri, JSON.toPrettyString(buildMetaData(uri, null,null)));
+        return create(uri, JSON.toPrettyString(buildMetaData(uri, null, null)));
     }
+
     /**
      * Creates a HTTP asset using the given URI.
      *
      * @param uri of the resource
      * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
-    public static URIAsset create(URI uri,Map<String, String> auth,Map<String, Object> metaData) {
-        return create(uri, JSON.toPrettyString(buildMetaData(uri, auth,metaData)));
+    public static URIAsset create(URI uri, Map<String, String> auth, Map<String, Object> metaData) {
+        return create(uri, JSON.toPrettyString(buildMetaData(uri, auth, metaData)));
     }
 
     /**
@@ -79,7 +79,7 @@ public class URIAsset extends AAsset implements DataAsset {
      * @return RemoteHttpAsset instance created using given params with given metadata.
      */
     public static URIAsset create(URI uri, Map<String, Object> metaData) {
-        return new URIAsset(uri, getResponse(uri,null),JSON.toPrettyString(buildMetaData(uri,null, metaData)));
+        return new URIAsset(uri, getResponse(uri, null), JSON.toPrettyString(buildMetaData(uri, null, metaData)));
     }
 
     /**
@@ -90,12 +90,12 @@ public class URIAsset extends AAsset implements DataAsset {
      *                 default value will be overridden.
      * @return String buildMetadata
      */
-    private static Map<String, Object> buildMetaData(URI uri, Map<String, String> auth,Map<String, Object> metaData) {
+    private static Map<String, Object> buildMetaData(URI uri, Map<String, String> auth, Map<String, Object> metaData) {
 
         Map<String, Object> ob = new HashMap<>();
         ob.put(Constant.DATE_CREATED, Instant.now().toString());
         ob.put(Constant.TYPE, Constant.DATA_SET);
-        CloseableHttpResponse response = getResponse(uri,auth);
+        CloseableHttpResponse response = getResponse(uri, auth);
         Header[] headers = response.getAllHeaders();
 
         ob.put(CONTENT_TYPE, getHeaderValue(CONTENT_TYPE, headers));
@@ -110,16 +110,16 @@ public class URIAsset extends AAsset implements DataAsset {
         return ob;
     }
 
-    private static CloseableHttpResponse getResponse(URI uri,Map<String, String> header) {
+    private static CloseableHttpResponse getResponse(URI uri, Map<String, String> header) {
         HttpGet httpget = new HttpGet(uri);
-        if(header != null){
-            addHeader(httpget,header);
+        if (header != null) {
+            addHeader(httpget, header);
         }
         return HTTP.execute(httpget);
 
     }
 
-    private static void addHeader(HttpGet httpget,Map<String, String> header) {
+    private static void addHeader(HttpGet httpget, Map<String, String> header) {
         for (Map.Entry<String, String> entry : header.entrySet()) {
             httpget.addHeader(entry.getKey(), entry.getValue());
         }

@@ -32,8 +32,8 @@ public class DexConfigFactory {
         DexConfig dexConfig = new DexConfig();
 
         dexConfig.setKeeperUrl((String) properties.getOrDefault(DexConfig.KEEPER_URL, DEFAULT_KEEPER_URL));
-        dexConfig.setKeeperGasLimit(new BigInteger((String) properties.getOrDefault(dexConfig.KEEPER_GAS_LIMIT, DEFAULT_KEEPER_GAS_LIMIT.toString())));
-        dexConfig.setKeeperGasPrice(new BigInteger((String) properties.getOrDefault(dexConfig.KEEPER_GAS_PRICE, DEFAULT_KEEPER_GAS_PRICE.toString())));
+        dexConfig.setKeeperGasLimit(new BigInteger((String) properties.getOrDefault(DexConfig.KEEPER_GAS_LIMIT, DEFAULT_KEEPER_GAS_LIMIT.toString())));
+        dexConfig.setKeeperGasPrice(new BigInteger((String) properties.getOrDefault(DexConfig.KEEPER_GAS_PRICE, DEFAULT_KEEPER_GAS_PRICE.toString())));
         dexConfig.setKeeperTxAttempts(Integer.parseInt(
                 (String) properties.getOrDefault(
                         DexConfig.KEEPER_TX_ATTEMPTS, String.valueOf(TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH))
@@ -43,16 +43,16 @@ public class DexConfigFactory {
                         (String) properties.getOrDefault(DexConfig.KEEPER_TX_SLEEPDURATION, String.valueOf(TransactionManager.DEFAULT_POLLING_FREQUENCY))
                 ));
 
-        dexConfig.setDidRegistryAddress((String) properties.getOrDefault(dexConfig.DID_REGISTRY_ADDRESS, ""));
-        dexConfig.setProvenanceAddress((String) properties.getOrDefault(dexConfig.PROVENANCE_ADDRESS, ""));
-        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(dexConfig.DIRECT_PURCHASE_ADDRESS, ""));
-        dexConfig.setTokenAddress((String) properties.getOrDefault(dexConfig.TOKEN_ADDRESS, ""));
-        dexConfig.setMainAccountAddress((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_ADDRESS, ""));
-        dexConfig.setMainAccountPassword((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_PASSWORD, ""));
-        dexConfig.setParityAccountAddress((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_ADDRESS, ""));
-        dexConfig.setParityAccountPassword((String) properties.getOrDefault(dexConfig.PARITY_ACCOUNT_PASSWORD, ""));
+        dexConfig.setDidRegistryAddress((String) properties.getOrDefault(DexConfig.DID_REGISTRY_ADDRESS, ""));
+        dexConfig.setProvenanceAddress((String) properties.getOrDefault(DexConfig.PROVENANCE_ADDRESS, ""));
+        dexConfig.setDirectPurchaseAddress((String) properties.getOrDefault(DexConfig.DIRECT_PURCHASE_ADDRESS, ""));
+        dexConfig.setTokenAddress((String) properties.getOrDefault(DexConfig.TOKEN_ADDRESS, ""));
+        dexConfig.setMainAccountAddress((String) properties.getOrDefault(DexConfig.MAIN_ACCOUNT_ADDRESS, ""));
+        dexConfig.setMainAccountPassword((String) properties.getOrDefault(DexConfig.MAIN_ACCOUNT_PASSWORD, ""));
+        dexConfig.setParityAccountAddress((String) properties.getOrDefault(DexConfig.PARITY_ACCOUNT_ADDRESS, ""));
+        dexConfig.setParityAccountPassword((String) properties.getOrDefault(DexConfig.PARITY_ACCOUNT_PASSWORD, ""));
 
-        dexConfig.setMainAccountCredentialsFile((String) properties.getOrDefault(dexConfig.MAIN_ACCOUNT_CREDENTIALS_FILE, ""));
+        dexConfig.setMainAccountCredentialsFile((String) properties.getOrDefault(DexConfig.MAIN_ACCOUNT_CREDENTIALS_FILE, ""));
 
         return dexConfig;
 
@@ -61,21 +61,22 @@ public class DexConfigFactory {
     private static Properties getProperties(String fileName) throws IOException {
         Properties prop = new Properties();
 
-            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
 
-            if (inputStream == null) {
+        if (inputStream == null) {
 
-                inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
-            } else if (inputStream == null) {
-                throw new IOException("Resource file: " + fileName + "not found ");
-            }
+            inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
+        } else if (inputStream == null) {
+            throw new IOException("Resource file: " + fileName + "not found ");
+        }
 
-            prop.load(inputStream);
+        prop.load(inputStream);
 
 
         return prop;
     }
-    public static File getDefaultCredential()  {
+
+    public static File getDefaultCredential() {
 
         File file = new File("account_credential_default.json");
 
@@ -85,7 +86,7 @@ public class DexConfigFactory {
                  BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String contents = reader.lines()
                         .collect(Collectors.joining(System.lineSeparator()));
-                FileUtils.writeStringToFile(file,contents, Charset.defaultCharset());
+                FileUtils.writeStringToFile(file, contents, Charset.defaultCharset());
             }
         } catch (IOException e) {
             e.printStackTrace();

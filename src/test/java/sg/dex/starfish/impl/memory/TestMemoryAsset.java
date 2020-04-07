@@ -88,7 +88,7 @@ public class TestMemoryAsset {
      */
     @Test
     public void testGetInputStream() {
-        MemoryAsset memoryAsset = MemoryAsset.create("Test Stream".getBytes());
+        MemoryAsset memoryAsset = MemoryAsset.create("Test Stream" .getBytes());
         assertEquals(11, memoryAsset.getContent().length);
         assertEquals("Test Stream", Utils.stringFromStream(memoryAsset.getContentStream()));
     }
@@ -98,8 +98,8 @@ public class TestMemoryAsset {
      */
     @Test
     public void testgetContent() {
-        MemoryAsset memoryAsset = MemoryAsset.create("Test get Content".getBytes());
-        assertArrayEquals("Test get Content".getBytes(), memoryAsset.getContent());
+        MemoryAsset memoryAsset = MemoryAsset.create("Test get Content" .getBytes());
+        assertArrayEquals("Test get Content" .getBytes(), memoryAsset.getContent());
     }
 
     /**
@@ -107,7 +107,7 @@ public class TestMemoryAsset {
      */
     @Test
     public void testgetContentSize() {
-        MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
+        MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size" .getBytes());
         assertEquals(17, memoryAsset.getContentSize());
     }
 
@@ -116,7 +116,7 @@ public class TestMemoryAsset {
      */
     @Test
     public void testGetParamValue() {
-        MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size".getBytes());
+        MemoryAsset memoryAsset = MemoryAsset.create("Test Content Size" .getBytes());
         String actual = memoryAsset.getParamValue().get(ID).toString();
         String expected = memoryAsset.getAssetID();
         assertEquals(expected, actual);
