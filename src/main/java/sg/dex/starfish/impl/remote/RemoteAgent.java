@@ -172,7 +172,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public static RemoteAgent connect(DID did, RemoteAccount acc) {
         if (null == did || null == acc) {
-            throw new IllegalArgumentException("Missing Argument , Either DID or Account is null");
+            throw new IllegalArgumentException("param DID/RemoteAccount cannot be null. ");
         }
         return new RemoteAgent(DexResolver.create(), did, acc);
     }
@@ -185,9 +185,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param acc remote account
      * @return New Remote Agent Instance
      */
-    public static RemoteAgent connect(String url, RemoteAccount acc) throws URISyntaxException, IOException {
-        if (url == null) throw new IllegalArgumentException("URL  cannot be null ");
-        if (acc == null) throw new IllegalArgumentException("Account cannot be null ");
+    public static RemoteAgent connect(String url, RemoteAccount acc) throws URISyntaxException {
+        if (url == null || null == acc) throw new IllegalArgumentException("params URL or acc  cannot be null ");
         return create(url, acc);
     }
 
@@ -240,8 +239,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return RemoteAgent
      */
     protected RemoteAgent create(Resolver resolver, DID did, RemoteAccount account) {
-        if (resolver == null) throw new IllegalArgumentException("Resolver  cannot be null for remote agent");
-        if (did == null) throw new IllegalArgumentException("DID cannot be null for remote agent");
+        if (resolver == null || null==did ) throw new IllegalArgumentException("params Resolver/DID  cannot be null . ");
         return new RemoteAgent(resolver, did, account);
     }
 
@@ -277,7 +275,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public <R extends Asset> R registerAsset(Asset asset) {
         if (null == asset) {
-            throw new IllegalArgumentException("Asset cannot be null ");
+            throw new IllegalArgumentException("params Asset cannot be null. ");
         } else if (asset.getMetadata().get(TYPE).equals(BUNDLE)) {
             return (R) registerBundle((Bundle) asset);
         }
@@ -287,7 +285,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public <R extends Asset> R registerAsset(String metaString) {
         if (null == metaString) {
-            throw new StarfishValidationException("Asset metadata cannot be null");
+            throw new StarfishValidationException("params metaString cannot be null");
         }
 
         URI uri = getMetaURI();
@@ -454,7 +452,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     @Override
     public <R extends Asset> R uploadAsset(Asset asset) {
         if (null == asset) {
-            throw new IllegalArgumentException("Asset cannot be null");
+            throw new IllegalArgumentException("params Asset cannot be null");
         }
         // asset already registered then only upload
         if (isAssetRegistered(asset.getAssetID())) {
@@ -518,19 +516,22 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * Gets URI for this agent's invoke endpoint
      *
-     * @param did did
+     * @param operationID did
      * @return The URI for this agent's invoke endpoint
      * @throws RuntimeException on URI syntax errors
      */
-    private URI getInvokeSyncURI(Object did) {
+    private URI getInvokeSyncURI(String operationID) {
         try {
-            if (did == null) {
-                return new URI(getInvokeEndpoint());
-            } else {
-                return new URI(getInvokeEndpoint() + INVOKE_SYNC + "/" + did.toString());
+            String endPoint = getInvokeEndpoint();
+            if (endPoint == null) throw
+                    new UnsupportedOperationException(
+                            "This agent does not support the Invoke API (no endpoint defined)");
+
+
+                return new URI(endPoint + INVOKE_SYNC + "/" +operationID);
             }
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+        catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Can't create valid URI for async: " + operationID, e);
         }
     }
 
@@ -543,9 +544,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     private URI getInvokeAsyncURI(String operationID) {
         try {
-            return new URI(getInvokeEndpoint() + INVOKE_ASYNC + "/" + operationID);
+            String endPoint = getInvokeEndpoint();
+            if (endPoint == null) throw
+                    new UnsupportedOperationException(
+                            "This agent does not support the Invoke API (no endpoint defined)");
+            return new URI(endPoint + INVOKE_ASYNC + "/" + operationID);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Can't create valid URI for async: " + operationID, e);
         }
     }
 
@@ -558,7 +563,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private URI getJobURI(String jobID) {
         try {
             String endPoint = getInvokeEndpoint();
-            if (endPoint == null) throw new IllegalArgumentException("Agent has no Invoke endpoint defined");
+            if (endPoint == null) throw new UnsupportedOperationException("This agent does not support the Invoke API (no endpoint defined)");
             return new URI(endPoint + JOBS + "/" + jobID);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create valid URI for job: " + jobID, e);
@@ -777,7 +782,6 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
         Map<String, Object> paramValueMap = Params.formatParams(operation, params);
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         URI uri = getInvokeAsyncURI(operation.getAssetID());
         HttpPost httppost = new HttpPost(uri);
         addAuthHeaders(httppost);
@@ -836,16 +840,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
 
         } catch (HttpException e) {
-            throw new RemoteException("Fatal protocol violation: " + e.getCause(), e);
+            throw new RemoteException("Fatal protocol violation: " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new RemoteException("Fatal transport error: ", e);
+            throw new RemoteException("Fatal transport error: "+e.getMessage(), e);
         } finally {
             // Release the connection.
             requestBase.releaseConnection();
         }
     }
 
-    private CloseableHttpResponse getHttpResponse(HttpRequestBase requestBase) throws IOException {
+    private CloseableHttpResponse getHttpResponse(HttpRequestBase requestBase)
+            throws IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         return httpclient.execute(requestBase);
     }
@@ -879,7 +884,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpPost httpPost = new HttpPost(getMarketURI(marketAgentUrl));
 
         addAuthHeaders(httpPost);
-        httpPost.addHeader("Accept", "application/json");
+       // httpPost.addHeader("Accept", "application/json");
 
         httpPost.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));
 
@@ -903,7 +908,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpPut put = new HttpPut(getMarketURI(marketAgentUrl));
 
         addAuthHeaders(put);
-        put.addHeader("Accept", "application/json");
+        //put.addHeader("Accept", "application/json");
 
         put.setEntity(new StringEntity(JSON.toPrettyString(listingData), ContentType.APPLICATION_JSON));
 
@@ -942,13 +947,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     @Override
     public Listing createListing(Map<String, Object> listingData) {
-        Object assetId = listingData.get("assetid");
+        Object assetId = listingData.get(ASSET_ID);
         if (assetId == null) {
             throw new StarfishValidationException("Asset ID not found, asset id is mandatory for creating listing");
         }
 
         String response = createMarketAgentInstance(listingData, LISTING_URL);
-        String id = JSON.toMap(response).get("id").toString();
+        String id = JSON.toMap(response).get(ID).toString();
         return RemoteListing.create(this, id);
     }
 
@@ -961,11 +966,14 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public Listing updateListing(Map<String, Object> metaMap) {
 
-        if (null == metaMap || metaMap.get(ID) == null) {
-            throw new StarfishValidationException("Either the argument pass is null or Listing " +
-                    "ID not found in the meta map passed");
+        if (null == metaMap){
+            throw new IllegalArgumentException("param metaMap cannot be null.");
         }
-        String id = metaMap.get(ID).toString();
+        if ( metaMap.get(ID) == null) {
+            throw new StarfishValidationException(
+                    "Listing ID :"+metaMap.get(ID)+" not found in the meta map passed");
+        }
+        String id = (String)metaMap.get(ID);
         updateMarketMetaData(metaMap, LISTING_URL + "/" + id);
         return RemoteListing.create(this, id);
 
@@ -987,7 +995,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @return List of all listing
      */
-    protected List<Listing> getAllListing() {
+    private List<Listing> getAllListing() {
 
         List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
 
@@ -1004,7 +1012,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *               agent
      * @return List of all listing belong to given user id
      */
-    public List<RemoteListing> getAllListing(String userID) {
+    private List<RemoteListing> getAllListing(String userID) {
 
         List<Map<String, Object>> result = getAllMarketMetaData(LISTING_URL);
 
@@ -1021,9 +1029,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return Purchase
      */
     public Purchase createPurchase(Map<String, Object> data) {
+        if (null == data){
+            throw new IllegalArgumentException("param data cannot be null");
+        }
         // check if the data is not null and it must have listing id
-        if (null == data || data.get(LISTING_ID) == null) {
-            throw new StarfishValidationException("Either Purchase metadata is null or it doesn't have Listing ID.");
+        if (data.get(LISTING_ID) == null) {
+            throw new StarfishValidationException(" Listing ID is missing in param passed");
         }
         String response = createMarketAgentInstance(data, PURCHASE_URL);
         String id = JSON.toMap(response).get(ID).toString();
@@ -1047,7 +1058,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @param newValue map of new value to update purchase
      * @return Purchase
      */
-    public Purchase updatePurchase(Map<String, Object> newValue) {
+    private Purchase updatePurchase(Map<String, Object> newValue) {
 
         String id = newValue.get(ID).toString();
         if (id == null) {
@@ -1168,12 +1179,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return status uri
      */
     private URI getStatusUri() {
+        String endPoint = getStatusEndpoint();
         try {
-            String endPoint = getStatusEndpoint();
-            if (endPoint == null) throw new IllegalArgumentException("Agent has no Status endpoint defined");
+            if (endPoint == null) throw new IllegalArgumentException("This agent does not support the Status API (no endpoint defined)");
             return new URI(endPoint);
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Can't create valid URI ", e);
+            throw new IllegalArgumentException("Can't create valid URI for endpoint "+endPoint, e);
         }
     }
 
@@ -1183,12 +1194,13 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * @return ddo uri
      */
     private URI getDDOUri() {
+        String endPoint = getDDOEndpoint();
         try {
-            String endPoint = getDDOEndpoint();
-            if (endPoint == null) throw new IllegalArgumentException("Agent has no DDO endpoint defined");
+
+            if (endPoint == null) throw new IllegalArgumentException("This agent does not support the DDO API (no endpoint defined)");
             return new URI(endPoint);
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Can't create valid URI ", e);
+            throw new IllegalArgumentException("Can't create valid URI : "+ endPoint , e);
         }
     }
 
