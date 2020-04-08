@@ -302,7 +302,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             throw new StarfishValidationException("Remote Asset ID " + remoteAssetID +
                     "is not match with given Asset ID" + assetID);
         }
-        return (R) getAsset(assetID);
+
+        return (R) getRemoteAsset( metaString,JSON.toMap(metaString));
     }
 
 
@@ -359,7 +360,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         HttpGet httpget = new HttpGet(uri);
         String body = Utils.stringFromStream(getHTTPResponseAsStream(httpget));
         Map<String, Object> metaMap = JSON.toMap(body);
-        R a = getRemoteAsset(body, metaMap);
+        R a = getRemoteAsset( body,metaMap);
         String rid = a.getAssetID();
         if (!rid.equals(id)) {
             throw new StarfishValidationException(
@@ -373,18 +374,17 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * This method is used for getting the remote Asset instance based on metadata
      * passed
      *
-     * @param metaString meta data of the asset
      * @param metaMap    map of the asset
      * @return the new remote asset created
      */
     @SuppressWarnings("unchecked")
-    private <R extends Asset> R getRemoteAsset(String metaString, Map<String, Object> metaMap) {
+    private <R extends Asset> R getRemoteAsset( String meta,Map<String, Object> metaMap) {
         if (metaMap.get(TYPE).equals(OPERATION)) {
-            return (R) RemoteOperation.create(this, metaString);
+            return (R) RemoteOperation.create(this, meta);
         } else if (metaMap.get(TYPE).equals(DATA_SET)) {
-            return (R) RemoteDataAsset.create(this, metaString);
+            return (R) RemoteDataAsset.create(this, meta);
         } else if (metaMap.get(TYPE).equals(BUNDLE)) {
-            return (R) RemoteBundle.create(this, metaString);
+            return (R) RemoteBundle.create(this, meta);
         } else {
             throw new StarfishValidationException("Invalid Asset Type :" + metaMap.get(TYPE));
         }

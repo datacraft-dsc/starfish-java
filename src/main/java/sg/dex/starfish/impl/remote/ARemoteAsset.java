@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -43,14 +42,14 @@ public abstract class ARemoteAsset extends AAsset {
             URI uri = agent.getStorageURI(getAssetID());
             HttpGet httpget = new HttpGet(uri);
             try {
-                CloseableHttpResponse response =agent.getHttpResponse(httpget);
+                CloseableHttpResponse response = agent.getHttpResponse(httpget);
                 StatusLine statusLine = response.getStatusLine();
                 int statusCode = statusLine.getStatusCode();
                 if (statusCode == 200) {
                     return HTTP.getContent(response);
                 }
             } catch (IOException e) {
-                throw new RemoteException("Error while getting the asset content for URI"+uri.toString(),e);
+                throw new RemoteException("Error while getting the asset content for URI" + uri.toString(), e);
             }
 
         }
