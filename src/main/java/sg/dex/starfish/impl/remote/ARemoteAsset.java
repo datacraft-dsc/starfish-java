@@ -2,6 +2,7 @@ package sg.dex.starfish.impl.remote;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.RemoteException;
@@ -9,6 +10,7 @@ import sg.dex.starfish.impl.AAsset;
 import sg.dex.starfish.util.DID;
 import sg.dex.starfish.util.HTTP;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -40,16 +42,17 @@ public abstract class ARemoteAsset extends AAsset {
         if (validateAssetType()) {
             URI uri = agent.getStorageURI(getAssetID());
             HttpGet httpget = new HttpGet(uri);
-            agent.addAuthHeaders(httpget);
-            HttpResponse response = HTTP.execute(httpget);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 404) {
-                throw new RemoteException("Asset with asset ID " + this.getAssetID() + "is not uploaded on  agent :DID " + agent.getDID() + "URL failed " + uri);
+            try {
+                CloseableHttpResponse response =agent.getHttpResponse(httpget);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) {
+                    return HTTP.getContent(response);
+                }
+            } catch (IOException e) {
+                throw new RemoteException("Error while getting the asset content for URI"+uri.toString(),e);
             }
-            if (statusCode == 200) {
-                return HTTP.getContent(response);
-            }
+
         }
         throw new UnsupportedOperationException("Cannot get InputStream for asset of class: " + this.getClass().getCanonicalName());
     }
