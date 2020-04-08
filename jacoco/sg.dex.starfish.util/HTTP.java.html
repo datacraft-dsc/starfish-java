@@ -51,11 +51,11 @@ import java.nio.charset.StandardCharsets;
      *                         Server.
      */
     public static CloseableHttpResponse execute(HttpUriRequest httpRequest) {
-<span class="fc" id="L54">        CloseableHttpClient httpclient = HttpClients.createDefault();</span>
+<span class="nc" id="L54">        CloseableHttpClient httpclient = HttpClients.createDefault();</span>
         CloseableHttpResponse response;
         try {
-<span class="fc" id="L57">            response = httpclient.execute(httpRequest);</span>
-<span class="fc" id="L58">            return response;</span>
+<span class="nc" id="L57">            response = httpclient.execute(httpRequest);</span>
+<span class="nc" id="L58">            return response;</span>
 <span class="nc" id="L59">        } catch (ClientProtocolException e) {</span>
 <span class="nc" id="L60">            throw new RemoteException(&quot;ClientProtocolException executing HTTP request ,&quot; + e.getMessage(), e);</span>
 <span class="nc" id="L61">        } catch (IOException e) {</span>
