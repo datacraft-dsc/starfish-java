@@ -34,7 +34,8 @@ public class Hex {
     public static byte[] toBytes(String hex) {
         int length = hex.length();
         int n = length / 2;
-        if (n * 2 != length) throw new IllegalArgumentException("Hex string must have even length: " + length);
+        if (n * 2 != length)
+            throw new IllegalArgumentException("Hex string must have even length: " + length);
         byte[] result = new byte[n];
 
         for (int i = 0; i < n; i++) {

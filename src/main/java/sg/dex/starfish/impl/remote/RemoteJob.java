@@ -61,7 +61,8 @@ public class RemoteJob implements Job {
     public synchronized Map<String, Object> pollResult() {
         // quick check to see if we already have a terminal result - avoids extra requests
         if (isDone()) {
-            if (status.equals(SUCCEEDED)) return result; // we should have a valid result
+            if (status.equals(SUCCEEDED))
+                return result; // we should have a valid result
             return getResult(); // should throw an error
         }
 
@@ -70,7 +71,8 @@ public class RemoteJob implements Job {
         if (response == null) return null; // unable to read from server?
 
         String newStatus = (String) response.get(STATUS);
-        if (newStatus == null) throw new RemoteException("No status in job id " + jobID + " result: " + response);
+        if (newStatus == null)
+            throw new RemoteException("No status in job id " + jobID + " result: " + response);
 
         // FIXME: needs to match statuses in DEP6
         if (newStatus.equals(RUNNING) || newStatus.equals(SCHEDULED)) {
@@ -81,7 +83,8 @@ public class RemoteJob implements Job {
         if (newStatus.equals(SUCCEEDED)) {
 
             Map<String, Object> res = (Map<String, Object>) response.get(Constant.OUTPUTS);
-            if (res == null) throw new RemoteException("No result map in job id " + jobID + " result: " + response);
+            if (res == null)
+                throw new RemoteException("No result map in job id " + jobID + " result: " + response);
             // store result and success status
             result = res;
             this.status = SUCCEEDED;

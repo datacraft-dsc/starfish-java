@@ -35,8 +35,10 @@ public class DID {
      * @throws IllegalArgumentException if method or id are null
      */
     private DID(String method, String id, String path, String fragment) {
-        if (method == null) throw new IllegalArgumentException("DID method cannot be null");
-        if (id == null) throw new IllegalArgumentException("DID id cannot be null");
+        if (method == null)
+            throw new IllegalArgumentException("DID method cannot be null");
+        if (id == null)
+            throw new IllegalArgumentException("DID id cannot be null");
         this.method = method;
         this.id = id;
         this.path = path;

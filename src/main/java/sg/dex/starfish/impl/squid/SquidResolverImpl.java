@@ -89,7 +89,8 @@ public class SquidResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-        if (did == null) throw new IllegalArgumentException("DID cannot be null");
+        if (did == null)
+            throw new IllegalArgumentException("DID cannot be null");
         did = did.withoutPath();
         ddoCache.put(did, ddoString);
     }

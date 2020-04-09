@@ -194,7 +194,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      */
     @Override
     public InputStream getContentStream() {
-        if (data == null) throw new Error("MemoryAsset has not been initialised with data");
+        if (data == null)
+            throw new Error("MemoryAsset has not been initialised with data");
         return new ByteArrayInputStream(data);
     }
 

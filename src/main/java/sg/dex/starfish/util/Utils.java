@@ -120,7 +120,8 @@ public class Utils {
             if (o instanceof Integer) return (Integer) o;
             Number n = (Number) o;
             int value = (int) n.longValue();
-            if (value != n.doubleValue()) throw new IllegalArgumentException("Cannot coerce to int without loss:");
+            if (value != n.doubleValue())
+                throw new IllegalArgumentException("Cannot coerce to int without loss:");
             return value;
         }
         if (o instanceof String) {
