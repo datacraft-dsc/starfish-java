@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor {
-    private static final Logger log = LogManager.getLogger(com.oceanprotocol.common.web3.parity.ExtendedTransactionReceiptProcessor.class);
+    private static final Logger log = LogManager.getLogger(DexTransactionReceiptProcessor.class);
     private final long sleepDuration;
     private final int attempts;
     private final Web3j web3j;
