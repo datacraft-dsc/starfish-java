@@ -1,6 +1,4 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>sg.dex</groupId>
     <artifactId>starfish-java</artifactId>
@@ -35,8 +33,7 @@
         <jdk.version>1.8</jdk.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8
-        </project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>true</skip.integration.tests>
@@ -46,13 +43,9 @@
     </properties>
 
     <scm>
-        <connection>
-            scm:git:git@github.com:DEX-Company/${project.artifactId}.git
-        </connection>
+        <connection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</connection>
         <url>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</url>
-        <developerConnection>
-            scm:git:git@github.com:DEX-Company/${project.artifactId}.git
-        </developerConnection>
+        <developerConnection>scm:git:git@github.com:DEX-Company/${project.artifactId}.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -87,8 +80,7 @@
         <repository>
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
@@ -353,8 +345,7 @@
                             <resources>
                                 <resource>
                                     <filtering>true</filtering>
-                                    <directory>src/integration-test/resources
-                                    </directory>
+                                    <directory>src/integration-test/resources</directory>
                                 </resource>
                             </resources>
                         </configuration>
