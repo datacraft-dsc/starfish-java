@@ -24,7 +24,8 @@ public interface Agent {
     /**
      * Gets the DID for an Agent
      *
-     * @return DID The DID that can be used to address this agent in the Ecosystem
+     * @return DID The DID that can be used to address this agent in the
+     *         Ecosystem
      */
     DID getDID();
 
@@ -34,8 +35,10 @@ public interface Agent {
      *
      * @param asset The Asset to register
      * @return Asset
-     * @throws AuthorizationException        if requester does not have register permission
-     * @throws UnsupportedOperationException if the agent does not support metadata storage
+     * @throws AuthorizationException        if requester does not have register
+     *                                       permission
+     * @throws UnsupportedOperationException if the agent does not support
+     *                                       metadata storage
      */
     <R extends Asset> R registerAsset(Asset asset);
 
@@ -47,8 +50,10 @@ public interface Agent {
      *
      * @param metaString The metadata of an Asset to register
      * @return Asset
-     * @throws AuthorizationException        if requester does not have register permission
-     * @throws UnsupportedOperationException if the agent does not support metadata storage
+     * @throws AuthorizationException        if requester does not have register
+     *                                       permission
+     * @throws UnsupportedOperationException if the agent does not support
+     *                                       metadata storage
      */
     <R extends Asset> R registerAsset(String metaString);
 
@@ -57,7 +62,8 @@ public interface Agent {
      * Returns null if the asset ID does not exist in the context of the agent
      *
      * @param id The ID of the asset to get from this agent
-     * @return Asset The asset if found, or null if the agent does not have the specified asset
+     * @return Asset The asset if found, or null if the agent does not have the
+     *         specified asset
      */
     <R extends Asset> R getAsset(String id);
 
@@ -67,22 +73,28 @@ public interface Agent {
      *
      * @param did The DID of the asset to get from this agent
      * @return Asset The asset if found, or null if not found
-     * @throws AuthorizationException if requester does not have access permission
-     * @throws StorageException       if there is an error in retrieving the Asset
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                Asset
      */
     <R extends Asset> R getAsset(DID did);
 
     /**
-     * Uploads an asset to this agent. Registers the asset with the agent if required.
+     * Uploads an asset to this agent. Registers the asset with the agent if
+     * required.
      * <p>
-     * Throws an exception if upload is not possible, with the following likely causes:
+     * Throws an exception if upload is not possible, with the following likely
+     * causes:
      * - The agent does not support uploads of this asset type / size
      * - The data for the asset cannot be accessed by the agent
      *
      * @param a Asset to upload
      * @return Asset An asset stored on the agent if the upload is successful
-     * @throws AuthorizationException if requester does not have upload permission
-     * @throws StorageException       if there is an error in uploading the Asset
+     * @throws AuthorizationException if requester does not have upload
+     *                                permission
+     * @throws StorageException       if there is an error in uploading the
+     *                                Asset
      */
     <R extends Asset> R uploadAsset(Asset a);
 

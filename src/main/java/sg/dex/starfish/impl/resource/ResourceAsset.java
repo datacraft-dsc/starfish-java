@@ -17,7 +17,8 @@ import java.util.Map;
 /**
  * Class exposing a Java classpath resource as a local Asset.
  * <p>
- * Mainly useful for testing, or for applications that wish to embed some default assets such as
+ * Mainly useful for testing, or for applications that wish to embed some
+ * default assets such as
  * scripts as fixed resources.
  *
  * @author Mike
@@ -33,13 +34,19 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
+     * This method is to create Resource Asset with specific resource path,
+     * metadata  and isHashOfContentRequired
      *
      * @param resourcePath path of the resource
-     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
-     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaData     metadata associated with the asset.This metadata will
+     *                     be be added
+     *                     in addition to default
+     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                     key,value is
+     *                     provided then the
      *                     default value will be overridden.
-     * @return ResourceAsset instance created using given resource path and metadata
+     * @return ResourceAsset instance created using given resource path and
+     *         metadata
      */
 
     public static ResourceAsset create(String resourcePath, String metaData) {
@@ -47,13 +54,19 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * This method is to create Resource Asset with specific resource path, metadata  and isHashOfContentRequired
+     * This method is to create Resource Asset with specific resource path,
+     * metadata  and isHashOfContentRequired
      *
      * @param resourcePath path of the resource
-     * @param metaData     metadata associated with the asset.This metadata will be be added in addition to default
-     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaData     metadata associated with the asset.This metadata will
+     *                     be be added
+     *                     in addition to default
+     *                     metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                     key,value is
+     *                     provided then the
      *                     default value will be overridden.
-     * @return ResourceAsset instance created using given resource path and metadata
+     * @return ResourceAsset instance created using given resource path and
+     *         metadata
      */
 
     public static ResourceAsset create(String resourcePath, Map<String, Object> metaData) {
@@ -61,10 +74,12 @@ public class ResourceAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * This method is to crete Resource Asset with specific resource path, metadata  and isHashOfContentRequired
+     * This method is to crete Resource Asset with specific resource path,
+     * metadata  and isHashOfContentRequired
      *
      * @param resourcePath path of the resource
-     * @return ResourceAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     * @return ResourceAsset instance created using given params with default
+     *         metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static ResourceAsset create(String resourcePath) {
         return create(resourcePath, buildMetaData(null));
@@ -73,8 +88,12 @@ public class ResourceAsset extends AAsset implements DataAsset {
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
-     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaData metadata associated with the asset.This metadata will be
+     *                 be added
+     *                 in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                 key,value is
+     *                 provided then the
      *                 default value will be overridden.
      * @return String buildMetadata
      */
@@ -103,7 +122,8 @@ public class ResourceAsset extends AAsset implements DataAsset {
      * Gets InputStream corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requester does not have access permission
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override

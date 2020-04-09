@@ -38,10 +38,12 @@ public interface Bundle extends Asset {
     Bundle add(String name, Asset asset);
 
     /**
-     * API to create a new bundle adding all named sub-assets passed as parameters
+     * API to create a new bundle adding all named sub-assets passed as
+     * parameters
      *
      * @param assetMap sub Asset map that need to be bundled
-     * @return An new bundle including the all thee given sub-assets passed as argument
+     * @return An new bundle including the all thee given sub-assets passed as
+     *         argument
      */
     Bundle addAll(Map<String, Asset> assetMap);
 
@@ -49,7 +51,8 @@ public interface Bundle extends Asset {
      * API to get an specific asset from an asset Bundle by asset name
      *
      * @param name The name of the sub-asset
-     * @return The sub-asset referenced by the given name, or null if not present
+     * @return The sub-asset referenced by the given name, or null if not
+     *         present
      */
     <R extends Asset> R get(String name);
 

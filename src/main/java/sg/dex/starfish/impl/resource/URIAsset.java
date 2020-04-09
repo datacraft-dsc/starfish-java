@@ -25,7 +25,8 @@ import static sg.dex.starfish.constant.Constant.CONTENT_TYPE;
 /**
  * A specialised asset class that references data at a given URI.
  * <p>
- * It is assumed that asset content can be accessed with a HTTP GET to the given URI.
+ * It is assumed that asset content can be accessed with a HTTP GET to the given
+ * URI.
  */
 public class URIAsset extends AAsset implements DataAsset {
 
@@ -43,7 +44,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * Creates a HTTP asset using the given URI and metadata
      *
      * @param uri of the resource
-     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     * @return RemoteHttpAsset instance created using given params with default
+     *         metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, String metaString) {
         return new URIAsset(uri, getResponse(uri, null), metaString);
@@ -53,7 +55,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * Creates a HTTP asset using the given URI.
      *
      * @param uri of the resource
-     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     * @return RemoteHttpAsset instance created using given params with default
+     *         metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri) {
         return create(uri, JSON.toPrettyString(buildMetaData(uri, null, null)));
@@ -63,7 +66,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * Creates a HTTP asset using the given URI.
      *
      * @param uri of the resource
-     * @return RemoteHttpAsset instance created using given params with default metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
+     * @return RemoteHttpAsset instance created using given params with default
+     *         metadata this include DATE_CREATED,TYPE,CONTENT_TYPE
      */
     public static URIAsset create(URI uri, Map<String, String> auth, Map<String, Object> metaData) {
         return create(uri, JSON.toPrettyString(buildMetaData(uri, auth, metaData)));
@@ -73,10 +77,15 @@ public class URIAsset extends AAsset implements DataAsset {
      * Creates a HTTP asset using the given URI string.
      *
      * @param uri      of the resource
-     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
-     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaData metadata associated with the asset.This metadata will be
+     *                 be added
+     *                 in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                 key,value is
+     *                 provided then the
      *                 default value will be overridden.
-     * @return RemoteHttpAsset instance created using given params with given metadata.
+     * @return RemoteHttpAsset instance created using given params with given
+     *         metadata.
      */
     public static URIAsset create(URI uri, Map<String, Object> metaData) {
         return new URIAsset(uri, getResponse(uri, null), JSON.toPrettyString(buildMetaData(uri, null, metaData)));
@@ -85,8 +94,12 @@ public class URIAsset extends AAsset implements DataAsset {
     /**
      * This method is to build the metadata of the Resource Asset
      *
-     * @param metaData metadata associated with the asset.This metadata will be be added in addition to default
-     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaData metadata associated with the asset.This metadata will be
+     *                 be added
+     *                 in addition to default
+     *                 metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                 key,value is
+     *                 provided then the
      *                 default value will be overridden.
      * @return String buildMetadata
      */
@@ -140,7 +153,8 @@ public class URIAsset extends AAsset implements DataAsset {
      * Gets raw data corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override

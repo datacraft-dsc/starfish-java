@@ -30,7 +30,8 @@ public interface MarketAgent {
 
     /**
      * API used to create a  new listing instance
-     * it will have map of all metadata that need to be passed while creating the listing instance
+     * it will have map of all metadata that need to be passed while creating
+     * the listing instance
      *
      * @param listingData The data to include in the listing
      * @return Listing instance created

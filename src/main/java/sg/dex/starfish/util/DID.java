@@ -62,7 +62,8 @@ public class DID {
      * Checks if the provided String is a valid DID
      *
      * @param did Any String to test as a DID
-     * @return boolean true if the String is parseable as a valid DID, false otherwise
+     * @return boolean true if the String is parseable as a valid DID, false
+     *         otherwise
      */
     public static boolean isValidDID(String did) {
         Matcher m = DID_PATTERN.matcher(did);
@@ -153,7 +154,8 @@ public class DID {
     /**
      * Gets the DID fragment for this DID
      *
-     * @return String The DID fragment, or null if there is no fragment specified
+     * @return String The DID fragment, or null if there is no fragment
+     *         specified
      */
     public String getFragment() {
         return fragment;
@@ -224,12 +226,14 @@ public class DID {
     }
 
     /**
-     * Removes the path and fragment from a DID, creating a simple DID that identifies the DID Subject.
+     * Removes the path and fragment from a DID, creating a simple DID that
+     * identifies the DID Subject.
      *
      * @return A DID without path and fragment portions.
      */
     public DID withoutPath() {
-        if ((path == null) && (fragment == null)) return this;
+        if ((path == null) && (fragment == null))
+            return this;
         return new DID(method, id, null, null);
     }
 

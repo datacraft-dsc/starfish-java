@@ -65,7 +65,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
      * @param asset The asset to use to construct this MemoryAsset
-     * @return A new MemoryAsset containing the data from the passed asset argument
+     * @return A new MemoryAsset containing the data from the passed asset
+     *         argument
      */
     public static MemoryAsset create(Asset asset) {
         if (asset instanceof MemoryAsset) {
@@ -83,7 +84,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      *
      * @param asset       The asset to use to construct this MemoryAsset
      * @param memoryAgent memoryAgent
-     * @return A new MemoryAsset containing the data from the passed asset argument
+     * @return A new MemoryAsset containing the data from the passed asset
+     *         argument
      */
     public static MemoryAsset create(Asset asset, MemoryAgent memoryAgent) {
         if (asset instanceof MemoryAsset) {
@@ -126,7 +128,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     }
 
     /**
-     * Creates a MemoryAsset with the provided string data, encoded in UTF_8 Default
+     * Creates a MemoryAsset with the provided string data, encoded in UTF_8
+     * Default
      * metadata will be generated.
      *
      * @param string String containing the data for this asset
@@ -155,7 +158,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
     }
 
     /**
-     * Creates a MemoryAsset with given byte[] content, using the specified MemoryAgent
+     * Creates a MemoryAsset with given byte[] content, using the specified
+     * MemoryAgent
      * <p>
      * Creates default metadata, and merges in and additional metadata provided
      *
@@ -189,7 +193,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * Gets InputStream corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
@@ -203,7 +208,8 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * Gets raw data corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override

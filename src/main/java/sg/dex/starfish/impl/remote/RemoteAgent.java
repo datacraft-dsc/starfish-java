@@ -66,9 +66,12 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Creates a RemoteAgent with the specified URL of Agent adn user Account detial.
-     * This method is used to get an instance of an Remote Agent based on Agent URL.
-     * IT will connect to an Agent and get the DDO and did from the Agent using the
+     * Creates a RemoteAgent with the specified URL of Agent adn user Account
+     * detial.
+     * This method is used to get an instance of an Remote Agent based on Agent
+     * URL.
+     * IT will connect to an Agent and get the DDO and did from the Agent using
+     * the
      * Status Endpoint and create respective  Agent Instance
      *
      * @param account RemoteAccount for this agent
@@ -188,8 +191,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to create a Remote Agent Instance based on agent url and user Account
-     * this method will connect with Agent through REST endpoint and get the DDO based on
+     * This method is to create a Remote Agent Instance based on agent url and
+     * user Account
+     * this method will connect with Agent through REST endpoint and get the DDO
+     * based on
      * give DID.
      *
      * @param url url of the Agent
@@ -204,8 +209,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to get the DDO from and agent with agent URL and UserAccount.
-     * This will make an HTTP call to remote agent whose and will parse the response .
+     * This method is to get the DDO from and agent with agent URL and
+     * UserAccount.
+     * This will make an HTTP call to remote agent whose and will parse the
+     * response .
      * The DDO response include the DID, all services Endpoints.
      *
      * @return JSON
@@ -262,7 +269,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
 
     /**
      * Creates a RemoteAgent with the specified Resolver and DID This method
-     * will create a new instance of Remote agent based on the Resolver and DID reference
+     * will create a new instance of Remote agent based on the Resolver and DID
+     * reference
      * passed as an argument
      *
      * @param resolver Resolver
@@ -358,14 +366,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Gets an asset for the given asset ID from this agent. Throws an exeception if
+     * Gets an asset for the given asset ID from this agent. Throws an
+     * exeception if
      * the asset ID does not exist, or if the returned metadata is not valid.
      *
      * @param id The ID of the asset to get from this agent
      * @return Asset The asset found
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException       if there is an error in retrieving the Asset
-     * @throws JobFailedException     if there is a failure in a remote operation
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                Asset
+     * @throws JobFailedException     if there is a failure in a remote
+     *                                operation
      */
     @Override
     public <R extends Asset> R getAsset(String id) {
@@ -384,7 +396,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is used for getting the remote Asset instance based on metadata
+     * This method is used for getting the remote Asset instance based on
+     * metadata
      * passed
      *
      * @param metaMap map of the asset
@@ -404,8 +417,10 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to check if the Asset is already registered based on asset ID
-     * passed as parameter. if the asset is already registered it will return true
+     * This method is to check if the Asset is already registered based on asset
+     * ID
+     * passed as parameter. if the asset is already registered it will return
+     * true
      * else false.
      *
      * @param assetId id of an asset to check if the aset is register
@@ -434,14 +449,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * required.
      * <p>
      * Throws an exception if upload is not possible, with the following likely
-     * causes: - The agent does not support uploads of this asset type / size - The
+     * causes: - The agent does not support uploads of this asset type / size -
+     * The
      * data for the asset cannot be accessed by the agent
      *
      * @param asset Asset to upload
      * @return Asset An asset stored on the agent if the upload is successful
-     * @throws AuthorizationException if requestor does not have upload permission
-     * @throws StorageException       if there is an error in uploading the Asset
-     * @throws RemoteException        if there is an problem executing the task on remote
+     * @throws AuthorizationException if requestor does not have upload
+     *                                permission
+     * @throws StorageException       if there is an error in uploading the
+     *                                Asset
+     * @throws RemoteException        if there is an problem executing the task
+     *                                on remote
      *                                Server.
      */
     @SuppressWarnings("unchecked")
@@ -465,7 +484,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to upload the content of an data asset to this agent. if the
+     * This method is to upload the content of an data asset to this agent. if
+     * the
      * asset type is operation it will do nothing
      *
      * @param asset Asset
@@ -537,7 +557,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets URI for invoking a specific operation asynchronously
      *
      * @param operationID Asset ID of the operation to invoke
-     * @return The URI for this the async invoke endpoint for the specified operation
+     * @return The URI for this the async invoke endpoint for the specified
+     *         operation
      * @throws RuntimeException on URI syntax errors
      */
     private URI getInvokeAsyncURI(String operationID) {
@@ -578,7 +599,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param assetID of the URI to create
      * @return The URI for this assetID
-     * @throws UnsupportedOperationException if the agent does not support the Meta
+     * @throws UnsupportedOperationException if the agent does not support the
+     *                                       Meta
      *                                       API
      * @throws IllegalArgumentException      on invalid URI for assetID
      */
@@ -605,8 +627,9 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     protected URI getStorageURI(String assetID) {
         String storageEndpoint = getStorageEndpoint();
-        if (storageEndpoint == null) throw new UnsupportedOperationException(
-                "This agent does not support the Storage API (no endpoint defined)");
+        if (storageEndpoint == null)
+            throw new UnsupportedOperationException(
+                    "This agent does not support the Storage API (no endpoint defined)");
         try {
             return new URI(storageEndpoint + "/" + assetID);
         } catch (URISyntaxException e) {
@@ -618,7 +641,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets meta URI for this agent
      *
      * @return The URI for asset metadata
-     * @throws UnsupportedOperationException if the agent does not support the Meta
+     * @throws UnsupportedOperationException if the agent does not support the
+     *                                       Meta
      *                                       API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
      */
@@ -637,7 +661,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets the storage endpoint for this agent
      *
      * @return The storage endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/storage"
+     *         "https://www.myagent.com/api/v1/storage"
      */
     public String getStorageEndpoint() {
         return getEndpoint(Constant.ENDPOINT_STORAGE);
@@ -647,7 +671,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets the Invoke API endpoint for this agent
      *
      * @return The invoke endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/invoke"
+     *         "https://www.myagent.com/api/v1/invoke"
      */
     public String getInvokeEndpoint() {
         return getEndpoint(Constant.ENDPOINT_INVOKE);
@@ -665,17 +689,18 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets the Meta API endpoint for this agent, or null if this does not exist
      *
      * @return The Meta API endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/meta"
+     *         "https://www.myagent.com/api/v1/meta"
      */
     public String getMetaEndpoint() {
         return getEndpoint(Constant.ENDPOINT_META);
     }
 
     /**
-     * Gets the Market API endpoint for this agent, or null if this does not exist
+     * Gets the Market API endpoint for this agent, or null if this does not
+     * exist
      *
      * @return The Meta API endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/meta"
+     *         "https://www.myagent.com/api/v1/meta"
      */
     public String getMarketEndpoint() {
         return getEndpoint(Constant.ENDPOINT_MARKET);
@@ -685,7 +710,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Gets the Auth API endpoint for this agent, or null if this does not exist
      *
      * @return The Auth API endpoint for this agent e.g.
-     * "https://www.myagent.com/api/v1/meta"
+     *         "https://www.myagent.com/api/v1/meta"
      */
     public String getAuthEndpoint() {
 
@@ -704,9 +729,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      * Polls this agent for the Asset resulting from the given job ID
      *
      * @param jobID ID for the Job to poll
-     * @return The JSON map representing the response from the server as per DEP6.
+     * @return The JSON map representing the response from the server as per
+     *         DEP6.
      * @throws IllegalArgumentException If the job ID is invalid
-     * @throws RemoteException          if there is a failure in a remote operation
+     * @throws RemoteException          if there is a failure in a remote
+     *                                  operation
      * @throws RuntimeException         for protocol errors
      */
     public Object pollJob(String jobID) {
@@ -910,7 +937,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to get the Market metadata from the agent by providing market
+     * This method is to get the Market metadata from the agent by providing
+     * market
      * URL.
      *
      * @param marketAgentUrl market url
@@ -934,7 +962,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param marketAgentUrl marketAgentUrl
      * @return The URI for listing metadata
-     * @throws UnsupportedOperationException if the agent does not support the Meta
+     * @throws UnsupportedOperationException if the agent does not support the
+     *                                       Meta
      *                                       API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
      */
@@ -972,7 +1001,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * API to update the data of existing listing. if the listing id passed is not
+     * API to update the data of existing listing. if the listing id passed is
+     * not
      * exist it will throw Exception
      *
      * @param metaMap map of new value need to be updated for listing
@@ -1022,7 +1052,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     /**
      * APi to get all the listing that belong to user id passed in the argument
      *
-     * @param userID user id for which the listing data need to be retrieved form
+     * @param userID user id for which the listing data need to be retrieved
+     *               form
      *               agent
      * @return List of all listing belong to given user id
      */
@@ -1088,7 +1119,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param path auth path
      * @return The URI for listing metadata
-     * @throws UnsupportedOperationException if the agent does not support the Meta
+     * @throws UnsupportedOperationException if the agent does not support the
+     *                                       Meta
      *                                       API (no endpoint defined)
      * @throws IllegalArgumentException      on invalid URI for asset metadata
      */
@@ -1145,7 +1177,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is to get the content of an Asset based on Asset id passed as an
+     * This method is to get the content of an Asset based on Asset id passed as
+     * an
      * argument.
      *
      * @param assetId of the asset
@@ -1231,7 +1264,8 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * This method is used to get the remote account associated with the Remote Agent
+     * This method is used to get the remote account associated with the Remote
+     * Agent
      *
      * @return remoteAgent instance
      */

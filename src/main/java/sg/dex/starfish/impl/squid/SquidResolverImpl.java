@@ -81,7 +81,8 @@ public class SquidResolverImpl implements Resolver {
     }
 
     /**
-     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * Registers a DID with a DDO in the context of this Ocean connection on the
+     * local machine.
      * <p>
      * This registration is intended for testing purposes.
      *

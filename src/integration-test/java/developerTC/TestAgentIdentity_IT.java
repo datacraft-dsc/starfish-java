@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * As a developer working with Data Supply line,
- * I need a stable identifier (Agent ID) for an arbitrary Agent in the Data ecosystem
+ * I need a stable identifier (Agent ID) for an arbitrary Agent in the Data
+ * ecosystem
  * This test class with validate the DID and DDO format and and their data
  */
 public class TestAgentIdentity_IT {

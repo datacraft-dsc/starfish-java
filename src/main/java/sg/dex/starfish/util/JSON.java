@@ -45,7 +45,8 @@ public class JSON {
     }
 
     /**
-     * Converts an object to a pretty-printed JSON string representation suitable
+     * Converts an object to a pretty-printed JSON string representation
+     * suitable
      * for human consumption
      *
      * @param value Object to represent as a JSON String
@@ -120,7 +121,8 @@ public class JSON {
 
     /**
      * Converts a string assumed to contain a valid JSON object to a (possibly
-     * nested) Map. Use in preference to parse(...) if you know the string should
+     * nested) Map. Use in preference to parse(...) if you know the string
+     * should
      * contain a map/object.
      *
      * @param jsonString A string containing a valid JSON object

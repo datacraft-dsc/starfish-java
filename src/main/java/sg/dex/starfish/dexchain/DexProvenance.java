@@ -17,7 +17,8 @@ import java.util.ArrayList;
 /**
  * Dex Provenance
  * <p>
- * It provides interface for registering assets on chain and getting their provenance.
+ * It provides interface for registering assets on chain and getting their
+ * provenance.
  * </p>
  *
  * @author Ilya Bukalov
@@ -77,7 +78,8 @@ public class DexProvenance {
      * Get asset provenance from chain.
      *
      * @param String assetId
-     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     * @return Array of DexProvenanceResult. Results of all records related to
+     *         given asset
      * @throws DexChainException
      */
     public ArrayList<DexProvenanceResult> getAssetProvenance(String assetId) throws DexChainException {
@@ -109,7 +111,8 @@ public class DexProvenance {
      *
      * @param String user
      * @param String assetId
-     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     * @return Array of DexProvenanceResult. Results of all records related to
+     *         given asset
      * @throws DexChainException
      */
     public ArrayList<DexProvenanceResult> getAssetProvenance(String assetId, String user) throws DexChainException {
@@ -143,7 +146,8 @@ public class DexProvenance {
      * Search asset provenance from chain by user
      *
      * @param String user
-     * @return Array of DexProvenanceResult. Results of all records related to given asset
+     * @return Array of DexProvenanceResult. Results of all records related to
+     *         given asset
      */
     public ArrayList<DexProvenanceResult> getAssetProvenanceByUser(String user) {
         String user_padded = Hex.toZeroPaddedHex(user);

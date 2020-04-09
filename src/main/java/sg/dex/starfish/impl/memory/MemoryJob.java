@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Class representing a Job being conducted asynchronously in the local JVM, which wraps
+ * Class representing a Job being conducted asynchronously in the local JVM,
+ * which wraps
  * an arbitrary Future.
  *
  * @author Mike

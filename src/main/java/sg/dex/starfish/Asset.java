@@ -11,7 +11,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * Interface representing an Asset. An Asset in Starfish is an entity in the decentralised data ecosystem
+ * Interface representing an Asset. An Asset in Starfish is an entity in the
+ * decentralised data ecosystem
  * that is:
  * A) Described by metadata
  * B) Able to be used in Digital Supply Lines
@@ -42,16 +43,19 @@ public interface Asset {
     DID getDID();
 
     /**
-     * Gets a copy of the JSON metadata for this asset, as a map of strings to values.
+     * Gets a copy of the JSON metadata for this asset, as a map of strings to
+     * values.
      * <p>
-     * Asset metadata will differ as per type of asset: (e.g. dataset, operation, bundle)
+     * Asset metadata will differ as per type of asset: (e.g. dataset,
+     * operation, bundle)
      *
      * @return New clone of the parsed JSON metadata for this asset
      */
     Map<String, Object> getMetadata();
 
     /**
-     * Returns true if this asset is a data asset, i.e. the asset represents an immutable
+     * Returns true if this asset is a data asset, i.e. the asset represents an
+     * immutable
      * data object.
      *
      * @return true if the asset is a data asset, false otherwise
@@ -71,10 +75,12 @@ public interface Asset {
     }
 
     /**
-     * Returns the metadata for this asset as a String. Assets should store their metadata by default
+     * Returns the metadata for this asset as a String. Assets should store
+     * their metadata by default
      * as a valid JSON string.
      * <p>
-     * Warning: Some implementations may not validate the JSON on asset creation and it is possible
+     * Warning: Some implementations may not validate the JSON on asset creation
+     * and it is possible
      * for the metadata String to contain invalid JSON.
      *
      * @return The metadata of this asset as a String
@@ -85,8 +91,10 @@ public interface Asset {
      * Gets the contents of this data asset as a byte[] array.
      *
      * @return The byte contents of this asset.
-     * @throws UnsupportedOperationException If this asset does not support getting byte data
-     * @throws AuthorizationException        if requester does not have access permission
+     * @throws UnsupportedOperationException If this asset does not support
+     *                                       getting byte data
+     * @throws AuthorizationException        if requester does not have access
+     *                                       permission
      * @throws StorageException              if unable to load the Asset
      */
     default byte[] getContent() {
@@ -110,8 +118,10 @@ public interface Asset {
      * Gets the contents of this data asset as a input stream.
      *
      * @return The byte contents of this asset.
-     * @throws UnsupportedOperationException If this asset does not support getting byte data
-     * @throws AuthorizationException        if requester does not have access permission
+     * @throws UnsupportedOperationException If this asset does not support
+     *                                       getting byte data
+     * @throws AuthorizationException        if requester does not have access
+     *                                       permission
      * @throws StorageException              if unable to load the Asset
      */
     default InputStream getContentStream() {
@@ -119,7 +129,8 @@ public interface Asset {
     }
 
     /**
-     * Gets the representation of this asset as required to pass to a remote invokable
+     * Gets the representation of this asset as required to pass to a remote
+     * invokable
      * service.
      *
      * @return A map representing this asset

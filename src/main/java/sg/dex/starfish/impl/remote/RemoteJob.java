@@ -13,7 +13,8 @@ import java.util.concurrent.TimeoutException;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
- * This class represents a remote Job executed via the Invoke API on a remote agent.
+ * This class represents a remote Job executed via the Invoke API on a remote
+ * agent.
  */
 public class RemoteJob implements Job {
     private final RemoteAgent agent;
@@ -51,9 +52,11 @@ public class RemoteJob implements Job {
     /**
      * Polls the invokable service job for a complete result.
      * <p>
-     * Returns null if the Job has not completed, or if the remote service cannot be accessed
+     * Returns null if the Job has not completed, or if the remote service
+     * cannot be accessed
      *
-     * @return The Map of <String,Object> where key will be the result and value will be the payload
+     * @return The Map of <String,Object> where key will be the result and value
+     *         will be the payload
      * @throws JobFailedException If the job has failed
      */
     @Override
@@ -68,7 +71,8 @@ public class RemoteJob implements Job {
 
         // Get JSON response map
         Map<String, Object> response = (Map<String, Object>) agent.pollJob(jobID);
-        if (response == null) return null; // unable to read from server?
+        if (response == null)
+            return null; // unable to read from server?
 
         String newStatus = (String) response.get(STATUS);
         if (newStatus == null)

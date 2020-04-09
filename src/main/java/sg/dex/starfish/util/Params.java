@@ -11,12 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class for marshalling invokable operation parameters and return values
+ * Utility class for marshalling invokable operation parameters and return
+ * values
  */
 public class Params {
 
     /**
-     * Creates the "params" part of the invoke payload using the spec in the operation metadata
+     * Creates the "params" part of the invoke payload using the spec in the
+     * operation metadata
      * and the passed positional arguments
      *
      * @param operation The operation to format the parameters for
@@ -52,7 +54,8 @@ public class Params {
     }
 
     /**
-     * API to prepare required result from a raw result based on metadata of the asset
+     * API to prepare required result from a raw result based on metadata of the
+     * asset
      *
      * @param params    params
      * @param result    result
@@ -85,9 +88,12 @@ public class Params {
 
     /**
      * This method is used to format result of the response form Invoke calls.
-     * It will map the result data of the response to result defined in the metadata
-     * Eg: if the result of the response is type Json ,then it type caste the response to Json
-     * if the result of the response is type asset, then it ype caste the response map to asset.
+     * It will map the result data of the response to result defined in the
+     * metadata
+     * Eg: if the result of the response is type Json ,then it type caste the
+     * response to Json
+     * if the result of the response is type asset, then it ype caste the
+     * response map to asset.
      *
      * @param operationSpecs instance reference
      * @param response       response received from the Invoke call
@@ -181,11 +187,13 @@ public class Params {
     }
 
     /**
-     * Creates the "params" part of the invoke payload using the spec in the operation metadata
+     * Creates the "params" part of the invoke payload using the spec in the
+     * operation metadata
      * and the passed positional arguments
      *
      * @param operation The operation to format the parameters for
-     * @param params    An array of assets to be provided as positional parameters
+     * @param params    An array of assets to be provided as positional
+     *                  parameters
      * @return The "params" portion of the invoke payload as a JSONObject
      * @throws IllegalArgumentException if missing required parameter
      */
@@ -215,7 +223,8 @@ public class Params {
     }
 
     /**
-     * Converts an array of positional parameters to a map of named parameters, according to the
+     * Converts an array of positional parameters to a map of named parameters,
+     * according to the
      * parameter spec of the given operation.
      *
      * @param operation need to get the meta data

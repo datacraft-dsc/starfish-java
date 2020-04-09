@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * As a developer working with an Ocean marketplace,
- * I need a way to un publish my asset (i.e. remove relevant listings) from a marketplace
+ * I need a way to un publish my asset (i.e. remove relevant listings) from a
+ * marketplace
  */
 @Disabled
 public class TestUnPublishListing_IT {

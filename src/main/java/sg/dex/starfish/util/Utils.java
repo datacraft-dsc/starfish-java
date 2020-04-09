@@ -17,7 +17,8 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Utility class for StarFish
- * This class has methods for creating random hex string,coerces argument to respective type,
+ * This class has methods for creating random hex string,coerces argument to
+ * respective type,
  * check if the resource exist, build default metadata
  *
  * @author Mike
@@ -89,8 +90,10 @@ public class Utils {
     }
 
     /**
-     * Coerces the argument to a boolean value, where: - null is considered false -
-     * Strings "false" and "true" are interpreted appropriately - Boolean values are
+     * Coerces the argument to a boolean value, where: - null is considered
+     * false -
+     * Strings "false" and "true" are interpreted appropriately - Boolean values
+     * are
      * retained as-is
      *
      * @param o The object to attempt to coerce to a boolean value
@@ -186,7 +189,8 @@ public class Utils {
     }
 
     /**
-     * Checks HTTP URL and returns <code>true</code> a connection can be established
+     * Checks HTTP URL and returns <code>true</code> a connection can be
+     * established
      * to the corresponding host and port
      *
      * @param urlString The HTTP URL to be checked.
@@ -217,7 +221,8 @@ public class Utils {
 
     /**
      * API to validate the meta data mandatory attribute.
-     * If any mandatory attribute is missing it will throw StarfishValidationException
+     * If any mandatory attribute is missing it will throw
+     * StarfishValidationException
      *
      * @param metaData need to be validated
      * @return true if valid metadata

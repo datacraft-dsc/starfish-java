@@ -76,7 +76,8 @@ public class RemoteAccount extends AAccount {
 
     /**
      * This method is to get the user data map.
-     * Userdata map contains value related to user which may change like Role ,token,..
+     * Userdata map contains value related to user which may change like Role
+     * ,token,..
      *
      * @return userdata map
      */

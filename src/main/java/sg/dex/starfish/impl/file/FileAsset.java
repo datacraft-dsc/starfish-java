@@ -61,8 +61,12 @@ public class FileAsset extends AAsset implements DataAsset {
     /**
      * Build default metadata for a file asset
      *
-     * @param metaMap metadata associated with the asset.This metadata will be be added in addition to default
-     *                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaMap metadata associated with the asset.This metadata will be
+     *                be added
+     *                in addition to default
+     *                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                key,value is
+     *                provided then the
      *                default value will be overridden.
      * @return The default metadata as a String
      */
@@ -81,13 +85,15 @@ public class FileAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * Gets an input stream that can be used to consume the content of this asset.
+     * Gets an input stream that can be used to consume the content of this
+     * asset.
      * <p>
      * Will throw an exception if consumption of the asset data in not possible
      * locally.
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override

@@ -16,10 +16,12 @@ import java.util.Map;
 /**
  * Interface representing a data asset.
  * <p>
- * A data asset is any asset that can be represented as an immutable sequence of bytes.
+ * A data asset is any asset that can be represented as an immutable sequence of
+ * bytes.
  * As such, data assets offer the following properties:
  * - They can be validated with a hash of the byte content
- * - The byte representation of the data can be obtained (subject to appropriate permissions)
+ * - The byte representation of the data can be obtained (subject to appropriate
+ * permissions)
  *
  * @author Mike
  * @version 0.5
@@ -32,12 +34,15 @@ public interface DataAsset extends Asset {
     }
 
     /**
-     * Gets an input stream that can be used to consume the content of this asset.
+     * Gets an input stream that can be used to consume the content of this
+     * asset.
      * <p>
-     * Will throw an exception if consumption of the asset data in not possible locally.
+     * Will throw an exception if consumption of the asset data in not possible
+     * locally.
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requester does not have access permission
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
@@ -58,7 +63,8 @@ public interface DataAsset extends Asset {
      * if both are not the same , StarfishValidation Exception will be thrown
      *
      * @return boolean  true if the content is valid else false
-     * @throws StarfishValidationException if hash content is not matched , exception will be thrown
+     * @throws StarfishValidationException if hash content is not matched ,
+     *                                     exception will be thrown
      */
     default boolean validateContentHash() {
 
@@ -77,7 +83,8 @@ public interface DataAsset extends Asset {
     }
 
     /**
-     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
+     * This method is used to calculate the hash of the content by using
+     * keccak256 hashing algorithm.
      *
      * @return the content of hash as string
      */
@@ -90,10 +97,13 @@ public interface DataAsset extends Asset {
 
     /**
      * This method is to include the content of hash in the asset metadata.
-     * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
+     * Hash of the content will be calculated based on sha3_256String hashing
+     * algo , and the hash content will
      * be included in the asset metadata.
-     * This hash content will be used to validate the integrity of asset content
-     * Also this operation is only applicable if the Asset is of type DataAsset , if Asset is not
+     * This hash content will be used to validate the integrity of asset
+     * content
+     * Also this operation is only applicable if the Asset is of type DataAsset
+     * , if Asset is not
      * DataAsset Unsupported Operation Exception will be thrown
      *
      * @return respective data asset sub class.
@@ -119,9 +129,11 @@ public interface DataAsset extends Asset {
      * Get the new Data Asset based on metaData passed as n argument.
      * This method will be implemented by the sub class
      *
-     * @param newMetaData new meta data that will be used to create a Data Asset.
+     * @param newMetaData new meta data that will be used to create a Data
+     *                    Asset.
      * @return the respective dataAsset based on sub-class
-     * @throws UnsupportedOperationException if this operation  is not supported by sub-class
+     * @throws UnsupportedOperationException if this operation  is not supported
+     *                                       by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
         throw new UnsupportedOperationException("This Operation is not supported");

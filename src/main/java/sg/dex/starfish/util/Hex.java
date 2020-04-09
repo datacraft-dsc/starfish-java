@@ -9,7 +9,8 @@ import org.web3j.utils.Numeric;
  */
 public class Hex {
     /**
-     * Converts an int value in the range 0..15 to a lowercase hexadecimal character
+     * Converts an int value in the range 0..15 to a lowercase hexadecimal
+     * character
      *
      * @param value Integer value to convert
      * @return The lowercase hex character
@@ -56,8 +57,10 @@ public class Hex {
         int v = (int) c;
         if (v <= 102) {
             if (v >= 97) return v - 87; // lowercase
-            if ((v >= 65) && (v <= 70)) return v - 55; // uppercase
-            if ((v >= 48) && (v <= 57)) return v - 48; // digit
+            if ((v >= 65) && (v <= 70))
+                return v - 55; // uppercase
+            if ((v >= 48) && (v <= 57))
+                return v - 48; // digit
         }
         throw new IllegalArgumentException("Invalid hex char [" + c + "] = " + (int) c);
     }
@@ -105,7 +108,8 @@ public class Hex {
     }
 
     /**
-     * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     * Make the hex string zero padded by 32 byte according to low level
+     * Ethereum interaction requirements
      * With Prefix
      *
      * @param value String to convert
@@ -116,7 +120,8 @@ public class Hex {
     }
 
     /**
-     * Make the hex string zero padded by 32 byte according to low level Ethereum interaction requirements
+     * Make the hex string zero padded by 32 byte according to low level
+     * Ethereum interaction requirements
      * No Prefix
      *
      * @param value String to convert

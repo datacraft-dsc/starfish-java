@@ -27,7 +27,8 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * Create method is to create a instance of Memory Purchase
-     * This method will create a new instance of Purchase based on metaMap passed as an argument.
+     * This method will create a new instance of Purchase based on metaMap
+     * passed as an argument.
      *
      * @param agent   Agent on which the listing has to be created
      * @param metaMap Map of metadata that need to create listing

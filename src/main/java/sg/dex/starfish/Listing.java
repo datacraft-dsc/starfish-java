@@ -6,7 +6,8 @@ import sg.dex.starfish.exception.StorageException;
 import java.util.Map;
 
 /**
- * Interface representing a listing of an asset available for use in the data ecosystem.
+ * Interface representing a listing of an asset available for use in the data
+ * ecosystem.
  * <p>
  * Listings can be used to query and purchase Assets
  *
@@ -18,12 +19,15 @@ public interface Listing {
     /**
      * Returns the asset associated with this listing.
      * <p>
-     * The asset may not be available in some circumstances (e.g. lack of access permission)
+     * The asset may not be available in some circumstances (e.g. lack of access
+     * permission)
      * in which case an exception will be thrown.
      *
      * @return The asset for this listing
-     * @throws AuthorizationException if requester does not have access permission
-     * @throws StorageException       if there is an error in retrieving the Asset
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                Asset
      */
     Asset getAsset();
 
@@ -45,7 +49,8 @@ public interface Listing {
     Asset purchase(Account account);
 
     /**
-     * Refreshes the Listing data from the agent where it is stored, returning a new listing.
+     * Refreshes the Listing data from the agent where it is stored, returning a
+     * new listing.
      *
      * @return The latest version of the Listing
      */

@@ -23,7 +23,8 @@ public class RemoteBundle extends ARemoteAsset implements Bundle {
 
 
     /**
-     * Creates a RemoteAsset with the given metadata on the specified remote agent
+     * Creates a RemoteAsset with the given metadata on the specified remote
+     * agent
      *
      * @param agent RemoteAgent on which to create the RemoteAsset
      * @param meta  Asset metadata which must be a valid JSON string

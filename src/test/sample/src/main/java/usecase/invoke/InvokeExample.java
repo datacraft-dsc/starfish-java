@@ -19,26 +19,31 @@ import java.util.Map;
  * USE CASE 01:
  * <p>
  * One user say user1  has data and other user say user 2  has operation and
- * user1 wanted to run operation on his data and result should be also publish to an Agent(user agent)
+ * user1 wanted to run operation on his data and result should be also publish
+ * to an Agent(user agent)
  * </p>
  * <p>
  * Example:
  * <p>
- * User 1 - this user has two data set one is  vehicle Data and other is workshop data.
+ * User 1 - this user has two data set one is  vehicle Data and other is
+ * workshop data.
  * This data can be in local pc/DB/Cloud storage.
- * In this example I have used data present in local pc .User upload( will be registered als)
+ * In this example I have used data present in local pc .User upload( will be
+ * registered als)
  * these two data set on Remote Agent(Surfer,http://52.230.82.125:3030/)
  * User 2- Running compute service on different Remote Agent(KOI,http://52.230.52.223:8191/)
  * (Azure instance in this case).
  *
  * <p>
- * To implement the use case , only things user 1 has to know the ID where the compute service is running .
+ * To implement the use case , only things user 1 has to know the ID where the
+ * compute service is running .
  * <p>
  * Implementation details:
  * <p>
  * 1. User 1 will register its both data asset Vehicle data and Workshop data
  * 2. CAll starfish API passing the ID of register asset and the compute ID .
- * 3.Compute will run(ASYNC/SYNC) the operation on the given data asset and register the result as a new Asset to Surfer.
+ * 3.Compute will run(ASYNC/SYNC) the operation on the given data asset and
+ * register the result as a new Asset to Surfer.
  * 3. Compute will return Asset to the user 1.
  * </p>
  */

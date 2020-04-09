@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * As a developer building client code to interact with an Digital Supply line marketplace,
+ * As a developer building client code to interact with an Digital Supply line
+ * marketplace,
  * I need a way to search available asset listings
  */
 @Disabled

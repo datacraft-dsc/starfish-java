@@ -47,7 +47,8 @@ public class HTTP {
      *
      * @param httpRequest the HttpUriRequest to execute
      * @return CloseableHttpResponse
-     * @throws RemoteException if there is an problem executing the task on remote
+     * @throws RemoteException if there is an problem executing the task on
+     *                         remote
      *                         Server.
      */
     public static CloseableHttpResponse execute(HttpUriRequest httpRequest) {

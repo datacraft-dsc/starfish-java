@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * As a developer working with Data Supply Line,
- * I need a stable identifier (Asset ID) for an arbitrary asset in the Data supply line  ecosystem
+ * I need a stable identifier (Asset ID) for an arbitrary asset in the Data
+ * supply line  ecosystem
  */
 
 public class TestAssetIdentity_IT {
