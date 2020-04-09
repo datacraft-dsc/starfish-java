@@ -59,80 +59,82 @@ public class DexResolver implements Resolver {
     /**
      * Creates a DexResolver
      *
-     * @param configFile configFile. All information about account credentials will be taken from this file
+     * @param configFile configFile. All information about account credentials
+     *                   will be
+     *                   taken from this file
      * @return DexResolver The newly created DexResolver
      * @throws IOException
      */
     public static DexResolver create(String configFile) throws IOException {
-<span class="fc" id="L67">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
+<span class="fc" id="L69">        DexConfig dexConfig = DexConfigFactory.getDexConfig(configFile);</span>
 
-<span class="fc" id="L69">        Credentials credentials = null;</span>
+<span class="fc" id="L71">        Credentials credentials = null;</span>
         try {
-<span class="fc" id="L71">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
-<span class="nc" id="L72">        } catch (CipherException e) {</span>
-<span class="nc" id="L73">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
-<span class="nc" id="L74">            e.printStackTrace();</span>
-<span class="fc" id="L75">        }</span>
+<span class="fc" id="L73">            credentials = WalletUtils.loadCredentials(dexConfig.getMainAccountPassword(), dexConfig.getMainAccountCredentialsFile());</span>
+<span class="nc" id="L74">        } catch (CipherException e) {</span>
+<span class="nc" id="L75">            System.err.println(&quot;Wrong credential file or its password&quot;);</span>
+<span class="nc" id="L76">            e.printStackTrace();</span>
+<span class="fc" id="L77">        }</span>
 
-<span class="fc" id="L77">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
-<span class="fc" id="L78">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
-<span class="fc" id="L79">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
-<span class="fc" id="L80">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
-<span class="fc" id="L81">        return new DexResolver(contract, dexConfig);</span>
+<span class="fc" id="L79">        Web3j web3 = Web3j.build(new HttpService(dexConfig.getKeeperUrl()));</span>
+<span class="fc" id="L80">        TransactionManager txManager = new DexTransactionManager(web3, credentials, (int) dexConfig.getKeeperTxSleepDuration(), dexConfig.getKeeperTxAttempts());</span>
+<span class="fc" id="L81">        ContractGasProvider gasProvider = new StaticGasProvider(dexConfig.getKeeperGasPrice(), dexConfig.getKeeperGasLimit());</span>
+<span class="fc" id="L82">        DIDRegistry contract = DIDRegistry.load(dexConfig.getDidRegistryAddress(), web3, txManager, gasProvider);</span>
+<span class="fc" id="L83">        return new DexResolver(contract, dexConfig);</span>
     }
 
     @Override
     public String getDDOString(DID did) throws DexChainException {
-<span class="fc" id="L86">        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        return result != null ? result._value : null;</span>
+<span class="fc" id="L88">        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        return result != null ? result._value : null;</span>
     }
 
     public String getDDOTimestamp(DID did, Date date) throws DexChainException {
-<span class="fc" id="L91">        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (result != null)</span>
-<span class="fc" id="L93">            date.setTime(result._timestamp.longValue() * 1000);</span>
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        return result != null ? result._value : null;</span>
+<span class="fc" id="L93">        DIDRegistry.DIDRegisteredEventResponse result = getDDOInternal(did);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (result != null)</span>
+<span class="fc" id="L95">            date.setTime(result._timestamp.longValue() * 1000);</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        return result != null ? result._value : null;</span>
     }
 
     private DIDRegistry.DIDRegisteredEventResponse getDDOInternal(DID did) throws DexChainException {
-<span class="fc" id="L98">        String didHash = did.getID();</span>
-<span class="fc" id="L99">        BigInteger blockNumber = BigInteger.valueOf(0);</span>
+<span class="fc" id="L100">        String didHash = did.getID();</span>
+<span class="fc" id="L101">        BigInteger blockNumber = BigInteger.valueOf(0);</span>
         try {
-<span class="fc" id="L101">            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();</span>
-<span class="nc" id="L102">        } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L103">            throw new DexChainException(e);</span>
-<span class="nc" id="L104">        } catch (Exception e) {</span>
+<span class="fc" id="L103">            blockNumber = contract.getBlockNumberUpdated(Numeric.hexStringToByteArray(didHash)).send();</span>
+<span class="nc" id="L104">        } catch (UnsupportedEncodingException e) {</span>
 <span class="nc" id="L105">            throw new DexChainException(e);</span>
-<span class="fc" id="L106">        }</span>
+<span class="nc" id="L106">        } catch (Exception e) {</span>
+<span class="nc" id="L107">            throw new DexChainException(e);</span>
+<span class="fc" id="L108">        }</span>
 
-<span class="fc" id="L108">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());</span>
-<span class="fc" id="L109">        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDREGISTERED_EVENT));</span>
-<span class="fc" id="L110">        String didTopic = &quot;0x&quot; + didHash;</span>
-<span class="fc" id="L111">        filter.addOptionalTopics(didTopic);</span>
-<span class="fc" id="L112">        Flowable&lt;DIDRegistry.DIDRegisteredEventResponse&gt; floable = contract.dIDRegisteredEventFlowable(filter);</span>
-<span class="fc" id="L113">        ArrayList&lt;DIDRegistry.DIDRegisteredEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L114">        floable.subscribe(log -&gt; {</span>
-<span class="fc" id="L115">            outcome.add(log);</span>
-<span class="fc" id="L116">        });</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        return outcome.size() == 1 ? outcome.get(0) : null;</span>
+<span class="fc" id="L110">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(blockNumber), DefaultBlockParameter.valueOf(blockNumber), contract.getContractAddress());</span>
+<span class="fc" id="L111">        filter.addSingleTopic(EventEncoder.encode(DIDRegistry.DIDREGISTERED_EVENT));</span>
+<span class="fc" id="L112">        String didTopic = &quot;0x&quot; + didHash;</span>
+<span class="fc" id="L113">        filter.addOptionalTopics(didTopic);</span>
+<span class="fc" id="L114">        Flowable&lt;DIDRegistry.DIDRegisteredEventResponse&gt; floable = contract.dIDRegisteredEventFlowable(filter);</span>
+<span class="fc" id="L115">        ArrayList&lt;DIDRegistry.DIDRegisteredEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L116">        floable.subscribe(log -&gt; {</span>
+<span class="fc" id="L117">            outcome.add(log);</span>
+<span class="fc" id="L118">        });</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        return outcome.size() == 1 ? outcome.get(0) : null;</span>
     }
 
     @Override
     public void registerDID(DID did, String ddo) throws DexChainException {
-<span class="fc" id="L122">        TransactionReceipt receipt = null;</span>
+<span class="fc" id="L124">        TransactionReceipt receipt = null;</span>
         try {
-<span class="fc" id="L124">            receipt = contract.registerDID(</span>
-<span class="fc" id="L125">                    Numeric.hexStringToByteArray(did.getID()), ddo).send();</span>
-<span class="nc" id="L126">        } catch (IOException e) {</span>
-<span class="nc" id="L127">            throw new DexChainException(e);</span>
-<span class="nc" id="L128">        } catch (CipherException e) {</span>
+<span class="fc" id="L126">            receipt = contract.registerDID(</span>
+<span class="fc" id="L127">                    Numeric.hexStringToByteArray(did.getID()), ddo).send();</span>
+<span class="nc" id="L128">        } catch (IOException e) {</span>
 <span class="nc" id="L129">            throw new DexChainException(e);</span>
-<span class="fc" id="L130">        } catch (Exception e) {</span>
-<span class="fc" id="L131">            throw new DexChainException(e);</span>
-<span class="fc" id="L132">        }</span>
+<span class="nc" id="L130">        } catch (CipherException e) {</span>
+<span class="nc" id="L131">            throw new DexChainException(e);</span>
+<span class="fc" id="L132">        } catch (Exception e) {</span>
+<span class="fc" id="L133">            throw new DexChainException(e);</span>
+<span class="fc" id="L134">        }</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
-<span class="nc" id="L135">            throw new DexChainException();</span>
-<span class="fc" id="L136">    }</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (!receipt.getStatus().equals(&quot;0x1&quot;))</span>
+<span class="nc" id="L137">            throw new DexChainException();</span>
+<span class="fc" id="L138">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -39,14 +39,15 @@ import java.util.Map;
         //
 <span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (services == null) return null;</span>
 <span class="fc bfc" id="L41" title="All 2 branches covered.">        for (Map&lt;String, Object&gt; service : services) {</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (type.equals(service.get(&quot;type&quot;))) return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
-<span class="fc" id="L43">        }</span>
-<span class="fc" id="L44">        return null;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (type.equals(service.get(&quot;type&quot;)))</span>
+<span class="fc" id="L43">                return (String) service.get(Constant.SERVICE_ENDPOINT);</span>
+<span class="fc" id="L44">        }</span>
+<span class="fc" id="L45">        return null;</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     private static List&lt;Map&lt;String, Object&gt;&gt; getServices(Map&lt;String, Object&gt; ddo) {
-<span class="fc" id="L49">        return (List&lt;Map&lt;String, Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
+<span class="fc" id="L50">        return (List&lt;Map&lt;String, Object&gt;&gt;) ddo.get(Constant.SERVICE);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

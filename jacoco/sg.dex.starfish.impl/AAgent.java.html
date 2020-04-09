@@ -50,8 +50,9 @@ public abstract class AAgent implements Agent {
     @Override
     public &lt;R extends Asset&gt; R getAsset(DID did) {
 <span class="nc" id="L52">        String assetID = did.getPath();</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (assetID == null) throw new IllegalArgumentException(&quot;Expected Asset ID in DID path&quot;);</span>
-<span class="nc" id="L54">        return getAsset(assetID);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (assetID == null)</span>
+<span class="nc" id="L54">            throw new IllegalArgumentException(&quot;Expected Asset ID in DID path&quot;);</span>
+<span class="nc" id="L55">        return getAsset(assetID);</span>
     }
 
     /**
@@ -62,14 +63,14 @@ public abstract class AAgent implements Agent {
      * @return The service endpoint, or null if not found
      */
     public String getEndpoint(String type) {
-<span class="fc" id="L65">        Map&lt;String, Object&gt; ddo = getDDO();</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (ddo == null) return null;</span>
-<span class="fc" id="L67">        return DDO.getEndpoint(ddo, type);</span>
+<span class="fc" id="L66">        Map&lt;String, Object&gt; ddo = getDDO();</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (ddo == null) return null;</span>
+<span class="fc" id="L68">        return DDO.getEndpoint(ddo, type);</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L72">        return &quot;#starfish/agent \&quot;&quot; + getDID().toString() + &quot;\&quot;&quot;;</span>
+<span class="nc" id="L73">        return &quot;#starfish/agent \&quot;&quot; + getDID().toString() + &quot;\&quot;&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

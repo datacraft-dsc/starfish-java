@@ -61,56 +61,62 @@ public class FileAsset extends AAsset implements DataAsset {
     /**
      * Build default metadata for a file asset
      *
-     * @param metaMap metadata associated with the asset.This metadata will be be added in addition to default
-     *                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same key,value is provided then the
+     * @param metaMap metadata associated with the asset.This metadata will be
+     *                be added
+     *                in addition to default
+     *                metadata i.e DATE_CREATED,TYPE,CONTENT_TYPE.If same
+     *                key,value is
+     *                provided then the
      *                default value will be overridden.
      * @return The default metadata as a String
      */
     protected static Map&lt;String, Object&gt; buildMetadata(Map&lt;String, Object&gt; metaMap) {
-<span class="fc" id="L70">        Map&lt;String, Object&gt; ob = Utils.createDefaultMetadata();</span>
-<span class="fc" id="L71">        ob.put(TYPE, DATA_SET);</span>
-<span class="fc" id="L72">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
+<span class="fc" id="L74">        Map&lt;String, Object&gt; ob = Utils.createDefaultMetadata();</span>
+<span class="fc" id="L75">        ob.put(TYPE, DATA_SET);</span>
+<span class="fc" id="L76">        ob.put(CONTENT_TYPE, OCTET_STREAM);</span>
         // TODO: maybe include file name?
 
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (metaMap != null) {</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
-<span class="nc" id="L77">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L78">            }</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (metaMap != null) {</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : metaMap.entrySet()) {</span>
+<span class="nc" id="L81">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L82">            }</span>
         }
-<span class="fc" id="L80">        return ob;</span>
+<span class="fc" id="L84">        return ob;</span>
     }
 
     /**
-     * Gets an input stream that can be used to consume the content of this asset.
+     * Gets an input stream that can be used to consume the content of this
+     * asset.
      * &lt;p&gt;
      * Will throw an exception if consumption of the asset data in not possible
      * locally.
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
     public InputStream getContentStream() {
         try {
-<span class="fc" id="L96">            return new FileInputStream(file);</span>
-<span class="nc" id="L97">        } catch (FileNotFoundException e) {</span>
-<span class="nc" id="L98">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
+<span class="fc" id="L102">            return new FileInputStream(file);</span>
+<span class="nc" id="L103">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L104">            throw new StorageException(&quot;File not found ,file : &quot; + file, e);</span>
         }
     }
 
     @Override
     public long getContentSize() {
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        return null != file ? file.length() : -1;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        return null != file ? file.length() : -1;</span>
     }
 
     public File getSource() {
-<span class="fc" id="L108">        return file;</span>
+<span class="fc" id="L114">        return file;</span>
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="fc" id="L113">        return create(this.getSource(), newMeta);</span>
+<span class="fc" id="L119">        return create(this.getSource(), newMeta);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

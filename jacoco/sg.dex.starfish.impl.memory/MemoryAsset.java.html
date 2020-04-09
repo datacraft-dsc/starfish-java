@@ -65,16 +65,17 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * Gets a MemoryAsset using the content and metadata from the provided asset
      *
      * @param asset The asset to use to construct this MemoryAsset
-     * @return A new MemoryAsset containing the data from the passed asset argument
+     * @return A new MemoryAsset containing the data from the passed asset
+     *         argument
      */
     public static MemoryAsset create(Asset asset) {
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
-<span class="nc" id="L72">            return (MemoryAsset) asset;</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
-<span class="nc" id="L74">            byte[] data = asset.getContent();</span>
-<span class="nc" id="L75">            return create(data, buildMetaData(data, null));</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
+<span class="nc" id="L73">            return (MemoryAsset) asset;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
+<span class="nc" id="L75">            byte[] data = asset.getContent();</span>
+<span class="nc" id="L76">            return create(data, buildMetaData(data, null));</span>
         } else {
-<span class="nc" id="L77">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
+<span class="nc" id="L78">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
         }
     }
 
@@ -83,16 +84,17 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      *
      * @param asset       The asset to use to construct this MemoryAsset
      * @param memoryAgent memoryAgent
-     * @return A new MemoryAsset containing the data from the passed asset argument
+     * @return A new MemoryAsset containing the data from the passed asset
+     *         argument
      */
     public static MemoryAsset create(Asset asset, MemoryAgent memoryAgent) {
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
-<span class="nc" id="L90">            return (MemoryAsset) asset;</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
-<span class="nc" id="L92">            byte[] data = asset.getContent();</span>
-<span class="nc" id="L93">            return create(data, buildMetaData(data, null), memoryAgent);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (asset instanceof MemoryAsset) {</span>
+<span class="nc" id="L92">            return (MemoryAsset) asset;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        } else if (asset.isDataAsset()) {</span>
+<span class="nc" id="L94">            byte[] data = asset.getContent();</span>
+<span class="nc" id="L95">            return create(data, buildMetaData(data, null), memoryAgent);</span>
         } else {
-<span class="nc" id="L95">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
+<span class="nc" id="L97">            throw new IllegalArgumentException(&quot;Asset must be a data asset&quot;);</span>
         }
     }
 
@@ -104,10 +106,10 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data) {
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (data == null) {</span>
-<span class="nc" id="L108">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (data == null) {</span>
+<span class="nc" id="L110">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
         }
-<span class="fc" id="L110">        return create(data, buildMetaData(data, null), MemoryAgent.create());</span>
+<span class="fc" id="L112">        return create(data, buildMetaData(data, null), MemoryAgent.create());</span>
     }
 
     /**
@@ -119,26 +121,27 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, MemoryAgent memoryAgent) {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (data == null) {</span>
-<span class="nc" id="L123">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (data == null) {</span>
+<span class="nc" id="L125">            throw new IllegalArgumentException(&quot;Missing data,data cannot be null&quot;);</span>
         }
-<span class="nc" id="L125">        return create(data, buildMetaData(data, null), memoryAgent);</span>
+<span class="nc" id="L127">        return create(data, buildMetaData(data, null), memoryAgent);</span>
     }
 
     /**
-     * Creates a MemoryAsset with the provided string data, encoded in UTF_8 Default
+     * Creates a MemoryAsset with the provided string data, encoded in UTF_8
+     * Default
      * metadata will be generated.
      *
      * @param string String containing the data for this asset
      * @return The newly created in-memory asset
      */
     public static Asset createFromString(String string) {
-<span class="fc" id="L136">        byte[] data = string.getBytes(StandardCharsets.UTF_8);</span>
+<span class="fc" id="L139">        byte[] data = string.getBytes(StandardCharsets.UTF_8);</span>
 
         // set up default content type
-<span class="fc" id="L139">        Map&lt;String, Object&gt; meta = Utils.mapOf(Constant.CONTENT_TYPE, &quot;text/plain&quot;);</span>
+<span class="fc" id="L142">        Map&lt;String, Object&gt; meta = Utils.mapOf(Constant.CONTENT_TYPE, &quot;text/plain&quot;);</span>
 
-<span class="fc" id="L141">        return create(data, meta);</span>
+<span class="fc" id="L144">        return create(data, meta);</span>
     }
 
     /**
@@ -151,11 +154,12 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map&lt;String, Object&gt; additionalMeta) {
-<span class="fc" id="L154">        return create(data, additionalMeta, MemoryAgent.create());</span>
+<span class="fc" id="L157">        return create(data, additionalMeta, MemoryAgent.create());</span>
     }
 
     /**
-     * Creates a MemoryAsset with given byte[] content, using the specified MemoryAgent
+     * Creates a MemoryAsset with given byte[] content, using the specified
+     * MemoryAgent
      * &lt;p&gt;
      * Creates default metadata, and merges in and additional metadata provided
      *
@@ -165,12 +169,12 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, Map&lt;String, Object&gt; additionalMeta, MemoryAgent memoryAgent) {
-<span class="fc" id="L168">        Map&lt;String, Object&gt; meta = buildMetaData(data, additionalMeta);</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (!meta.containsKey(Constant.CONTENT_HASH)) {</span>
-<span class="fc" id="L170">            String hash = Hash.sha3_256String(data);</span>
-<span class="fc" id="L171">            meta.put(Constant.CONTENT_HASH, hash);</span>
+<span class="fc" id="L172">        Map&lt;String, Object&gt; meta = buildMetaData(data, additionalMeta);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (!meta.containsKey(Constant.CONTENT_HASH)) {</span>
+<span class="fc" id="L174">            String hash = Hash.sha3_256String(data);</span>
+<span class="fc" id="L175">            meta.put(Constant.CONTENT_HASH, hash);</span>
         }
-<span class="fc" id="L173">        return new MemoryAsset(data, JSON.toPrettyString(meta), memoryAgent);</span>
+<span class="fc" id="L177">        return new MemoryAsset(data, JSON.toPrettyString(meta), memoryAgent);</span>
     }
 
     /**
@@ -181,7 +185,7 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * @return The newly created in-memory asset
      */
     public static MemoryAsset create(byte[] data, String metaString) {
-<span class="fc" id="L184">        return create(data, JSON.toMap(metaString), MemoryAgent.create());</span>
+<span class="fc" id="L188">        return create(data, JSON.toMap(metaString), MemoryAgent.create());</span>
     }
 
 
@@ -189,50 +193,53 @@ public class MemoryAsset extends AMemoryAsset implements DataAsset {
      * Gets InputStream corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
     public InputStream getContentStream() {
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (data == null) throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
-<span class="fc" id="L198">        return new ByteArrayInputStream(data);</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        if (data == null)</span>
+<span class="nc" id="L203">            throw new Error(&quot;MemoryAsset has not been initialised with data&quot;);</span>
+<span class="fc" id="L204">        return new ByteArrayInputStream(data);</span>
     }
 
     /**
      * Gets raw data corresponding to this Asset
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requestor does not have access permission
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
     public byte[] getContent() {
         // we take a copy of data to protected immutability of MemoryAsset instance
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        return null != data ? data.clone() : null;</span>
     }
 
 
     @Override
     public Map&lt;String, Object&gt; getParamValue() {
-<span class="nc" id="L217">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L224">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
         // pass the asset ID, i.e. hash of content
-<span class="nc" id="L219">        o.put(ID, getAssetID());</span>
-<span class="nc" id="L220">        return o;</span>
+<span class="nc" id="L226">        o.put(ID, getAssetID());</span>
+<span class="nc" id="L227">        return o;</span>
     }
 
     @Override
     public long getContentSize() {
-<span class="nc bnc" id="L225" title="All 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        return this.data != null ? this.data.length : -1;</span>
     }
 
 
     public byte[] getSource() {
-<span class="nc" id="L230">        return data;</span>
+<span class="nc" id="L237">        return data;</span>
     }
 
     @Override
     public DataAsset updateMeta(String newMeta) {
-<span class="nc" id="L235">        return new MemoryAsset(this.getSource(), newMeta, MemoryAgent.create());</span>
+<span class="nc" id="L242">        return new MemoryAsset(this.getSource(), newMeta, MemoryAgent.create());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

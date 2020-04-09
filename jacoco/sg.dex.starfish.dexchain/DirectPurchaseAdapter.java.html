@@ -108,30 +108,31 @@ public final class DirectPurchaseAdapter {
     /**
      * Returns whether the transaction is successful
      *
-     * @param spenderAddress The address who will be allowed to spend tokens of signer
+     * @param spenderAddress The address who will be allowed to spend tokens of
+     *                       signer
      * @param price          Amount of tokens to spend
      * @return boolean
      */
     public boolean tokenApprove(String spenderAddress, String price) {
-<span class="fc" id="L116">        String checksumAddress = Keys.toChecksumAddress(spenderAddress);</span>
+<span class="fc" id="L117">        String checksumAddress = Keys.toChecksumAddress(spenderAddress);</span>
 
         try {
 
-<span class="fc" id="L120">            TransactionReceipt receipt = oceanToken.approve(</span>
+<span class="fc" id="L121">            TransactionReceipt receipt = oceanToken.approve(</span>
                     checksumAddress,
                     new BigInteger(price)
-<span class="fc" id="L123">            ).send();</span>
+<span class="fc" id="L124">            ).send();</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">            if (!receipt.getStatus().equals(&quot;0x1&quot;)) {</span>
-<span class="nc" id="L126">                System.err.println(&quot;The Status received is not valid executing Token Approve: &quot; + receipt.getStatus());</span>
-<span class="nc" id="L127">                return false;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            if (!receipt.getStatus().equals(&quot;0x1&quot;)) {</span>
+<span class="nc" id="L127">                System.err.println(&quot;The Status received is not valid executing Token Approve: &quot; + receipt.getStatus());</span>
+<span class="nc" id="L128">                return false;</span>
             }
 
-<span class="fc" id="L130">            return true;</span>
+<span class="fc" id="L131">            return true;</span>
 
-<span class="nc" id="L132">        } catch (Exception e) {</span>
-<span class="nc" id="L133">            System.err.println(&quot;Error executing Token Approve &quot; + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L134">            return false;</span>
+<span class="nc" id="L133">        } catch (Exception e) {</span>
+<span class="nc" id="L134">            System.err.println(&quot;Error executing Token Approve &quot; + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L135">            return false;</span>
         }
     }
 
@@ -145,28 +146,28 @@ public final class DirectPurchaseAdapter {
      * @return boolean          Result
      */
     public boolean checkIsPaid(String purchaser_address, String publisher_address, BigInteger amount, String reference) {
-<span class="fc" id="L148">        String purchaser_padded = Hex.toZeroPaddedHex(purchaser_address);</span>
-<span class="fc" id="L149">        String publisher_padded = Hex.toZeroPaddedHex(publisher_address);</span>
-<span class="fc" id="L150">        String reference_padded = Hex.toZeroPaddedHex(reference);</span>
-<span class="fc" id="L151">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());</span>
+<span class="fc" id="L149">        String purchaser_padded = Hex.toZeroPaddedHex(purchaser_address);</span>
+<span class="fc" id="L150">        String publisher_padded = Hex.toZeroPaddedHex(publisher_address);</span>
+<span class="fc" id="L151">        String reference_padded = Hex.toZeroPaddedHex(reference);</span>
+<span class="fc" id="L152">        EthFilter filter = new EthFilter(DefaultBlockParameter.valueOf(BigInteger.valueOf(1)), DefaultBlockParameterName.LATEST, directPurchase.getContractAddress());</span>
 
-<span class="fc" id="L153">        filter.addSingleTopic(EventEncoder.encode(DirectPurchase.TOKENSENT_EVENT));</span>
+<span class="fc" id="L154">        filter.addSingleTopic(EventEncoder.encode(DirectPurchase.TOKENSENT_EVENT));</span>
         // addOptionalTopic does not work for some reason.
-<span class="fc" id="L155">        filter.addSingleTopic(purchaser_padded);</span>
-<span class="fc" id="L156">        filter.addSingleTopic(publisher_padded);</span>
-<span class="fc" id="L157">        filter.addSingleTopic(reference_padded);</span>
+<span class="fc" id="L156">        filter.addSingleTopic(purchaser_padded);</span>
+<span class="fc" id="L157">        filter.addSingleTopic(publisher_padded);</span>
+<span class="fc" id="L158">        filter.addSingleTopic(reference_padded);</span>
 
-<span class="fc" id="L159">        Flowable&lt;DirectPurchase.TokenSentEventResponse&gt; floable = directPurchase.tokenSentEventFlowable(filter);</span>
-<span class="fc" id="L160">        ArrayList&lt;DirectPurchase.TokenSentEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L161">        floable.subscribe(log -&gt; {</span>
-<span class="fc" id="L162">            outcome.add(log);</span>
-<span class="fc" id="L163">        });</span>
+<span class="fc" id="L160">        Flowable&lt;DirectPurchase.TokenSentEventResponse&gt; floable = directPurchase.tokenSentEventFlowable(filter);</span>
+<span class="fc" id="L161">        ArrayList&lt;DirectPurchase.TokenSentEventResponse&gt; outcome = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L162">        floable.subscribe(log -&gt; {</span>
+<span class="fc" id="L163">            outcome.add(log);</span>
+<span class="fc" id="L164">        });</span>
 
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        for (DirectPurchase.TokenSentEventResponse obj : outcome) {</span>
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (obj._amount.equals(amount))</span>
-<span class="fc" id="L167">                return true;</span>
-<span class="nc" id="L168">        }</span>
-<span class="nc" id="L169">        return false;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        for (DirectPurchase.TokenSentEventResponse obj : outcome) {</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if (obj._amount.equals(amount))</span>
+<span class="fc" id="L168">                return true;</span>
+<span class="nc" id="L169">        }</span>
+<span class="nc" id="L170">        return false;</span>
     }
 
 }

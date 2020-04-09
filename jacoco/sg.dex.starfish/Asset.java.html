@@ -11,7 +11,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * Interface representing an Asset. An Asset in Starfish is an entity in the decentralised data ecosystem
+ * Interface representing an Asset. An Asset in Starfish is an entity in the
+ * decentralised data ecosystem
  * that is:
  * A) Described by metadata
  * B) Able to be used in Digital Supply Lines
@@ -42,22 +43,25 @@ public interface Asset {
     DID getDID();
 
     /**
-     * Gets a copy of the JSON metadata for this asset, as a map of strings to values.
+     * Gets a copy of the JSON metadata for this asset, as a map of strings to
+     * values.
      * &lt;p&gt;
-     * Asset metadata will differ as per type of asset: (e.g. dataset, operation, bundle)
+     * Asset metadata will differ as per type of asset: (e.g. dataset,
+     * operation, bundle)
      *
      * @return New clone of the parsed JSON metadata for this asset
      */
     Map&lt;String, Object&gt; getMetadata();
 
     /**
-     * Returns true if this asset is a data asset, i.e. the asset represents an immutable
+     * Returns true if this asset is a data asset, i.e. the asset represents an
+     * immutable
      * data object.
      *
      * @return true if the asset is a data asset, false otherwise
      */
     default boolean isDataAsset() {
-<span class="nc" id="L60">        return Constant.DATA_SET.equals(getMetadata().get(Constant.TYPE));</span>
+<span class="nc" id="L64">        return Constant.DATA_SET.equals(getMetadata().get(Constant.TYPE));</span>
     }
 
     /**
@@ -67,14 +71,16 @@ public interface Asset {
      * @return true if this asset is an operation, false otherwise
      */
     default boolean isOperation() {
-<span class="nc" id="L70">        return Constant.OPERATION.equals(getMetadata().get(Constant.TYPE));</span>
+<span class="nc" id="L74">        return Constant.OPERATION.equals(getMetadata().get(Constant.TYPE));</span>
     }
 
     /**
-     * Returns the metadata for this asset as a String. Assets should store their metadata by default
+     * Returns the metadata for this asset as a String. Assets should store
+     * their metadata by default
      * as a valid JSON string.
      * &lt;p&gt;
-     * Warning: Some implementations may not validate the JSON on asset creation and it is possible
+     * Warning: Some implementations may not validate the JSON on asset creation
+     * and it is possible
      * for the metadata String to contain invalid JSON.
      *
      * @return The metadata of this asset as a String
@@ -85,41 +91,46 @@ public interface Asset {
      * Gets the contents of this data asset as a byte[] array.
      *
      * @return The byte contents of this asset.
-     * @throws UnsupportedOperationException If this asset does not support getting byte data
-     * @throws AuthorizationException        if requester does not have access permission
+     * @throws UnsupportedOperationException If this asset does not support
+     *                                       getting byte data
+     * @throws AuthorizationException        if requester does not have access
+     *                                       permission
      * @throws StorageException              if unable to load the Asset
      */
     default byte[] getContent() {
-<span class="fc" id="L93">        InputStream is = getContentStream();</span>
-<span class="fc" id="L94">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
+<span class="fc" id="L101">        InputStream is = getContentStream();</span>
+<span class="fc" id="L102">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
 
-<span class="fc" id="L96">        byte[] buf = new byte[16384];</span>
+<span class="fc" id="L104">        byte[] buf = new byte[16384];</span>
 
         int bytesRead;
         try {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {</span>
-<span class="fc" id="L101">                buffer.write(buf, 0, bytesRead);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            while ((bytesRead = is.read(buf, 0, buf.length)) != -1) {</span>
+<span class="fc" id="L109">                buffer.write(buf, 0, bytesRead);</span>
             }
-<span class="nc" id="L103">        } catch (IOException e) {</span>
-<span class="nc" id="L104">            throw new StorageException(&quot;Unable to get Asset content&quot;, e);</span>
-<span class="fc" id="L105">        }</span>
-<span class="fc" id="L106">        return buffer.toByteArray();</span>
+<span class="nc" id="L111">        } catch (IOException e) {</span>
+<span class="nc" id="L112">            throw new StorageException(&quot;Unable to get Asset content&quot;, e);</span>
+<span class="fc" id="L113">        }</span>
+<span class="fc" id="L114">        return buffer.toByteArray();</span>
     }
 
     /**
      * Gets the contents of this data asset as a input stream.
      *
      * @return The byte contents of this asset.
-     * @throws UnsupportedOperationException If this asset does not support getting byte data
-     * @throws AuthorizationException        if requester does not have access permission
+     * @throws UnsupportedOperationException If this asset does not support
+     *                                       getting byte data
+     * @throws AuthorizationException        if requester does not have access
+     *                                       permission
      * @throws StorageException              if unable to load the Asset
      */
     default InputStream getContentStream() {
-<span class="nc" id="L118">        throw new UnsupportedOperationException(&quot;Cannot get InputStream for asset of class: &quot; + this.getClass().getCanonicalName());</span>
+<span class="nc" id="L128">        throw new UnsupportedOperationException(&quot;Cannot get InputStream for asset of class: &quot; + this.getClass().getCanonicalName());</span>
     }
 
     /**
-     * Gets the representation of this asset as required to pass to a remote invokable
+     * Gets the representation of this asset as required to pass to a remote
+     * invokable
      * service.
      *
      * @return A map representing this asset
@@ -132,7 +143,7 @@ public interface Asset {
      * @return true if this asset is an bundle, false otherwise
      */
     default boolean isBundle() {
-<span class="nc" id="L135">        return Constant.BUNDLE.equals(getMetadata().get(Constant.TYPE));</span>
+<span class="nc" id="L146">        return Constant.BUNDLE.equals(getMetadata().get(Constant.TYPE));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Class representing a Job being conducted asynchronously in the local JVM, which wraps
+ * Class representing a Job being conducted asynchronously in the local JVM,
+ * which wraps
  * an arbitrary Future.
  *
  * @author Mike
@@ -23,10 +24,10 @@ public class MemoryJob implements Job {
     private final Future&lt;Map&lt;String, Object&gt;&gt; future;
     private String status;
 
-<span class="nc" id="L26">    private MemoryJob(Future&lt;Map&lt;String, Object&gt;&gt; future) {</span>
-<span class="nc" id="L27">        status = Constant.SCHEDULED;</span>
-<span class="nc" id="L28">        this.future = future;</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L27">    private MemoryJob(Future&lt;Map&lt;String, Object&gt;&gt; future) {</span>
+<span class="nc" id="L28">        status = Constant.SCHEDULED;</span>
+<span class="nc" id="L29">        this.future = future;</span>
+<span class="nc" id="L30">    }</span>
 
     /**
      * Create a MemoryJob instance using the provided Future.
@@ -35,70 +36,70 @@ public class MemoryJob implements Job {
      * @return A MemoryJob instance encapsulation the provided future
      */
     public static MemoryJob create(Future&lt;Map&lt;String, Object&gt;&gt; future) {
-<span class="nc" id="L38">        return new MemoryJob(future);</span>
+<span class="nc" id="L39">        return new MemoryJob(future);</span>
     }
 
     @Override
     public boolean isDone() {
-<span class="nc" id="L43">        return future.isDone();</span>
+<span class="nc" id="L44">        return future.isDone();</span>
     }
 
     @Override
     public boolean isCancelled() {
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (future.isCancelled()) {</span>
-<span class="nc" id="L49">            status = Constant.CANCELLED;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (future.isCancelled()) {</span>
+<span class="nc" id="L50">            status = Constant.CANCELLED;</span>
         }
-<span class="nc" id="L51">        return status.equals(Constant.CANCELLED);</span>
+<span class="nc" id="L52">        return status.equals(Constant.CANCELLED);</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; pollResult() {
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (!future.isDone()) return null;</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (!future.isDone()) return null;</span>
         try {
             // get result from future. Must be done at this point.
-<span class="nc" id="L59">            Map&lt;String, Object&gt; result = future.get();</span>
-<span class="nc" id="L60">            status = Constant.SUCCEEDED;</span>
-<span class="nc" id="L61">            return result;</span>
-<span class="nc" id="L62">        } catch (CancellationException t) {</span>
-<span class="nc" id="L63">            status = Constant.CANCELLED;</span>
-<span class="nc" id="L64">            throw Utils.sneakyThrow(t);</span>
-<span class="nc" id="L65">        } catch (Throwable t) {</span>
-<span class="nc" id="L66">            status = Constant.FAILED;</span>
-<span class="nc" id="L67">            throw Utils.sneakyThrow(t);</span>
+<span class="nc" id="L60">            Map&lt;String, Object&gt; result = future.get();</span>
+<span class="nc" id="L61">            status = Constant.SUCCEEDED;</span>
+<span class="nc" id="L62">            return result;</span>
+<span class="nc" id="L63">        } catch (CancellationException t) {</span>
+<span class="nc" id="L64">            status = Constant.CANCELLED;</span>
+<span class="nc" id="L65">            throw Utils.sneakyThrow(t);</span>
+<span class="nc" id="L66">        } catch (Throwable t) {</span>
+<span class="nc" id="L67">            status = Constant.FAILED;</span>
+<span class="nc" id="L68">            throw Utils.sneakyThrow(t);</span>
         }
     }
 
     @Override
     public Map&lt;String, Object&gt; get(long timeout, TimeUnit timeUnit) {
-<span class="nc" id="L73">        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);</span>
-<span class="nc" id="L74">        long start = System.currentTimeMillis();</span>
-<span class="nc" id="L75">        int initialSleep = 100;</span>
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
-<span class="nc" id="L77">            Map&lt;String, Object&gt; a = pollResult();</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (a != null) {</span>
-<span class="nc" id="L79">                status = Constant.SUCCEEDED;</span>
-<span class="nc" id="L80">                return a;</span>
+<span class="nc" id="L74">        long timeoutMillis = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);</span>
+<span class="nc" id="L75">        long start = System.currentTimeMillis();</span>
+<span class="nc" id="L76">        int initialSleep = 100;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        while (System.currentTimeMillis() &lt; start + timeoutMillis) {</span>
+<span class="nc" id="L78">            Map&lt;String, Object&gt; a = pollResult();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (a != null) {</span>
+<span class="nc" id="L80">                status = Constant.SUCCEEDED;</span>
+<span class="nc" id="L81">                return a;</span>
             }
             try {
-<span class="nc" id="L83">                Thread.sleep(initialSleep);</span>
-<span class="nc" id="L84">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L85">                status = Constant.CANCELLED;</span>
-<span class="nc" id="L86">                throw new JobFailedException(&quot;Job interrupted with exception: &quot; + e.getCause(), e);</span>
-<span class="nc" id="L87">            }</span>
-<span class="nc" id="L88">            initialSleep *= 2;</span>
-<span class="nc" id="L89">        }</span>
-<span class="nc" id="L90">        throw Utils.sneakyThrow(new TimeoutException(&quot;Timeout in MemoryJob.get(...)&quot;));</span>
+<span class="nc" id="L84">                Thread.sleep(initialSleep);</span>
+<span class="nc" id="L85">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L86">                status = Constant.CANCELLED;</span>
+<span class="nc" id="L87">                throw new JobFailedException(&quot;Job interrupted with exception: &quot; + e.getCause(), e);</span>
+<span class="nc" id="L88">            }</span>
+<span class="nc" id="L89">            initialSleep *= 2;</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">        throw Utils.sneakyThrow(new TimeoutException(&quot;Timeout in MemoryJob.get(...)&quot;));</span>
     }
 
     @Override
     public String getStatus() {
-<span class="nc" id="L95">        return this.status;</span>
+<span class="nc" id="L96">        return this.status;</span>
     }
 
     @Override
     public String getJobID() {
         // ID is local only, identity of object in JVM
-<span class="nc" id="L101">        return &quot;MemoryJob:&quot; + Hex.toString(System.identityHashCode(this));</span>
+<span class="nc" id="L102">        return &quot;MemoryJob:&quot; + Hex.toString(System.identityHashCode(this));</span>
     }
 
 

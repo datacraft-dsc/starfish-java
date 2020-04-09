@@ -126,7 +126,8 @@ import java.nio.charset.StandardCharsets;
     }
 
     /**
-     * This method is used to compute the complete hash computation based on input stream passed.
+     * This method is used to compute the complete hash computation based on
+     * input stream passed.
      * A MessageDigest object starts out initialized.
      * The data is processed through it using the update methods.
      * At any point reset can be called to reset the digest.
@@ -139,17 +140,17 @@ import java.nio.charset.StandardCharsets;
     public static String sha3_256String(InputStream inputStream) throws IOException {
         String checksum;
 
-<span class="fc" id="L142">        SHA3.DigestSHA3 md = new SHA3.Digest256();</span>
+<span class="fc" id="L143">        SHA3.DigestSHA3 md = new SHA3.Digest256();</span>
         //Using MessageDigest update() method to provide input
-<span class="fc" id="L144">        byte[] buffer = new byte[8192];</span>
+<span class="fc" id="L145">        byte[] buffer = new byte[8192];</span>
         int numOfBytesRead;
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        while ((numOfBytesRead = inputStream.read(buffer)) &gt; 0) {</span>
-<span class="fc" id="L147">            md.update(buffer, 0, numOfBytesRead);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        while ((numOfBytesRead = inputStream.read(buffer)) &gt; 0) {</span>
+<span class="fc" id="L148">            md.update(buffer, 0, numOfBytesRead);</span>
         }
-<span class="fc" id="L149">        byte[] hash = md.digest();</span>
-<span class="fc" id="L150">        checksum = Hex.toString(hash);</span>
+<span class="fc" id="L150">        byte[] hash = md.digest();</span>
+<span class="fc" id="L151">        checksum = Hex.toString(hash);</span>
 
-<span class="fc" id="L152">        return checksum;</span>
+<span class="fc" id="L153">        return checksum;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -93,24 +93,26 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * Registers an Asset with this Agent
      *
      * @param a The Asset to register
-     * @return Asset The asset found, or null if the agent does not have the asset available
-     * @throws AuthorizationException if requestor does not have register permission
+     * @return Asset The asset found, or null if the agent does not have the
+     *         asset available
+     * @throws AuthorizationException if requestor does not have register
+     *                                permission
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R registerAsset(Asset a) {
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
-<span class="nc" id="L104">            throw new UnsupportedOperationException(&quot;Not yet supported!&quot;);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (!(a instanceof AMemoryAsset)) {</span>
+<span class="nc" id="L106">            throw new UnsupportedOperationException(&quot;Not yet supported!&quot;);</span>
         }
-<span class="nc" id="L106">        AMemoryAsset ma = (AMemoryAsset) a;</span>
-<span class="nc" id="L107">        assetStore.put(ma.getAssetID(), ma);</span>
-<span class="nc" id="L108">        return (R) ma;</span>
+<span class="nc" id="L108">        AMemoryAsset ma = (AMemoryAsset) a;</span>
+<span class="nc" id="L109">        assetStore.put(ma.getAssetID(), ma);</span>
+<span class="nc" id="L110">        return (R) ma;</span>
     }
 
     @Override
     public &lt;R extends Asset&gt; R registerAsset(String metaString) {
-<span class="nc" id="L113">        throw new UnsupportedOperationException(&quot;MemoryAgent does not support registering assets without content&quot;);</span>
+<span class="nc" id="L115">        throw new UnsupportedOperationException(&quot;MemoryAgent does not support registering assets without content&quot;);</span>
     }
 
     /**
@@ -118,94 +120,105 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param a The Asset to register
      * @return Asset The asset uploaded
-     * @throws AuthorizationException if requestor does not have register permission
+     * @throws AuthorizationException if requestor does not have register
+     *                                permission
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R uploadAsset(Asset a) {
-<span class="nc" id="L127">        MemoryAsset ma = MemoryAsset.create(a);</span>
-<span class="nc" id="L128">        registerAsset(ma);</span>
-<span class="nc" id="L129">        return (R) ma;</span>
+<span class="nc" id="L130">        MemoryAsset ma = MemoryAsset.create(a);</span>
+<span class="nc" id="L131">        registerAsset(ma);</span>
+<span class="nc" id="L132">        return (R) ma;</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public &lt;R extends Asset&gt; R getAsset(String id) {
-<span class="nc" id="L135">        R asset = (R) assetStore.get(id);</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (asset == null) return null;</span>
-<span class="nc" id="L137">        String rid = asset.getAssetID();</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (!id.equals(rid)) {</span>
-<span class="nc" id="L139">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
+<span class="nc" id="L138">        R asset = (R) assetStore.get(id);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (asset == null) return null;</span>
+<span class="nc" id="L140">        String rid = asset.getAssetID();</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (!id.equals(rid)) {</span>
+<span class="nc" id="L142">            throw new StarfishValidationException(&quot;Expected asset ID: &quot; + id + &quot; but got metadata with hash: &quot; + rid);</span>
         }
-<span class="nc" id="L141">        return asset;</span>
+<span class="nc" id="L144">        return asset;</span>
     }
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    Positional parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
-     * @throws IllegalArgumentException if required parameters are not available.
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available.
      */
     @Override
     public Job invoke(Operation operation, Object... params) {
-<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L157">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (!(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L164">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L159">        return operation.invoke(params);</span>
+<span class="nc" id="L166">        return operation.invoke(params);</span>
     }
 
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    named parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override
     public Job invoke(Operation operation, Map&lt;String, Object&gt; params) {
-<span class="nc bnc" id="L175" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L176">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L186">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
-<span class="nc" id="L178">        return operation.invoke(params);</span>
+<span class="nc" id="L188">        return operation.invoke(params);</span>
     }
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    named parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override
     public Job invokeAsync(Operation operation, Map&lt;String, Object&gt; params) {
 
-<span class="nc bnc" id="L194" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
-<span class="nc" id="L195">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
+<span class="nc bnc" id="L207" title="All 4 branches missed.">        if (null == operation || !(operation instanceof AMemoryOperation)) {</span>
+<span class="nc" id="L208">            throw new IllegalArgumentException(&quot;Operation must be a MemoryOperation but got: &quot; + Utils.getClass(operation));</span>
         }
 
-<span class="nc" id="L198">        return operation.invoke(params);</span>
+<span class="nc" id="L211">        return operation.invoke(params);</span>
     }
 
     @Override
     public Listing getListing(String id) {
-<span class="nc" id="L203">        return listingStore.get(id);</span>
+<span class="nc" id="L216">        return listingStore.get(id);</span>
     }
 
     @Override
     public Purchase getPurchase(String id) {
-<span class="nc" id="L208">        return purchaseStore.get(id);</span>
+<span class="nc" id="L221">        return purchaseStore.get(id);</span>
     }
 
 
@@ -217,12 +230,12 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      */
     @Override
     public Listing createListing(Map&lt;String, Object&gt; listingData) {
-<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
-<span class="nc" id="L221">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (listingData.get(&quot;assetid&quot;) == null) {</span>
+<span class="nc" id="L234">            throw new IllegalArgumentException(&quot;Asset Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="nc" id="L224">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
-<span class="nc" id="L225">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
+<span class="nc" id="L237">        listingStore.put(listingData.get(&quot;id&quot;).toString(), MemoryListing.create(this, listingData));</span>
+<span class="nc" id="L238">        return listingStore.get(listingData.get(&quot;id&quot;).toString());</span>
     }
 
     /**
@@ -232,18 +245,18 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * @return MemoryPurchase instance of new memory purchase
      */
     public MemoryPurchase createPurchase(Map&lt;String, Object&gt; purchaseData) {
-<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
-<span class="nc" id="L236">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (purchaseData.get(&quot;listingid&quot;) == null) {</span>
+<span class="nc" id="L249">            throw new IllegalArgumentException(&quot;Listing Id is mandatory, cannot be null&quot;);</span>
         }
 
-<span class="nc" id="L239">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
-<span class="nc" id="L240">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
+<span class="nc" id="L252">        purchaseStore.put(purchaseData.get(&quot;id&quot;).toString(), MemoryPurchase.create(this, purchaseData));</span>
+<span class="nc" id="L253">        return purchaseStore.get(purchaseData.get(&quot;id&quot;).toString());</span>
     }
 
     @Override
     public Job getJob(String jobID) {
         // TODO Consider caching Jobs? Or just return null
-<span class="nc" id="L246">        return null;</span>
+<span class="nc" id="L259">        return null;</span>
     }
 
 }

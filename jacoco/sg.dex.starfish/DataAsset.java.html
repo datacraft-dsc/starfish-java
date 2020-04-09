@@ -16,10 +16,12 @@ import java.util.Map;
 /**
  * Interface representing a data asset.
  * &lt;p&gt;
- * A data asset is any asset that can be represented as an immutable sequence of bytes.
+ * A data asset is any asset that can be represented as an immutable sequence of
+ * bytes.
  * As such, data assets offer the following properties:
  * - They can be validated with a hash of the byte content
- * - The byte representation of the data can be obtained (subject to appropriate permissions)
+ * - The byte representation of the data can be obtained (subject to appropriate
+ * permissions)
  *
  * @author Mike
  * @version 0.5
@@ -28,16 +30,19 @@ public interface DataAsset extends Asset {
 
     @Override
     default boolean isDataAsset() {
-<span class="nc" id="L31">        return true;</span>
+<span class="nc" id="L33">        return true;</span>
     }
 
     /**
-     * Gets an input stream that can be used to consume the content of this asset.
+     * Gets an input stream that can be used to consume the content of this
+     * asset.
      * &lt;p&gt;
-     * Will throw an exception if consumption of the asset data in not possible locally.
+     * Will throw an exception if consumption of the asset data in not possible
+     * locally.
      *
      * @return An input stream allowing consumption of the asset data
-     * @throws AuthorizationException if requester does not have access permission
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
      * @throws StorageException       if unable to load the Asset
      */
     @Override
@@ -58,42 +63,47 @@ public interface DataAsset extends Asset {
      * if both are not the same , StarfishValidation Exception will be thrown
      *
      * @return boolean  true if the content is valid else false
-     * @throws StarfishValidationException if hash content is not matched , exception will be thrown
+     * @throws StarfishValidationException if hash content is not matched ,
+     *                                     exception will be thrown
      */
     default boolean validateContentHash() {
 
-<span class="fc" id="L65">        Object contentHashFromMetadata = this.getMetadata().get(Constant.CONTENT_HASH);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (null == contentHashFromMetadata) {</span>
-<span class="nc" id="L67">            throw new StarfishValidationException(&quot;Content hash is not included in the metadata&quot;);</span>
+<span class="fc" id="L71">        Object contentHashFromMetadata = this.getMetadata().get(Constant.CONTENT_HASH);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (null == contentHashFromMetadata) {</span>
+<span class="nc" id="L73">            throw new StarfishValidationException(&quot;Content hash is not included in the metadata&quot;);</span>
         }
 
-<span class="fc" id="L70">        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
+<span class="fc" id="L76">        String contentHash = Hex.toString(Hash.sha3_256(Utils.stringFromStream(this.getContentStream())));</span>
         // if hash of asset content is equal
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (contentHashFromMetadata.toString().equals(contentHash)) {</span>
-<span class="fc" id="L73">            return true;</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (contentHashFromMetadata.toString().equals(contentHash)) {</span>
+<span class="fc" id="L79">            return true;</span>
 
         }
-<span class="nc" id="L76">        throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
+<span class="nc" id="L82">        throw new StarfishValidationException(&quot;Failed to validate content hash&quot;);</span>
     }
 
     /**
-     * This method is used to calculate the hash of the content by using keccak256 hashing algorithm.
+     * This method is used to calculate the hash of the content by using
+     * keccak256 hashing algorithm.
      *
      * @return the content of hash as string
      */
 
     default String getContentHash() throws IOException {
 
-<span class="fc" id="L87">        return Hash.sha3_256String(this.getContentStream());</span>
+<span class="fc" id="L94">        return Hash.sha3_256String(this.getContentStream());</span>
     }
 
 
     /**
      * This method is to include the content of hash in the asset metadata.
-     * Hash of the content will be calculated based on sha3_256String hashing algo , and the hash content will
+     * Hash of the content will be calculated based on sha3_256String hashing
+     * algo , and the hash content will
      * be included in the asset metadata.
-     * This hash content will be used to validate the integrity of asset content
-     * Also this operation is only applicable if the Asset is of type DataAsset , if Asset is not
+     * This hash content will be used to validate the integrity of asset
+     * content
+     * Also this operation is only applicable if the Asset is of type DataAsset
+     * , if Asset is not
      * DataAsset Unsupported Operation Exception will be thrown
      *
      * @return respective data asset sub class.
@@ -103,15 +113,15 @@ public interface DataAsset extends Asset {
 
         // check if the hash content is already present also
         // validate if content is valid or not
-<span class="pc bpc" id="L106" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
+<span class="pc bpc" id="L116" title="1 of 4 branches missed.">        if (null != this.getMetadata().get(Constant.CONTENT_HASH) &amp;&amp; validateContentHash()) {</span>
 
-<span class="fc" id="L108">            return this;</span>
+<span class="fc" id="L118">            return this;</span>
 
         } else {
-<span class="fc" id="L111">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
-<span class="fc" id="L112">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
+<span class="fc" id="L121">            Map&lt;String, Object&gt; metaMap = this.getMetadata();</span>
+<span class="fc" id="L122">            metaMap.put(Constant.CONTENT_HASH, getContentHash());</span>
 
-<span class="fc" id="L114">            return this.updateMeta(JSON.toPrettyString(metaMap));</span>
+<span class="fc" id="L124">            return this.updateMeta(JSON.toPrettyString(metaMap));</span>
         }
     }
 
@@ -119,12 +129,14 @@ public interface DataAsset extends Asset {
      * Get the new Data Asset based on metaData passed as n argument.
      * This method will be implemented by the sub class
      *
-     * @param newMetaData new meta data that will be used to create a Data Asset.
+     * @param newMetaData new meta data that will be used to create a Data
+     *                    Asset.
      * @return the respective dataAsset based on sub-class
-     * @throws UnsupportedOperationException if this operation  is not supported by sub-class
+     * @throws UnsupportedOperationException if this operation  is not supported
+     *                                       by sub-class
      */
     default DataAsset updateMeta(String newMetaData) {
-<span class="nc" id="L127">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
+<span class="nc" id="L139">        throw new UnsupportedOperationException(&quot;This Operation is not supported&quot;);</span>
     }
 
 }

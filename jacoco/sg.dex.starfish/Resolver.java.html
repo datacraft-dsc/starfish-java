@@ -7,12 +7,14 @@ import sg.dex.starfish.util.JSON;
 import java.util.Map;
 
 /**
- * This interface represents a Resolver instance used to resolve / register DIDs and DDOd.
+ * This interface represents a Resolver instance used to resolve / register DIDs
+ * and DDOd.
  */
 public interface Resolver {
 
     /**
-     * Method to  get a DDO (as a String) for any given DID registered with the resolver.
+     * Method to  get a DDO (as a String) for any given DID registered with the
+     * resolver.
      *
      * @param did Given DID which is registered with the resolver
      * @return DDO String value or null
@@ -29,10 +31,10 @@ public interface Resolver {
      * @throws UnsupportedOperationException not yet implemented
      */
     default Map&lt;String, Object&gt; getDDO(DID did) {
-<span class="fc" id="L32">        did = did.withoutPath();</span>
-<span class="fc" id="L33">        String ddoString = getDDOString(did);</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (ddoString == null) return null;</span>
-<span class="fc" id="L35">        return JSON.parse(ddoString);</span>
+<span class="fc" id="L34">        did = did.withoutPath();</span>
+<span class="fc" id="L35">        String ddoString = getDDOString(did);</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (ddoString == null) return null;</span>
+<span class="fc" id="L37">        return JSON.parse(ddoString);</span>
     }
 
     /**

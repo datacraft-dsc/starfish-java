@@ -10,13 +10,14 @@ import java.util.WeakHashMap;
 /**
  * Utility class maintaining a cache of parsed JSON objects
  * &lt;p&gt;
- * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than fresh parsing
+ * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than
+ * fresh parsing
  *
  * @author Mike
  */
-<span class="nc" id="L17">public class JSONObjectCache {</span>
+<span class="nc" id="L18">public class JSONObjectCache {</span>
 
-<span class="fc" id="L19">    private static final WeakHashMap&lt;String, JSONObject&gt; cache = new WeakHashMap&lt;String, JSONObject&gt;();</span>
+<span class="fc" id="L20">    private static final WeakHashMap&lt;String, JSONObject&gt; cache = new WeakHashMap&lt;String, JSONObject&gt;();</span>
 
     /**
      * Converts a string assumed to contain valid JSON object to an Object
@@ -27,15 +28,16 @@ import java.util.WeakHashMap;
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public synchronized static Map&lt;String, Object&gt; parse(String jsonString) {
-<span class="fc" id="L30">        JSONObject cached = cache.get(jsonString);</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (cached != null) return new JSONObject(cached); // deep clone</span>
-<span class="fc" id="L32">        JSONParser parser = new JSONParser();</span>
+<span class="fc" id="L31">        JSONObject cached = cache.get(jsonString);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (cached != null)</span>
+<span class="fc" id="L33">            return new JSONObject(cached); // deep clone</span>
+<span class="fc" id="L34">        JSONParser parser = new JSONParser();</span>
         try {
-<span class="fc" id="L34">            JSONObject result = (JSONObject) parser.parse(jsonString);</span>
-<span class="fc" id="L35">            cache.put(jsonString, result);</span>
-<span class="fc" id="L36">            return new JSONObject(result);</span>
-<span class="nc" id="L37">        } catch (ParseException e) {</span>
-<span class="nc" id="L38">            throw new Error(&quot;Error in JSON parsing: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L36">            JSONObject result = (JSONObject) parser.parse(jsonString);</span>
+<span class="fc" id="L37">            cache.put(jsonString, result);</span>
+<span class="fc" id="L38">            return new JSONObject(result);</span>
+<span class="nc" id="L39">        } catch (ParseException e) {</span>
+<span class="nc" id="L40">            throw new Error(&quot;Error in JSON parsing: &quot; + e.getMessage(), e);</span>
         }
     }
 }

@@ -17,26 +17,27 @@ import static sg.dex.starfish.constant.Constant.*;
 
 /**
  * Utility class for StarFish
- * This class has methods for creating random hex string,coerces argument to respective type,
+ * This class has methods for creating random hex string,coerces argument to
+ * respective type,
  * check if the resource exist, build default metadata
  *
  * @author Mike
  * @version 0.5
  */
-<span class="nc" id="L26">public class Utils {</span>
+<span class="nc" id="L27">public class Utils {</span>
 
     /**
      * Length of a DID identifier in bytes
      */
     public static final int DID_LENGTH = 32;
-<span class="fc" id="L32">    private static List&lt;String&gt; assetType = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">    private static List&lt;String&gt; assetType = new ArrayList&lt;&gt;();</span>
 
     static {
-<span class="fc" id="L35">        assetType.add(BUNDLE);</span>
-<span class="fc" id="L36">        assetType.add(OPERATION);</span>
-<span class="fc" id="L37">        assetType.add(DATA_SET);</span>
+<span class="fc" id="L36">        assetType.add(BUNDLE);</span>
+<span class="fc" id="L37">        assetType.add(OPERATION);</span>
+<span class="fc" id="L38">        assetType.add(DATA_SET);</span>
 
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L40">    }</span>
 
     /**
      * Creates a random hex string of the specified length
@@ -45,10 +46,10 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A lowercase hex string of the specified length
      */
     public static String createRandomHexString(int length) {
-<span class="fc" id="L48">        SecureRandom sr = new SecureRandom();</span>
-<span class="fc" id="L49">        byte[] bytes = new byte[length];</span>
-<span class="fc" id="L50">        sr.nextBytes(bytes);</span>
-<span class="fc" id="L51">        return Hex.toString(bytes);</span>
+<span class="fc" id="L49">        SecureRandom sr = new SecureRandom();</span>
+<span class="fc" id="L50">        byte[] bytes = new byte[length];</span>
+<span class="fc" id="L51">        sr.nextBytes(bytes);</span>
+<span class="fc" id="L52">        return Hex.toString(bytes);</span>
     }
 
     /**
@@ -59,9 +60,9 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return boolean true if the arguments are equal, false otherwise
      */
     public static boolean equals(Object a, Object b) {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (a == null)</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            return b == null;</span>
-<span class="fc" id="L64">        return a.equals(b);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (a == null)</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            return b == null;</span>
+<span class="fc" id="L65">        return a.equals(b);</span>
     }
 
     /**
@@ -71,8 +72,8 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return The computed hashcode
      */
     public static int hashCode(Object o) {
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (o == null) return 0;</span>
-<span class="nc" id="L75">        return o.hashCode();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (o == null) return 0;</span>
+<span class="nc" id="L76">        return o.hashCode();</span>
     }
 
     /**
@@ -84,29 +85,31 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public static &lt;T&gt; Class&lt;T&gt; getClass(T o) {
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (o == null) return null;</span>
-<span class="nc" id="L88">        return (Class&lt;T&gt;) o.getClass();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (o == null) return null;</span>
+<span class="nc" id="L89">        return (Class&lt;T&gt;) o.getClass();</span>
     }
 
     /**
-     * Coerces the argument to a boolean value, where: - null is considered false -
-     * Strings &quot;false&quot; and &quot;true&quot; are interpreted appropriately - Boolean values are
+     * Coerces the argument to a boolean value, where: - null is considered
+     * false -
+     * Strings &quot;false&quot; and &quot;true&quot; are interpreted appropriately - Boolean values
+     * are
      * retained as-is
      *
      * @param o The object to attempt to coerce to a boolean value
      * @return The boolean value of this object if coercion is successful
      */
     public static boolean coerceBoolean(Object o) {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (o == null) return true;</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (o instanceof Boolean) {</span>
-<span class="fc" id="L102">            return (Boolean) o;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (o == null) return true;</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (o instanceof Boolean) {</span>
+<span class="fc" id="L105">            return (Boolean) o;</span>
         }
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (o instanceof String) {</span>
-<span class="nc" id="L105">            String s = (String) o;</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (s.equals(&quot;true&quot;)) return true;</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (s.equals(&quot;false&quot;)) return false;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (o instanceof String) {</span>
+<span class="nc" id="L108">            String s = (String) o;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (s.equals(&quot;true&quot;)) return true;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (s.equals(&quot;false&quot;)) return false;</span>
         }
-<span class="nc" id="L109">        throw new IllegalArgumentException(&quot;Can't coerce to boolean: &quot; + o);</span>
+<span class="nc" id="L112">        throw new IllegalArgumentException(&quot;Can't coerce to boolean: &quot; + o);</span>
     }
 
     /**
@@ -116,17 +119,18 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return The coerced int value of the object
      */
     public static int coerceInt(Object o) {
-<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (o instanceof Number) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (o instanceof Integer) return (Integer) o;</span>
-<span class="nc" id="L121">            Number n = (Number) o;</span>
-<span class="nc" id="L122">            int value = (int) n.longValue();</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (value != n.doubleValue()) throw new IllegalArgumentException(&quot;Cannot coerce to int without loss:&quot;);</span>
-<span class="nc" id="L124">            return value;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (o instanceof Number) {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (o instanceof Integer) return (Integer) o;</span>
+<span class="nc" id="L124">            Number n = (Number) o;</span>
+<span class="nc" id="L125">            int value = (int) n.longValue();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (value != n.doubleValue())</span>
+<span class="nc" id="L127">                throw new IllegalArgumentException(&quot;Cannot coerce to int without loss:&quot;);</span>
+<span class="nc" id="L128">            return value;</span>
         }
-<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (o instanceof String) {</span>
-<span class="nc" id="L127">            return Integer.parseInt((String) o);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (o instanceof String) {</span>
+<span class="nc" id="L131">            return Integer.parseInt((String) o);</span>
         }
-<span class="nc" id="L129">        throw new IllegalArgumentException(&quot;Can't coerce to int: &quot; + o);</span>
+<span class="nc" id="L133">        throw new IllegalArgumentException(&quot;Can't coerce to int: &quot; + o);</span>
     }
 
     /**
@@ -136,17 +140,17 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return The String value of inputStream
      */
     public static String stringFromStream(InputStream inputStream) {
-<span class="fc" id="L139">        ByteArrayOutputStream result = new ByteArrayOutputStream();</span>
-<span class="fc" id="L140">        byte[] buffer = new byte[4096];</span>
+<span class="fc" id="L143">        ByteArrayOutputStream result = new ByteArrayOutputStream();</span>
+<span class="fc" id="L144">        byte[] buffer = new byte[4096];</span>
         int length;
         try {
-<span class="fc bfc" id="L143" title="All 2 branches covered.">            while ((length = inputStream.read(buffer)) != -1) {</span>
-<span class="fc" id="L144">                result.write(buffer, 0, length);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            while ((length = inputStream.read(buffer)) != -1) {</span>
+<span class="fc" id="L148">                result.write(buffer, 0, length);</span>
             }
-<span class="nc" id="L146">        } catch (IOException e) {</span>
-<span class="nc" id="L147">            throw Utils.sneakyThrow(e);</span>
-<span class="fc" id="L148">        }</span>
-<span class="fc" id="L149">        return new String(result.toByteArray(), StandardCharsets.UTF_8);</span>
+<span class="nc" id="L150">        } catch (IOException e) {</span>
+<span class="nc" id="L151">            throw Utils.sneakyThrow(e);</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">        return new String(result.toByteArray(), StandardCharsets.UTF_8);</span>
     }
 
     /**
@@ -160,16 +164,16 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     @SuppressWarnings({&quot;unchecked&quot;})
     public static &lt;K, V&gt; Map&lt;K, V&gt; mapOf(Object... params) {
-<span class="fc" id="L163">        int len = params.length;</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if ((len &amp; 1) != 0)</span>
-<span class="nc" id="L165">            throw new IllegalArgumentException(&quot;mapOf requires a even number of arguments but got: &quot; + len);</span>
-<span class="fc" id="L166">        Map&lt;K, V&gt; result = new HashMap&lt;&gt;(len &gt;&gt; 1);</span>
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        for (int i = 0; i &lt; len; i += 2) {</span>
-<span class="fc" id="L168">            K key = (K) params[i];</span>
-<span class="fc" id="L169">            V value = (V) params[i + 1];</span>
-<span class="fc" id="L170">            result.put(key, value);</span>
+<span class="fc" id="L167">        int len = params.length;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if ((len &amp; 1) != 0)</span>
+<span class="nc" id="L169">            throw new IllegalArgumentException(&quot;mapOf requires a even number of arguments but got: &quot; + len);</span>
+<span class="fc" id="L170">        Map&lt;K, V&gt; result = new HashMap&lt;&gt;(len &gt;&gt; 1);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        for (int i = 0; i &lt; len; i += 2) {</span>
+<span class="fc" id="L172">            K key = (K) params[i];</span>
+<span class="fc" id="L173">            V value = (V) params[i + 1];</span>
+<span class="fc" id="L174">            result.put(key, value);</span>
         }
-<span class="fc" id="L172">        return result;</span>
+<span class="fc" id="L176">        return result;</span>
     }
 
     /**
@@ -179,13 +183,14 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return true if the resource exists
      */
     public static boolean resourceExists(String fileName) {
-<span class="nc" id="L182">        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span>
-<span class="nc" id="L183">        URL url = classLoader.getResource(fileName);</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">        return (url != null);</span>
+<span class="nc" id="L186">        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span>
+<span class="nc" id="L187">        URL url = classLoader.getResource(fileName);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        return (url != null);</span>
     }
 
     /**
-     * Checks HTTP URL and returns &lt;code&gt;true&lt;/code&gt; a connection can be established
+     * Checks HTTP URL and returns &lt;code&gt;true&lt;/code&gt; a connection can be
+     * established
      * to the corresponding host and port
      *
      * @param urlString The HTTP URL to be checked.
@@ -193,12 +198,12 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     public static boolean checkURL(String urlString) {
         try {
-<span class="nc" id="L196">            URL url = new URL(urlString);</span>
-<span class="nc" id="L197">            Socket socket = new Socket(url.getHost(), url.getPort());</span>
-<span class="nc" id="L198">            socket.close();</span>
-<span class="nc" id="L199">            return true;</span>
-<span class="nc" id="L200">        } catch (Exception e) {</span>
-<span class="nc" id="L201">            return false;</span>
+<span class="nc" id="L201">            URL url = new URL(urlString);</span>
+<span class="nc" id="L202">            Socket socket = new Socket(url.getHost(), url.getPort());</span>
+<span class="nc" id="L203">            socket.close();</span>
+<span class="nc" id="L204">            return true;</span>
+<span class="nc" id="L205">        } catch (Exception e) {</span>
+<span class="nc" id="L206">            return false;</span>
         }
     }
 
@@ -209,14 +214,15 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A HashMap containing the default metadata
      */
     public static HashMap&lt;String, Object&gt; createDefaultMetadata() {
-<span class="fc" id="L212">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L213">        ob.put(DATE_CREATED, Instant.now().toString());</span>
-<span class="fc" id="L214">        return ob;</span>
+<span class="fc" id="L217">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L218">        ob.put(DATE_CREATED, Instant.now().toString());</span>
+<span class="fc" id="L219">        return ob;</span>
     }
 
     /**
      * API to validate the meta data mandatory attribute.
-     * If any mandatory attribute is missing it will throw StarfishValidationException
+     * If any mandatory attribute is missing it will throw
+     * StarfishValidationException
      *
      * @param metaData need to be validated
      * @return true if valid metadata
@@ -224,37 +230,37 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     public static boolean validateAssetMetaData(String metaData) {
 
-<span class="fc" id="L227">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
+<span class="fc" id="L233">        Map&lt;String, Object&gt; metaDataMap = JSON.toMap(metaData);</span>
 
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        String type = null == metaDataMap.get(&quot;type&quot;) ? null : metaDataMap.get(&quot;type&quot;).toString();</span>
 
-<span class="pc bpc" id="L231" title="2 of 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
-<span class="nc" id="L232">            throw new StarfishValidationException(&quot;Type is mandatory for creating Asset.It cannot be null or Empty&quot;);</span>
+<span class="pc bpc" id="L237" title="2 of 4 branches missed.">        if (type == null || type.isEmpty()) {</span>
+<span class="nc" id="L238">            throw new StarfishValidationException(&quot;Type is mandatory for creating Asset.It cannot be null or Empty&quot;);</span>
         }
-<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (!assetType.contains(type)) {</span>
-<span class="nc" id="L235">            throw new StarfishValidationException(&quot;Type is not a valid assetType.It should be operation,bundle,dataset&quot;);</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        if (!assetType.contains(type)) {</span>
+<span class="nc" id="L241">            throw new StarfishValidationException(&quot;Type is not a valid assetType.It should be operation,bundle,dataset&quot;);</span>
         }
 
 
-<span class="fc" id="L239">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
+<span class="fc" id="L245">        Set&lt;String&gt; attributeSet = metaDataMap.keySet();</span>
 
-<span class="fc" id="L241">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
+<span class="fc" id="L247">        boolean mandatoryAttributePresent = getMadatoryAttribute().stream().allMatch(attribute -&gt; attributeSet.contains(attribute));</span>
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
-<span class="nc" id="L244">            throw new StarfishValidationException(&quot;Not a valid asset metadata, one or few mandatory is missing&quot;);</span>
-<span class="pc bpc" id="L245" title="3 of 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
-<span class="nc" id="L246">            throw new StarfishValidationException(&quot;Mandatory attribute missing : ,contents attribute is mandatory for bundle attribute&quot;);</span>
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        if (!mandatoryAttributePresent) {</span>
+<span class="nc" id="L250">            throw new StarfishValidationException(&quot;Not a valid asset metadata, one or few mandatory is missing&quot;);</span>
+<span class="pc bpc" id="L251" title="3 of 4 branches missed.">        } else if (type.equals(BUNDLE) &amp;&amp; metaDataMap.get(&quot;contents&quot;) == null) {</span>
+<span class="nc" id="L252">            throw new StarfishValidationException(&quot;Mandatory attribute missing : ,contents attribute is mandatory for bundle attribute&quot;);</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        } else if (type.equals(OPERATION)) {</span>
             // for bundle attribute params and results is mandatory
-<span class="fc" id="L249">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
-<span class="pc bpc" id="L250" title="2 of 4 branches missed.">            if (operationMap.get(&quot;inputs&quot;) == null || operationMap.get(&quot;outputs&quot;) == null) {</span>
-<span class="nc" id="L251">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
+<span class="fc" id="L255">            Map&lt;String, Object&gt; operationMap = JSON.toMap(metaDataMap.get(OPERATION).toString());</span>
+<span class="pc bpc" id="L256" title="2 of 4 branches missed.">            if (operationMap.get(&quot;inputs&quot;) == null || operationMap.get(&quot;outputs&quot;) == null) {</span>
+<span class="nc" id="L257">                throw new StarfishValidationException(&quot;Mandatory attribute missing : , either Params or results attribute is missing in operation asset&quot;);</span>
             }
-<span class="pc bnc" id="L253" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
-<span class="nc" id="L254">            throw new StarfishValidationException(&quot;Mandatory attribute missing :,either contentType or size  attribute is missing in dataset asset&quot;);</span>
+<span class="pc bnc" id="L259" title="All 6 branches missed.">        } else if (type.equals(DATA_SET) &amp;&amp; ((metaDataMap.get(&quot;contentType&quot;) == null) || (metaDataMap.get(&quot;size&quot;) == null))) {</span>
+<span class="nc" id="L260">            throw new StarfishValidationException(&quot;Mandatory attribute missing :,either contentType or size  attribute is missing in dataset asset&quot;);</span>
         }
 
-<span class="fc" id="L257">        return true;</span>
+<span class="fc" id="L263">        return true;</span>
 
     }
 
@@ -265,13 +271,13 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return list of String
      */
     private static List&lt;String&gt; getMadatoryAttribute() {
-<span class="fc" id="L268">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L269">        mandatoryList.add(&quot;type&quot;);</span>
+<span class="fc" id="L274">        List&lt;String&gt; mandatoryList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L275">        mandatoryList.add(&quot;type&quot;);</span>
         //  mandatoryList.add(&quot;name&quot;);
         //mandatoryList.add(&quot;license&quot;);
-<span class="fc" id="L272">        mandatoryList.add(&quot;dateCreated&quot;);</span>
+<span class="fc" id="L278">        mandatoryList.add(&quot;dateCreated&quot;);</span>
         // mandatoryList.add(&quot;author&quot;);
-<span class="fc" id="L274">        return mandatoryList;</span>
+<span class="fc" id="L280">        return mandatoryList;</span>
     }
 
     /**
@@ -279,7 +285,7 @@ import static sg.dex.starfish.constant.Constant.*;
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public static &lt;T extends Throwable&gt; T sneakyThrow(Throwable t) throws T {
-<span class="nc" id="L282">        throw (T) t;</span>
+<span class="nc" id="L288">        throw (T) t;</span>
     }
 
     /**
@@ -290,13 +296,13 @@ import static sg.dex.starfish.constant.Constant.*;
      * @return A new map containing the merged metadata
      */
     public Map&lt;String, Object&gt; mergeMeta(Map&lt;String, Object&gt; a, Map&lt;String, Object&gt; b) {
-<span class="nc" id="L293">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (b != null) {</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
-<span class="nc" id="L296">                ob.put(me.getKey(), me.getValue());</span>
-<span class="nc" id="L297">            }</span>
+<span class="nc" id="L299">        HashMap&lt;String, Object&gt; ob = new HashMap&lt;&gt;(a);</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">        if (b != null) {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">            for (Map.Entry&lt;String, Object&gt; me : b.entrySet()) {</span>
+<span class="nc" id="L302">                ob.put(me.getKey(), me.getValue());</span>
+<span class="nc" id="L303">            }</span>
         }
-<span class="nc" id="L299">        return ob;</span>
+<span class="nc" id="L305">        return ob;</span>
     }
 
 }

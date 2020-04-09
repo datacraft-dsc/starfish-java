@@ -38,10 +38,12 @@ public interface Bundle extends Asset {
     Bundle add(String name, Asset asset);
 
     /**
-     * API to create a new bundle adding all named sub-assets passed as parameters
+     * API to create a new bundle adding all named sub-assets passed as
+     * parameters
      *
      * @param assetMap sub Asset map that need to be bundled
-     * @return An new bundle including the all thee given sub-assets passed as argument
+     * @return An new bundle including the all thee given sub-assets passed as
+     *         argument
      */
     Bundle addAll(Map&lt;String, Asset&gt; assetMap);
 
@@ -49,7 +51,8 @@ public interface Bundle extends Asset {
      * API to get an specific asset from an asset Bundle by asset name
      *
      * @param name The name of the sub-asset
-     * @return The sub-asset referenced by the given name, or null if not present
+     * @return The sub-asset referenced by the given name, or null if not
+     *         present
      */
     &lt;R extends Asset&gt; R get(String name);
 
@@ -62,7 +65,7 @@ public interface Bundle extends Asset {
 
     @Override
     default DID getDID() {
-<span class="nc" id="L65">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
+<span class="nc" id="L68">        throw new UnsupportedOperationException(&quot;Unable to obtain DID for asset of class: &quot; + getClass());</span>
     }
 
     /**
@@ -72,9 +75,9 @@ public interface Bundle extends Asset {
      */
     @Override
     default Map&lt;String, Object&gt; getParamValue() {
-<span class="nc" id="L75">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L76">        o.put(Constant.DID, getAssetID());</span>
-<span class="nc" id="L77">        return o;</span>
+<span class="nc" id="L78">        Map&lt;String, Object&gt; o = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L79">        o.put(Constant.DID, getAssetID());</span>
+<span class="nc" id="L80">        return o;</span>
     }
 
 }

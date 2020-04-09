@@ -28,44 +28,54 @@ public interface Operation extends Asset {
      *
      * @param params Positional parameters for this invoke job
      * @return The Job for this invoked operation
-     * @throws IllegalArgumentException if required parameters are not available.
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available.
      */
     default Job invoke(Object... params) {
-<span class="nc" id="L34">        return invoke(Params.namedParams(this, params));</span>
+<span class="nc" id="L35">        return invoke(Params.namedParams(this, params));</span>
     }
 
     /**
-     * Invokes this operation with the given named parameters. Operations should
-     * override this method to provide an implementation of asynchronous invocation
+     * Invokes this operation with the given named parameters. Operations
+     * should
+     * override this method to provide an implementation of asynchronous
+     * invocation
      * via the Job interface
      *
      * @param params Positional parameters for this invoke job
      * @return The Job for this invoked operation
-     * @throws IllegalArgumentException if required parameters are not available, or
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available, or
      *                                  of incorrect type
      */
     Job invokeAsync(Map&lt;String, Object&gt; params);
 
     /**
-     * Invokes this operation with the given named parameters. Operations should
-     * override this method to provide an implementation of synchronous invocation
+     * Invokes this operation with the given named parameters. Operations
+     * should
+     * override this method to provide an implementation of synchronous
+     * invocation
      * via the Job interface
      *
      * @param params Positional parameters for this invoke job
      * @return The result for this invoked operation
-     * @throws IllegalArgumentException if required parameters are not available, or
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available, or
      *                                  of incorrect type
      */
     Map&lt;String, Object&gt; invokeResult(Map&lt;String, Object&gt; params);
 
     /**
-     * Invokes this operation with the given named parameters. Operations should
-     * override this method to provide an implementation of asynchronous invocation
+     * Invokes this operation with the given named parameters. Operations
+     * should
+     * override this method to provide an implementation of asynchronous
+     * invocation
      * via the Job interface
      *
      * @param params Positional parameters for this invoke job
      * @return The Job for this invoked operation
-     * @throws IllegalArgumentException if required parameters are not available, or
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available, or
      *                                  of incorrect type
      */
     Job invoke(Map&lt;String, Object&gt; params);
@@ -82,7 +92,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default Map&lt;String, Object&gt; getOperationSpec() {
-<span class="fc" id="L85">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
+<span class="fc" id="L95">        return (Map&lt;String, Object&gt;) getMetadata().get(Constant.OPERATION);</span>
     }
 
     /**
@@ -95,7 +105,7 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default Map&lt;String, Object&gt; getParamsSpec() {
-<span class="fc" id="L98">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;inputs&quot;);</span>
+<span class="fc" id="L108">        return (Map&lt;String, Object&gt;) getOperationSpec().get(&quot;inputs&quot;);</span>
     }
 
     /**
@@ -104,25 +114,25 @@ public interface Operation extends Asset {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     default List&lt;String&gt; getOperationModes() {
-<span class="fc" id="L107">        Map&lt;String, Object&gt; operationData = getOperationSpec();</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (operationData == null) {</span>
-<span class="nc" id="L109">            throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
+<span class="fc" id="L117">        Map&lt;String, Object&gt; operationData = getOperationSpec();</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (operationData == null) {</span>
+<span class="nc" id="L119">            throw new StarfishValidationException(&quot;No operation metadata found&quot;);</span>
         }
 
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (operationData.get(MODES) == null) {</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (operationData.get(MODES) == null) {</span>
             // return default list (all supported modes) as per DEP6
-<span class="nc" id="L114">            return List.of(SYNC, ASYNC);</span>
+<span class="nc" id="L124">            return List.of(SYNC, ASYNC);</span>
         }
-<span class="fc" id="L116">        List&lt;String&gt; modeLst = (List&lt;String&gt;) operationData.get(MODES);</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (String mode : modeLst) {</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (mode.equals(SYNC) ||</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                    mode.equals(ASYNC)) {</span>
+<span class="fc" id="L126">        List&lt;String&gt; modeLst = (List&lt;String&gt;) operationData.get(MODES);</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (String mode : modeLst) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (mode.equals(SYNC) ||</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                    mode.equals(ASYNC)) {</span>
             } else {
-<span class="nc" id="L121">                throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot; + mode);</span>
+<span class="nc" id="L131">                throw new StarfishValidationException(&quot;Invalid mode in operation metadata: &quot; + mode);</span>
             }
-<span class="fc" id="L123">        }</span>
+<span class="fc" id="L133">        }</span>
 
-<span class="fc" id="L125">        return modeLst;</span>
+<span class="fc" id="L135">        return modeLst;</span>
     }
 
 }

@@ -27,7 +27,8 @@ public class MemoryPurchase implements Purchase {
 
     /**
      * Create method is to create a instance of Memory Purchase
-     * This method will create a new instance of Purchase based on metaMap passed as an argument.
+     * This method will create a new instance of Purchase based on metaMap
+     * passed as an argument.
      *
      * @param agent   Agent on which the listing has to be created
      * @param metaMap Map of metadata that need to create listing
@@ -35,7 +36,7 @@ public class MemoryPurchase implements Purchase {
      */
     public static MemoryPurchase create(MemoryAgent agent, Map&lt;String, Object&gt; metaMap) {
 
-<span class="nc" id="L38">        return new MemoryPurchase(agent, metaMap.get(ID).toString(), metaMap);</span>
+<span class="nc" id="L39">        return new MemoryPurchase(agent, metaMap.get(ID).toString(), metaMap);</span>
     }
 
     /**
@@ -45,7 +46,7 @@ public class MemoryPurchase implements Purchase {
      * @return Listing id
      */
     public String getListingId() {
-<span class="nc" id="L48">        return meta.get(LISTING_ID).toString();</span>
+<span class="nc" id="L49">        return meta.get(LISTING_ID).toString();</span>
     }
 
     /**
@@ -55,28 +56,28 @@ public class MemoryPurchase implements Purchase {
      * @return purchase id
      */
     public String getId() {
-<span class="nc" id="L58">        return id;</span>
+<span class="nc" id="L59">        return id;</span>
     }
 
 
     @Override
     public Listing getListing() {
-<span class="nc" id="L64">        return agent.getListing(meta.get(LISTING_ID).toString());</span>
+<span class="nc" id="L65">        return agent.getListing(meta.get(LISTING_ID).toString());</span>
     }
 
     @Override
     public String status() {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        return meta.get(STATUS) == null ? null : meta.get(STATUS).toString();</span>
     }
 
     @Override
     public Map&lt;String, Object&gt; getMetaData() {
-<span class="nc" id="L74">        return meta;</span>
+<span class="nc" id="L75">        return meta;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L79">        return &quot;Purchase: &quot; + JSON.toString(meta);</span>
+<span class="nc" id="L80">        return &quot;Purchase: &quot; + JSON.toString(meta);</span>
     }
 
 }
