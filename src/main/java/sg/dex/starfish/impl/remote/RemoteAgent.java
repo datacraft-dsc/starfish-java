@@ -1,6 +1,5 @@
 package sg.dex.starfish.impl.remote;
 
-import org.apache.commons.httpclient.HttpException;
 import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -243,9 +242,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                         + uri.getPath());
             }
             return JSON.toMap(body);
-        } catch (HttpException e) {
-            throw new RemoteException("Fatal protocol violation: " + e.getCause(), e);
-        } catch (IOException e) {
+        }  catch (IOException e) {
             throw new RemoteException("Fatal transport error: ", e);
         } finally {
             // Release the connection.
@@ -880,9 +877,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             return response.getEntity().getContent();
 
 
-        } catch (HttpException e) {
-            throw new RemoteException("Fatal protocol violation: " + e.getMessage(), e);
-        } catch (IOException e) {
+        }  catch (IOException e) {
             throw new RemoteException("Fatal transport error: " + e.getMessage(), e);
         } finally {
             // Release the connection.

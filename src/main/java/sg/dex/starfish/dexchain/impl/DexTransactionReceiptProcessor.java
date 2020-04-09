@@ -1,7 +1,5 @@
 package sg.dex.starfish.dexchain.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.Log;
@@ -13,7 +11,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor {
-    private static final Logger log = LogManager.getLogger(DexTransactionReceiptProcessor.class);
+
     private final long sleepDuration;
     private final int attempts;
     private final Web3j web3j;
@@ -47,7 +45,6 @@ public class DexTransactionReceiptProcessor extends TransactionReceiptProcessor 
                 return !log.getType().equalsIgnoreCase("mined");
             }).findFirst();
             if (optionalLog.isPresent()) {
-                log.debug("Not mined transaction receipt. Waiting until transaction get mined...");
                 return true;
             } else {
                 return false;

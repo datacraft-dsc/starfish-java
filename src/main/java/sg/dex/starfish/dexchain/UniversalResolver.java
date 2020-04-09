@@ -3,8 +3,6 @@ package sg.dex.starfish.dexchain;
 import sg.dex.starfish.Resolver;
 import sg.dex.starfish.constant.Constant;
 import sg.dex.starfish.exception.DexChainException;
-import sg.dex.starfish.impl.squid.SquidResolverImpl;
-import sg.dex.starfish.impl.squid.SquidService;
 import sg.dex.starfish.util.DID;
 
 /**
@@ -28,18 +26,18 @@ public class UniversalResolver implements Resolver {
         this.squidResolverImpl = squidResolverImpl;
     }
 
-    /**
-     * Creates UniversalResolver
-     *
-     * @param squidConfigFile squidConfigFile. Squid config file which is used
-     *                        to initialize
-     *                        Squid Resolver.
-     * @return UniversalResolver The newly created UniversalResolver
-     */
-    public static UniversalResolver create(String squidConfigFile) {
-        SquidService squidService = SquidService.create(squidConfigFile);
-        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));
-    }
+//    /**
+//     * Creates UniversalResolver
+//     *
+//     * @param squidConfigFile squidConfigFile. Squid config file which is used
+//     *                        to initialize
+//     *                        Squid Resolver.
+//     * @return UniversalResolver The newly created UniversalResolver
+//     */
+//    public static UniversalResolver create(String squidConfigFile) {
+//        SquidService squidService = SquidService.create(squidConfigFile);
+//        return new UniversalResolver(DexResolver.create(), new SquidResolverImpl(squidService));
+//    }
 
     /**
      * Creates UniversalResolver

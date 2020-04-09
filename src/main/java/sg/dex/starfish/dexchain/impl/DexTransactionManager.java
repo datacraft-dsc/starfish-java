@@ -5,6 +5,7 @@ import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -43,6 +44,18 @@ public class DexTransactionManager extends TransactionManager {
         BigInteger nonce = this.getNonce();
         RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, this.getEstimatedGas(to, data), gasLimit, to, value, data);
         return this.signAndSend(rawTransaction);
+    }
+
+    @Override
+    public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value, boolean constructor) throws IOException {
+        //todo need to implement
+        return null;
+    }
+
+    @Override
+    public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter) throws IOException {
+        //todo need to implement
+        return null;
     }
 
     public String sign(RawTransaction rawTransaction) {

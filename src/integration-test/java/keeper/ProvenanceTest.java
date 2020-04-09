@@ -1,5 +1,6 @@
 package keeper;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sg.dex.starfish.dexchain.DexChain;
 import sg.dex.starfish.dexchain.DexConfig;
@@ -9,7 +10,7 @@ import sg.dex.starfish.util.DID;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@Disabled
 public class ProvenanceTest {
     private DexProvenance provenance;
 
