@@ -16,12 +16,15 @@ public interface Purchase {
     /**
      * Returns the Listing associated with this Purchase.
      * <p>
-     * The listing may not be available in some circumstances (e.g. lack of access permission)
+     * The listing may not be available in some circumstances (e.g. lack of
+     * access permission)
      * in which case an exception will be thrown.
      *
      * @return The listing for this Purchase
-     * @throws AuthorizationException if requester does not have access permission
-     * @throws StorageException       if there is an error in retrieving the Asset
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                Asset
      */
     Listing getListing();
 
@@ -32,8 +35,10 @@ public interface Purchase {
      * "wishlist", "ordered", "delivered"
      *
      * @return The status of the purchase
-     * @throws AuthorizationException if requester does not have access permission
-     * @throws StorageException       if there is an error in retrieving the Asset
+     * @throws AuthorizationException if requester does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                Asset
      */
     String status();
 

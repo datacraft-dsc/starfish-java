@@ -10,7 +10,8 @@ import java.util.WeakHashMap;
 /**
  * Utility class maintaining a cache of parsed JSON objects
  * <p>
- * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than fresh parsing
+ * TODO: confirm hypothesis that a deep clone of JSONObject is cheaper than
+ * fresh parsing
  *
  * @author Mike
  */
@@ -28,7 +29,8 @@ public class JSONObjectCache {
     @SuppressWarnings("unchecked")
     public synchronized static Map<String, Object> parse(String jsonString) {
         JSONObject cached = cache.get(jsonString);
-        if (cached != null) return new JSONObject(cached); // deep clone
+        if (cached != null)
+            return new JSONObject(cached); // deep clone
         JSONParser parser = new JSONParser();
         try {
             JSONObject result = (JSONObject) parser.parse(jsonString);

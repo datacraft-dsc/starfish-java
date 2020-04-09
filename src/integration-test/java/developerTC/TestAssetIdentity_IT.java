@@ -2,7 +2,6 @@ package developerTC;
 
 import org.junit.jupiter.api.*;
 import sg.dex.starfish.Asset;
-import sg.dex.starfish.exception.StarfishValidationException;
 import sg.dex.starfish.impl.memory.MemoryAsset;
 import sg.dex.starfish.impl.remote.ARemoteAsset;
 import sg.dex.starfish.impl.remote.RemoteAgent;
@@ -20,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * As a developer working with Data Supply Line,
- * I need a stable identifier (Asset ID) for an arbitrary asset in the Data supply line  ecosystem
+ * I need a stable identifier (Asset ID) for an arbitrary asset in the Data
+ * supply line  ecosystem
  */
 
 public class TestAssetIdentity_IT {

@@ -30,7 +30,8 @@ public class RemoteListing extends AListing {
 
 
     /**
-     * To get the reference of existing listing user need to pass the remote Agent and the existing listing id.
+     * To get the reference of existing listing user need to pass the remote
+     * Agent and the existing listing id.
      *
      * @param remoteAgent remote agent
      * @param id          id

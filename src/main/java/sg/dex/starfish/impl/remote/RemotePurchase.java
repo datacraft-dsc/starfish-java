@@ -31,8 +31,8 @@ public class RemotePurchase implements Purchase {
 
 
     /**
-     * To get the reference of existing listing user need to pass the remote Agent
-     * and the existing listing id.
+     * To get the reference of existing listing user need to pass the remote
+     * Agent and the existing listing id.
      *
      * @param remoteAgent remote Agent
      * @param id          id
@@ -57,7 +57,8 @@ public class RemotePurchase implements Purchase {
     }
 
     /**
-     * This method to create the local cache when the Purchase instance is create
+     * This method to create the local cache when the Purchase instance is
+     * create
      */
     private static void initializeCache() {
         if (null == metaDataCache) {

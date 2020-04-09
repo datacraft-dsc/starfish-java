@@ -42,7 +42,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * Create a memory bundle asset.
-     * This method will create a bundle asset which may contain zero or more sub-asset
+     * This method will create a bundle asset which may contain zero or more
+     * sub-asset
      * based on assetMap  passed in the argument.
      * Default memory Agent will be passed to create bundle
      *
@@ -57,7 +58,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * Create a memory bundle asset.
-     * This method will create a bundle asset which may contain zero or more sub-asset
+     * This method will create a bundle asset which may contain zero or more
+     * sub-asset
      * based on assetMap  passed in the argument.
      *
      * @param assetMap    map of all asset with name and Asset
@@ -72,7 +74,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
 
     /**
      * Create a memory bundle asset.
-     * This method will create a bundle asset which may contain zero or more sub-asset
+     * This method will create a bundle asset which may contain zero or more
+     * sub-asset
      * based on assetMap map passed in the argument.
      *
      * @param assetMap map of all asset with name and Asset
@@ -134,7 +137,8 @@ public class MemoryBundle extends AMemoryAsset implements Bundle {
     }
 
     /**
-     * API to get the AssetMap.Asset map will have all asset belong to given bundle.
+     * API to get the AssetMap.Asset map will have all asset belong to given
+     * bundle.
      *
      * @return Map
      */

@@ -24,7 +24,8 @@ public class RemoteOperation extends ARemoteAsset implements Operation {
     }
 
     /**
-     * This method is to create the remote operation instance by passing the remote agent and the metadata
+     * This method is to create the remote operation instance by passing the
+     * remote agent and the metadata
      *
      * @param a    agent on which this operation instance needs to be created
      * @param meta meta data for creating remote operation instance

@@ -13,13 +13,16 @@ import java.util.concurrent.CompletableFuture;
 import static sg.dex.starfish.constant.Constant.*;
 
 /**
- * Class representing a local in-memory operation asset. Operations are executed in
+ * Class representing a local in-memory operation asset. Operations are executed
+ * in
  * a thread pool managed by a MemoryAgent.
  * <p>
  * Intended for use in testing or local development situations.
  * <p>
- * This is a abstract base class that implements common functionality required for
- * different memory operations. Subclasses only need to override the `compute` method
+ * This is a abstract base class that implements common functionality required
+ * for
+ * different memory operations. Subclasses only need to override the `compute`
+ * method
  * to provide an alternative operation implementation.
  */
 public abstract class AMemoryOperation extends AMemoryAsset implements Operation {

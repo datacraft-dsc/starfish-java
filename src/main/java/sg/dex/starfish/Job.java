@@ -29,8 +29,10 @@ public interface Job extends Future<Map<String, Object>> {
     long MAX_TIMEOUT_MILLIS = Long.MAX_VALUE / 4;
 
     /**
-     * Gets the Job ID associated with this Job. Job IDs are allocated by the agent
-     * implementation responsible for completing the job, and may be used to refer
+     * Gets the Job ID associated with this Job. Job IDs are allocated by the
+     * agent
+     * implementation responsible for completing the job, and may be used to
+     * refer
      * to the Job via other mechanisms.
      * <p>
      * The definition of a Job ID is Agent-specific
@@ -40,9 +42,11 @@ public interface Job extends Future<Map<String, Object>> {
     String getJobID();
 
     /**
-     * Returns true if the Job has been completed, either due to success, failure or cancellation.
+     * Returns true if the Job has been completed, either due to success,
+     * failure or cancellation.
      * <p>
-     * If the job has succeeded, the result may be obtained via get() or getResult()
+     * If the job has succeeded, the result may be obtained via get() or
+     * getResult()
      *
      * @return boolean true if the job is complete, false otherwise.
      */
@@ -105,21 +109,25 @@ public interface Job extends Future<Map<String, Object>> {
      * A timeout will not prevent the Job from completing at a later time.
      *
      * @return The result map from the job
-     * @throws TimeoutException if the result is not returned by the given timeout
+     * @throws TimeoutException if the result is not returned by the given
+     *                          timeout
      */
     @Override
     Map<String, Object> get(long timeout, TimeUnit unit)
             throws TimeoutException;
 
     /**
-     * Waits for the result of the Operation and returns the result or returns null
+     * Waits for the result of the Operation and returns the result or returns
+     * null
      * if the timeout in milliseconds expires before the asset is available.
      *
-     * @param timeoutMillis The number of milliseconds to wait for a result before
+     * @param timeoutMillis The number of milliseconds to wait for a result
+     *                      before
      *                      throwing a TimeoutException
      * @return The result from the Job
      * @throws ExecutionException if Job fails with an error
-     * @throws TimeoutException   if the result is not returned by the given timeout
+     * @throws TimeoutException   if the result is not returned by the given
+     *                            timeout
      */
     default Map<String, Object> get(long timeoutMillis)
             throws TimeoutException, ExecutionException {
@@ -127,7 +135,8 @@ public interface Job extends Future<Map<String, Object>> {
     }
 
     /**
-     * Convenience method to get the result of the Job without checked exceptions.
+     * Convenience method to get the result of the Job without checked
+     * exceptions.
      *
      * @param timeoutMillis Timeout to wait for the Jo result in milliseconds
      * @return The result of the Job
@@ -137,7 +146,8 @@ public interface Job extends Future<Map<String, Object>> {
     }
 
     /**
-     * Convenience method to get the result of the Job without checked exceptions.
+     * Convenience method to get the result of the Job without checked
+     * exceptions.
      *
      * @param timeout Timeout to wait for the Job result
      * @param unit    Time unit for timeout value, e.g. TimeUnit.MILLISECONDS
@@ -167,34 +177,44 @@ public interface Job extends Future<Map<String, Object>> {
     }
 
     /**
-     * Attempts to cancel execution of this Job. This attempt will fail if the Job
-     * has already completed, has already been cancelled, or could not be cancelled
+     * Attempts to cancel execution of this Job. This attempt will fail if the
+     * Job
+     * has already completed, has already been cancelled, or could not be
+     * cancelled
      * for some other reason. If successful, and this task has not started when
      * {@code cancel} is called, this Job should never run.
      *
-     * @return {@code false} if the Job could not be cancelled, typically because it
-     * has already completed normally; {@code true} otherwise
+     * @return {@code false} if the Job could not be cancelled, typically
+     *         because it
+     *         has already completed normally; {@code true} otherwise
      */
     default boolean cancel() {
         return cancel(true);
     }
 
     /**
-     * Attempts to cancel execution of this Job. This attempt will fail if the Job
-     * has already completed, has already been cancelled, or could not be cancelled
+     * Attempts to cancel execution of this Job. This attempt will fail if the
+     * Job
+     * has already completed, has already been cancelled, or could not be
+     * cancelled
      * for some other reason. If successful, and this task has not started when
      * {@code cancel} is called, this Job should never run.
      * <p>
      * If the Job has already started, then the {@code mayInterruptIfRunning}
-     * parameter determines whether the an attempt should be made to stop the Job
-     * (e.g. via interrupting a running thread, or by sending a message to cancel to
+     * parameter determines whether the an attempt should be made to stop the
+     * Job
+     * (e.g. via interrupting a running thread, or by sending a message to
+     * cancel to
      * a remote agent)
      *
-     * @param mayInterruptIfRunning {@code true} if an attempt should be made to
-     *                              interrupt and already-running Job; otherwise, in-progress tasks
+     * @param mayInterruptIfRunning {@code true} if an attempt should be made
+     *                              to
+     *                              interrupt and already-running Job;
+     *                              otherwise, in-progress tasks
      *                              are allowed to complete
-     * @return {@code false} if the Job could not be cancelled, typically because it
-     * has already completed normally; {@code true} otherwise
+     * @return {@code false} if the Job could not be cancelled, typically
+     *         because it
+     *         has already completed normally; {@code true} otherwise
      */
     @Override
     default boolean cancel(boolean mayInterruptIfRunning) {

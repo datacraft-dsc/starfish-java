@@ -51,7 +51,8 @@ public class ReverseByte_AssetI_AssetO extends AMemoryOperation implements Opera
     @Override
     protected Map<String, Object> compute(Map<String, Object> params) {
         Object o = params.get("input");
-        if (o == null) throw new IllegalArgumentException("Missing parameter 'input'");
+        if (o == null)
+            throw new IllegalArgumentException("Missing parameter 'input'");
         return doCompute((Asset) o);
     }
 }

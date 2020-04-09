@@ -124,7 +124,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * TEST PRIME ::For this operation the input must be type JSON and the response will  be type asset.
+     * TEST PRIME ::For this operation the input must be type JSON and the
+     * response will  be type asset.
      * it support both SYNC and ASYNC
      * this test case is for testing Sync behaviour SYNC
      */
@@ -160,7 +161,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * TEST PRIME ::For this operation the input must be type JSON and the response will  be type asset.
+     * TEST PRIME ::For this operation the input must be type JSON and the
+     * response will  be type asset.
      * it support both SYNC and ASYNC
      * this test case is for testing ASYNC behaviour SYNC
      */
@@ -227,7 +229,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * TEST HASHING ::For this operation the input must be type ASSET and the response will  be type asset.
+     * TEST HASHING ::For this operation the input must be type ASSET and the
+     * response will  be type asset.
      * this is to test the  ASYNC
      * this test case is for testing ASync behaviour of HASHING
      */
@@ -271,7 +274,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * TEST HASHING ::For this operation the input must be type ASSET and the response will  be type asset.
+     * TEST HASHING ::For this operation the input must be type ASSET and the
+     * response will  be type asset.
      * this is to test the sync mode
      * this test case is for testing SYNC behaviour of HASHING
      */
@@ -314,7 +318,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * This Testcase is to test sync the merge operation for two given data asset.
+     * This Testcase is to test sync the merge operation for two given data
+     * asset.
      * One data asset is Vehicle data and other Asset is workshop data.
      * Result Asset will be merged of both data based on some criteria
      *
@@ -363,7 +368,8 @@ public class TestInvokeServiceFree_IT {
     }
 
     /**
-     * This Testcase is to test async the merge operation for two given data asset.
+     * This Testcase is to test async the merge operation for two given data
+     * asset.
      * One data asset is Vehicle data and other Asset is workshop data.
      * Result Asset will be merged of both data based on some criteria
      *

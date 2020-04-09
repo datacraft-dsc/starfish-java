@@ -31,7 +31,9 @@ public class UniversalResolver implements Resolver {
     /**
      * Creates UniversalResolver
      *
-     * @param squidConfigFile squidConfigFile. Squid config file which is used to initialize Squid Resolver.
+     * @param squidConfigFile squidConfigFile. Squid config file which is used
+     *                        to initialize
+     *                        Squid Resolver.
      * @return UniversalResolver The newly created UniversalResolver
      */
     public static UniversalResolver create(String squidConfigFile) {

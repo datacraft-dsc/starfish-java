@@ -93,8 +93,10 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      * Registers an Asset with this Agent
      *
      * @param a The Asset to register
-     * @return Asset The asset found, or null if the agent does not have the asset available
-     * @throws AuthorizationException if requestor does not have register permission
+     * @return Asset The asset found, or null if the agent does not have the
+     *         asset available
+     * @throws AuthorizationException if requestor does not have register
+     *                                permission
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
@@ -118,7 +120,8 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
      *
      * @param a The Asset to register
      * @return Asset The asset uploaded
-     * @throws AuthorizationException if requestor does not have register permission
+     * @throws AuthorizationException if requestor does not have register
+     *                                permission
      * @throws StorageException       if there is an error in storing the Asset
      */
     @SuppressWarnings("unchecked")
@@ -142,14 +145,18 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    Positional parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
-     * @throws IllegalArgumentException if required parameters are not available.
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
+     * @throws IllegalArgumentException if required parameters are not
+     *                                  available.
      */
     @Override
     public Job invoke(Operation operation, Object... params) {
@@ -161,13 +168,16 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
 
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    named parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override
@@ -179,13 +189,16 @@ public class MemoryAgent extends AAgent implements Invokable, MarketAgent {
     }
 
     /**
-     * Invokes the specified operation on this agent. If the invoke is successfully launched,
-     * will return a Job instance that can be used to access the result, otherwise throws an
+     * Invokes the specified operation on this agent. If the invoke is
+     * successfully launched,
+     * will return a Job instance that can be used to access the result,
+     * otherwise throws an
      * exception.
      *
      * @param operation The operation to invoke on this agent
      * @param params    named parameters for the invoke operation
-     * @return A Job instance allowing access to the invoke job status and result
+     * @return A Job instance allowing access to the invoke job status and
+     *         result
      * @throws IllegalArgumentException if operation not a AMemoryOperation
      */
     @Override

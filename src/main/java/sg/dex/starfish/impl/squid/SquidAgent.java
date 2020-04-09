@@ -35,9 +35,11 @@ public class SquidAgent extends AAgent {
     private SquidService squidService;
 
     /**
-     * Creates a SquidAgent with the specified OceanAPI, Ocean connection and DID
+     * Creates a SquidAgent with the specified OceanAPI, Ocean connection and
+     * DID
      *
-     * @param resolver Resolver instance used to resolve / register DIDs and DDO.
+     * @param resolver Resolver instance used to resolve / register DIDs and
+     *                 DDO.
      * @param did      DID for this agent
      */
     protected SquidAgent(
@@ -67,9 +69,12 @@ public class SquidAgent extends AAgent {
      *
      * @param asset The asset to register
      * @return SquidAsset
-     * @throws AuthorizationException        if requestor does not have register permission
-     * @throws StorageException              if unable to register the SquidAsset
-     * @throws UnsupportedOperationException if the agent does not support metadata storage
+     * @throws AuthorizationException        if requestor does not have register
+     *                                       permission
+     * @throws StorageException              if unable to register the
+     *                                       SquidAsset
+     * @throws UnsupportedOperationException if the agent does not support
+     *                                       metadata storage
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -159,8 +164,10 @@ public class SquidAgent extends AAgent {
      *
      * @param id The ID of the asset to get from this agent
      * @return SquidAsset The asset found
-     * @throws AuthorizationException if requestor does not have access permission
-     * @throws StorageException       if there is an error in retrieving the SquidAsset
+     * @throws AuthorizationException if requestor does not have access
+     *                                permission
+     * @throws StorageException       if there is an error in retrieving the
+     *                                SquidAsset
      */
     @Override
     public SquidAsset getAsset(String id) {
@@ -192,16 +199,21 @@ public class SquidAgent extends AAgent {
     }
 
     /**
-     * API to uploads an squid asset to this agent. Registers the asset with the agent if required.
+     * API to uploads an squid asset to this agent. Registers the asset with the
+     * agent if required.
      * <p>
-     * Throws an exception if upload is not possible, with the following likely causes:
+     * Throws an exception if upload is not possible, with the following likely
+     * causes:
      * - The agent does not support uploads of this asset type / size
      * - The data for the asset cannot be accessed by the agent
      *
      * @param a SquidAsset to upload
-     * @return SquidAsset An asset stored on the agent if the upload is successful
-     * @throws AuthorizationException if requestor does not have upload permission
-     * @throws StorageException       if there is an error in uploading the SquidAsset
+     * @return SquidAsset An asset stored on the agent if the upload is
+     *         successful
+     * @throws AuthorizationException if requestor does not have upload
+     *                                permission
+     * @throws StorageException       if there is an error in uploading the
+     *                                SquidAsset
      */
     @Override
     public SquidAsset uploadAsset(Asset a) {

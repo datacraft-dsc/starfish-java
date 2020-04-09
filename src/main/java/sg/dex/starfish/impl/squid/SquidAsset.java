@@ -58,7 +58,8 @@ public class SquidAsset extends AAsset implements DataAsset {
     }
 
     /**
-     * Method that wrap the squid DDO data  into starfish metadata as additional information
+     * Method that wrap the squid DDO data  into starfish metadata as additional
+     * information
      *
      * @param ddo squid ddo
      * @return map of metadata which have squid DDO information

@@ -18,7 +18,7 @@ public class AgentFactory {
     private static String username = "Aladdin";
     private static String password = "OpenSesame";
     static RemoteAccount remoteAccount = RemoteAccount.create(username, password);
-    private static String surferURL = "http://52.230.82.125:3030";
+    private static String surferURL = "http://localhost:3030";
     private static Resolver defaultResolver = new LocalResolverImpl();
 
 

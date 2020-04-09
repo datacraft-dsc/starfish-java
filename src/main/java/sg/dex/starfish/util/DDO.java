@@ -39,7 +39,8 @@ public class DDO {
         //
         if (services == null) return null;
         for (Map<String, Object> service : services) {
-            if (type.equals(service.get("type"))) return (String) service.get(Constant.SERVICE_ENDPOINT);
+            if (type.equals(service.get("type")))
+                return (String) service.get(Constant.SERVICE_ENDPOINT);
         }
         return null;
     }

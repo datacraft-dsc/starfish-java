@@ -12,7 +12,8 @@ public class ProvUtil {
     public static String DEP = "dep";
 
     /**
-     * Create a default namespace which includes the prefix and path for DEP standard provenance
+     * Create a default namespace which includes the prefix and path for DEP
+     * standard provenance
      * protocol schema
      *
      * @return a Map with prefixes respective IRIs used in this document
@@ -109,7 +110,8 @@ public class ProvUtil {
     }
 
     /**
-     * Returns a Map representing an associatedWith Relationship, which connects the
+     * Returns a Map representing an associatedWith Relationship, which connects
+     * the
      * agentID with the activityId
      *
      * @param agentId    the agent Id
@@ -130,7 +132,8 @@ public class ProvUtil {
     }
 
     /**
-     * Returns a Map representing an generatedBy Relationship, which connects the
+     * Returns a Map representing an generatedBy Relationship, which connects
+     * the
      * entityid with the activityId
      *
      * @param activityId the activity Id
@@ -154,7 +157,8 @@ public class ProvUtil {
      * Returns a Map representing an derived by Relationship, which connects the
      * dependent entities
      *
-     * @param entities list of entities that the generated entity is derived from
+     * @param entities list of entities that the generated entity is derived
+     *                 from
      * @return Map
      */
     public static Map<String, Object> derivedFrom(Collection<Asset> entities) {
@@ -256,7 +260,8 @@ public class ProvUtil {
     }
 
     /**
-     * Create dependencies. There are 2 sets of dependencies: one that are assets,
+     * Create dependencies. There are 2 sets of dependencies: one that are
+     * assets,
      * and the second which is JSON payloads.
      *
      * @param inputs  the param string sent to the invoke rest API
@@ -285,9 +290,11 @@ public class ProvUtil {
      *
      * @param actId             the activity Id
      * @param agentId           the agent identifier
-     * @param assetDependencies the list of assets that consumed by the operation
+     * @param assetDependencies the list of assets that consumed by the
+     *                          operation
      * @param inputs            the argument string passed to the operation
-     * @param outputs           the name of the result argument for the generated
+     * @param outputs           the name of the result argument for the
+     *                          generated
      *                          asset
      * @return Map
      */

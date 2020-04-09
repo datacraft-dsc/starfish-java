@@ -59,7 +59,9 @@ public class DexResolver implements Resolver {
     /**
      * Creates a DexResolver
      *
-     * @param configFile configFile. All information about account credentials will be taken from this file
+     * @param configFile configFile. All information about account credentials
+     *                   will be
+     *                   taken from this file
      * @return DexResolver The newly created DexResolver
      * @throws IOException
      */

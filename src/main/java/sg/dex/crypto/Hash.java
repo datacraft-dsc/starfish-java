@@ -126,7 +126,8 @@ public class Hash {
     }
 
     /**
-     * This method is used to compute the complete hash computation based on input stream passed.
+     * This method is used to compute the complete hash computation based on
+     * input stream passed.
      * A MessageDigest object starts out initialized.
      * The data is processed through it using the update methods.
      * At any point reset can be called to reset the digest.

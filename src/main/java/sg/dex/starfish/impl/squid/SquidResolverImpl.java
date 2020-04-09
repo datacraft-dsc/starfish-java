@@ -81,7 +81,8 @@ public class SquidResolverImpl implements Resolver {
     }
 
     /**
-     * Registers a DID with a DDO in the context of this Ocean connection on the local machine.
+     * Registers a DID with a DDO in the context of this Ocean connection on the
+     * local machine.
      * <p>
      * This registration is intended for testing purposes.
      *
@@ -89,7 +90,8 @@ public class SquidResolverImpl implements Resolver {
      * @param ddoString A string containing a valid DDO in JSON Format
      */
     private void installLocalDDO(DID did, String ddoString) {
-        if (did == null) throw new IllegalArgumentException("DID cannot be null");
+        if (did == null)
+            throw new IllegalArgumentException("DID cannot be null");
         did = did.withoutPath();
         ddoCache.put(did, ddoString);
     }

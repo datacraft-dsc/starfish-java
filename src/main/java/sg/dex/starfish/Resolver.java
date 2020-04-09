@@ -7,12 +7,14 @@ import sg.dex.starfish.util.JSON;
 import java.util.Map;
 
 /**
- * This interface represents a Resolver instance used to resolve / register DIDs and DDOd.
+ * This interface represents a Resolver instance used to resolve / register DIDs
+ * and DDOd.
  */
 public interface Resolver {
 
     /**
-     * Method to  get a DDO (as a String) for any given DID registered with the resolver.
+     * Method to  get a DDO (as a String) for any given DID registered with the
+     * resolver.
      *
      * @param did Given DID which is registered with the resolver
      * @return DDO String value or null

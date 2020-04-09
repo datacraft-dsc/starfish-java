@@ -108,7 +108,8 @@ public final class DirectPurchaseAdapter {
     /**
      * Returns whether the transaction is successful
      *
-     * @param spenderAddress The address who will be allowed to spend tokens of signer
+     * @param spenderAddress The address who will be allowed to spend tokens of
+     *                       signer
      * @param price          Amount of tokens to spend
      * @return boolean
      */

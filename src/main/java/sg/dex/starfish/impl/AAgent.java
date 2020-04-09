@@ -50,7 +50,8 @@ public abstract class AAgent implements Agent {
     @Override
     public <R extends Asset> R getAsset(DID did) {
         String assetID = did.getPath();
-        if (assetID == null) throw new IllegalArgumentException("Expected Asset ID in DID path");
+        if (assetID == null)
+            throw new IllegalArgumentException("Expected Asset ID in DID path");
         return getAsset(assetID);
     }
 

@@ -6,7 +6,6 @@ import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Event;
-import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.abi.datatypes.generated.Uint256;
@@ -28,9 +27,11 @@ import java.util.*;
 /**
  * <p>Auto generated code.
  * <p><strong>Do not modify!</strong>
- * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
+ * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j
+ * command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen
+ * module</a> to update.
  *
  * <p>Generated with web3j version 4.5.14.
  */

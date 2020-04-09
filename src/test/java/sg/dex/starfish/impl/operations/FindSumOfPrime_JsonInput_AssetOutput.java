@@ -10,7 +10,8 @@ import java.util.Map;
 /**
  * This class is a memory implementation of Invoke Service.
  * It calculate all prime number present before any given number.
- * It reads metadata from a file which has basic detail of the input and output type.
+ * It reads metadata from a file which has basic detail of the input and output
+ * type.
  */
 public class FindSumOfPrime_JsonInput_AssetOutput extends AMemoryOperation implements Operation {
     protected FindSumOfPrime_JsonInput_AssetOutput(String meta, MemoryAgent memoryAgent) {
