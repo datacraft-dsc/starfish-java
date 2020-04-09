@@ -48,13 +48,13 @@ public class DexTransactionManager extends TransactionManager {
 
     @Override
     public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value, boolean constructor) throws IOException {
-        //todo need to implement
-        return null;
+        BigInteger nonce = this.getNonce();
+        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, this.getEstimatedGas(to, data), gasLimit, to, value, data);
+        return this.signAndSend(rawTransaction);
     }
 
     @Override
     public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter) throws IOException {
-        //todo need to implement
         return null;
     }
 
