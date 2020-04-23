@@ -7,6 +7,8 @@ import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthGetCode;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.tx.TransactionManager;
@@ -40,12 +42,6 @@ public class DexTransactionManager extends TransactionManager {
         return gas;
     }
 
-    public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value) throws IOException {
-        BigInteger nonce = this.getNonce();
-        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, this.getEstimatedGas(to, data), gasLimit, to, value, data);
-        return this.signAndSend(rawTransaction);
-    }
-
     @Override
     public EthSendTransaction sendTransaction(BigInteger gasPrice, BigInteger gasLimit, String to, String data, BigInteger value, boolean constructor) throws IOException {
         BigInteger nonce = this.getNonce();
@@ -55,6 +51,11 @@ public class DexTransactionManager extends TransactionManager {
 
     @Override
     public String sendCall(String to, String data, DefaultBlockParameter defaultBlockParameter) throws IOException {
+        return (this.web3j.ethCall(Transaction.createEthCallTransaction(credentials.getAddress(), to, data), defaultBlockParameter).send()).getValue();
+    }
+
+    @Override
+    public EthGetCode getCode(String s, DefaultBlockParameter defaultBlockParameter) throws IOException {
         return null;
     }
 
