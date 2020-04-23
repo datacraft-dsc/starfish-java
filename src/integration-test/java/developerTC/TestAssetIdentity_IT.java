@@ -114,7 +114,7 @@ public class TestAssetIdentity_IT {
         RemoteDataAsset remoteAsset = remoteAgent.registerAsset(asset2);
 
         // uploading the Asset this remote Agent
-        remoteAgent.uploadAsset(asset2);
+        //remoteAgent.uploadAsset(asset2);
 
 
         //verify prov info exists
