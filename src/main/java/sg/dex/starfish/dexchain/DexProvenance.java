@@ -171,5 +171,14 @@ public class DexProvenance {
         public String user;
         public String assetId;
         java.util.Date timeStamp;
+
+        @Override
+        public String toString() {
+            return "DexProvenanceResult{" +
+                    "user='" + user + '\'' +
+                    ", assetId='" + assetId + '\'' +
+                    ", timeStamp=" + timeStamp +
+                    '}';
+        }
     }
 }
