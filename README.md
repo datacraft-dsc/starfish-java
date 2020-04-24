@@ -27,7 +27,7 @@
 
 ## Features
 
-Starfish is a open source lient library for the decentralised data economy, based on underlying open data ecosystem standards (see [Data Ecosystem Proposals](https://https://github.com/DEX-Company/DEPs/))
+Starfish is a open source client library for the decentralised data economy, based on underlying open data ecosystem standards (see [Data Ecosystem Proposals](https://https://github.com/DEX-Company/DEPs/))
 
 Starfish provides high-level APIs for common tasks within the data economy, for example registering/publishing a data asset for subsequent use in a digital supply line. In this case, an asset can be any data set, model or data service.
 
