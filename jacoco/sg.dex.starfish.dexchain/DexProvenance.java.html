@@ -171,6 +171,15 @@ public class DexProvenance {
         public String user;
         public String assetId;
         java.util.Date timeStamp;
+
+        @Override
+        public String toString() {
+<span class="nc" id="L177">            return &quot;DexProvenanceResult{&quot; +</span>
+                    &quot;user='&quot; + user + '\'' +
+                    &quot;, assetId='&quot; + assetId + '\'' +
+                    &quot;, timeStamp=&quot; + timeStamp +
+                    '}';
+        }
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
