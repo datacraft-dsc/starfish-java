@@ -1,6 +1,5 @@
 package sg.dex.starfish.dexchain;
 
-import org.apache.logging.log4j.util.Strings;
 
 import java.math.BigInteger;
 
@@ -153,7 +152,7 @@ public class DexConfig {
 
     public DexConfig setMainAccountCredentialsFile(String mainAccountCredentialsFile) {
         this.mainAccountCredentialsFile = mainAccountCredentialsFile;
-        if (Strings.isBlank(mainAccountCredentialsFile)) {
+        if (null == mainAccountCredentialsFile) {
             this.mainAccountCredentialsFile = DexConfigFactory.getDefaultCredential().getAbsolutePath();
         }
         return this;
