@@ -110,7 +110,7 @@ public class TestRemoteAgentTest_IT {
 
         RemoteAccount remoteAccount = RemoteAccount.create("WrongUser", "WrongPassword");
         RemoteAgent remoteAgent = RemoteAgent.connect(resolver, did, remoteAccount);
-        Assertions.assertThrows(RemoteException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             remoteAgent.getAsset("1234");
         });
 
