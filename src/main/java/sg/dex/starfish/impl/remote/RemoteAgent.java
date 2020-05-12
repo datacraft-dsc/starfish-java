@@ -1,6 +1,8 @@
 package sg.dex.starfish.impl.remote;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.*;
+import org.apache.http.auth.AUTH;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -14,6 +16,8 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.CharArrayBuffer;
+import org.apache.http.util.EncodingUtils;
 import org.json.simple.JSONArray;
 import sg.dex.crypto.Hash;
 import sg.dex.starfish.*;
@@ -242,7 +246,7 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
                         + uri.getPath());
             }
             return JSON.toMap(body);
-        }  catch (IOException e) {
+        } catch (IOException e) {
             throw new RemoteException("Fatal transport error: ", e);
         } finally {
             // Release the connection.
@@ -336,7 +340,11 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
             return account.getUserDataMap().get(TOKEN).toString();
         }
         validateAccountData(account);
-        createToken(account);
+        try {
+            createToken(account);
+        } catch (RemoteException e) {
+            return null;
+        }
 
         return account.getUserDataMap().get(TOKEN).toString();
     }
@@ -855,34 +863,41 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
     private InputStream getHTTPResponseAsStream(HttpRequestBase requestBase) {
         try {
 
+            // make http call
             CloseableHttpResponse response = getHttpResponse(requestBase);
+
             StatusLine statusLine = response.getStatusLine();
 
-            if (statusLine.getStatusCode() != 200) {
-                throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-            }
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
+            if (statusLine.getStatusCode() == 200) {
+                return response.getEntity().getContent();
+                //throw new HttpResponseException(statusLine.getStatusCode(),
+                //statusLine.getReasonPhrase());
+            } else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_UNAUTHORIZED) {
                 // refresh the token and try again
                 requestBase.removeHeaders(HttpHeaders.AUTHORIZATION);
-                account.getUserDataMap().put(TOKEN, null);
-                requestBase.addHeader(HttpHeaders.AUTHORIZATION, "token " + getSignInToken());
-
+                if (account.getUserDataMap() != null) {
+                    account.getUserDataMap().put(TOKEN, null);
+                } else {
+                    account.getUserDataMap().put("Basic", null);
+                }
                 //  resend the request
                 response = getHttpResponse(requestBase);
-
-                if (statusLine.getStatusCode() != 200) {
+                 statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == 200) {
+                    return response.getEntity().getContent();}
+                else{
                     throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
                 }
             }
-            return response.getEntity().getContent();
 
 
-        }  catch (IOException e) {
+        } catch (IOException e) {
             throw new RemoteException("Fatal transport error: " + e.getMessage(), e);
         } finally {
             // Release the connection.
             requestBase.releaseConnection();
         }
+        throw new RemoteException("Authorization failed :");
     }
 
     /**
@@ -894,7 +909,16 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
      */
     public CloseableHttpResponse getHttpResponse(HttpRequestBase requestBase)
             throws IOException {
-        requestBase.addHeader(HttpHeaders.AUTHORIZATION, "token " + getSignInToken());
+
+        if (null != getSignInToken()) {
+            requestBase.addHeader(HttpHeaders.AUTHORIZATION, "token " + getSignInToken());
+        }
+        // try basic token
+        else {
+            String value = getBasicToken();
+            String header = AUTH.WWW_AUTH_RESP;
+            requestBase.setHeader(header, value);
+        }
         CloseableHttpClient httpclient = HttpClients.createDefault();
         return httpclient.execute(requestBase);
     }
@@ -1169,6 +1193,31 @@ public class RemoteAgent extends AAgent implements Invokable, MarketAgent {
         }
 
 
+    }
+
+    private String getBasicToken() {
+
+        if (null != account.getUserDataMap().get("Basic")) {
+            return account.getUserDataMap().get("Basic").toString();
+        }
+
+        final CharArrayBuffer buffer = new CharArrayBuffer(32);
+
+        String username =
+                this.account.getCredentials().get("username").toString();
+        String password =
+                this.account.getCredentials().get("password").toString();
+        final StringBuilder tmp = new StringBuilder();
+        tmp.append(username);
+        tmp.append(":");
+        tmp.append((password == null) ? "null" : password);
+        final Base64 base64codec = new Base64(0);
+        final byte[] base64password = base64codec.encode(EncodingUtils.getBytes(tmp.toString(), Consts.UTF_8.name()));
+        buffer.append("Basic ");
+        buffer.append(base64password, 0, base64password.length);
+        account.getUserDataMap().put("Basic", buffer.toString());
+
+        return buffer.toString();
     }
 
     /**
